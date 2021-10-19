@@ -101,12 +101,12 @@ public class EnemyCombatBehaviour : MonoBehaviour
         GameManager.instance.BattleMan.DeadEnemy(combatID);
     }
 
-    // public void AddDebuff(BuffDebuff toAdd)
-    // {
-    //     Debuffs.Add(toAdd);
-    //     if(toAdd.ValeurEffet < 0 || toAdd.Debuff)
-    //         ReceiveTension(Source.Buff);
-    // }
+    public void AddDebuff(List<BuffDebuff> toAdd)
+    {
+        Debuffs.AddRange(toAdd);
+        // if(toAdd.ValeurEffet < 0 || toAdd.Debuff)
+        //     ReceiveTension(Source.Buff);
+    }
     private void Update() {
         updateUI();
     }
@@ -139,7 +139,6 @@ public class EnemyCombatBehaviour : MonoBehaviour
 
     public void EndAnim()
     {
-        EndAnimBool();
         EndTurn();
     }
 
@@ -190,6 +189,8 @@ public class EnemyCombatBehaviour : MonoBehaviour
             case nextActionEnum.Debuff:
                 this.GetComponent<Animator>().SetBool("LaunchDebuff",true);
                 break;
+            default:
+                break;
         }
 
     }
@@ -214,11 +215,14 @@ public class EnemyCombatBehaviour : MonoBehaviour
             case nextActionEnum.Debuff:
                 this.GetComponent<Animator>().SetBool("LaunchDebuff",false);
                 break;
+            default:
+                break;
         }
     }
     
     public void EndTurn()
     {
+        EndAnimBool();
         ChooseNextAction();
         EndTurnBM();
 

@@ -312,7 +312,7 @@ public class BattleManager : MonoBehaviour
                                 enemy.TakeDamage(item.HpModif,Source.Attaque);
                             }
                         }
-                        //if(item.buffToApply != null) enemy.AddDebuff(item.buffToApply);
+                        if(item.DebuffBuff != null) enemy.AddDebuff(item.DebuffBuff);
                     }
                     break;
 
@@ -327,7 +327,7 @@ public class BattleManager : MonoBehaviour
                                 enemy.TakeDamage(item.HpModif,Source.Attaque);
                             }
                         }
-                        //if(item.buffToApply != null) enemy.AddDebuff(item.buffToApply);
+                        if(item.DebuffBuff != null) enemy.AddDebuff(item.DebuffBuff);
                     }
                     break;
 
@@ -345,7 +345,7 @@ public class BattleManager : MonoBehaviour
                             player.EnervementTension();
                         if(Apaisement)
                             player.ApaisementTension();
-                    //if(item.buffToApply != null) player.AddDebuff(item.buffToApply);
+                    if(item.DebuffBuff != null) player.AddDebuff(item.DebuffBuff);
                     break;
 
                     case Cible.Ally:
@@ -358,7 +358,7 @@ public class BattleManager : MonoBehaviour
                             Enemy.TakeDamage(item.HpModif,Source.Attaque);
                         }
                     }
-                    //if(item.buffToApply != null) Enemy.AddDebuff(item.buffToApply);
+                    if(item.DebuffBuff != null) Enemy.AddDebuff(item.DebuffBuff);
                     break;
 
                     case Cible.ennemi:
@@ -375,7 +375,7 @@ public class BattleManager : MonoBehaviour
                             player.EnervementTension();
                         if(Apaisement)
                             player.ApaisementTension();
-                    //if(item.buffToApply != null) player.AddDebuff(item.buffToApply);
+                    if(item.DebuffBuff != null) player.AddDebuff(item.DebuffBuff);
                     break;
 
                     case Cible.self:
@@ -388,7 +388,7 @@ public class BattleManager : MonoBehaviour
                             self.TakeDamage(item.HpModif,Source.Attaque);
                         }
                     }
-                    //if(item.buffToApply != null) self.AddDebuff(item.buffToApply);
+                    if(item.DebuffBuff != null) self.AddDebuff(item.DebuffBuff);
                     break;
                 }
             }
@@ -537,7 +537,12 @@ public class BattleManager : MonoBehaviour
     
     public void EndCurrentAttaque()
     {
-        EnemyScripts.First(c => c.combatID == currentIdTurn).EndAnim();
+        foreach (var item in EnemyScripts)
+        {
+            if(item.combatID == currentIdTurn)
+                item.EndAnim();
+        }
+        //EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn).EndAnim();
     }
 
     public void EndHurtAnim()
