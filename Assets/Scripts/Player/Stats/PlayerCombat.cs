@@ -137,9 +137,9 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    public void AddDebuff(List<BuffDebuff> toAdd)
+    public void AddDebuff(BuffDebuff toAdd)
     {
-        debuffs.AddRange(toAdd);
+        debuffs.Add(toAdd);
         // if(toAdd.ValeurEffet < 0 || toAdd.Debuff)
         //     ReceiveTension(Source.Buff);
     }
