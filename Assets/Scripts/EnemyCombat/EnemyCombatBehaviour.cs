@@ -31,6 +31,7 @@ public class EnemyCombatBehaviour : MonoBehaviour
 
     public Action EndTurnBM;
     public Action<List<ActionResult>,int,int,bool,bool> actResult;
+    public Action<List<BuffDebuff>,int,int> actDebuff;
 
     public int combatID;
     public EnemySpell nextAction;
@@ -101,9 +102,9 @@ public class EnemyCombatBehaviour : MonoBehaviour
         GameManager.instance.BattleMan.DeadEnemy(combatID);
     }
 
-    public void AddDebuff(List<BuffDebuff> toAdd)
+    public void AddDebuff(BuffDebuff toAdd)
     {
-        Debuffs.AddRange(toAdd);
+        Debuffs.Add(toAdd);
         // if(toAdd.ValeurEffet < 0 || toAdd.Debuff)
         //     ReceiveTension(Source.Buff);
     }
@@ -151,8 +152,9 @@ public class EnemyCombatBehaviour : MonoBehaviour
         List<ActionResult> temp = new List<ActionResult>();
         bool enerv,apais;
         GetResult(temp,out enerv,out apais);
-        LaunchAnimBool();
+        actDebuff(nextAction.debuffsBuffs,combatID,-1);
         actResult(temp,combatID,-1,enerv,apais);
+        LaunchAnimBool();
     }
 
     public void GetResult(List<ActionResult> temp,out bool enervement, out bool apaisement)
@@ -168,7 +170,7 @@ public class EnemyCombatBehaviour : MonoBehaviour
         }
         if(nextAction.Effet.Any(c => c.type == BuffType.Enervement))
             enervement = true;
-        if(nextAction.Effet.Any(c => c.type == BuffType.Apaisement))
+        else if(nextAction.Effet.Any(c => c.type == BuffType.Apaisement))
             apaisement = true;
 
     }

@@ -8,7 +8,7 @@ public class BuffDebuff : ScriptableObject
     
     public string NomDebuff;
     public EffetTypeDecompte Decompte;
-    public Cible Target;
+    public Cible target;
     public int nbTemps;
     public Sprite Icon;
     public List<Effect> effects; 
