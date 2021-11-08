@@ -42,7 +42,8 @@ public class EnemyCombatBehaviour : MonoBehaviour
     public void SetUp()
     {
         updateUI();
-
+        var animator = this.GetComponent<Animator>();
+        animator.SetLayerWeight(animator.GetLayerIndex("Mère supérieur"),1);
         if(current.Att1 != null)
             current.Att1 = Instantiate(current.Att1);
         if(current.Att2 != null)
