@@ -123,12 +123,25 @@ public class BattleManager : MonoBehaviour
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
-        StartPhase();
+        StartFirstPhase();
     }
 
     private void StartPhase()
     {
         DetermTour();
+        player.StartPhase();
+        foreach (var item in EnemyScripts)
+        {
+            item.StartPhase();
+        }
+        currentIdTurn = 0;
+        nbPhase++;
+        nbTurn = 0;
+        StartNextTurn();
+    }
+        private void StartFirstPhase()
+    {
+        DetermFirstTurn();
         player.StartPhase();
         foreach (var item in EnemyScripts)
         {
@@ -178,6 +191,24 @@ public class BattleManager : MonoBehaviour
             if(CheckTension(item.Key))
                 IdOrder.Add(new CombatOrder(){id = item.Key,Played = false});
         }
+    }    
+    private void DetermFirstTurn()
+    {
+        var test = IdSpeedDictionary.OrderByDescending(c => c.Value);
+        IdOrder = new List<CombatOrder>();
+        IdOrder.Add(new CombatOrder(){id = idPlayer, Played = false});
+        foreach (var item in test)
+        {
+            if(item.Key != idPlayer)
+            {
+                IdOrder.Add(new CombatOrder(){id = item.Key,Played = false});
+                if(CheckTension(item.Key))
+                    IdOrder.Add(new CombatOrder(){id = item.Key,Played = false});
+
+            }
+        }
+
+
     }
 #endregion Turn
 #region calcul tension & calme
