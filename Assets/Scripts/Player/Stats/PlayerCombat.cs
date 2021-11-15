@@ -24,10 +24,12 @@ public class PlayerCombat : MonoBehaviour
     public Slider HP;
     public Slider Volonté;
     public Slider Tension;
+    public Slider Conscience;
 
     public TextMeshProUGUI TensionText;
     public TextMeshProUGUI HpText;
     public TextMeshProUGUI VolontéText; 
+    public TextMeshProUGUI ConscienceText; 
     public Action EndTurnBM;
     
     public Spell SelectedSpell;
@@ -114,8 +116,12 @@ public class PlayerCombat : MonoBehaviour
         Tension.maxValue = stat.NbPalier;
         Volonté.value = stat.Volonté;
         Volonté.maxValue = stat.MaxVolonté;
+        Conscience.value = stat.Conscience;
+        Conscience.maxValue = stat.MaximumConscience;
 
         HpText.text = stat.HP +"/" + stat.MaxHP;
+
+        ConscienceText.text = stat.Conscience +"/" + stat.MaximumConscience;
 
     }
     public void ReceiveTension(Source sourceDamage)
