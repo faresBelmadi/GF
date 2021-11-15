@@ -101,6 +101,12 @@ public class GameManager : MonoBehaviour {
         GameData data = new GameData();
         data.CurrentRun = new RunData(){ClassID = 0};
         data.previousRuns = new List<RunData>();
+        var spellsToAdd = AllClasses.First(c => c.ID == 0).spellClass.Where(c => c.Status == SpellStatus.bought);
+        List<int> boughtspells = new List<int>();
+        foreach (var item in spellsToAdd)
+        {
+            boughtspells.Add(item.ID);   
+        }
         data.CurrentRun.player = new PlayerData()
         {   
             HP = AllClasses.First(c => c.ID == 0).PlayerStat.HP,
@@ -108,7 +114,7 @@ public class GameManager : MonoBehaviour {
             dmg = AllClasses.First(c => c.ID == 0).PlayerStat.dmg,
             Speed = AllClasses.First(c => c.ID == 0).PlayerStat.Speed,
             Volonté = AllClasses.First(c => c.ID == 0).PlayerStat.Volonté,
-            BoughtSpellID = new List<int>(){0}
+            BoughtSpellID = boughtspells
         };
         string json = JsonUtility.ToJson(data);
         

@@ -213,6 +213,7 @@ public class PlayerCombat : MonoBehaviour
 
     public void StartUp()
     {
+        Debug.Log(stat.AvailableSpell.Count());
         foreach (var item in stat.AvailableSpell)
         {
             var temp = Instantiate(SpellPrefab,SpellsSpawn.transform);
