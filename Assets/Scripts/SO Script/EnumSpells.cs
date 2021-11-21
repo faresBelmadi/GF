@@ -4,7 +4,7 @@ using UnityEngine;
 
 public enum BuffType
 {
-    Dégats,
+    DégatsForceAme,
     DégatsBrut,
     Enervement,
     Apaisement,
@@ -12,15 +12,24 @@ public enum BuffType
     AttBrut,
     Def,
     DefBrut,
+    //Doute = chance de skip tour
     Doute,
+    //TO DELETE
     Découragé,
+    //TO DELETE
     Vulnérable,
+    //Peur = chance de leave le combat #dead sans leave l'essence
     Peur,
+    //Colere = chance d'attaquer pas de buff ou debuff
     Colère,
+    //TO DELETE
     PourEnFinir,
+    //TO DELETE
     Execution,
     Passif,
+    //TO DELETE
     Cible,
+    //TO DELETE
     Armure,
     Soin,
     //TODO
@@ -30,14 +39,18 @@ public enum BuffType
     Clairvoyance,
     PVMax,
     Stun,
-    AttUpDamageTaken,
+    //Soif de vengeance = att up for each dmg taken
+    SoifDeVengeance,
     SoinRadianceMax,
+    //on hold 
     AttUpPVMiss,
     Ponction,
     DmgPVMax,
     EpineForceAme,
     DeathTrigger,
-    RandNBAttack
+    RandNBAttack,
+    AttUpBuff,
+    AttUpDebuff
 }
 
 public enum EffetAcharnementHabitude

@@ -8,14 +8,12 @@ public class Enemy : ScriptableObject
     [Header("Stats")]
     public int HP;
     public int MaxHP;
-    public int Dmg;
-    public int Armor;
+    public int ForceAme;
     public int Bouclier;
-    public int CritRate;
-    public int Esquive;
     public int Speed;
     public int Calme;
     public int Dissimulation;
+    public int résilience;
 
     [Header("Stats Tension")]
     public int GainAttaque = 4;

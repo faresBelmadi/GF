@@ -7,6 +7,7 @@ public class BuffDebuff : ScriptableObject
 {
     
     public string NomDebuff;
+    public bool IsDebuff;
     public EffetTypeDecompte Decompte;
     public Cible target;
     public int nbTemps;

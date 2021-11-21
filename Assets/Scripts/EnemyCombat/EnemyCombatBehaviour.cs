@@ -83,17 +83,36 @@ public class EnemyCombatBehaviour : MonoBehaviour
 
     public void TakeDamage(int dmg,Source sourceDamage)
     {   
-        // if(Debuffs.Where(c => (c.Type == BuffType.Def ||c.Type == BuffType.DefBrut)).Count() > 0)
-        // {
-        //     foreach (var item in Debuffs.Where(c => (c.Type == BuffType.Def ||c.Type == BuffType.DefBrut)&& c.ValeurEffet < 0 ))
-        //     {
-        //         dmg += Mathf.RoundToInt((item.ValeurEffet/100f)*dmg); 
-        //     }
-        // }
-        
+        foreach (var item in Debuffs)
+        {
+            foreach (var effect in item.effects)
+            {
+                if(effect.type == BuffType.Def)
+                {
+                    var tempResi = 1 - (effect.pourcentageEffet/100f);
+
+                    dmg += dmg - Mathf.RoundToInt(tempResi *dmg); 
+                }
+                if(effect.type == BuffType.DefBrut)
+                {
+                    dmg -= effect.pourcentageEffet;
+                }
+                
+            }
+        }
+        //résilience
+        if(current.résilience != 0)
+        {
+            var tempResi = 1 - ((current.résilience*3)/100f);
+            dmg = Mathf.RoundToInt(tempResi * dmg);
+        }
+
+
         current.HP -= dmg;
         if(current.HP <=0)
+        {  
             Dead();
+        }
         else
             UICombat.SpawnDegatSoin(dmg);
             
@@ -102,17 +121,35 @@ public class EnemyCombatBehaviour : MonoBehaviour
 
     private void Dead()
     {
+    foreach (var item in Debuffs)
+        {
+            foreach (var effect in item.effects)
+            {
+            
+                if(effect.type == BuffType.DeathTrigger)
+                {
+                    //to do : change name to official debuff name for debuff intouchable
+                    if(item.NomDebuff == "Débuff intouchable")
+                    {
+                        current.EssenceDrop = 0;
+                    }
+                }
+            }
+        }
         var t = Instantiate(EssencePrefab,this.transform.parent);
-        t.GetComponent<Essence>().AddEssence(current.EssenceDrop);
-        GameManager.instance.BattleMan.ListEssence.Add(t);
+        if(current.EssenceDrop != 0)
+        {
+            t.GetComponent<Essence>().AddEssence(current.EssenceDrop);
+            GameManager.instance.BattleMan.ListEssence.Add(t);
+        }
         GameManager.instance.BattleMan.DeadEnemy(combatID);
     }
 
     public void AddDebuff(BuffDebuff toAdd)
     {
         Debuffs.Add(toAdd);
-        // if(toAdd.ValeurEffet < 0 || toAdd.Debuff)
-        //     ReceiveTension(Source.Buff);
+        if(toAdd.IsDebuff)
+            ReceiveTension(Source.Buff);
     }
     private void Update() {
         updateUI();
@@ -167,11 +204,41 @@ public class EnemyCombatBehaviour : MonoBehaviour
     {
         enervement = false;
         apaisement = false;
+        var Fa = current.ForceAme;
+
+        foreach (var item in Debuffs)
+        {
+            foreach (var effect in item.effects)
+            {
+            
+                if(effect.type == BuffType.AttBrut)
+                {
+                    Fa += effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.Att)
+                {
+                    
+                    var tempResi = 1 - (effect.pourcentageEffet/100f);
+
+                    Fa += Fa - Mathf.RoundToInt(tempResi * Fa); 
+                }
+                if(effect.type == BuffType.AttUpPVMiss)
+                {
+                    if(item.target == Cible.ennemi)
+                    {
+                        var pvMiss = (100 - ((GameManager.instance.BattleMan.player.stat.HP * 100) / GameManager.instance.BattleMan.player.stat.MaxHP));
+                        Fa += Fa - Mathf.RoundToInt((pvMiss * ((2*Fa)/100) + Fa));
+                    }
+                }
+            }
+        }
+
+
         foreach (var item in nextAction.Effet)
         {
             int tempHp = 0;
             int nbattack = 0;
-            item.DoAction(current.Dmg,out tempHp, out nbattack);
+            item.DoAction(Fa,out tempHp, out nbattack);
             temp.Add(new ActionResult(){HpModif = tempHp, target=item.target,nbAttaque = nbattack});
         }
         if(nextAction.Effet.Any(c => c.type == BuffType.Enervement))
@@ -238,24 +305,58 @@ public class EnemyCombatBehaviour : MonoBehaviour
 
     private void DecompteDebuff()
     {
-        for (int i = 0; i < Debuffs.Count; i++)
+        var skip = false;
+        foreach (var item in Debuffs)
         {
+            foreach (var effect in item.effects)
+            {
+                if(effect.type == BuffType.DmgPVMax)
+                {
+                    current.HP -= Mathf.RoundToInt((effect.pourcentageEffet * current.MaxHP) / 100);
+                }
+                if(effect.type == BuffType.DégatsBrut)
+                {
+                    current.HP -= effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.Doute || effect.type == BuffType.Stun)
+                {
+                    UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+                    var temp = UnityEngine.Random.Range(0,100);
+                    if(temp <= effect.pourcentageEffet)
+                        skip = true;
+                }
+            }
+            
 
-            if (Debuffs[i].Decompte == EffetTypeDecompte.tour)
-                Debuffs[i].nbTemps--;
+            if (item.Decompte == EffetTypeDecompte.tour)
+                item.nbTemps--;
         }
 
         Debuffs.RemoveAll(c => c.nbTemps <= 0);
+        if(skip)
+            EndTurn();
     }
 
     public void StartPhase()
     {
         
-        for (int i = 0; i < Debuffs.Count; i++)
+        foreach (var item in Debuffs)
         {
+            foreach (var effect in item.effects)
+            {
+                if(effect.type == BuffType.DmgPVMax)
+                {
+                    current.HP -= Mathf.RoundToInt((effect.pourcentageEffet * current.MaxHP) / 100);
+                }
+                if(effect.type == BuffType.DégatsBrut)
+                {
+                    current.HP -= effect.pourcentageEffet;
+                }
+            }
             
-            if(Debuffs[i].Decompte == EffetTypeDecompte.round)
-               Debuffs[i].nbTemps--;
+
+            if (item.Decompte == EffetTypeDecompte.round)
+                item.nbTemps--;
         }
 
         Debuffs.RemoveAll(c => c.nbTemps <= 0);
@@ -283,13 +384,31 @@ public class EnemyCombatBehaviour : MonoBehaviour
     
     public void ChooseNextAction()
     {
+        bool colere = false;
+        foreach (var item in Debuffs)
+        {
+            foreach (var effect in item.effects)
+            {
+                if(effect.type == BuffType.Colère)
+                {
+                    UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+                    var temp = UnityEngine.Random.Range(0,100);
+                    if(temp <= effect.pourcentageEffet)
+                        colere = true;
+                }                
+            }
+        }
         if(Spells == null)
             CreateSpellList();
 
         nextAction = Spells.First();
         foreach (var item in Spells)
         {
-            if(item.Weight < nextAction.Weight)
+            if(nextAction.IsAttaque && colere)
+            {
+
+            }
+            else if(item.Weight < nextAction.Weight)
                 nextAction = item;
         }
 
