@@ -34,15 +34,9 @@ public class Effect : ScriptableObject
             case BuffType.DefBrut:
             hpToRemove = 0;
             break;
-            case BuffType.Cible:
-            case BuffType.Armure:
             case BuffType.Colère:
             case BuffType.Doute:
-            case BuffType.Découragé:
-            case BuffType.Execution:
             case BuffType.Peur:
-            case BuffType.PourEnFinir:
-            case BuffType.Vulnérable:
             hpToRemove = 0;
             break;
 

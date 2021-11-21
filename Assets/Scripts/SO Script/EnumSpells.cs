@@ -14,23 +14,11 @@ public enum BuffType
     DefBrut,
     //Doute = chance de skip tour
     Doute,
-    //TO DELETE
-    Découragé,
-    //TO DELETE
-    Vulnérable,
     //Peur = chance de leave le combat #dead sans leave l'essence
     Peur,
     //Colere = chance d'attaquer pas de buff ou debuff
     Colère,
-    //TO DELETE
-    PourEnFinir,
-    //TO DELETE
-    Execution,
     Passif,
-    //TO DELETE
-    Cible,
-    //TO DELETE
-    Armure,
     Soin,
     //TODO
     Vitesse,
