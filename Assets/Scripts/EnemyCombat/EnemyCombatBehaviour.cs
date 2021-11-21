@@ -217,7 +217,6 @@ public class EnemyCombatBehaviour : MonoBehaviour
                 }
                 if(effect.type == BuffType.Att)
                 {
-                    
                     var tempResi = 1 - (effect.pourcentageEffet/100f);
 
                     Fa += Fa - Mathf.RoundToInt(tempResi * Fa); 
@@ -308,6 +307,15 @@ public class EnemyCombatBehaviour : MonoBehaviour
         var skip = false;
         foreach (var item in Debuffs)
         {
+            if (item.Decompte == EffetTypeDecompte.tour)
+                item.nbTemps--;
+        }
+
+        Debuffs.RemoveAll(c => c.nbTemps <= 0);
+        ResetStat();
+
+        foreach (var item in Debuffs)
+        {
             foreach (var effect in item.effects)
             {
                 if(effect.type == BuffType.DmgPVMax)
@@ -325,21 +333,61 @@ public class EnemyCombatBehaviour : MonoBehaviour
                     if(temp <= effect.pourcentageEffet)
                         skip = true;
                 }
+                if(effect.type == BuffType.Résilience)
+                {
+                    current.résilience += effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.VitesseBrut)
+                {
+                    current.Speed += effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.Vitesse)
+                {
+                    current.Speed += Mathf.RoundToInt((effect.pourcentageEffet * current.Speed) / 100f);
+                }
+                if(effect.type == BuffType.Dissimulation)
+                {
+                    current.Dissimulation += effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.PVMax)
+                {
+                    current.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * current.MaxHP) / 100f);
+                }
+                if(effect.type == BuffType.Peur)
+                {
+                    UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+                    var temp = UnityEngine.Random.Range(0,100);
+                    if(temp <= effect.pourcentageEffet)
+                    {
+                        current.EssenceDrop = 0;
+                        Dead();
+                    }
+                }
             }
-            
+        }
 
-            if (item.Decompte == EffetTypeDecompte.tour)
+
+        if(skip)
+            EndTurn();
+    }
+    public void ResetStat()
+    {
+        current.MaxHP = current.MaxHPOriginal;
+        current.Speed = current.SpeedOriginal;
+        current.Dissimulation = current.DissimulationOriginal;
+        current.résilience = current.résilienceOriginal;
+    }
+    public void StartPhase()
+    {
+        
+        foreach (var item in Debuffs)
+        {                    
+            if (item.Decompte == EffetTypeDecompte.round)
                 item.nbTemps--;
         }
 
         Debuffs.RemoveAll(c => c.nbTemps <= 0);
-        if(skip)
-            EndTurn();
-    }
 
-    public void StartPhase()
-    {
-        
         foreach (var item in Debuffs)
         {
             foreach (var effect in item.effects)
@@ -353,13 +401,8 @@ public class EnemyCombatBehaviour : MonoBehaviour
                     current.HP -= effect.pourcentageEffet;
                 }
             }
-            
-
-            if (item.Decompte == EffetTypeDecompte.round)
-                item.nbTemps--;
         }
 
-        Debuffs.RemoveAll(c => c.nbTemps <= 0);
     }
 
     public void CreateSpellList()
