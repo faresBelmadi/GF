@@ -20,13 +20,15 @@ public enum BuffType
     Colère,
     Passif,
     Soin,
-    //TODO
+    VitesseBrut,
     Vitesse,
     Résilience,
     Conviction,
+    Dissimulation,
     Clairvoyance,
     PVMax,
     Stun,
+    //TODO
     //Soif de vengeance = att up for each dmg taken
     SoifDeVengeance,
     SoinRadianceMax,
