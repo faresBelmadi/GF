@@ -30,10 +30,11 @@ public enum BuffType
     Stun,
     //TODO
     //Soif de vengeance = att up for each dmg taken
-    SoifDeVengeance,
+    AttUpLastDmgTaken,
     SoinRadianceMax,
     //on hold 
     AttUpPVMiss,
+    AttUpPVMissSelf,
     Ponction,
     DmgPVMax,
     EpineForceAme,

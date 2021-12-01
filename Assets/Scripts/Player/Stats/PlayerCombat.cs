@@ -38,6 +38,8 @@ public class PlayerCombat : MonoBehaviour
 
     bool DoTurn;
 
+    public int LastDamageTaken;
+
     public void EnervementTension()
     {
         Debug.Log("tension avant Enervement : " + stat.Tension);
@@ -71,15 +73,38 @@ public class PlayerCombat : MonoBehaviour
     {
         if(Source.Soin != sourceDamage)
         {
-        //     if(debuffs.Where(c => (c.Type == BuffType.Def ||c.Type == BuffType.DefBrut)).Count() > 0)
-        //     {
-        //         foreach (var item in debuffs.Where(c => (c.Type == BuffType.Def ||c.Type == BuffType.DefBrut)&& c.ValeurEffet < 0 ))
-        //         {
-        //             dmg += Mathf.FloorToInt((item.ValeurEffet/100f)*dmg); 
-        //         }
-        //     }
+            foreach (var item in debuffs)
+            {
+                foreach (var effect in item.effects)
+                {
+                    if(effect.type == BuffType.Def)
+                    {
+                        var tempResi = 1 - (effect.pourcentageEffet/100f);
+
+                        dmg += dmg - Mathf.RoundToInt(tempResi *dmg); 
+                    }
+                    if(effect.type == BuffType.DefBrut)
+                    {
+                        dmg -= effect.pourcentageEffet;
+                    }
+                    if(effect.type == BuffType.EpineForceAme)
+                    {
+                        var dmgRetour = Mathf.RoundToInt((20 * stat.Dmg)/100f);
+                        GameManager.instance.BattleMan.EnemyScripts.First(c => c.combatID == GameManager.instance.BattleMan.currentIdTurn).TakeDamage(dmgRetour,Source.Dot);
+                    }
+                }
+            }
         }
+
+        if(stat.Resilience != 0)
+        {
+            var tempResi = 1 - ((stat.Resilience*3)/100f);
+            dmg = Mathf.RoundToInt(tempResi * dmg);
+        }
+
         stat.HP -= dmg;
+
+        LastDamageTaken = dmg;
 
         if(dmg > 0)
         {
@@ -146,8 +171,8 @@ public class PlayerCombat : MonoBehaviour
     public void AddDebuff(BuffDebuff toAdd)
     {
         debuffs.Add(toAdd);
-        // if(toAdd.ValeurEffet < 0 || toAdd.Debuff)
-        //     ReceiveTension(Source.Buff);
+        if(toAdd.IsDebuff)
+            ReceiveTension(Source.Buff);
     }
 
     public bool CanHaveAnotherTurn()
@@ -194,14 +219,59 @@ public class PlayerCombat : MonoBehaviour
 
     private void DecompteDebuff()
     {
-        for (int i = 0; i < debuffs.Count; i++)
+        foreach (var item in debuffs)
         {
-
-            if (debuffs[i].Decompte == EffetTypeDecompte.tour)
-                debuffs[i].nbTemps--;
+            if (item.Decompte == EffetTypeDecompte.tour)
+                item.nbTemps--;
         }
 
         debuffs.RemoveAll(c => c.nbTemps <= 0);
+        ResetStat();
+
+        foreach (var item in debuffs)
+        {
+            foreach (var effect in item.effects)
+            {
+                if(effect.type == BuffType.DmgPVMax)
+                {
+                    stat.HP -= Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100);
+                }
+                if(effect.type == BuffType.DégatsBrut)
+                {
+                    stat.HP -= effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.Résilience)
+                {
+                    stat.Resilience += effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.VitesseBrut)
+                {
+                    stat.Speed += effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.Vitesse)
+                {
+                    stat.Speed += Mathf.RoundToInt((effect.pourcentageEffet * stat.Speed) / 100f);
+                }
+                if(effect.type == BuffType.Clairvoyance)
+                {
+                    stat.Clairvoyance += effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.PVMax)
+                {
+                    stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
+                }
+                
+            }
+        }
+
+
+    }
+    public void ResetStat()
+    {
+        stat.MaxHP = stat.MaxHPOriginal;
+        stat.Speed = stat.SpeedOriginal;
+        stat.Clairvoyance = stat.ClairvoyanceOriginal;
+        stat.Resilience = stat.ResilienceOriginal;
     }
 
     public void StartPhase()
