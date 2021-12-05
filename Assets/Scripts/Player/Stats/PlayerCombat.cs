@@ -14,9 +14,12 @@ public class PlayerCombat : MonoBehaviour
 
     public List<GameObject> Spells;
     public Transform DamageSpawn;
+    public Transform BuffContainer;
     public Transform DebuffContainer;
     public GameObject DamagePrefab;
     public GameObject SoinPrefab;
+    public GameObject BuffPrefab;
+    public GameObject DebuffPrefab;
     public GameObject SpellPrefab;
     public GameObject SpellsSpawn;
     public Button EndTurnButton;
@@ -170,9 +173,18 @@ public class PlayerCombat : MonoBehaviour
 
     public void AddDebuff(BuffDebuff toAdd)
     {
-        debuffs.Add(toAdd);
         if(toAdd.IsDebuff)
+        {
             ReceiveTension(Source.Buff);
+            toAdd.SpawnedObject = Instantiate(DebuffPrefab,DebuffContainer.transform);
+            toAdd.SpawnedObject.GetComponentInChildren<TextMeshProUGUI>().text = toAdd.NomDebuff;
+        }
+        else
+        {
+            toAdd.SpawnedObject = Instantiate(BuffPrefab,BuffContainer.transform);
+            toAdd.SpawnedObject.GetComponentInChildren<TextMeshProUGUI>().text = toAdd.NomDebuff;
+        }
+        debuffs.Add(toAdd);
     }
 
     public bool CanHaveAnotherTurn()

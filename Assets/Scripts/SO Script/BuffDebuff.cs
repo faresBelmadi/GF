@@ -13,4 +13,6 @@ public class BuffDebuff : ScriptableObject
     public int nbTemps;
     public Sprite Icon;
     public List<Effect> effects; 
+
+    public GameObject SpawnedObject;
 }
