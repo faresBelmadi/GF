@@ -7,7 +7,8 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour
 {
     public List<Room> Rooms;
-
+    
+    
 
 
     public void Init(List<Room> _rooms)
