@@ -33,7 +33,7 @@ public class Room : MonoBehaviour
 
         }
     }
-
+    public Sprite ToSet;
     public List<GameObject> OwnedCorridors = new List<GameObject>();
 
     public int ID;
@@ -48,29 +48,7 @@ public class Room : MonoBehaviour
     }
     private void SetColor()
     {
-        switch (type)
-        {
-            case TypeRoom.Spawn:
-            this.GetComponent<SpriteRenderer>().color = Color.blue;
-                break;
-            case TypeRoom.NotSet:
-            this.GetComponent<SpriteRenderer>().color = Color.grey;
-                break;
-            case TypeRoom.Combat:
-            this.GetComponent<SpriteRenderer>().color = Color.red;
-                break;
-            case TypeRoom.Heal:
-            this.GetComponent<SpriteRenderer>().color = Color.green;
-                break;
-            case TypeRoom.Event:
-            this.GetComponent<SpriteRenderer>().color = Color.yellow;
-                break;
-            case TypeRoom.Visited:
-            this.GetComponent<SpriteRenderer>().color = Color.black;
-                break;
-            default:
-            break;
-        }
+        this.GetComponent<SpriteRenderer>().sprite = ToSet;
     }
 
     private void OnMouseEnter() {
