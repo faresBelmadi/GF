@@ -24,6 +24,7 @@ public class EnemyCombatBehaviour : MonoBehaviour
     public EnemyCombatGen UICombat;
 
     List<BuffDebuff> Debuffs = new List<BuffDebuff>();
+    List<GameObject> ListBuff = new List<GameObject>();
     public int TensionUI;
     public float currentTension;
     public float TensionPalier;
