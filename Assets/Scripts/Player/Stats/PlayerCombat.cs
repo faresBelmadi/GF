@@ -140,6 +140,7 @@ public class PlayerCombat : MonoBehaviour
     public void updateUI()
     {
         HP.value = stat.HP;
+        HP.minValue = 0;
         HP.maxValue = stat.MaxHP;
         Tension.value = Mathf.FloorToInt((stat.Tension*stat.NbPalier)/stat.TensionMax);
         Tension.maxValue = stat.NbPalier;
@@ -182,6 +183,7 @@ public class PlayerCombat : MonoBehaviour
             {
                 t = Instantiate(DebuffPrefab, DebuffContainer.transform);
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.NomDebuff;
+                t.GetComponent<DescriptionHoverTrigger>().Description.text = toAdd.Description;
                 ListBuff.Add(t);
             }
             else
@@ -200,6 +202,7 @@ public class PlayerCombat : MonoBehaviour
             {
                 t = Instantiate(BuffPrefab, BuffContainer.transform);
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.NomDebuff;
+                t.GetComponent<DescriptionHoverTrigger>().Description.text = toAdd.Description;
                 ListBuff.Add(t);
             }
             else
@@ -302,7 +305,8 @@ public class PlayerCombat : MonoBehaviour
             }
         }
 
-
+        
+        updateUI();
     }
     public void ResetStat()
     {

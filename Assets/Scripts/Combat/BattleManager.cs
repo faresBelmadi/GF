@@ -69,6 +69,10 @@ public class BattleManager : MonoBehaviour
         idIndexer = 0;
         battleUI = GetComponent<BattleUI>();
         player.stat = GameManager.instance.playerStat;
+        player.stat.MaxHPOriginal = player.stat.MaxHP;
+        player.stat.SpeedOriginal = player.stat.Speed;
+        player.stat.ClairvoyanceOriginal = player.stat.Clairvoyance;
+        player.stat.ResilienceOriginal = player.stat.Resilience;
         player.EndTurnBM = EndTurn;
         player.StartUp();
         SpawnedEnemy = new List<GameObject>();
