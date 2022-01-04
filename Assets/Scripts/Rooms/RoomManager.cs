@@ -7,7 +7,11 @@ using UnityEngine;
 public class RoomManager : MonoBehaviour
 {
     public List<Room> Rooms;
-
+    
+    public Sprite SalleCombat;
+    public Sprite SalleHeal;
+    public Sprite SalleStart;
+    
 
 
     public void Init(List<Room> _rooms)
@@ -26,11 +30,13 @@ public class RoomManager : MonoBehaviour
 
         foreach (var item in start.ConnectedRooms)
         {
+            item.ToSet = SalleCombat;
             item.Type = TypeRoom.Combat;
             foreach (var item2 in item.ConnectedRooms)
             {
                 if(item2.Type == TypeRoom.NotSet)
                 {
+                    item2.ToSet = SalleCombat;
                     item2.Type = TypeRoom.Combat;
                 }
             }
@@ -40,6 +46,7 @@ public class RoomManager : MonoBehaviour
         {
             if(item.ConnectedRooms.Count >= maxCo && item != start && !healSet && item.ConnectedRooms.Where(c => c.Type == TypeRoom.Heal).Count() == 0)
             {
+                item.ToSet = SalleHeal;
                 item.Type = TypeRoom.Heal;
                 healSet = true;
             }
@@ -60,10 +67,15 @@ public class RoomManager : MonoBehaviour
                     }
                 }
                 if(Combat)
+                {
+                    item.ToSet = SalleCombat;
                     item.Type = TypeRoom.Combat;
+
+                }
                 else
                 {
-                        item.Type = TypeRoom.Combat;
+                    item.ToSet = SalleCombat;
+                    item.Type = TypeRoom.Combat;
                 }
             }
         }

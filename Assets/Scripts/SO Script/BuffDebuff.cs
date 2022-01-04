@@ -7,9 +7,15 @@ public class BuffDebuff : ScriptableObject
 {
     
     public string NomDebuff;
+    
+    [Multiline(5)]
+    public string Description;
+    public bool IsDebuff;
     public EffetTypeDecompte Decompte;
     public Cible target;
     public int nbTemps;
     public Sprite Icon;
     public List<Effect> effects; 
+
+    public GameObject SpawnedObject;
 }

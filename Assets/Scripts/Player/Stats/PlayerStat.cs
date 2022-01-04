@@ -22,6 +22,7 @@ public class PlayerStat
     public int MinConviction;
     public int Conviction;
     public int MaxConviction;
+    public int Clairvoyance;
 
     [Header("Stats Tension")]
     public int TensionAttaque = 4;
@@ -34,4 +35,9 @@ public class PlayerStat
     public int NbPalier = 3;
 
     public List<Spell> AvailableSpell;
+
+    public int ResilienceOriginal;
+    public int MaxHPOriginal;
+    public int SpeedOriginal;
+    public int ClairvoyanceOriginal;
 }
