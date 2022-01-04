@@ -33,7 +33,13 @@ public class PlayerCombat : MonoBehaviour
     public TextMeshProUGUI TensionText;
     public TextMeshProUGUI HpText;
     public TextMeshProUGUI VolontéText; 
-    public TextMeshProUGUI ConscienceText; 
+    public TextMeshProUGUI ConscienceText;
+    public TextMeshProUGUI StatSpeedText;
+    public TextMeshProUGUI StatForceAmeText;
+    public TextMeshProUGUI StatResilienceText;
+    public TextMeshProUGUI StatClairvoyanceText;
+    public TextMeshProUGUI StatConvictionText;
+    
     public Action EndTurnBM;
     
     public Spell SelectedSpell;
@@ -46,31 +52,25 @@ public class PlayerCombat : MonoBehaviour
 
     public void EnervementTension()
     {
-        Debug.Log("tension avant Enervement : " + stat.Tension);
         var t = (int)((stat.Tension/(stat.NbPalier*stat.ValeurPalier)) * stat.NbPalier);
-        Debug.Log("Valeur de palier : " + t);
         if(t >= stat.NbPalier)
         t = stat.NbPalier;
         else
         t ++;
 
         stat.Tension = t*stat.ValeurPalier;
-        Debug.Log("tension apres Enervement : " + stat.Tension);
     }
 
     public void ApaisementTension()
     {
-        Debug.Log("tension avant apaisement : " + stat.Tension);
         
         var t = (int)((stat.Tension/(stat.NbPalier*stat.ValeurPalier)) * stat.NbPalier);
-        Debug.Log("Valeur de palier : " + t);
         if(t <= 0)
         t = 0;
         else
         t --;
 
         stat.Tension = t*stat.ValeurPalier;
-        Debug.Log("tension apres apaisement : " + stat.Tension);
     }
 
     public void TakeDamage(int dmg, Source sourceDamage)
@@ -152,6 +152,52 @@ public class PlayerCombat : MonoBehaviour
         HpText.text = stat.HP +"/" + stat.MaxHP;
 
         ConscienceText.text = stat.Conscience +"/" + stat.MaximumConscience;
+
+        StatClairvoyanceText.text = stat.Clairvoyance+"";
+
+       if(stat.Clairvoyance > stat.ClairvoyanceOriginal)
+            StatClairvoyanceText.color = Color.green;
+        else if(stat.Clairvoyance < stat.ClairvoyanceOriginal)
+            StatClairvoyanceText.color = Color.red;
+        else
+            StatClairvoyanceText.color = Color.black;
+
+
+        StatForceAmeText.text = stat.Dmg+"";
+
+        if(stat.Dmg > stat.ForceAmeOriginal)
+            StatForceAmeText.color = Color.green;
+        else if(stat.Dmg < stat.ForceAmeOriginal)
+            StatForceAmeText.color = Color.red;
+        else
+            StatForceAmeText.color = Color.black;
+
+        StatSpeedText.text = stat.Speed+"";
+        
+        if(stat.Speed > stat.SpeedOriginal)
+            StatSpeedText.color = Color.green;
+        else if(stat.Speed < stat.SpeedOriginal)
+            StatSpeedText.color = Color.red;
+        else
+            StatSpeedText.color = Color.black;
+
+        StatConvictionText.text = stat.Conviction+"";
+
+        if(stat.Conviction > stat.ConvictionOriginal)
+            StatConvictionText.color = Color.green;
+        else if(stat.Conviction < stat.ConvictionOriginal)
+            StatConvictionText.color = Color.red;
+        else
+            StatConvictionText.color = Color.black;
+
+        StatResilienceText.text =stat.Resilience+"";
+
+        if(stat.Resilience > stat.ResilienceOriginal)
+            StatResilienceText.color = Color.green;
+        else if(stat.Resilience < stat.ResilienceOriginal)
+            StatResilienceText.color = Color.red;
+        else
+            StatResilienceText.color = Color.black;
 
     }
     public void ReceiveTension(Source sourceDamage)
@@ -285,6 +331,10 @@ public class PlayerCombat : MonoBehaviour
                 {
                     stat.Resilience += effect.pourcentageEffet;
                 }
+                if(effect.type == BuffType.Conviction)
+                {
+                    stat.Conviction += effect.pourcentageEffet;
+                }
                 if(effect.type == BuffType.VitesseBrut)
                 {
                     stat.Speed += effect.pourcentageEffet;
@@ -314,6 +364,8 @@ public class PlayerCombat : MonoBehaviour
         stat.Speed = stat.SpeedOriginal;
         stat.Clairvoyance = stat.ClairvoyanceOriginal;
         stat.Resilience = stat.ResilienceOriginal;
+        stat.Dmg = stat.ForceAmeOriginal;
+        stat.Conviction = stat.ConvictionOriginal;
     }
 
     public void StartPhase()
