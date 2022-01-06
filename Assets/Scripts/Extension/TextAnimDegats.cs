@@ -31,7 +31,7 @@ public class TextAnimDegats : MonoBehaviour
         this.GetComponentInChildren<TextMeshProUGUI>().text = t;
         this.GetComponent<Animator>().SetBool("CanRun",true);
 
-        Invoke("DestroyGO",10f); 
+        Invoke("DestroyGO",5f); 
     }
 
     private void DestroyGO()

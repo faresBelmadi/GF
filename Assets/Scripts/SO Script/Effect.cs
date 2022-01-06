@@ -20,7 +20,7 @@ public class Effect : ScriptableObject
         nbAttaque = 0;
         switch(type)
         {
-            case BuffType.Dégats:
+            case BuffType.DégatsForceAme:
             hpToRemove = Mathf.FloorToInt((pourcentageEffet/100f) * strength);
             nbAttaque = nbAttaques;
             break;
@@ -34,15 +34,9 @@ public class Effect : ScriptableObject
             case BuffType.DefBrut:
             hpToRemove = 0;
             break;
-            case BuffType.Cible:
-            case BuffType.Armure:
             case BuffType.Colère:
             case BuffType.Doute:
-            case BuffType.Découragé:
-            case BuffType.Execution:
             case BuffType.Peur:
-            case BuffType.PourEnFinir:
-            case BuffType.Vulnérable:
             hpToRemove = 0;
             break;
 

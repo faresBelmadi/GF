@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class TextAniamtion : MonoBehaviour
+public class TextAnimation : MonoBehaviour
 {
     TextMeshProUGUI TextAttached;
     Animation toPlay;

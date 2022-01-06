@@ -11,12 +11,16 @@ public class PlayerCombat : MonoBehaviour
     public PlayerStat stat;
 
     public List<BuffDebuff> debuffs = new List<BuffDebuff>();
+    public List<GameObject> ListBuff = new List<GameObject>();
 
     public List<GameObject> Spells;
     public Transform DamageSpawn;
+    public Transform BuffContainer;
     public Transform DebuffContainer;
     public GameObject DamagePrefab;
     public GameObject SoinPrefab;
+    public GameObject BuffPrefab;
+    public GameObject DebuffPrefab;
     public GameObject SpellPrefab;
     public GameObject SpellsSpawn;
     public Button EndTurnButton;
@@ -37,6 +41,8 @@ public class PlayerCombat : MonoBehaviour
     public AnimationControllerAttack AnimationController;
 
     bool DoTurn;
+
+    public int LastDamageTaken;
 
     public void EnervementTension()
     {
@@ -71,15 +77,38 @@ public class PlayerCombat : MonoBehaviour
     {
         if(Source.Soin != sourceDamage)
         {
-        //     if(debuffs.Where(c => (c.Type == BuffType.Def ||c.Type == BuffType.DefBrut)).Count() > 0)
-        //     {
-        //         foreach (var item in debuffs.Where(c => (c.Type == BuffType.Def ||c.Type == BuffType.DefBrut)&& c.ValeurEffet < 0 ))
-        //         {
-        //             dmg += Mathf.FloorToInt((item.ValeurEffet/100f)*dmg); 
-        //         }
-        //     }
+            foreach (var item in debuffs)
+            {
+                foreach (var effect in item.effects)
+                {
+                    if(effect.type == BuffType.Def)
+                    {
+                        var tempResi = 1 - (effect.pourcentageEffet/100f);
+
+                        dmg += dmg - Mathf.RoundToInt(tempResi *dmg); 
+                    }
+                    if(effect.type == BuffType.DefBrut)
+                    {
+                        dmg -= effect.pourcentageEffet;
+                    }
+                    if(effect.type == BuffType.EpineForceAme)
+                    {
+                        var dmgRetour = Mathf.RoundToInt((20 * stat.Dmg)/100f);
+                        GameManager.instance.BattleMan.EnemyScripts.First(c => c.combatID == GameManager.instance.BattleMan.currentIdTurn).TakeDamage(dmgRetour,Source.Dot);
+                    }
+                }
+            }
         }
+
+        if(stat.Resilience != 0)
+        {
+            var tempResi = 1 - ((stat.Resilience*3)/100f);
+            dmg = Mathf.RoundToInt(tempResi * dmg);
+        }
+
         stat.HP -= dmg;
+
+        LastDamageTaken = dmg;
 
         if(dmg > 0)
         {
@@ -111,6 +140,7 @@ public class PlayerCombat : MonoBehaviour
     public void updateUI()
     {
         HP.value = stat.HP;
+        HP.minValue = 0;
         HP.maxValue = stat.MaxHP;
         Tension.value = Mathf.FloorToInt((stat.Tension*stat.NbPalier)/stat.TensionMax);
         Tension.maxValue = stat.NbPalier;
@@ -145,9 +175,45 @@ public class PlayerCombat : MonoBehaviour
 
     public void AddDebuff(BuffDebuff toAdd)
     {
+        if(toAdd.IsDebuff)
+        {
+            ReceiveTension(Source.Buff);
+            var t = ListBuff.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == toAdd.NomDebuff);
+            if(t == null)
+            {
+                t = Instantiate(DebuffPrefab, DebuffContainer.transform);
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.NomDebuff;
+                t.GetComponent<DescriptionHoverTrigger>().Description.text = toAdd.Description;
+                ListBuff.Add(t);
+            }
+            else
+            {
+                var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;
+                int nb = int.Parse(s);
+                s = nb+1+"";
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
+            }
+
+        }
+        else
+        {
+            var t = ListBuff.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == toAdd.NomDebuff);
+            if(t == null)
+            {
+                t = Instantiate(BuffPrefab, BuffContainer.transform);
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.NomDebuff;
+                t.GetComponent<DescriptionHoverTrigger>().Description.text = toAdd.Description;
+                ListBuff.Add(t);
+            }
+            else
+            {
+                var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;
+                int nb = int.Parse(s);
+                s = nb+1+"";
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
+            }
+        }
         debuffs.Add(toAdd);
-        // if(toAdd.ValeurEffet < 0 || toAdd.Debuff)
-        //     ReceiveTension(Source.Buff);
     }
 
     public bool CanHaveAnotherTurn()
@@ -194,14 +260,60 @@ public class PlayerCombat : MonoBehaviour
 
     private void DecompteDebuff()
     {
-        for (int i = 0; i < debuffs.Count; i++)
+        foreach (var item in debuffs)
         {
-
-            if (debuffs[i].Decompte == EffetTypeDecompte.tour)
-                debuffs[i].nbTemps--;
+            if (item.Decompte == EffetTypeDecompte.tour)
+                item.nbTemps--;
         }
 
         debuffs.RemoveAll(c => c.nbTemps <= 0);
+        ResetStat();
+
+        foreach (var item in debuffs)
+        {
+            foreach (var effect in item.effects)
+            {
+                if(effect.type == BuffType.DmgPVMax)
+                {
+                    stat.HP -= Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100);
+                }
+                if(effect.type == BuffType.DégatsBrut)
+                {
+                    stat.HP -= effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.Résilience)
+                {
+                    stat.Resilience += effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.VitesseBrut)
+                {
+                    stat.Speed += effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.Vitesse)
+                {
+                    stat.Speed += Mathf.RoundToInt((effect.pourcentageEffet * stat.Speed) / 100f);
+                }
+                if(effect.type == BuffType.Clairvoyance)
+                {
+                    stat.Clairvoyance += effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.PVMax)
+                {
+                    stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
+                }
+                
+            }
+        }
+
+        
+        updateUI();
+    }
+    public void ResetStat()
+    {
+        stat.MaxHP = stat.MaxHPOriginal;
+        stat.Speed = stat.SpeedOriginal;
+        stat.Clairvoyance = stat.ClairvoyanceOriginal;
+        stat.Resilience = stat.ResilienceOriginal;
     }
 
     public void StartPhase()
