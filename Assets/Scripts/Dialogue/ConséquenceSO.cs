@@ -23,7 +23,8 @@ public enum TypeConsequence
 public class ConséquenceSO : ScriptableObject
 {
     public Texture2D Icon;
-    //public CategoryConsequence catConsequence;
+
+    //Consequence peuvent avoir 3 type : effet de spell/application d'un debuff pour le prochain combat ou les deux en meme temps;
     public TypeConsequence typConsequence;
 
     public List<BuffDebuff> Buffs;
@@ -31,6 +32,6 @@ public class ConséquenceSO : ScriptableObject
     public List<Effect> Effects;
 
     [Header("Self is always the player")]
-    public Cible target; 
+    public Cible target;
     public List<int> IdTarget;
 }
