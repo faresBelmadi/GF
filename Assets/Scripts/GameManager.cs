@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour {
                     MaxVolonté = classSO.PlayerStat.Volonté,
                     Conscience = loadedData.CurrentRun.player.Conscience,
                     MaximumConscience = classSO.PlayerStat.ConscienceMax,
+                    Conviction = classSO.PlayerStat.Conviction,
+                    Resilience = classSO.PlayerStat.Résilience,
                     Essence = loadedData.CurrentRun.player.Essence,
                     Dmg = loadedData.CurrentRun.player.dmg,
                     armor = loadedData.CurrentRun.player.armor,

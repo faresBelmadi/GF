@@ -73,6 +73,7 @@ public class BattleManager : MonoBehaviour
         player.stat.SpeedOriginal = player.stat.Speed;
         player.stat.ClairvoyanceOriginal = player.stat.Clairvoyance;
         player.stat.ResilienceOriginal = player.stat.Resilience;
+        Debug.Log(player.stat.Conviction);
         player.stat.ConvictionOriginal = player.stat.Conviction;
         player.stat.ForceAmeOriginal = player.stat.Dmg;
         player.EndTurnBM = EndTurn;

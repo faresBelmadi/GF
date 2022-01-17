@@ -259,7 +259,9 @@ public class PlayerCombat : MonoBehaviour
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
             }
         }
-        debuffs.Add(toAdd);
+        //instantiate parceque chaque buff/debuff est un scriptable object donc si on modifie les valeurs ca sera sauvegardé entre les lancements
+        //instantiate permet de créer une copy du buff/debuff
+        debuffs.Add(Instantiate(toAdd));
     }
 
     public bool CanHaveAnotherTurn()
@@ -312,7 +314,7 @@ public class PlayerCombat : MonoBehaviour
                 item.nbTemps--;
         }
 
-        debuffs.RemoveAll(c => c.nbTemps <= 0);
+        debuffs.RemoveAll(c => c.nbTemps <= -1);
         ResetStat();
 
         foreach (var item in debuffs)
@@ -383,7 +385,6 @@ public class PlayerCombat : MonoBehaviour
 
     public void StartUp()
     {
-        Debug.Log(stat.AvailableSpell.Count());
         foreach (var item in stat.AvailableSpell)
         {
             var temp = Instantiate(SpellPrefab,SpellsSpawn.transform);

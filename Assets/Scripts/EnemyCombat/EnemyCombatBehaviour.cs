@@ -47,7 +47,6 @@ public class EnemyCombatBehaviour : MonoBehaviour
         var animator = this.GetComponent<Animator>();
 
         string[] name = current.name.Split('(');
-        Debug.Log(name[0]);
         animator.SetLayerWeight(animator.GetLayerIndex(name[0]),1);
 
         if(current.Att1 != null)
