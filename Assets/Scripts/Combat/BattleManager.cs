@@ -90,7 +90,7 @@ public class BattleManager : MonoBehaviour
     {
         _encounter = ToSpawn;
         SpawnEnemy();
-        player.updateUI();
+        player.UpdateUI();
         player.DesactivateSpells();
         DialogueEnableSetup();
     }

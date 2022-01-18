@@ -46,7 +46,6 @@ public class PlayerCombat : MonoBehaviour
 
     public AnimationControllerAttack AnimationController;
 
-    bool DoTurn;
 
     public int LastDamageTaken;
 
@@ -133,11 +132,11 @@ public class PlayerCombat : MonoBehaviour
 
         ReceiveTension(sourceDamage);
 
-        updateUI();
+        UpdateUI();
         
     }
 
-    public void updateUI()
+    public void UpdateUI()
     {
         HP.value = stat.HP;
         HP.minValue = 0;
@@ -262,6 +261,9 @@ public class PlayerCombat : MonoBehaviour
         //instantiate parceque chaque buff/debuff est un scriptable object donc si on modifie les valeurs ca sera sauvegardé entre les lancements
         //instantiate permet de créer une copy du buff/debuff
         debuffs.Add(Instantiate(toAdd));
+        
+        ApplicationEffetBuffDebuff();
+        UpdateUI();
     }
 
     public bool CanHaveAnotherTurn()
@@ -277,7 +279,6 @@ public class PlayerCombat : MonoBehaviour
 
     public void StartTurn()
     {
-        DoTurn = true;
         DecompteDebuff();//Peut changer en fin de tour..............
         foreach (var item in Spells)
         {
@@ -285,13 +286,12 @@ public class PlayerCombat : MonoBehaviour
         }
         EndTurnButton.interactable = true;
         stat.Volonté = stat.MaxVolonté;
-        updateUI();
+        UpdateUI();
     }
 
 
     public void EndTurn()
     {
-        DoTurn = false;
         DesactivateSpells();
 
         EndTurnBM();
@@ -312,54 +312,80 @@ public class PlayerCombat : MonoBehaviour
         {
             if (item.Decompte == EffetTypeDecompte.tour)
                 item.nbTemps--;
+
+            if (item.nbTemps < 0)
+            {
+                var t = ListBuff.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == item.NomDebuff);
+                if (t != null)
+                {
+                    var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;
+                    int nb = int.Parse(s);
+                    nb -= 1;
+                    s = nb + "";
+                    if (nb <= 0)
+                        ListBuff.Remove(t);
+                    else
+                        t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
+                }
+            }
         }
 
-        debuffs.RemoveAll(c => c.nbTemps <= -1);
-        ResetStat();
+        debuffs.RemoveAll(c => c.nbTemps < 0);
 
+        ApplicationEffetBuffDebuff();
+
+        UpdateUI();
+    }
+
+    private void ApplicationEffetBuffDebuff()
+    {
+
+        ResetStat();
         foreach (var item in debuffs)
         {
             foreach (var effect in item.effects)
             {
-                if(effect.type == BuffType.DmgPVMax)
+                if (effect.type == BuffType.DmgPVMax)
                 {
                     stat.HP -= Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100);
                 }
-                if(effect.type == BuffType.DégatsBrut)
+                if (effect.type == BuffType.DégatsBrut)
                 {
                     stat.HP -= effect.pourcentageEffet;
                 }
-                if(effect.type == BuffType.Résilience)
+                if (effect.type == BuffType.Résilience)
                 {
                     stat.Resilience += effect.pourcentageEffet;
                 }
-                if(effect.type == BuffType.Conviction)
+                if (effect.type == BuffType.Conviction)
                 {
                     stat.Conviction += effect.pourcentageEffet;
                 }
-                if(effect.type == BuffType.VitesseBrut)
+                if (effect.type == BuffType.VitesseBrut)
                 {
                     stat.Speed += effect.pourcentageEffet;
                 }
-                if(effect.type == BuffType.Vitesse)
+                if (effect.type == BuffType.Vitesse)
                 {
                     stat.Speed += Mathf.RoundToInt((effect.pourcentageEffet * stat.Speed) / 100f);
                 }
-                if(effect.type == BuffType.Clairvoyance)
+                if (effect.type == BuffType.Clairvoyance)
                 {
                     stat.Clairvoyance += effect.pourcentageEffet;
                 }
-                if(effect.type == BuffType.PVMax)
+                if (effect.type == BuffType.PVMax)
                 {
                     stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
                 }
-                
+                if (effect.type == BuffType.Ponction)
+                {
+                    stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
+                }
+
             }
         }
-
-        
-        updateUI();
     }
+
     public void ResetStat()
     {
         stat.MaxHP = stat.MaxHPOriginal;
@@ -418,7 +444,7 @@ public class PlayerCombat : MonoBehaviour
     {
         GameManager.instance.BattleMan.GetListEffectPlayer(SelectedSpell);
         
-        updateUI();
+        UpdateUI();
     }
 
     public void Costs()
