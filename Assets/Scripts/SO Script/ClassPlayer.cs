@@ -12,4 +12,6 @@ public class ClassPlayer : ScriptableObject {
     public Stat PlayerStat;
 
     public List<Spell> spellClass;
+    
+    public List<string> Passif;
 }

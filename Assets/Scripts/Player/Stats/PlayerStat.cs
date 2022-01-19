@@ -16,12 +16,13 @@ public class PlayerStat
     public int armor;
     public int Speed;
     public int Calme;
-    public int MinResilience;
+    public int MinResilience = -10;
     public int Resilience;
-    public int MaxResilience;
-    public int MinConviction;
+    public int MaxResilience = 10;
+    public int MinConviction = -10;
     public int Conviction;
-    public int MaxConviction;
+    public int MaxConviction = 10;
+    public int Clairvoyance;
 
     [Header("Stats Tension")]
     public int TensionAttaque = 4;
@@ -34,4 +35,11 @@ public class PlayerStat
     public int NbPalier = 3;
 
     public List<Spell> AvailableSpell;
+
+    public int ResilienceOriginal;
+    public int MaxHPOriginal;
+    public int SpeedOriginal;
+    public int ClairvoyanceOriginal;
+    public int ConvictionOriginal;
+    public int ForceAmeOriginal;
 }

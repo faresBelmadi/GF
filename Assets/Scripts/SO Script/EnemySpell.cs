@@ -7,7 +7,7 @@ public class EnemySpell : ScriptableObject
 {
     public string Name;
     public int ID;
-
+    public bool IsAttaque;
     public Sprite ImageIntentionSpell;
     
     [Tooltip("Poids de départ du sort, plus il est bas, plus le sort aura de chance d'etre lancé en premier")]
