@@ -313,7 +313,7 @@ public class PlayerCombat : MonoBehaviour
             if (item.Decompte == EffetTypeDecompte.tour)
                 item.nbTemps--;
 
-            if (item.nbTemps < 0)
+            if (item.nbTemps <= 0)
             {
                 var t = ListBuff.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == item.NomDebuff);
                 if (t != null)
@@ -323,7 +323,10 @@ public class PlayerCombat : MonoBehaviour
                     nb -= 1;
                     s = nb + "";
                     if (nb <= 0)
+                    {
                         ListBuff.Remove(t);
+                        GameObject.Destroy(t);
+                    }
                     else
                         t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
                 }
