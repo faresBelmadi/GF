@@ -262,7 +262,7 @@ public class PlayerCombat : MonoBehaviour
         //instantiate permet de créer une copy du buff/debuff
         debuffs.Add(Instantiate(toAdd));
         
-        ApplicationEffetBuffDebuff();
+        ApplicationEffetStatBuffDebuff();
         UpdateUI();
     }
 
@@ -313,7 +313,7 @@ public class PlayerCombat : MonoBehaviour
             if (item.Decompte == EffetTypeDecompte.tour)
                 item.nbTemps--;
 
-            if (item.nbTemps <= 0)
+            if (item.nbTemps < 0)
             {
                 var t = ListBuff.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == item.NomDebuff);
                 if (t != null)
@@ -335,12 +335,13 @@ public class PlayerCombat : MonoBehaviour
 
         debuffs.RemoveAll(c => c.nbTemps < 0);
 
-        ApplicationEffetBuffDebuff();
+        ApplicationEffetStatBuffDebuff();
+        ApplicationBuffDebuffDegats();
 
         UpdateUI();
     }
 
-    private void ApplicationEffetBuffDebuff()
+    private void ApplicationEffetStatBuffDebuff()
     {
 
         ResetStat();
@@ -348,14 +349,7 @@ public class PlayerCombat : MonoBehaviour
         {
             foreach (var effect in item.effects)
             {
-                if (effect.type == BuffType.DmgPVMax)
-                {
-                    stat.HP -= Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100);
-                }
-                if (effect.type == BuffType.DégatsBrut)
-                {
-                    stat.HP -= effect.pourcentageEffet;
-                }
+
                 if (effect.type == BuffType.Résilience)
                 {
                     stat.Resilience += effect.pourcentageEffet;
@@ -376,19 +370,38 @@ public class PlayerCombat : MonoBehaviour
                 {
                     stat.Clairvoyance += effect.pourcentageEffet;
                 }
-                if (effect.type == BuffType.PVMax)
-                {
-                    stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
-                }
-                if (effect.type == BuffType.Ponction)
-                {
-                    stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
-                }
 
             }
         }
     }
 
+
+    public void ApplicationBuffDebuffDegats()
+    {
+        foreach (var item in debuffs)
+        {
+            foreach (var effect in item.effects)
+            {
+                if (effect.type == BuffType.Ponction)
+                {
+                    stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
+                }
+                if (effect.type == BuffType.PVMax)
+                {
+                    stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
+                }
+                if (effect.type == BuffType.DmgPVMax)
+                {
+                    stat.HP -= Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100);
+                }
+                if (effect.type == BuffType.DégatsBrut)
+                {
+                    stat.HP -= effect.pourcentageEffet;
+                }
+
+            }
+        }
+    }
     public void ResetStat()
     {
         stat.MaxHP = stat.MaxHPOriginal;
