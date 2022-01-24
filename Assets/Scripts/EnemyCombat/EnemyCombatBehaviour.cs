@@ -49,6 +49,11 @@ public class EnemyCombatBehaviour : MonoBehaviour
         string[] name = current.name.Split('(');
         animator.SetLayerWeight(animator.GetLayerIndex(name[0]),1);
 
+        current.SpeedOriginal = current.Speed;
+        current.DissimulationOriginal = current.Dissimulation;
+        current.résilienceOriginal = current.résilience;
+        current.MaxHPOriginal = current.MaxHP;
+
         if(current.Att1 != null)
             current.Att1 = Instantiate(current.Att1);
         if(current.Att2 != null)

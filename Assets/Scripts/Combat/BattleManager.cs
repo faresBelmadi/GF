@@ -146,10 +146,8 @@ public class BattleManager : MonoBehaviour
         nbTurn = 0;
         StartNextTurn();
     }
-
-    private void StartFirstPhase()
+        private void StartFirstPhase()
     {
-
         DetermFirstTurn();
         player.StartPhase();
         foreach (var item in EnemyScripts)

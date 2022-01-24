@@ -262,7 +262,7 @@ public class PlayerCombat : MonoBehaviour
         //instantiate permet de créer une copy du buff/debuff
         debuffs.Add(Instantiate(toAdd));
         
-        ApplicationEffetStatBuffDebuff();
+        ApplicationEffetBuffDebuff();
         UpdateUI();
     }
 
@@ -323,10 +323,7 @@ public class PlayerCombat : MonoBehaviour
                     nb -= 1;
                     s = nb + "";
                     if (nb <= 0)
-                    {
                         ListBuff.Remove(t);
-                        GameObject.Destroy(t);
-                    }
                     else
                         t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
                 }
@@ -335,13 +332,12 @@ public class PlayerCombat : MonoBehaviour
 
         debuffs.RemoveAll(c => c.nbTemps < 0);
 
-        ApplicationEffetStatBuffDebuff();
-        ApplicationBuffDebuffDegats();
+        ApplicationEffetBuffDebuff();
 
         UpdateUI();
     }
 
-    private void ApplicationEffetStatBuffDebuff()
+    private void ApplicationEffetBuffDebuff()
     {
 
         ResetStat();
@@ -349,7 +345,14 @@ public class PlayerCombat : MonoBehaviour
         {
             foreach (var effect in item.effects)
             {
-
+                if (effect.type == BuffType.DmgPVMax)
+                {
+                    stat.HP -= Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100);
+                }
+                if (effect.type == BuffType.DégatsBrut)
+                {
+                    stat.HP -= effect.pourcentageEffet;
+                }
                 if (effect.type == BuffType.Résilience)
                 {
                     stat.Resilience += effect.pourcentageEffet;
@@ -370,37 +373,19 @@ public class PlayerCombat : MonoBehaviour
                 {
                     stat.Clairvoyance += effect.pourcentageEffet;
                 }
-
-            }
-        }
-    }
-
-
-    public void ApplicationBuffDebuffDegats()
-    {
-        foreach (var item in debuffs)
-        {
-            foreach (var effect in item.effects)
-            {
-                if (effect.type == BuffType.Ponction)
-                {
-                    stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
-                }
                 if (effect.type == BuffType.PVMax)
                 {
                     stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
                 }
-                if (effect.type == BuffType.DmgPVMax)
+                if (effect.type == BuffType.Ponction)
                 {
-                    stat.HP -= Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100);
+                    stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
                 }
-                if (effect.type == BuffType.DégatsBrut)
-                {
-                    stat.HP -= effect.pourcentageEffet;
-                }
+
             }
         }
     }
+
     public void ResetStat()
     {
         stat.MaxHP = stat.MaxHPOriginal;
@@ -421,7 +406,7 @@ public class PlayerCombat : MonoBehaviour
                debuffs[i].nbTemps--;
         }
 
-        debuffs.RemoveAll(c => c.nbTemps < 0);
+        debuffs.RemoveAll(c => c.nbTemps <= 0);
     }
 
     public void StartUp()
