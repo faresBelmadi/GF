@@ -422,7 +422,7 @@ public class PlayerCombat : MonoBehaviour
                debuffs[i].nbTemps--;
         }
 
-        debuffs.RemoveAll(c => c.nbTemps <= 0);
+        debuffs.RemoveAll(c => c.nbTemps < 0);
     }
 
     public void StartUp()
