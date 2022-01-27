@@ -46,7 +46,7 @@ public class BattleManager : MonoBehaviour
     int idIndexer = 0;
     int idPlayer;
 
-    int currentIdTurn;
+    public int currentIdTurn;
     public int nbTurn;
     public int idTarget = -1;
     bool endBattle;
@@ -69,6 +69,13 @@ public class BattleManager : MonoBehaviour
         idIndexer = 0;
         battleUI = GetComponent<BattleUI>();
         player.stat = GameManager.instance.playerStat;
+        player.stat.MaxHPOriginal = player.stat.MaxHP;
+        player.stat.SpeedOriginal = player.stat.Speed;
+        player.stat.ClairvoyanceOriginal = player.stat.Clairvoyance;
+        player.stat.ResilienceOriginal = player.stat.Resilience;
+        Debug.Log(player.stat.Conviction);
+        player.stat.ConvictionOriginal = player.stat.Conviction;
+        player.stat.ForceAmeOriginal = player.stat.Dmg;
         player.EndTurnBM = EndTurn;
         player.StartUp();
         SpawnedEnemy = new List<GameObject>();
@@ -83,7 +90,7 @@ public class BattleManager : MonoBehaviour
     {
         _encounter = ToSpawn;
         SpawnEnemy();
-        player.updateUI();
+        player.UpdateUI();
         player.DesactivateSpells();
         DialogueEnableSetup();
     }
@@ -304,11 +311,44 @@ public class BattleManager : MonoBehaviour
     public List<ActionResult> GetResult(Spell ToGet)
     {
         List<ActionResult> temp = new List<ActionResult>();
+        var Fa = player.stat.Dmg;
+
+        foreach (var item in player.debuffs)
+        {
+            foreach (var effect in item.effects)
+            {
+            
+                if(effect.type == BuffType.AttBrut)
+                {
+                    Fa += effect.pourcentageEffet;
+                }
+                if(effect.type == BuffType.Att)
+                {
+                    var tempResi = 1 - (effect.pourcentageEffet/100f);
+
+                    Fa += Fa - Mathf.RoundToInt(tempResi * Fa); 
+                }
+                if(effect.type == BuffType.AttUpPVMiss)
+                {
+                    var pvMiss = (100 - ((EnemyScripts.First(c => c.combatID == idTarget).current.HP * 100) / EnemyScripts.First(c => c.combatID == idTarget).current.MaxHP));
+                    Fa += Fa - Mathf.RoundToInt((pvMiss * ((2*Fa)/100) + Fa));
+                }
+                if(effect.type == BuffType.AttUpLastDmgTaken)
+                {
+                    Fa += player.LastDamageTaken;
+                }
+                if(effect.type == BuffType.AttUpPVMissSelf)
+                {
+                    var pvMiss = (100 - ((player.stat.HP * 100) / player.stat.MaxHP));
+                    Fa += Fa - Mathf.RoundToInt((pvMiss * ((2*Fa)/100) + Fa));
+                }
+            }
+        }
         foreach (var item in ToGet.Effet)
         {
             int tempHp = 0;
             int nbAttaque = 0;
-            item.DoAction(player.stat.Dmg,out tempHp, out nbAttaque);
+            item.DoAction(Fa,out tempHp, out nbAttaque);
             temp.Add(new ActionResult(){HpModif = tempHp,target=item.target,nbAttaque = nbAttaque});
         }
 

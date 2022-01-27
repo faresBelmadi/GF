@@ -40,12 +40,12 @@ public class DialogueManager : MonoBehaviour
     {
         DialogueIndex = NextDialogueIndex;
         MainText.text = _CurrentEncounter.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].name + ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
-        MainTextGO.GetComponent<TextAniamtion>().LaunchAnim();
+        MainTextGO.GetComponent<TextAnimation>().LaunchAnim();
         for (int i = 0; i < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count; i++)
         {   
             RéponseGO[i].SetActive(true);
             Réponse[i].text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].TexteRéponse;
-            //Réponse[i].GetComponent<TextAniamtion>().LaunchAnim();
+            //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
         }
     }
 

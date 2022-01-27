@@ -98,6 +98,7 @@ public class AnimationControllerAttack : MonoBehaviour
         // Debug.Log("ending animation");
     }
 
+
     IEnumerator LerpPosition(Transform ToMove, Transform Target, float duration)
     {
         float time = 0;
