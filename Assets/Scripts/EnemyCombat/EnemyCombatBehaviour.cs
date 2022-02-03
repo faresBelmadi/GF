@@ -163,7 +163,7 @@ public class EnemyCombatBehaviour : MonoBehaviour
     {
         TensionUI = Mathf.FloorToInt((currentTension * current.NbPalier) / TensionMax); 
         UICombat.updateHp(current.HP,current.MaxHP);
-        UICombat.updateTension(TensionUI,current.NbPalier);
+        //UICombat.updateTension(TensionUI,current.NbPalier);
         string[] t = current.name.Split('(');
         UICombat.updateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
