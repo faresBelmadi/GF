@@ -696,12 +696,7 @@ public class BattleManager : MonoBehaviour
     
     public void EndCurrentAttaque()
     {
-        foreach (var item in EnemyScripts)
-        {
-            if(item.combatID == currentIdTurn)
-                item.EndAnim();
-        }
-        //EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn).EndAnim();
+        EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn).EndAnim();
     }
 
     public void EndHurtAnim()

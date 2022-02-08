@@ -44,11 +44,6 @@ public class EnemyCombatBehaviour : MonoBehaviour
     {
         updateUI();
 
-        var animator = this.GetComponent<Animator>();
-
-        string[] name = current.name.Split('(');
-        animator.SetLayerWeight(animator.GetLayerIndex(name[0]),1);
-
         current.SpeedOriginal = current.Speed;
         current.DissimulationOriginal = current.Dissimulation;
         current.résilienceOriginal = current.résilience;
@@ -163,7 +158,7 @@ public class EnemyCombatBehaviour : MonoBehaviour
     {
         TensionUI = Mathf.FloorToInt((currentTension * current.NbPalier) / TensionMax); 
         UICombat.updateHp(current.HP,current.MaxHP);
-        //UICombat.updateTension(TensionUI,current.NbPalier);
+        // UICombat.updateTension(TensionUI,current.NbPalier);
         string[] t = current.name.Split('(');
         UICombat.updateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
