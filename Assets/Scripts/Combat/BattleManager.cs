@@ -130,7 +130,7 @@ public class BattleManager : MonoBehaviour
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
-        StartFirstPhase();
+        StartPhase();
     }
 
     private void StartPhase()
@@ -151,11 +151,11 @@ public class BattleManager : MonoBehaviour
     {
 
         DetermFirstTurn();
-        player.StartPhase();
-        foreach (var item in EnemyScripts)
-        {
-            item.StartPhase();
-        }
+        //player.StartPhase();
+        //foreach (var item in EnemyScripts)
+        //{
+        //    item.StartPhase();
+        //}
         currentIdTurn = 0;
         nbPhase++;
         nbTurn = 0;

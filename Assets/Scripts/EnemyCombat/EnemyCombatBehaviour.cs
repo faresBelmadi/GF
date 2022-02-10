@@ -146,9 +146,10 @@ public class EnemyCombatBehaviour : MonoBehaviour
 
     public void AddDebuff(BuffDebuff toAdd)
     {
-        Debuffs.Add(toAdd);
+        Debuffs.Add(Instantiate(toAdd));
         if(toAdd.IsDebuff)
             ReceiveTension(Source.Buff);
+        UICombat.AddUIDebuff(toAdd);
     }
     private void Update() {
         updateUI();
@@ -308,9 +309,11 @@ public class EnemyCombatBehaviour : MonoBehaviour
         {
             if (item.Decompte == EffetTypeDecompte.tour)
                 item.nbTemps--;
+            if(item.nbTemps <0)
+                UICombat.ClearDebuff(item);
         }
 
-        Debuffs.RemoveAll(c => c.nbTemps <= 0);
+        Debuffs.RemoveAll(c => c.nbTemps < 0);
         ResetStat();
 
         foreach (var item in Debuffs)
@@ -383,9 +386,11 @@ public class EnemyCombatBehaviour : MonoBehaviour
         {                    
             if (item.Decompte == EffetTypeDecompte.round)
                 item.nbTemps--;
+            if(item.nbTemps < 0)
+                UICombat.ClearDebuff(item);
         }
 
-        Debuffs.RemoveAll(c => c.nbTemps <= 0);
+        Debuffs.RemoveAll(c => c.nbTemps < 0);
 
         foreach (var item in Debuffs)
         {
