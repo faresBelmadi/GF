@@ -648,12 +648,16 @@ public class BattleManager : MonoBehaviour
     {
         GameManager.instance.DeadPlayer();
     }
-#endregion Death
-#region Essence
+    #endregion Death
+    #region Essence
     public void Consume(int essence)
     {
-        player.TakeDamage(-essence,Source.Soin);
-        if(endBattle)
+        player.TakeDamage(-essence, Source.Soin);
+    }
+    public void ConsumeEndBattle(int essence)
+    {
+        player.TakeDamage(-essence, Source.Soin);
+        if (endBattle)
             EndBattle();
     }
     private IEnumerator GatherEssence()
