@@ -70,7 +70,9 @@ public class PlayerMapManager : MonoBehaviour
                 break;
             case TypeRoom.Heal:
                 break;
-            case TypeRoom.Event:
+            case TypeRoom.Alea:
+                StartCoroutine("LoadSceneAsync", "AleaScene");
+                _currentRoom.Type = TypeRoom.Visited;
                 break;
             case TypeRoom.Visited:
                 break;

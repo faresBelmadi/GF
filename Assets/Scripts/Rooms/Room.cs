@@ -8,7 +8,7 @@ public enum TypeRoom
 {
     NotSet,
     Combat,
-    Event,
+    Alea,
     Heal,
     Spawn,
     Visited
