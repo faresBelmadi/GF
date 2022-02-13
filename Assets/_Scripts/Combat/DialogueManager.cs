@@ -30,6 +30,12 @@ public class DialogueManager : MonoBehaviour
         StartCombat();
     }
 
+    public void SetupDialogue(DialogueSO dialogue)
+    {
+        _CurrentDialogue = dialogue;
+        startDialogue();
+    }
+
     void startDialogue()
     {
         resetRéponse();
@@ -39,8 +45,15 @@ public class DialogueManager : MonoBehaviour
     void GoNext()
     {
         DialogueIndex = NextDialogueIndex;
-        MainText.text = _CurrentEncounter.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].name + ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
-        MainTextGO.GetComponent<TextAnimation>().LaunchAnim();
+        if (_CurrentEncounter != null)
+        {
+            MainText.text = _CurrentEncounter.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].name + ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text; 
+        }
+        else
+        {
+            MainText.text = _CurrentDialogue.Questions[DialogueIndex].Question.Text;
+        }
+        //MainTextGO.GetComponent<TextAnimation>().LaunchAnim();
         for (int i = 0; i < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count; i++)
         {   
             RéponseGO[i].SetActive(true);
@@ -65,9 +78,18 @@ public class DialogueManager : MonoBehaviour
     public void GetRéponse(int i)
     {
         NextDialogueIndex = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].IDNextQuestion;
+
+        //Gestion conséquences
+        foreach (ConséquenceSO cons in _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences)
+        {
+
+            //Fonction qui gère la conséquence
+        }
+
         resetRéponse();
         GoNext();
     }
+
     void StartCombat()
     {
         GameManager.instance.BattleMan.StartCombat();
