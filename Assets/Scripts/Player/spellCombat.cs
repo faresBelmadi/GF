@@ -18,7 +18,7 @@ public class spellCombat : MonoBehaviour
     {
         button = this.GetComponent<Button>();
         texte = this.GetComponentInChildren<TextMeshProUGUI>();
-
+        button.GetComponent<Image>().sprite = Action.IconSprite;
         button.onClick.AddListener(ClickAction);
         texte.text = Action.Name; 
     }
