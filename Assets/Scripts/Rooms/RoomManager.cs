@@ -41,18 +41,18 @@ public class RoomManager : MonoBehaviour
                 }
             }
         }
-        bool healSet = false;
+        bool aleaSet = false;
         foreach (var item in Rooms)
         {
-            if(item.ConnectedRooms.Count >= maxCo && item != start && !healSet && item.ConnectedRooms.Where(c => c.Type == TypeRoom.Heal).Count() == 0)
+            if(item.ConnectedRooms.Count >= maxCo && item != start && !aleaSet && item.ConnectedRooms.Where(c => c.Type == TypeRoom.Alea).Count() == 0)
             {
                 item.ToSet = SalleAlea;
                 item.Type = TypeRoom.Alea;
-                healSet = true;
+                aleaSet = true;
             }
             else if(item.Type == TypeRoom.NotSet)
             {
-                healSet = false;
+                aleaSet = false;
                 bool Combat = true;
                 for (int i = 0; i < item.ConnectedRooms.Count; i++)
                 {
