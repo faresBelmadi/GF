@@ -20,7 +20,7 @@ public class spellCombat : MonoBehaviour
         texte = this.GetComponentInChildren<TextMeshProUGUI>();
         button.GetComponent<Image>().sprite = Action.IconSprite;
         button.onClick.AddListener(ClickAction);
-        texte.text = Action.Name; 
+        //texte.text = Action.Name; 
     }
 
     private void Update() {
