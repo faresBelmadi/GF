@@ -263,6 +263,8 @@ public class PlayerCombat : MonoBehaviour
         debuffs.Add(Instantiate(toAdd));
         
         ApplicationEffetStatBuffDebuff();
+        ApplicationBuffDebuffDegats();
+
         UpdateUI();
     }
 
@@ -397,6 +399,14 @@ public class PlayerCombat : MonoBehaviour
                 if (effect.type == BuffType.DégatsBrut)
                 {
                     stat.HP -= effect.pourcentageEffet;
+                }
+                if (effect.type == BuffType.Att)
+                {
+                    stat.Dmg += Mathf.RoundToInt((effect.pourcentageEffet * stat.Dmg) / 100f);
+                }
+                if (effect.type == BuffType.AttBrut)
+                {
+                    stat.Dmg += effect.pourcentageEffet;
                 }
 
             }
