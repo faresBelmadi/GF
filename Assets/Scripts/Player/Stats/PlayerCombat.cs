@@ -307,6 +307,15 @@ public class PlayerCombat : MonoBehaviour
         }
         EndTurnButton.interactable = false;
     }
+    public void ActivateSpells()
+    {
+        foreach (var item in Spells)
+        {
+            item.GetComponent<spellCombat>().isTurn = true;
+        }
+        EndTurnButton.interactable = true;
+    }
+
 
     private void DecompteDebuff()
     {
@@ -462,6 +471,7 @@ public class PlayerCombat : MonoBehaviour
     public void SendSpell()
     {
         Costs();
+        DesactivateSpells();
         AnimationController.StartAttack(AfterAnim);
         GameManager.instance.BattleMan.LaunchAnimAttacked();
     }
@@ -469,7 +479,7 @@ public class PlayerCombat : MonoBehaviour
     void AfterAnim()
     {
         GameManager.instance.BattleMan.GetListEffectPlayer(SelectedSpell);
-        
+        ActivateSpells();
         UpdateUI();
     }
 
