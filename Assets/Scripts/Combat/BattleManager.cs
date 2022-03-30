@@ -130,7 +130,7 @@ public class BattleManager : MonoBehaviour
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
-        StartFirstPhase();
+        StartPhase();
     }
 
     private void StartPhase()
@@ -146,14 +146,16 @@ public class BattleManager : MonoBehaviour
         nbTurn = 0;
         StartNextTurn();
     }
-        private void StartFirstPhase()
+
+    private void StartFirstPhase()
     {
+
         DetermFirstTurn();
-        player.StartPhase();
-        foreach (var item in EnemyScripts)
-        {
-            item.StartPhase();
-        }
+        //player.StartPhase();
+        //foreach (var item in EnemyScripts)
+        //{
+        //    item.StartPhase();
+        //}
         currentIdTurn = 0;
         nbPhase++;
         nbTurn = 0;
@@ -646,12 +648,16 @@ public class BattleManager : MonoBehaviour
     {
         GameManager.instance.DeadPlayer();
     }
-#endregion Death
-#region Essence
+    #endregion Death
+    #region Essence
     public void Consume(int essence)
     {
-        player.TakeDamage(-essence,Source.Soin);
-        if(endBattle)
+        player.TakeDamage(-essence, Source.Soin);
+    }
+    public void ConsumeEndBattle(int essence)
+    {
+        player.TakeDamage(-essence, Source.Soin);
+        if (endBattle)
             EndBattle();
     }
     private IEnumerator GatherEssence()
@@ -694,12 +700,7 @@ public class BattleManager : MonoBehaviour
     
     public void EndCurrentAttaque()
     {
-        foreach (var item in EnemyScripts)
-        {
-            if(item.combatID == currentIdTurn)
-                item.EndAnim();
-        }
-        //EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn).EndAnim();
+        EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn).EndAnim();
     }
 
     public void EndHurtAnim()

@@ -41,7 +41,10 @@ public enum BuffType
     DeathTrigger,
     RandNBAttack,
     AttUpBuff,
-    AttUpDebuff
+    AttUpDebuff,
+    Conscience,
+    Volonté,
+    SkipCombat
 }
 
 public enum EffetAcharnementHabitude
