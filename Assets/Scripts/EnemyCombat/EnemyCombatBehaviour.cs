@@ -44,11 +44,6 @@ public class EnemyCombatBehaviour : MonoBehaviour
     {
         updateUI();
 
-        var animator = this.GetComponent<Animator>();
-
-        string[] name = current.name.Split('(');
-        animator.SetLayerWeight(animator.GetLayerIndex(name[0]),1);
-
         current.SpeedOriginal = current.Speed;
         current.DissimulationOriginal = current.Dissimulation;
         current.résilienceOriginal = current.résilience;
@@ -151,9 +146,10 @@ public class EnemyCombatBehaviour : MonoBehaviour
 
     public void AddDebuff(BuffDebuff toAdd)
     {
-        Debuffs.Add(toAdd);
+        Debuffs.Add(Instantiate(toAdd));
         if(toAdd.IsDebuff)
             ReceiveTension(Source.Buff);
+        UICombat.AddUIDebuff(toAdd);
     }
     private void Update() {
         updateUI();
@@ -163,7 +159,7 @@ public class EnemyCombatBehaviour : MonoBehaviour
     {
         TensionUI = Mathf.FloorToInt((currentTension * current.NbPalier) / TensionMax); 
         UICombat.updateHp(current.HP,current.MaxHP);
-        UICombat.updateTension(TensionUI,current.NbPalier);
+        // UICombat.updateTension(TensionUI,current.NbPalier);
         string[] t = current.name.Split('(');
         UICombat.updateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
@@ -313,9 +309,11 @@ public class EnemyCombatBehaviour : MonoBehaviour
         {
             if (item.Decompte == EffetTypeDecompte.tour)
                 item.nbTemps--;
+            if(item.nbTemps <0)
+                UICombat.ClearDebuff(item);
         }
 
-        Debuffs.RemoveAll(c => c.nbTemps <= 0);
+        Debuffs.RemoveAll(c => c.nbTemps < 0);
         ResetStat();
 
         foreach (var item in Debuffs)
@@ -388,9 +386,11 @@ public class EnemyCombatBehaviour : MonoBehaviour
         {                    
             if (item.Decompte == EffetTypeDecompte.round)
                 item.nbTemps--;
+            if(item.nbTemps < 0)
+                UICombat.ClearDebuff(item);
         }
 
-        Debuffs.RemoveAll(c => c.nbTemps <= 0);
+        Debuffs.RemoveAll(c => c.nbTemps < 0);
 
         foreach (var item in Debuffs)
         {

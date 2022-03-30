@@ -16,7 +16,7 @@ public class Essence : MonoBehaviour
     public void ConsumeEssence()
     {
         if(isEnd)
-            GameManager.instance.BattleMan.Consume(amount);
+            GameManager.instance.BattleMan.ConsumeEndBattle(amount);
         else
             GameManager.instance.BattleMan.Consume(Mathf.FloorToInt(amount/2));
             
