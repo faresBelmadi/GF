@@ -5,10 +5,18 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-
+using Steamworks;
+enum Achievement : int
+{
+    STARTED_GAME_TEST
+};
 public class GameManager : MonoBehaviour {
     
     public static GameManager instance;
+
+    private Achievement_t[] m_Achievements = new Achievement_t[] {
+        new Achievement_t(Achievement.STARTED_GAME_TEST, "Started", "")
+    };
 
     [Header("Managers")]
     public RoomManager rm;
@@ -27,11 +35,23 @@ public class GameManager : MonoBehaviour {
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
 
+    private CGameID m_GameID;
+
+    protected Callback<UserAchievementStored_t> m_UserAchievementStored;
+
     private void Awake() {
         if(instance != null)
             Destroy(this.gameObject);
         else
         {
+            if (!SteamManager.Initialized)
+                return;
+
+
+            m_GameID = new CGameID(SteamUtils.GetAppID());
+
+            m_UserAchievementStored = Callback<UserAchievementStored_t>.Create(OnAchievementStored);
+
             instance = this;
             DontDestroyOnLoad(this);
         }
@@ -119,7 +139,9 @@ public class GameManager : MonoBehaviour {
             BoughtSpellID = boughtspells
         };
         string json = JsonUtility.ToJson(data);
-        
+
+        UnlockAchievement(m_Achievements.First(c => c.m_strName == "Started"));
+
         #if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
         #else
@@ -228,5 +250,58 @@ public class GameManager : MonoBehaviour {
         yield return SceneManager.LoadSceneAsync(0);
         pmm = FindObjectOfType<PlayerMapManager>();
         rm = FindObjectOfType<RoomManager>();
+    }
+
+    #region testSteamworks
+
+    private void UnlockAchievement(Achievement_t achievement)
+    {
+        achievement.m_bAchieved = true;
+
+        // the icon may change once it's unlocked
+        //achievement.m_iIconImage = 0;
+
+        // mark it down
+        SteamUserStats.SetAchievement(achievement.m_eAchievementID.ToString());
+        Debug.Log("achievement done");
+    }
+
+    private void OnAchievementStored(UserAchievementStored_t pCallback)
+    {
+        // We may get callbacks for other games' stats arriving, ignore them
+        if ((ulong)m_GameID == pCallback.m_nGameID)
+        {
+            if (0 == pCallback.m_nMaxProgress)
+            {
+                Debug.Log("Achievement '" + pCallback.m_rgchAchievementName + "' unlocked!");
+            }
+            else
+            {
+                Debug.Log("Achievement '" + pCallback.m_rgchAchievementName + "' progress callback, (" + pCallback.m_nCurProgress + "," + pCallback.m_nMaxProgress + ")");
+            }
+        }
+    }
+
+#endregion testSteamworks
+}
+class Achievement_t
+{
+    public Achievement m_eAchievementID;
+    public string m_strName;
+    public string m_strDescription;
+    public bool m_bAchieved;
+
+    /// <summary>
+    /// Creates an Achievement. You must also mirror the data provided here in https://partner.steamgames.com/apps/achievements/yourappid
+    /// </summary>
+    /// <param name="achievement">The "API Name Progress Stat" used to uniquely identify the achievement.</param>
+    /// <param name="name">The "Display Name" that will be shown to players in game and on the Steam Community.</param>
+    /// <param name="desc">The "Description" that will be shown to players in game and on the Steam Community.</param>
+    public Achievement_t(Achievement achievementID, string name, string desc)
+    {
+        m_eAchievementID = achievementID;
+        m_strName = name;
+        m_strDescription = desc;
+        m_bAchieved = false;
     }
 }
