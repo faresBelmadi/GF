@@ -13,14 +13,29 @@ public class spellCombat : MonoBehaviour
 
     public Button button;
     public TextMeshProUGUI texte;
+    public GameObject Description;
+    public TextMeshProUGUI TexteDescription;
 
     public void StartUp()
     {
         button = this.GetComponent<Button>();
         texte = this.GetComponentInChildren<TextMeshProUGUI>();
-
+        button.GetComponent<Image>().sprite = Action.IconSprite;
         button.onClick.AddListener(ClickAction);
-        texte.text = Action.Name; 
+        //texte.text = Action.Name;
+        TexteDescription.text = Action.Name + "\nCost : ";
+        foreach (var item in Action.Costs)
+        {
+            if (item.typeCost == TypeCostSpell.Volonté)
+                TexteDescription.text += item.Value + "V ";
+            if (item.typeCost == TypeCostSpell.Radiance)
+                TexteDescription.text += item.Value + "R ";
+            if (item.typeCost == TypeCostSpell.Conscience)
+                TexteDescription.text += item.Value + "C ";
+        }
+        TexteDescription.text += "\n";
+
+        TexteDescription.text += Action.Description;
     }
 
     private void Update() {

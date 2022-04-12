@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,11 +22,13 @@ public class EnemyCombatGen : MonoBehaviour
 
     public Action RaiseEvent;
 
-    public Transform degatSoinParent,buffParents;
+    public Transform degatSoinParent,buffParents, debuffParents;
 
     public GameObject soinPrefab;
     public GameObject degatPrefab;
-    
+    public List<GameObject> DebuffSpawned = new List<GameObject>();
+    public GameObject BuffPrefab;
+    public GameObject DebuffPrefab;
     public void updateHp(int newHp,int newMaxHp)
     {
         healthSlider.value = newHp;
@@ -50,6 +53,8 @@ public class EnemyCombatGen : MonoBehaviour
         NameText.gameObject.SetActive(true);
         if(TargetingMode)
             Ciblage.SetActive(true);
+        if (debuffParents.childCount > 0 || buffParents.childCount > 0)
+            GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("ShowDescription");
     }
 
     private void OnMouseExit() {
@@ -58,7 +63,9 @@ public class EnemyCombatGen : MonoBehaviour
         NameText.gameObject.SetActive(false);
         if(TargetingMode)
             Ciblage.SetActive(false);
-        
+
+        if(debuffParents.childCount > 0 || buffParents.childCount > 0)
+            GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("HideDescription");
     }
 
     public void SpawnDegatSoin(int value)
@@ -84,6 +91,66 @@ public class EnemyCombatGen : MonoBehaviour
         {
             RaiseEvent();
             Ciblage.SetActive(false);
+        }
+    }
+
+    public void AddUIDebuff(BuffDebuff toAdd)
+    {
+        if (toAdd.IsDebuff)
+        {
+            var t = DebuffSpawned.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == toAdd.NomDebuff);
+            if (t == null)
+            {
+                t = Instantiate(DebuffPrefab, debuffParents.transform);
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.NomDebuff;
+                t.GetComponent<DescriptionHoverTrigger>().Description.text = toAdd.Description;
+                DebuffSpawned.Add(t);
+            }
+            else
+            {
+                var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;
+                int nb = int.Parse(s);
+                s = nb + 1 + "";
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
+            }
+
+        }
+        else
+        {
+            var t = DebuffSpawned.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == toAdd.NomDebuff);
+            if (t == null)
+            {
+                t = Instantiate(BuffPrefab, buffParents.transform);
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.NomDebuff;
+                t.GetComponent<DescriptionHoverTrigger>().Description.text = toAdd.Description;
+                DebuffSpawned.Add(t);
+            }
+            else
+            {
+                var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;
+                int nb = int.Parse(s);
+                s = nb + 1 + "";
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
+            }
+        }
+    }
+
+    public void ClearDebuff(BuffDebuff remove)
+    {
+        var t = DebuffSpawned.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == remove.NomDebuff);
+        if (t != null)
+        {
+            var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;
+            int nb = int.Parse(s);
+            nb -= 1;
+            s = nb + "";
+            if (nb <= 0)
+            {
+                DebuffSpawned.Remove(t);
+                GameObject.Destroy(t);
+            }
+            else
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
         }
     }
 }
