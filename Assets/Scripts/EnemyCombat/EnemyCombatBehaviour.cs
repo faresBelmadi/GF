@@ -37,6 +37,7 @@ public class EnemyCombatBehaviour : MonoBehaviour
     public int combatID;
     public EnemySpell nextAction;
     public GameObject EssencePrefab;
+    bool skip;
     nextActionEnum nextActionType;
     List<EnemySpell> Spells;
 
@@ -120,7 +121,8 @@ public class EnemyCombatBehaviour : MonoBehaviour
 
     private void Dead()
     {
-    foreach (var item in Debuffs)
+        EndTurn();
+        foreach (var item in Debuffs)
         {
             foreach (var effect in item.effects)
             {
@@ -178,6 +180,7 @@ public class EnemyCombatBehaviour : MonoBehaviour
     public void StartTurn()
     {
         DecompteDebuff();
+        if(!skip)
         DoAction();
     }
 
@@ -296,7 +299,8 @@ public class EnemyCombatBehaviour : MonoBehaviour
     
     public void EndTurn()
     {
-        EndAnimBool();
+        if(!skip)
+            EndAnimBool();
         ChooseNextAction();
         EndTurnBM();
 
@@ -304,7 +308,7 @@ public class EnemyCombatBehaviour : MonoBehaviour
 
     private void DecompteDebuff()
     {
-        var skip = false;
+        skip = false;
         foreach (var item in Debuffs)
         {
             if (item.Decompte == EffetTypeDecompte.tour)
@@ -363,6 +367,7 @@ public class EnemyCombatBehaviour : MonoBehaviour
                     {
                         current.EssenceDrop = 0;
                         Dead();
+            EndTurn();
                     }
                 }
             }

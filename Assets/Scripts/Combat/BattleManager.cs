@@ -165,7 +165,9 @@ public class BattleManager : MonoBehaviour
 #region Turn
     void EndTurn()
     {
-        IdOrder.FirstOrDefault(c => c.id == currentIdTurn && !c.Played).Played = true;
+        var turnPlayed = IdOrder.FirstOrDefault(c => c.id == currentIdTurn && !c.Played);
+        if (turnPlayed != null)
+            turnPlayed.Played = true;
         nbTurn++;
         if(nbTurn >= IdOrder.Count)
             StartPhase();
