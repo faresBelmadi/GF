@@ -11,27 +11,37 @@ public class DescriptionHoverTrigger : MonoBehaviour, IPointerEnterHandler, IPoi
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        Debug.Log("enter");
         ToShow.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+        Debug.Log("exit");
         ToShow.SetActive(false);
     }
 
     public void ShowDescription()
     {
-        var rectTransform = this.GetComponent<RectTransform>();
-        var mousePosition = Input.mousePosition;
-        var normalizedMousePosition = new Vector2(mousePosition.x / Screen.width, mousePosition.y / Screen.height);
-        if (normalizedMousePosition.x > rectTransform.anchorMin.x &&
-            normalizedMousePosition.x < rectTransform.anchorMax.x &&
-            normalizedMousePosition.y > rectTransform.anchorMin.y &&
-            normalizedMousePosition.y < rectTransform.anchorMax.y)
+        //var rectTransform = this.GetComponent<RectTransform>();
+        //var mousePosition = Input.mousePosition;
+        //var normalizedMousePosition = new Vector2(mousePosition.x / Screen.width, mousePosition.y / Screen.height);
+        //if (normalizedMousePosition.x > rectTransform.anchorMin.x &&
+        //    normalizedMousePosition.x < rectTransform.anchorMax.x &&
+        //    normalizedMousePosition.y > rectTransform.anchorMin.y &&
+        //    normalizedMousePosition.y < rectTransform.anchorMax.y)
+        //{
+        //    ToShow.SetActive(true);
+        //}
+
+        Ray ray = GameManager.instance.pmm.BattleCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        RaycastHit[] t = Physics.RaycastAll(ray);
+        foreach (var item in t)
         {
-            ToShow.SetActive(true);
+            Debug.Log(item.collider.gameObject.name);
         }
         
+    
     }
 
     public void HideDescription()

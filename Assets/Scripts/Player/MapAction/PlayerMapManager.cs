@@ -24,7 +24,7 @@ public class PlayerMapManager : MonoBehaviour
     private Room _currentRoom;
 
     public GameObject MenuCamera;
-    GameObject BattleCamera;
+    public GameObject BattleCamera;
     GameObject[] rootBattleScene;
     Scene s;
 
