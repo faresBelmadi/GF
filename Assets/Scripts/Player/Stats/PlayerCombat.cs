@@ -96,14 +96,16 @@ public class PlayerCombat : MonoBehaviour
                         GameManager.instance.BattleMan.EnemyScripts.First(c => c.combatID == GameManager.instance.BattleMan.currentIdTurn).TakeDamage(dmgRetour,Source.Dot);
                     }
                 }
+            }        
+            
+            if(stat.Resilience != 0)
+            {
+                var tempResi = 1 - ((stat.Resilience*3)/100f);
+                dmg = Mathf.RoundToInt(tempResi * dmg);
             }
         }
 
-        if(stat.Resilience != 0)
-        {
-            var tempResi = 1 - ((stat.Resilience*3)/100f);
-            dmg = Mathf.RoundToInt(tempResi * dmg);
-        }
+
 
         stat.HP -= dmg;
 
@@ -396,6 +398,10 @@ public class PlayerCombat : MonoBehaviour
                 if (effect.type == BuffType.Ponction)
                 {
                     stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * stat.MaxHP) / 100f);
+                    if (item.NomDebuff == "Trone d'or")
+                    {
+                        GameManager.instance.BattleMan.PonctionAll(effect.pourcentageEffet);
+                    }
                 }
                 if (effect.type == BuffType.PVMax)
                 {

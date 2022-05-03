@@ -118,6 +118,18 @@ public class EnemyCombatBehaviour : MonoBehaviour
             
         ReceiveTension(sourceDamage);
     }
+    public int TakeDamagePVActuel(int pourcentage, Source sourceDamage)
+    {
+        int dmgDone = Mathf.RoundToInt(pourcentage * current.HP / 100f);
+        TakeDamage(dmgDone, sourceDamage);
+        return dmgDone;
+    }
+    public int TakeDamagePVMax(int pourcentage, Source sourceDamage)
+    {
+        int dmgDone = Mathf.RoundToInt(pourcentage * current.MaxHP / 100f);
+        TakeDamage(dmgDone, sourceDamage);
+        return dmgDone;
+    }
 
     private void Dead()
     {
@@ -327,10 +339,14 @@ public class EnemyCombatBehaviour : MonoBehaviour
                 if(effect.type == BuffType.DmgPVMax)
                 {
                     current.HP -= Mathf.RoundToInt((effect.pourcentageEffet * current.MaxHP) / 100);
+                    if (current.HP <= 0)
+                        Dead();
                 }
                 if(effect.type == BuffType.DégatsBrut)
                 {
                     current.HP -= effect.pourcentageEffet;
+                    if (current.HP <= 0)
+                        Dead();
                 }
                 if(effect.type == BuffType.Doute || effect.type == BuffType.Stun)
                 {
@@ -367,7 +383,6 @@ public class EnemyCombatBehaviour : MonoBehaviour
                     {
                         current.EssenceDrop = 0;
                         Dead();
-            EndTurn();
                     }
                 }
             }

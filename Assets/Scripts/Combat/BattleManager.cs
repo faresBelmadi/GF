@@ -455,6 +455,15 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
+
+    public void PonctionAll(int pourcentageEffet)
+    {
+        foreach(var enemy in EnemyScripts)
+        {
+            player.TakeDamage(-1 * enemy.TakeDamagePVActuel(pourcentageEffet, Source.Dot),Source.Soin);
+        }
+    }
+
     public void ActResult(List<ActionResult> actions,int idOrigin,int target = -1,bool Enervement = false, bool Apaisement = false)
     {
         if(idOrigin != idPlayer)
