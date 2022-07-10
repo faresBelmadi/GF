@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public struct QuestionRéponse
+public class QuestionRéponse
 {    
     public int ID;
     public QuestionSO Question;

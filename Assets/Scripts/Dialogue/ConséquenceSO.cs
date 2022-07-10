@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[System.Serializable]
+/*[System.Serializable]
 public enum CategoryConsequence
 {
     InGame,
     InCombat
-}
+}*/
 
-[System.Serializable]
+/*[System.Serializable]
 public enum TypeConsequence
 {
     Effect,
     Debuff,
     Both
-}
+}*/
 
 [CreateAssetMenu(fileName = "New conséquence", menuName = "Dialogue/Create New Conséquence", order = 11)]
 [System.Serializable]
@@ -25,10 +25,9 @@ public class ConséquenceSO : ScriptableObject
     public Texture2D Icon;
 
     //Consequence peuvent avoir 3 type : effet de spell/application d'un debuff pour le prochain combat ou les deux en meme temps;
-    public TypeConsequence typConsequence;
+    //public TypeConsequence typConsequence;
 
     public List<BuffDebuff> Buffs;
-
     public List<Effect> Effects;
 
     [Header("Self is always the player")]

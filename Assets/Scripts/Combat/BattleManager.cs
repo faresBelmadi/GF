@@ -312,6 +312,50 @@ public class BattleManager : MonoBehaviour
     {
         EnemyScripts.First(c => c.combatID == idTarget).getAttacked();
     }
+
+    public ActionResult GetResult(Effect ToGet)
+    {
+        ActionResult temp = new ActionResult();
+        var Fa = player.stat.Dmg;
+
+        foreach (var item in player.debuffs)
+        {
+            foreach (var effect in item.effects)
+            {
+
+                if (effect.type == BuffType.AttBrut)
+                {
+                    Fa += effect.pourcentageEffet;
+                }
+                if (effect.type == BuffType.Att)
+                {
+                    var tempResi = 1 - (effect.pourcentageEffet / 100f);
+
+                    Fa += Fa - Mathf.RoundToInt(tempResi * Fa);
+                }
+                if (effect.type == BuffType.AttUpPVMiss)
+                {
+                    var pvMiss = (100 - ((EnemyScripts.First(c => c.combatID == idTarget).current.HP * 100) / EnemyScripts.First(c => c.combatID == idTarget).current.MaxHP));
+                    Fa += Fa - Mathf.RoundToInt((pvMiss * ((2 * Fa) / 100) + Fa));
+                }
+                if (effect.type == BuffType.AttUpLastDmgTaken)
+                {
+                    Fa += player.LastDamageTaken;
+                }
+                if (effect.type == BuffType.AttUpPVMissSelf)
+                {
+                    var pvMiss = (100 - ((player.stat.HP * 100) / player.stat.MaxHP));
+                    Fa += Fa - Mathf.RoundToInt((pvMiss * ((2 * Fa) / 100) + Fa));
+                }
+            }
+        }
+        int tempHp = 0;
+        int nbAttaque = 0;
+        ToGet.DoAction(Fa, out tempHp, out nbAttaque);
+        temp = new ActionResult() { HpModif = tempHp, target = ToGet.target, nbAttaque = nbAttaque };
+        return temp;
+    }
+
     public List<ActionResult> GetResult(Spell ToGet)
     {
         List<ActionResult> temp = new List<ActionResult>();
@@ -361,7 +405,7 @@ public class BattleManager : MonoBehaviour
     } 
 
 
-    public void ActDebuff(List<BuffDebuff> ToApply,int idOrigin, int Target = -1)
+    public void ActDebuff(List<BuffDebuff> ToApply, int idOrigin, int Target = -1)
     {
         if(idOrigin != idPlayer)
         {
@@ -464,185 +508,185 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void ActResult(List<ActionResult> actions,int idOrigin,int target = -1,bool Enervement = false, bool Apaisement = false)
+    public void ActResult(List<ActionResult> actions, int idOrigin, int target = -1, bool Enervement = false, bool Apaisement = false)
     {
-        if(idOrigin != idPlayer)
+        if (idOrigin != idPlayer)
         {
             foreach (var item in actions)
             {
-                switch(item.target)
+                switch (item.target)
                 {
                     case Cible.All:
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
+                        if (item.HpModif != 0)
                         {
-                            player.TakeDamage(item.HpModif,Source.Attaque);
-                        }
-                    }
-                    if(Enervement)
-                        player.EnervementTension();
-                    if(Apaisement)
-                        player.ApaisementTension();
-                    foreach (var enemy in EnemyScripts)
-                    {
-                        if(item.HpModif != 0)
-                        {
-                            for(int i = 0; i < item.nbAttaque; i++)
+                            for (int i = 0; i < item.nbAttaque; i++)
                             {
-                                enemy.TakeDamage(item.HpModif,Source.Attaque);
+                                player.TakeDamage(item.HpModif, Source.Attaque);
                             }
                         }
-                    }
-                    break;
+                        if (Enervement)
+                            player.EnervementTension();
+                        if (Apaisement)
+                            player.ApaisementTension();
+                        foreach (var enemy in EnemyScripts)
+                        {
+                            if (item.HpModif != 0)
+                            {
+                                for (int i = 0; i < item.nbAttaque; i++)
+                                {
+                                    enemy.TakeDamage(item.HpModif, Source.Attaque);
+                                }
+                            }
+                        }
+                        break;
 
                     case Cible.allAllies:
 
-                    foreach (var enemy in EnemyScripts)
-                    {
-                        if(item.HpModif != 0)
+                        foreach (var enemy in EnemyScripts)
                         {
-                            for(int i = 0; i < item.nbAttaque; i++)
+                            if (item.HpModif != 0)
                             {
-                                enemy.TakeDamage(item.HpModif,Source.Attaque);
+                                for (int i = 0; i < item.nbAttaque; i++)
+                                {
+                                    enemy.TakeDamage(item.HpModif, Source.Attaque);
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
 
-                    case Cible.allEnnemi :
+                    case Cible.allEnnemi:
 
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
+                        if (item.HpModif != 0)
                         {
-                            player.TakeDamage(item.HpModif,Source.Attaque);
+                            for (int i = 0; i < item.nbAttaque; i++)
+                            {
+                                player.TakeDamage(item.HpModif, Source.Attaque);
+                            }
                         }
-                    }
-                        
-                        if(Enervement)
+
+                        if (Enervement)
                             player.EnervementTension();
-                        if(Apaisement)
+                        if (Apaisement)
                             player.ApaisementTension();
-                    break;
+                        break;
 
                     case Cible.Ally:
 
-                    var Enemy = EnemyScripts.First(c => c.combatID == UnityEngine.Random.Range(1,idIndexer));
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
+                        var Enemy = EnemyScripts.First(c => c.combatID == UnityEngine.Random.Range(1, idIndexer));
+                        if (item.HpModif != 0)
                         {
-                            Enemy.TakeDamage(item.HpModif,Source.Attaque);
+                            for (int i = 0; i < item.nbAttaque; i++)
+                            {
+                                Enemy.TakeDamage(item.HpModif, Source.Attaque);
+                            }
                         }
-                    }
-                    break;
+                        break;
 
                     case Cible.ennemi:
 
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
+                        if (item.HpModif != 0)
                         {
-                            player.TakeDamage(item.HpModif,Source.Attaque);
+                            for (int i = 0; i < item.nbAttaque; i++)
+                            {
+                                player.TakeDamage(item.HpModif, Source.Attaque);
+                            }
                         }
-                    }
-                        
-                        if(Enervement)
+
+                        if (Enervement)
                             player.EnervementTension();
-                        if(Apaisement)
+                        if (Apaisement)
                             player.ApaisementTension();
-                    break;
+                        break;
 
                     case Cible.self:
-                    
-                    var self = EnemyScripts.First(c => c.combatID == idOrigin);
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
+
+                        var self = EnemyScripts.First(c => c.combatID == idOrigin);
+                        if (item.HpModif != 0)
                         {
-                            self.TakeDamage(item.HpModif,Source.Attaque);
+                            for (int i = 0; i < item.nbAttaque; i++)
+                            {
+                                self.TakeDamage(item.HpModif, Source.Attaque);
+                            }
                         }
-                    }
-                    break;
+                        break;
                 }
             }
         }
         else
         {
-             foreach (var item in actions)
+            foreach (var item in actions)
             {
-                switch(item.target)
+                switch (item.target)
                 {
                     case Cible.All:
 
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
+                        if (item.HpModif != 0)
                         {
-                            player.TakeDamage(item.HpModif,Source.Attaque);
-                        }
-                    }
-                    foreach (var enemy in EnemyScripts)
-                    {
-                        if(item.HpModif != 0)
-                        {
-                            for(int i = 0; i < item.nbAttaque; i++)
+                            for (int i = 0; i < item.nbAttaque; i++)
                             {
-                                enemy.TakeDamage(item.HpModif,Source.Attaque);
+                                player.TakeDamage(item.HpModif, Source.Attaque);
                             }
                         }
-                    }
-                    break;
+                        foreach (var enemy in EnemyScripts)
+                        {
+                            if (item.HpModif != 0)
+                            {
+                                for (int i = 0; i < item.nbAttaque; i++)
+                                {
+                                    enemy.TakeDamage(item.HpModif, Source.Attaque);
+                                }
+                            }
+                        }
+                        break;
 
                     case Cible.allEnnemi:
 
-                    foreach (var enemy in EnemyScripts)
-                    {
-                        if(item.HpModif != 0)
+                        foreach (var enemy in EnemyScripts)
                         {
-                            for(int i = 0; i < item.nbAttaque; i++)
+                            if (item.HpModif != 0)
                             {
-                                enemy.TakeDamage(item.HpModif,Source.Attaque);
+                                for (int i = 0; i < item.nbAttaque; i++)
+                                {
+                                    enemy.TakeDamage(item.HpModif, Source.Attaque);
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
 
                     case Cible.ennemi:
-                    
-                    var Enemy = EnemyScripts.First(c => c.combatID == target);
-                    if(Enemy == null)
-                        Enemy = EnemyScripts.First(c => c.combatID == UnityEngine.Random.Range(1,idIndexer));
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
-                        { 
-                            Enemy.TakeDamage(item.HpModif,Source.Attaque);
-                        }
-                    }
-                    break;
 
-                    case Cible.allAllies :
+                        var Enemy = EnemyScripts.First(c => c.combatID == target);
+                        if (Enemy == null)
+                            Enemy = EnemyScripts.First(c => c.combatID == UnityEngine.Random.Range(1, idIndexer));
+                        if (item.HpModif != 0)
+                        {
+                            for (int i = 0; i < item.nbAttaque; i++)
+                            {
+                                Enemy.TakeDamage(item.HpModif, Source.Attaque);
+                            }
+                        }
+                        break;
+
+                    case Cible.allAllies:
                     case Cible.Ally:
                     case Cible.self:
 
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
+                        if (item.HpModif != 0)
                         {
-                            player.TakeDamage(item.HpModif,Source.Attaque);
-                        }
+                            for (int i = 0; i < item.nbAttaque; i++)
+                            {
+                                player.TakeDamage(item.HpModif, Source.Attaque);
+                            }
 
-                    }
-                    break;
+                        }
+                        break;
                 }
             }
         }
-        
+
     }
     #endregion Result
-#region Death
+    #region Death
     public void DeadEnemy(int id)
     {
         nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true); 
