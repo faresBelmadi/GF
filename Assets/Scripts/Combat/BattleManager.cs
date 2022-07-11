@@ -768,6 +768,7 @@ public class BattleManager : MonoBehaviour
 
     private void EndBattle()
     {
+        player.ResetStat();
         player.stat.Volonté = player.stat.MaxVolonté;
         player.stat.Tension = 0;
         GameManager.instance.playerStat = player.stat;

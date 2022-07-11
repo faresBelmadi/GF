@@ -37,5 +37,6 @@ public enum TypeEffetRemake
 {
     DegatsForceAme,
     DegatsBrut,
-    Clairvoyance
+    Clairvoyance,
+    Colere
 }

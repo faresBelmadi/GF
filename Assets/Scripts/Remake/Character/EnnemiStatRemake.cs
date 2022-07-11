@@ -7,5 +7,10 @@ using UnityEngine;
 public class EnnemiStatRemake : CharacterStatRemake
 {
     public int Dissimulation;
+    public int DissimulationOriginal;
     public GameObject Spawnable;
+    public EnnemiSpellRemake Att1;
+    public EnnemiSpellRemake Att2;
+    public EnnemiSpellRemake Buff;
+    public EnnemiSpellRemake Debuff;
 }
