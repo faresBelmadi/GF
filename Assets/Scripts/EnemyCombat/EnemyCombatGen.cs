@@ -48,7 +48,7 @@ public class EnemyCombatGen : MonoBehaviour
     }
 
     private void OnMouseEnter() {
-        //healthSlider.gameObject.SetActive(true);
+        healthSlider.gameObject.SetActive(true);
         TensionSlider.gameObject.SetActive(true);
         NameText.gameObject.SetActive(true);
         if(TargetingMode)
@@ -58,7 +58,7 @@ public class EnemyCombatGen : MonoBehaviour
     }
 
     private void OnMouseExit() {
-        //healthSlider.gameObject.SetActive(false);
+        healthSlider.gameObject.SetActive(false);
         TensionSlider.gameObject.SetActive(false);
         NameText.gameObject.SetActive(false);
         if(TargetingMode)

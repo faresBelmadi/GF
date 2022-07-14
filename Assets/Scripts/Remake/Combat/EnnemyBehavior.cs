@@ -13,7 +13,7 @@ public class EnnemyBehavior : CombatBehavior
     public EnemyCombatGen UICombat;
 
     //List<BuffDebuff> Debuffs = new List<BuffDebuff>();
-    List<GameObject> ListBuff = new List<GameObject>();
+    //List<GameObject> ListBuff = new List<GameObject>();
 
     public int TensionUI;
 
@@ -36,7 +36,7 @@ public class EnnemyBehavior : CombatBehavior
     {
         TensionUI = Mathf.FloorToInt((Tension * NbPalier) / TensionMax);
         UICombat.updateHp(Stat.Radiance, Stat.RadianceMax);
-        // UICombat.updateTension(TensionUI,current.NbPalier);
+        UICombat.updateTension(TensionUI, NbPalier);
         string[] t = Stat.name.Split('(');
         UICombat.updateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
@@ -73,39 +73,12 @@ public class EnnemyBehavior : CombatBehavior
 
     public void StartPhase()
     {
-
-        foreach (var item in Stat.ListBuffDebuff)
-        {
-            if (item.Decompte == DecompteRemake.round)
-                item.Temps--;
-            if (item.Temps < 0)
-            {
-                //UICombat.ClearDebuff(item);
-            }
-        }
-
-        Stat.ListBuffDebuff.RemoveAll(c => c.Temps < 0);
-
-        foreach (var item in Stat.ListBuffDebuff)
-        {
-            foreach (var effect in item.Effet)
-            {
-                /*if (effect.TypeEffet == TypeEffetRemake.DmgPVMax)
-                {
-                    Stat.Radiance -= Mathf.RoundToInt((effect.Pourcentage * Stat.RadianceMax) / 100);
-                }*/
-                if (effect.TypeEffet == TypeEffetRemake.DegatsBrut)
-                {
-                    Stat.Radiance -= effect.Pourcentage;
-                }
-            }
-        }
-
+        DecompteDebuffEnnemi(DecompteRemake.phase, TimerApplication.DebutPhase);
     }
 
     public void StartTurn()
     {
-        DecompteDebuff();
+        DecompteDebuffEnnemi(DecompteRemake.tour, TimerApplication.DebutTour);
         if (!skip)
         {
             //DoAction();
@@ -217,6 +190,11 @@ public class EnnemyBehavior : CombatBehavior
 
     #region Spell
 
+    public void DoAction()
+    {
+
+    }
+
     public void CreateSpellList()
     {
         Spells = new List<EnnemiSpellRemake>();
@@ -241,94 +219,70 @@ public class EnnemyBehavior : CombatBehavior
 
     #region BuffDebuff
 
-    public void AddDebuff(BuffDebuffRemake toAdd)
+    public void AddDebuff(BuffDebuffRemake toAdd, DecompteRemake Decompte, TimerApplication Timer)
     {
         if (toAdd.IsDebuff)
         {
             ReceiveTension(Source.Buff);
         }
         Stat.ListBuffDebuff.Add(Instantiate(toAdd));
-        AddUIBuffDebuff(toAdd);
+        base.AddBuffDebuff(toAdd);
+
+        DecompteDebuffEnnemi(Decompte, Timer);
+
+        updateUI();
     }
 
-    private void DecompteDebuff()
+    private void DecompteDebuffEnnemi(DecompteRemake Decompte, TimerApplication Timer)
+    {
+        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte);
+
+        ApplicationBuffDebuff(Timer);
+
+        updateUI();
+    }
+
+    public void ApplicationBuffDebuff(TimerApplication Timer)
     {
         skip = false;
-        foreach (var item in Stat.ListBuffDebuff)
-        {
-            if (item.Decompte == DecompteRemake.tour)
-                item.Temps--;
-            if (item.Temps < 0)
-            {
-                //UICombat.ClearDebuff(item);
-            }
-        }
-
-        Stat.ListBuffDebuff.RemoveAll(c => c.Temps < 0);
         ResetStat();
-
         foreach (var item in Stat.ListBuffDebuff)
         {
-            foreach (var effect in item.Effet)
+            if (item.Activate == true && (item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant))
             {
-                /*if (effect.TypeEffet == TypeEffetRemake.DmgPVMax)
+                foreach (var effet in item.Effet)
                 {
-                    Stat.Radiance -= Mathf.RoundToInt((effect.Pourcentage * Stat.RadianceMax) / 100);
-                    if (Stat.Radiance <= 0)
-                        Dead();
-                }
-                if (effect.TypeEffet == TypeEffetRemake.DégatsBrut)
-                {
-                    Stat.Radiance -= effect.Pourcentage;
-                    if (Stat.Radiance <= 0)
-                        Dead();
-                }
-                if (effect.type == BuffType.Doute || effect.type == BuffType.Stun)
-                {
-                    UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-                    var temp = UnityEngine.Random.Range(0, 100);
-                    if (temp <= effect.pourcentageEffet)
-                        skip = true;
-                }
-                if (effect.type == BuffType.Résilience)
-                {
-                    Stat.résilience += effect.pourcentageEffet;
-                }
-                if (effect.type == BuffType.VitesseBrut)
-                {
-                    Stat.Speed += effect.pourcentageEffet;
-                }
-                if (effect.type == BuffType.Vitesse)
-                {
-                    Stat.Speed += Mathf.RoundToInt((effect.pourcentageEffet * Stat.Speed) / 100f);
-                }
-                if (effect.type == BuffType.Dissimulation)
-                {
-                    Stat.Dissimulation += effect.pourcentageEffet;
-                }
-                if (effect.type == BuffType.PVMax)
-                {
-                    Stat.MaxHP += Mathf.RoundToInt((effect.pourcentageEffet * Stat.MaxHP) / 100f);
-                }
-                if (effect.type == BuffType.Peur)
-                {
-                    UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-                    var temp = UnityEngine.Random.Range(0, 100);
-                    if (temp <= effect.pourcentageEffet)
+                    if (item.CibleApplication == effet.Cible)
                     {
-                        Stat.EssenceDrop = 0;
-                        Dead();
+                        ApplicationEffet(effet);
                     }
-                }*/
+                    else
+                    {
+                        //A Mettre une fois les combats terminer
+                        //GameManager.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine);
+                    }
+                }
+            }
+            else
+            {
+                item.Activate = true;
             }
         }
-
-
         if (skip)
             EndTurn();
     }
 
     #endregion BuffDebuff
+
+    #region Effet
+
+    public void ApplicationEffet(EffetRemake effet)
+    {
+        var ModifStat = effet.ResultEffet(Stat);
+        Stat.ModifStateAll(ModifStat);
+    }
+
+    #endregion Effet
 
     #region Tension
 
@@ -391,11 +345,6 @@ public class EnnemyBehavior : CombatBehavior
     public void getAttacked()
     {
         this.GetComponent<Animator>().SetBool("IsAttacked", true);
-    }
-
-    public void EndAnim()
-    {
-        EndTurn();
     }
 
     public void EndAnimHurt()

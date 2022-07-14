@@ -11,7 +11,7 @@ public class JoueurBehavior : CombatBehavior
     public JoueurStatRemake Stat;
 
     //public List<BuffDebuff> debuffs = new List<BuffDebuff>();
-    public List<GameObject> ListBuff = new List<GameObject>();
+    //public List<GameObject> ListBuff = new List<GameObject>();
 
     public List<GameObject> Spells;
     public Transform DamageSpawn;
@@ -127,25 +127,13 @@ public class JoueurBehavior : CombatBehavior
 
     public void StartPhase()
     {
-
-        for (int i = 0; i < Stat.ListBuffDebuff.Count; i++)
-        {
-
-            if (Stat.ListBuffDebuff[i].Decompte == DecompteRemake.round)
-                Stat.ListBuffDebuff[i].Temps--;
-        }
-
-        Stat.ListBuffDebuff.RemoveAll(c => c.Temps < 0);
+        DecompteDebuffJoueur(DecompteRemake.phase, TimerApplication.DebutPhase);
     }
 
     public void StartTurn()
     {
-        DecompteDebuff();//Peut changer en fin de tour..............
-        foreach (var item in Spells)
-        {
-            item.GetComponent<SpellCombatRemake>().isTurn = true;
-        }
-        EndTurnButton.interactable = true;
+        DecompteDebuffJoueur(DecompteRemake.tour, TimerApplication.DebutTour);
+        ActivateSpells();
         Stat.Volonter = Stat.VolonterMax;
         UpdateUI();
     }
@@ -153,7 +141,6 @@ public class JoueurBehavior : CombatBehavior
     public void EndTurn()
     {
         DesactivateSpells();
-
         EndTurnBM();
     }
 
@@ -291,7 +278,8 @@ public class JoueurBehavior : CombatBehavior
 
     void AfterAnim()
     {
-        //GameManager.instance.BattleMan.GetListEffectPlayer(SelectedSpell);
+        //A Mettre une fois les combats terminer
+        //GameManager.instance.BattleMan.LaunchSpell(SelectedSpell);
         ActivateSpells();
         UpdateUI();
     }
@@ -300,57 +288,65 @@ public class JoueurBehavior : CombatBehavior
 
     #region BuffDebuff
 
-    public void AddDebuff(BuffDebuffRemake toAdd)
+    public void AddDebuff(BuffDebuffRemake toAdd, DecompteRemake Decompte, TimerApplication Timer)
     {
         if(toAdd.IsDebuff)
         {
             ReceiveTension(Source.Buff);
         }
         Stat.ListBuffDebuff.Add(Instantiate(toAdd));
-        AddUIBuffDebuff(toAdd);
+        base.AddBuffDebuff(toAdd);
 
-        //ApplicationEffetStatBuffDebuff();
-        //ApplicationBuffDebuffDegats();
+        DecompteDebuffJoueur(Decompte, Timer);
 
         UpdateUI();
     }
 
-    private void DecompteDebuff()
+    private void DecompteDebuffJoueur(DecompteRemake Decompte, TimerApplication Timer)
     {
+        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte);
+
+        ApplicationBuffDebuff(Timer);
+
+        UpdateUI();
+    }
+
+    public void ApplicationBuffDebuff(TimerApplication Timer)
+    {
+        ResetStat();
         foreach (var item in Stat.ListBuffDebuff)
         {
-            if (item.Decompte == DecompteRemake.tour)
-                item.Temps--;
-
-            if (item.Temps < 0)
+            if(item.Activate == true && (item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant))
             {
-                var t = ListBuff.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == item.Nom);
-                if (t != null)
+                foreach (var effet in item.Effet)
                 {
-                    var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;
-                    int nb = int.Parse(s);
-                    nb -= 1;
-                    s = nb + "";
-                    if (nb <= 0)
+                    if(item.CibleApplication == effet.Cible)
                     {
-                        ListBuff.Remove(t);
-                        GameObject.Destroy(t);
+                        ApplicationEffet(effet);
                     }
                     else
-                        t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
+                    {
+                        //A Mettre une fois les combats terminer
+                        //GameManager.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine);
+                    }
                 }
             }
+            else
+            {
+                item.Activate = true;
+            }
         }
-
-        Stat.ListBuffDebuff.RemoveAll(c => c.Temps < 0);
-
-        //ApplicationEffetStatBuffDebuff();
-        //ApplicationBuffDebuffDegats();
-
-        UpdateUI();
     }
-
 
     #endregion BuffDebuff
 
+    #region Effet
+
+    public void ApplicationEffet(EffetRemake effet)
+    {
+        var ModifStat = effet.ResultEffet(Stat);
+        Stat.ModifStateAll(ModifStat);
+    }
+
+    #endregion Effet
 }

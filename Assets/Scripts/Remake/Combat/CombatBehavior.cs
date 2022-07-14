@@ -26,7 +26,7 @@ public class CombatBehavior : MonoBehaviour
 
     public Action EndTurnBM;
 
-    public void AddUIBuffDebuff(BuffDebuffRemake toAdd)
+    public void AddBuffDebuff(BuffDebuffRemake toAdd)
     {
         if (toAdd.IsDebuff)
         {
@@ -65,5 +65,36 @@ public class CombatBehavior : MonoBehaviour
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
             }
         }
+    }
+
+    public List<BuffDebuffRemake> DecompteDebuff(List<BuffDebuffRemake> BuffDebuff, DecompteRemake Timer)
+    {
+        foreach (var item in BuffDebuff)
+        {
+            if (item.Decompte == Timer)
+                item.Temps--;
+
+            if (item.Temps < 0)
+            {
+                var t = ListBuffDebuff.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == item.Nom);
+                if (t != null)
+                {
+                    var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;
+                    int nb = int.Parse(s);
+                    nb -= 1;
+                    s = nb + "";
+                    if (nb <= 0)
+                    {
+                        ListBuffDebuff.Remove(t);
+                        GameObject.Destroy(t);
+                    }
+                    else
+                        t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
+                }
+            }
+        }
+
+        BuffDebuff.RemoveAll(c => c.Temps < 0);
+        return BuffDebuff;
     }
 }

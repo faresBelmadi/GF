@@ -241,6 +241,96 @@ public class BattleManagerRemake : MonoBehaviour
 
     #endregion Turn
 
+    #region Lien Joueur - Ennemi
+
+    public void LaunchSpell(SpellRemake Spell)
+    {
+        GiveBuffDebuff(Spell.ActionBuffDebuff, idTarget);
+        foreach(var effet in Spell.ActionEffet)
+        {
+            PassageEffet(effet, idTarget);
+        }
+        idTarget = -1;
+    }
+
+    public void LaunchSpellEnnemi(EnnemiSpellRemake Spell)
+    {
+
+    }
+
+    public void GiveBuffDebuff(List<BuffDebuffRemake> BuffDebuff, int target = -1)
+    {
+        int origine = currentIdTurn;
+        DecompteRemake Decompte = DecompteRemake.tour;
+        TimerApplication Timer = TimerApplication.Persistant;
+        foreach(var item in BuffDebuff)
+        {
+            item.IDCombatOrigine = origine;
+            switch (item.CibleApplication)
+            {
+                case CibleRemake.joueur:
+                    player.AddDebuff(item, Decompte, Timer);
+                    break;
+                case CibleRemake.ennemi:
+                    EnemyScripts.First(c => c.combatID == target).AddDebuff(item, Decompte, Timer);
+                    break;
+                case CibleRemake.Ally:
+
+                    break;
+                case CibleRemake.allEnnemi:
+                    foreach(var ennemie in EnemyScripts)
+                    {
+                        ennemie.AddDebuff(item, Decompte, Timer);
+                    }
+                    break;
+                case CibleRemake.allAllies:
+
+                    break;
+                case CibleRemake.All:
+                    player.AddDebuff(item, Decompte, Timer);
+                    foreach (var ennemie in EnemyScripts)
+                    {
+                        ennemie.AddDebuff(item, Decompte, Timer);
+                    }
+                    break;
+            }
+        }
+    }
+
+    public void PassageEffet(EffetRemake effet, int target)
+    {
+        switch (effet.Cible)
+        {
+            case CibleRemake.joueur:
+                player.ApplicationEffet(effet);
+                break;
+            case CibleRemake.ennemi:
+                EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet);
+                break;
+            case CibleRemake.Ally:
+
+                break;
+            case CibleRemake.allEnnemi:
+                foreach (var ennemie in EnemyScripts)
+                {
+                    ennemie.ApplicationEffet(effet);
+                }
+                break;
+            case CibleRemake.allAllies:
+
+                break;
+            case CibleRemake.All:
+                player.ApplicationEffet(effet);
+                foreach (var ennemie in EnemyScripts)
+                {
+                    ennemie.ApplicationEffet(effet);
+                }
+                break;
+        }
+    }
+
+    #endregion Lien Joueur - Ennemi
+
     #region Targeting
 
     public void StartTargeting()
@@ -353,7 +443,7 @@ public class BattleManagerRemake : MonoBehaviour
 
     public void EndCurrentAttaque()
     {
-        EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn).EndAnim();
+        EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn).EndTurn();
     }
 
     public void EndHurtAnim()
@@ -365,7 +455,5 @@ public class BattleManagerRemake : MonoBehaviour
     }
 
     #endregion Animation
-
-
 
 }

@@ -4,14 +4,22 @@ using UnityEngine;
 
 public enum DecompteRemake
 {
-    round,
+    phase,
     tour,
     combat
 }
 
+public enum TimerApplication
+{
+    DebutPhase,
+    DebutTour,
+    Attaque,
+    Persistant
+}
+
 public enum CibleRemake
 {
-    self,
+    joueur,
     ennemi,
     allEnnemi,
     All,

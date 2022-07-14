@@ -483,7 +483,7 @@ public class BattleManager : MonoBehaviour
                     break;
 
                     case Cible.ennemi:
-                    
+        
                     var Enemy = EnemyScripts.First(c => c.combatID == Target);
                     if(Enemy == null)
                         Enemy = EnemyScripts.First(c => c.combatID == UnityEngine.Random.Range(1,idIndexer));

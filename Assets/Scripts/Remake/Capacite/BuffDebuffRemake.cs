@@ -12,7 +12,9 @@ public class BuffDebuffRemake : ScriptableObject
     public CibleRemake CibleApplication;
     public int IDCombatOrigine;
     public DecompteRemake Decompte;
+    public TimerApplication timerApplication;
     public int Temps;
+    public bool Activate;
     public Sprite Icon;
     public GameObject SpawnObject;
 }
