@@ -17,4 +17,3 @@ public enum nextActionEnumRemake
     Buff,
     Debuff
 }
-

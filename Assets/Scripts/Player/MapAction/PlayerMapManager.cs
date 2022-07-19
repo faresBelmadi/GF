@@ -65,7 +65,8 @@ public class PlayerMapManager : MonoBehaviour
             case TypeRoom.NotSet:
                 break;
             case TypeRoom.Combat:
-                StartCoroutine("LoadSceneAsync","BattleScene");
+                //Attention Modif
+                StartCoroutine("LoadSceneAsync","BattleSceneRemake");
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
             case TypeRoom.Heal:
@@ -88,7 +89,8 @@ public class PlayerMapManager : MonoBehaviour
 
         switch(name)
         {
-            case "BattleScene":
+            //Attention Modif
+            case "BattleSceneRemake":
                 StartBattle();
                 break;
             default:
@@ -102,8 +104,9 @@ public class PlayerMapManager : MonoBehaviour
     void StartBattle()
     {
         BattleCamera = rootBattleScene.First(c => c.name == "BattleCamera");
-        GameManager.instance.BattleMan = rootBattleScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
-        GameManager.instance.LoadCombat();
+        //Attention Modif
+        GameManagerRemake.instance.BattleMan = rootBattleScene.First(c => c.name == "BattleManager").GetComponent<BattleManagerRemake>();
+        GameManagerRemake.instance.LoadCombat();
         BattleCamera.SetActive(true);
         MenuCamera.SetActive(false);
     }

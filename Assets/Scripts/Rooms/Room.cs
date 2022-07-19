@@ -70,7 +70,8 @@ public class Room : MonoBehaviour
     private void OnMouseDown() {
         if(isNavigable || type == TypeRoom.Visited)
         {
-            GameManager.instance.SetRoom(this);
+            //Attention Modif
+            GameManagerRemake.instance.SetRoom(this);
             var scale = oldScale;
             transform.localScale = scale;
         }

@@ -107,7 +107,7 @@ public class BattleManagerRemake : MonoBehaviour
     {
         idIndexer = 0;
         battleUI = GetComponent<BattleUI>();
-        //player.Stat = GameManager.instance.playerStat;
+        player.Stat = GameManagerRemake.instance.playerStat;
         player.EndTurnBM = EndTurn;
         player.StartUp();
         SpawnedEnemy = new List<GameObject>();
@@ -125,7 +125,9 @@ public class BattleManagerRemake : MonoBehaviour
         SpawnEnemy();
         player.UpdateUI();
         player.DesactivateSpells();
-        DialogueEnableSetup();
+        //A changer pour ajouter le dialogue
+        //DialogueEnableSetup();
+        StartCombat();
     }
 
     void SpawnEnemy()
@@ -146,8 +148,6 @@ public class BattleManagerRemake : MonoBehaviour
             tempCombatScript.Stat = Instantiate(item);
             tempCombatScript.SetUp();
             tempCombatScript.EndTurnBM = EndTurn;
-            //tempCombatScript.actResult = ActResult;
-            //tempCombatScript.actDebuff = ActDebuff;
             SpawnedEnemy.Add(temp);
             EnemyScripts.Add(tempCombatScript);
 
@@ -171,9 +171,9 @@ public class BattleManagerRemake : MonoBehaviour
         player.ResetStat();
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Tension = 0;
-        //GameManager.instance.playerStat = player.Stat;
+        GameManagerRemake.instance.playerStat = player.Stat;
 
-        StartCoroutine(GameManager.instance.pmm.EndBattle());
+        StartCoroutine(GameManagerRemake.instance.pmm.EndBattle());
     }
 
     #endregion Mise en place combat & fin
@@ -182,6 +182,7 @@ public class BattleManagerRemake : MonoBehaviour
 
     private void StartPhase()
     {
+        Debug.Log(IdSpeedDictionary);
         DetermTour();
         player.StartPhase();
         foreach (var item in EnemyScripts)
@@ -243,19 +244,23 @@ public class BattleManagerRemake : MonoBehaviour
 
     #region Lien Joueur - Ennemi
 
-    public void LaunchSpell(SpellRemake Spell)
+    public void LaunchSpellJoueur(SpellRemake Spell)
     {
         GiveBuffDebuff(Spell.ActionBuffDebuff, idTarget);
         foreach(var effet in Spell.ActionEffet)
         {
-            PassageEffet(effet, idTarget);
+            PassageEffet(effet, idPlayer, idTarget);
         }
         idTarget = -1;
     }
 
     public void LaunchSpellEnnemi(EnnemiSpellRemake Spell)
     {
-
+        GiveBuffDebuff(Spell.debuffsBuffs);
+        foreach(var effet in Spell.Effet)
+        {
+            PassageEffet(effet, currentIdTurn);
+        }
     }
 
     public void GiveBuffDebuff(List<BuffDebuffRemake> BuffDebuff, int target = -1)
@@ -297,15 +302,29 @@ public class BattleManagerRemake : MonoBehaviour
         }
     }
 
-    public void PassageEffet(EffetRemake effet, int target)
+    public void PassageEffet(EffetRemake effet, int Caster, int target = -1)
     {
         switch (effet.Cible)
         {
             case CibleRemake.joueur:
-                player.ApplicationEffet(effet);
+                if(Caster == idPlayer)
+                {
+                    player.ApplicationEffet(effet);
+                }
+                else
+                {
+                    player.ApplicationEffet(effet, EnemyScripts.First(c => c.combatID == Caster).Stat);
+                }
                 break;
             case CibleRemake.ennemi:
-                EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet);
+                if (Caster == target)
+                {
+                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet);
+                }
+                else
+                {
+                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat);
+                }
                 break;
             case CibleRemake.Ally:
 
@@ -331,49 +350,20 @@ public class BattleManagerRemake : MonoBehaviour
 
     #endregion Lien Joueur - Ennemi
 
-    #region Targeting
-
-    public void StartTargeting()
-    {
-        StopCoroutine("Targeting");
-        StartCoroutine("Targeting");
-    }
-
-    private IEnumerator Targeting()
-    {
-        foreach (var item in EnemyScripts)
-        {
-            item.SetTargetingMode();
-        }
-
-        do
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        while (idTarget == -1);
-
-        foreach (var item in EnemyScripts)
-        {
-            item.EndTargetingMode();
-        }
-
-        player.SendSpell();
-    }
-
-    #endregion Targeting
-
     #region Essence
 
     public void Consume(int essence)
     {
-        //player.TakeDamage(-essence, Source.Soin);
+        player.UseEssence(essence, Source.Soin);
     }
+
     public void ConsumeEndBattle(int essence)
     {
-        //player.TakeDamage(-essence, Source.Soin);
+        player.UseEssence(essence, Source.Soin);
         if (endBattle)
             EndBattle();
     }
+
     private IEnumerator GatherEssence()
     {
         yield return new WaitForSeconds(1f);
@@ -429,10 +419,41 @@ public class BattleManagerRemake : MonoBehaviour
 
     public void DeadPlayer()
     {
-        GameManager.instance.DeadPlayer();
+        GameManagerRemake.instance.DeadPlayer();
     }
 
     #endregion Death
+
+    #region Targeting
+
+    public void StartTargeting()
+    {
+        StopCoroutine("Targeting");
+        StartCoroutine("Targeting");
+    }
+
+    private IEnumerator Targeting()
+    {
+        foreach (var item in EnemyScripts)
+        {
+            item.SetTargetingMode();
+        }
+
+        do
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        while (idTarget == -1);
+
+        foreach (var item in EnemyScripts)
+        {
+            item.EndTargetingMode();
+        }
+
+        player.SendSpell();
+    }
+
+    #endregion Targeting
 
     #region Animation
 

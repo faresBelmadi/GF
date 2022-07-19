@@ -22,7 +22,7 @@ public class CharacterStatRemake : ScriptableObject
     public int ResilienceOriginal;
     public int Calme;
     public int Essence;
-    public List<BuffDebuffRemake> ListBuffDebuff; 
+    public List<BuffDebuffRemake> ListBuffDebuff = new List<BuffDebuffRemake>(); 
 
     public void ModifStateAll(CharacterStatRemake ModifState)
     {

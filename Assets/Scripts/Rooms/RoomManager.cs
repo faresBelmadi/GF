@@ -79,7 +79,8 @@ public class RoomManager : MonoBehaviour
                 }
             }
         }
-        GameManager.instance.SetRoom(start);
+        //Attention Modif
+        GameManagerRemake.instance.SetRoom(start);
     }
     
     public int FindMaxConnection()
