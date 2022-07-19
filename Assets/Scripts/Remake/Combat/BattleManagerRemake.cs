@@ -12,6 +12,7 @@ public class BattleManagerRemake : MonoBehaviour
     public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
+    public List<EnnemyBehavior> DeadEnemyScripts;
     public Transform[] spawnPos;
     public EncounterRemake _encounter;
     public GameObject prefabEssence;
@@ -112,6 +113,7 @@ public class BattleManagerRemake : MonoBehaviour
         player.StartUp();
         SpawnedEnemy = new List<GameObject>();
         EnemyScripts = new List<EnnemyBehavior>();
+        DeadEnemyScripts = new List<EnnemyBehavior>();
         IdOrder = new List<CombatOrderRemake>();
         IdSpeedDictionary = new Dictionary<int, int>();
         IdSpeedDictionary.Add(idIndexer, player.Stat.Vitesse);
@@ -313,7 +315,14 @@ public class BattleManagerRemake : MonoBehaviour
                 }
                 else
                 {
-                    player.ApplicationEffet(effet, EnemyScripts.First(c => c.combatID == Caster).Stat);
+                    if (EnemyScripts.FirstOrDefault(c => c.combatID == Caster) == null)
+                    {
+                        player.ApplicationEffet(effet, DeadEnemyScripts.First(c => c.combatID == Caster).Stat);
+                    }
+                    else
+                    {
+                        player.ApplicationEffet(effet, EnemyScripts.First(c => c.combatID == Caster).Stat);
+                    }
                 }
                 break;
             case CibleRemake.ennemi:
@@ -411,7 +420,9 @@ public class BattleManagerRemake : MonoBehaviour
         IdOrder.RemoveAll(c => c.id == id);
         IdSpeedDictionary.Remove(id);
         var todestroy = EnemyScripts.First(c => c.combatID == id).gameObject;
+        DeadEnemyScripts.Add(EnemyScripts.FirstOrDefault(c => c.combatID == id));
         EnemyScripts.RemoveAll(c => c.combatID == id);
+        SpawnedEnemy.Remove(todestroy);
         Destroy(todestroy);
         if (EnemyScripts.Count <= 0)
             StartCoroutine("GatherEssence");
