@@ -28,7 +28,7 @@ public class ConséquenceSO : ScriptableObject
     //public TypeConsequence typConsequence;
 
     public List<BuffDebuff> Buffs;
-    public List<Effect> Effects;
+    public List<Effet> Effects;
 
     [Header("Self is always the player")]
     public Cible target;

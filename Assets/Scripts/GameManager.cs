@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour {
     public List<Encounter> AllEncounter;
 
     public ClassPlayer classSO;
-    public PlayerStat playerStat;
+    public JoueurStat playerStat;
 
     [Header("Data")]
     public GameData loadedData;
