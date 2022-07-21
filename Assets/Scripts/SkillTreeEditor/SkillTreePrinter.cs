@@ -64,7 +64,7 @@ public class SkillTreePrinter : MonoBehaviour
             temp.name = nodeToPrint.nodeDataCollection[i].spellId +"";
             ((RectTransform)temp.transform).localPosition = new Vector3(nodeToPrint.nodeDataCollection[i].position.x,-nodeToPrint.nodeDataCollection[i].position.y,0);
             SpawnedNodes.Add(temp);
-            temp.GetComponent<SpellUI>().LinkedSpell = GameManager.instance.classSO.spellClass.First(c => c.ID == nodeToPrint.nodeDataCollection[i].spellId);
+            temp.GetComponent<SpellUI>().LinkedSpell = GameManager.instance.classSO.spellClass.First(c => c.IDSpell == nodeToPrint.nodeDataCollection[i].spellId);
         }
         var t = ((RectTransform)SpawnedNodes.First(c => c.name == "0").transform).localPosition;
         ScrollView.content.localPosition -= new Vector3(t.x + 200,t.y-100,0); // ScrollRectExtensions.GetSnapToPositionToBringChildIntoView(ScrollView,(RectTransform)SpawnedNodes.First(c => c.name == "id : 0").transform);
@@ -74,10 +74,10 @@ public class SkillTreePrinter : MonoBehaviour
     {
         foreach (var item in SpawnedNodes)
         {
-            Spell currentSpell = GameManager.instance.classSO.spellClass.First(c => c.ID.ToString() == item.name);
-            for (int i = 0; i < currentSpell.idChildren.Count; i++)
+            Spell currentSpell = GameManager.instance.classSO.spellClass.First(c => c.IDSpell.ToString() == item.name);
+            for (int i = 0; i < currentSpell.IDChildren.Count; i++)
             {
-                var destination = SpawnedNodes.First(d => d.name == currentSpell.idChildren[i]+"");
+                var destination = SpawnedNodes.First(d => d.name == currentSpell.IDChildren[i]+"");
                 if(destination != null)
                 {
                     var tempLine = Instantiate(LinePrefab,Vector2.zero,Quaternion.identity,SkillTreeContainer.transform);
@@ -95,14 +95,14 @@ public class SkillTreePrinter : MonoBehaviour
 
     public void UpdateSkillTree(SpellUI ToUpdate)
     {
-        GameManager.instance.playerStat.Essence -= ToUpdate.LinkedSpell.CostUnlocked;
+        GameManager.instance.playerStat.Essence -= ToUpdate.LinkedSpell.CostUnlock;
         EssenceHeader.text = "Essence : " + GameManager.instance.playerStat.Essence;
-        foreach (var item in ToUpdate.LinkedSpell.idChildren)
+        foreach (var item in ToUpdate.LinkedSpell.IDChildren)
         {
             var t = SpawnedNodes.First(c => c.name == item + "");
             if(t !=null)
             {
-                t.GetComponent<SpellUI>().LinkedSpell.Status = SpellStatus.unlocked;
+                t.GetComponent<SpellUI>().LinkedSpell.SpellStatue = SpellStatus.unlocked;
                 t.GetComponent<SpellUI>().UpdateVisual();
             }
         }
@@ -110,8 +110,8 @@ public class SkillTreePrinter : MonoBehaviour
 
     public void ShowInspectorOver(Spell toShow)
     {
-        SpellTitle.text = toShow.Name;
-        SpellCost.text = "Price : " + toShow.CostUnlocked;
+        SpellTitle.text = toShow.Nom;
+        SpellCost.text = "Price : " + toShow.CostUnlock;
         InspectorContainer.SetActive(true);
     }
 

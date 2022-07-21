@@ -91,11 +91,11 @@ public class Node {
 
         SpellNode = spellToLink;
         
-        this.unlocked = SpellNode.isAvailable;
-        newID = SpellNode.ID.ToString();
+        this.unlocked = SpellNode.IsAvailable;
+        newID = SpellNode.IDSpell.ToString();
         // Create string with ID info
         nodeTitle = new StringBuilder();
-        nodeTitle.Append(SpellNode.Name);
+        nodeTitle.Append(SpellNode.Nom);
     }
 
     public void Drag(Vector2 delta)
@@ -136,7 +136,7 @@ public class Node {
         else
             unlocked = false;
 
-        SpellNode.isAvailable = unlocked;
+        SpellNode.IsAvailable = unlocked;
 
         // Print the cost field
         GUI.Label(rectRefreshLabel, "Change spell: ", styleField);

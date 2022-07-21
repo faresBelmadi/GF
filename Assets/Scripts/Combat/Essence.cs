@@ -16,11 +16,11 @@ public class Essence : MonoBehaviour
     public void ConsumeEssence()
     {
         if(isEnd)
-            GameManagerRemake.instance.BattleMan.ConsumeEndBattle(amount);
+            GameManager.instance.BattleMan.ConsumeEndBattle(amount);
         else
-            GameManagerRemake.instance.BattleMan.Consume(Mathf.FloorToInt(amount/2));
+            GameManager.instance.BattleMan.Consume(Mathf.FloorToInt(amount/2));
 
-        GameManagerRemake.instance.BattleMan.ListEssence.Remove(this.gameObject);
+        GameManager.instance.BattleMan.ListEssence.Remove(this.gameObject);
         Destroy(this.gameObject);
     }
 

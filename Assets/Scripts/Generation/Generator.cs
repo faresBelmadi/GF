@@ -272,8 +272,7 @@ public class Generator : MonoBehaviour
 
     void ClearUseless()
     {
-        //Attention Modif
-        var t = SceneManager.GetSceneByName("MondeRemake").GetRootGameObjects();
+        var t = SceneManager.GetSceneByName("Monde").GetRootGameObjects();
         List<GameObject> todestroy = new List<GameObject>();
         for (int i = 0; i < t.Count(); i++)
         {

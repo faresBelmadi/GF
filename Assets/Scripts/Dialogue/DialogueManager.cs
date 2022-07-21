@@ -79,14 +79,14 @@ public class DialogueManager : MonoBehaviour
     {
         if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences.Count != 0)
         {
-            ApplyConsequence(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences);
+            //ApplyConsequence(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences);
         }
         NextDialogueIndex = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].IDNextQuestion;
         resetRéponse();
         GoNext();
     }
 
-    void ApplyConsequence(List<ConséquenceSO> consequence)
+    /*void ApplyConsequence(List<ConséquenceSO> consequence)
     {
         int origine;
         List<ActionResult> ResultatEffet = new List<ActionResult>();
@@ -109,7 +109,7 @@ public class DialogueManager : MonoBehaviour
                 //Switchtype(UIJoueur, ennemie)
             }
         }
-    }
+    }*/
 
     public void StartCombat()
     {

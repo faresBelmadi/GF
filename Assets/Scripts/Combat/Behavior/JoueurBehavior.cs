@@ -344,7 +344,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void ApplicationEffet(Effet effet, EnnemiStat Caster = null)
     {
-        EnnemiStat ModifStat;
+        JoueurStat ModifStat;
         if (Caster == null)
         {
             ModifStat = effet.ResultEffet(Stat);
