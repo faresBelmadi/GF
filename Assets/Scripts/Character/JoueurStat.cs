@@ -26,7 +26,7 @@ public class JoueurStat : CharacterStat
 
     public static JoueurStat CreateFromCharacter(CharacterStat ToCreate)
     {
-        JoueurStat ToReturn = ScriptableObject.CreateInstance("JoueurStatRemake") as JoueurStat;
+        JoueurStat ToReturn = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ToReturn.ModifStateAll(ToCreate);
         return ToReturn;
     }
