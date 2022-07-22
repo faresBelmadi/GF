@@ -37,8 +37,6 @@ public class JoueurBehavior : CombatBehavior
 
     public AnimationControllerAttack AnimationController;
 
-    public int LastDamageTaken;
-
     #region Divers start & fin
 
     public void StartUp()
@@ -126,6 +124,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void StartPhase()
     {
+        ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
     }
 
@@ -145,12 +144,16 @@ public class JoueurBehavior : CombatBehavior
 
     public void ResetStat()
     {
+        Stat.MultiDegat = 1;
+        Stat.MultiplDef = 1;
+        Stat.MultiplSoin = 1;
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
         Stat.Resilience = Stat.ResilienceOriginal;
         Stat.ForceAme = Stat.ForceAmeOriginal;
         Stat.Conviction = Stat.ConvictionOriginal;
+
     }
 
     void Dead()
@@ -315,7 +318,7 @@ public class JoueurBehavior : CombatBehavior
         ResetStat();
         foreach (var item in Stat.ListBuffDebuff)
         {
-            if(item.Activate == true && (item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant))
+            if(item.timerApplication == Timer || Timer == TimerApplication.Persistant)
             {
                 foreach (var effet in item.Effet)
                 {
@@ -330,11 +333,16 @@ public class JoueurBehavior : CombatBehavior
                         GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine);
                     }*/
                 }
+                if (item.IsConsomable == true)
+                {
+                    item.Temps = 0;
+                    foreach (var ToAdd in item.Consomation)
+                    {
+                        AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
+                    }
+                }
             }
-            else
-            {
-                item.Activate = true;
-            }
+            
         }
     }
 
@@ -347,12 +355,13 @@ public class JoueurBehavior : CombatBehavior
         JoueurStat ModifStat;
         if (Caster == null)
         {
-            ModifStat = effet.ResultEffet(Stat);
+            ModifStat = effet.ResultEffet(Stat, LastDamageTaken);
         }
         else
         {
-            ModifStat = effet.ResultEffet(Caster);
+            ModifStat = effet.ResultEffet(Caster, LastDamageTaken);
         }
+
         Stat.ModifStateAll(ModifStat);
         if(ModifStat.Radiance < 0)
         {

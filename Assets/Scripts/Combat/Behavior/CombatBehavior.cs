@@ -26,6 +26,8 @@ public class CombatBehavior : MonoBehaviour
 
     public Action EndTurnBM;
 
+    public int LastDamageTaken;
+
     public void AddBuffDebuff(BuffDebuff toAdd)
     {
         if (toAdd.IsDebuff)

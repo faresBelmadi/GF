@@ -77,11 +77,11 @@ public class GameManager : MonoBehaviour {
 
                 foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
                 {
-                    var temp = classSO.spellClass.First(c => c.IDSpell == item);
+                    var temp = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item);
                     temp.SpellStatue = SpellStatus.bought;
                     foreach (var item2 in temp.IDChildren)
                     {
-                        var t = classSO.spellClass.First(c => c.IDSpell == item2);
+                        var t = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item2);
                         if(t.IsAvailable)
                             t.SpellStatue = SpellStatus.unlocked;
                         
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour {
         GameData data = new GameData();
         data.CurrentRun = new RunData(){ClassID = 0};
         data.previousRuns = new List<RunData>();
-        var spellsToAdd = AllClasses.First(c => c.ID == 0).spellClass.Where(c => c.SpellStatue == SpellStatus.bought);
+        var spellsToAdd = AllClasses.First(c => c.ID == 0).PlayerStat.ListSpell.Where(c => c.SpellStatue == SpellStatus.bought);
         List<int> boughtspells = new List<int>();
         foreach (var item in spellsToAdd)
         {
@@ -205,10 +205,10 @@ public class GameManager : MonoBehaviour {
     {
         classSO = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID));
         classSO.PlayerStat = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID).PlayerStat);
-        classSO.spellClass.Clear();
-        foreach (var item in AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID).spellClass)
+        classSO.PlayerStat.ListSpell.Clear();
+        foreach (var item in AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID).PlayerStat.ListSpell)
         {
-            classSO.spellClass.Add(Instantiate(item));
+            classSO.PlayerStat.ListSpell.Add(Instantiate(item));
         }
     }
 

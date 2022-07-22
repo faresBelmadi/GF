@@ -6,7 +6,8 @@ public enum Decompte
 {
     phase,
     tour,
-    combat
+    combat,
+    none
 }
 
 public enum TimerApplication
@@ -46,5 +47,9 @@ public enum TypeEffet
     DegatsForceAme,
     DegatsBrut,
     Clairvoyance,
-    Colere
+    Colere,
+    Conviction,
+    AugmentationPourcentageFA,
+    RadianceMax,
+    AugmentationDegat
 }

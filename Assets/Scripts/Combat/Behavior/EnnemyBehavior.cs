@@ -284,7 +284,7 @@ public class EnnemyBehavior : CombatBehavior
         ResetStat();
         foreach (var item in Stat.ListBuffDebuff)
         {
-            if (item.Activate == true && (item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant))
+            if (item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant)
             {
                 foreach (var effet in item.Effet)
                 {
@@ -299,10 +299,14 @@ public class EnnemyBehavior : CombatBehavior
                         GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
                     }*/
                 }
-            }
-            else
-            {
-                item.Activate = true;
+                if (item.IsConsomable == true)
+                {
+                    item.Temps = 0;
+                    foreach (var ToAdd in item.Consomation)
+                    {
+                        AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
+                    }
+                }
             }
         }
         if (skip)
@@ -318,16 +322,16 @@ public class EnnemyBehavior : CombatBehavior
         JoueurStat ModifStat;
         if(Caster == null)
         {
-            ModifStat = effet.ResultEffet(Stat);
+            ModifStat = effet.ResultEffet(Stat, LastDamageTaken);
         }
         else
         {
-            ModifStat = effet.ResultEffet(Caster);
+            ModifStat = effet.ResultEffet(Caster, LastDamageTaken);
         }
         Stat.ModifStateAll(ModifStat);
         if (ModifStat.Radiance < 0)
         {
-            ReceiveTension(Source.Attaque);
+            LastDamageTaken = ModifStat.Radiance;
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
         else if (ModifStat.Radiance > 0)

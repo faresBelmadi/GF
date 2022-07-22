@@ -252,6 +252,7 @@ public class BattleManager : MonoBehaviour
         {
             PassageEffet(effet, idPlayer, idTarget);
         }
+        EnemyScripts.First(c => c.combatID == idTarget).ApplicationBuffDebuff(TimerApplication.Attaque);
         idTarget = -1;
     }
 
@@ -262,12 +263,13 @@ public class BattleManager : MonoBehaviour
         {
             PassageEffet(effet, currentIdTurn);
         }
+        player.ApplicationBuffDebuff(TimerApplication.Attaque);
     }
 
     public void GiveBuffDebuff(List<BuffDebuff> BuffDebuff, int target = -1)
     {
         int origine = currentIdTurn;
-        Decompte Decompte = Decompte.tour;
+        Decompte Decompte = Decompte.none;
         TimerApplication Timer = TimerApplication.Persistant;
         foreach(var item in BuffDebuff)
         {
