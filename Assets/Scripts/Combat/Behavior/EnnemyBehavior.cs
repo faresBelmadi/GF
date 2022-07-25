@@ -75,7 +75,7 @@ public class EnnemyBehavior : CombatBehavior
 
     private void Dead()
     {
-        EndTurn();
+        //EndTurn();
         foreach (var item in Stat.ListBuffDebuff)
         {
             foreach (var effect in item.Effet)
