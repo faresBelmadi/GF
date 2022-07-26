@@ -15,10 +15,12 @@ public class DialogueManager : MonoBehaviour
     public List<GameObject> RéponseGO;
     public GameObject EndDialogue;
     public BattleManager Manager;
+    public AleaManager ManagerAlea;
     //public Button skipButton; 
     #endregion UI Reference
     #region SO
     private Encounter _CurrentEncounter;
+    private EncounterAlea _CurrentEncounterAlea;
     private DialogueSO _CurrentDialogue;
     #endregion SO
     #region Dialogue Property
@@ -35,6 +37,15 @@ public class DialogueManager : MonoBehaviour
         startDialogue();
     }
 
+    public void SetupDialogue(EncounterAlea encounterToSet)
+    {
+        _CurrentDialogue = encounterToSet.DialogueRencontre;
+        _CurrentEncounterAlea = encounterToSet;
+
+        UIDialogue.SetActive(true);
+        startDialogue();
+    }
+
     void startDialogue()
     {
         resetRéponse();
@@ -44,7 +55,7 @@ public class DialogueManager : MonoBehaviour
     void GoNext()
     {
         DialogueIndex = NextDialogueIndex;
-        MainText.text = _CurrentEncounter.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].name + ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
+        MainText.text = /*_CurrentEncounter.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].name + ": " +*/ _CurrentDialogue.Questions[DialogueIndex].Question.Text;
         //MainTextGO.GetComponent<TextAnimation>().LaunchAnim();
         if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count == 0)
         {
@@ -79,16 +90,28 @@ public class DialogueManager : MonoBehaviour
     {
         if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences.Count != 0)
         {
-            //ApplyConsequence(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences);
+            ApplyConsequence(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences);
         }
         NextDialogueIndex = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].IDNextQuestion;
         resetRéponse();
         GoNext();
     }
 
-    /*void ApplyConsequence(List<ConséquenceSO> consequence)
+    void ApplyConsequence(List<ConséquenceSO> consequence)
     {
-        int origine;
+        foreach(var Consequence in consequence)
+        {
+            foreach(var BuffDebuff in Consequence.Buffs)
+            {
+                ManagerAlea.Stat.ListBuffDebuff.Add(BuffDebuff);
+            }
+            foreach(var effet in Consequence.Effects)
+            {
+                ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat));
+            }
+
+        }
+        /*int origine;
         List<ActionResult> ResultatEffet = new List<ActionResult>();
         foreach (ConséquenceSO Cons in consequence)
         {
@@ -108,13 +131,18 @@ public class DialogueManager : MonoBehaviour
                 ResultatEffet.Clear();
                 //Switchtype(UIJoueur, ennemie)
             }
-        }
-    }*/
+        }*/
+    }
 
     public void StartCombat()
     {
         UIJoueur.SetActive(true);
         UIDialogue.SetActive(false);
         GameManager.instance.BattleMan.StartCombat();
+    }
+
+    public void EndDialogueFonction()
+    {
+        GameManager.instance.AleaMan.EndAlea();
     }
 }

@@ -485,6 +485,7 @@ MonoBehaviour:
   Rooms: []
   SalleCombat: {fileID: 21300000, guid: 5a384bc285457e54fa86bdd619b92fd6, type: 3}
   SalleHeal: {fileID: 21300000, guid: 9b82884ca305d9847949b0a9b0dd0493, type: 3}
+  SalleAlea: {fileID: 21300000, guid: 3f72537a3eaf8a942ae5bdccb1b57126, type: 3}
   SalleStart: {fileID: 0}
 --- !u!114 &141422496
 MonoBehaviour:
@@ -499,7 +500,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MenuCamera: {fileID: 6605643}
-  BattleCamera: {fileID: 0}
+  CurrentRoomCamera: {fileID: 0}
 --- !u!1 &190056835
 GameObject:
   m_ObjectHideFlags: 0
@@ -1718,10 +1719,13 @@ MonoBehaviour:
   rm: {fileID: 141422495}
   pmm: {fileID: 141422496}
   BattleMan: {fileID: 0}
+  AleaMan: {fileID: 0}
   AllClasses:
   - {fileID: 11400000, guid: eb647a2e02c086b48bc073d435ea3740, type: 2}
   AllEncounter:
   - {fileID: 11400000, guid: f3bb0484e30b8314a99dab6366e7b37e, type: 2}
+  AllEncounterAlea:
+  - {fileID: 11400000, guid: df13c67171968a04f8a4259a116547ed, type: 2}
   classSO: {fileID: 0}
   playerStat: {fileID: 0}
   loadedData:

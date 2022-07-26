@@ -14,11 +14,13 @@ public class GameManager : MonoBehaviour {
     public RoomManager rm;
     public PlayerMapManager pmm;
     public BattleManager BattleMan;
+    public AleaManager AleaMan;
 
     [Header("Classes & Encounter")]
     public List<ClassPlayer> AllClasses;
 
     public List<Encounter> AllEncounter;
+    public List<EncounterAlea> AllEncounterAlea;
 
     public ClassPlayer classSO;
     public JoueurStat playerStat;
@@ -198,7 +200,7 @@ public class GameManager : MonoBehaviour {
 
     public void LoadEvent()
     {
-
+        AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
     }
     
     void getClassRun()

@@ -24,8 +24,8 @@ public class PlayerMapManager : MonoBehaviour
     private Room _currentRoom;
 
     public GameObject MenuCamera;
-    public GameObject BattleCamera;
-    GameObject[] rootBattleScene;
+    public GameObject CurrentRoomCamera;
+    GameObject[] rootScene;
     Scene s;
 
     private void VisualUpdateNew()
@@ -71,6 +71,8 @@ public class PlayerMapManager : MonoBehaviour
             case TypeRoom.Heal:
                 break;
             case TypeRoom.Event:
+                StartCoroutine("LoadSceneAsync", "AleaScene");
+                _currentRoom.Type = TypeRoom.Visited;
                 break;
             case TypeRoom.Visited:
                 break;
@@ -84,12 +86,15 @@ public class PlayerMapManager : MonoBehaviour
         yield return SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
         s = SceneManager.GetSceneByName(name);
 
-        rootBattleScene = s.GetRootGameObjects();
+        rootScene = s.GetRootGameObjects();
 
         switch(name)
         {
             case "BattleScene":
                 StartBattle();
+                break;
+            case "AleaScene":
+                StartAlea();
                 break;
             default:
             break;
@@ -101,17 +106,34 @@ public class PlayerMapManager : MonoBehaviour
 
     void StartBattle()
     {
-        BattleCamera = rootBattleScene.First(c => c.name == "BattleCamera");
-        GameManager.instance.BattleMan = rootBattleScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
+        CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
+        GameManager.instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
         GameManager.instance.LoadCombat();
-        BattleCamera.SetActive(true);
+        CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
     }
 
     public IEnumerator EndBattle()
     {
-        BattleCamera.SetActive(false);
+        CurrentRoomCamera.SetActive(false);
         GameManager.instance.BattleMan = null;
+        MenuCamera.SetActive(true);
+        yield return SceneManager.UnloadSceneAsync(s);
+    }
+
+    void StartAlea()
+    {
+        CurrentRoomCamera = rootScene.First(c => c.name == "AleaCamera");
+        GameManager.instance.AleaMan = rootScene.First(c => c.name == "AleaManager").GetComponent<AleaManager>();
+        GameManager.instance.LoadEvent();
+        CurrentRoomCamera.SetActive(true);
+        MenuCamera.SetActive(false);
+    }
+
+    public IEnumerator EndAlea()
+    {
+        CurrentRoomCamera.SetActive(false);
+        GameManager.instance.AleaMan = null;
         MenuCamera.SetActive(true);
         yield return SceneManager.UnloadSceneAsync(s);
     }

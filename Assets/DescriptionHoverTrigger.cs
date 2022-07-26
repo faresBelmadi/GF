@@ -34,7 +34,7 @@ public class DescriptionHoverTrigger : MonoBehaviour, IPointerEnterHandler, IPoi
         //    ToShow.SetActive(true);
         //}
 
-        Ray ray = GameManager.instance.pmm.BattleCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        Ray ray = GameManager.instance.pmm.CurrentRoomCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
         RaycastHit[] t = Physics.RaycastAll(ray);
         foreach (var item in t)
         {

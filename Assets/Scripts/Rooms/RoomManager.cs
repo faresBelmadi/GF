@@ -10,6 +10,7 @@ public class RoomManager : MonoBehaviour
     
     public Sprite SalleCombat;
     public Sprite SalleHeal;
+    public Sprite SalleAlea;
     public Sprite SalleStart;
     
 
@@ -49,6 +50,11 @@ public class RoomManager : MonoBehaviour
                 item.ToSet = SalleHeal;
                 item.Type = TypeRoom.Heal;
                 healSet = true;
+            }
+            else if(item.ConnectedRooms.Count >= maxCo && item != start && item.ConnectedRooms.Where(c => c.Type == TypeRoom.Event).Count() == 0 && item.Type != TypeRoom.Heal)
+            {
+                item.ToSet = SalleAlea;
+                item.Type = TypeRoom.Event;
             }
             else if(item.Type == TypeRoom.NotSet)
             {
