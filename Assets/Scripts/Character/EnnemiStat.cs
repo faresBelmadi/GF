@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New dialogue", menuName = "Remake/Character/Create New Ennemi", order = 11)]
 public class EnnemiStat : CharacterStat
 {
+    public string Nom;
     public int Dissimulation;
     public int DissimulationOriginal;
     public GameObject Spawnable;

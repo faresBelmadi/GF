@@ -1056,6 +1056,7 @@ GameObject:
   - component: {fileID: 525076455}
   - component: {fileID: 525076457}
   - component: {fileID: 525076456}
+  - component: {fileID: 525076458}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1179,6 +1180,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 525076454}
   m_CullTransparentMesh: 0
+--- !u!114 &525076458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 525076454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac5f3feddca5e14d9b23a928f844a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delai: 0.05
 --- !u!1 &527544261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1303,6 +1317,7 @@ GameObject:
   - component: {fileID: 569218706}
   - component: {fileID: 569218708}
   - component: {fileID: 569218707}
+  - component: {fileID: 569218709}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1426,6 +1441,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 569218705}
   m_CullTransparentMesh: 0
+--- !u!114 &569218709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569218705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac5f3feddca5e14d9b23a928f844a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delai: 0.05
 --- !u!1 &646054203
 GameObject:
   m_ObjectHideFlags: 0
@@ -2474,7 +2502,6 @@ GameObject:
   - component: {fileID: 1172403765}
   - component: {fileID: 1172403767}
   - component: {fileID: 1172403766}
-  - component: {fileID: 1172403768}
   - component: {fileID: 1172403769}
   m_Layer: 5
   m_Name: Text (TMP)
@@ -2599,22 +2626,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1172403764}
   m_CullTransparentMesh: 0
---- !u!111 &1172403768
-Animation:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1172403764}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 103f812dd13014d4a88b1f64b18947b2, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 103f812dd13014d4a88b1f64b18947b2, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 0
-  m_AnimatePhysics: 0
-  m_CullingType: 0
 --- !u!114 &1172403769
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2627,6 +2638,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eac5f3feddca5e14d9b23a928f844a51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delai: 0.05
 --- !u!1 &1231486616
 GameObject:
   m_ObjectHideFlags: 0
@@ -3384,7 +3396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be9d14f132e4f244898326bc7ba035ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIDialogue: {fileID: 1367920561}
+  UIDialogue: {fileID: 0}
   UIJoueur: {fileID: 0}
   MainText: {fileID: 1172403766}
   MainTextGO: {fileID: 1172403764}
@@ -3397,7 +3409,7 @@ MonoBehaviour:
   - {fileID: 402346720}
   - {fileID: 1805707615}
   EndDialogue: {fileID: 1918915043}
-  Manager: {fileID: 0}
+  ManagerBattle: {fileID: 0}
   ManagerAlea: {fileID: 1502046454}
 --- !u!1 &1514174629
 GameObject:
@@ -4173,6 +4185,7 @@ GameObject:
   - component: {fileID: 1605132897}
   - component: {fileID: 1605132899}
   - component: {fileID: 1605132898}
+  - component: {fileID: 1605132900}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -4296,6 +4309,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1605132896}
   m_CullTransparentMesh: 0
+--- !u!114 &1605132900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1605132896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eac5f3feddca5e14d9b23a928f844a51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delai: 0.05
 --- !u!1 &1613937951
 GameObject:
   m_ObjectHideFlags: 0

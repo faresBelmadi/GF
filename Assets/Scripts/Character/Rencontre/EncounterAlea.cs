@@ -9,4 +9,5 @@ public class EncounterAlea : ScriptableObject
     public DialogueSO DialogueRencontre;
     [Header("PNJ")]
     public GameObject Pnj;
+    public string NamePnj;
 }

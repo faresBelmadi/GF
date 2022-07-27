@@ -150,7 +150,7 @@ public class EnnemyBehavior : CombatBehavior
         TensionUI = Mathf.FloorToInt((Tension * NbPalier) / TensionMax);
         UICombat.updateHp(Stat.Radiance, Stat.RadianceMax);
         UICombat.updateTension(TensionUI, NbPalier);
-        string[] t = Stat.name.Split('(');
+        string[] t = Stat.Nom.Split('(');
         UICombat.updateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
     }

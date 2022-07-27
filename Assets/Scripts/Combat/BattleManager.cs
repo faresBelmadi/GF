@@ -101,7 +101,7 @@ public class BattleManager : MonoBehaviour
 
     void DialogueEnableSetup()
     {
-        //DialogueManager.SetupDialogue(_encounter);
+        DialogueManager.SetupDialogue(_encounter);
     }
 
     void CombatEnableSetup()
@@ -127,9 +127,8 @@ public class BattleManager : MonoBehaviour
         SpawnEnemy();
         player.UpdateUI();
         player.DesactivateSpells();
-        //A changer pour ajouter le dialogue
-        //DialogueEnableSetup();
-        StartCombat();
+        DialogueEnableSetup();
+        //StartCombat();
     }
 
     void SpawnEnemy()

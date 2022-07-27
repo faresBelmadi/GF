@@ -14,12 +14,12 @@ public class DialogueManager : MonoBehaviour
     public List<TextMeshProUGUI> Réponse;
     public List<GameObject> RéponseGO;
     public GameObject EndDialogue;
-    public BattleManager Manager;
+    public BattleManager ManagerBattle;
     public AleaManager ManagerAlea;
     //public Button skipButton; 
     #endregion UI Reference
     #region SO
-    private Encounter _CurrentEncounter;
+    private Encounter _CurrentEncounterBattle;
     private EncounterAlea _CurrentEncounterAlea;
     private DialogueSO _CurrentDialogue;
     #endregion SO
@@ -31,7 +31,7 @@ public class DialogueManager : MonoBehaviour
     public void SetupDialogue(Encounter encounterToSet)
     {
         _CurrentDialogue = encounterToSet.DialogueRencontre;
-        _CurrentEncounter = encounterToSet;
+        _CurrentEncounterBattle = encounterToSet;
         UIJoueur.SetActive(false);
         UIDialogue.SetActive(true);
         startDialogue();
@@ -41,8 +41,6 @@ public class DialogueManager : MonoBehaviour
     {
         _CurrentDialogue = encounterToSet.DialogueRencontre;
         _CurrentEncounterAlea = encounterToSet;
-
-        UIDialogue.SetActive(true);
         startDialogue();
     }
 
@@ -55,8 +53,8 @@ public class DialogueManager : MonoBehaviour
     void GoNext()
     {
         DialogueIndex = NextDialogueIndex;
-        MainText.text = /*_CurrentEncounter.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].name + ": " +*/ _CurrentDialogue.Questions[DialogueIndex].Question.Text;
-        //MainTextGO.GetComponent<TextAnimation>().LaunchAnim();
+        MainText.text = TextePrincipal();
+        MainTextGO.SetActive(true);
         if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count == 0)
         {
             EndDialogue.SetActive(true);
@@ -65,10 +63,22 @@ public class DialogueManager : MonoBehaviour
         {
             for (int i = 0; i < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count; i++)
             {
-                RéponseGO[i].SetActive(true);
                 Réponse[i].text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].TexteRéponse;
+                RéponseGO[i].SetActive(true);
                 //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
             }
+        }
+    }
+
+    private string TextePrincipal()
+    {
+        if(ManagerBattle == null)
+        {
+            return _CurrentEncounterAlea.NamePnj + ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
+        }
+        else
+        {
+            return _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom + ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
         }
     }
 
@@ -79,7 +89,7 @@ public class DialogueManager : MonoBehaviour
             item.SetActive(false);
             EndDialogue.SetActive(false);
         }
-
+        MainTextGO.SetActive(false);
         foreach (var item in Réponse)
         {
             item.text = "";
@@ -101,37 +111,40 @@ public class DialogueManager : MonoBehaviour
     {
         foreach(var Consequence in consequence)
         {
-            foreach(var BuffDebuff in Consequence.Buffs)
+            if (ManagerBattle == null)
             {
-                ManagerAlea.Stat.ListBuffDebuff.Add(BuffDebuff);
+                foreach (var BuffDebuff in Consequence.Buffs)
+                {
+                    ManagerAlea.Stat.ListBuffDebuff.Add(BuffDebuff);
+                }
+                foreach (var effet in Consequence.Effects)
+                {
+                    ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat));
+                }
             }
-            foreach(var effet in Consequence.Effects)
+            else
             {
-                ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat));
+                //A Terminer une fois les effet et buffdebuff finalisé
+                foreach (var BuffDebuff in Consequence.Buffs)
+                {
+                    switch (Consequence.target)
+                    {
+                        case Cible.joueur:
+                            ManagerBattle.player.Stat.ListBuffDebuff.Add(Instantiate(BuffDebuff));
+                            break;
+                    }
+                }
+                foreach (var effet in Consequence.Effects)
+                {
+                    switch (Consequence.target)
+                    {
+                        case Cible.joueur:
+                            ManagerBattle.player.Stat.ModifStateAll(effet.ResultEffet(ManagerBattle.player.Stat));
+                            break;
+                    }
+                }
             }
-
         }
-        /*int origine;
-        List<ActionResult> ResultatEffet = new List<ActionResult>();
-        foreach (ConséquenceSO Cons in consequence)
-        {
-            Manager.ActDebuff(Cons.Buffs, 0, -1);
-            foreach(var item in Cons.Effects)
-            {
-                if(Cons.target== Cible.self)
-                {
-                    origine = 0;
-                }
-                else
-                {
-                    origine = 1;
-                }
-                ResultatEffet.Add(Manager.GetResult(item));
-                Manager.ActResult(ResultatEffet, origine);
-                ResultatEffet.Clear();
-                //Switchtype(UIJoueur, ennemie)
-            }
-        }*/
     }
 
     public void StartCombat()
