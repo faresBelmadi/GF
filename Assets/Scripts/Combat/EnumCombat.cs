@@ -17,3 +17,9 @@ public enum nextActionEnum
     Buff,
     Debuff
 }
+
+public enum SourceEffet
+{
+    Spell,
+    BuffDebuff
+}

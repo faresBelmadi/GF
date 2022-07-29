@@ -252,7 +252,7 @@ public class BattleManager : MonoBehaviour
         GiveBuffDebuff(Spell.ActionBuffDebuff, idTarget);
         foreach(var effet in Spell.ActionEffet)
         {
-            PassageEffet(effet, idPlayer, idTarget);
+            PassageEffet(effet, idPlayer, idTarget, SourceEffet.Spell);
         }
         //EnemyScripts.First(c => c.combatID == idTarget).ApplicationBuffDebuff(TimerApplication.Attaque);
         idTarget = -1;
@@ -263,7 +263,7 @@ public class BattleManager : MonoBehaviour
         GiveBuffDebuff(Spell.debuffsBuffs);
         foreach(var effet in Spell.Effet)
         {
-            PassageEffet(effet, currentIdTurn);
+            PassageEffet(effet, currentIdTurn, -1,SourceEffet.Spell);
         }
         //player.ApplicationBuffDebuff(TimerApplication.Attaque);
     }
@@ -307,35 +307,35 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void PassageEffet(Effet effet, int Caster, int target = -1)
+    public void PassageEffet(Effet effet, int Caster, int target = -1, SourceEffet source = SourceEffet.Spell)
     {
         switch (effet.Cible)
         {
             case Cible.joueur:
                 if(Caster == idPlayer)
                 {
-                    player.ApplicationEffet(effet);
+                    player.ApplicationEffet(effet, null, source);
                 }
                 else
                 {
                     if (EnemyScripts.FirstOrDefault(c => c.combatID == Caster) == null)
                     {
-                        player.ApplicationEffet(effet, DeadEnemyScripts.First(c => c.combatID == Caster).Stat);
+                        player.ApplicationEffet(effet, DeadEnemyScripts.First(c => c.combatID == Caster).Stat, source);
                     }
                     else
                     {
-                        player.ApplicationEffet(effet, EnemyScripts.First(c => c.combatID == Caster).Stat);
+                        player.ApplicationEffet(effet, EnemyScripts.First(c => c.combatID == Caster).Stat, source);
                     }
                 }
                 break;
             case Cible.ennemi:
                 if (Caster == target)
                 {
-                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet);
+                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source);
                 }
                 else
                 {
-                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat);
+                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source);
                 }
                 break;
             case Cible.Ally:
@@ -344,17 +344,17 @@ public class BattleManager : MonoBehaviour
             case Cible.allEnnemi:
                 foreach (var ennemie in EnemyScripts)
                 {
-                    ennemie.ApplicationEffet(effet);
+                    ennemie.ApplicationEffet(effet, null, source);
                 }
                 break;
             case Cible.allAllies:
 
                 break;
             case Cible.All:
-                player.ApplicationEffet(effet);
+                player.ApplicationEffet(effet, null, source);
                 foreach (var ennemie in EnemyScripts)
                 {
-                    ennemie.ApplicationEffet(effet);
+                    ennemie.ApplicationEffet(effet, null, source);
                 }
                 break;
         }

@@ -24,7 +24,7 @@ public class CharacterStat : ScriptableObject
     public int Essence;
     public float MultiplDef = 1;
     public float MultiplSoin = 1;
-    public float MultiDegat = 1;
+    public float MultiplDegat = 1;
     public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>(); 
 
     public void ModifStateAll(CharacterStat ModifState)
