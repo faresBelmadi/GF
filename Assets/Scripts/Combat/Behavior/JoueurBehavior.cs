@@ -144,7 +144,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void ResetStat()
     {
-        Stat.MultiDegat = 1;
+        Stat.MultiplDegat = 1;
         Stat.MultiplDef = 1;
         Stat.MultiplSoin = 1;
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
@@ -322,7 +322,7 @@ public class JoueurBehavior : CombatBehavior
             {
                 foreach (var effet in item.Effet)
                 {
-                    GameManager.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, 0);
+                    GameManager.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
                     /*if(item.CibleApplication == effet.Cible)
                     {
                         ApplicationEffet(effet);
@@ -350,7 +350,7 @@ public class JoueurBehavior : CombatBehavior
 
     #region Effet
 
-    public void ApplicationEffet(Effet effet, EnnemiStat Caster = null)
+    public void ApplicationEffet(Effet effet, EnnemiStat Caster = null, SourceEffet source = SourceEffet.Spell)
     {
         JoueurStat ModifStat;
         if (Caster == null)
@@ -366,7 +366,12 @@ public class JoueurBehavior : CombatBehavior
         if(ModifStat.Radiance < 0)
         {
             LastDamageTaken = ModifStat.Radiance;
-            ReceiveTension(Source.Attaque);
+
+            if(source == SourceEffet.Spell)
+                ReceiveTension(Source.Attaque);
+            else if (source == SourceEffet.BuffDebuff)
+                ReceiveTension(Source.Dot);
+
             var temp = Instantiate(DamagePrefab, DamageSpawn);
             temp.GetComponent<TextAnimDegats>().Value = ModifStat.Radiance;
         }

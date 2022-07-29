@@ -295,7 +295,7 @@ public class EnnemyBehavior : CombatBehavior
             {
                 foreach (var effet in item.Effet)
                 {
-                    GameManager.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
+                    GameManager.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
                     /*if (item.CibleApplication == effet.Cible)
                     {
                         ApplicationEffet(effet);
@@ -324,7 +324,7 @@ public class EnnemyBehavior : CombatBehavior
 
     #region Effet
 
-    public void ApplicationEffet(Effet effet, JoueurStat Caster = null)
+    public void ApplicationEffet(Effet effet, JoueurStat Caster = null, SourceEffet source = SourceEffet.Spell)
     {
         JoueurStat ModifStat;
         if(Caster == null)
@@ -339,6 +339,12 @@ public class EnnemyBehavior : CombatBehavior
         if (ModifStat.Radiance < 0)
         {
             LastDamageTaken = ModifStat.Radiance;
+
+            if (source == SourceEffet.Spell)
+                ReceiveTension(Source.Attaque);
+            else if (source == SourceEffet.BuffDebuff)
+                ReceiveTension(Source.Dot);
+
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
         else if (ModifStat.Radiance > 0)

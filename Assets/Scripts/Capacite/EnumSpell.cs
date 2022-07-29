@@ -51,5 +51,7 @@ public enum TypeEffet
     Conviction,
     AugmentationPourcentageFA,
     RadianceMax,
-    AugmentationDegat
+    AugmentationDegat,
+    AugmentationSoin,
+    AugmentationDef
 }
