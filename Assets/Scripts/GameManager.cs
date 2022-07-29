@@ -202,6 +202,16 @@ public class GameManager : MonoBehaviour {
     {
         AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
     }
+
+    public void StartStatJoueur()
+    {
+        pmm.LoadMenuStat();
+    }
+
+    public void LoadMenuStat()
+    {
+
+    }
     
     void getClassRun()
     {

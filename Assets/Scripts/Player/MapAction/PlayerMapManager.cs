@@ -96,11 +96,14 @@ public class PlayerMapManager : MonoBehaviour
             case "AleaScene":
                 StartAlea();
                 break;
+            case "MenuStat":
+                StartMenuStat();
+                break;
             default:
             break;
         }
 
-        
+       
         
     }
 
@@ -134,6 +137,25 @@ public class PlayerMapManager : MonoBehaviour
     {
         CurrentRoomCamera.SetActive(false);
         GameManager.instance.AleaMan = null;
+        MenuCamera.SetActive(true);
+        yield return SceneManager.UnloadSceneAsync(s);
+    }
+
+    public void LoadMenuStat()
+    {
+        StartCoroutine("LoadSceneAsync", "MenuStat");
+    }
+
+    void StartMenuStat()
+    {
+        CurrentRoomCamera = rootScene.First(c => c.name == "MenuStatCamera");
+        CurrentRoomCamera.SetActive(true);
+        MenuCamera.SetActive(false);
+    }
+
+    public IEnumerator EndMenuStat()
+    {
+        CurrentRoomCamera.SetActive(false);
         MenuCamera.SetActive(true);
         yield return SceneManager.UnloadSceneAsync(s);
     }

@@ -144,7 +144,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void ResetStat()
     {
-        Stat.MultiDegat = 1;
+        Stat.MultiplDegat = 1;
         Stat.MultiplDef = 1;
         Stat.MultiplSoin = 1;
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
