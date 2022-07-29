@@ -13,7 +13,6 @@ public class UIEnnemi : MonoBehaviour
     public Slider TensionSlider;
 
     public TextMeshProUGUI HpText;
-    public TextMeshProUGUI TensionText;
     public TextMeshProUGUI NameText;
     public GameObject Ciblage;
     public Image Intention;
@@ -28,21 +27,20 @@ public class UIEnnemi : MonoBehaviour
     public GameObject degatPrefab;
     public List<GameObject> DebuffSpawned = new List<GameObject>();
 
-    public void updateHp(int newHp, int newMaxHp)
+    public void UpdateHp(int newHp, int newMaxHp)
     {
         healthSlider.value = newHp;
         healthSlider.maxValue = newMaxHp;
         HpText.text = newHp + "/" + newMaxHp;
     }
 
-    public void updateTension(int newTension, int nbPalier)
+    public void UpdateTension(int newTension, int nbPalier)
     {
         TensionSlider.value = newTension;
         TensionSlider.maxValue = nbPalier;
-        //TensionText.text = newTension + "/" + nbPalier;
     }
 
-    public void updateNom(string nom)
+    public void UpdateNom(string nom)
     {
         NameText.text = nom;
     }

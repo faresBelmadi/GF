@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Enemy Spell", menuName = "Remake/Capacité/Create New Enemy Spell", order = 1)]
+[CreateAssetMenu(fileName = "New Enemy Spell", menuName = "Capacité/Create New Enemy Spell", order = 1)]
 public class EnnemiSpell : ScriptableObject
 {
     public string Name;

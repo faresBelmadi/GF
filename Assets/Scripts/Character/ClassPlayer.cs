@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = "NewClass", menuName = "Create New Playable Class Remake", order = 2)]
+[CreateAssetMenu(fileName = "NewClass", menuName = "Create New Playable Class", order = 2)]
 public class ClassPlayer : ScriptableObject
 {
 

@@ -25,7 +25,14 @@ public class EnnemyBehavior : CombatBehavior
 
     public void SetUp()
     {
-        updateUI();
+        UICombat = this.GetComponent<UIEnnemi>();
+
+        UpdateUI();
+
+        //assignation des container dans le parent
+        base.BuffContainer = UICombat.buffParents;
+        base.DebuffContainer = UICombat.debuffParents;
+
 
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.DissimulationOriginal = Stat.Dissimulation;
@@ -142,16 +149,16 @@ public class EnnemyBehavior : CombatBehavior
 
     private void Update()
     {
-        updateUI();
+        UpdateUI();
     }
 
-    private void updateUI()
+    private void UpdateUI()
     {
         TensionUI = Mathf.FloorToInt((Tension * NbPalier) / TensionMax);
-        UICombat.updateHp(Stat.Radiance, Stat.RadianceMax);
-        UICombat.updateTension(TensionUI, NbPalier);
+        UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
+        UICombat.UpdateTension(TensionUI, NbPalier);
         string[] t = Stat.Nom.Split('(');
-        UICombat.updateNom(t[0]);
+        UICombat.UpdateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
     }
 
@@ -196,7 +203,7 @@ public class EnnemyBehavior : CombatBehavior
                 item.Weight--;
         }
         NextActionType();
-        updateIntention();
+        UpdateIntention();
     }
 
     private void NextActionType()
@@ -215,7 +222,7 @@ public class EnnemyBehavior : CombatBehavior
                 nextActionType = nextActionEnum.Debuff;
     }
 
-    private void updateIntention()
+    private void UpdateIntention()
     {
         UICombat.ChangeIntention(nextAction.ImageIntentionSpell);
     }
@@ -266,7 +273,7 @@ public class EnnemyBehavior : CombatBehavior
 
         DecompteDebuffEnnemi(Decompte, Timer);
 
-        updateUI();
+        UpdateUI();
     }
 
     private void DecompteDebuffEnnemi(Decompte Decompte, TimerApplication Timer)
@@ -275,7 +282,7 @@ public class EnnemyBehavior : CombatBehavior
 
         ApplicationBuffDebuff(Timer);
 
-        updateUI();
+        UpdateUI();
     }
 
     public void ApplicationBuffDebuff(TimerApplication Timer)
@@ -340,7 +347,7 @@ public class EnnemyBehavior : CombatBehavior
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
 
-        updateUI();
+        UpdateUI();
 
         if (Stat.Radiance <= 0)
         {
@@ -372,7 +379,7 @@ public class EnnemyBehavior : CombatBehavior
 
     #region Animation
 
-    public void getAttacked()
+    public void GetAttacked()
     {
         this.GetComponent<Animator>().SetBool("IsAttacked", true);
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-[CreateAssetMenu(fileName = "New dialogue", menuName = "Remake/Capacité/Create New Spell", order = 11)]
+[CreateAssetMenu(fileName = "New spell", menuName = "Capacité/Create New Spell", order = 11)]
 public class Spell : ScriptableObject
 {
     public string Nom;

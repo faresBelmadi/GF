@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New dialogue", menuName = "Remake/Character/Create New Encounter", order = 11)]
+[CreateAssetMenu(fileName = "New Encounter", menuName = "Encounter/Create New Encounter", order = 11)]
 public class Encounter : ScriptableObject
 {
     [Header("Dialogue")]

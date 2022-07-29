@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New dialogue", menuName = "Remake/Capacité/Create New BuffDebuff", order = 11)]
+[CreateAssetMenu(fileName = "New Buff/debuff", menuName = "Capacité/Create New BuffDebuff", order = 11)]
 public class BuffDebuff : ScriptableObject
 {
     public string Nom;

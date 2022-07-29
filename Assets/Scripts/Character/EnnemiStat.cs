@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-[CreateAssetMenu(fileName = "New dialogue", menuName = "Remake/Character/Create New Ennemi", order = 11)]
+[CreateAssetMenu(fileName = "New Stat Ennemi", menuName = "Character/Create New Ennemi", order = 11)]
 public class EnnemiStat : CharacterStat
 {
     public string Nom;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New dialogue", menuName = "Remake/Capacité/Create New Effet", order = 11)]
+[CreateAssetMenu(fileName = "New Effect", menuName = "Capacité/Create New Effet", order = 11)]
 public class Effet : ScriptableObject
 {
     public TypeEffet TypeEffet;

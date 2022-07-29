@@ -20,9 +20,9 @@ public class CombatBehavior : MonoBehaviour
 
     public List<GameObject> ListBuffDebuff = new List<GameObject>();
     public GameObject BuffPrefab;
-    public Transform BuffContainer;
+    protected Transform BuffContainer;
     public GameObject DebuffPrefab;
-    public Transform DebuffContainer;
+    protected Transform DebuffContainer;
 
     public Action EndTurnBM;
 

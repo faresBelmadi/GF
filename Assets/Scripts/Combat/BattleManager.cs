@@ -17,6 +17,7 @@ public class BattleManager : MonoBehaviour
     public Encounter _encounter;
     public GameObject prefabEssence;
     public GameObject buttonEndCombat;
+    const string Target = "Targeting";
 
     [Header("Round/Turn variables")]
     public List<CombatOrder> IdOrder;
@@ -115,8 +116,10 @@ public class BattleManager : MonoBehaviour
         EnemyScripts = new List<EnnemyBehavior>();
         DeadEnemyScripts = new List<EnnemyBehavior>();
         IdOrder = new List<CombatOrder>();
-        IdSpeedDictionary = new Dictionary<int, int>();
-        IdSpeedDictionary.Add(idIndexer, player.Stat.Vitesse);
+        IdSpeedDictionary = new Dictionary<int, int>
+        {
+            { idIndexer, player.Stat.Vitesse }
+        };
         idPlayer = idIndexer;
         idIndexer++;
     }
@@ -439,8 +442,8 @@ public class BattleManager : MonoBehaviour
 
     public void StartTargeting()
     {
-        StopCoroutine("Targeting");
-        StartCoroutine("Targeting");
+        StopCoroutine(Target);
+        StartCoroutine(Target);
     }
 
     private IEnumerator Targeting()
@@ -470,7 +473,7 @@ public class BattleManager : MonoBehaviour
 
     public void LaunchAnimAttacked()
     {
-        EnemyScripts.First(c => c.combatID == idTarget).getAttacked();
+        EnemyScripts.First(c => c.combatID == idTarget).GetAttacked();
     }
 
     public void EndCurrentAttaque()
