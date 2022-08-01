@@ -92,7 +92,7 @@ public class Effet : ScriptableObject
                 ModifState.Resilience += valueToChange;
                 break;
             case TypeEffet.TensionStep:
-                ModifState.PalierActuel += valueToChange;
+                ModifState.PalierChangement += valueToChange;
                 break;
             case TypeEffet.TensionValue:
                 ModifState.Tension += valueToChange;

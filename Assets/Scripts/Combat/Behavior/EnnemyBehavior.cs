@@ -111,6 +111,29 @@ public class EnnemyBehavior : CombatBehavior
 
     #region Tension
 
+    public void EnervementTension()
+    {
+        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        if (t >= Stat.NbPalier)
+            t = Stat.NbPalier;
+        else
+            t++;
+
+        Stat.Tension = t * Stat.ValeurPalier;
+    }
+
+    public void ApaisementTension()
+    {
+
+        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        if (t <= 0)
+            t = 0;
+        else
+            t--;
+
+        Stat.Tension = t * Stat.ValeurPalier;
+    }
+
     public bool CanHaveAnotherTurn()
     {
         if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
@@ -336,6 +359,13 @@ public class EnnemyBehavior : CombatBehavior
             ModifStat = effet.ResultEffet(Caster, LastDamageTaken);
         }
         Stat.ModifStateAll(ModifStat);
+
+        if (ModifStat.PalierChangement > 0)
+            EnervementTension();
+        else if (ModifStat.PalierChangement < 0)
+            ApaisementTension();
+
+
         if (ModifStat.Radiance < 0)
         {
             LastDamageTaken = ModifStat.Radiance;

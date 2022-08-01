@@ -31,7 +31,7 @@ public class CharacterStat : ScriptableObject
     public int TensionSoin = -3;
     public float Tension;
     public float TensionMax;
-    public int PalierActuel;
+    public int PalierChangement;
     public float ValeurPalier = 10;
     public int NbPalier = 1;
     public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>(); 

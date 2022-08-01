@@ -363,7 +363,13 @@ public class JoueurBehavior : CombatBehavior
         }
 
         Stat.ModifStateAll(ModifStat);
-        if(ModifStat.Radiance < 0)
+
+        if (ModifStat.PalierChangement > 0)
+            EnervementTension();
+        else if (ModifStat.PalierChangement < 0)
+            ApaisementTension();
+
+        if (ModifStat.Radiance < 0)
         {
             LastDamageTaken = ModifStat.Radiance;
 
