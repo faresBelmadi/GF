@@ -46,16 +46,16 @@ public class BattleManager : MonoBehaviour
 
     private void CalcTensionJoueur()
     {
-        player.TensionMax = (CalmeMoyenAdversaire / CalmeMoyen) * player.Stat.Calme;
-        player.ValeurPalier = player.TensionMax / player.NbPalier;
+        player.Stat.TensionMax = (CalmeMoyenAdversaire / CalmeMoyen) * player.Stat.Calme;
+        player.Stat.ValeurPalier = player.Stat.TensionMax / player.Stat.NbPalier;
     }
 
     private void CalcTensionEnemy()
     {
         foreach (var item in EnemyScripts)
         {
-            item.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.Calme;
-            item.ValeurPalier = (item.TensionMax) / item.NbPalier;
+            item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.Calme;
+            item.Stat.ValeurPalier = (item.Stat.TensionMax) / item.Stat.NbPalier;
         }
     }
 
@@ -174,7 +174,7 @@ public class BattleManager : MonoBehaviour
     {
         player.ResetStat();
         player.Stat.Volonter = player.Stat.VolonterMax;
-        player.Tension = 0;
+        player.Stat.Tension = 0;
         GameManager.instance.playerStat = player.Stat;
 
         StartCoroutine(GameManager.instance.pmm.EndBattle());

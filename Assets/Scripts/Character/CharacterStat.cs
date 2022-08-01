@@ -25,6 +25,15 @@ public class CharacterStat : ScriptableObject
     public float MultiplDef = 1;
     public float MultiplSoin = 1;
     public float MultiplDegat = 1;
+    public int TensionAttaque = 4;
+    public int TensionDebuff = 2;
+    public int TensionDot = 1;
+    public int TensionSoin = -3;
+    public float Tension;
+    public float TensionMax;
+    public int PalierActuel;
+    public float ValeurPalier = 10;
+    public int NbPalier = 1;
     public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>(); 
 
     public void ModifStateAll(CharacterStat ModifState)
@@ -41,5 +50,11 @@ public class CharacterStat : ScriptableObject
         this.ResilienceMax += ModifState.ResilienceMax;
         this.Calme += ModifState.Calme;
         this.Essence += ModifState.Essence;
+        this.TensionAttaque += ModifState.TensionAttaque;
+        this.TensionDebuff += ModifState.TensionDebuff;
+        this.TensionDot += ModifState.TensionDot;
+        this.TensionSoin += ModifState.TensionSoin;
+        this.Tension += ModifState.Tension;
+        this.TensionMax += ModifState.TensionMax;
     }
 }

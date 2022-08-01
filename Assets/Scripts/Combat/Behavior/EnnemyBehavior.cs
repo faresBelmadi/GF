@@ -113,7 +113,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public bool CanHaveAnotherTurn()
     {
-        if (Tension >= ValeurPalier * NbPalier)
+        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
         {
             return true;
 
@@ -127,20 +127,20 @@ public class EnnemyBehavior : CombatBehavior
         switch (sourceDamage)
         {
             case Source.Attaque:
-                Tension += TensionAttaque;
+                Stat.Tension += Stat.TensionAttaque;
                 break;
             case Source.Dot:
-                Tension += TensionDot;
+                Stat.Tension += Stat.TensionDot;
                 break;
             case Source.Buff:
-                Tension += TensionDebuff;
+                Stat.Tension += Stat.TensionDebuff;
                 break;
             case Source.Soin:
-                Tension += TensionSoin;
+                Stat.Tension += Stat.TensionSoin;
                 break;
         }
-        if (Tension >= ValeurPalier * NbPalier)
-            Tension = ValeurPalier * NbPalier + 0.2f;
+        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
+            Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
     }
 
     #endregion Tension
@@ -154,9 +154,9 @@ public class EnnemyBehavior : CombatBehavior
 
     private void UpdateUI()
     {
-        TensionUI = Mathf.FloorToInt((Tension * NbPalier) / TensionMax);
+        TensionUI = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
         UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
-        UICombat.UpdateTension(TensionUI, NbPalier);
+        UICombat.UpdateTension(TensionUI, Stat.NbPalier);
         string[] t = Stat.Nom.Split('(');
         UICombat.UpdateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;

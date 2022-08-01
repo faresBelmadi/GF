@@ -63,8 +63,8 @@ public class JoueurBehavior : CombatBehavior
         RadianceSlider.value = Stat.Radiance;
         RadianceSlider.minValue = 0;
         RadianceSlider.maxValue = Stat.RadianceMax;
-        TensionSlider.value = Mathf.FloorToInt((Tension * NbPalier) / TensionMax);
-        TensionSlider.maxValue = NbPalier;
+        TensionSlider.value = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
+        TensionSlider.maxValue = Stat.NbPalier;
         VolonteSlider.value = Stat.Volonter;
         VolonteSlider.maxValue = Stat.VolonterMax;
         ConscienceSlider.value = Stat.Conscience;
@@ -167,25 +167,25 @@ public class JoueurBehavior : CombatBehavior
 
     public void EnervementTension()
     {
-        var t = (int)((Tension / (NbPalier * ValeurPalier)) * NbPalier);
-        if (t >= NbPalier)
-            t = NbPalier;
+        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        if (t >= Stat.NbPalier)
+            t = Stat.NbPalier;
         else
             t++;
 
-        Tension = t * ValeurPalier;
+        Stat.Tension = t * Stat.ValeurPalier;
     }
 
     public void ApaisementTension()
     {
 
-        var t = (int)((Tension / (NbPalier * ValeurPalier)) * NbPalier);
+        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
         if (t <= 0)
             t = 0;
         else
             t--;
 
-        Tension = t * ValeurPalier;
+        Stat.Tension = t * Stat.ValeurPalier;
     }
 
     public void ReceiveTension(Source sourceDamage)
@@ -193,25 +193,25 @@ public class JoueurBehavior : CombatBehavior
         switch (sourceDamage)
         {
             case Source.Attaque:
-                Tension += TensionAttaque;
+                Stat.Tension += Stat.TensionAttaque;
                 break;
             case Source.Dot:
-                Tension += TensionDot;
+                Stat.Tension += Stat.TensionDot;
                 break;
             case Source.Buff:
-                Tension += TensionDebuff;
+                Stat.Tension += Stat.TensionDebuff;
                 break;
             case Source.Soin:
-                Tension += TensionSoin;
+                Stat.Tension += Stat.TensionSoin;
                 break;
         }
     }
 
     public bool CanHaveAnotherTurn()
     {
-        if (Tension >= ValeurPalier * NbPalier)
+        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
         {
-            Tension = ValeurPalier * NbPalier;
+            Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
             return true;
         }
 

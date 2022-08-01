@@ -16,7 +16,6 @@ public class Effet : ScriptableObject
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         switch (this.TypeEffet)
         {
-
             default:
                 ModifState = ResultEffetCommun(Caster);
                 break;
@@ -33,19 +32,25 @@ public class Effet : ScriptableObject
 
     private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0)
     {
+        int valueToChange = ValeurBrut * NbAttaque;
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken));
         switch (this.TypeEffet)
         {
             case TypeEffet.Clairvoyance:
-                if (NbAttaque >= 1)
-                {
-                    ModifState.Clairvoyance = ValeurBrut * NbAttaque;
-                }
-                else
-                {
-                    ModifState.Clairvoyance = ValeurBrut;
-                }
+                ModifState.Clairvoyance = valueToChange;
+                break;
+            case TypeEffet.Volonte:
+                ModifState.Volonter += valueToChange;
+                break;
+            case TypeEffet.VolonteMax:
+                ModifState.VolonterMax += valueToChange;
+                break;
+            case TypeEffet.Conscience:
+                ModifState.Conscience += valueToChange;
+                break;
+            case TypeEffet.ConscienceMax:
+                ModifState.ConscienceMax += valueToChange;
                 break;
             default:
                 break;
@@ -55,27 +60,55 @@ public class Effet : ScriptableObject
 
     private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0)
     {
+        int valueToChange = ValeurBrut * NbAttaque;
         CharacterStat ModifState = ScriptableObject.CreateInstance("CharacterStat") as CharacterStat;
         switch (this.TypeEffet)
         {
             case TypeEffet.DegatsForceAme:
-                ModifState.Radiance -= (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme;
+                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme;
                 break;
             case TypeEffet.DegatsBrut:
-                ModifState.Radiance -= ValeurBrut * NbAttaque;
+                ModifState.Radiance += valueToChange;
                 break;
             case TypeEffet.Conviction:
-                ModifState.Conviction += ValeurBrut * NbAttaque;
+                ModifState.Conviction += valueToChange;
                 break;
             case TypeEffet.AugmentationPourcentageFA:
                 ModifState.ForceAme += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme;
                 break;
-            case TypeEffet.RadianceMax:
-                ModifState.RadianceMax += ValeurBrut * NbAttaque;
+            case TypeEffet.AugmentationBrutFA:
+                ModifState.ForceAme += valueToChange;
                 break;
-            case TypeEffet.AugmentationDegat:
-                ModifState.Radiance -= (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * LastDamageTaken;
+            case TypeEffet.RadianceMax:
+                ModifState.RadianceMax += valueToChange;
+                break;
+            case TypeEffet.AugmentationDegatDamageTaken:
+                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * LastDamageTaken;
                     break;
+            case TypeEffet.Vitesse:
+                ModifState.Vitesse += valueToChange;
+                break;
+            case TypeEffet.Resilience:
+                ModifState.Resilience += valueToChange;
+                break;
+            case TypeEffet.TensionStep:
+                ModifState.PalierActuel += valueToChange;
+                break;
+            case TypeEffet.TensionValue:
+                ModifState.Tension += valueToChange;
+                break;
+            case TypeEffet.TensionGainAttaqueValue:
+                ModifState.TensionAttaque += valueToChange;
+                break;
+            case TypeEffet.TensionGainDebuffValue:
+                ModifState.TensionDebuff += valueToChange;
+                break;
+            case TypeEffet.TensionGainSoinValue:
+                ModifState.TensionSoin += valueToChange;
+                break;
+            case TypeEffet.TensionGainDotValue:
+                ModifState.TensionDot += valueToChange;
+                break;
             default:
                 break;
         }

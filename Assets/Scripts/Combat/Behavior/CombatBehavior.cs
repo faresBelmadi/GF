@@ -9,14 +9,6 @@ using UnityEngine.UI;
 
 public class CombatBehavior : MonoBehaviour
 {
-    public int TensionAttaque = 4;
-    public int TensionDebuff = 2;
-    public int TensionDot = 1;
-    public int TensionSoin = -3;
-    public float Tension;
-    public float TensionMax;
-    public float ValeurPalier = 10;
-    public int NbPalier = 1;
 
     public List<GameObject> ListBuffDebuff = new List<GameObject>();
     public GameObject BuffPrefab;
