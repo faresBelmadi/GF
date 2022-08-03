@@ -149,6 +149,8 @@ public class PlayerMapManager : MonoBehaviour
     void StartMenuStat()
     {
         CurrentRoomCamera = rootScene.First(c => c.name == "MenuStatCamera");
+        GameManager.instance.StatMan = rootScene.First(c => c.name == "MenuStatManager").GetComponent<MenuStatManager>();
+        GameManager.instance.LoadMenuStat();
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
     }
@@ -156,6 +158,7 @@ public class PlayerMapManager : MonoBehaviour
     public IEnumerator EndMenuStat()
     {
         CurrentRoomCamera.SetActive(false);
+        GameManager.instance.StatMan = null;
         MenuCamera.SetActive(true);
         yield return SceneManager.UnloadSceneAsync(s);
     }

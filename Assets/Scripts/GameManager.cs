@@ -15,12 +15,15 @@ public class GameManager : MonoBehaviour {
     public PlayerMapManager pmm;
     public BattleManager BattleMan;
     public AleaManager AleaMan;
+    public MenuStatManager StatMan;
 
     [Header("Classes & Encounter")]
     public List<ClassPlayer> AllClasses;
 
     public List<Encounter> AllEncounter;
     public List<EncounterAlea> AllEncounterAlea;
+
+    public List<Souvenir> AllSouvenir;
 
     public ClassPlayer classSO;
     public JoueurStat playerStat;
@@ -75,6 +78,7 @@ public class GameManager : MonoBehaviour {
                     Calme = classSO.PlayerStat.Calme
                 };
 
+                playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
 
                 foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
@@ -210,7 +214,7 @@ public class GameManager : MonoBehaviour {
 
     public void LoadMenuStat()
     {
-
+        StatMan.StartMenuStat();
     }
     
     void getClassRun()

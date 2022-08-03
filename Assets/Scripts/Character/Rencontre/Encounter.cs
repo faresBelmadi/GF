@@ -9,7 +9,6 @@ public class Encounter : ScriptableObject
     public DialogueSO DialogueRencontre;
     [Header("Ennemy")]
     public List<EnnemiStat> ToFight;
-
-
-
+    public int PourcentageLootSouvenir;
+    public List<LootRarity> LootRarity;
 }

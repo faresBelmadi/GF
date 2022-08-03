@@ -7,9 +7,14 @@ public class Souvenir : ScriptableObject
 {
     public Rarity Rarete;
     public int Slots;
+    public bool Equiped;
     public List<PourcentageEmotion> ProcEmotion;
     public Emotion Emotion;
     public List<ModificationStatSouvenir> ModificationStat;
+
+    public string Nom;
+    public string Description;
+    public Sprite Icon;
 
     private void Awake()
     {

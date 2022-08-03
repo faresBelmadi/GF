@@ -41,6 +41,40 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private DialogueManager DialogueManager;
 
+    #region Loot
+
+    public void Loot()
+    {
+        int random = UnityEngine.Random.Range(0, 101);
+        Debug.Log("Loot : " + random);
+        if (random >= _encounter.PourcentageLootSouvenir)
+        {
+            return;
+        }
+        _encounter.LootRarity.Sort((x, y) => x.Pourcentage.CompareTo(y.Pourcentage));
+        int PourcentageTotal = 0;
+        for (int i = 0; i < _encounter.LootRarity.Count; i++)
+        {
+            PourcentageTotal += _encounter.LootRarity[i].Pourcentage;
+        }
+        random = UnityEngine.Random.Range(0, PourcentageTotal + 1);
+        Debug.Log("Rarity : " + random);
+        for (int i = 0; i < _encounter.LootRarity.Count; i++)
+        {
+            if (random <= _encounter.LootRarity[i].Pourcentage)
+            {
+                player.Stat.ListSouvenir.Add(Instantiate(GameManager.instance.AllSouvenir.FirstOrDefault(c => c.Rarete == _encounter.LootRarity[i].rareter)));
+                return;
+            }
+            else
+            {
+                random -= _encounter.LootRarity[i].Pourcentage;
+            }
+        }
+    }
+
+    #endregion Loot
+
     #region calcul tension & calme
 
     private void CalcTensionJoueur()
@@ -169,6 +203,7 @@ public class BattleManager : MonoBehaviour
 
     private void EndBattle()
     {
+        Loot();
         player.ResetStat();
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Tension = 0;
