@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public PlayerMapManager pmm;
     public BattleManager BattleMan;
     public AleaManager AleaMan;
+    public MainMenuManager MainMenuMan;
 
     [Header("Classes & Encounter")]
     public List<ClassPlayer> AllClasses;
@@ -39,16 +40,16 @@ public class GameManager : MonoBehaviour {
         }
 
         UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-        LoadSave();
+        //LoadSave();
     }
 
     private void LoadSave()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
-        #endif
+#endif
         string dataAsJson;
         if (File.Exists(path))
         {
@@ -57,10 +58,11 @@ public class GameManager : MonoBehaviour {
 
             // Pass the json to JsonUtility, and tell it to create a SkillTree object from it
             loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
-            if(!loadedData.CurrentRun.Ended)
+            if (!loadedData.CurrentRun.Ended)
             {
                 getClassRun();
-                playerStat = new JoueurStat(){
+                playerStat = new JoueurStat()
+                {
                     Radiance = loadedData.CurrentRun.player.Radiance,
                     RadianceMax = classSO.PlayerStat.RadianceMax,
                     Volonter = loadedData.CurrentRun.player.Volonter,
@@ -84,9 +86,9 @@ public class GameManager : MonoBehaviour {
                     foreach (var item2 in temp.IDChildren)
                     {
                         var t = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item2);
-                        if(t.IsAvailable)
+                        if (t.IsAvailable)
                             t.SpellStatue = SpellStatus.unlocked;
-                        
+
                     }
                     playerStat.ListSpell.Add(temp);
                 }
@@ -94,24 +96,24 @@ public class GameManager : MonoBehaviour {
         }
         else
         {
-            CreateSave();
-            getClassRun();
+            //CreateSave();
+            //getClassRun();
         }
     }
 
-    private void CreateSave()
+    private void CreateSave(int classChosen)
     {
         GameData data = new GameData();
-        data.CurrentRun = new RunData(){ClassID = 0};
+        data.CurrentRun = new RunData() { ClassID = classChosen };
         data.previousRuns = new List<RunData>();
-        var spellsToAdd = AllClasses.First(c => c.ID == 0).PlayerStat.ListSpell.Where(c => c.SpellStatue == SpellStatus.bought);
+        var spellsToAdd = AllClasses.First(c => c.ID == classChosen).PlayerStat.ListSpell.Where(c => c.SpellStatue == SpellStatus.bought);
         List<int> boughtspells = new List<int>();
         foreach (var item in spellsToAdd)
         {
-            boughtspells.Add(item.IDSpell);   
+            boughtspells.Add(item.IDSpell);
         }
         data.CurrentRun.player = new PlayerData()
-        {   
+        {
             Radiance = AllClasses.First(c => c.ID == 0).PlayerStat.Radiance,
             Conscience = AllClasses.First(c => c.ID == 0).PlayerStat.Conscience,
             ForceAme = AllClasses.First(c => c.ID == 0).PlayerStat.ForceAme,
@@ -120,27 +122,27 @@ public class GameManager : MonoBehaviour {
             BoughtSpellID = boughtspells
         };
         string json = JsonUtility.ToJson(data);
-        
-        #if UNITY_EDITOR
+
+#if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
         System.IO.Directory.CreateDirectory(Application.persistentDataPath+"/SavedData");
         System.IO.Directory.CreateDirectory(Application.persistentDataPath+"/SavedData/GameData");
-        #endif
+#endif
 
-        System.IO.File.WriteAllText(path,json);
+        System.IO.File.WriteAllText(path, json);
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
-        #endif
+#endif
         LoadSave();
     }
 
     public void SaveGame()
     {
         SavePlayer();
-        if(loadedData.CurrentRun.Ended)
+        if (loadedData.CurrentRun.Ended)
         {
             loadedData.previousRuns.Add(loadedData.CurrentRun);
             loadedData.CurrentRun.player = new PlayerData()
@@ -151,22 +153,22 @@ public class GameManager : MonoBehaviour {
                 Essence = classSO.PlayerStat.Essence,
                 ForceAme = classSO.PlayerStat.ForceAme,
                 Vitesse = classSO.PlayerStat.Vitesse,
-                BoughtSpellID = new List<int>(){0}
+                BoughtSpellID = new List<int>() { 0 }
             };
             loadedData.CurrentRun.Ended = false;
         }
         string json = JsonUtility.ToJson(loadedData);
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
-        #endif
+#endif
 
-        System.IO.File.WriteAllText(path,json);
+        System.IO.File.WriteAllText(path, json);
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
-        #endif
+#endif
     }
 
     private void SavePlayer()
@@ -219,14 +221,36 @@ public class GameManager : MonoBehaviour {
         loadedData.CurrentRun.Ended =true;
         SaveGame();
         LoadSave();
-        StartCoroutine(Reload());
+        StartCoroutine(LoadMainMenuFromMonde());
     }
 
-    IEnumerator Reload()
+    IEnumerator LoadMainMenuFromMonde()
     {
-        yield return SceneManager.UnloadSceneAsync(0);
-        yield return SceneManager.LoadSceneAsync(0);
+        yield return SceneManager.UnloadSceneAsync("Monde");
+        yield return SceneManager.LoadSceneAsync("MainMenu");
+
+        MainMenuMan = FindObjectOfType<MainMenuManager>();
+    }
+
+    public void ChooseCharacterSave(int classChosen)
+    {
+        CreateSave(classChosen);
+        getClassRun();
+        StartCoroutine(LoadTutorialScene());
+    }
+
+    IEnumerator LoadTutorialScene()
+    {
+        yield return SceneManager.UnloadSceneAsync("MainMenu");
+        yield return SceneManager.LoadSceneAsync("TutorialScene");
+    }
+
+    IEnumerator LoadMondeSceneFromTutorialScene()
+    {
+        yield return SceneManager.UnloadSceneAsync("TutorialScene");
+        yield return SceneManager.LoadSceneAsync("Monde");
         pmm = FindObjectOfType<PlayerMapManager>();
         rm = FindObjectOfType<RoomManager>();
+
     }
 }
