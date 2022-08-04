@@ -82,7 +82,7 @@ public class Effet : ScriptableObject
             case TypeEffet.RadianceMax:
                 ModifState.RadianceMax += valueToChange;
                 break;
-            case TypeEffet.AugmentationDegatDamageTaken:
+            case TypeEffet.AugmentFADernierDegatsSubi:
                 ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * LastDamageTaken;
                     break;
             case TypeEffet.Vitesse:

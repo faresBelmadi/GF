@@ -52,10 +52,10 @@ public enum TypeEffet
     AugmentationPourcentageFA,
     AugmentationBrutFA,
     RadianceMax,
-    AugmentationDegatDamageTaken,
-    AugmentationDegat,
-    AugmentationSoin,
-    AugmentationDef,
+    AugmentFADernierDegatsSubi,
+    MultiplDegat,
+    MultiplSoin,
+    MultiplDef,
     Vitesse,
     Volonte,
     VolonteMax,
@@ -68,4 +68,8 @@ public enum TypeEffet
     TensionGainDotValue,
     Conscience,
     ConscienceMax,
+    Soin,
+    SoinFA,
+    SoinRadianceMax,
+    SoinRadianceActuelle
 }
