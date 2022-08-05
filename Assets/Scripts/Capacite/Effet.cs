@@ -13,7 +13,7 @@ public class Effet : ScriptableObject
     public int RandomY;
     public int NbAttaque;
 
-    public JoueurStat ResultEffet(JoueurStat Caster,JoueurStat Cible, int LastDamageTake = 0)
+    public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTake = 0, JoueurStat Cible = null)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         switch (this.TypeEffet)
@@ -25,14 +25,14 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    public JoueurStat ResultEffet(EnnemiStat Caster, JoueurStat Cible, int LastDamageTaken = 0)
+    public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken);
         return ModifState;
     }
 
-    private JoueurStat ResultEffetCommun(CharacterStat Caster, JoueurStat Cible, int LastDamageTaken = 0)
+    private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
     {
         int valueToChange = ValeurBrut * NbAttaque;
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
@@ -60,7 +60,7 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    private CharacterStat ResultEffetBase(CharacterStat Caster, JoueurStat Cible, int LastDamageTaken = 0)
+    private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
     {
         int valueToChange = ValeurBrut * NbAttaque;
         CharacterStat ModifState = ScriptableObject.CreateInstance("CharacterStat") as CharacterStat;

@@ -25,7 +25,8 @@ public enum Cible
     allEnnemi,
     All,
     Ally,
-    allAllies
+    allAllies,
+    MostDamage
 }
 
 public enum SpellStatus

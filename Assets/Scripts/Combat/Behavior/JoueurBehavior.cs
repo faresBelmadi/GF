@@ -350,7 +350,7 @@ public class JoueurBehavior : CombatBehavior
 
     #region Effet
 
-    public void ApplicationEffet(Effet effet, EnnemiStat Caster = null, SourceEffet source = SourceEffet.Spell)
+    public void ApplicationEffet(Effet effet, EnnemiStat Caster = null, SourceEffet source = SourceEffet.Spell, int idCaster = 0)
     {
         JoueurStat ModifStat;
         if (Caster == null)
@@ -373,7 +373,13 @@ public class JoueurBehavior : CombatBehavior
         {
             LastDamageTaken = ModifStat.Radiance;
 
-            if(source == SourceEffet.Spell)
+            if (LastDamageTaken < GameManager.instance.BattleMan.MostDamage)
+            {
+                GameManager.instance.BattleMan.MostDamage = LastDamageTaken;
+                GameManager.instance.BattleMan.MostDamageID = idCaster;
+            }
+
+            if (source == SourceEffet.Spell)
                 ReceiveTension(Source.Attaque);
             else if (source == SourceEffet.BuffDebuff)
                 ReceiveTension(Source.Dot);

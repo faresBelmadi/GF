@@ -347,7 +347,7 @@ public class EnnemyBehavior : CombatBehavior
 
     #region Effet
 
-    public void ApplicationEffet(Effet effet, JoueurStat Caster = null, SourceEffet source = SourceEffet.Spell)
+    public void ApplicationEffet(Effet effet, JoueurStat Caster = null, SourceEffet source = SourceEffet.Spell, int idCaster = 0)
     {
         JoueurStat ModifStat;
         if(Caster == null)
@@ -369,6 +369,12 @@ public class EnnemyBehavior : CombatBehavior
         if (ModifStat.Radiance < 0)
         {
             LastDamageTaken = ModifStat.Radiance;
+
+            if (LastDamageTaken < GameManager.instance.BattleMan.MostDamage)
+            {
+                GameManager.instance.BattleMan.MostDamage = LastDamageTaken;
+                GameManager.instance.BattleMan.MostDamageID = idCaster;
+            }
 
             if (source == SourceEffet.Spell)
                 ReceiveTension(Source.Attaque);

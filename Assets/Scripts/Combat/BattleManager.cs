@@ -38,6 +38,7 @@ public class BattleManager : MonoBehaviour
     public int idTarget = -1;
     bool endBattle;
     BattleUI battleUI;
+    public int MostDamage, MostDamageID;
 
     [SerializeField]
     private DialogueManager DialogueManager;
@@ -320,22 +321,22 @@ public class BattleManager : MonoBehaviour
                 {
                     if (EnemyScripts.FirstOrDefault(c => c.combatID == Caster) == null)
                     {
-                        player.ApplicationEffet(effet, DeadEnemyScripts.First(c => c.combatID == Caster).Stat, source);
+                        player.ApplicationEffet(effet, DeadEnemyScripts.First(c => c.combatID == Caster).Stat, source, Caster);
                     }
                     else
                     {
-                        player.ApplicationEffet(effet, EnemyScripts.First(c => c.combatID == Caster).Stat, source);
+                        player.ApplicationEffet(effet, EnemyScripts.First(c => c.combatID == Caster).Stat, source, Caster);
                     }
                 }
                 break;
             case Cible.ennemi:
                 if (Caster == target)
                 {
-                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source);
+                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
                 }
                 else
                 {
-                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source);
+                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source, Caster);
                 }
                 break;
             case Cible.Ally:
@@ -344,18 +345,43 @@ public class BattleManager : MonoBehaviour
             case Cible.allEnnemi:
                 foreach (var ennemie in EnemyScripts)
                 {
-                    ennemie.ApplicationEffet(effet, null, source);
+                    ennemie.ApplicationEffet(effet, null, source, Caster);
                 }
                 break;
             case Cible.allAllies:
 
                 break;
             case Cible.All:
-                player.ApplicationEffet(effet, null, source);
                 foreach (var ennemie in EnemyScripts)
                 {
-                    ennemie.ApplicationEffet(effet, null, source);
+                    ennemie.ApplicationEffet(effet, null, source, Caster);
                 }
+                break;
+            case Cible.MostDamage:
+
+                if (MostDamageID == idPlayer)
+                {
+                    if (EnemyScripts.FirstOrDefault(c => c.combatID == Caster) == null)
+                    {
+                        player.ApplicationEffet(effet, DeadEnemyScripts.First(c => c.combatID == Caster).Stat, source, Caster);
+                    }
+                    else
+                    {
+                        player.ApplicationEffet(effet, EnemyScripts.First(c => c.combatID == Caster).Stat, source, Caster);
+                    }
+                }
+                else
+                {
+                    if (Caster == target)
+                    {
+                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
+                    }
+                    else
+                    {
+                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source, Caster);
+                    }
+                }
+
                 break;
         }
     }
