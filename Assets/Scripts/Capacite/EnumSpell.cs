@@ -71,5 +71,8 @@ public enum TypeEffet
     Soin,
     SoinFA,
     SoinRadianceMax,
-    SoinRadianceActuelle
+    SoinRadianceActuelle,
+    DegatPVMax,
+    RandomAttaque,
+    AugmentationFaRadianceActuelle,
 }

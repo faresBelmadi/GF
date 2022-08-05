@@ -9,9 +9,11 @@ public class Effet : ScriptableObject
     public Cible Cible;
     public int Pourcentage;
     public int ValeurBrut;
+    public int RandomX;
+    public int RandomY;
     public int NbAttaque;
 
-    public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTake = 0)
+    public JoueurStat ResultEffet(JoueurStat Caster,JoueurStat Cible, int LastDamageTake = 0)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         switch (this.TypeEffet)
@@ -23,14 +25,14 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken = 0)
+    public JoueurStat ResultEffet(EnnemiStat Caster, JoueurStat Cible, int LastDamageTaken = 0)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken);
         return ModifState;
     }
 
-    private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0)
+    private JoueurStat ResultEffetCommun(CharacterStat Caster, JoueurStat Cible, int LastDamageTaken = 0)
     {
         int valueToChange = ValeurBrut * NbAttaque;
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
@@ -58,7 +60,7 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0)
+    private CharacterStat ResultEffetBase(CharacterStat Caster, JoueurStat Cible, int LastDamageTaken = 0)
     {
         int valueToChange = ValeurBrut * NbAttaque;
         CharacterStat ModifState = ScriptableObject.CreateInstance("CharacterStat") as CharacterStat;
@@ -83,8 +85,8 @@ public class Effet : ScriptableObject
                 ModifState.RadianceMax += valueToChange;
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * LastDamageTaken;
-                    break;
+                ModifState.ForceAme += LastDamageTaken;
+                break;
             case TypeEffet.Vitesse:
                 ModifState.Vitesse += valueToChange;
                 break;
@@ -108,6 +110,36 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.TensionGainDotValue:
                 ModifState.TensionDot += valueToChange;
+                break;
+            case TypeEffet.MultiplDef:
+                ModifState.MultiplDef += valueToChange;
+                break;
+            case TypeEffet.MultiplDegat:
+                ModifState.MultiplDegat += valueToChange;
+                break;
+            case TypeEffet.MultiplSoin:
+                ModifState.MultiplSoin += valueToChange;
+                break;
+            case TypeEffet.DegatPVMax:
+                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax;
+                break;
+            case TypeEffet.Soin:
+                ModifState.Radiance += valueToChange;
+                break;
+            case TypeEffet.SoinFA:
+                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme;
+                break;
+            case TypeEffet.SoinRadianceMax:
+                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax;
+                break;
+            case TypeEffet.SoinRadianceActuelle:
+                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.Radiance;
+                break;
+            case TypeEffet.RandomAttaque:
+                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * Random.Range(RandomX, RandomY + 1)) * Caster.ForceAme;
+                break;
+            case TypeEffet.AugmentationFaRadianceActuelle:
+                ModifState.ForceAme += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.Radiance;
                 break;
             default:
                 break;
