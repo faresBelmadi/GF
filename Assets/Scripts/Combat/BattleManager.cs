@@ -41,13 +41,15 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private DialogueManager DialogueManager;
 
+    public bool IsLoot;
+
     #region Loot
 
     public void Loot()
     {
         int random = UnityEngine.Random.Range(0, 101);
         Debug.Log("Loot : " + random);
-        if (random >= _encounter.PourcentageLootSouvenir)
+        if (random > _encounter.PourcentageLootSouvenir)
         {
             return;
         }
@@ -61,14 +63,17 @@ public class BattleManager : MonoBehaviour
         Debug.Log("Rarity : " + random);
         for (int i = 0; i < _encounter.LootRarity.Count; i++)
         {
-            if (random <= _encounter.LootRarity[i].Pourcentage)
+            if (random <= _encounter.LootRarity[i].Pourcentage && GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == _encounter.LootRarity[i].rareter) != null)
             {
-                player.Stat.ListSouvenir.Add(Instantiate(GameManager.instance.AllSouvenir.FirstOrDefault(c => c.Rarete == _encounter.LootRarity[i].rareter)));
+                player.Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == _encounter.LootRarity[i].rareter)));
+                GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == _encounter.LootRarity[i].rareter));
+                IsLoot = true;
                 return;
             }
             else
             {
                 random -= _encounter.LootRarity[i].Pourcentage;
+                IsLoot = false;
             }
         }
     }
@@ -208,8 +213,8 @@ public class BattleManager : MonoBehaviour
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Tension = 0;
         GameManager.instance.playerStat = player.Stat;
-
-        StartCoroutine(GameManager.instance.pmm.EndBattle());
+        Debug.Log(IsLoot);
+        StartCoroutine(GameManager.instance.pmm.EndBattle(IsLoot));
     }
 
     #endregion Mise en place combat & fin

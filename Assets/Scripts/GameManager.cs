@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
     public List<EncounterAlea> AllEncounterAlea;
 
     public List<Souvenir> AllSouvenir;
+    public List<Souvenir> CopyAllSouvenir;
 
     public ClassPlayer classSO;
     public JoueurStat playerStat;
@@ -63,7 +64,7 @@ public class GameManager : MonoBehaviour {
             if(!loadedData.CurrentRun.Ended)
             {
                 getClassRun();
-                playerStat = new JoueurStat(){
+                playerStat = new JoueurStat() {
                     Radiance = loadedData.CurrentRun.player.Radiance,
                     RadianceMax = classSO.PlayerStat.RadianceMax,
                     Volonter = loadedData.CurrentRun.player.Volonter,
@@ -75,9 +76,13 @@ public class GameManager : MonoBehaviour {
                     Essence = loadedData.CurrentRun.player.Essence,
                     ForceAme = loadedData.CurrentRun.player.ForceAme,
                     Vitesse = loadedData.CurrentRun.player.Vitesse,
-                    Calme = classSO.PlayerStat.Calme
+                    Calme = classSO.PlayerStat.Calme,
+                    SlotsSouvenir = classSO.PlayerStat.SlotsSouvenir
                 };
-
+                for(int i = 0; i < AllSouvenir.Count; i++)
+                {
+                    CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
+                }
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
 

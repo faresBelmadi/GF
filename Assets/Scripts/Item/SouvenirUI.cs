@@ -5,17 +5,27 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Serializable]
 public class SouvenirUI : MonoBehaviour
 {
     public Souvenir LeSouvenir;
-    public Action<Souvenir> Act;
-    public Button button;
+    public GameObject SouvenirObject;
     public TextMeshProUGUI TexteDescription;
 
     public void StartUp()
     {
-        button = this.GetComponent<Button>();
-        button.GetComponent<Image>().sprite = LeSouvenir.Icon;
-        TexteDescription.text = LeSouvenir.Nom + LeSouvenir.Description;
+        SouvenirObject = this.gameObject;
+        SouvenirObject.GetComponent<Image>().sprite = LeSouvenir.Icon;
+        TexteDescription.text = LeSouvenir.Nom + "\n" + LeSouvenir.Description;
+    }
+
+    public void OnMouseEnter()
+    {
+        
+    }
+
+    public void OnMouseExit()
+    {
+        
     }
 }

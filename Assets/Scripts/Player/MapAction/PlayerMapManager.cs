@@ -116,12 +116,17 @@ public class PlayerMapManager : MonoBehaviour
         MenuCamera.SetActive(false);
     }
 
-    public IEnumerator EndBattle()
+    public IEnumerator EndBattle(bool IsLoot)
     {
         CurrentRoomCamera.SetActive(false);
         GameManager.instance.BattleMan = null;
         MenuCamera.SetActive(true);
+        if (IsLoot == true)
+        {
+            LoadMenuStat();
+        }
         yield return SceneManager.UnloadSceneAsync(s);
+        
     }
 
     void StartAlea()
