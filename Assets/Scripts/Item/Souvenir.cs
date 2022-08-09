@@ -13,6 +13,7 @@ public class Souvenir : ScriptableObject
     public List<ModificationStatSouvenir> ModificationStat;
 
     public string Nom;
+    [TextArea(5, 10)]
     public string Description;
     public Sprite Icon;
 
