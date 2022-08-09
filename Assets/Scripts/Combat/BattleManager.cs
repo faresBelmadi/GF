@@ -42,6 +42,45 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private DialogueManager DialogueManager;
 
+    public bool IsLoot;
+
+    #region Loot
+
+    public void Loot()
+    {
+        int random = UnityEngine.Random.Range(0, 101);
+        Debug.Log("Loot : " + random);
+        if (random > _encounter.PourcentageLootSouvenir)
+        {
+            return;
+        }
+        _encounter.LootRarity.Sort((x, y) => x.Pourcentage.CompareTo(y.Pourcentage));
+        int PourcentageTotal = 0;
+        for (int i = 0; i < _encounter.LootRarity.Count; i++)
+        {
+            PourcentageTotal += _encounter.LootRarity[i].Pourcentage;
+        }
+        random = UnityEngine.Random.Range(0, PourcentageTotal + 1);
+        Debug.Log("Rarity : " + random);
+        for (int i = 0; i < _encounter.LootRarity.Count; i++)
+        {
+            if (random <= _encounter.LootRarity[i].Pourcentage && GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == _encounter.LootRarity[i].rareter) != null)
+            {
+                player.Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == _encounter.LootRarity[i].rareter)));
+                GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == _encounter.LootRarity[i].rareter));
+                IsLoot = true;
+                return;
+            }
+            else
+            {
+                random -= _encounter.LootRarity[i].Pourcentage;
+                IsLoot = false;
+            }
+        }
+    }
+
+    #endregion Loot
+
     #region calcul tension & calme
 
     private void CalcTensionJoueur()
@@ -172,12 +211,13 @@ public class BattleManager : MonoBehaviour
 
     private void EndBattle()
     {
+        Loot();
         player.ResetStat();
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Stat.Tension = 0;
         GameManager.instance.playerStat = player.Stat;
-
-        StartCoroutine(GameManager.instance.pmm.EndBattle());
+        Debug.Log(IsLoot);
+        StartCoroutine(GameManager.instance.pmm.EndBattle(IsLoot));
     }
 
     #endregion Mise en place combat & fin

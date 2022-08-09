@@ -13,6 +13,9 @@ public class JoueurStat : CharacterStat
     public int Clairvoyance;
     public int ClairvoyanceOriginal;
     public List<Spell> ListSpell;
+    public List<Passif> ListPassif;
+    public int SlotsSouvenir;
+    public List<Souvenir> ListSouvenir;
 
     public void ModifStateAll(JoueurStat ModifState)
     {

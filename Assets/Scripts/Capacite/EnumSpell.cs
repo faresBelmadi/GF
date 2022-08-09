@@ -69,3 +69,15 @@ public enum TypeEffet
     Conscience,
     ConscienceMax,
 }
+
+public enum TypePassif
+{
+    CodeDeLHonneur,
+    SacrificeRituel,
+    Mannequin,
+    Martyr,
+    Cultiste,
+    Sauvage,
+    Fille,
+    Droit
+}
