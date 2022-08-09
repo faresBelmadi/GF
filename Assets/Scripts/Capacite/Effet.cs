@@ -13,7 +13,7 @@ public class Effet : ScriptableObject
     public int RandomX;
     public int RandomY;
     public int NbAttaque;
-    private int TimeAlive;
+    private int TimeAlive = 1;
 
     public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTake = 0, JoueurStat Cible = null)
     {
@@ -162,13 +162,19 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += Mathf.FloorToInt((Pourcentage + (ValeurBrut * tempListAFAD.Count()) / 100f) * NbAttaque) * Caster.ForceAme;
                 break;
             case TypeEffet.GainResilienceIncrementale:
-                TimeAlive++;
                 ModifState.Resilience += ValeurBrut * TimeAlive;
+                TimeAlive++;
                 if (ModifState.Resilience > 10)
                     ModifState.Resilience = 10;
                 break;
             case TypeEffet.DamageLastPhase:
                 ModifState.Radiance += -GameManager.instance.BattleMan.LastPhaseDamage;
+                break;
+            case TypeEffet.NoEssence:
+                ModifState.Essence += -Cible.Essence;
+                break;
+            case TypeEffet.DoubleBuffDebuff:
+                ModifState.MultipleBuffDebuff = ValeurBrut;
                 break;
             default:
                 break;

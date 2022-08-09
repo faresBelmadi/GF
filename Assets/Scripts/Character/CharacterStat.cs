@@ -34,7 +34,8 @@ public class CharacterStat : ScriptableObject
     public int PalierChangement;
     public float ValeurPalier = 10;
     public int NbPalier = 1;
-    public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>(); 
+    public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>();
+    public int MultipleBuffDebuff;
 
     public void ModifStateAll(CharacterStat ModifState)
     {

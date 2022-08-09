@@ -81,5 +81,7 @@ public enum TypeEffet
     AttaqueStackAmant,
     AttaqueFADebuff,
     GainResilienceIncrementale,
-    DamageLastPhase
+    DamageLastPhase,
+    NoEssence,
+    DoubleBuffDebuff
 }

@@ -153,6 +153,7 @@ public class JoueurBehavior : CombatBehavior
         Stat.Resilience = Stat.ResilienceOriginal;
         Stat.ForceAme = Stat.ForceAmeOriginal;
         Stat.Conviction = Stat.ConvictionOriginal;
+        Stat.MultipleBuffDebuff = 1;
 
     }
 
@@ -292,12 +293,16 @@ public class JoueurBehavior : CombatBehavior
 
     public void AddDebuff(BuffDebuff toAdd, Decompte Decompte, TimerApplication Timer)
     {
-        if(toAdd.IsDebuff)
+        for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
-            ReceiveTension(Source.Buff);
+            if (toAdd.IsDebuff)
+            {
+                ReceiveTension(Source.Buff);
+            }
+            Stat.ListBuffDebuff.Add(Instantiate(toAdd));
+            base.AddBuffDebuff(toAdd);
         }
-        Stat.ListBuffDebuff.Add(Instantiate(toAdd));
-        base.AddBuffDebuff(toAdd);
+       
 
         DecompteDebuffJoueur(Decompte, Timer);
 

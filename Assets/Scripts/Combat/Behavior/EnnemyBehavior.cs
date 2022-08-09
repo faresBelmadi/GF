@@ -55,6 +55,7 @@ public class EnnemyBehavior : CombatBehavior
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Dissimulation = Stat.DissimulationOriginal;
         Stat.Resilience = Stat.ResilienceOriginal;
+        Stat.MultipleBuffDebuff = 1;
     }
 
     public void StartPhase()
@@ -287,13 +288,15 @@ public class EnnemyBehavior : CombatBehavior
 
     public void AddDebuff(BuffDebuff toAdd, Decompte Decompte, TimerApplication Timer)
     {
-        if (toAdd.IsDebuff)
+        for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
-            ReceiveTension(Source.Buff);
+            if (toAdd.IsDebuff)
+            {
+                ReceiveTension(Source.Buff);
+            }
+            Stat.ListBuffDebuff.Add(Instantiate(toAdd));
+            base.AddBuffDebuff(toAdd);
         }
-        Stat.ListBuffDebuff.Add(Instantiate(toAdd));
-        base.AddBuffDebuff(toAdd);
-
         DecompteDebuffEnnemi(Decompte, Timer);
 
         UpdateUI();
