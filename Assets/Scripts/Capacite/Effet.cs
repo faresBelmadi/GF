@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Effect", menuName = "Capacité/Create New Effet", order = 11)]
@@ -12,6 +13,7 @@ public class Effet : ScriptableObject
     public int RandomX;
     public int RandomY;
     public int NbAttaque;
+    private int TimeAlive;
 
     public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTake = 0, JoueurStat Cible = null)
     {
@@ -140,6 +142,33 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.AugmentationFaRadianceActuelle:
                 ModifState.ForceAme += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.Radiance;
+                break;
+            case TypeEffet.ConsommeTensionAugmentationFA:
+                ModifState.Tension += -Cible.Tension;
+                var toAdd = Instantiate(GameObject.FindObjectsOfType<BuffDebuff>().Where(c => c.Nom == "Tension convertis en FA").First());
+                toAdd.Effet.First().Pourcentage = (int)Cible.Tension;
+                Caster.ListBuffDebuff.Add(toAdd);
+                break;
+            case TypeEffet.RemoveDebuff:
+                var tempListRD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
+                tempListRD.RemoveAt(Random.Range  (0, tempListRD.Count));
+                break;
+            case TypeEffet.AttaqueStackAmant:
+                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * Cible.ListBuffDebuff.Where(c => c.Nom == "Amant").Count()) * Caster.ForceAme;
+                break;
+            case TypeEffet.AttaqueFADebuff:
+                var tempListAFAD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
+
+                ModifState.Radiance += Mathf.FloorToInt((Pourcentage + (ValeurBrut * tempListAFAD.Count()) / 100f) * NbAttaque) * Caster.ForceAme;
+                break;
+            case TypeEffet.GainResilienceIncrementale:
+                TimeAlive++;
+                ModifState.Resilience += ValeurBrut * TimeAlive;
+                if (ModifState.Resilience > 10)
+                    ModifState.Resilience = 10;
+                break;
+            case TypeEffet.DamageLastPhase:
+                ModifState.Radiance += -GameManager.instance.BattleMan.LastPhaseDamage;
                 break;
             default:
                 break;

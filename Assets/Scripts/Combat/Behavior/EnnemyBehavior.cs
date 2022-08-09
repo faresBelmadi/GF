@@ -369,6 +369,8 @@ public class EnnemyBehavior : CombatBehavior
         if (ModifStat.Radiance < 0)
         {
             LastDamageTaken = ModifStat.Radiance;
+            GameManager.instance.BattleMan.CurrentPhaseDamage += LastDamageTaken;
+
 
             if (LastDamageTaken < GameManager.instance.BattleMan.MostDamage)
             {

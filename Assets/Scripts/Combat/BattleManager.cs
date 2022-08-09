@@ -39,7 +39,8 @@ public class BattleManager : MonoBehaviour
     bool endBattle;
     BattleUI battleUI;
     public int MostDamage, MostDamageID;
-
+    public int LastPhaseDamage;
+    public int CurrentPhaseDamage;
     [SerializeField]
     private DialogueManager DialogueManager;
 
@@ -187,6 +188,8 @@ public class BattleManager : MonoBehaviour
 
     private void StartPhase()
     {
+        LastPhaseDamage = CurrentPhaseDamage;
+        CurrentPhaseDamage = 0;
         DetermTour();
         player.StartPhase();
         foreach (var item in EnemyScripts)

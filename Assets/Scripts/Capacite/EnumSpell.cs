@@ -76,4 +76,10 @@ public enum TypeEffet
     DegatPVMax,
     RandomAttaque,
     AugmentationFaRadianceActuelle,
+    ConsommeTensionAugmentationFA,
+    RemoveDebuff,
+    AttaqueStackAmant,
+    AttaqueFADebuff,
+    GainResilienceIncrementale,
+    DamageLastPhase
 }
