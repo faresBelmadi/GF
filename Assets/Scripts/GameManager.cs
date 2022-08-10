@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour {
     public PlayerMapManager pmm;
     public BattleManager BattleMan;
     public AleaManager AleaMan;
+    public AutelManager AutelMan;
     public MenuStatManager StatMan;
 
     [Header("Classes & Encounter")]
@@ -210,6 +211,11 @@ public class GameManager : MonoBehaviour {
     public void LoadEvent()
     {
         AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
+    }
+
+    public void LoadAutel()
+    {
+        AutelMan.StartAutel();
     }
 
     public void StartStatJoueur()

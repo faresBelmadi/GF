@@ -105,8 +105,8 @@ public class MenuStatManager : MonoBehaviour
         ValeurConviction.text = StatTemp.Conviction.ToString();
         ValeurResilience.text = StatTemp.Resilience.ToString();
         ValeurCalme.text = StatTemp.Calme.ToString();
-        ValeurVolonter.text = StatTemp.VolonterMax.ToString();
-        ValeurConscience.text = StatTemp.ConscienceMax.ToString();
+        ValeurVolonter.text = StatTemp.Volonter.ToString() + "/" + StatTemp.VolonterMax.ToString();
+        ValeurConscience.text = StatTemp.Conscience.ToString() + "/" + StatTemp.ConscienceMax.ToString();
         ValeurClairvoyance.text = StatTemp.Clairvoyance.ToString();
 
         ModifTempsReel(Stat.RadianceMax, StatTemp.RadianceMax, ModifRadiance);

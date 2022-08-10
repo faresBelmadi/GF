@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New dialogue", menuName = "Remake/Character/Create New Joueur", order = 11)]
 public class JoueurStat : CharacterStat
 {
+    public int Lvl;
     public int Volonter;
     public int VolonterMax;
     public int Conscience;
