@@ -159,19 +159,11 @@ public class PlayerMapManager : MonoBehaviour
         MenuCamera.SetActive(false);
     }
 
-    public IEnumerator EndAutel(bool Use, bool Loot)
+    public IEnumerator EndAutel(bool Loot)
     {
         CurrentRoomCamera.SetActive(false);
         GameManager.instance.AutelMan = null;
         MenuCamera.SetActive(true);
-        if(Use == true)
-        {
-            _currentRoom.Type = TypeRoom.Visited;
-        }
-        else
-        {
-            _currentRoom.Type = TypeRoom.Heal;
-        }
         if (Loot == true)
         {
             LoadMenuStat();
