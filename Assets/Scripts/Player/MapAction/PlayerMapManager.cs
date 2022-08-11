@@ -44,7 +44,7 @@ public class PlayerMapManager : MonoBehaviour
     {
         if(_currentRoom != null)
         {
-            //_currentRoom.Type = TypeRoom.Visited;
+            _currentRoom.Type = TypeRoom.Visited;
             foreach (var item in _currentRoom.ConnectedRooms)
             {
                 item.isNavigable = false;

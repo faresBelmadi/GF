@@ -11,6 +11,7 @@ public class AutelManager : MonoBehaviour
     public bool Use = false;
     public bool Loot = false;
     public JoueurStat Stat;
+    public TextMeshProUGUI EssenceText;
     public int CoutLvlUp = 1000;
     public int Etage = 1;
 
@@ -21,6 +22,8 @@ public class AutelManager : MonoBehaviour
     public List<LootRarity> LootRarityForChoix1;
     public GameObject SpawnSouvenirChoix3, SouvenirChoix3;
     public GameObject SouvenirPrefab;
+
+    #region Start & End
 
     public void StartAutel()
     {
@@ -36,16 +39,29 @@ public class AutelManager : MonoBehaviour
         {
             case 1:
                 SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare));
+                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
                 break;
             case 2:
                 SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique));
+                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
                 break;
             case 3:
                 SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Legendaire));
+                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
                 break;
         }
-        SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
+        
     }
+
+    public void EndAutel()
+    {
+        GameManager.instance.playerStat = Stat;
+        StartCoroutine(GameManager.instance.pmm.EndAutel(Use, Loot));
+    }
+
+    #endregion Start & End
+
+    #region Update
 
     public void UpdateCoutChoix()
     {
@@ -67,12 +83,13 @@ public class AutelManager : MonoBehaviour
                 TextCoutChoix3.text = "Cout : " + CoutChoix3.ToString() + " essence\n10 point de Clairvoyance";
                 break;
         }
-        
+
     }
 
     public void Update()
     {
-        if(Stat.Essence < CoutLvlUp)
+        EssenceText.text = "Essence : " + Stat.Essence;
+        if (Stat.Essence < CoutLvlUp)
         {
             ButtonLvlup.GetComponentInChildren<Button>().interactable = false;
         }
@@ -90,6 +107,10 @@ public class AutelManager : MonoBehaviour
         }
     }
 
+    #endregion Update
+
+    #region LvlUp
+
     public void Lvlup()
     {
         Stat.Essence -= CoutLvlUp;
@@ -97,6 +118,10 @@ public class AutelManager : MonoBehaviour
         Use = true;
         ButtonItem.GetComponent<Button>().interactable = false;
     }
+
+    #endregion LvlUp
+
+    #region Item
 
     public void Item()
     {
@@ -118,6 +143,10 @@ public class AutelManager : MonoBehaviour
         ButtonReturn.SetActive(false);
     }
 
+    #endregion Item
+
+    #region Les Choix
+
     public void Choix1()
     {
         Stat.Essence -= CoutChoix1;
@@ -126,6 +155,7 @@ public class AutelManager : MonoBehaviour
         Debug.Log("Loot : " + random);
         if (random > 51)
         {
+            EndAutel();
             return;
         }
         LootRarityForChoix1.Sort((x, y) => x.Pourcentage.CompareTo(y.Pourcentage));
@@ -140,8 +170,9 @@ public class AutelManager : MonoBehaviour
         {
             if (random <= LootRarityForChoix1[i].Pourcentage && GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter) != null)
             {
-                Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter)));
-                //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter));
+                string NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter).Nom;
+                Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 Use = true;
                 Loot = true;
                 EndAutel();
@@ -159,19 +190,23 @@ public class AutelManager : MonoBehaviour
     {
         Stat.Essence -= CoutChoix2;
         Stat.Conscience += 3;
+        string NameLoot;
         switch (Etage)
         {
             case 1:
-                Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare)));
-                //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare));
+                NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare).Nom;
+                Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 break;
             case 2:
-                Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare)));
-                //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare));
+                NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare).Nom;
+                Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 break;
             case 3:
-                Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique)));
-                //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique));
+                NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).Nom;
+                Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 break;
         }
         Use = true;
@@ -202,9 +237,5 @@ public class AutelManager : MonoBehaviour
         EndAutel();
     }
 
-    public void EndAutel()
-    {
-        GameManager.instance.playerStat = Stat;
-        StartCoroutine(GameManager.instance.pmm.EndAutel(Use, Loot));
-    }
+    #endregion Les Choix
 }
