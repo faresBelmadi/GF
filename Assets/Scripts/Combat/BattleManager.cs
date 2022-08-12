@@ -35,7 +35,7 @@ public class BattleManager : MonoBehaviour
     public int currentIdTurn;
     public int nbTurn;
     public int idTarget = -1;
-    bool endBattle;
+    public bool endBattle;
     BattleUI battleUI;
 
     [SerializeField]
