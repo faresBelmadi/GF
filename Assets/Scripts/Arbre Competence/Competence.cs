@@ -8,7 +8,7 @@ public class Competence
     public int IDLvl;
     public Spell Spell;
     public List<ModifStat> ModifStat;
-    public int Essence;
+    public int EssenceOriginal, Essence;
     public List<int> IDLier;
     public bool Bought;
     public bool Unlock;

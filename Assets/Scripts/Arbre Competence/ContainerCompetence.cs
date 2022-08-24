@@ -2,24 +2,33 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ContainerCompetence : MonoBehaviour
+public class ContainerCompetence : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public Competence LaCompetence;
     public Sprite Acheter;
     public TextMeshProUGUI NomSpell, Stat, Cout;
     public Button ButtonBuy, ButtonEquip, ButtonUnEquip;
-    public GameObject ZoneDescription;
+    public GameObject ZoneDescription, AffichageAchat;
 
     public void Affichage()
     {
         NomSpell.text = "Spell :\n" + LaCompetence.Spell.Nom.ToString();
+        Stat.text = "";
         foreach(var item in LaCompetence.ModifStat)
         {
             Stat.text += DescriptionStat(item.StatModif) + item.Valeur + "\n";
         }
-        Cout.text = "Cout : " + LaCompetence.Essence.ToString();
+        if(LaCompetence.Bought == true)
+        {
+            Cout.text = "";
+        }
+        else
+        {
+            Cout.text = "Cout : " + LaCompetence.Essence.ToString();
+        }
     }
 
     private string DescriptionStat(StatModif Stat)
@@ -58,8 +67,30 @@ public class ContainerCompetence : MonoBehaviour
         return DescTemp;
     }
 
-    public void OnMouseEnter()
+    #region Description
+
+    public void OnPointerEnter(PointerEventData eventData)
     {
-        
+        ZoneDescription.SetActive(true);
+        ZoneDescription.GetComponentInChildren<TextMeshProUGUI>().text = LaCompetence.Spell.Nom + "\nCost : ";
+        foreach (var item in LaCompetence.Spell.Costs)
+        {
+            if (item.typeCost == TypeCostSpell.volonte)
+                ZoneDescription.GetComponentInChildren<TextMeshProUGUI>().text += item.Value + "V ";
+            if (item.typeCost == TypeCostSpell.radiance)
+                ZoneDescription.GetComponentInChildren<TextMeshProUGUI>().text += item.Value + "R ";
+            if (item.typeCost == TypeCostSpell.conscience)
+                ZoneDescription.GetComponentInChildren<TextMeshProUGUI>().text += item.Value + "C ";
+        }
+        ZoneDescription.GetComponentInChildren<TextMeshProUGUI>().text += "\n" + LaCompetence.Spell.Description;
     }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        ZoneDescription.SetActive(false);
+    }
+
+    #endregion Description
+
+
 }
