@@ -15,11 +15,16 @@ public class AutelManager : MonoBehaviour
 
     public GameObject ButtonLvlup, ButtonItem;
     public GameObject ButtonChoix1, ButtonChoix2, ButtonChoix3, ButtonReturn;
-    public TextMeshProUGUI TextCoutChoix1, TextCoutChoix2, TextCoutChoix3, TextCoutLvlUp;
+    public TextMeshProUGUI TextCoutChoix1, TextCoutChoix2, TextCoutChoix3;
     public List<int> CoutChoix1, CoutChoix2, CoutChoix3, CoutStatChoix3;
     public List<LootRarity> LootRarityForChoix1;
     public GameObject SpawnSouvenirChoix3, SouvenirChoix3;
     public GameObject SouvenirPrefab;
+
+    public GameObject RetourButton;
+
+    public GameObject ArbreCompetencePrefab;
+    public GameObject ArbreCompetence, Canvas, AutelMenu;
 
     #region Start & End
 
@@ -83,7 +88,6 @@ public class AutelManager : MonoBehaviour
 
     public void UpdateCoutChoix()
     {
-        TextCoutLvlUp.text = "Cout : XXX essence";
         switch (Etage)
         {
             case 1:
@@ -108,10 +112,6 @@ public class AutelManager : MonoBehaviour
     {
         UpdateCoutChoix();
         EssenceText.text = "Essence : " + Stat.Essence;
-        if (Stat.Essence < 1000)
-        {
-            ButtonLvlup.GetComponentInChildren<Button>().interactable = false;
-        }
         if (Stat.Essence < CoutChoix1[Etage-1])
         {
             ButtonChoix1.GetComponentInChildren<Button>().interactable = false;
@@ -153,9 +153,17 @@ public class AutelManager : MonoBehaviour
 
     public void Lvlup()
     {
-        Stat.Essence -= 1000;
-        Stat.Lvl += 1;
-        ButtonItem.GetComponent<Button>().interactable = false;
+        AutelMenu.SetActive(false);
+        ArbreCompetence = Instantiate(ArbreCompetencePrefab, Canvas.transform);
+        ArbreCompetence.GetComponentInChildren<RetourArbre>().Act = NonAfficherArbre;
+        ArbreCompetence.GetComponent<ArbreManager>().StartArbre(Stat);
+    }
+
+    public void NonAfficherArbre()
+    {
+        AutelMenu.SetActive(true);
+        Destroy(ArbreCompetence);
+        EndAutel();
     }
 
     #endregion LvlUp

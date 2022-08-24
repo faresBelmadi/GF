@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI.Extensions;
 using static UnityEngine.UI.Extensions.ReorderableList;
+using UnityEngine.UI;
 
 public class MenuStatManager : MonoBehaviour
 {
@@ -21,6 +22,9 @@ public class MenuStatManager : MonoBehaviour
     public int NbSlotsEquiped;
     public TextMeshProUGUI NbSlots;
 
+    public GameObject ArbreCompetencePrefab;
+    public GameObject ArbreCompetence, Canvas, Menu;
+ 
     #region Start
 
     public void StartMenuStat()
@@ -248,4 +252,22 @@ public class MenuStatManager : MonoBehaviour
     }
 
     #endregion End
+
+    #region Arbre de Competence
+
+    public void afficherArbre()
+    {
+        Menu.SetActive(false);
+        ArbreCompetence = Instantiate(ArbreCompetencePrefab, Canvas.transform);
+        ArbreCompetence.GetComponentInChildren<RetourArbre>().Act = NonAfficherArbre;
+        ArbreCompetence.GetComponent<ArbreManager>().StartArbre(StatTemp);
+    }
+
+    public void NonAfficherArbre()
+    {
+        Menu.SetActive(true);
+        Destroy(ArbreCompetence);
+    }
+
+    #endregion Arbre de Competence
 }

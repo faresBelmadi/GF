@@ -15,4 +15,6 @@ public class ClassPlayer : ScriptableObject
     public List<Spell> spellClass;
 
     public List<string> Passif;
+
+    public List<Competence> Competences;
 }
