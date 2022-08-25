@@ -132,7 +132,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 30, y: 30}
+  m_CellSize: {x: 100, y: 100}
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -432,7 +432,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: -1
-  m_PreferredHeight: 300
+  m_PreferredHeight: 80
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -468,7 +468,7 @@ MonoBehaviour:
   IsDropable: 1
   IsDisplacable: 0
   EqualizeSizesOnDrag: 0
-  maxItems: 2147483647
+  maxItems: 12
   OnElementDropped:
     m_PersistentCalls:
       m_Calls: []
@@ -2162,7 +2162,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Stat: {fileID: 0}
-  Class: {fileID: 0}
+  Class:
+  - IDLvl: 0
+    Spell: {fileID: 0}
+    ModifStat: []
+    EssenceOriginal: 0
+    Essence: 0
+    IDLier: 
+    Bought: 0
+    Unlock: 0
   ValeurRadiance: {fileID: 2864794339374763795}
   ValeurFA: {fileID: 2864794338265181833}
   ValeurVitesse: {fileID: 2864794338819356362}
@@ -2189,6 +2197,9 @@ MonoBehaviour:
   - {fileID: 5874559703207202440}
   - {fileID: 5874559703690536767}
   - {fileID: 5874559702846705574}
+  SpellEquiped: []
+  SpellPrefab: {fileID: 3759916300714854615, guid: 92a26db5e4e82a3458630265ff8ac7df, type: 3}
+  SpellsSpawn: {fileID: 2864794337359137999}
 --- !u!1 &2864794338725564874
 GameObject:
   m_ObjectHideFlags: 0

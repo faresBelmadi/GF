@@ -153,10 +153,10 @@ public class AutelManager : MonoBehaviour
 
     public void Lvlup()
     {
-        AutelMenu.SetActive(false);
         ArbreCompetence = Instantiate(ArbreCompetencePrefab, Canvas.transform);
-        ArbreCompetence.GetComponentInChildren<RetourArbre>().Act = NonAfficherArbre;
         ArbreCompetence.GetComponent<ArbreManager>().StartArbre(Stat);
+        ArbreCompetence.GetComponentInChildren<RetourArbre>().Act = NonAfficherArbre;
+        AutelMenu.SetActive(false);
     }
 
     public void NonAfficherArbre()

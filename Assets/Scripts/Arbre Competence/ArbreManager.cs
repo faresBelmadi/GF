@@ -9,17 +9,41 @@ using UnityEngine.UI;
 public class ArbreManager : MonoBehaviour
 {
     public JoueurStat Stat;
-    public ClassPlayer Class;
+    public List<Competence> Class;
+    public int NbMaxSpell;
 
     public TextMeshProUGUI ValeurRadiance, ValeurFA, ValeurVitesse, ValeurConviction, ValeurResilience, ValeurCalme, ValeurVolonter, ValeurConscience, ValeurClairvoyance, ValeurEssence;
-    public List<GameObject> PanelCompetence;
+    public List<GameObject> PanelCompetence, SpellEquipedGO;
+    public List<Spell> SpellEquiped;
+
+    public GameObject SpellPrefab, SpellsSpawn;
 
     public void StartArbre(JoueurStat _Stat)
     {
         Stat = _Stat;
-        Class = GameManager.instance.classSO;
+        Class = GameManager.instance.classSO.Competences;
+        NbMaxSpell = GameManager.instance.classSO.NbMaxSpell;
+        InstantiateSpell();
         InstantiateArbre();
         TextStat();
+        EnabledCompetence();
+    }
+
+    public void InstantiateSpell()
+    {
+        foreach (var item in Stat.ListSpell)
+        {
+            var temp = Instantiate(SpellPrefab, SpellsSpawn.transform);
+            temp.GetComponent<SpellCombat>().Action = item;
+            temp.GetComponent<SpellCombat>().StartUp();
+            temp.GetComponent<SpellCombat>().isTurn = false;
+            var Colors = temp.GetComponent<Button>().colors;
+            Colors.disabledColor = Color.white;
+            temp.GetComponent<Button>().colors = Colors;
+
+            SpellEquipedGO.Add(temp);
+            SpellEquiped.Add(temp.GetComponent<SpellCombat>().Action);
+        }
     }
 
     public void TextStat()
@@ -40,13 +64,32 @@ public class ArbreManager : MonoBehaviour
     {
         for(int i=1; i < PanelCompetence.Count; i++)
         {
-            PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence = Class.Competences.First(c => c.IDLvl == i);
+            PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence = Class.First(c => c.IDLvl == i);
             PanelCompetence[i].GetComponent<ContainerCompetence>().Affichage();
             ContainerCompetence temp = PanelCompetence[i].GetComponent<ContainerCompetence>();
             PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonBuy.onClick.AddListener(() => { Buy(temp); });
+            PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.onClick.AddListener(() => { Equip(temp); });
+            PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonUnEquip.onClick.AddListener(() => { UnEquip(temp); });
         }
-
         UpdateCout();
+    }
+
+    public void EnabledCompetence()
+    {
+        for (int i = 1; i < PanelCompetence.Count; i++)
+        {
+            PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonBuy.interactable = false;
+            if (Stat.Essence >= PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.Essence)
+            {
+                for(int y=0;y< PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.IDLier.Count; y++)
+                {
+                    if(Class.First(c=>c.IDLvl == PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.IDLier[y]).Bought == true)
+                    {
+                        PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonBuy.interactable = true;
+                    }
+                }
+            }
+        }
     }
 
     public void UpdateCout()
@@ -56,7 +99,7 @@ public class ArbreManager : MonoBehaviour
             item.GetComponent<ContainerCompetence>().LaCompetence.Essence = item.GetComponent<ContainerCompetence>().LaCompetence.EssenceOriginal;
             for (int i = 0; i < item.GetComponent<ContainerCompetence>().LaCompetence.IDLier.Count; i++)
             {
-                if(Class.Competences.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).Bought == true && Class.Competences.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).IDLvl != 0)
+                if(Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).Bought == true && Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).IDLvl != 0)
                 {
                     item.GetComponent<ContainerCompetence>().LaCompetence.Essence -= 200;
                 }
@@ -73,8 +116,27 @@ public class ArbreManager : MonoBehaviour
 
     }
 
+    public void Update()
+    {
+        if(SpellEquiped.Count == 12)
+        {
+            for(int i = 0; i < PanelCompetence.Count; i++)
+            {
+                PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.interactable = false;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < PanelCompetence.Count; i++)
+            {
+                PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.interactable = true;
+            }
+        }
+    }
+
     public void Buy(ContainerCompetence Competence)
     {
+        Stat.Essence -= Competence.LaCompetence.Essence;
         Competence.LaCompetence.Bought = true;
         Competence.AffichageAchat.GetComponent<Image>().sprite = Competence.Acheter;
         Competence.ButtonBuy.gameObject.SetActive(false);
@@ -82,6 +144,43 @@ public class ArbreManager : MonoBehaviour
         ModifStat(Competence.LaCompetence);
         UpdateCout();
         TextStat();
+        EnabledCompetence();
+    }
+
+    public void Equip(ContainerCompetence Competence)
+    {
+        var temp = Instantiate(SpellPrefab, SpellsSpawn.transform);
+        temp.GetComponent<SpellCombat>().Action = Competence.LaCompetence.Spell;
+        temp.GetComponent<SpellCombat>().StartUp();
+        temp.GetComponent<SpellCombat>().isTurn = false;
+        var Colors = temp.GetComponent<Button>().colors;
+        Colors.disabledColor = Color.white;
+        temp.GetComponent<Button>().colors = Colors;
+
+        SpellEquipedGO.Add(temp);
+        SpellEquiped.Add(temp.GetComponent<SpellCombat>().Action);
+
+        Competence.ButtonEquip.gameObject.SetActive(false);
+        Competence.ButtonUnEquip.gameObject.SetActive(true);
+    }
+
+    public void UnEquip(ContainerCompetence Competence)
+    {
+        int PosSpell = 0;
+        for(int i = 0; i < SpellEquipedGO.Count; i++)
+        {
+            if(SpellEquipedGO[i].GetComponent<SpellCombat>().Action.Nom == SpellEquiped.First(c => c.Nom == Competence.LaCompetence.Spell.Nom).Nom)
+            {
+                PosSpell = i;
+            }
+        }
+        Destroy(SpellEquipedGO[PosSpell]);
+        SpellEquipedGO.Remove(SpellEquipedGO[PosSpell]);
+        SpellEquiped.Remove(SpellEquiped.First(c => c.Nom == Competence.LaCompetence.Spell.Nom));
+        
+
+        Competence.ButtonEquip.gameObject.SetActive(true);
+        Competence.ButtonUnEquip.gameObject.SetActive(false);
     }
 
     public void ModifStat(Competence LaCompetence)
