@@ -5,6 +5,7 @@ using TMPro;
 using System.Linq;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using UnityEngine.UI.Extensions;
 
 public class ArbreManager : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class ArbreManager : MonoBehaviour
 
     public GameObject SpellPrefab, SpellsSpawn;
 
+    #region Start&End
+
     public void StartArbre(JoueurStat _Stat)
     {
         Stat = _Stat;
@@ -27,6 +30,22 @@ public class ArbreManager : MonoBehaviour
         InstantiateArbre();
         TextStat();
         EnabledCompetence();
+    }
+
+    public void StartArbreMenuStat(JoueurStat _Stat)
+    {
+        Stat = _Stat;
+        Class = GameManager.instance.classSO.Competences;
+        NbMaxSpell = GameManager.instance.classSO.NbMaxSpell;
+        InstantiateSpell();
+        InstantiateArbre();
+        TextStat();
+        for (int i = 0; i < PanelCompetence.Count; i++)
+        {
+            PanelCompetence[i].GetComponent<ContainerCompetence>().Consultation();
+        }
+        this.GetComponentInChildren<ReorderableList>().IsDraggable = false;
+
     }
 
     public void InstantiateSpell()
@@ -62,7 +81,7 @@ public class ArbreManager : MonoBehaviour
 
     public void InstantiateArbre()
     {
-        for(int i=1; i < PanelCompetence.Count; i++)
+        for (int i = 1; i < PanelCompetence.Count; i++)
         {
             PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence = Class.First(c => c.IDLvl == i);
             PanelCompetence[i].GetComponent<ContainerCompetence>().Affichage();
@@ -74,6 +93,21 @@ public class ArbreManager : MonoBehaviour
         UpdateCout();
     }
 
+    public void ReordableSpell()
+    {
+        SpellEquiped.Clear();
+        Debug.Log(SpellEquiped.Count);
+        var temp = this.GetComponentInChildren<ReorderableListContent>().gameObject;
+        for (int i = 0; i < temp.transform.childCount; i++)
+        {
+            SpellEquiped.Add(temp.transform.GetChild(i).gameObject.GetComponent<SpellCombat>().Action);
+        }
+    }
+
+    #endregion Start&End
+
+    #region Update
+
     public void EnabledCompetence()
     {
         for (int i = 1; i < PanelCompetence.Count; i++)
@@ -81,9 +115,9 @@ public class ArbreManager : MonoBehaviour
             PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonBuy.interactable = false;
             if (Stat.Essence >= PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.Essence)
             {
-                for(int y=0;y< PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.IDLier.Count; y++)
+                for (int y = 0; y < PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.IDLier.Count; y++)
                 {
-                    if(Class.First(c=>c.IDLvl == PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.IDLier[y]).Bought == true)
+                    if (Class.First(c => c.IDLvl == PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.IDLier[y]).Bought == true)
                     {
                         PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonBuy.interactable = true;
                     }
@@ -94,33 +128,28 @@ public class ArbreManager : MonoBehaviour
 
     public void UpdateCout()
     {
-        foreach(var item in PanelCompetence)
+        foreach (var item in PanelCompetence)
         {
             item.GetComponent<ContainerCompetence>().LaCompetence.Essence = item.GetComponent<ContainerCompetence>().LaCompetence.EssenceOriginal;
             for (int i = 0; i < item.GetComponent<ContainerCompetence>().LaCompetence.IDLier.Count; i++)
             {
-                if(Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).Bought == true && Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).IDLvl != 0)
+                if (Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).Bought == true && Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).IDLvl != 0)
                 {
                     item.GetComponent<ContainerCompetence>().LaCompetence.Essence -= 200;
                 }
             }
-            if(item.GetComponent<ContainerCompetence>().LaCompetence.IDLvl != 0)
+            if (item.GetComponent<ContainerCompetence>().LaCompetence.IDLvl != 0)
             {
                 item.GetComponent<ContainerCompetence>().Affichage();
             }
         }
     }
 
-    public void EndArbre()
-    {
-
-    }
-
     public void Update()
     {
-        if(SpellEquiped.Count == 12)
+        if (SpellEquiped.Count == 12)
         {
-            for(int i = 0; i < PanelCompetence.Count; i++)
+            for (int i = 0; i < PanelCompetence.Count; i++)
             {
                 PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.interactable = false;
             }
@@ -133,6 +162,10 @@ public class ArbreManager : MonoBehaviour
             }
         }
     }
+
+    #endregion Update
+
+    #region Interraction Competence
 
     public void Buy(ContainerCompetence Competence)
     {
@@ -149,6 +182,7 @@ public class ArbreManager : MonoBehaviour
 
     public void Equip(ContainerCompetence Competence)
     {
+        Competence.LaCompetence.Equiped = true;
         var temp = Instantiate(SpellPrefab, SpellsSpawn.transform);
         temp.GetComponent<SpellCombat>().Action = Competence.LaCompetence.Spell;
         temp.GetComponent<SpellCombat>().StartUp();
@@ -166,10 +200,11 @@ public class ArbreManager : MonoBehaviour
 
     public void UnEquip(ContainerCompetence Competence)
     {
+        Competence.LaCompetence.Equiped = false;
         int PosSpell = 0;
-        for(int i = 0; i < SpellEquipedGO.Count; i++)
+        for (int i = 0; i < SpellEquipedGO.Count; i++)
         {
-            if(SpellEquipedGO[i].GetComponent<SpellCombat>().Action.Nom == SpellEquiped.First(c => c.Nom == Competence.LaCompetence.Spell.Nom).Nom)
+            if (SpellEquipedGO[i].GetComponent<SpellCombat>().Action.Nom == SpellEquiped.First(c => c.Nom == Competence.LaCompetence.Spell.Nom).Nom)
             {
                 PosSpell = i;
             }
@@ -177,7 +212,7 @@ public class ArbreManager : MonoBehaviour
         Destroy(SpellEquipedGO[PosSpell]);
         SpellEquipedGO.Remove(SpellEquipedGO[PosSpell]);
         SpellEquiped.Remove(SpellEquiped.First(c => c.Nom == Competence.LaCompetence.Spell.Nom));
-        
+
 
         Competence.ButtonEquip.gameObject.SetActive(true);
         Competence.ButtonUnEquip.gameObject.SetActive(false);
@@ -190,33 +225,37 @@ public class ArbreManager : MonoBehaviour
             switch (item.StatModif)
             {
                 case StatModif.RadianceMax:
-                    Stat.RadianceMax -= item.Valeur;
+                    Stat.RadianceMax += item.Valeur;
                     break;
                 case StatModif.ForceAme:
-                    Stat.ForceAme -= item.Valeur;
+                    Stat.ForceAme += item.Valeur;
                     break;
                 case StatModif.Calme:
-                    Stat.Calme -= item.Valeur;
+                    Stat.Calme += item.Valeur;
                     break;
                 case StatModif.Clairvoyance:
-                    Stat.Clairvoyance -= item.Valeur;
+                    Stat.Clairvoyance += item.Valeur;
                     break;
                 case StatModif.ConscienceMax:
-                    Stat.ConscienceMax -= item.Valeur;
+                    Stat.ConscienceMax += item.Valeur;
                     break;
                 case StatModif.Conviction:
-                    Stat.Conviction -= item.Valeur;
+                    Stat.Conviction += item.Valeur;
                     break;
                 case StatModif.Resilience:
-                    Stat.Resilience -= item.Valeur;
+                    Stat.Resilience += item.Valeur;
                     break;
                 case StatModif.Vitesse:
-                    Stat.Vitesse -= item.Valeur;
+                    Stat.Vitesse += item.Valeur;
                     break;
                 case StatModif.VolonterMax:
-                    Stat.VolonterMax -= item.Valeur;
+                    Stat.VolonterMax += item.Valeur;
                     break;
             }
         }
     }
+
+    #endregion Interraction Competence
+
+
 }

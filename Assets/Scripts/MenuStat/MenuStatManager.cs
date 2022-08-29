@@ -259,8 +259,8 @@ public class MenuStatManager : MonoBehaviour
     {
         Menu.SetActive(false);
         ArbreCompetence = Instantiate(ArbreCompetencePrefab, Canvas.transform);
-        ArbreCompetence.GetComponentInChildren<RetourArbre>().Act = NonAfficherArbre;
-        ArbreCompetence.GetComponent<ArbreManager>().StartArbre(StatTemp);
+        ArbreCompetence.GetComponentInChildren<RetourArbre>().gameObject.GetComponent<Button>().onClick.AddListener(NonAfficherArbre);
+        ArbreCompetence.GetComponent<ArbreManager>().StartArbreMenuStat(StatTemp);
     }
 
     public void NonAfficherArbre()

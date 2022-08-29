@@ -154,13 +154,18 @@ public class AutelManager : MonoBehaviour
     public void Lvlup()
     {
         ArbreCompetence = Instantiate(ArbreCompetencePrefab, Canvas.transform);
+        ArbreCompetence.GetComponentInChildren<RetourArbre>().gameObject.GetComponent<Button>().onClick.AddListener(NonAfficherArbre);
         ArbreCompetence.GetComponent<ArbreManager>().StartArbre(Stat);
-        ArbreCompetence.GetComponentInChildren<RetourArbre>().Act = NonAfficherArbre;
         AutelMenu.SetActive(false);
     }
 
     public void NonAfficherArbre()
     {
+        Stat = ArbreCompetence.GetComponent<ArbreManager>().Stat;
+        ArbreCompetence.GetComponent<ArbreManager>().ReordableSpell();
+        Stat.ListSpell.Clear();
+        Stat.ListSpell = ArbreCompetence.GetComponent<ArbreManager>().SpellEquiped;
+        GameManager.instance.classSO.Competences = ArbreCompetence.GetComponent<ArbreManager>().Class;
         AutelMenu.SetActive(true);
         Destroy(ArbreCompetence);
         EndAutel();

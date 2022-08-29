@@ -13,6 +13,8 @@ public class ContainerCompetence : MonoBehaviour, IPointerEnterHandler, IPointer
     public Button ButtonBuy, ButtonEquip, ButtonUnEquip;
     public GameObject ZoneDescription, AffichageAchat;
 
+    #region Affichage
+
     public void Affichage()
     {
         NomSpell.text = "Spell :\n" + LaCompetence.Spell.Nom.ToString();
@@ -28,6 +30,22 @@ public class ContainerCompetence : MonoBehaviour, IPointerEnterHandler, IPointer
         else
         {
             Cout.text = "Cout : " + LaCompetence.Essence.ToString();
+        }
+        if(LaCompetence.Bought == true)
+        {
+            AffichageAchat.GetComponent<Image>().sprite = Acheter;
+            if(LaCompetence.Equiped == true)
+            {
+                ButtonBuy.gameObject.SetActive(false);
+                ButtonEquip.gameObject.SetActive(false);
+                ButtonUnEquip.gameObject.SetActive(true);
+            }
+            else
+            {
+                ButtonBuy.gameObject.SetActive(false);
+                ButtonEquip.gameObject.SetActive(true);
+                ButtonUnEquip.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -67,6 +85,15 @@ public class ContainerCompetence : MonoBehaviour, IPointerEnterHandler, IPointer
         return DescTemp;
     }
 
+    public void Consultation()
+    {
+        ButtonBuy.interactable = false;
+        ButtonEquip.interactable = false;
+        ButtonUnEquip.interactable = false;
+    }
+
+    #endregion Affichage
+
     #region Description
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -91,6 +118,4 @@ public class ContainerCompetence : MonoBehaviour, IPointerEnterHandler, IPointer
     }
 
     #endregion Description
-
-
 }

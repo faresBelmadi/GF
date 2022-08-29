@@ -11,5 +11,5 @@ public class Competence
     public int EssenceOriginal, Essence;
     public List<int> IDLier;
     public bool Bought;
-    public bool Unlock;
+    public bool Equiped;
 }
