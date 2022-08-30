@@ -28,6 +28,19 @@ public class JoueurStat : CharacterStat
         base.ModifStateAll(ModifState);
     }
 
+    public new void RectificationStat()
+    {
+        if (this.Volonter > this.VolonterMax)
+        {
+            this.Volonter = this.VolonterMax;
+        }
+        if (this.Conscience > this.ConscienceMax)
+        {
+            this.Conscience = this.ConscienceMax;
+        }
+        base.RectificationStat();
+    }
+
     public static JoueurStat CreateFromCharacter(CharacterStat ToCreate)
     {
         JoueurStat ToReturn = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;

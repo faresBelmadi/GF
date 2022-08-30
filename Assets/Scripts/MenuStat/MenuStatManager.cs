@@ -161,11 +161,13 @@ public class MenuStatManager : MonoBehaviour
                     {
                         var Temp = Mathf.FloorToInt((item.Pourcentage / 100f) * Stat.RadianceMax);
                         StatTemp.RadianceMax += Temp;
+                        StatTemp.Radiance += Temp;
                         item.ValeurModifier = Temp;
                     }
                     else
                     {
                         StatTemp.RadianceMax -= item.ValeurModifier;
+                        StatTemp.Radiance -= item.ValeurModifier;
                     }
                     break;
                 case StatModif.ForceAme:
@@ -203,6 +205,7 @@ public class MenuStatManager : MonoBehaviour
                     break;
             }
         }
+        StatTemp.RectificationStat();
     }
 
     #endregion Application Souvenir

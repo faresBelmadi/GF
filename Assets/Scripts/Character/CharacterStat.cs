@@ -42,4 +42,27 @@ public class CharacterStat : ScriptableObject
         this.Calme += ModifState.Calme;
         this.Essence += ModifState.Essence;
     }
+
+    public void RectificationStat()
+    {
+        if (this.Radiance > this.RadianceMax)
+        {
+            this.Radiance = this.RadianceMax;
+        }
+        if (this.Conviction > this.ConvictionMax)
+        {
+            this.Conviction = this.ConvictionMax;
+        }else if(this.Conviction < this.ConvictionMin)
+        {
+            this.Conviction = this.ConvictionMin;
+        }
+        if (this.Resilience > this.ResilienceMax)
+        {
+            this.Resilience = this.ResilienceMax;
+        }
+        else if (this.Resilience < this.ResilienceMin)
+        {
+            this.Resilience = this.ResilienceMin;
+        }
+    }
 }

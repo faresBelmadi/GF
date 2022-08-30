@@ -14,6 +14,7 @@ public class ArbreManager : MonoBehaviour
     public int NbMaxSpell;
 
     public TextMeshProUGUI ValeurRadiance, ValeurFA, ValeurVitesse, ValeurConviction, ValeurResilience, ValeurCalme, ValeurVolonter, ValeurConscience, ValeurClairvoyance, ValeurEssence;
+    public TextMeshProUGUI SpellEquipedText;
     public List<GameObject> PanelCompetence, SpellEquipedGO;
     public List<Spell> SpellEquiped;
 
@@ -96,7 +97,6 @@ public class ArbreManager : MonoBehaviour
     public void ReordableSpell()
     {
         SpellEquiped.Clear();
-        Debug.Log(SpellEquiped.Count);
         var temp = this.GetComponentInChildren<ReorderableListContent>().gameObject;
         for (int i = 0; i < temp.transform.childCount; i++)
         {
@@ -147,7 +147,7 @@ public class ArbreManager : MonoBehaviour
 
     public void Update()
     {
-        if (SpellEquiped.Count == 12)
+        if (SpellEquiped.Count == NbMaxSpell)
         {
             for (int i = 0; i < PanelCompetence.Count; i++)
             {
@@ -161,6 +161,7 @@ public class ArbreManager : MonoBehaviour
                 PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.interactable = true;
             }
         }
+        SpellEquipedText.text = "Sort Equiper : " + SpellEquiped.Count + "/" + NbMaxSpell;
     }
 
     #endregion Update
@@ -226,6 +227,7 @@ public class ArbreManager : MonoBehaviour
             {
                 case StatModif.RadianceMax:
                     Stat.RadianceMax += item.Valeur;
+                    Stat.Radiance += item.Valeur;
                     break;
                 case StatModif.ForceAme:
                     Stat.ForceAme += item.Valeur;
@@ -253,6 +255,7 @@ public class ArbreManager : MonoBehaviour
                     break;
             }
         }
+        Stat.RectificationStat();
     }
 
     #endregion Interraction Competence
