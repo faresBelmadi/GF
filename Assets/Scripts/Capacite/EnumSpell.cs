@@ -71,6 +71,7 @@ public enum TypeEffet
     ConscienceMax,
     Soin,
     SoinFA,
+    SoinFANbEnnemi,
     SoinRadianceMax,
     SoinRadianceActuelle,
     DegatPVMax,

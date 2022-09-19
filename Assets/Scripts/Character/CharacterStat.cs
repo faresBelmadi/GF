@@ -36,6 +36,8 @@ public class CharacterStat : ScriptableObject
     public int NbPalier = 1;
     public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>();
     public int MultipleBuffDebuff;
+    public int LastTurnHitReceived;
+    public int LastPhaseHitReceived;
 
     public void ModifStateAll(CharacterStat ModifState)
     {
