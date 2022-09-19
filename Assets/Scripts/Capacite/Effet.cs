@@ -22,7 +22,6 @@ public class Effet : ScriptableObject
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         switch (this.TypeEffet)
         {
-            default:
             case TypeEffet.Clairvoyance:
                 ModifState.Clairvoyance = valueToChange;
                 break;
@@ -38,6 +37,7 @@ public class Effet : ScriptableObject
             case TypeEffet.ConscienceMax:
                 ModifState.ConscienceMax += valueToChange;
                 break;
+            default:
                 ModifState = ResultEffetCommun(Caster);
                 break;
         }
