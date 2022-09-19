@@ -71,6 +71,7 @@ public enum TypeEffet
     ConscienceMax,
     Soin,
     SoinFA,
+    SoinFANbEnnemi,
     SoinRadianceMax,
     SoinRadianceActuelle,
     DegatPVMax,
@@ -84,4 +85,16 @@ public enum TypeEffet
     DamageLastPhase,
     NoEssence,
     DoubleBuffDebuff
+}
+
+public enum TypePassif
+{
+    CodeDeLHonneur,
+    SacrificeRituel,
+    Mannequin,
+    Martyr,
+    Cultiste,
+    Sauvage,
+    Fille,
+    Droit
 }

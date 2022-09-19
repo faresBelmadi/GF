@@ -99,9 +99,9 @@ public class EnnemyBehavior : CombatBehavior
                 }*/
             }
         }
-        var t = Instantiate(EssencePrefab, this.transform.parent);
         if (Stat.Essence != 0)
         {
+            var t = Instantiate(EssencePrefab, this.transform.parent);
             t.GetComponent<Essence>().AddEssence(Stat.Essence);
             GameManager.instance.BattleMan.ListEssence.Add(t);
         }

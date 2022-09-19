@@ -69,6 +69,7 @@ public class PlayerMapManager : MonoBehaviour
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
             case TypeRoom.Heal:
+                StartCoroutine("LoadSceneAsync", "Autel");
                 break;
             case TypeRoom.Event:
                 StartCoroutine("LoadSceneAsync", "AleaScene");
@@ -96,11 +97,17 @@ public class PlayerMapManager : MonoBehaviour
             case "AleaScene":
                 StartAlea();
                 break;
+            case "Autel":
+                StartAutel();
+                break;
+            case "MenuStat":
+                StartMenuStat();
+                break;
             default:
             break;
         }
 
-        
+       
         
     }
 
@@ -113,12 +120,17 @@ public class PlayerMapManager : MonoBehaviour
         MenuCamera.SetActive(false);
     }
 
-    public IEnumerator EndBattle()
+    public IEnumerator EndBattle(bool IsLoot)
     {
         CurrentRoomCamera.SetActive(false);
         GameManager.instance.BattleMan = null;
         MenuCamera.SetActive(true);
+        if (IsLoot == true)
+        {
+            LoadMenuStat();
+        }
         yield return SceneManager.UnloadSceneAsync(s);
+        
     }
 
     void StartAlea()
@@ -134,6 +146,49 @@ public class PlayerMapManager : MonoBehaviour
     {
         CurrentRoomCamera.SetActive(false);
         GameManager.instance.AleaMan = null;
+        MenuCamera.SetActive(true);
+        yield return SceneManager.UnloadSceneAsync(s);
+    }
+
+    void StartAutel()
+    {
+        CurrentRoomCamera = rootScene.First(c => c.name == "AutelCamera");
+        GameManager.instance.AutelMan = rootScene.First(c => c.name == "AutelManager").GetComponent<AutelManager>();
+        GameManager.instance.LoadAutel();
+        CurrentRoomCamera.SetActive(true);
+        MenuCamera.SetActive(false);
+    }
+
+    public IEnumerator EndAutel(bool Loot)
+    {
+        CurrentRoomCamera.SetActive(false);
+        GameManager.instance.AutelMan = null;
+        MenuCamera.SetActive(true);
+        if (Loot == true)
+        {
+            LoadMenuStat();
+        }
+        yield return SceneManager.UnloadSceneAsync(s);
+    }
+
+    public void LoadMenuStat()
+    {
+        StartCoroutine("LoadSceneAsync", "MenuStat");
+    }
+
+    void StartMenuStat()
+    {
+        CurrentRoomCamera = rootScene.First(c => c.name == "MenuStatCamera");
+        GameManager.instance.StatMan = rootScene.First(c => c.name == "MenuStatManager").GetComponent<MenuStatManager>();
+        GameManager.instance.LoadMenuStat();
+        CurrentRoomCamera.SetActive(true);
+        MenuCamera.SetActive(false);
+    }
+
+    public IEnumerator EndMenuStat()
+    {
+        CurrentRoomCamera.SetActive(false);
+        GameManager.instance.StatMan = null;
         MenuCamera.SetActive(true);
         yield return SceneManager.UnloadSceneAsync(s);
     }

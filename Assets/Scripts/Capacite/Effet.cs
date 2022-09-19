@@ -14,33 +14,15 @@ public class Effet : ScriptableObject
     public int RandomY;
     public int NbAttaque;
     private int TimeAlive = 1;
+    public bool IsAttaqueEffet;
 
     public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTake = 0, JoueurStat Cible = null)
     {
+        int valueToChange = ValeurBrut * NbAttaque;
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         switch (this.TypeEffet)
         {
             default:
-                ModifState = ResultEffetCommun(Caster);
-                break;
-        }
-        return ModifState;
-    }
-
-    public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
-    {
-        JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        ModifState = ResultEffetCommun(Caster, LastDamageTaken);
-        return ModifState;
-    }
-
-    private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
-    {
-        int valueToChange = ValeurBrut * NbAttaque;
-        JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken));
-        switch (this.TypeEffet)
-        {
             case TypeEffet.Clairvoyance:
                 ModifState.Clairvoyance = valueToChange;
                 break;
@@ -56,6 +38,26 @@ public class Effet : ScriptableObject
             case TypeEffet.ConscienceMax:
                 ModifState.ConscienceMax += valueToChange;
                 break;
+                ModifState = ResultEffetCommun(Caster);
+                break;
+        }
+        return ModifState;
+    }
+
+    public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
+    {
+        JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        ModifState = ResultEffetCommun(Caster, LastDamageTaken);
+        return ModifState;
+    }
+
+    private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
+    {
+        JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken));
+        switch (this.TypeEffet)
+        {
+            
             default:
                 break;
         }
@@ -130,6 +132,9 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.SoinFA:
                 ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme;
+                break;
+            case TypeEffet.SoinFANbEnnemi:
+                ModifState.Radiance += ((Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * GameManager.instance.BattleMan.EnemyScripts.Count;
                 break;
             case TypeEffet.SoinRadianceMax:
                 ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax;

@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Stat Joueur", menuName = "Character/Create New Joueur", order = 11)]
 public class JoueurStat : CharacterStat
 {
+    public int Lvl;
     public int Volonter;
     public int VolonterMax;
     public int Conscience;
@@ -13,6 +14,9 @@ public class JoueurStat : CharacterStat
     public int Clairvoyance;
     public int ClairvoyanceOriginal;
     public List<Spell> ListSpell;
+    public List<Passif> ListPassif;
+    public int SlotsSouvenir;
+    public List<Souvenir> ListSouvenir;
 
     public void ModifStateAll(JoueurStat ModifState)
     {
@@ -22,6 +26,19 @@ public class JoueurStat : CharacterStat
         this.ConscienceMax += ModifState.ConscienceMax;
         this.Clairvoyance += ModifState.Clairvoyance;
         base.ModifStateAll(ModifState);
+    }
+
+    public new void RectificationStat()
+    {
+        if (this.Volonter > this.VolonterMax)
+        {
+            this.Volonter = this.VolonterMax;
+        }
+        if (this.Conscience > this.ConscienceMax)
+        {
+            this.Conscience = this.ConscienceMax;
+        }
+        base.RectificationStat();
     }
 
     public static JoueurStat CreateFromCharacter(CharacterStat ToCreate)

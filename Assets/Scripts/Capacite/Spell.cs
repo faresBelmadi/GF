@@ -7,6 +7,7 @@ using UnityEngine;
 public class Spell : ScriptableObject
 {
     public string Nom;
+    [TextArea(5, 10)]
     public string Description;
     public int IDSpell;
     public List<int> IDChildren;
