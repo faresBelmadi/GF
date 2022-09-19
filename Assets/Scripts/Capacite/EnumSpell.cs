@@ -86,3 +86,15 @@ public enum TypeEffet
     NoEssence,
     DoubleBuffDebuff
 }
+
+public enum TypePassif
+{
+    CodeDeLHonneur,
+    SacrificeRituel,
+    Mannequin,
+    Martyr,
+    Cultiste,
+    Sauvage,
+    Fille,
+    Droit
+}

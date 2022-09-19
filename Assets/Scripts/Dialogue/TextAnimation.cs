@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-[System.Serializable]
 public class TextAnimation : MonoBehaviour
 {
     string originalTexte;
     TextMeshProUGUI TextAttached;
     int index;
-    public float delai = 0.05f;
+    public float delai = 0.02f;
 
     private void OnEnable() {
         TextAttached = transform.GetComponent<TextMeshProUGUI>();

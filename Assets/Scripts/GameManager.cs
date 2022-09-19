@@ -15,12 +15,17 @@ public class GameManager : MonoBehaviour {
     public PlayerMapManager pmm;
     public BattleManager BattleMan;
     public AleaManager AleaMan;
+    public AutelManager AutelMan;
+    public MenuStatManager StatMan;
 
     [Header("Classes & Encounter")]
     public List<ClassPlayer> AllClasses;
 
     public List<Encounter> AllEncounter;
     public List<EncounterAlea> AllEncounterAlea;
+
+    public List<Souvenir> AllSouvenir;
+    public List<Souvenir> CopyAllSouvenir;
 
     public ClassPlayer classSO;
     public JoueurStat playerStat;
@@ -60,7 +65,7 @@ public class GameManager : MonoBehaviour {
             if(!loadedData.CurrentRun.Ended)
             {
                 getClassRun();
-                playerStat = new JoueurStat(){
+                playerStat = new JoueurStat() {
                     Radiance = loadedData.CurrentRun.player.Radiance,
                     RadianceMax = classSO.PlayerStat.RadianceMax,
                     Volonter = loadedData.CurrentRun.player.Volonter,
@@ -72,9 +77,14 @@ public class GameManager : MonoBehaviour {
                     Essence = loadedData.CurrentRun.player.Essence,
                     ForceAme = loadedData.CurrentRun.player.ForceAme,
                     Vitesse = loadedData.CurrentRun.player.Vitesse,
-                    Calme = classSO.PlayerStat.Calme
+                    Calme = classSO.PlayerStat.Calme,
+                    SlotsSouvenir = classSO.PlayerStat.SlotsSouvenir
                 };
-
+                for(int i = 0; i < AllSouvenir.Count; i++)
+                {
+                    CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
+                }
+                playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
 
                 foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
@@ -201,6 +211,21 @@ public class GameManager : MonoBehaviour {
     public void LoadEvent()
     {
         AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
+    }
+
+    public void LoadAutel()
+    {
+        AutelMan.StartAutel();
+    }
+
+    public void StartStatJoueur()
+    {
+        pmm.LoadMenuStat();
+    }
+
+    public void LoadMenuStat()
+    {
+        StatMan.StartMenuStat();
     }
     
     void getClassRun()

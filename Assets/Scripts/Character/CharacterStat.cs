@@ -24,20 +24,8 @@ public class CharacterStat : ScriptableObject
     public int Essence;
     public float MultiplDef = 1;
     public float MultiplSoin = 1;
-    public float MultiplDegat = 1;
-    public int TensionAttaque = 4;
-    public int TensionDebuff = 2;
-    public int TensionDot = 1;
-    public int TensionSoin = -3;
-    public float Tension;
-    public float TensionMax;
-    public int PalierChangement;
-    public float ValeurPalier = 10;
-    public int NbPalier = 1;
-    public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>();
-    public int MultipleBuffDebuff;
-    public int LastTurnHitReceived;
-    public int LastPhaseHitReceived;
+    public float MultiDegat = 1;
+    public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>(); 
 
     public void ModifStateAll(CharacterStat ModifState)
     {
@@ -53,11 +41,28 @@ public class CharacterStat : ScriptableObject
         this.ResilienceMax += ModifState.ResilienceMax;
         this.Calme += ModifState.Calme;
         this.Essence += ModifState.Essence;
-        this.TensionAttaque += ModifState.TensionAttaque;
-        this.TensionDebuff += ModifState.TensionDebuff;
-        this.TensionDot += ModifState.TensionDot;
-        this.TensionSoin += ModifState.TensionSoin;
-        this.Tension += ModifState.Tension;
-        this.TensionMax += ModifState.TensionMax;
+    }
+
+    public void RectificationStat()
+    {
+        if (this.Radiance > this.RadianceMax)
+        {
+            this.Radiance = this.RadianceMax;
+        }
+        if (this.Conviction > this.ConvictionMax)
+        {
+            this.Conviction = this.ConvictionMax;
+        }else if(this.Conviction < this.ConvictionMin)
+        {
+            this.Conviction = this.ConvictionMin;
+        }
+        if (this.Resilience > this.ResilienceMax)
+        {
+            this.Resilience = this.ResilienceMax;
+        }
+        else if (this.Resilience < this.ResilienceMin)
+        {
+            this.Resilience = this.ResilienceMin;
+        }
     }
 }

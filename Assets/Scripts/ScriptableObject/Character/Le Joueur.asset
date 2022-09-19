@@ -1,0 +1,225 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c61427ca8b9e59f41878c928960a1ab9, type: 3}
+  m_Name: Le Joueur
+  m_EditorClassIdentifier: 
+  ID: 0
+  nameClass: Guerrier
+  PlayerStat: {fileID: 11400000, guid: 5d5113d4575fbfd44b1508a685d42370, type: 2}
+  spellClass: []
+  NbMaxSpell: 12
+  Passif: []
+  Competences:
+  - IDLvl: 0
+    Spell: {fileID: 0}
+    ModifStat: []
+    EssenceOriginal: 0
+    Essence: 0
+    IDLier: 01000000020000000300000004000000
+    Bought: 1
+    Equiped: 0
+  - IDLvl: 1
+    Spell: {fileID: 11400000, guid: a093cc8dfc73e974eb1e46cbae821bf1, type: 2}
+    ModifStat:
+    - StatModif: 1
+      Valeur: 1
+    - StatModif: 3
+      Valeur: 1
+    - StatModif: 5
+      Valeur: -1
+    EssenceOriginal: 1000
+    Essence: 0
+    IDLier: 000000000500000006000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 2
+    Spell: {fileID: 11400000, guid: 085b47302b125eb4799684ec6556540d, type: 2}
+    ModifStat:
+    - StatModif: 1
+      Valeur: 1
+    - StatModif: 2
+      Valeur: 1
+    - StatModif: 5
+      Valeur: -1
+    EssenceOriginal: 1000
+    Essence: 0
+    IDLier: 000000000800000009000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 3
+    Spell: {fileID: 11400000, guid: 9a2c308239b04be4ebb1f3b30c58de8c, type: 2}
+    ModifStat:
+    - StatModif: 2
+      Valeur: 1
+    - StatModif: 5
+      Valeur: -1
+    - StatModif: 0
+      Valeur: -1
+    EssenceOriginal: 1000
+    Essence: 0
+    IDLier: 000000000a0000000b000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 4
+    Spell: {fileID: 11400000, guid: fefabdb5f8ad9484eabddd4e774bef3b, type: 2}
+    ModifStat:
+    - StatModif: 0
+      Valeur: 1
+    - StatModif: 1
+      Valeur: 1
+    - StatModif: 8
+      Valeur: -1
+    EssenceOriginal: 1000
+    Essence: 0
+    IDLier: 000000000d0000000e000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 5
+    Spell: {fileID: 11400000, guid: 8d1d4fdde24a8c842a7125c8b9172871, type: 2}
+    ModifStat:
+    - StatModif: 0
+      Valeur: 2
+    - StatModif: 4
+      Valeur: 2
+    - StatModif: 8
+      Valeur: 2
+    EssenceOriginal: 2000
+    Essence: 0
+    IDLier: 0100000006000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 6
+    Spell: {fileID: 11400000, guid: c572636a1654f7341a6519f36a4155d9, type: 2}
+    ModifStat:
+    - StatModif: 1
+      Valeur: 2
+    - StatModif: 3
+      Valeur: 2
+    - StatModif: 0
+      Valeur: -2
+    EssenceOriginal: 2000
+    Essence: 0
+    IDLier: 010000000500000007000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 7
+    Spell: {fileID: 11400000, guid: 48dd7f0db5a442340a541d9028c0c4a9, type: 2}
+    ModifStat:
+    - StatModif: 0
+      Valeur: 3
+    - StatModif: 8
+      Valeur: 3
+    - StatModif: 5
+      Valeur: 3
+    EssenceOriginal: 3000
+    Essence: 0
+    IDLier: 000000000600000008000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 8
+    Spell: {fileID: 11400000, guid: e21edd2a9c592b04b979f3d844d9bc16, type: 2}
+    ModifStat:
+    - StatModif: 4
+      Valeur: 2
+    - StatModif: 3
+      Valeur: 2
+    - StatModif: 0
+      Valeur: -2
+    EssenceOriginal: 2000
+    Essence: 0
+    IDLier: 020000000700000009000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 9
+    Spell: {fileID: 11400000, guid: 15d70cfe504e4c94ab6d6cc0b221fb24, type: 2}
+    ModifStat:
+    - StatModif: 1
+      Valeur: 2
+    - StatModif: 2
+      Valeur: 2
+    - StatModif: 0
+      Valeur: -2
+    EssenceOriginal: 2000
+    Essence: 0
+    IDLier: 0200000008000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 10
+    Spell: {fileID: 11400000, guid: d1e527f0c4ed3c3459d8a4c20600a16a, type: 2}
+    ModifStat:
+    - StatModif: 0
+      Valeur: 2
+    - StatModif: 2
+      Valeur: 2
+    - StatModif: 4
+      Valeur: 2
+    EssenceOriginal: 2000
+    Essence: 0
+    IDLier: 030000000b000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 11
+    Spell: {fileID: 11400000, guid: 601bb1e26094e9a4a9c84986c0bba66d, type: 2}
+    ModifStat:
+    - StatModif: 0
+      Valeur: 2
+    - StatModif: 3
+      Valeur: 2
+    - StatModif: 8
+      Valeur: 2
+    EssenceOriginal: 2000
+    Essence: 0
+    IDLier: 030000000a0000000c000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 12
+    Spell: {fileID: 11400000, guid: c8609203deabaf34a96b019d12fde0c2, type: 2}
+    ModifStat:
+    - StatModif: 1
+      Valeur: 3
+    - StatModif: 3
+      Valeur: 3
+    - StatModif: 5
+      Valeur: -3
+    EssenceOriginal: 3000
+    Essence: 0
+    IDLier: 000000000b0000000d000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 13
+    Spell: {fileID: 11400000, guid: 30154dc30ae822042b4030bd8a76e54c, type: 2}
+    ModifStat:
+    - StatModif: 5
+      Valeur: -2
+    - StatModif: 8
+      Valeur: -2
+    - StatModif: 0
+      Valeur: -2
+    EssenceOriginal: 2000
+    Essence: 0
+    IDLier: 040000000c0000000e000000
+    Bought: 0
+    Equiped: 0
+  - IDLvl: 14
+    Spell: {fileID: 11400000, guid: 5c71f77d99361a64abd5ff3feef0d285, type: 2}
+    ModifStat:
+    - StatModif: 0
+      Valeur: 2
+    - StatModif: 3
+      Valeur: 2
+    - StatModif: 8
+      Valeur: -2
+    EssenceOriginal: 2000
+    Essence: 0
+    IDLier: 040000000d000000
+    Bought: 0
+    Equiped: 0
