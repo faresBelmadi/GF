@@ -6,6 +6,5 @@ using UnityEngine;
 public class ModificationStatSouvenir
 {
     public StatModif StatModif;
-    public int Pourcentage;
-    public int ValeurModifier;
+    public ParametreModifStat ParametreModifStat;
 }

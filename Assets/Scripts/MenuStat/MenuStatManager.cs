@@ -62,31 +62,31 @@ public class MenuStatManager : MonoBehaviour
             switch (item.StatModif)
             {
                 case StatModif.RadianceMax:
-                    Stat.RadianceMax -= item.ValeurModifier;
+                    Stat.RadianceMax -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.ForceAme:
-                    Stat.ForceAme -= item.ValeurModifier;
+                    Stat.ForceAme -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.Calme:
-
+                    Stat.Calme -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.Clairvoyance:
-
+                    Stat.Clairvoyance -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.ConscienceMax:
-
+                    Stat.ConscienceMax -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.Conviction:
-
+                    Stat.Conviction -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.Resilience:
-
+                    Stat.Resilience -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.Vitesse:
-
+                    Stat.Vitesse -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.VolonterMax:
-
+                    Stat.VolonterMax -= item.ParametreModifStat.ValeurModifier;
                     break;
             }
         }
@@ -159,49 +159,184 @@ public class MenuStatManager : MonoBehaviour
                 case StatModif.RadianceMax:
                     if (Equiped == true)
                     {
-                        var Temp = Mathf.FloorToInt((item.Pourcentage / 100f) * Stat.RadianceMax);
+                        var Temp = 0;
+                        if(item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
+                        {
+                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.RadianceMax);
+                        }
+                        else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            Temp = item.ParametreModifStat.Valeur;
+                        }
                         StatTemp.RadianceMax += Temp;
                         StatTemp.Radiance += Temp;
-                        item.ValeurModifier = Temp;
+                        item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
-                        StatTemp.RadianceMax -= item.ValeurModifier;
-                        StatTemp.Radiance -= item.ValeurModifier;
+                        StatTemp.RadianceMax -= item.ParametreModifStat.ValeurModifier;
+                        StatTemp.Radiance -= item.ParametreModifStat.ValeurModifier;
                     }
                     break;
                 case StatModif.ForceAme:
                     if (Equiped == true)
                     {
-                        var Temp = Mathf.FloorToInt((item.Pourcentage / 100f) * Stat.ForceAme);
+                        var Temp = 0;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
+                        {
+                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.ForceAme);
+                        }
+                        else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            Temp = item.ParametreModifStat.Valeur;
+                        }
                         StatTemp.ForceAme += Temp;
-                        item.ValeurModifier = Temp;
+                        item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
-                        StatTemp.ForceAme -= item.ValeurModifier;
+                        StatTemp.ForceAme -= item.ParametreModifStat.ValeurModifier;
                     }
                     break;
                 case StatModif.Calme:
-                    StatTemp.Calme += (Mathf.FloorToInt(item.Pourcentage / 100f)) * StatTemp.Calme;
+                    if (Equiped == true)
+                    {
+                        var Temp = 0;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
+                        {
+                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Calme);
+                        }
+                        else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            Temp = item.ParametreModifStat.Valeur;
+                        }
+                        StatTemp.Calme += Temp;
+                        item.ParametreModifStat.ValeurModifier = Temp;
+                    }
+                    else
+                    {
+                        StatTemp.Calme -= item.ParametreModifStat.ValeurModifier;
+                    }
                     break;
                 case StatModif.Clairvoyance:
-                    StatTemp.Clairvoyance += (Mathf.FloorToInt(item.Pourcentage / 100f)) * StatTemp.Clairvoyance;
+                    if (Equiped == true)
+                    {
+                        var Temp = 0;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
+                        {
+                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Clairvoyance);
+                        }
+                        else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            Temp = item.ParametreModifStat.Valeur;
+                        }
+                        StatTemp.Clairvoyance += Temp;
+                        item.ParametreModifStat.ValeurModifier = Temp;
+                    }
+                    else
+                    {
+                        StatTemp.Clairvoyance -= item.ParametreModifStat.ValeurModifier;
+                    }
                     break;
                 case StatModif.ConscienceMax:
-                    StatTemp.ConscienceMax += (Mathf.FloorToInt(item.Pourcentage / 100f)) * StatTemp.ConscienceMax;
+                    if (Equiped == true)
+                    {
+                        var Temp = 0;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
+                        {
+                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.ConscienceMax);
+                        }
+                        else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            Temp = item.ParametreModifStat.Valeur;
+                        }
+                        StatTemp.ConscienceMax += Temp;
+                        item.ParametreModifStat.ValeurModifier = Temp;
+                    }
+                    else
+                    {
+                        StatTemp.ConscienceMax -= item.ParametreModifStat.ValeurModifier;
+                    }
                     break;
                 case StatModif.Conviction:
-                    StatTemp.Conviction += (Mathf.FloorToInt(item.Pourcentage / 100f)) * StatTemp.Conviction;
+                    if (Equiped == true)
+                    {
+                        var Temp = 0;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
+                        {
+                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Conviction);
+                        }
+                        else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            Temp = item.ParametreModifStat.Valeur;
+                        }
+                        StatTemp.Conviction += Temp;
+                        item.ParametreModifStat.ValeurModifier = Temp;
+                    }
+                    else
+                    {
+                        StatTemp.Conviction -= item.ParametreModifStat.ValeurModifier;
+                    }
                     break;
                 case StatModif.Resilience:
-                    StatTemp.Resilience += (Mathf.FloorToInt(item.Pourcentage / 100f)) * StatTemp.Resilience;
+                    if (Equiped == true)
+                    {
+                        var Temp = 0;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
+                        {
+                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Resilience);
+                        }
+                        else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            Temp = item.ParametreModifStat.Valeur;
+                        }
+                        StatTemp.Resilience += Temp;
+                        item.ParametreModifStat.ValeurModifier = Temp;
+                    }
+                    else
+                    {
+                        StatTemp.Resilience -= item.ParametreModifStat.ValeurModifier;
+                    }
                     break;
                 case StatModif.Vitesse:
-                    StatTemp.Vitesse += (Mathf.FloorToInt(item.Pourcentage / 100f)) * StatTemp.Vitesse;
+                    if (Equiped == true)
+                    {
+                        var Temp = 0;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
+                        {
+                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Vitesse);
+                        }
+                        else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            Temp = item.ParametreModifStat.Valeur;
+                        }
+                        StatTemp.Vitesse += Temp;
+                        item.ParametreModifStat.ValeurModifier = Temp;
+                    }
+                    else
+                    {
+                        StatTemp.Vitesse -= item.ParametreModifStat.ValeurModifier;
+                    }
                     break;
                 case StatModif.VolonterMax:
-                    StatTemp.VolonterMax += (Mathf.FloorToInt(item.Pourcentage / 100f)) * StatTemp.VolonterMax;
+                    if (Equiped == true)
+                    {
+                        var Temp = 0;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
+                        {
+                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.VolonterMax);
+                        }
+                        else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            Temp = item.ParametreModifStat.Valeur;
+                        }
+                        StatTemp.VolonterMax += Temp;
+                        item.ParametreModifStat.ValeurModifier = Temp;
+                    }
+                    else
+                    {
+                        StatTemp.VolonterMax -= item.ParametreModifStat.ValeurModifier;
+                    }
                     break;
             }
         }
