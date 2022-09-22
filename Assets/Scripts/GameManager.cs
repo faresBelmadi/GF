@@ -86,8 +86,8 @@ public class GameManager : MonoBehaviour {
                 }
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
-
-                foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
+                //TODO : Angela a mis ça en commentaire pour que val puisse faire des test, a voir si c'est a remetre 
+                /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
                 {
                     var temp = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item);
                     temp.SpellStatue = SpellStatus.bought;
@@ -99,6 +99,10 @@ public class GameManager : MonoBehaviour {
                         
                     }
                     playerStat.ListSpell.Add(temp);
+                }*/
+                foreach(var item in classSO.PlayerStat.ListSpell)
+                {
+                    playerStat.ListSpell.Add(item);
                 }
             }
         }
