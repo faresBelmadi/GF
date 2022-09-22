@@ -12,6 +12,7 @@ public class ArbreManager : MonoBehaviour
     public JoueurStat Stat;
     public List<Competence> Class;
     public int NbMaxSpell;
+    public int ReductionCout;
 
     public TextMeshProUGUI ValeurRadiance, ValeurFA, ValeurVitesse, ValeurConviction, ValeurResilience, ValeurCalme, ValeurVolonter, ValeurConscience, ValeurClairvoyance, ValeurEssence;
     public TextMeshProUGUI SpellEquipedText;
@@ -135,7 +136,7 @@ public class ArbreManager : MonoBehaviour
             {
                 if (Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).Bought == true && Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).IDLvl != 0)
                 {
-                    item.GetComponent<ContainerCompetence>().LaCompetence.Essence -= 200;
+                    item.GetComponent<ContainerCompetence>().LaCompetence.Essence -= ReductionCout;
                 }
             }
             if (item.GetComponent<ContainerCompetence>().LaCompetence.IDLvl != 0)
