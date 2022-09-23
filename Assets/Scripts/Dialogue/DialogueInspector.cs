@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 
 #if UNITY_EDITOR
-[CustomEditor(typeof(DialogueSO))]
+//[CustomEditor(typeof(DialogueSO))]
 public class DialogueInspector : Editor
 {
     SerializedProperty Base;

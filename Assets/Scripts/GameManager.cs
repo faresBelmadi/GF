@@ -14,14 +14,21 @@ public class GameManager : MonoBehaviour {
     public RoomManager rm;
     public PlayerMapManager pmm;
     public BattleManager BattleMan;
+    public AleaManager AleaMan;
+    public AutelManager AutelMan;
+    public MenuStatManager StatMan;
 
     [Header("Classes & Encounter")]
     public List<ClassPlayer> AllClasses;
 
     public List<Encounter> AllEncounter;
+    public List<EncounterAlea> AllEncounterAlea;
+
+    public List<Souvenir> AllSouvenir;
+    public List<Souvenir> CopyAllSouvenir;
 
     public ClassPlayer classSO;
-    public PlayerStat playerStat;
+    public JoueurStat playerStat;
 
     [Header("Data")]
     public GameData loadedData;
@@ -58,36 +65,44 @@ public class GameManager : MonoBehaviour {
             if(!loadedData.CurrentRun.Ended)
             {
                 getClassRun();
-                playerStat = new PlayerStat(){
-                    HP = loadedData.CurrentRun.player.HP,
-                    MaxHP = classSO.PlayerStat.HP,
-                    Volonté = loadedData.CurrentRun.player.Volonté,
-                    MaxVolonté = classSO.PlayerStat.Volonté,
+                playerStat = new JoueurStat() {
+                    Radiance = loadedData.CurrentRun.player.Radiance,
+                    RadianceMax = classSO.PlayerStat.RadianceMax,
+                    Volonter = loadedData.CurrentRun.player.Volonter,
+                    VolonterMax = classSO.PlayerStat.Volonter,
                     Conscience = loadedData.CurrentRun.player.Conscience,
-                    MaximumConscience = classSO.PlayerStat.ConscienceMax,
+                    ConscienceMax = classSO.PlayerStat.ConscienceMax,
                     Conviction = classSO.PlayerStat.Conviction,
-                    Resilience = classSO.PlayerStat.Résilience,
+                    Resilience = classSO.PlayerStat.Resilience,
                     Essence = loadedData.CurrentRun.player.Essence,
-                    Dmg = loadedData.CurrentRun.player.dmg,
-                    armor = loadedData.CurrentRun.player.armor,
-                    Speed = loadedData.CurrentRun.player.Speed,
-                    Calme = classSO.PlayerStat.Calme
+                    ForceAme = loadedData.CurrentRun.player.ForceAme,
+                    Vitesse = loadedData.CurrentRun.player.Vitesse,
+                    Calme = classSO.PlayerStat.Calme,
+                    SlotsSouvenir = classSO.PlayerStat.SlotsSouvenir
                 };
-
-                playerStat.AvailableSpell = new List<Spell>();
-
-                foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
+                for(int i = 0; i < AllSouvenir.Count; i++)
                 {
-                    var temp = classSO.spellClass.First(c => c.ID == item);
-                    temp.Status = SpellStatus.bought;
-                    foreach (var item2 in temp.idChildren)
+                    CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
+                }
+                playerStat.ListSouvenir = new List<Souvenir>();
+                playerStat.ListSpell = new List<Spell>();
+                //TODO : Angela a mis �a en commentaire pour que val puisse faire des test, a voir si c'est a remetre 
+                /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
+                {
+                    var temp = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item);
+                    temp.SpellStatue = SpellStatus.bought;
+                    foreach (var item2 in temp.IDChildren)
                     {
-                        var t = classSO.spellClass.First(c => c.ID == item2);
-                        if(t.isAvailable)
-                            t.Status = SpellStatus.unlocked;
+                        var t = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item2);
+                        if(t.IsAvailable)
+                            t.SpellStatue = SpellStatus.unlocked;
                         
                     }
-                    playerStat.AvailableSpell.Add(temp);
+                    playerStat.ListSpell.Add(temp);
+                }*/
+                foreach(var item in classSO.PlayerStat.ListSpell)
+                {
+                    playerStat.ListSpell.Add(item);
                 }
             }
         }
@@ -103,19 +118,19 @@ public class GameManager : MonoBehaviour {
         GameData data = new GameData();
         data.CurrentRun = new RunData(){ClassID = 0};
         data.previousRuns = new List<RunData>();
-        var spellsToAdd = AllClasses.First(c => c.ID == 0).spellClass.Where(c => c.Status == SpellStatus.bought);
+        var spellsToAdd = AllClasses.First(c => c.ID == 0).PlayerStat.ListSpell.Where(c => c.SpellStatue == SpellStatus.bought);
         List<int> boughtspells = new List<int>();
         foreach (var item in spellsToAdd)
         {
-            boughtspells.Add(item.ID);   
+            boughtspells.Add(item.IDSpell);   
         }
         data.CurrentRun.player = new PlayerData()
         {   
-            HP = AllClasses.First(c => c.ID == 0).PlayerStat.HP,
+            Radiance = AllClasses.First(c => c.ID == 0).PlayerStat.Radiance,
             Conscience = AllClasses.First(c => c.ID == 0).PlayerStat.Conscience,
-            dmg = AllClasses.First(c => c.ID == 0).PlayerStat.dmg,
-            Speed = AllClasses.First(c => c.ID == 0).PlayerStat.Speed,
-            Volonté = AllClasses.First(c => c.ID == 0).PlayerStat.Volonté,
+            ForceAme = AllClasses.First(c => c.ID == 0).PlayerStat.ForceAme,
+            Vitesse = AllClasses.First(c => c.ID == 0).PlayerStat.Vitesse,
+            Volonter = AllClasses.First(c => c.ID == 0).PlayerStat.Volonter,
             BoughtSpellID = boughtspells
         };
         string json = JsonUtility.ToJson(data);
@@ -144,12 +159,12 @@ public class GameManager : MonoBehaviour {
             loadedData.previousRuns.Add(loadedData.CurrentRun);
             loadedData.CurrentRun.player = new PlayerData()
             {
-                HP = classSO.PlayerStat.HP,
-                Volonté = classSO.PlayerStat.Volonté,
+                Radiance = classSO.PlayerStat.Radiance,
+                Volonter = classSO.PlayerStat.Volonter,
                 Conscience = classSO.PlayerStat.Conscience,
                 Essence = classSO.PlayerStat.Essence,
-                dmg = classSO.PlayerStat.dmg,
-                Speed = classSO.PlayerStat.Speed,
+                ForceAme = classSO.PlayerStat.ForceAme,
+                Vitesse = classSO.PlayerStat.Vitesse,
                 BoughtSpellID = new List<int>(){0}
             };
             loadedData.CurrentRun.Ended = false;
@@ -172,18 +187,17 @@ public class GameManager : MonoBehaviour {
     {
         loadedData.CurrentRun.player = new PlayerData()
         {
-            HP = playerStat.HP,
-            Volonté = playerStat.Volonté,
+            Radiance = playerStat.Radiance,
+            Volonter = playerStat.Volonter,
             Conscience = playerStat.Conscience,
             Essence = playerStat.Essence,
-            dmg = playerStat.Dmg,
-            armor = playerStat.armor,
-            Speed = playerStat.Speed
+            ForceAme = playerStat.ForceAme,
+            Vitesse = playerStat.Vitesse
         };
         loadedData.CurrentRun.player.BoughtSpellID = new List<int>();
-        foreach (var item in playerStat.AvailableSpell)
+        foreach (var item in playerStat.ListSpell)
         {
-            loadedData.CurrentRun.player.BoughtSpellID.Add(item.ID);
+            loadedData.CurrentRun.player.BoughtSpellID.Add(item.IDSpell);
         }
 
     }
@@ -200,17 +214,32 @@ public class GameManager : MonoBehaviour {
 
     public void LoadEvent()
     {
+        AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
+    }
 
+    public void LoadAutel()
+    {
+        AutelMan.StartAutel();
+    }
+
+    public void StartStatJoueur()
+    {
+        pmm.LoadMenuStat();
+    }
+
+    public void LoadMenuStat()
+    {
+        StatMan.StartMenuStat();
     }
     
     void getClassRun()
     {
         classSO = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID));
         classSO.PlayerStat = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID).PlayerStat);
-        classSO.spellClass.Clear();
-        foreach (var item in AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID).spellClass)
+        classSO.PlayerStat.ListSpell.Clear();
+        foreach (var item in AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID).PlayerStat.ListSpell)
         {
-            classSO.spellClass.Add(Instantiate(item));
+            classSO.PlayerStat.ListSpell.Add(Instantiate(item));
         }
     }
 

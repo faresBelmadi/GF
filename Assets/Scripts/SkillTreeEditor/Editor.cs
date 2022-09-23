@@ -278,7 +278,7 @@ public class SkillTreeController : EditorWindow
         // We create the node with the default info for the node
         nodes.Add(new Node(mousePosition, 200, 100, nodeStyle, selectedNodeStyle,
             inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode,
-            classTree.classe.spellClass.First(c => c.ID.ToString() == id)));
+            classTree.classe.spellClass.First(c => c.IDSpell.ToString() == id)));
         ++nodeCount;
     }
 
@@ -345,8 +345,8 @@ public class SkillTreeController : EditorWindow
 
     private void OnClickRemoveConnection(Connection connection)
     {
-        if(connection.outPoint.node.SpellNode.idChildren.Contains(connection.inPoint.node.SpellNode.ID))
-            connection.outPoint.node.SpellNode.idChildren.Remove(connection.inPoint.node.SpellNode.ID);
+        if(connection.outPoint.node.SpellNode.IDChildren.Contains(connection.inPoint.node.SpellNode.IDSpell))
+            connection.outPoint.node.SpellNode.IDChildren.Remove(connection.inPoint.node.SpellNode.IDSpell);
         connections.Remove(connection);
     }
 
@@ -357,8 +357,8 @@ public class SkillTreeController : EditorWindow
             connections = new List<Connection>();
         }
         connections.Add(new Connection(selectedInPoint, selectedOutPoint, OnClickRemoveConnection));
-        if(!selectedOutPoint.node.SpellNode.idChildren.Contains(selectedInPoint.node.SpellNode.ID))
-            selectedOutPoint.node.SpellNode.idChildren.Add(selectedInPoint.node.SpellNode.ID);
+        if(!selectedOutPoint.node.SpellNode.IDChildren.Contains(selectedInPoint.node.SpellNode.IDSpell))
+            selectedOutPoint.node.SpellNode.IDChildren.Add(selectedInPoint.node.SpellNode.IDSpell);
     }
 
     private void ClearConnectionSelection()
@@ -391,7 +391,7 @@ public class SkillTreeController : EditorWindow
         for (int i = 0; i < nodes.Count; ++i)
         {
             nodeData.nodeDataCollection[i] = new NodeData();
-            nodeData.nodeDataCollection[i].spellId = nodes[i].SpellNode.ID;
+            nodeData.nodeDataCollection[i].spellId = nodes[i].SpellNode.IDSpell;
             nodeData.nodeDataCollection[i].position = nodes[i].rect.position;
         }
         data.nodes = nodeData;
@@ -453,7 +453,7 @@ public class SkillTreeController : EditorWindow
         {
             nodes = new List<Node>();
         }
-        var spell = classTree.classe.spellClass.First(c => c.ID == spellID);
+        var spell = classTree.classe.spellClass.First(c => c.IDSpell == spellID);
         nodes.Add(new Node(position, 200, 100, nodeStyle, selectedNodeStyle,
             inPointStyle, outPointStyle, OnClickInPoint, OnClickOutPoint, OnClickRemoveNode, 
             spell));
@@ -464,7 +464,7 @@ public class SkillTreeController : EditorWindow
     public static void ReloadNode(Node toDelete, string newSpellID)
     {
         Vector2 nodePos = toDelete.rect.position;
-        var newSpell = current.classTree.classe.spellClass.First(c => c.ID.ToString() == newSpellID);
+        var newSpell = current.classTree.classe.spellClass.First(c => c.IDSpell.ToString() == newSpellID);
         current.nodes.Add(new Node(nodePos, 200, 100, current.nodeStyle,current.selectedNodeStyle,
                                    current.inPointStyle,current.outPointStyle,current.OnClickInPoint,
                                    current.OnClickOutPoint,current.OnClickRemoveNode,newSpell));
@@ -477,11 +477,11 @@ public class SkillTreeController : EditorWindow
         Node outnode = null;
         for (int i = 0; i < nodes.Count; ++i)
         {
-            for (int j = 0; j < nodes[i].SpellNode.idChildren.Count; ++j)
+            for (int j = 0; j < nodes[i].SpellNode.IDChildren.Count; ++j)
             {
                 for (int k = 0; k < nodes.Count; ++k)
                 {
-                    if (nodes[k].SpellNode.ID == nodes[i].SpellNode.idChildren[j])
+                    if (nodes[k].SpellNode.IDSpell == nodes[i].SpellNode.IDChildren[j])
                     {
                         outnode = nodes[k];
                         OnClickInPoint(outnode.inPoint);

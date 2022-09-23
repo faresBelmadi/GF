@@ -5,36 +5,24 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum Source
-{
-    Attaque,
-    Dot,
-    Buff,
-    Soin
-}
 [System.Serializable]
-public class CombatOrder
-{
-    public int id;
-    public bool Played;
-}
-
 public class BattleManager : MonoBehaviour
 {
     [Header("Prefab Combat")]
-    public PlayerCombat player;
+    public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
-    public List<EnemyCombatBehaviour> EnemyScripts;
+    public List<EnnemyBehavior> EnemyScripts;
+    public List<EnnemyBehavior> DeadEnemyScripts;
     public Transform[] spawnPos;
     public Encounter _encounter;
     public GameObject prefabEssence;
     public GameObject buttonEndCombat;
+    const string Target = "Targeting";
 
     [Header("Round/Turn variables")]
     public List<CombatOrder> IdOrder;
     public int nbPhase = 0;
-    public List<int> AlreadyPlayed;
-    public Dictionary<int,int> IdSpeedDictionary;
+    public Dictionary<int, int> IdSpeedDictionary;
     public List<GameObject> ListEssence = new List<GameObject>();
 
     [Header("Stats combats")]
@@ -45,47 +33,139 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     int idIndexer = 0;
     int idPlayer;
-
     public int currentIdTurn;
     public int nbTurn;
     public int idTarget = -1;
-    bool endBattle;
+    public bool endBattle;
     BattleUI battleUI;
-    
+    public int MostDamage, MostDamageID;
+    public int LastPhaseDamage;
+    public int CurrentPhaseDamage;
     [SerializeField]
     private DialogueManager DialogueManager;
 
+    public bool IsLoot;
 
-    // Start is called before the first frame update
-    private void OnEnable() {
+    #region Loot
+
+    public void Loot()
+    {
+        int random = UnityEngine.Random.Range(0, 101);
+        Debug.Log("Loot : " + random);
+        if (random > _encounter.PourcentageLootSouvenir)
+        {
+            return;
+        }
+        _encounter.LootRarity.Sort((x, y) => x.Pourcentage.CompareTo(y.Pourcentage));
+        int PourcentageTotal = 0;
+        for (int i = 0; i < _encounter.LootRarity.Count; i++)
+        {
+            PourcentageTotal += _encounter.LootRarity[i].Pourcentage;
+        }
+        random = UnityEngine.Random.Range(0, PourcentageTotal + 1);
+        Debug.Log("Rarity : " + random);
+        for (int i = 0; i < _encounter.LootRarity.Count; i++)
+        {
+            if (random <= _encounter.LootRarity[i].Pourcentage && GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == _encounter.LootRarity[i].rareter) != null)
+            {
+                string NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == _encounter.LootRarity[i].rareter).Nom;
+                player.Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
+                IsLoot = true;
+                return;
+            }
+            else
+            {
+                random -= _encounter.LootRarity[i].Pourcentage;
+                IsLoot = false;
+            }
+        }
+    }
+
+    #endregion Loot
+
+    #region calcul tension & calme
+
+    private void CalcTensionJoueur()
+    {
+        player.Stat.TensionMax = (CalmeMoyenAdversaire / CalmeMoyen) * player.Stat.Calme;
+        player.Stat.ValeurPalier = player.Stat.TensionMax / player.Stat.NbPalier;
+    }
+
+    private void CalcTensionEnemy()
+    {
+        foreach (var item in EnemyScripts)
+        {
+            item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.Calme;
+            item.Stat.ValeurPalier = (item.Stat.TensionMax) / item.Stat.NbPalier;
+        }
+    }
+
+    void CalcCalmeMoyen()
+    {
+        float tempCalmeEnemy = 0;
+        for (int i = 0; i < EnemyScripts.Count; i++)
+        {
+            tempCalmeEnemy += EnemyScripts[i].Stat.Calme;
+        }
+        CalmeMoyenJoueur = player.Stat.Calme;
+        CalmeMoyenAdversaire = tempCalmeEnemy / EnemyScripts.Count;
+        //remplacer 1 par une variable si le cas de plusieurs personnage jouable arrive
+        CalmeMoyen = (tempCalmeEnemy + player.Stat.Calme) / (EnemyScripts.Count + 1);
+    }
+
+    private bool CheckTension(int key)
+    {
+
+        if (key == idPlayer)
+        {
+            if (player.CanHaveAnotherTurn())
+            {
+                return true;
+            }
+        }
+        else
+        {
+            var t = EnemyScripts.First(c => c.combatID == key);
+            if (t.CanHaveAnotherTurn())
+                return true;
+        }
+        return false;
+    }
+
+    #endregion calcul tension & calme
+
+    #region Mise en place combat & fin
+
+    private void OnEnable()
+    {
         CombatEnableSetup();
     }
+
     void DialogueEnableSetup()
     {
         DialogueManager.SetupDialogue(_encounter);
     }
+
     void CombatEnableSetup()
     {
         idIndexer = 0;
         battleUI = GetComponent<BattleUI>();
-        player.stat = GameManager.instance.playerStat;
-        player.stat.MaxHPOriginal = player.stat.MaxHP;
-        player.stat.SpeedOriginal = player.stat.Speed;
-        player.stat.ClairvoyanceOriginal = player.stat.Clairvoyance;
-        player.stat.ResilienceOriginal = player.stat.Resilience;
-        Debug.Log(player.stat.Conviction);
-        player.stat.ConvictionOriginal = player.stat.Conviction;
-        player.stat.ForceAmeOriginal = player.stat.Dmg;
+        player.Stat = GameManager.instance.playerStat;
         player.EndTurnBM = EndTurn;
         player.StartUp();
         SpawnedEnemy = new List<GameObject>();
-        EnemyScripts = new List<EnemyCombatBehaviour>();
+        EnemyScripts = new List<EnnemyBehavior>();
+        DeadEnemyScripts = new List<EnnemyBehavior>();
         IdOrder = new List<CombatOrder>();
-        IdSpeedDictionary = new Dictionary<int, int>();
-        IdSpeedDictionary.Add(idIndexer,player.stat.Speed);
+        IdSpeedDictionary = new Dictionary<int, int>
+        {
+            { idIndexer, player.Stat.Vitesse }
+        };
         idPlayer = idIndexer;
         idIndexer++;
     }
+
     public void LoadEnemy(Encounter ToSpawn)
     {
         _encounter = ToSpawn;
@@ -93,6 +173,7 @@ public class BattleManager : MonoBehaviour
         player.UpdateUI();
         player.DesactivateSpells();
         DialogueEnableSetup();
+        //StartCombat();
     }
 
     void SpawnEnemy()
@@ -100,25 +181,23 @@ public class BattleManager : MonoBehaviour
         List<Transform> used = new List<Transform>();
         foreach (var item in _encounter.ToFight)
         {
-            var index = UnityEngine.Random.Range(0,spawnPos.Length);
+            var index = UnityEngine.Random.Range(0, spawnPos.Length);
             while (used.Contains(spawnPos[index]))
             {
-                index = UnityEngine.Random.Range(0,spawnPos.Length);
+                index = UnityEngine.Random.Range(0, spawnPos.Length);
             }
             used.Add(spawnPos[index]);
 
-            var temp = Instantiate(item.Spawnable,spawnPos[index].position,Quaternion.identity,spawnPos[index]);
-            var tempCombatScript = temp.GetComponent<EnemyCombatBehaviour>();
+            var temp = Instantiate(item.Spawnable, spawnPos[index].position, Quaternion.identity, spawnPos[index]);
+            var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
             //instantiate tout les so modifiable
-            tempCombatScript.current = Instantiate(item);
+            tempCombatScript.Stat = Instantiate(item);
             tempCombatScript.SetUp();
             tempCombatScript.EndTurnBM = EndTurn;
-            tempCombatScript.actResult = ActResult;
-            tempCombatScript.actDebuff = ActDebuff;
             SpawnedEnemy.Add(temp);
             EnemyScripts.Add(tempCombatScript);
 
-            IdSpeedDictionary.Add(idIndexer,tempCombatScript.current.Speed);
+            IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
             tempCombatScript.combatID = idIndexer;
             tempCombatScript.ChooseNextAction();
             idIndexer++;
@@ -133,8 +212,25 @@ public class BattleManager : MonoBehaviour
         StartPhase();
     }
 
+    private void EndBattle()
+    {
+        Loot();
+        player.ResetStat();
+        player.Stat.Volonter = player.Stat.VolonterMax;
+        player.Stat.Tension = 0;
+        GameManager.instance.playerStat = player.Stat;
+        Debug.Log(IsLoot);
+        StartCoroutine(GameManager.instance.pmm.EndBattle(IsLoot));
+    }
+
+    #endregion Mise en place combat & fin
+
+    #region Phase
+
     private void StartPhase()
     {
+        LastPhaseDamage = CurrentPhaseDamage;
+        CurrentPhaseDamage = 0;
         DetermTour();
         player.StartPhase();
         foreach (var item in EnemyScripts)
@@ -147,37 +243,27 @@ public class BattleManager : MonoBehaviour
         StartNextTurn();
     }
 
-    private void StartFirstPhase()
+    private void DetermTour()
     {
-
-        DetermFirstTurn();
-        //player.StartPhase();
-        //foreach (var item in EnemyScripts)
-        //{
-        //    item.StartPhase();
-        //}
-        currentIdTurn = 0;
-        nbPhase++;
-        nbTurn = 0;
-        StartNextTurn();
+        var test = IdSpeedDictionary.OrderByDescending(c => c.Value);
+        IdOrder = new List<CombatOrder>();
+        foreach (var item in test)
+        {
+            IdOrder.Add(new CombatOrder() { id = item.Key, Played = false });
+            if (CheckTension(item.Key))
+                IdOrder.Add(new CombatOrder() { id = item.Key, Played = false });
+        }
     }
 
-#region Turn
-    void EndTurn()
-    {
-        IdOrder.FirstOrDefault(c => c.id == currentIdTurn && !c.Played).Played = true;
-        nbTurn++;
-        if(nbTurn >= IdOrder.Count)
-            StartPhase();
-        else
-            StartNextTurn();
-    }
+    #endregion Phase
+
+    #region Turn
 
     private void StartNextTurn()
     {
         int key = IdOrder.First(c => c.Played == false).id;
         currentIdTurn = key;
-        if(key == idPlayer)
+        if (key == idPlayer)
         {
             player.StartTurn();
             battleUI.textPLayingTurn.text = "Guerrier";
@@ -188,478 +274,178 @@ public class BattleManager : MonoBehaviour
             playing.StartTurn();
             battleUI.textPLayingTurn.text = playing.UICombat.NameText.text;
         }
-    }   
-
-    private void DetermTour()
-    {
-        var test = IdSpeedDictionary.OrderByDescending(c => c.Value);
-        IdOrder = new List<CombatOrder>();
-        foreach (var item in test)
-        {
-            IdOrder.Add(new CombatOrder(){id = item.Key,Played = false});
-            if(CheckTension(item.Key))
-                IdOrder.Add(new CombatOrder(){id = item.Key,Played = false});
-        }
-    }    
-    private void DetermFirstTurn()
-    {
-        var test = IdSpeedDictionary.OrderByDescending(c => c.Value);
-        IdOrder = new List<CombatOrder>();
-        IdOrder.Add(new CombatOrder(){id = idPlayer, Played = false});
-        foreach (var item in test)
-        {
-            if(item.Key != idPlayer)
-            {
-                IdOrder.Add(new CombatOrder(){id = item.Key,Played = false});
-                if(CheckTension(item.Key))
-                    IdOrder.Add(new CombatOrder(){id = item.Key,Played = false});
-
-            }
-        }
-
-
-    }
-#endregion Turn
-#region calcul tension & calme
-    private void CalcTensionJoueur()
-    {
-        player.stat.TensionMax = (CalmeMoyenAdversaire/CalmeMoyen)*player.stat.Calme;
-        player.stat.ValeurPalier = player.stat.TensionMax / player.stat.NbPalier;
     }
 
-    private void CalcTensionEnemy()
+    void EndTurn()
     {
-        foreach (var item in EnemyScripts)
-        {
-            item.TensionMax = (CalmeMoyenJoueur/CalmeMoyen) * item.current.Calme;
-            item.TensionPalier = (item.TensionMax) / item.current.NbPalier;
-        }
-    }
-
-    void CalcCalmeMoyen()
-    {
-        float tempCalmeEnemy = 0;
-        for (int i = 0; i < EnemyScripts.Count; i++)
-        {
-            tempCalmeEnemy += EnemyScripts[i].current.Calme;
-        }
-        CalmeMoyenJoueur = player.stat.Calme;
-        CalmeMoyenAdversaire = tempCalmeEnemy/EnemyScripts.Count;
-        //remplacer 1 par une variable si le cas de plusieurs personnage jouable arrive
-        CalmeMoyen = (tempCalmeEnemy + player.stat.Calme)/(EnemyScripts.Count + 1);
-    }
-
-    private bool CheckTension(int key)
-    {
-        
-        if(key == idPlayer)
-        {
-            if(player.CanHaveAnotherTurn())
-            {
-                return true;
-            }
-        }
+        var turnPlayed = IdOrder.FirstOrDefault(c => c.id == currentIdTurn && !c.Played);
+        if (turnPlayed != null)
+            turnPlayed.Played = true;
+        nbTurn++;
+        if (nbTurn >= IdOrder.Count)
+            StartPhase();
         else
-        {
-            var t = EnemyScripts.First(c => c.combatID == key);
-            if(t.CanHaveAnotherTurn())
-                return true;
-        }
-        return false;
+            StartNextTurn();
     }
 
-#endregion calcul tension & calme
-#region Targeting
-    public void StartTargeting()
+    #endregion Turn
+
+    #region Lien Joueur - Ennemi
+
+    public void LaunchSpellJoueur(Spell Spell)
     {
-        StopCoroutine("Targeting");
-        StartCoroutine("Targeting");
-    }
-    private IEnumerator Targeting()
-    {
-        foreach (var item in EnemyScripts)
+        GiveBuffDebuff(Spell.ActionBuffDebuff, idTarget);
+        foreach(var effet in Spell.ActionEffet)
         {
-            item.SetTargetingMode();    
+            PassageEffet(effet, idPlayer, idTarget, SourceEffet.Spell);
         }
-
-        do
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-        while(idTarget == -1);
-        
-        foreach (var item in EnemyScripts)
-        {
-            item.EndTargetingMode();    
-        }
-
-        player.SendSpell();
-    }
-
-
-#endregion Targeting
-#region Result
-    public void GetListEffectPlayer(Spell ToGet)
-    {
-        ActResult(GetResult(ToGet),0,idTarget);
-        ActDebuff(ToGet.debuffsBuffs,0,idTarget);
+        //EnemyScripts.First(c => c.combatID == idTarget).ApplicationBuffDebuff(TimerApplication.Attaque);
         idTarget = -1;
     }
 
-    public void LaunchAnimAttacked()
+    public void LaunchSpellEnnemi(EnnemiSpell Spell)
     {
-        EnemyScripts.First(c => c.combatID == idTarget).getAttacked();
+        GiveBuffDebuff(Spell.debuffsBuffs);
+        foreach(var effet in Spell.Effet)
+        {
+            PassageEffet(effet, currentIdTurn, -1,SourceEffet.Spell);
+        }
+        //player.ApplicationBuffDebuff(TimerApplication.Attaque);
     }
-    public List<ActionResult> GetResult(Spell ToGet)
+
+    public void GiveBuffDebuff(List<BuffDebuff> BuffDebuff, int target = -1)
     {
-        List<ActionResult> temp = new List<ActionResult>();
-        var Fa = player.stat.Dmg;
-
-        foreach (var item in player.debuffs)
+        int origine = currentIdTurn;
+        Decompte Decompte = Decompte.none;
+        TimerApplication Timer = TimerApplication.Persistant;
+        foreach(var item in BuffDebuff)
         {
-            foreach (var effect in item.effects)
+            item.IDCombatOrigine = origine;
+            switch (item.CibleApplication)
             {
-            
-                if(effect.type == BuffType.AttBrut)
-                {
-                    Fa += effect.pourcentageEffet;
-                }
-                if(effect.type == BuffType.Att)
-                {
-                    var tempResi = 1 - (effect.pourcentageEffet/100f);
+                case Cible.joueur:
+                    player.AddDebuff(item, Decompte, Timer);
+                    break;
+                case Cible.ennemi:
+                    EnemyScripts.First(c => c.combatID == target).AddDebuff(item, Decompte, Timer);
+                    break;
+                case Cible.Ally:
 
-                    Fa += Fa - Mathf.RoundToInt(tempResi * Fa); 
-                }
-                if(effect.type == BuffType.AttUpPVMiss)
-                {
-                    var pvMiss = (100 - ((EnemyScripts.First(c => c.combatID == idTarget).current.HP * 100) / EnemyScripts.First(c => c.combatID == idTarget).current.MaxHP));
-                    Fa += Fa - Mathf.RoundToInt((pvMiss * ((2*Fa)/100) + Fa));
-                }
-                if(effect.type == BuffType.AttUpLastDmgTaken)
-                {
-                    Fa += player.LastDamageTaken;
-                }
-                if(effect.type == BuffType.AttUpPVMissSelf)
-                {
-                    var pvMiss = (100 - ((player.stat.HP * 100) / player.stat.MaxHP));
-                    Fa += Fa - Mathf.RoundToInt((pvMiss * ((2*Fa)/100) + Fa));
-                }
-            }
-        }
-        foreach (var item in ToGet.Effet)
-        {
-            int tempHp = 0;
-            int nbAttaque = 0;
-            item.DoAction(Fa,out tempHp, out nbAttaque);
-            temp.Add(new ActionResult(){HpModif = tempHp,target=item.target,nbAttaque = nbAttaque});
-        }
-
-        return temp;
-
-    } 
-
-
-    public void ActDebuff(List<BuffDebuff> ToApply,int idOrigin, int Target = -1)
-    {
-        if(idOrigin != idPlayer)
-        {
-            foreach (var item in ToApply)
-            {
-                switch(item.target)
-                {
-                    case Cible.All:
-                    foreach (var enemy in EnemyScripts)
+                    break;
+                case Cible.allEnnemi:
+                    foreach(var ennemie in EnemyScripts)
                     {
-
-                        if(item != null) enemy.AddDebuff(item);
+                        ennemie.AddDebuff(item, Decompte, Timer);
                     }
                     break;
+                case Cible.allAllies:
 
-                    case Cible.allAllies:
-
-                    foreach (var enemy in EnemyScripts)
+                    break;
+                case Cible.All:
+                    player.AddDebuff(item, Decompte, Timer);
+                    foreach (var ennemie in EnemyScripts)
                     {
-
-                        if(item != null) enemy.AddDebuff(item);
+                        ennemie.AddDebuff(item, Decompte, Timer);
                     }
                     break;
-
-                    case Cible.allEnnemi :
-
-                    if(item != null) player.AddDebuff(item);
-                    break;
-
-                    case Cible.Ally:
-
-                    var Enemy = EnemyScripts.First(c => c.combatID == UnityEngine.Random.Range(1,idIndexer));
-                    
-                    if(item != null) Enemy.AddDebuff(item);
-                    break;
-
-                    case Cible.ennemi:
-
-                    
-                    if(item != null) player.AddDebuff(item);
-                    break;
-
-                    case Cible.self:
-                    
-                    var self = EnemyScripts.First(c => c.combatID == idOrigin);
-                   
-                    if(item != null) self.AddDebuff(item);
-                    break;
-                }
-            }
-        }
-        else
-        {
-             foreach (var item in ToApply)
-            {
-                switch(item.target)
-                {
-                    case Cible.All:
-
-                    if(item != null) player.AddDebuff(item);
-                    foreach (var enemy in EnemyScripts)
-                    {
-                        
-                        if(item != null) enemy.AddDebuff(item);
-                    }
-                    break;
-
-                    case Cible.allEnnemi:
-
-                    foreach (var enemy in EnemyScripts)
-                    {
-
-                        if(item != null) enemy.AddDebuff(item);
-                    }
-                    break;
-
-                    case Cible.ennemi:
-                    
-                    var Enemy = EnemyScripts.First(c => c.combatID == Target);
-                    if(Enemy == null)
-                        Enemy = EnemyScripts.First(c => c.combatID == UnityEngine.Random.Range(1,idIndexer));
-                    if(item != null) Enemy.AddDebuff(item);
-                    break;
-
-                    case Cible.allAllies :
-                    case Cible.Ally:
-                    case Cible.self:
-                    if(item != null) player.AddDebuff(item);
-                    break;
-                }
             }
         }
     }
-    public void ActResult(List<ActionResult> actions,int idOrigin,int target = -1,bool Enervement = false, bool Apaisement = false)
+
+    public void PassageEffet(Effet effet, int Caster, int target = -1, SourceEffet source = SourceEffet.Spell)
     {
-        if(idOrigin != idPlayer)
+        switch (effet.Cible)
         {
-            foreach (var item in actions)
-            {
-                switch(item.target)
+            case Cible.joueur:
+                if(Caster == idPlayer)
                 {
-                    case Cible.All:
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
-                        {
-                            player.TakeDamage(item.HpModif,Source.Attaque);
-                        }
-                    }
-                    if(Enervement)
-                        player.EnervementTension();
-                    if(Apaisement)
-                        player.ApaisementTension();
-                    foreach (var enemy in EnemyScripts)
-                    {
-                        if(item.HpModif != 0)
-                        {
-                            for(int i = 0; i < item.nbAttaque; i++)
-                            {
-                                enemy.TakeDamage(item.HpModif,Source.Attaque);
-                            }
-                        }
-                    }
-                    break;
-
-                    case Cible.allAllies:
-
-                    foreach (var enemy in EnemyScripts)
-                    {
-                        if(item.HpModif != 0)
-                        {
-                            for(int i = 0; i < item.nbAttaque; i++)
-                            {
-                                enemy.TakeDamage(item.HpModif,Source.Attaque);
-                            }
-                        }
-                    }
-                    break;
-
-                    case Cible.allEnnemi :
-
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
-                        {
-                            player.TakeDamage(item.HpModif,Source.Attaque);
-                        }
-                    }
-                        
-                        if(Enervement)
-                            player.EnervementTension();
-                        if(Apaisement)
-                            player.ApaisementTension();
-                    break;
-
-                    case Cible.Ally:
-
-                    var Enemy = EnemyScripts.First(c => c.combatID == UnityEngine.Random.Range(1,idIndexer));
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
-                        {
-                            Enemy.TakeDamage(item.HpModif,Source.Attaque);
-                        }
-                    }
-                    break;
-
-                    case Cible.ennemi:
-
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
-                        {
-                            player.TakeDamage(item.HpModif,Source.Attaque);
-                        }
-                    }
-                        
-                        if(Enervement)
-                            player.EnervementTension();
-                        if(Apaisement)
-                            player.ApaisementTension();
-                    break;
-
-                    case Cible.self:
-                    
-                    var self = EnemyScripts.First(c => c.combatID == idOrigin);
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
-                        {
-                            self.TakeDamage(item.HpModif,Source.Attaque);
-                        }
-                    }
-                    break;
+                    player.ApplicationEffet(effet, null, source);
                 }
-            }
-        }
-        else
-        {
-             foreach (var item in actions)
-            {
-                switch(item.target)
+                else
                 {
-                    case Cible.All:
-
-                    if(item.HpModif != 0)
+                    if (EnemyScripts.FirstOrDefault(c => c.combatID == Caster) == null)
                     {
-                        for(int i = 0; i < item.nbAttaque; i++)
-                        {
-                            player.TakeDamage(item.HpModif,Source.Attaque);
-                        }
+                        player.ApplicationEffet(effet, DeadEnemyScripts.First(c => c.combatID == Caster).Stat, source, Caster);
                     }
-                    foreach (var enemy in EnemyScripts)
+                    else
                     {
-                        if(item.HpModif != 0)
-                        {
-                            for(int i = 0; i < item.nbAttaque; i++)
-                            {
-                                enemy.TakeDamage(item.HpModif,Source.Attaque);
-                            }
-                        }
+                        player.ApplicationEffet(effet, EnemyScripts.First(c => c.combatID == Caster).Stat, source, Caster);
                     }
-                    break;
-
-                    case Cible.allEnnemi:
-
-                    foreach (var enemy in EnemyScripts)
-                    {
-                        if(item.HpModif != 0)
-                        {
-                            for(int i = 0; i < item.nbAttaque; i++)
-                            {
-                                enemy.TakeDamage(item.HpModif,Source.Attaque);
-                            }
-                        }
-                    }
-                    break;
-
-                    case Cible.ennemi:
-                    
-                    var Enemy = EnemyScripts.First(c => c.combatID == target);
-                    if(Enemy == null)
-                        Enemy = EnemyScripts.First(c => c.combatID == UnityEngine.Random.Range(1,idIndexer));
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
-                        { 
-                            Enemy.TakeDamage(item.HpModif,Source.Attaque);
-                        }
-                    }
-                    break;
-
-                    case Cible.allAllies :
-                    case Cible.Ally:
-                    case Cible.self:
-
-                    if(item.HpModif != 0)
-                    {
-                        for(int i = 0; i < item.nbAttaque; i++)
-                        {
-                            player.TakeDamage(item.HpModif,Source.Attaque);
-                        }
-
-                    }
-                    break;
                 }
-            }
+                break;
+            case Cible.ennemi:
+                if (Caster == target)
+                {
+                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
+                }
+                else
+                {
+                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source, Caster);
+                }
+                break;
+            case Cible.Ally:
+
+                break;
+            case Cible.allEnnemi:
+                foreach (var ennemie in EnemyScripts)
+                {
+                    ennemie.ApplicationEffet(effet, null, source, Caster);
+                }
+                break;
+            case Cible.allAllies:
+
+                break;
+            case Cible.All:
+                foreach (var ennemie in EnemyScripts)
+                {
+                    ennemie.ApplicationEffet(effet, null, source, Caster);
+                }
+                break;
+            case Cible.MostDamage:
+
+                if (MostDamageID == idPlayer)
+                {
+                    if (EnemyScripts.FirstOrDefault(c => c.combatID == Caster) == null)
+                    {
+                        player.ApplicationEffet(effet, DeadEnemyScripts.First(c => c.combatID == Caster).Stat, source, Caster);
+                    }
+                    else
+                    {
+                        player.ApplicationEffet(effet, EnemyScripts.First(c => c.combatID == Caster).Stat, source, Caster);
+                    }
+                }
+                else
+                {
+                    if (Caster == target)
+                    {
+                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
+                    }
+                    else
+                    {
+                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source, Caster);
+                    }
+                }
+
+                break;
         }
-        
     }
-    #endregion Result
-#region Death
-    public void DeadEnemy(int id)
-    {
-        nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true); 
-        IdOrder.RemoveAll(c => c.id == id);
-        IdSpeedDictionary.Remove(id);
-        var todestroy = EnemyScripts.First(c => c.combatID == id).gameObject;
-        EnemyScripts.RemoveAll(c => c.combatID == id);
-        Destroy(todestroy);
-        if(EnemyScripts.Count <= 0)
-            StartCoroutine("GatherEssence");
-    }    
-    
-    public void DeadPlayer()
-    {
-        GameManager.instance.DeadPlayer();
-    }
-    #endregion Death
+
+    #endregion Lien Joueur - Ennemi
+
     #region Essence
+
     public void Consume(int essence)
     {
-        player.TakeDamage(-essence, Source.Soin);
+        player.UseEssence(essence, Source.Soin);
     }
+
     public void ConsumeEndBattle(int essence)
     {
-        player.TakeDamage(-essence, Source.Soin);
+        player.UseEssence(essence, Source.Soin);
         if (endBattle)
             EndBattle();
     }
+
     private IEnumerator GatherEssence()
     {
         yield return new WaitForSeconds(1f);
@@ -671,13 +457,13 @@ public class BattleManager : MonoBehaviour
         }
         for (int i = 0; i < ListEssence.Count; i++)
         {
-           Destroy(ListEssence[i]); 
+            Destroy(ListEssence[i]);
         }
         ListEssence.Clear();
-        var temp = Instantiate(prefabEssence,spawnPos[0]);
-        temp.transform.localScale = new Vector3(1.5f,1.5f,0);
+        var temp = Instantiate(prefabEssence, spawnPos[0]);
+        temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
         temp.GetComponent<Essence>().AddEssence(amount);
-        temp.transform.localScale = new Vector3(1.5f,1.5f,0);
+        temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
         temp.GetComponent<Essence>().isEnd = true;
         ListEssence.Add(temp);
         buttonEndCombat.SetActive(true);
@@ -693,14 +479,76 @@ public class BattleManager : MonoBehaviour
             amount += item.GetComponent<Essence>().getEssence();
         }
 
-        player.stat.Essence += amount;
+        player.Stat.Essence += amount;
         EndBattle();
     }
-#endregion Essence
-    
+
+    #endregion Essence
+
+    #region Death
+
+    public void DeadEnemy(int id)
+    {
+        nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true);
+        IdOrder.RemoveAll(c => c.id == id);
+        IdSpeedDictionary.Remove(id);
+        var todestroy = EnemyScripts.First(c => c.combatID == id).gameObject;
+        DeadEnemyScripts.Add(EnemyScripts.FirstOrDefault(c => c.combatID == id));
+        EnemyScripts.RemoveAll(c => c.combatID == id);
+        SpawnedEnemy.Remove(todestroy);
+        Destroy(todestroy);
+        if (EnemyScripts.Count <= 0)
+            StartCoroutine("GatherEssence");
+    }
+
+    public void DeadPlayer()
+    {
+        GameManager.instance.DeadPlayer();
+    }
+
+    #endregion Death
+
+    #region Targeting
+
+    public void StartTargeting()
+    {
+        StopCoroutine(Target);
+        StartCoroutine(Target);
+    }
+
+    private IEnumerator Targeting()
+    {
+        foreach (var item in EnemyScripts)
+        {
+            item.SetTargetingMode();
+        }
+
+        do
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        while (idTarget == -1);
+
+        foreach (var item in EnemyScripts)
+        {
+            item.EndTargetingMode();
+        }
+
+        player.SendSpell();
+    }
+
+    #endregion Targeting
+
+    #region Animation
+
+    public void LaunchAnimAttacked()
+    {
+        EnemyScripts.First(c => c.combatID == idTarget).GetAttacked();
+    }
+
     public void EndCurrentAttaque()
     {
-        EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn).EndAnim();
+        EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn).EndTurn();
     }
 
     public void EndHurtAnim()
@@ -711,15 +559,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void EndBattle()
-    {
-        player.stat.Volonté = player.stat.MaxVolonté;
-        player.stat.Tension = 0;
-        GameManager.instance.playerStat = player.stat;
-
-        StartCoroutine(GameManager.instance.pmm.EndBattle());
-    }
-
+    #endregion Animation
 
 }
-

@@ -5,15 +5,29 @@ using UnityEngine;
 
 public class TextAnimation : MonoBehaviour
 {
+    string originalTexte;
     TextMeshProUGUI TextAttached;
-    Animation toPlay;
+    int index;
+    public float delai = 0.02f;
+
     private void OnEnable() {
         TextAttached = transform.GetComponent<TextMeshProUGUI>();
-        toPlay = transform.GetComponent<Animation>();
+        originalTexte = TextAttached.text;
+        index = originalTexte.IndexOf(':');
+        if(index == -1)
+        {
+            index = 0;
+        }
+        TextAttached.text = originalTexte.Substring(0, index);
+        StartCoroutine(ShowLetterByLetter());
     }
 
-    public void LaunchAnim()
+    IEnumerator ShowLetterByLetter()
     {
-        toPlay.Play();
+        for(int i=index; i <= originalTexte.Length; i++)
+        {
+            TextAttached.text = originalTexte.Substring(0, i);
+            yield return new WaitForSeconds(delai);
+        }
     }
 }
