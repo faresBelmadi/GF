@@ -1600,6 +1600,53 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &3121724902693126268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3862327204176296207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fec9b970d31eee5479309846a749daf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ListBuffDebuff: []
+  BuffPrefab: {fileID: 8673195161482103611, guid: 60ec796ae1ca68a4a825f65f310e1c7b, type: 3}
+  DebuffPrefab: {fileID: 8673195161482103611, guid: 2d80ffd33b61f364e853bdf7ae85c4f4, type: 3}
+  LastDamageTaken: 0
+  Stat: {fileID: 0}
+  UICombat: {fileID: 5654147462372662326}
+  TensionUI: 0
+  combatID: 0
+  nextAction: {fileID: 0}
+  EssencePrefab: {fileID: 2949636703588565037, guid: bb5710fb14e5fd14ca171e5b37c0264d, type: 3}
+--- !u!114 &5654147462372662326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3862327204176296207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceea535c8d6026142879907e8e6876ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthSlider: {fileID: 0}
+  TensionSlider: {fileID: 0}
+  HpText: {fileID: 0}
+  NameText: {fileID: 0}
+  Ciblage: {fileID: 0}
+  Intention: {fileID: 0}
+  TargetingMode: 0
+  degatSoinParent: {fileID: 0}
+  buffParents: {fileID: 0}
+  debuffParents: {fileID: 0}
+  soinPrefab: {fileID: 0}
+  degatPrefab: {fileID: 0}
+  DebuffSpawned: []
 --- !u!1 &7530179260505834983
 GameObject:
   m_ObjectHideFlags: 0
@@ -4671,7 +4718,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -179887054839415071, guid: 2f6c8bd3ce493034fb53663a3cc6ae8e, type: 3}
       propertyPath: m_Bounds.m_Center.x
-      value: 0.059916615
+      value: 0.059918717
       objectReference: {fileID: 0}
     - target: {fileID: -179887054839415071, guid: 2f6c8bd3ce493034fb53663a3cc6ae8e, type: 3}
       propertyPath: m_Bounds.m_Center.y
@@ -4679,11 +4726,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -179887054839415071, guid: 2f6c8bd3ce493034fb53663a3cc6ae8e, type: 3}
       propertyPath: m_Bounds.m_Extent.x
-      value: 0.23180798
+      value: 0.231809
       objectReference: {fileID: 0}
     - target: {fileID: -179887054839415071, guid: 2f6c8bd3ce493034fb53663a3cc6ae8e, type: 3}
       propertyPath: m_Bounds.m_Extent.y
-      value: 0.54316294
+      value: 0.543162
       objectReference: {fileID: 0}
     - target: {fileID: -171544846171468225, guid: 2f6c8bd3ce493034fb53663a3cc6ae8e, type: 3}
       propertyPath: m_Materials.Array.data[0]
