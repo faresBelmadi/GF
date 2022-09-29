@@ -1614,7 +1614,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ListBuffDebuff: []
   BuffPrefab: {fileID: 8673195161482103611, guid: 60ec796ae1ca68a4a825f65f310e1c7b, type: 3}
+  BuffContainer: {fileID: 0}
   DebuffPrefab: {fileID: 8673195161482103611, guid: 2d80ffd33b61f364e853bdf7ae85c4f4, type: 3}
+  DebuffContainer: {fileID: 0}
   LastDamageTaken: 0
   Stat: {fileID: 0}
   UICombat: {fileID: 5654147462372662326}
@@ -1634,19 +1636,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceea535c8d6026142879907e8e6876ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSlider: {fileID: 0}
-  TensionSlider: {fileID: 0}
-  HpText: {fileID: 0}
-  NameText: {fileID: 0}
-  Ciblage: {fileID: 0}
-  Intention: {fileID: 0}
+  healthSlider: {fileID: 4651241952034831330}
+  TensionSlider: {fileID: 4730337870308300381}
+  HpText: {fileID: 7144655845428507469}
+  NameText: {fileID: 6584411611179492934}
+  Ciblage: {fileID: 5375941821256806556}
+  Intention: {fileID: 9049143635219596227}
   TargetingMode: 0
-  degatSoinParent: {fileID: 0}
-  buffParents: {fileID: 0}
-  debuffParents: {fileID: 0}
-  soinPrefab: {fileID: 0}
-  degatPrefab: {fileID: 0}
+  degatSoinParent: {fileID: 284219217725898098}
+  buffParents: {fileID: 4271840571918534162}
+  debuffParents: {fileID: 2561707514240804295}
+  soinPrefab: {fileID: 369757569958449724, guid: 27af5be5d6aa1cb4bab7c465b4dfdeae, type: 3}
+  degatPrefab: {fileID: 6455525814061643745, guid: 9a2387407ca1b4e439ff7a03898d83b4, type: 3}
   DebuffSpawned: []
+--- !u!61 &2718787006365057608
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3862327204176296207}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.5825281, y: 2.8790884}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 4.0589085, y: 5.659319}
+  m_EdgeRadius: 0
 --- !u!1 &7530179260505834983
 GameObject:
   m_ObjectHideFlags: 0

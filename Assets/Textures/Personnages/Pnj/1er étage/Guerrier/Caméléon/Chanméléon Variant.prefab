@@ -2086,18 +2086,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ceea535c8d6026142879907e8e6876ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthSlider: {fileID: 0}
-  TensionSlider: {fileID: 0}
-  HpText: {fileID: 0}
-  NameText: {fileID: 0}
-  Ciblage: {fileID: 0}
-  Intention: {fileID: 0}
+  healthSlider: {fileID: 3730035313909149222}
+  TensionSlider: {fileID: 9001067167934808068}
+  HpText: {fileID: 5580126356354233082}
+  NameText: {fileID: 6051955758865598965}
+  Ciblage: {fileID: 7346668489201733165}
+  Intention: {fileID: 6630528314692184675}
   TargetingMode: 0
-  degatSoinParent: {fileID: 0}
-  buffParents: {fileID: 0}
-  debuffParents: {fileID: 0}
-  soinPrefab: {fileID: 0}
-  degatPrefab: {fileID: 0}
+  degatSoinParent: {fileID: 9114999201460462673}
+  buffParents: {fileID: 6191086509420086680}
+  debuffParents: {fileID: 5824541904047534055}
+  soinPrefab: {fileID: 369757569958449724, guid: 27af5be5d6aa1cb4bab7c465b4dfdeae, type: 3}
+  degatPrefab: {fileID: 6455525814061643745, guid: 9a2387407ca1b4e439ff7a03898d83b4, type: 3}
   DebuffSpawned: []
 --- !u!114 &1904508386297289447
 MonoBehaviour:
@@ -2113,7 +2113,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ListBuffDebuff: []
   BuffPrefab: {fileID: 8673195161482103611, guid: 60ec796ae1ca68a4a825f65f310e1c7b, type: 3}
+  BuffContainer: {fileID: 0}
   DebuffPrefab: {fileID: 8673195161482103611, guid: 2d80ffd33b61f364e853bdf7ae85c4f4, type: 3}
+  DebuffContainer: {fileID: 0}
   LastDamageTaken: 0
   Stat: {fileID: 0}
   UICombat: {fileID: -8184111494549973428}
@@ -2121,6 +2123,32 @@ MonoBehaviour:
   combatID: 0
   nextAction: {fileID: 0}
   EssencePrefab: {fileID: 2949636703588565037, guid: bb5710fb14e5fd14ca171e5b37c0264d, type: 3}
+--- !u!61 &4152714978656765131
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1528274911265179840}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.02215004, y: 1.5433245}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 3.0334358, y: 3.643816}
+  m_EdgeRadius: 0
 --- !u!1001 &9078368096159321630
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4990,13 +5018,13 @@ PrefabInstance:
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: -7492213408102837390, guid: bc4d0093ad32f794d98fd03bd9a7114a, type: 3}
---- !u!4 &7884416746647314671 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1195640756109127409, guid: bc4d0093ad32f794d98fd03bd9a7114a, type: 3}
-  m_PrefabInstance: {fileID: 9078368096159321630}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1528274911265179840 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1672715350102604066, guid: bc4d0093ad32f794d98fd03bd9a7114a, type: 3}
+  m_PrefabInstance: {fileID: 9078368096159321630}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7884416746647314671 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1195640756109127409, guid: bc4d0093ad32f794d98fd03bd9a7114a, type: 3}
   m_PrefabInstance: {fileID: 9078368096159321630}
   m_PrefabAsset: {fileID: 0}
