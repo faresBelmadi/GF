@@ -380,25 +380,56 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source, Caster);
+                    if(target != -1)
+                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source, Caster);
+                    else
+                    {
+                        int index;
+                        do
+                        {
+                            index = UnityEngine.Random.Range(1, EnemyScripts.Count+1);
+
+                        } while (index == Caster);
+
+                        EnemyScripts.First(c => c.combatID == index).ApplicationEffet(effet, player.Stat, source, Caster);
+                    }
                 }
                 break;
             case Cible.Ally:
 
                 break;
             case Cible.allEnnemi:
-                foreach (var ennemie in EnemyScripts)
+                for(int x = EnemyScripts.Count-1; x >= 0; x--)
                 {
-                    ennemie.ApplicationEffet(effet, null, source, Caster);
+                    var ennemie = EnemyScripts[x];
+                    if(ennemie != null)
+                        ennemie.ApplicationEffet(effet, null, source, Caster);
                 }
                 break;
             case Cible.allAllies:
 
                 break;
             case Cible.All:
-                foreach (var ennemie in EnemyScripts)
+                for (int x = EnemyScripts.Count-1; x >= 0; x--)
                 {
-                    ennemie.ApplicationEffet(effet, null, source, Caster);
+                    var ennemie = EnemyScripts[x];
+                    if (ennemie != null)
+                        ennemie.ApplicationEffet(effet, null, source, Caster);
+                }
+                if (Caster == idPlayer)
+                {
+                    player.ApplicationEffet(effet, null, source);
+                }
+                else
+                {
+                    if (EnemyScripts.FirstOrDefault(c => c.combatID == Caster) == null)
+                    {
+                        player.ApplicationEffet(effet, DeadEnemyScripts.First(c => c.combatID == Caster).Stat, source, Caster);
+                    }
+                    else
+                    {
+                        player.ApplicationEffet(effet, EnemyScripts.First(c => c.combatID == Caster).Stat, source, Caster);
+                    }
                 }
                 break;
             case Cible.MostDamage:
@@ -489,6 +520,9 @@ public class BattleManager : MonoBehaviour
 
     public void DeadEnemy(int id)
     {
+       
+
+
         nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true);
         IdOrder.RemoveAll(c => c.id == id);
         IdSpeedDictionary.Remove(id);
@@ -497,6 +531,12 @@ public class BattleManager : MonoBehaviour
         EnemyScripts.RemoveAll(c => c.combatID == id);
         SpawnedEnemy.Remove(todestroy);
         Destroy(todestroy);
+
+        if (currentIdTurn == id && IdOrder.Count > 2)
+        {
+            currentIdTurn = IdOrder.FirstOrDefault(c => c.id != currentIdTurn && !c.Played).id;
+        }
+
         if (EnemyScripts.Count <= 0)
             StartCoroutine("GatherEssence");
     }
@@ -548,7 +588,15 @@ public class BattleManager : MonoBehaviour
 
     public void EndCurrentAttaque()
     {
-        EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn).EndTurn();
+        
+        var temp = EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn);
+        if (temp != null)
+            temp.EndTurn();
+        else
+            foreach (var item in EnemyScripts)
+            {
+                item.EndAnimBool();
+            }
     }
 
     public void EndHurtAnim()

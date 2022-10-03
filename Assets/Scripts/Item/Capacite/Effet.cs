@@ -66,10 +66,10 @@ public class Effet : ScriptableObject
         switch (this.TypeEffet)
         {
             case TypeEffet.DegatsForceAme:
-                ModifState.Radiance -= (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme));
+                ModifState.Radiance += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme));
                 break;
             case TypeEffet.DegatsBrut:
-                ModifState.Radiance -= valueToChange;
+                ModifState.Radiance += valueToChange;
                 break;
             case TypeEffet.Conviction:
                 ModifState.Conviction += valueToChange;
@@ -120,7 +120,7 @@ public class Effet : ScriptableObject
                 ModifState.MultiplSoin += valueToChange;
                 break;
             case TypeEffet.DegatPVMax:
-                ModifState.Radiance -= (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax;
+                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax;
                 break;
             case TypeEffet.Soin:
                 ModifState.Radiance += valueToChange;

@@ -65,7 +65,7 @@ public class UIEnnemi : MonoBehaviour
     public void SpawnDegatSoin(int value)
     {
         GameObject t;
-        if (value > 0)
+        if (value < 0)
             t = Instantiate(degatPrefab, degatSoinParent);
         else
             t = Instantiate(soinPrefab, degatSoinParent);
