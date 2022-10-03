@@ -66,16 +66,16 @@ public class Effet : ScriptableObject
         switch (this.TypeEffet)
         {
             case TypeEffet.DegatsForceAme:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme;
+                ModifState.Radiance -= (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme));
                 break;
             case TypeEffet.DegatsBrut:
-                ModifState.Radiance += valueToChange;
+                ModifState.Radiance -= valueToChange;
                 break;
             case TypeEffet.Conviction:
                 ModifState.Conviction += valueToChange;
                 break;
             case TypeEffet.AugmentationPourcentageFA:
-                ModifState.ForceAme += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme;
+                ModifState.ForceAme += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme));
                 break;
             case TypeEffet.AugmentationBrutFA:
                 ModifState.ForceAme += valueToChange;
@@ -111,7 +111,7 @@ public class Effet : ScriptableObject
                 ModifState.TensionDot += valueToChange;
                 break;
             case TypeEffet.MultiplDef:
-                ModifState.MultiplDef += valueToChange;
+                ModifState.MultiplDef += (Pourcentage / 100f) * NbAttaque;
                 break;
             case TypeEffet.MultiplDegat:
                 ModifState.MultiplDegat += valueToChange;
@@ -120,7 +120,7 @@ public class Effet : ScriptableObject
                 ModifState.MultiplSoin += valueToChange;
                 break;
             case TypeEffet.DegatPVMax:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax;
+                ModifState.Radiance -= (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax;
                 break;
             case TypeEffet.Soin:
                 ModifState.Radiance += valueToChange;
