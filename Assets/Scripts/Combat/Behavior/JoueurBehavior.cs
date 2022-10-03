@@ -147,13 +147,13 @@ public class JoueurBehavior : CombatBehavior
         Stat.MultiplDegat = 1;
         Stat.MultiplDef = 1;
         Stat.MultiplSoin = 1;
+        Stat.MultipleBuffDebuff = 1;
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
         Stat.Resilience = Stat.ResilienceOriginal;
         Stat.ForceAme = Stat.ForceAmeOriginal;
         Stat.Conviction = Stat.ConvictionOriginal;
-        Stat.MultipleBuffDebuff = 1;
 
     }
 
