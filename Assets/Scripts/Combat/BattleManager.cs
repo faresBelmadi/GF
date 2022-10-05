@@ -520,25 +520,26 @@ public class BattleManager : MonoBehaviour
 
     public void DeadEnemy(int id)
     {
-       
-
-
-        nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true);
-        IdOrder.RemoveAll(c => c.id == id);
-        IdSpeedDictionary.Remove(id);
-        var todestroy = EnemyScripts.First(c => c.combatID == id).gameObject;
-        DeadEnemyScripts.Add(EnemyScripts.FirstOrDefault(c => c.combatID == id));
-        EnemyScripts.RemoveAll(c => c.combatID == id);
-        SpawnedEnemy.Remove(todestroy);
-        Destroy(todestroy);
-
-        if (currentIdTurn == id && IdOrder.Count > 2)
+        if(EnemyScripts.FirstOrDefault(c => c.combatID == id) != null)
         {
-            currentIdTurn = IdOrder.FirstOrDefault(c => c.id != currentIdTurn && !c.Played).id;
-        }
+            nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true);
+            IdOrder.RemoveAll(c => c.id == id);
+            IdSpeedDictionary.Remove(id);
+            var todestroy = EnemyScripts.First(c => c.combatID == id).gameObject;
+            DeadEnemyScripts.Add(EnemyScripts.FirstOrDefault(c => c.combatID == id));
+            EnemyScripts.RemoveAll(c => c.combatID == id);
+            SpawnedEnemy.Remove(todestroy);
+            Destroy(todestroy);
 
-        if (EnemyScripts.Count <= 0)
-            StartCoroutine("GatherEssence");
+            if (currentIdTurn == id && IdOrder.Count > 2)
+            {
+                currentIdTurn = IdOrder.FirstOrDefault(c => c.id != currentIdTurn && !c.Played).id;
+            }
+
+            if (EnemyScripts.Count <= 0)
+                StartCoroutine("GatherEssence");
+
+        }
     }
 
     public void DeadPlayer()
