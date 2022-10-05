@@ -327,7 +327,19 @@ public class BattleManager : MonoBehaviour
                     player.AddDebuff(item, Decompte, Timer);
                     break;
                 case Cible.ennemi:
-                    EnemyScripts.First(c => c.combatID == target).AddDebuff(item, Decompte, Timer);
+                        if (target != -1)
+                            EnemyScripts.First(c => c.combatID == target).AddDebuff(item, Decompte, Timer);
+                        else
+                        {
+                            int index;
+                            do
+                            {
+                                index = UnityEngine.Random.Range(1, EnemyScripts.Count + 1);
+
+                            } while (index == origine);
+
+                            EnemyScripts.First(c => c.combatID == index).AddDebuff(item, Decompte, Timer);
+                        }
                     break;
                 case Cible.Ally:
 
@@ -384,7 +396,7 @@ public class BattleManager : MonoBehaviour
                         EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source, Caster);
                     else
                     {
-                        int index;
+                        int index = Caster;
                         do
                         {
                             index = UnityEngine.Random.Range(1, EnemyScripts.Count+1);
