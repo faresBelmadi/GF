@@ -126,6 +126,7 @@ public class JoueurBehavior : CombatBehavior
     {
         ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
+        UpdateUI();
     }
 
     public void StartTurn()
@@ -320,7 +321,6 @@ public class JoueurBehavior : CombatBehavior
 
     public void ApplicationBuffDebuff(TimerApplication Timer)
     {
-        ResetStat();
         foreach (var item in Stat.ListBuffDebuff)
         {
             if(item.timerApplication == Timer || Timer == TimerApplication.Persistant)
