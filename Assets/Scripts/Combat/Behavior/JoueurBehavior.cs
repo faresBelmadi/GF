@@ -360,7 +360,7 @@ public class JoueurBehavior : CombatBehavior
         JoueurStat ModifStat;
         if (Caster == null)
         {
-            ModifStat = effet.ResultEffet(Stat, LastDamageTaken);
+            ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Cible:null);
         }
         else
         {

@@ -51,10 +51,10 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTaken, EnnemiStat Cible = null)
+    public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTaken, EnnemiStat CibleEnnemi = null)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        ModifState = ResultEffetCommun(Caster, LastDamageTaken, Cible);
+        ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi);
         return ModifState;
     }
     private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null)
