@@ -144,7 +144,7 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.Radiance;
                 break;
             case TypeEffet.RandomAttaque:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * Random.Range(RandomX, RandomY + 1)) * Caster.ForceAme;
+                ModifState.Radiance += (Mathf.FloorToInt((Pourcentage / 100f) * Random.Range(RandomX, RandomY + 1) * Caster.ForceAme));
                 break;
             case TypeEffet.AugmentationFaRadianceActuelle:
                 ModifState.ForceAme += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.Radiance;
@@ -181,6 +181,9 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.DoubleBuffDebuff:
                 ModifState.MultipleBuffDebuff = ValeurBrut;
+                break;
+            case TypeEffet.AugmentationRadianceMaxPourcentage:
+                ModifState.RadianceMax += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax;
                 break;
             default:
                 break;
