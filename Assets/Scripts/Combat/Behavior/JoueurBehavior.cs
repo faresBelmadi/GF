@@ -364,7 +364,7 @@ public class JoueurBehavior : CombatBehavior
         }
         else
         {
-            ModifStat = effet.ResultEffet(Caster, LastDamageTaken);
+            ModifStat = effet.ResultEffet(Caster, LastDamageTaken,Stat);
         }
 
         Stat.ModifStateAll(ModifStat);

@@ -120,7 +120,7 @@ public class Effet : ScriptableObject
                 ModifState.MultiplSoin += valueToChange;
                 break;
             case TypeEffet.DegatPVMax:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax;
+                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax);
                 break;
             case TypeEffet.Soin:
                 ModifState.Radiance += valueToChange;
