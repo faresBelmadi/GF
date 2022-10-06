@@ -39,7 +39,11 @@ public class CharacterStat : ScriptableObject
 
     public void ModifStateAll(CharacterStat ModifState)
     {
-        this.Radiance += ModifState.Radiance;
+        this.MultiplDef += ModifState.MultiplDef;
+        this.MultiplSoin += ModifState.MultiplSoin;
+        this.MultiplDegat += ModifState.MultiplDegat;
+        this.MultipleBuffDebuff += ModifState.MultipleBuffDebuff;
+
         this.RadianceMax += ModifState.RadianceMax;
         this.ForceAme += ModifState.ForceAme;
         this.Vitesse += ModifState.Vitesse;
@@ -51,6 +55,17 @@ public class CharacterStat : ScriptableObject
         this.ResilienceMax += ModifState.ResilienceMax;
         this.Calme += ModifState.Calme;
         this.Essence += ModifState.Essence;
+
+
+        if (ModifState.Radiance < 0)
+        {
+            var toRemove = Mathf.FloorToInt(ModifState.Radiance * this.MultiplDef);
+            toRemove += Mathf.FloorToInt(((Resilience * 3) / 100f) * toRemove);
+            this.Radiance += toRemove;
+        }
+        else
+            this.Radiance += ModifState.Radiance;
+
     }
 
     public void RectificationStat()
@@ -74,5 +89,8 @@ public class CharacterStat : ScriptableObject
         {
             this.Resilience = this.ResilienceMin;
         }
+
+        if (this.ForceAme <= 0)
+            this.ForceAme = 0;
     }
 }
