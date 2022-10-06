@@ -51,7 +51,13 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
+    public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTaken, EnnemiStat Cible = null)
+    {
+        JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        ModifState = ResultEffetCommun(Caster, LastDamageTaken, Cible);
+        return ModifState;
+    }
+    private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken,Cible));
@@ -59,7 +65,7 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
+    private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null)
     {
         int valueToChange = ValeurBrut * NbAttaque;
         CharacterStat ModifState = ScriptableObject.CreateInstance("CharacterStat") as CharacterStat;
@@ -181,4 +187,5 @@ public class Effet : ScriptableObject
         }
         return ModifState;
     }
+
 }
