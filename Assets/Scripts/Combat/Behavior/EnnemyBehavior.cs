@@ -83,7 +83,6 @@ public class EnnemyBehavior : CombatBehavior
 
     private void Dead()
     {
-        //EndTurn();
         foreach (var item in Stat.ListBuffDebuff)
         {
             foreach (var effect in item.Effet)
@@ -359,7 +358,7 @@ public class EnnemyBehavior : CombatBehavior
         }
         else
         {
-            ModifStat = effet.ResultEffet(Caster, LastDamageTaken);
+            ModifStat = effet.ResultEffet(Caster, LastDamageTaken, Stat);
         }
         Stat.ModifStateAll(ModifStat);
 
@@ -398,6 +397,7 @@ public class EnnemyBehavior : CombatBehavior
 
         if (Stat.Radiance <= 0)
         {
+            EndTurn();
             Dead();
         }
     }
@@ -436,7 +436,7 @@ public class EnnemyBehavior : CombatBehavior
         this.GetComponent<Animator>().SetBool("IsAttacked", false);
     }
 
-    void EndAnimBool()
+    public void EndAnimBool()
     {
         switch (nextActionType)
         {

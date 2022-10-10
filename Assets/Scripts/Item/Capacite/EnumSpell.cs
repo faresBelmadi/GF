@@ -84,7 +84,8 @@ public enum TypeEffet
     GainResilienceIncrementale,
     DamageLastPhase,
     NoEssence,
-    DoubleBuffDebuff
+    DoubleBuffDebuff,
+    AugmentationRadianceMaxPourcentage
 }
 
 public enum TypePassif

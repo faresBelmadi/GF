@@ -126,6 +126,7 @@ public class JoueurBehavior : CombatBehavior
     {
         ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
+        UpdateUI();
     }
 
     public void StartTurn()
@@ -147,13 +148,13 @@ public class JoueurBehavior : CombatBehavior
         Stat.MultiplDegat = 1;
         Stat.MultiplDef = 1;
         Stat.MultiplSoin = 1;
+        Stat.MultipleBuffDebuff = 1;
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
         Stat.Resilience = Stat.ResilienceOriginal;
         Stat.ForceAme = Stat.ForceAmeOriginal;
         Stat.Conviction = Stat.ConvictionOriginal;
-        Stat.MultipleBuffDebuff = 1;
 
     }
 
@@ -320,7 +321,6 @@ public class JoueurBehavior : CombatBehavior
 
     public void ApplicationBuffDebuff(TimerApplication Timer)
     {
-        ResetStat();
         foreach (var item in Stat.ListBuffDebuff)
         {
             if(item.timerApplication == Timer || Timer == TimerApplication.Persistant)
@@ -360,11 +360,11 @@ public class JoueurBehavior : CombatBehavior
         JoueurStat ModifStat;
         if (Caster == null)
         {
-            ModifStat = effet.ResultEffet(Stat, LastDamageTaken);
+            ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Cible:null);
         }
         else
         {
-            ModifStat = effet.ResultEffet(Caster, LastDamageTaken);
+            ModifStat = effet.ResultEffet(Caster, LastDamageTaken,Stat);
         }
 
         Stat.ModifStateAll(ModifStat);

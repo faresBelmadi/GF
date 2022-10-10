@@ -47,46 +47,48 @@ public class Effet : ScriptableObject
     public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        ModifState = ResultEffetCommun(Caster, LastDamageTaken);
+        ModifState = ResultEffetCommun(Caster, LastDamageTaken,Cible);
         return ModifState;
     }
 
-    private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
+    public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTaken, EnnemiStat CibleEnnemi = null)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken));
-        switch (this.TypeEffet)
-        {
-            
-            default:
-                break;
-        }
+        ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi);
+        return ModifState;
+    }
+    private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null)
+    {
+        JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken,Cible));
+
         return ModifState;
     }
 
-    private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
+    private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null)
     {
         int valueToChange = ValeurBrut * NbAttaque;
         CharacterStat ModifState = ScriptableObject.CreateInstance("CharacterStat") as CharacterStat;
         switch (this.TypeEffet)
         {
             case TypeEffet.DegatsForceAme:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme;
+                ModifState.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme)*Caster.MultiplDegat);
                 break;
             case TypeEffet.DegatsBrut:
-                ModifState.Radiance += valueToChange;
+                ModifState.Radiance += Mathf.FloorToInt(valueToChange*Caster.MultiplDegat);
                 break;
             case TypeEffet.Conviction:
                 ModifState.Conviction += valueToChange;
                 break;
             case TypeEffet.AugmentationPourcentageFA:
-                ModifState.ForceAme += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme;
+                ModifState.ForceAme += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme));
                 break;
             case TypeEffet.AugmentationBrutFA:
                 ModifState.ForceAme += valueToChange;
                 break;
             case TypeEffet.RadianceMax:
                 ModifState.RadianceMax += valueToChange;
+                ModifState.Radiance += valueToChange;
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:
                 ModifState.ForceAme += LastDamageTaken;
@@ -116,7 +118,7 @@ public class Effet : ScriptableObject
                 ModifState.TensionDot += valueToChange;
                 break;
             case TypeEffet.MultiplDef:
-                ModifState.MultiplDef += valueToChange;
+                ModifState.MultiplDef += (Pourcentage / 100f) * NbAttaque;
                 break;
             case TypeEffet.MultiplDegat:
                 ModifState.MultiplDegat += valueToChange;
@@ -125,28 +127,28 @@ public class Effet : ScriptableObject
                 ModifState.MultiplSoin += valueToChange;
                 break;
             case TypeEffet.DegatPVMax:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax;
+                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax);
                 break;
             case TypeEffet.Soin:
                 ModifState.Radiance += valueToChange;
                 break;
             case TypeEffet.SoinFA:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme;
+                ModifState.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme)*Caster.MultiplSoin);
                 break;
             case TypeEffet.SoinFANbEnnemi:
-                ModifState.Radiance += ((Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * GameManager.instance.BattleMan.EnemyScripts.Count;
+                ModifState.Radiance += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * GameManager.instance.BattleMan.EnemyScripts.Count);
                 break;
             case TypeEffet.SoinRadianceMax:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax;
+                ModifState.Radiance +=Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax);
                 break;
             case TypeEffet.SoinRadianceActuelle:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Cible.Radiance;
+                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.Radiance);
                 break;
             case TypeEffet.RandomAttaque:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * Random.Range(RandomX, RandomY + 1)) * Caster.ForceAme;
+                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Random.Range(RandomX, RandomY + 1) * Caster.ForceAme));
                 break;
             case TypeEffet.AugmentationFaRadianceActuelle:
-                ModifState.ForceAme += (Mathf.FloorToInt(Pourcentage / 100f) * NbAttaque) * Caster.Radiance;
+                ModifState.ForceAme += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.Radiance);
                 break;
             case TypeEffet.ConsommeTensionAugmentationFA:
                 ModifState.Tension += -Cible.Tension;
@@ -159,12 +161,12 @@ public class Effet : ScriptableObject
                 tempListRD.RemoveAt(Random.Range  (0, tempListRD.Count));
                 break;
             case TypeEffet.AttaqueStackAmant:
-                ModifState.Radiance += (Mathf.FloorToInt(Pourcentage / 100f) * Cible.ListBuffDebuff.Where(c => c.Nom == "Amant").Count()) * Caster.ForceAme;
+                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Cible.ListBuffDebuff.Where(c => c.Nom == "Amant").Count()) * Caster.ForceAme);
                 break;
             case TypeEffet.AttaqueFADebuff:
                 var tempListAFAD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
 
-                ModifState.Radiance += Mathf.FloorToInt((Pourcentage + (ValeurBrut * tempListAFAD.Count()) / 100f) * NbAttaque) * Caster.ForceAme;
+                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage + (ValeurBrut * tempListAFAD.Count()) / 100f) * NbAttaque) * Caster.ForceAme);
                 break;
             case TypeEffet.GainResilienceIncrementale:
                 ModifState.Resilience += ValeurBrut * TimeAlive;
@@ -181,9 +183,13 @@ public class Effet : ScriptableObject
             case TypeEffet.DoubleBuffDebuff:
                 ModifState.MultipleBuffDebuff = ValeurBrut;
                 break;
+            case TypeEffet.AugmentationRadianceMaxPourcentage:
+                ModifState.RadianceMax += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax);
+                break;
             default:
                 break;
         }
         return ModifState;
     }
+
 }
