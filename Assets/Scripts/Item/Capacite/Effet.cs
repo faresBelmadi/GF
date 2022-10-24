@@ -121,10 +121,10 @@ public class Effet : ScriptableObject
                 ModifState.MultiplDef += (Pourcentage / 100f) * NbAttaque;
                 break;
             case TypeEffet.MultiplDegat:
-                ModifState.MultiplDegat += valueToChange;
+                ModifState.MultiplDegat += (Pourcentage / 100f) * NbAttaque;
                 break;
             case TypeEffet.MultiplSoin:
-                ModifState.MultiplSoin += valueToChange;
+                ModifState.MultiplSoin += (Pourcentage / 100f) * NbAttaque;
                 break;
             case TypeEffet.DegatPVMax:
                 ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax);
@@ -185,6 +185,19 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.AugmentationRadianceMaxPourcentage:
                 ModifState.RadianceMax += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax);
+                break;
+            case TypeEffet.BuffFaCoupRecu:
+                ModifState.ForceAme += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque));
+                break;
+            case TypeEffet.BuffResilienceCoupRecu:
+                break;
+            case TypeEffet.ConsommeTensionDmgAllExceptCaster:
+                break;
+            case TypeEffet.Provocation:
+                break;
+            case TypeEffet.VolEssence:
+                break;
+            case TypeEffet.Colere:
                 break;
             default:
                 break;

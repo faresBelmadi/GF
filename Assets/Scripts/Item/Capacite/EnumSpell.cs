@@ -25,7 +25,7 @@ public enum Cible
     allEnnemi,
     All,
     Ally,
-    allAllies,
+    AllExceptSelf,
     MostDamage
 }
 
@@ -85,7 +85,13 @@ public enum TypeEffet
     DamageLastPhase,
     NoEssence,
     DoubleBuffDebuff,
-    AugmentationRadianceMaxPourcentage
+    AugmentationRadianceMaxPourcentage,
+    BuffFaCoupRecu,
+    BuffResilienceCoupRecu,
+    ConsommeTensionDmgAllExceptCaster,
+    Provocation,
+    VolEssence
+
 }
 
 public enum TypePassif

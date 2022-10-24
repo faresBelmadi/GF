@@ -350,7 +350,7 @@ public class BattleManager : MonoBehaviour
                         ennemie.AddDebuff(item, Decompte, Timer);
                     }
                     break;
-                case Cible.allAllies:
+                case Cible.AllExceptSelf:
 
                     break;
                 case Cible.All:
@@ -418,7 +418,7 @@ public class BattleManager : MonoBehaviour
                         ennemie.ApplicationEffet(effet, null, source, Caster);
                 }
                 break;
-            case Cible.allAllies:
+            case Cible.AllExceptSelf:
 
                 break;
             case Cible.All:

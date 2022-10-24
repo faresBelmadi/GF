@@ -36,6 +36,7 @@ public class CharacterStat : ScriptableObject
     public float ValeurPalier = 0;
     public int NbPalier = 3;
     public int PalierChangement = 0;
+    public int nbAttaqueRecu = 0;
 
     public void ModifStateAll(CharacterStat ModifState)
     {
