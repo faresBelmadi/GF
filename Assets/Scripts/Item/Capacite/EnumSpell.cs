@@ -86,11 +86,35 @@ public enum TypeEffet
     NoEssence,
     DoubleBuffDebuff,
     AugmentationRadianceMaxPourcentage,
+    //todo
     BuffFaCoupRecu,
     BuffResilienceCoupRecu,
     ConsommeTensionDmgAllExceptCaster,
     Provocation,
-    VolEssence
+    VolEssence,
+    //Toadd Effet
+    RandomChanceCastSpellSelf,
+    SwapMostLeastBuffDebuff,
+    RadianceRepartition,
+    RandomAttaqueDebuff,
+    DegatsRetourSurAttaque,
+    RedirectionDegatsOnCasteur,
+    CancelPourcentageDamage,
+    RedirectionCancel,
+    DispellBuffJoueurDamage,
+    DispellDebuffCasterDamage,
+    DamageAllEvenly,
+    DamageUpTargetLowRadiance,
+    OnKillStunAll,
+    AugmentationFARadianceManquante,
+    DamageFaDebuff,
+    RemoveAllTensionProcDamage,
+    RemoveAllDebuffProcEffect,
+    RemoveAllDebuffSelfProcEffect,
+    NoCapaPossible,
+    ConsommeTensionReduitFa,
+    AugmentationDegatsHitJoueur,
+
 
 }
 
