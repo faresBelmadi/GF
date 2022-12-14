@@ -10,16 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eec0903590878f643a897bda7c3fa6bd, type: 3}
-  m_Name: Menace@
+  m_Name: Menace
   m_EditorClassIdentifier: 
   Nom: Menace
   Description: "Applique a tout les adversaires le d\xE9buff \"Febrile\""
   IDSpell: 0
   IDChildren: 
-  SpellStatue: 0
-  IsAvailable: 0
+  SpellStatue: 2
+  IsAvailable: 1
   CostUnlock: 0
-  Costs: []
+  Costs:
+  - typeCost: 1
+    Value: 3
   ActionEffet: []
-  ActionBuffDebuff: []
-  Sprite: {fileID: 0}
+  ActionBuffDebuff:
+  - {fileID: 11400000, guid: bf160e75d635cb54ca688b369f7a8dbf, type: 2}
+  Sprite: {fileID: 21300000, guid: 267612aab625a444cbd6e962660abe6f, type: 3}
