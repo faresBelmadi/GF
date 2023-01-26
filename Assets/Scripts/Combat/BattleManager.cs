@@ -338,8 +338,12 @@ public class BattleManager : MonoBehaviour
 
                             } while (index == origine);
 
-                            EnemyScripts.First(c => c.combatID == index).AddDebuff(item, Decompte, Timer);
-                        }
+                        var ennemy = EnemyScripts.First(c => c.combatID == index);
+                        if (ennemy != null)
+                            ennemy.AddDebuff(item, Decompte, Timer);
+                        else
+                            EnemyScripts.First().AddDebuff(item, Decompte, Timer);
+                    }
                     break;
                 case Cible.Ally:
 
@@ -556,7 +560,7 @@ public class BattleManager : MonoBehaviour
 
     public void DeadPlayer()
     {
-        GameManager.instance.DeadPlayer();
+        //GameManager.instance.DeadPlayer();
     }
 
     #endregion Death
