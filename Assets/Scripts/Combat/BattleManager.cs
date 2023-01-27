@@ -407,7 +407,11 @@ public class BattleManager : MonoBehaviour
 
                         } while (index == Caster);
 
-                        EnemyScripts.First(c => c.combatID == index).ApplicationEffet(effet, player.Stat, source, Caster);
+                        var ennemy = EnemyScripts.First(c => c.combatID == index);
+                        if (ennemy != null)
+                            ennemy.ApplicationEffet(effet, player.Stat, source, Caster);
+                        else
+                            EnemyScripts.First().ApplicationEffet(effet, player.Stat, source, Caster);
                     }
                 }
                 break;
@@ -560,7 +564,7 @@ public class BattleManager : MonoBehaviour
 
     public void DeadPlayer()
     {
-        //GameManager.instance.DeadPlayer();
+        GameManager.instance.DeadPlayer();
     }
 
     #endregion Death
