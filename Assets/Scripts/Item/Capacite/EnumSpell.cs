@@ -117,7 +117,8 @@ public enum TypeEffet
     ConsommeTensionReduitFa,
     AugmentationDegatsHitJoueur,
     GainFaBuffCible,
-    GainFaDebuffCible
+    GainFaDebuffCible,
+    Ponction
 
 }
 
