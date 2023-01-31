@@ -27,7 +27,8 @@ public enum Cible
     Ally,
     AllExceptSelf,
     MostDamage,
-    LastAttacker
+    LastAttacker,
+    AllAllyExceptSelf
 }
 
 public enum SpellStatus
@@ -115,7 +116,8 @@ public enum TypeEffet
     NoCapaPossible,
     ConsommeTensionReduitFa,
     AugmentationDegatsHitJoueur,
-
+    GainFaBuffCible,
+    GainFaDebuffCible
 
 }
 

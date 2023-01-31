@@ -478,6 +478,15 @@ public class BattleManager : MonoBehaviour
                 }
 
                 break;
+
+            case Cible.AllAllyExceptSelf:
+                for (int x = EnemyScripts.Count - 1; x >= 0; x--)
+                {
+                    var ennemie = EnemyScripts[x];
+                    if (ennemie != null && ennemie.combatID != Caster)
+                        ennemie.ApplicationEffet(effet, null, source, Caster);
+                }
+                break;
         }
     }
 
