@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour {
     public ClassPlayer classSO;
     public JoueurStat playerStat;
 
+    public int ClassIDSelected;
+
     [Header("Data")]
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
@@ -44,7 +46,10 @@ public class GameManager : MonoBehaviour {
         }
 
         UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-        LoadSave();
+        //LoadSave();
+        ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
+        CreateSave();
+        getClassRun();
     }
 
     private void LoadSave()
@@ -115,10 +120,11 @@ public class GameManager : MonoBehaviour {
 
     private void CreateSave()
     {
+
         GameData data = new GameData();
-        data.CurrentRun = new RunData(){ClassID = 0};
+        data.CurrentRun = new RunData(){ClassID = ClassIDSelected};
         data.previousRuns = new List<RunData>();
-        var spellsToAdd = AllClasses.First(c => c.ID == 0).PlayerStat.ListSpell.Where(c => c.SpellStatue == SpellStatus.bought);
+        var spellsToAdd = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ListSpell.Where(c => c.SpellStatue == SpellStatus.bought);
         List<int> boughtspells = new List<int>();
         foreach (var item in spellsToAdd)
         {
@@ -126,11 +132,11 @@ public class GameManager : MonoBehaviour {
         }
         data.CurrentRun.player = new PlayerData()
         {   
-            Radiance = AllClasses.First(c => c.ID == 0).PlayerStat.Radiance,
-            Conscience = AllClasses.First(c => c.ID == 0).PlayerStat.Conscience,
-            ForceAme = AllClasses.First(c => c.ID == 0).PlayerStat.ForceAme,
-            Vitesse = AllClasses.First(c => c.ID == 0).PlayerStat.Vitesse,
-            Volonter = AllClasses.First(c => c.ID == 0).PlayerStat.Volonter,
+            Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
+            Conscience = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Conscience,
+            ForceAme = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ForceAme,
+            Vitesse = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Vitesse,
+            Volonter = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Volonter,
             BoughtSpellID = boughtspells
         };
         string json = JsonUtility.ToJson(data);
@@ -253,8 +259,8 @@ public class GameManager : MonoBehaviour {
 
     IEnumerator Reload()
     {
-        yield return SceneManager.UnloadSceneAsync(0);
-        yield return SceneManager.LoadSceneAsync(0);
+        yield return SceneManager.UnloadSceneAsync(1);
+        yield return SceneManager.LoadSceneAsync(1);
         pmm = FindObjectOfType<PlayerMapManager>();
         rm = FindObjectOfType<RoomManager>();
     }

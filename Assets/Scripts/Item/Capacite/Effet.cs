@@ -199,6 +199,9 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.Colere:
                 break;
+            case TypeEffet.DegatsBrutConsequence:
+                ModifState.Radiance += valueToChange;
+                break;
             default:
                 break;
         }

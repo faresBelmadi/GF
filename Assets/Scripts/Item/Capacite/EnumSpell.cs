@@ -118,7 +118,8 @@ public enum TypeEffet
     AugmentationDegatsHitJoueur,
     GainFaBuffCible,
     GainFaDebuffCible,
-    Ponction
+    Ponction,
+    DegatsBrutConsequence
 
 }
 
