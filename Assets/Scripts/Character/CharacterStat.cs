@@ -40,10 +40,14 @@ public class CharacterStat : ScriptableObject
 
     public void ModifStateAll(CharacterStat ModifState)
     {
-        this.MultiplDef += ModifState.MultiplDef;
-        this.MultiplSoin += ModifState.MultiplSoin;
-        this.MultiplDegat += ModifState.MultiplDegat;
-        this.MultipleBuffDebuff += ModifState.MultipleBuffDebuff;
+        if (ModifState.MultiplDef != 1)
+            this.MultiplDef += ModifState.MultiplDef;
+        if (ModifState.MultiplSoin != 1)
+            this.MultiplSoin += ModifState.MultiplSoin;
+        if (ModifState.MultiplDegat != 1)
+            this.MultiplDegat += ModifState.MultiplDegat;
+        if (ModifState.MultipleBuffDebuff != 1)
+            this.MultipleBuffDebuff += ModifState.MultipleBuffDebuff;
 
         this.RadianceMax += ModifState.RadianceMax;
         this.ForceAme += ModifState.ForceAme;
