@@ -202,6 +202,12 @@ public class Effet : ScriptableObject
             case TypeEffet.DegatsBrutConsequence:
                 ModifState.Radiance += valueToChange;
                 break;
+            case TypeEffet.DamageUpTargetLowRadiance:
+                var percent = Pourcentage;
+                if (((Cible.Radiance / Cible.RadianceMax) * 100) <= 25)
+                    percent *= 3;
+                ModifState.Radiance += Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+                break;
             default:
                 break;
         }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New dialogue", menuName = "Remake/Capacité/Create New Passif", order = 11)]
+[CreateAssetMenu(fileName = "New dialogue", menuName = "Capacité/Create New Passif", order = 11)]
 public class Passif : ScriptableObject
 {
     public TypePassif passif;

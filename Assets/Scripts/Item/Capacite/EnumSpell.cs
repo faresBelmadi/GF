@@ -125,6 +125,7 @@ public enum TypeEffet
 
 public enum TypePassif
 {
+    None,
     CodeDeLHonneur,
     SacrificeRituel,
     Mannequin,
