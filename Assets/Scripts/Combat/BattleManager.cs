@@ -18,6 +18,8 @@ public class BattleManager : MonoBehaviour
     public GameObject prefabEssence;
     public GameObject buttonEndCombat;
     const string Target = "Targeting";
+    public PassifRules passifRules;
+
 
     [Header("Round/Turn variables")]
     public List<CombatOrder> IdOrder;

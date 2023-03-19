@@ -17,6 +17,7 @@ public class JoueurStat : CharacterStat
     public List<Passif> ListPassif;
     public int SlotsSouvenir;
     public List<Souvenir> ListSouvenir;
+    
 
     public void ModifStateAll(JoueurStat ModifState)
     {

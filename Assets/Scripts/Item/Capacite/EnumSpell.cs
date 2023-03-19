@@ -17,6 +17,18 @@ public enum TimerApplication
     Attaque,
     Persistant
 }
+public enum TimerPassif
+{
+    DebutPhase,
+    DebutTour,
+    FinPhase,
+    FinTour,
+    ChangementStat,
+    SourceDegats,
+    PersonnageMeurt,
+    AjoutBuffDebuff,
+    SuppBuffDebuff
+}
 
 public enum Cible
 {
@@ -126,12 +138,13 @@ public enum TypeEffet
 public enum TypePassif
 {
     None,
-    CodeDeLHonneur,
-    SacrificeRituel,
-    Mannequin,
-    Martyr,
-    Cultiste,
-    Sauvage,
-    Fille,
-    Droit
+    PassifGuerrier1,
+    PassifGuerrier2,
+    PassifMartyr,
+    PassifCameleon,
+    PassifCultiste,
+    PassifChefCultiste,
+    PassiJeanne,
+    PassifPapa,
+    PassifPapy,
 }

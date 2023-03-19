@@ -126,12 +126,14 @@ public class JoueurBehavior : CombatBehavior
     {
         ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
+        ResolvePassif();
         UpdateUI();
     }
 
     public void StartTurn()
     {
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
+        ResolvePassif();
         ActivateSpells();
         Stat.Volonter = Stat.VolonterMax;
         UpdateUI();
@@ -409,6 +411,31 @@ public class JoueurBehavior : CombatBehavior
     }
 
     #endregion Effet
+
+    #region passif
+
+    public void ResolvePassif()
+    {
+        foreach (var item in Stat.ListPassif)
+        {
+            switch (item.passif)
+            {
+                case TypePassif.PassifGuerrier1:
+                    // vous avez 1 points de résilience par point de conscience que vous possédez
+                    break;
+                case TypePassif.PassifGuerrier2:
+                    //Lorsque vous terminez un affrontement sans avoir consommé d'Essences, vous récupérez 1 point de Conscience et le total d'Essences obtenu est augmenté de 10%.        
+                    break;
+
+            }
+            
+            
+
+        }
+            
+    }
+
+    #endregion passif
 
     #region Essence
 
