@@ -397,7 +397,7 @@ public class EnnemyBehavior : CombatBehavior
 
         if (Stat.Radiance <= 0)
         {
-            EndTurn();
+            /*EndTurn();*/ // provoque une fin de tour du joueur a la mort d'un ennemi, est ce que c'est une feature voulu ?
             Dead();
         }
     }

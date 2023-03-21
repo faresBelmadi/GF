@@ -416,6 +416,8 @@ public class JoueurBehavior : CombatBehavior
 
     public void ResolvePassif()
     {
+        if (Stat.ListPassif == null)
+            return;
         foreach (var item in Stat.ListPassif)
         {
             switch (item.passif)
