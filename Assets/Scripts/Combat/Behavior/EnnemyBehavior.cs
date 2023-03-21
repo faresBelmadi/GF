@@ -257,8 +257,8 @@ public class EnnemyBehavior : CombatBehavior
     public void DoAction()
     {
         //A Mettre une fois les combats terminer
-        GameManager.instance.BattleMan.LaunchSpellEnnemi(nextAction);
         LaunchAnimBool();
+        GameManager.instance.BattleMan.LaunchSpellEnnemi(nextAction);
     }
 
     public void CreateSpellList()
