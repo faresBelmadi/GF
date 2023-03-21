@@ -100,13 +100,12 @@ public enum TypeEffet
     NoEssence,
     DoubleBuffDebuff,
     AugmentationRadianceMaxPourcentage,
-    //todo
+    //todo Github a fait un rollback ce qui nous a fait perdre tout ces effets dans le effet.cs
     BuffFaCoupRecu,
     BuffResilienceCoupRecu,
     ConsommeTensionDmgAllExceptCaster,
     Provocation,
     VolEssence,
-    //Toadd Effet
     RandomChanceCastSpellSelf,
     SwapMostLeastBuffDebuff,
     RadianceRepartition,
