@@ -47,9 +47,6 @@ public class UIEnnemi : MonoBehaviour
 
     private void OnMouseEnter()
     {
-        healthSlider.gameObject.SetActive(true);
-        TensionSlider.gameObject.SetActive(true);
-        NameText.gameObject.SetActive(true);
         if (TargetingMode)
             Ciblage.SetActive(true);
         if (debuffParents.childCount > 0 || buffParents.childCount > 0)
@@ -58,9 +55,6 @@ public class UIEnnemi : MonoBehaviour
 
     private void OnMouseExit()
     {
-        healthSlider.gameObject.SetActive(false);
-        TensionSlider.gameObject.SetActive(false);
-        NameText.gameObject.SetActive(false);
         if (TargetingMode)
             Ciblage.SetActive(false);
 
@@ -71,7 +65,7 @@ public class UIEnnemi : MonoBehaviour
     public void SpawnDegatSoin(int value)
     {
         GameObject t;
-        if (value > 0)
+        if (value < 0)
             t = Instantiate(degatPrefab, degatSoinParent);
         else
             t = Instantiate(soinPrefab, degatSoinParent);

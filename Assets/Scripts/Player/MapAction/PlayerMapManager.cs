@@ -69,6 +69,7 @@ public class PlayerMapManager : MonoBehaviour
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
             case TypeRoom.Heal:
+                StartCoroutine("LoadSceneAsync", "Autel");
                 break;
             case TypeRoom.Event:
                 StartCoroutine("LoadSceneAsync", "AleaScene");
@@ -95,6 +96,9 @@ public class PlayerMapManager : MonoBehaviour
                 break;
             case "AleaScene":
                 StartAlea();
+                break;
+            case "Autel":
+                StartAutel();
                 break;
             case "MenuStat":
                 StartMenuStat();
@@ -143,6 +147,27 @@ public class PlayerMapManager : MonoBehaviour
         CurrentRoomCamera.SetActive(false);
         GameManager.instance.AleaMan = null;
         MenuCamera.SetActive(true);
+        yield return SceneManager.UnloadSceneAsync(s);
+    }
+
+    void StartAutel()
+    {
+        CurrentRoomCamera = rootScene.First(c => c.name == "AutelCamera");
+        GameManager.instance.AutelMan = rootScene.First(c => c.name == "AutelManager").GetComponent<AutelManager>();
+        GameManager.instance.LoadAutel();
+        CurrentRoomCamera.SetActive(true);
+        MenuCamera.SetActive(false);
+    }
+
+    public IEnumerator EndAutel(bool Loot)
+    {
+        CurrentRoomCamera.SetActive(false);
+        GameManager.instance.AutelMan = null;
+        MenuCamera.SetActive(true);
+        if (Loot == true)
+        {
+            LoadMenuStat();
+        }
         yield return SceneManager.UnloadSceneAsync(s);
     }
 

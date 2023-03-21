@@ -16,7 +16,7 @@ public class SouvenirUI : MonoBehaviour
     {
         SouvenirObject = this.gameObject;
         SouvenirObject.GetComponent<Image>().sprite = LeSouvenir.Icon;
-        TexteDescription.text = LeSouvenir.Nom + "\n" + DescriptionEmotion() + "\n" + LeSouvenir.Description;
+        TexteDescription.text = LeSouvenir.Nom + "\n" + DescriptionEmotion() + "\n" + "Slots : " + LeSouvenir.Slots.ToString() + "\n" + LeSouvenir.Description;
     }
 
     private string DescriptionEmotion()

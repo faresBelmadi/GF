@@ -32,7 +32,6 @@ public class Souvenir : ScriptableObject
             PourcentageTotal += ProcEmotion[i].Pourcentage;
         }
         int random = Random.Range(0, PourcentageTotal + 1);
-        Debug.Log(random);
         for (int i = 0; i < ProcEmotion.Count; i++)
         {
             if (random <= ProcEmotion[i].Pourcentage)

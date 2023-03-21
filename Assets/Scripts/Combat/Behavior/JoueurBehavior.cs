@@ -126,11 +126,14 @@ public class JoueurBehavior : CombatBehavior
     {
         ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
+        ResolvePassif();
+        UpdateUI();
     }
 
     public void StartTurn()
     {
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
+        ResolvePassif();
         ActivateSpells();
         Stat.Volonter = Stat.VolonterMax;
         UpdateUI();
@@ -147,6 +150,7 @@ public class JoueurBehavior : CombatBehavior
         Stat.MultiplDegat = 1;
         Stat.MultiplDef = 1;
         Stat.MultiplSoin = 1;
+        Stat.MultipleBuffDebuff = 1;
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
@@ -292,12 +296,16 @@ public class JoueurBehavior : CombatBehavior
 
     public void AddDebuff(BuffDebuff toAdd, Decompte Decompte, TimerApplication Timer)
     {
-        if(toAdd.IsDebuff)
+        for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
-            ReceiveTension(Source.Buff);
+            if (toAdd.IsDebuff)
+            {
+                ReceiveTension(Source.Buff);
+            }
+            Stat.ListBuffDebuff.Add(Instantiate(toAdd));
+            base.AddBuffDebuff(toAdd);
         }
-        Stat.ListBuffDebuff.Add(Instantiate(toAdd));
-        base.AddBuffDebuff(toAdd);
+       
 
         DecompteDebuffJoueur(Decompte, Timer);
 
@@ -315,7 +323,6 @@ public class JoueurBehavior : CombatBehavior
 
     public void ApplicationBuffDebuff(TimerApplication Timer)
     {
-        ResetStat();
         foreach (var item in Stat.ListBuffDebuff)
         {
             if(item.timerApplication == Timer || Timer == TimerApplication.Persistant)
@@ -350,16 +357,16 @@ public class JoueurBehavior : CombatBehavior
 
     #region Effet
 
-    public void ApplicationEffet(Effet effet, EnnemiStat Caster = null, SourceEffet source = SourceEffet.Spell)
+    public void ApplicationEffet(Effet effet, EnnemiStat Caster = null, SourceEffet source = SourceEffet.Spell, int idCaster = 0)
     {
         JoueurStat ModifStat;
         if (Caster == null)
         {
-            ModifStat = effet.ResultEffet(Stat, LastDamageTaken);
+            ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Cible:null);
         }
         else
         {
-            ModifStat = effet.ResultEffet(Caster, LastDamageTaken);
+            ModifStat = effet.ResultEffet(Caster, LastDamageTaken,Stat);
         }
 
         Stat.ModifStateAll(ModifStat);
@@ -372,8 +379,15 @@ public class JoueurBehavior : CombatBehavior
         if (ModifStat.Radiance < 0)
         {
             LastDamageTaken = ModifStat.Radiance;
+            GameManager.instance.BattleMan.CurrentPhaseDamage += LastDamageTaken;
 
-            if(source == SourceEffet.Spell)
+            if (LastDamageTaken < GameManager.instance.BattleMan.MostDamage)
+            {
+                GameManager.instance.BattleMan.MostDamage = LastDamageTaken;
+                GameManager.instance.BattleMan.MostDamageID = idCaster;
+            }
+
+            if (source == SourceEffet.Spell)
                 ReceiveTension(Source.Attaque);
             else if (source == SourceEffet.BuffDebuff)
                 ReceiveTension(Source.Dot);
@@ -397,6 +411,31 @@ public class JoueurBehavior : CombatBehavior
     }
 
     #endregion Effet
+
+    #region passif
+
+    public void ResolvePassif()
+    {
+        foreach (var item in Stat.ListPassif)
+        {
+            switch (item.passif)
+            {
+                case TypePassif.PassifGuerrier1:
+                    // vous avez 1 points de résilience par point de conscience que vous possédez
+                    break;
+                case TypePassif.PassifGuerrier2:
+                    //Lorsque vous terminez un affrontement sans avoir consommé d'Essences, vous récupérez 1 point de Conscience et le total d'Essences obtenu est augmenté de 10%.        
+                    break;
+
+            }
+            
+            
+
+        }
+            
+    }
+
+    #endregion passif
 
     #region Essence
 

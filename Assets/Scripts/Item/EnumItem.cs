@@ -34,3 +34,9 @@ public enum StatModif
     ConscienceMax,
     Clairvoyance
 }
+
+public enum ParametreStat
+{
+    Pourcentage,
+    ValeurBrut
+}

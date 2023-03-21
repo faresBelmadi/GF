@@ -48,26 +48,33 @@ public class SpellCombat : MonoBehaviour
 
     private bool CheckPrice()
     {
-        var stat = GameManager.instance.BattleMan.player.Stat;
-        foreach (var price in Action.Costs)
+        if(GameManager.instance.BattleMan != null)
         {
-            switch (price.typeCost)
+            var stat = GameManager.instance.BattleMan.player.Stat;
+            foreach (var price in Action.Costs)
             {
-                case TypeCostSpell.conscience:
-                    if (stat.Conscience < price.Value)
-                        return false;
-                    break;
-                case TypeCostSpell.radiance:
-                    if (stat.Radiance < price.Value)
-                        return false;
-                    break;
-                case TypeCostSpell.volonte:
-                    if (stat.Volonter < price.Value)
-                        return false;
-                    break;
+                switch (price.typeCost)
+                {
+                    case TypeCostSpell.conscience:
+                        if (stat.Conscience < price.Value)
+                            return false;
+                        break;
+                    case TypeCostSpell.radiance:
+                        if (stat.Radiance < price.Value)
+                            return false;
+                        break;
+                    case TypeCostSpell.volonte:
+                        if (stat.Volonter < price.Value)
+                            return false;
+                        break;
+                }
             }
+            return true;
         }
-        return true;
+        else
+        {
+            return false;
+        } 
     }
 
     public void ClickAction()

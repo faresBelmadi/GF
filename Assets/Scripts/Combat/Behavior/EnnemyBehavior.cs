@@ -55,6 +55,7 @@ public class EnnemyBehavior : CombatBehavior
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Dissimulation = Stat.DissimulationOriginal;
         Stat.Resilience = Stat.ResilienceOriginal;
+        Stat.MultipleBuffDebuff = 1;
     }
 
     public void StartPhase()
@@ -82,7 +83,6 @@ public class EnnemyBehavior : CombatBehavior
 
     private void Dead()
     {
-        //EndTurn();
         foreach (var item in Stat.ListBuffDebuff)
         {
             foreach (var effect in item.Effet)
@@ -98,9 +98,9 @@ public class EnnemyBehavior : CombatBehavior
                 }*/
             }
         }
-        var t = Instantiate(EssencePrefab, this.transform.parent);
         if (Stat.Essence != 0)
         {
+            var t = Instantiate(EssencePrefab, this.transform.parent);
             t.GetComponent<Essence>().AddEssence(Stat.Essence);
             GameManager.instance.BattleMan.ListEssence.Add(t);
         }
@@ -287,13 +287,15 @@ public class EnnemyBehavior : CombatBehavior
 
     public void AddDebuff(BuffDebuff toAdd, Decompte Decompte, TimerApplication Timer)
     {
-        if (toAdd.IsDebuff)
+        for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
-            ReceiveTension(Source.Buff);
+            if (toAdd.IsDebuff)
+            {
+                ReceiveTension(Source.Buff);
+            }
+            Stat.ListBuffDebuff.Add(Instantiate(toAdd));
+            base.AddBuffDebuff(toAdd);
         }
-        Stat.ListBuffDebuff.Add(Instantiate(toAdd));
-        base.AddBuffDebuff(toAdd);
-
         DecompteDebuffEnnemi(Decompte, Timer);
 
         UpdateUI();
@@ -347,7 +349,7 @@ public class EnnemyBehavior : CombatBehavior
 
     #region Effet
 
-    public void ApplicationEffet(Effet effet, JoueurStat Caster = null, SourceEffet source = SourceEffet.Spell)
+    public void ApplicationEffet(Effet effet, JoueurStat Caster = null, SourceEffet source = SourceEffet.Spell, int idCaster = 0)
     {
         JoueurStat ModifStat;
         if(Caster == null)
@@ -356,7 +358,7 @@ public class EnnemyBehavior : CombatBehavior
         }
         else
         {
-            ModifStat = effet.ResultEffet(Caster, LastDamageTaken);
+            ModifStat = effet.ResultEffet(Caster, LastDamageTaken, Stat);
         }
         Stat.ModifStateAll(ModifStat);
 
@@ -369,6 +371,14 @@ public class EnnemyBehavior : CombatBehavior
         if (ModifStat.Radiance < 0)
         {
             LastDamageTaken = ModifStat.Radiance;
+            GameManager.instance.BattleMan.CurrentPhaseDamage += LastDamageTaken;
+
+
+            if (LastDamageTaken < GameManager.instance.BattleMan.MostDamage)
+            {
+                GameManager.instance.BattleMan.MostDamage = LastDamageTaken;
+                GameManager.instance.BattleMan.MostDamageID = idCaster;
+            }
 
             if (source == SourceEffet.Spell)
                 ReceiveTension(Source.Attaque);
@@ -387,6 +397,7 @@ public class EnnemyBehavior : CombatBehavior
 
         if (Stat.Radiance <= 0)
         {
+            EndTurn();
             Dead();
         }
     }
@@ -425,7 +436,7 @@ public class EnnemyBehavior : CombatBehavior
         this.GetComponent<Animator>().SetBool("IsAttacked", false);
     }
 
-    void EndAnimBool()
+    public void EndAnimBool()
     {
         switch (nextActionType)
         {

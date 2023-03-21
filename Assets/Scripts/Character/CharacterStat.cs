@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,20 +26,31 @@ public class CharacterStat : ScriptableObject
     public float MultiplDef = 1;
     public float MultiplSoin = 1;
     public float MultiplDegat = 1;
-    public int TensionAttaque = 4;
-    public int TensionDebuff = 2;
-    public int TensionDot = 1;
-    public int TensionSoin = -3;
-    public float Tension;
-    public float TensionMax;
-    public int PalierChangement;
-    public float ValeurPalier = 10;
-    public int NbPalier = 1;
-    public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>(); 
+    public float MultipleBuffDebuff = 1;
+    public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>();
+    public int TensionAttaque = 0;
+    public int TensionDebuff = 0;
+    public int TensionSoin = 0;
+    public int TensionDot = 0;
+    public float Tension = 0;
+    public float TensionMax = 0;
+    public float ValeurPalier = 0;
+    public int NbPalier = 3;
+    public int PalierChangement = 0;
+    public int nbAttaqueRecu = 0;
+    public Action ActionPassif; 
 
     public void ModifStateAll(CharacterStat ModifState)
     {
-        this.Radiance += ModifState.Radiance;
+        if (ModifState.MultiplDef != 1)
+            this.MultiplDef = ModifState.MultiplDef;
+        if (ModifState.MultiplSoin != 1)
+            this.MultiplSoin = ModifState.MultiplSoin;
+        if (ModifState.MultiplDegat != 1)
+            this.MultiplDegat = ModifState.MultiplDegat;
+        if (ModifState.MultipleBuffDebuff != 1)
+            this.MultipleBuffDebuff = ModifState.MultipleBuffDebuff;
+
         this.RadianceMax += ModifState.RadianceMax;
         this.ForceAme += ModifState.ForceAme;
         this.Vitesse += ModifState.Vitesse;
@@ -50,11 +62,42 @@ public class CharacterStat : ScriptableObject
         this.ResilienceMax += ModifState.ResilienceMax;
         this.Calme += ModifState.Calme;
         this.Essence += ModifState.Essence;
-        this.TensionAttaque += ModifState.TensionAttaque;
-        this.TensionDebuff += ModifState.TensionDebuff;
-        this.TensionDot += ModifState.TensionDot;
-        this.TensionSoin += ModifState.TensionSoin;
-        this.Tension += ModifState.Tension;
-        this.TensionMax += ModifState.TensionMax;
+
+
+        if (ModifState.Radiance < 0)
+        {
+            var toRemove = Mathf.FloorToInt(ModifState.Radiance * this.MultiplDef);
+            toRemove += Mathf.FloorToInt(((Resilience * 3) / 100f) * toRemove);
+            this.Radiance += toRemove;
+        }
+        else
+            this.Radiance += ModifState.Radiance;
+
+    }
+
+    public void RectificationStat()
+    {
+        if (this.Radiance > this.RadianceMax)
+        {
+            this.Radiance = this.RadianceMax;
+        }
+        if (this.Conviction > this.ConvictionMax)
+        {
+            this.Conviction = this.ConvictionMax;
+        }else if(this.Conviction < this.ConvictionMin)
+        {
+            this.Conviction = this.ConvictionMin;
+        }
+        if (this.Resilience > this.ResilienceMax)
+        {
+            this.Resilience = this.ResilienceMax;
+        }
+        else if (this.Resilience < this.ResilienceMin)
+        {
+            this.Resilience = this.ResilienceMin;
+        }
+
+        if (this.ForceAme <= 0)
+            this.ForceAme = 0;
     }
 }
