@@ -13,6 +13,9 @@ public class ClassPlayer : ScriptableObject
     public JoueurStat PlayerStat;
 
     public List<Spell> spellClass;
+    public int NbMaxSpell;
 
     public List<string> Passif;
+
+    public List<Competence> Competences;
 }

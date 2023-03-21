@@ -15,7 +15,8 @@ public class GameManager : MonoBehaviour {
     public PlayerMapManager pmm;
     public BattleManager BattleMan;
     public AleaManager AleaMan;
-    public MainMenuManager MainMenuMan;
+    public AutelManager AutelMan;
+    public MenuStatManager StatMan;
 
     [Header("Classes & Encounter")]
     public List<ClassPlayer> AllClasses;
@@ -23,8 +24,13 @@ public class GameManager : MonoBehaviour {
     public List<Encounter> AllEncounter;
     public List<EncounterAlea> AllEncounterAlea;
 
+    public List<Souvenir> AllSouvenir;
+    public List<Souvenir> CopyAllSouvenir;
+
     public ClassPlayer classSO;
     public JoueurStat playerStat;
+
+    public int ClassIDSelected;
 
     [Header("Data")]
     public GameData loadedData;
@@ -41,15 +47,18 @@ public class GameManager : MonoBehaviour {
 
         UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         //LoadSave();
+        ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
+        CreateSave();
+        getClassRun();
     }
 
     private void LoadSave()
     {
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-#else
+        #else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
-#endif
+        #endif
         string dataAsJson;
         if (File.Exists(path))
         {
@@ -58,11 +67,10 @@ public class GameManager : MonoBehaviour {
 
             // Pass the json to JsonUtility, and tell it to create a SkillTree object from it
             loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
-            if (!loadedData.CurrentRun.Ended)
+            if(!loadedData.CurrentRun.Ended)
             {
                 getClassRun();
-                playerStat = new JoueurStat()
-                {
+                playerStat = new JoueurStat() {
                     Radiance = loadedData.CurrentRun.player.Radiance,
                     RadianceMax = classSO.PlayerStat.RadianceMax,
                     Volonter = loadedData.CurrentRun.player.Volonter,
@@ -74,75 +82,85 @@ public class GameManager : MonoBehaviour {
                     Essence = loadedData.CurrentRun.player.Essence,
                     ForceAme = loadedData.CurrentRun.player.ForceAme,
                     Vitesse = loadedData.CurrentRun.player.Vitesse,
-                    Calme = classSO.PlayerStat.Calme
+                    Calme = classSO.PlayerStat.Calme,
+                    SlotsSouvenir = classSO.PlayerStat.SlotsSouvenir
                 };
-
+                for(int i = 0; i < AllSouvenir.Count; i++)
+                {
+                    CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
+                }
+                playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
-
-                foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
+                //TODO : Angela a mis ça en commentaire pour que val puisse faire des test, a voir si c'est a remetre 
+                /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
                 {
                     var temp = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item);
                     temp.SpellStatue = SpellStatus.bought;
                     foreach (var item2 in temp.IDChildren)
                     {
                         var t = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item2);
-                        if (t.IsAvailable)
+                        if(t.IsAvailable)
                             t.SpellStatue = SpellStatus.unlocked;
-
+                        
                     }
                     playerStat.ListSpell.Add(temp);
+                }*/
+                foreach(var item in classSO.PlayerStat.ListSpell)
+                {
+                    playerStat.ListSpell.Add(item);
                 }
             }
         }
         else
         {
-            //CreateSave();
-            //getClassRun();
+            CreateSave();
+            getClassRun();
         }
     }
 
-    private void CreateSave(int classChosen)
+    private void CreateSave()
     {
+
         GameData data = new GameData();
-        data.CurrentRun = new RunData() { ClassID = classChosen };
+        data.CurrentRun = new RunData(){ClassID = ClassIDSelected};
         data.previousRuns = new List<RunData>();
-        var spellsToAdd = AllClasses.First(c => c.ID == classChosen).PlayerStat.ListSpell.Where(c => c.SpellStatue == SpellStatus.bought);
+        var spellsToAdd = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ListSpell.Where(c => c.SpellStatue == SpellStatus.bought);
         List<int> boughtspells = new List<int>();
         foreach (var item in spellsToAdd)
         {
-            boughtspells.Add(item.IDSpell);
+            boughtspells.Add(item.IDSpell);   
         }
         data.CurrentRun.player = new PlayerData()
-        {
-            Radiance = AllClasses.First(c => c.ID == 0).PlayerStat.Radiance,
-            Conscience = AllClasses.First(c => c.ID == 0).PlayerStat.Conscience,
-            ForceAme = AllClasses.First(c => c.ID == 0).PlayerStat.ForceAme,
-            Vitesse = AllClasses.First(c => c.ID == 0).PlayerStat.Vitesse,
-            Volonter = AllClasses.First(c => c.ID == 0).PlayerStat.Volonter,
+        {   
+            Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
+            Conscience = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Conscience,
+            ForceAme = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ForceAme,
+            Vitesse = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Vitesse,
+            Volonter = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Volonter,
             BoughtSpellID = boughtspells
         };
         string json = JsonUtility.ToJson(data);
-
-#if UNITY_EDITOR
+        
+        #if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-#else
+        #else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
         System.IO.Directory.CreateDirectory(Application.persistentDataPath+"/SavedData");
         System.IO.Directory.CreateDirectory(Application.persistentDataPath+"/SavedData/GameData");
-#endif
+        #endif
 
-        System.IO.File.WriteAllText(path, json);
+        System.IO.File.WriteAllText(path,json);
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
-#endif
+        #endif
         LoadSave();
     }
 
     public void SaveGame()
     {
         SavePlayer();
-        if (loadedData.CurrentRun.Ended)
+        if(loadedData.CurrentRun.Ended)
         {
             loadedData.previousRuns.Add(loadedData.CurrentRun);
             loadedData.CurrentRun.player = new PlayerData()
@@ -153,22 +171,22 @@ public class GameManager : MonoBehaviour {
                 Essence = classSO.PlayerStat.Essence,
                 ForceAme = classSO.PlayerStat.ForceAme,
                 Vitesse = classSO.PlayerStat.Vitesse,
-                BoughtSpellID = new List<int>() { 0 }
+                BoughtSpellID = new List<int>(){0}
             };
             loadedData.CurrentRun.Ended = false;
         }
         string json = JsonUtility.ToJson(loadedData);
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-#else
+        #else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
-#endif
+        #endif
 
-        System.IO.File.WriteAllText(path, json);
+        System.IO.File.WriteAllText(path,json);
 
-#if UNITY_EDITOR
+        #if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
-#endif
+        #endif
     }
 
     private void SavePlayer()
@@ -204,6 +222,21 @@ public class GameManager : MonoBehaviour {
     {
         AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
     }
+
+    public void LoadAutel()
+    {
+        AutelMan.StartAutel();
+    }
+
+    public void StartStatJoueur()
+    {
+        pmm.LoadMenuStat();
+    }
+
+    public void LoadMenuStat()
+    {
+        StatMan.StartMenuStat();
+    }
     
     void getClassRun()
     {
@@ -221,36 +254,14 @@ public class GameManager : MonoBehaviour {
         loadedData.CurrentRun.Ended =true;
         SaveGame();
         LoadSave();
-        StartCoroutine(LoadMainMenuFromMonde());
+        StartCoroutine(Reload());
     }
 
-    IEnumerator LoadMainMenuFromMonde()
+    IEnumerator Reload()
     {
-        yield return SceneManager.UnloadSceneAsync("Monde");
-        yield return SceneManager.LoadSceneAsync("MainMenu");
-
-        MainMenuMan = FindObjectOfType<MainMenuManager>();
-    }
-
-    public void ChooseCharacterSave(int classChosen)
-    {
-        CreateSave(classChosen);
-        getClassRun();
-        StartCoroutine(LoadTutorialScene());
-    }
-
-    IEnumerator LoadTutorialScene()
-    {
-        yield return SceneManager.UnloadSceneAsync("MainMenu");
-        yield return SceneManager.LoadSceneAsync("TutorialScene");
-    }
-
-    IEnumerator LoadMondeSceneFromTutorialScene()
-    {
-        yield return SceneManager.UnloadSceneAsync("TutorialScene");
-        yield return SceneManager.LoadSceneAsync("Monde");
+        yield return SceneManager.UnloadSceneAsync(1);
+        yield return SceneManager.LoadSceneAsync(1);
         pmm = FindObjectOfType<PlayerMapManager>();
         rm = FindObjectOfType<RoomManager>();
-
     }
 }

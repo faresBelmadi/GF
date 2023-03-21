@@ -124,7 +124,7 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
-                //A Terminer une fois les effet et buffdebuff finalisé
+                //TODO : A Terminer une fois les effet et buffdebuff finalisé
                 foreach (var BuffDebuff in Consequence.Buffs)
                 {
                     switch (Consequence.target)
