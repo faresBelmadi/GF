@@ -258,6 +258,11 @@ public class EnnemyBehavior : CombatBehavior
     {
         //A Mettre une fois les combats terminer
         LaunchAnimBool();
+    }
+    
+    public void EndAttackAnimation()
+    {
+        Debug.Log("commencement des degats");
         GameManager.instance.BattleMan.LaunchSpellEnnemi(nextAction);
     }
 
