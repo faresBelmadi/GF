@@ -162,7 +162,9 @@ public class ArbreManager : MonoBehaviour
                 PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.interactable = true;
             }
         }
-        SpellEquipedText.text = "Sort Equiper : " + SpellEquiped.Count + "/" + NbMaxSpell;
+        if (SpellEquiped == null)
+            return;
+        //SpellEquipedText.text = "Sort Equiper : " + SpellEquiped.Count + "/" + NbMaxSpell;
     }
 
     #endregion Update
