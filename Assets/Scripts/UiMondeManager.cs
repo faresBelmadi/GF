@@ -14,9 +14,16 @@ public class UiMondeManager : MonoBehaviour
         UiSkillTreeHolder.SetActive(true);
     }
 
+    public void EnableStat()
+    {
+        UiMondeHolder.SetActive(false);
+        UiStatHolder.SetActive(true);
+    }
+
     public void EnableMonde()
     {
         UiMondeHolder.SetActive(true);
         UiSkillTreeHolder.SetActive(false);
+        UiStatHolder.SetActive(false);
     }
 }
