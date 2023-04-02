@@ -233,10 +233,10 @@ public class GameManager : MonoBehaviour {
         pmm.LoadMenuStat();
     }
 
-    public void LoadMenuStat()
-    {
-        StatMan.StartMenuStat();
-    }
+    //public void LoadMenuStat()
+    //{
+    //    StatMan.StartMenuStat();
+    //}
     
     void getClassRun()
     {
