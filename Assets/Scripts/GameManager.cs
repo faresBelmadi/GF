@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour {
 
     public int ClassIDSelected;
 
+    public PassifRules passifRules;
     [Header("Data")]
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;

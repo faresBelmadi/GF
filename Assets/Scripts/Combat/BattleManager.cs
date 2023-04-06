@@ -47,6 +47,8 @@ public class BattleManager : MonoBehaviour
     private DialogueManager DialogueManager;
 
     public bool IsLoot;
+    public bool ConsumedEssence;
+    public int EssenceGaind;
 
     #region Loot
 
@@ -498,7 +500,9 @@ public class BattleManager : MonoBehaviour
 
     public void Consume(int essence)
     {
+        ConsumedEssence = true;
         player.UseEssence(essence, Source.Soin);
+        
     }
 
     public void ConsumeEndBattle(int essence)
