@@ -186,32 +186,90 @@ public class Effet : ScriptableObject
             case TypeEffet.AugmentationRadianceMaxPourcentage:
                 ModifState.RadianceMax += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax);
                 break;
+            //case TypeEffet.ConsommeTensionDmgAllExceptCaster:
+            //    break;
+            //case TypeEffet.Provocation:
+            //    break;
+            //case TypeEffet.VolEssence:
+            //    break;
+            //case TypeEffet.Colere:
+            //    break;
             case TypeEffet.BuffFaCoupRecu:
                 ModifState.ForceAme += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque));
-                break;
-            case TypeEffet.BuffResilienceCoupRecu:
-                break;
-            case TypeEffet.ConsommeTensionDmgAllExceptCaster:
-                break;
-            case TypeEffet.Provocation:
-                break;
-            case TypeEffet.VolEssence:
-                break;
-            case TypeEffet.Colere:
                 break;
             case TypeEffet.DegatsBrutConsequence:
                 ModifState.Radiance += valueToChange;
                 break;
             case TypeEffet.DamageUpTargetLowRadiance:
                 var percent = Pourcentage;
+                percent = Pourcentage;
                 if (((Cible.Radiance / Cible.RadianceMax) * 100) <= 25)
                     percent *= 3;
                 ModifState.Radiance += Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+                break;
+            case TypeEffet.DegatsRetourSurAttaque:
+                //TODO
+                break;
+            case TypeEffet.BuffResilienceCoupRecu:
+                ModifState.Resilience += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque));
+                break;
+            case TypeEffet.CancelPourcentageDamage:
+                percent = Pourcentage;
+                ModifState.Radiance += Mathf.FloorToInt(valueToChange - ((percent / 100) * valueToChange));
+                break;
+            case TypeEffet.AugmentationFARadianceManquante: //martyr elite 
+                ModifState.ForceAme += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * (Caster.RadianceMax - Caster.Radiance));
+                break;
+            case TypeEffet.DamageFaDebuff:
+                //TODO
+                break;
+            case TypeEffet.RemoveAllTensionProcDamage:
+                var tempListBuffDebuffToRemoveProcDamage = Cible.ListBuffDebuff.Where(x => x.IsDebuff && x.CibleApplication == global::Cible.All);
+                foreach (var buffDebuff in tempListBuffDebuffToRemoveProcDamage)
+                {
+                    if (Cible.ListBuffDebuff.Contains(buffDebuff))
+                        Cible.ListBuffDebuff.Remove(buffDebuff);
+                }
+                break;
+            case TypeEffet.RemoveAllDebuffProcEffect:
+                var tempListDebuffToRemoveProcEffect = Cible.ListBuffDebuff.Where(x => x.IsDebuff
+                    && x.CibleApplication == global::Cible.joueur);
+                foreach (var buffDebuff in tempListDebuffToRemoveProcEffect)
+                {
+                    if (Cible.ListBuffDebuff.Contains(buffDebuff))
+                        Cible.ListBuffDebuff.Remove(buffDebuff);
+                }
+                break;
+            case TypeEffet.RemoveAllDebuffSelfProcEffect:
+                var tempListDebuffToRemoveSelfProcEffect = Cible.ListBuffDebuff.Where(x => x.IsDebuff
+                    && x.CibleApplication == global::Cible.joueur);
+                foreach (var buffDebuff in tempListDebuffToRemoveSelfProcEffect)
+                {
+                    if (Cible.ListBuffDebuff.Contains(buffDebuff))
+                        Cible.ListBuffDebuff.Remove(buffDebuff);
+                }
+                break;
+            case TypeEffet.RemoveAllBuffProcEffect:
+                var tempListBuffToRemoveProcEffect = Cible.ListBuffDebuff.Where(x => !x.IsDebuff
+                    && x.CibleApplication == global::Cible.joueur);
+                foreach (var buffDebuff in tempListBuffToRemoveProcEffect)
+                {
+                    if (Cible.ListBuffDebuff.Contains(buffDebuff))
+                        Cible.ListBuffDebuff.Remove(buffDebuff);
+                }
+                break;
+            case TypeEffet.GainFaBuffCible:
+                ModifState.ForceAme += Cible.ListBuffDebuff.Count(x => !x.IsDebuff) * valueToChange;
+                break;
+            case TypeEffet.GainFaDebuffCible:
+                ModifState.ForceAme += Cible.ListBuffDebuff.Count(x => x.IsDebuff) * valueToChange;
+                break;
+            case TypeEffet.Ponction:
+                ModifState.Radiance += valueToChange;
                 break;
             default:
                 break;
         }
         return ModifState;
     }
-
 }

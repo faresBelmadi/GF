@@ -124,6 +124,7 @@ public enum TypeEffet
     RemoveAllTensionProcDamage,
     RemoveAllDebuffProcEffect,
     RemoveAllDebuffSelfProcEffect,
+    RemoveAllBuffProcEffect,
     NoCapaPossible,
     ConsommeTensionReduitFa,
     AugmentationDegatsHitJoueur,
