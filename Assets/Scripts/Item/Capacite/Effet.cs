@@ -69,6 +69,7 @@ public class Effet : ScriptableObject
     {
         int valueToChange = ValeurBrut * NbAttaque;
         CharacterStat ModifState = ScriptableObject.CreateInstance("CharacterStat") as CharacterStat;
+        int percent;
         switch (this.TypeEffet)
         {
             case TypeEffet.DegatsForceAme:
@@ -201,7 +202,6 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += valueToChange;
                 break;
             case TypeEffet.DamageUpTargetLowRadiance:
-                var percent = Pourcentage;
                 percent = Pourcentage;
                 if (((Cible.Radiance / Cible.RadianceMax) * 100) <= 25)
                     percent *= 3;
