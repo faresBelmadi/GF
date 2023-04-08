@@ -144,4 +144,5 @@ public enum TypePassif
     PassiJeanne,
     PassifPapa,
     PassifPapy,
+    PassifClou
 }
