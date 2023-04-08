@@ -153,7 +153,7 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.ConsommeTensionAugmentationFA:
                 ModifState.Tension += -Cible.Tension;
-                var toAdd = Instantiate(GameObject.FindObjectsOfType<BuffDebuff>().Where(c => c.Nom == "Tension convertis en FA").First());
+                var toAdd = Instantiate(FindObjectsOfType<BuffDebuff>().First(c => c.Nom == "Tension convertis en FA"));
                 toAdd.Effet.First().Pourcentage = (int)Cible.Tension;
                 Caster.ListBuffDebuff.Add(toAdd);
                 break;
@@ -162,7 +162,7 @@ public class Effet : ScriptableObject
                 tempListRD.RemoveAt(Random.Range  (0, tempListRD.Count));
                 break;
             case TypeEffet.AttaqueStackAmant:
-                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Cible.ListBuffDebuff.Where(c => c.Nom == "Amant").Count()) * Caster.ForceAme);
+                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Cible.ListBuffDebuff.Count(c => c.Nom == "Amant")) * Caster.ForceAme);
                 break;
             case TypeEffet.AttaqueFADebuff:
                 var tempListAFAD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
@@ -187,14 +187,6 @@ public class Effet : ScriptableObject
             case TypeEffet.AugmentationRadianceMaxPourcentage:
                 ModifState.RadianceMax += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax);
                 break;
-            //case TypeEffet.ConsommeTensionDmgAllExceptCaster:
-            //    break;
-            //case TypeEffet.Provocation:
-            //    break;
-            //case TypeEffet.VolEssence:
-            //    break;
-            //case TypeEffet.Colere:
-            //    break;
             case TypeEffet.BuffFaCoupRecu:
                 ModifState.ForceAme += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque));
                 break;
@@ -207,27 +199,35 @@ public class Effet : ScriptableObject
                     percent *= 3;
                 ModifState.Radiance += Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
-            case TypeEffet.DegatsRetourSurAttaque:
+
+            case TypeEffet.DegatsRetourSurAttaque: //S2 manequin utiliser le nouveau truc pour le buff/ var dans l'enemi last damage taken pour appliquer ici
                 //TODO
                 break;
+
             case TypeEffet.BuffResilienceCoupRecu:
                 ModifState.Resilience += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque));
                 break;
             case TypeEffet.CancelPourcentageDamage:
-                percent = Pourcentage;
-                ModifState.Radiance += Mathf.FloorToInt(valueToChange - ((percent / 100) * valueToChange));
+                ModifState.Radiance += Mathf.FloorToInt(valueToChange - ((Pourcentage / 100) * valueToChange));
                 break;
             case TypeEffet.AugmentationFARadianceManquante: //martyr elite 
                 ModifState.ForceAme += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * (Caster.RadianceMax - Caster.Radiance));
                 break;
-            case TypeEffet.DamageFaDebuff:
-                //TODO
-                break;
+
+            //case TypeEffet.DamageFaBuff: //martyr capa 3 Inflige x% de Force d'ame au joueur, par buff sur lui 
+            //    //TODO
+            //    break;
+            //case TypeEffet.AugmentationFaNbDebuff: // buff FA en fct nb attaque
+            //    //TODO
+            //    break;
+
+                // rajouter buff debuff et dans les remove on check et on applique le buff/debuff en fct du truc
+                //separer proc damage et proc effect proc damage =W applique direct
             case TypeEffet.RemoveAllTensionProcDamage:
                 var tempListBuffDebuffToRemoveProcDamage = Cible.ListBuffDebuff.Where(x => x.IsDebuff && x.CibleApplication == global::Cible.All);
                 foreach (var buffDebuff in tempListBuffDebuffToRemoveProcDamage)
                 {
-                    if (Cible.ListBuffDebuff.Contains(buffDebuff))
+                    if (Cible.ListBuffDebuff.Contains(buffDebuff))//pourcentage FA
                         Cible.ListBuffDebuff.Remove(buffDebuff);
                 }
                 break;
@@ -265,7 +265,7 @@ public class Effet : ScriptableObject
                 ModifState.ForceAme += Cible.ListBuffDebuff.Count(x => x.IsDebuff) * valueToChange;
                 break;
             case TypeEffet.Ponction:
-                ModifState.Radiance += valueToChange;
+                ModifState.Radiance += valueToChange;//porcentage de la radiance de la cible // heal caster et le modif state == target en gros
                 break;
             default:
                 break;
