@@ -37,10 +37,9 @@ public class JoueurBehavior : CombatBehavior
     public Spell SelectedSpell;
 
     public AnimationControllerAttack AnimationController;
-
-    private PassifRules _rules = GameManager.instance.passifRules;
-    private BattleManager _refBattleMan = GameManager.instance.BattleMan;
-
+    
+    private readonly BattleManager _refBattleMan = GameManager.instance.BattleMan;
+    public bool IsTurn;
 
     #region Divers start & fin
 
@@ -131,14 +130,15 @@ public class JoueurBehavior : CombatBehavior
     {
         ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
-        ResolvePassif();
         UpdateUI();
     }
 
     public void StartTurn()
     {
+        IsTurn = true;
+        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
+        _refBattleMan.PassifManager.ResolvePassifs();
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
-        ResolvePassif();
         ActivateSpells();
         Stat.Volonter = Stat.VolonterMax;
         UpdateUI();
@@ -146,6 +146,9 @@ public class JoueurBehavior : CombatBehavior
 
     public void EndTurn()
     {
+        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
+        _refBattleMan.PassifManager.ResolvePassifs();
+        IsTurn = false;
         DesactivateSpells();
         EndTurnBM();
     }
@@ -407,6 +410,9 @@ public class JoueurBehavior : CombatBehavior
             temp.GetComponent<TextAnimDegats>().Value = ModifStat.Radiance;
         }
 
+        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
+        _refBattleMan.PassifManager.ResolvePassifs();
+
         UpdateUI();
 
         if (Stat.Radiance <= 0)
@@ -419,35 +425,6 @@ public class JoueurBehavior : CombatBehavior
 
     #region passif
 
-    public void ResolvePassif()
-    {
-        foreach (var item in Stat.ListPassif)
-        {
-            switch (item.passif)
-            {
-                case TypePassif.PassifGuerrier1:
-                    // vous avez 1 points de résilience par point de conscience que vous possédez
-                    int resilienceBonus = (Stat.Conscience / _rules.nbPtsConscience) * _rules.nbPtsResilience;
-                    Stat.Resilience += resilienceBonus;
-                    break;
-                case TypePassif.PassifGuerrier2:
-                    //Lorsque vous terminez un affrontement sans avoir consommé d'Essences, vous récupérez 1 point de Conscience et le total d'Essences obtenu est augmenté de 10%.        
-                    if (!_refBattleMan.ConsumedEssence)
-                    {
-                        var essenceAmount = _refBattleMan.ListEssence.FirstOrDefault().GetComponent<Essence>().amount;
-                        essenceAmount += (int)Math.Round((double)(_rules.PercentEssenceBonus * 100) / essenceAmount);
-                        Stat.Conscience += _rules.nbPtsConscienceEarned;
-                    }
-                    
-                    break;
-
-            }
-            
-            
-
-        }
-            
-    }
 
     #endregion passif
 

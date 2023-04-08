@@ -18,8 +18,11 @@ public class EnnemyBehavior : CombatBehavior
     public EnnemiSpell nextAction;
     public GameObject EssencePrefab;
     bool skip;
+    public bool IsTurn;
     nextActionEnum nextActionType;
     List<EnnemiSpell> Spells;
+
+    private readonly BattleManager _refBattleMan = GameManager.instance.BattleMan;
 
     #region Divers start & fin
 
@@ -65,6 +68,9 @@ public class EnnemyBehavior : CombatBehavior
 
     public void StartTurn()
     {
+        IsTurn = true;
+        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
+        _refBattleMan.PassifManager.ResolvePassifs();
         DecompteDebuffEnnemi(Decompte.tour, TimerApplication.DebutTour);
         if (!skip)
         {
@@ -74,6 +80,10 @@ public class EnnemyBehavior : CombatBehavior
 
     public void EndTurn()
     {
+
+        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
+        _refBattleMan.PassifManager.ResolvePassifs();
+        IsTurn = false;
         if (!skip)
             EndAnimBool();
         ChooseNextAction();
@@ -83,6 +93,9 @@ public class EnnemyBehavior : CombatBehavior
 
     private void Dead()
     {
+        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.Death;
+        _refBattleMan.PassifManager.ResolvePassifs();
+
         foreach (var item in Stat.ListBuffDebuff)
         {
             foreach (var effect in item.Effet)
@@ -102,9 +115,9 @@ public class EnnemyBehavior : CombatBehavior
         {
             var t = Instantiate(EssencePrefab, this.transform.parent);
             t.GetComponent<Essence>().AddEssence(Stat.Essence);
-            GameManager.instance.BattleMan.ListEssence.Add(t);
+            _refBattleMan.ListEssence.Add(t);
         }
-        GameManager.instance.BattleMan.DeadEnemy(combatID);
+        _refBattleMan.DeadEnemy(combatID);
     }
 
     #endregion Divers start & fin
@@ -257,7 +270,7 @@ public class EnnemyBehavior : CombatBehavior
     public void DoAction()
     {
         //A Mettre une fois les combats terminer
-        GameManager.instance.BattleMan.LaunchSpellEnnemi(nextAction);
+        _refBattleMan.LaunchSpellEnnemi(nextAction);
         LaunchAnimBool();
     }
 
@@ -320,7 +333,7 @@ public class EnnemyBehavior : CombatBehavior
             {
                 foreach (var effet in item.Effet)
                 {
-                    GameManager.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
+                    _refBattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
                     /*if (item.CibleApplication == effet.Cible)
                     {
                         ApplicationEffet(effet);
@@ -371,13 +384,13 @@ public class EnnemyBehavior : CombatBehavior
         if (ModifStat.Radiance < 0)
         {
             LastDamageTaken = ModifStat.Radiance;
-            GameManager.instance.BattleMan.CurrentPhaseDamage += LastDamageTaken;
+            _refBattleMan.CurrentPhaseDamage += LastDamageTaken;
 
 
-            if (LastDamageTaken < GameManager.instance.BattleMan.MostDamage)
+            if (LastDamageTaken < _refBattleMan.MostDamage)
             {
-                GameManager.instance.BattleMan.MostDamage = LastDamageTaken;
-                GameManager.instance.BattleMan.MostDamageID = idCaster;
+                _refBattleMan.MostDamage = LastDamageTaken;
+                _refBattleMan.MostDamageID = idCaster;
             }
 
             if (source == SourceEffet.Spell)
@@ -392,6 +405,9 @@ public class EnnemyBehavior : CombatBehavior
             ReceiveTension(Source.Soin);
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
+
+        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
+        _refBattleMan.PassifManager.ResolvePassifs();
 
         UpdateUI();
 
@@ -413,7 +429,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void TargetAcquired()
     {
-        GameManager.instance.BattleMan.idTarget = combatID;
+        _refBattleMan.idTarget = combatID;
 
     }
 

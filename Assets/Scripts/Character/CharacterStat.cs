@@ -38,7 +38,8 @@ public class CharacterStat : ScriptableObject
     public int NbPalier = 3;
     public int PalierChangement = 0;
     public int nbAttaqueRecu = 0;
-    public Action ActionPassif; 
+    public List<Passif> ListPassif;
+    public Action ActionPassif;
 
     public void ModifStateAll(CharacterStat ModifState)
     {

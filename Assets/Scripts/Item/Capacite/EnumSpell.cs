@@ -23,11 +23,9 @@ public enum TimerPassif
     DebutTour,
     FinPhase,
     FinTour,
-    ChangementStat,
-    SourceDegats,
-    PersonnageMeurt,
-    AjoutBuffDebuff,
-    SuppBuffDebuff
+    FinAction,
+    FinCombat,
+    Death
 }
 
 public enum Cible

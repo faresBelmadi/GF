@@ -45,10 +45,11 @@ public class BattleManager : MonoBehaviour
     public int CurrentPhaseDamage;
     [SerializeField]
     private DialogueManager DialogueManager;
+    public PassifManager PassifManager;
 
     public bool IsLoot;
     public bool ConsumedEssence;
-    public int EssenceGaind;
+    public int EssenceGained;
 
     #region Loot
 
@@ -177,6 +178,9 @@ public class BattleManager : MonoBehaviour
         player.UpdateUI();
         player.DesactivateSpells();
         DialogueEnableSetup();
+
+        PassifManager = new PassifManager(new List<JoueurBehavior>{player}, EnemyScripts);
+
         //StartCombat();
     }
 
@@ -218,6 +222,9 @@ public class BattleManager : MonoBehaviour
 
     private void EndBattle()
     {
+        PassifManager.CurrentEvent = TimerPassif.FinCombat;
+        PassifManager.ResolvePassifs();
+        
         Loot();
         player.ResetStat();
         player.Stat.Volonter = player.Stat.VolonterMax;
@@ -233,6 +240,9 @@ public class BattleManager : MonoBehaviour
 
     private void StartPhase()
     {
+        PassifManager.CurrentEvent = TimerPassif.DebutPhase;
+        PassifManager.ResolvePassifs();
+
         LastPhaseDamage = CurrentPhaseDamage;
         CurrentPhaseDamage = 0;
         DetermTour();
@@ -287,7 +297,14 @@ public class BattleManager : MonoBehaviour
             turnPlayed.Played = true;
         nbTurn++;
         if (nbTurn >= IdOrder.Count)
+        {
+
+            PassifManager.CurrentEvent = TimerPassif.FinPhase;
+            PassifManager.ResolvePassifs();
+
             StartPhase();
+
+        }
         else
             StartNextTurn();
     }
