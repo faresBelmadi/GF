@@ -17,7 +17,16 @@ public class CharacterStat : ScriptableObject
     public int ConvictionMin = -10;
     public int ConvictionMax = 10;
     public int ConvictionOriginal;
-    public int Resilience;
+
+    public int Resilience
+    {
+        get => _resilience + ResilienceBonus;
+
+        set => _resilience = value;
+    }
+
+    private int _resilience;
+    public int ResilienceBonus;
     public int ResilienceMin = -10;
     public int ResilienceMax = 10;
     public int ResilienceOriginal;
