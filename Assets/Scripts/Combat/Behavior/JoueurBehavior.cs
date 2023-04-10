@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -311,7 +312,7 @@ public class JoueurBehavior : CombatBehavior
 
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
-        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte);
+        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff.ToList(), Decompte);
 
         ApplicationBuffDebuff(Timer);
 
