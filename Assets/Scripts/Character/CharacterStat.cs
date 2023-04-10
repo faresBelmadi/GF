@@ -20,13 +20,13 @@ public class CharacterStat : ScriptableObject
 
     public int Resilience
     {
-        get => _resilience + ResilienceBonus;
+        get => _resilience + Mathf.RoundToInt(ResilienceBonus);
 
         set => _resilience = value;
     }
 
     private int _resilience;
-    public int ResilienceBonus;
+    public float ResilienceBonus;
     public int ResilienceMin = -10;
     public int ResilienceMax = 10;
     public int ResilienceOriginal;

@@ -46,12 +46,12 @@ public class PassifManager
                             {
                                 if (joueurBehavior.Stat.Radiance > behavior.Stat.Radiance)
                                 {
-                                    behavior.Stat.ForceAme += _rules.nbPercentBuffForceAmePapa;
+                                    //behavior.Stat.ForceAme += _rules.nbPercentBuffForceAmePapa;
                                 }
                                 else if (joueurBehavior.Stat.Radiance < behavior.Stat.Radiance)
                                 {
 
-                                    behavior.Stat.ForceAme -= _rules.nbPercentDebuffForceAmePapa;
+                                    //behavior.Stat.ForceAme -= _rules.nbPercentDebuffForceAmePapa;
                                 }
                             }
 
@@ -89,7 +89,7 @@ public class PassifManager
                     {
                         case TypePassif.PassifGuerrier1:
                             // vous avez 1 points de résilience par point de conscience que vous possédez
-                            int resilienceBonus = (behavior.Stat.Conscience / _rules.nbPtsConscience) * _rules.nbPtsResilience;
+                            var resilienceBonus = (behavior.Stat.Conscience / _rules.nbPtsConscience) * _rules.nbPtsResilience;
                             behavior.Stat.ResilienceBonus = resilienceBonus;
                             break;
                         case TypePassif.PassifGuerrier2:
@@ -98,7 +98,7 @@ public class PassifManager
                             {
                                 var essenceAmount = _refBattleManager.ListEssence.First().GetComponent<Essence>().amount;
                                 essenceAmount += (int)Math.Round((double)(_rules.PercentEssenceBonus * 100) / essenceAmount);
-                                behavior.Stat.Conscience += _rules.nbPtsConscienceEarned;
+                                behavior.Stat.Conscience += Mathf.RoundToInt(_rules.nbPtsConscienceEarned);
                             }
                             break;
                     }
