@@ -149,6 +149,7 @@ public class BattleManager : MonoBehaviour
 
     void DialogueEnableSetup()
     {
+        PassifManager = new PassifManager(new List<JoueurBehavior> { player }, EnemyScripts);
         DialogueManager.SetupDialogue(_encounter);
     }
 
@@ -179,7 +180,6 @@ public class BattleManager : MonoBehaviour
         player.DesactivateSpells();
         DialogueEnableSetup();
 
-        PassifManager = new PassifManager(new List<JoueurBehavior>{player}, EnemyScripts);
 
         //StartCombat();
     }

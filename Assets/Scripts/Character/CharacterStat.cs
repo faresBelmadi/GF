@@ -28,7 +28,7 @@ public class CharacterStat : ScriptableObject
 
     public int Resilience
     {
-        get => _resilience + Mathf.RoundToInt(ResilienceBonus);
+        get => _resilience + Mathf.FloorToInt(ResilienceBonus);
 
         set => _resilience = value;
     }
@@ -108,7 +108,7 @@ public class CharacterStat : ScriptableObject
         }
         if (this.Resilience > this.ResilienceMax)
         {
-            this.Resilience = this.ResilienceMax;
+            this.Resilience = this.ResilienceMax - Mathf.FloorToInt(ResilienceBonus);
         }
         else if (this.Resilience < this.ResilienceMin)
         {

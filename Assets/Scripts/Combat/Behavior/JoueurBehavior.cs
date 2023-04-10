@@ -38,7 +38,7 @@ public class JoueurBehavior : CombatBehavior
 
     public AnimationControllerAttack AnimationController;
     
-    private readonly BattleManager _refBattleMan = GameManager.instance.BattleMan;
+    private BattleManager _refBattleMan;
     public bool IsTurn;
 
     #region Divers start & fin
@@ -128,6 +128,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void StartPhase()
     {
+        _refBattleMan = GameManager.instance.BattleMan;
         ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
         UpdateUI();

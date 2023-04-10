@@ -21,11 +21,12 @@ public class PassifManager
 
     public void ResolvePassifs()
     {
+        
         foreach (var behavior in _currentBattleEnemy)
         {
             foreach (var item in behavior.Stat.ListPassif)
             {
-                if (item.timerPassif == CurrentEvent)
+                if (item.timerPassif == CurrentEvent && behavior.IsTurn == true)
                 {
                     switch (item.passif)
                     {
@@ -81,7 +82,7 @@ public class PassifManager
         {
             foreach (var item in behavior.Stat.ListPassif)
             {
-                if (item.timerPassif == CurrentEvent)
+                if (item.timerPassif == CurrentEvent && behavior.IsTurn == true)
                 {
                     switch (item.passif)
                     {

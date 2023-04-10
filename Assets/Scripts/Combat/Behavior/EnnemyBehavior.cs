@@ -22,14 +22,13 @@ public class EnnemyBehavior : CombatBehavior
     nextActionEnum nextActionType;
     List<EnnemiSpell> Spells;
 
-    private readonly BattleManager _refBattleMan = GameManager.instance.BattleMan;
+    private BattleManager _refBattleMan;
 
     #region Divers start & fin
 
     public void SetUp()
     {
         UICombat = this.GetComponent<UIEnnemi>();
-
         UpdateUI();
 
         //assignation des container dans le parent
@@ -63,6 +62,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void StartPhase()
     {
+        _refBattleMan = GameManager.instance.BattleMan;
         DecompteDebuffEnnemi(Decompte.phase, TimerApplication.DebutPhase);
     }
 
