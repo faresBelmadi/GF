@@ -141,7 +141,7 @@ public enum TypePassif
     PassifCameleon,
     PassifCultiste,
     PassifChefCultiste,
-    PassiJeanne,
+    PassifJeanne,
     PassifPapa,
     PassifPapy,
     PassifClou

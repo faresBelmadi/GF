@@ -29,7 +29,7 @@ public class PassifManager
                 {
                     switch (item.passif)
                     {
-                        case TypePassif.PassiJeanne:
+                        case TypePassif.PassifJeanne:
                             break;
                         //case TypePassif.PassifCameleon:
                         //    break;
@@ -53,7 +53,6 @@ public class PassifManager
                                     behavior.Stat.ForceAmeBonus = Mathf.FloorToInt(((_rules.nbPercentDebuffForceAmePapa / 100f) * behavior.Stat._forceAme));
                                 }
                             }
-
                             break;
                         case TypePassif.PassifPapy:
                             foreach (var joueurBehavior in _currentBattleJoueur)
