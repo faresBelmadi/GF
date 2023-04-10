@@ -179,7 +179,7 @@ public class BattleManager : MonoBehaviour
         player.UpdateUI();
         player.DesactivateSpells();
         DialogueEnableSetup();
-        StartCombat();
+        //StartCombat();
     }
 
     void SpawnEnemy()
