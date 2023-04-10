@@ -259,9 +259,11 @@ public class Effet : ScriptableObject
                 ModifState.ForceAme += Cible.ListBuffDebuff.Count(x => x.IsDebuff) * valueToChange;
                 break;
             case TypeEffet.Ponction:
-                var AmountToHeal = ((Pourcentage / 100) * valueToChange);
-                Caster.Radiance += AmountToHeal;
-                ModifState.Radiance += valueToChange;
+                var amountPonction = Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+                Caster.Radiance += amountPonction;
+                if (Caster.Radiance > Caster.RadianceMax)
+                    Caster.Radiance = Caster.RadianceMax;
+                ModifState.Radiance += amountPonction;
                 break;
             default:
                 break;
