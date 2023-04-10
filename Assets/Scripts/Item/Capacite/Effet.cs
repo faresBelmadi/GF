@@ -17,6 +17,8 @@ public class Effet : ScriptableObject
     private int TimeAlive = 1;
     public bool IsAttaqueEffet;
     public BuffDebuff AfterEffectToApply;
+
+    [System.NonSerialized]
     public int nbProcAfterEffect;
 
     public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTake = 0, JoueurStat Cible = null)
