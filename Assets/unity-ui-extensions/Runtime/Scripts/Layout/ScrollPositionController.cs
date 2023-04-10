@@ -2,7 +2,6 @@
 /// Sourced from - https://github.com/setchi/FancyScrollView
 
 using System;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
 namespace UnityEngine.UI.Extensions

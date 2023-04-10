@@ -1,4 +1,3 @@
-using UnityEngine;
 using UnityEditor;
 
 namespace UnityEngine.UI.Extensions.ColorPicker

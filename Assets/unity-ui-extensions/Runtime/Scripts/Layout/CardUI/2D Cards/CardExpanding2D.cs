@@ -3,11 +3,6 @@
 /// Sourced from - https://github.com/ryanslikesocool/Unity-Card-UI
 /// </summary>
 
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
 namespace UnityEngine.UI.Extensions
 {
 public class CardExpanding2D : MonoBehaviour

@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public enum Rarity
+﻿public enum Rarity
 {
     Commun,
     Rare,

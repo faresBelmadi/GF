@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New passif", menuName = "Capacité/Create New Passif", order = 11)]
 public class Passif : ScriptableObject
