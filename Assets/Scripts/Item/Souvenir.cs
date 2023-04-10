@@ -8,7 +8,7 @@ public class Souvenir : ScriptableObject
     public int Slots;
     public bool Equiped;
     public List<PourcentageEmotion> ProcEmotion;
-    public Emotion Emotion;
+    public Emotion Emotion; //En gros tel souvenir à 75% de chance d'etre colére, et 20% detre de la joie
     public List<ModificationStatSouvenir> ModificationStat;
 
     public string Nom;
@@ -35,7 +35,9 @@ public class Souvenir : ScriptableObject
         {
             if (random <= ProcEmotion[i].Pourcentage)
             {
-                Emotion = ProcEmotion[i].Emotion;
+                Emotion = GameManager.instance.EmotionManager.CreateEmotion(ProcEmotion[i].EmotionTypeEnum);
+                //Emotion.EmotionTypeEnum = ProcEmotion[i].EmotionTypeEnum;
+                
                 return;
             }
             else

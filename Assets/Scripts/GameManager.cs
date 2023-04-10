@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour {
 
     public int ClassIDSelected;
 
+    public EmotionManager EmotionManager;
+
     [Header("Data")]
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
@@ -50,6 +52,7 @@ public class GameManager : MonoBehaviour {
         ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
         CreateSave();
         getClassRun();
+        EmotionManager = new EmotionManager();
     }
 
     private void LoadSave()

@@ -6,7 +6,7 @@
     Legendaire
 }
 
-public enum Emotion
+public enum EmotionTypeEnum
 {
     Joie,
     Fierte,

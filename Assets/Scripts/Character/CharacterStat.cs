@@ -27,6 +27,7 @@ public class CharacterStat : ScriptableObject
     public float MultiplSoin = 1;
     public float MultiplDegat = 1;
     public float MultipleBuffDebuff = 1;
+    public ObservableCollection<BuffDebuff> test = new ObservableCollection<BuffDebuff>();
     public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>();
     public int TensionAttaque = 0;
     public int TensionDebuff = 0;
