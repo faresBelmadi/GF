@@ -20,6 +20,7 @@ public class PassifRules : ScriptableObject
 
     [Header("Passif Cultiste")]
     public int nbChargeZealoteEarned;
+    public BuffDebuff BuffZealote;
 
     [Header("Passif Chef Cultiste")]
     public BuffDebuff BuffFullLife;

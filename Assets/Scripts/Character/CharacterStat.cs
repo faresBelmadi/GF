@@ -9,7 +9,15 @@ public class CharacterStat : ScriptableObject
     public int Radiance;
     public int RadianceMax;
     public int RadianceMaxOriginal;
-    public int ForceAme;
+
+    public int ForceAme
+    {
+        get => _forceAme + ForceAmeBonus;
+        set => _forceAme = value;
+    }
+
+    public int _forceAme;
+    public int ForceAmeBonus;
     public int ForceAmeOriginal;
     public int Vitesse;
     public int VitesseOriginal;

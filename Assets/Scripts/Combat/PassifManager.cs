@@ -46,12 +46,11 @@ public class PassifManager
                             {
                                 if (joueurBehavior.Stat.Radiance > behavior.Stat.Radiance)
                                 {
-                                    //behavior.Stat.ForceAme += _rules.nbPercentBuffForceAmePapa;
+                                    behavior.Stat.ForceAmeBonus = Mathf.FloorToInt(((_rules.nbPercentBuffForceAmePapa / 100f) * behavior.Stat._forceAme));
                                 }
                                 else if (joueurBehavior.Stat.Radiance < behavior.Stat.Radiance)
                                 {
-
-                                    //behavior.Stat.ForceAme -= _rules.nbPercentDebuffForceAmePapa;
+                                    behavior.Stat.ForceAmeBonus = Mathf.FloorToInt(((_rules.nbPercentDebuffForceAmePapa / 100f) * behavior.Stat._forceAme));
                                 }
                             }
 
