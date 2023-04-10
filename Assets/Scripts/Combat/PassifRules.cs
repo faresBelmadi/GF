@@ -27,6 +27,9 @@ public class PassifRules : ScriptableObject
     public BuffDebuff Buff3QuarterLife;
     public BuffDebuff BuffHalfLife;
     public BuffDebuff BuffQuarterLife;
+    public int Percent3QuarterLife;
+    public int PercentHalfLife;
+    public int PercentQuarterLife;
 
     [Header("Passif Jeanne")]
     public BuffDebuff TrenteDivin;
