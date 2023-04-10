@@ -217,11 +217,11 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += Mathf.FloorToInt(valueToChange - ((Pourcentage / 100) * valueToChange));
                 break;
             case TypeEffet.AugmentationFARadianceManquante: //martyr elite 
-                ModifState.ForceAme += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * (Caster.RadianceMax - Caster.Radiance));
+                ModifState.ForceAme += Mathf.FloorToInt(((Pourcentage / 100f) * (Caster.RadianceMax - Caster.Radiance)) * NbAttaque);
                 break;
 
             case TypeEffet.DamageFaBuff: //martyr capa 3 Inflige x% de Force d'ame au joueur, par buff sur lui 
-                var nbBuffCible = Cible.ListBuffDebuff.Count(x => !x.IsDebuff);
+                var nbBuffCible = Caster.ListBuffDebuff.Count(x => !x.IsDebuff);
                 ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbBuffCible);
                 break;
             
