@@ -436,7 +436,15 @@ public class BattleManager : MonoBehaviour
                     }
                 }
                 break;
-            case Cible.Ally:
+            case Cible.Self:
+                if (Caster == idPlayer)
+                {
+                    player.ApplicationEffet(effet, null, source);
+                }
+                else
+                {
+                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
+                }
 
                 break;
             case Cible.allEnnemi:
@@ -448,7 +456,17 @@ public class BattleManager : MonoBehaviour
                 }
                 break;
             case Cible.AllExceptSelf:
-
+                
+                for (int x = EnemyScripts.Count - 1; x >= 0; x--)
+                {
+                    var ennemie = EnemyScripts[x];
+                    if (ennemie != null && ennemie.combatID != Caster)
+                        ennemie.ApplicationEffet(effet, null, source, Caster);
+                }
+                if (Caster != idPlayer)
+                {
+                    player.ApplicationEffet(effet, null, source);
+                }
                 break;
             case Cible.All:
                 for (int x = EnemyScripts.Count-1; x >= 0; x--)
