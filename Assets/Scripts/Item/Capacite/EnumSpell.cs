@@ -38,7 +38,8 @@ public enum Cible
     AllExceptSelf,
     MostDamage,
     LastAttacker,
-    AllAllyExceptSelf
+    AllAllyExceptSelf,
+    Self
 }
 
 public enum SpellStatus
