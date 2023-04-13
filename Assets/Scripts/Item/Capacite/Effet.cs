@@ -216,13 +216,13 @@ public class Effet : ScriptableObject
             case TypeEffet.CancelPourcentageDamage:
                 ModifState.Radiance += Mathf.FloorToInt(valueToChange - ((Pourcentage / 100) * valueToChange));
                 break;
-            case TypeEffet.AugmentationFARadianceManquante: //martyr elite 
+            case TypeEffet.AugmentationFARadianceManquante:
                 ModifState.ForceAme += Mathf.FloorToInt(((Pourcentage / 100f) * (Caster.RadianceMax - Caster.Radiance)) * NbAttaque);
                 break;
 
-            case TypeEffet.DamageFaBuff: //martyr capa 3 Inflige x% de Force d'ame au joueur, par buff sur lui 
-                var nbBuffCible = Caster.ListBuffDebuff.Count(x => !x.IsDebuff);
-                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbBuffCible);
+            case TypeEffet.DamageFaBuff:
+                var nbBuffCaster = Caster.ListBuffDebuff.Count(x => !x.IsDebuff);
+                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbBuffCaster);
                 break;
             
             //case TypeEffet.RemoveAllTensionProcDamage:
@@ -251,19 +251,18 @@ public class Effet : ScriptableObject
                 nbProcDamage = RemoveBuffOrDebuffFromList(Cible, false);
                 ModifState.Radiance += valueToChange * nbProcDamage;
                 break;
-
             case TypeEffet.GainFaBuffCible:
-                ModifState.ForceAme += Cible.ListBuffDebuff.Count(x => !x.IsDebuff) * valueToChange;
+                ModifState.ForceAme += Cible.ListBuffDebuff.Count(x => !x.IsDebuff) * valueToChange;//checker ui
                 break;
             case TypeEffet.GainFaDebuffCible:
                 ModifState.ForceAme += Cible.ListBuffDebuff.Count(x => x.IsDebuff) * valueToChange;
                 break;
             case TypeEffet.Ponction:
-                var amountPonction = Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+                var amountPonction = Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);//checker le multipl degat
                 Caster.Radiance += amountPonction;
                 if (Caster.Radiance > Caster.RadianceMax)
                     Caster.Radiance = Caster.RadianceMax;
-                ModifState.Radiance += amountPonction;
+                ModifState.Radiance += -amountPonction;
                 break;
             default:
                 break;
