@@ -503,18 +503,7 @@ public class BattleManager : MonoBehaviour
                     player.ApplicationEffet(effet, null, source);
                 }
                 break;
-            case Cible.All:
-                for (int x = EnemyScripts.Count-1; x >= 0; x--)
-                {
-                    var ennemie = EnemyScripts[x];
-                    if (ennemie != null)
-                        ennemie.ApplicationEffet(effet, null, source, Caster);
-                }
 
-                break;
-            case Cible.AllExceptSelf:
-
-                break;
             case Cible.All:
                 for (int x = EnemyScripts.Count - 1; x >= 0; x--)
                 {
