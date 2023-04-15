@@ -6,37 +6,42 @@ public class PassifRules : ScriptableObject
 {
 
     [Header("Passif Guerrier 1")]
-    public int nbPtsResilience;
-    public int nbPtsConscience;
+    public float nbPtsResilience;
+    public float nbPtsConscience;
 
     [Header("Passif Guerrier 2")]
-    public int nbPtsConscienceEarned;
-    public int PercentEssenceBonus;
+    public float nbPtsConscienceEarned;
+    public float PercentEssenceBonus;
 
     [Header("Passif Martyr")]
     public int nbSourcesDegats;
-    public int nbPtsResilienceMartyr;
-    public int nbPtsConvictionMartyr;
+    public float nbPtsResilienceMartyr;
+    public float nbPtsConvictionMartyr;
 
     [Header("Passif Cultiste")]
     public int nbChargeZealoteEarned;
+    public BuffDebuff BuffZealote;
 
     [Header("Passif Chef Cultiste")]
     public BuffDebuff BuffFullLife;
     public BuffDebuff Buff3QuarterLife;
     public BuffDebuff BuffHalfLife;
     public BuffDebuff BuffQuarterLife;
+    public int Percent3QuarterLife;
+    public int PercentHalfLife;
+    public int PercentQuarterLife;
 
-    [Header("Passi Jeanne")]
+    [Header("Passif Jeanne")]
     public BuffDebuff TrenteDivin;
     public BuffDebuff VingtDivin;
     public BuffDebuff DixDivin;
-    public int nbPtsRadianceJeanne;
-    public int nbPtsForceAmeJeanne;
+    public float nbPtsRadianceJeanne;
+    public float nbPtsForceAmeJeanne;
+    public float nbPtsDivinJeanne;
 
     [Header("Passif Papa")]
-    public int nbPercentBuffForceAmePapa;
-    public int nbPercentDebuffForceAmePapa;
+    public float nbPercentBuffForceAmePapa;
+    public float nbPercentDebuffForceAmePapa;
 
     [Header("Passif Papy")]
     public int nbBuffTriggerPapy;

@@ -23,11 +23,9 @@ public enum TimerPassif
     DebutTour,
     FinPhase,
     FinTour,
-    ChangementStat,
-    SourceDegats,
-    PersonnageMeurt,
-    AjoutBuffDebuff,
-    SuppBuffDebuff
+    FinAction,
+    FinCombat,
+    Death
 }
 
 public enum Cible
@@ -40,7 +38,8 @@ public enum Cible
     AllExceptSelf,
     MostDamage,
     LastAttacker,
-    AllAllyExceptSelf
+    AllAllyExceptSelf,
+    Self
 }
 
 public enum SpellStatus
@@ -147,7 +146,8 @@ public enum TypePassif
     PassifCameleon,
     PassifCultiste,
     PassifChefCultiste,
-    PassiJeanne,
+    PassifJeanne,
     PassifPapa,
     PassifPapy,
+    PassifClou
 }
