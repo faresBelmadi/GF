@@ -272,12 +272,17 @@ public class Effet : ScriptableObject
 
     private int RemoveBuffOrDebuffFromList(CharacterStat Cible, bool isDebuff)
     {
-        var tempListBuffDebuff = Cible.ListBuffDebuff.Where(x => x.IsDebuff == isDebuff);
-        var nbBuffDebuffRemoved = tempListBuffDebuff.Count();
-        foreach (var buffDebuff in tempListBuffDebuff)
+        int nbBuffDebuffRemoved = 0;
+        if (Cible.ListBuffDebuff != null)
         {
-            if (Cible.ListBuffDebuff.Contains(buffDebuff))
-                Cible.ListBuffDebuff.Remove(buffDebuff);
+            var tempListBuffDebuff = Cible.ListBuffDebuff.Where(x => x.IsDebuff == isDebuff);
+            nbBuffDebuffRemoved = tempListBuffDebuff.Count();
+            foreach (var buffDebuff in tempListBuffDebuff)
+            {
+                if (Cible.ListBuffDebuff.Contains(buffDebuff))
+                    Cible.ListBuffDebuff.Remove(buffDebuff);
+            }
+
         }
 
         return nbBuffDebuffRemoved;
