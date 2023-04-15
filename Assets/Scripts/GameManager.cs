@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour {
 
     public int ClassIDSelected;
 
-    public PassifRules passifRules;
     [Header("Data")]
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
@@ -92,7 +91,6 @@ public class GameManager : MonoBehaviour {
                 }
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
-                playerStat.ListPassif = new List<Passif>();
                 //TODO : Angela a mis ça en commentaire pour que val puisse faire des test, a voir si c'est a remetre 
                 /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
                 {
@@ -107,13 +105,9 @@ public class GameManager : MonoBehaviour {
                     }
                     playerStat.ListSpell.Add(temp);
                 }*/
-                foreach (var item in classSO.PlayerStat.ListSpell)
+                foreach(var item in classSO.PlayerStat.ListSpell)
                 {
                     playerStat.ListSpell.Add(item);
-                }
-                foreach (var item in classSO.PlayerStat.ListPassif)
-                {
-                    playerStat.ListPassif.Add(item);
                 }
             }
         }
