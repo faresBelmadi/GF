@@ -27,7 +27,7 @@ public class MenuStatManager : MonoBehaviour
  
     #region Start
 
-    public void StartMenuStat()
+    public void Start/*MenuStat*/()
     {
         Stat = GameManager.instance.playerStat;
         StatTemp = Instantiate(Stat);
@@ -96,10 +96,10 @@ public class MenuStatManager : MonoBehaviour
 
     #region Update
 
-    void Update()
-    {
-        UpdateStatUI();
-    }
+    //void Update()
+    //{
+    //    UpdateStatUI();
+    //}
 
     public void UpdateStatUI()
     {

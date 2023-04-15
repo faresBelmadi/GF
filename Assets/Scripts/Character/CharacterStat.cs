@@ -90,7 +90,7 @@ public class CharacterStat : ScriptableObject
         }
         else
             this.Radiance += ModifState.Radiance;
-
+        this.Radiance = this.Radiance > this.RadianceMax ? this.RadianceMax : this.Radiance;
     }
 
     public void RectificationStat()

@@ -153,9 +153,12 @@ public class AutelManager : MonoBehaviour
 
     public void Lvlup()
     {
-        ArbreCompetence = Instantiate(ArbreCompetencePrefab, Canvas.transform);
-        ArbreCompetence.GetComponentInChildren<RetourArbre>().gameObject.GetComponent<Button>().onClick.AddListener(NonAfficherArbre);
-        ArbreCompetence.GetComponent<ArbreManager>().StartArbre(Stat);
+        //Set Active prefab arbre de compétence
+
+        ArbreCompetencePrefab.SetActive(true);
+        //ArbreCompetence = Instantiate(ArbreCompetencePrefab, Canvas.transform);
+        //ArbreCompetence.GetComponentInChildren<RetourArbre>().gameObject.GetComponent<Button>().onClick.AddListener(NonAfficherArbre);
+        //ArbreCompetence.GetComponent<ArbreManager>().StartArbre(Stat);
         AutelMenu.SetActive(false);
     }
 
@@ -177,6 +180,7 @@ public class AutelManager : MonoBehaviour
 
     public void Item()
     {
+
         ButtonLvlup.SetActive(false);
         ButtonItem.SetActive(false);
         ButtonChoix1.SetActive(true);
@@ -187,6 +191,8 @@ public class AutelManager : MonoBehaviour
 
     public void Return()
     {
+        ArbreCompetencePrefab.SetActive(false);
+        AutelMenu.SetActive(true);
         ButtonLvlup.SetActive(true);
         ButtonItem.SetActive(true);
         ButtonChoix1.SetActive(false);

@@ -100,9 +100,9 @@ public class PlayerMapManager : MonoBehaviour
             case "Autel":
                 StartAutel();
                 break;
-            case "MenuStat":
-                StartMenuStat();
-                break;
+            //case "MenuStat":
+            //    StartMenuStat();
+            //    break;
             default:
             break;
         }
@@ -178,11 +178,11 @@ public class PlayerMapManager : MonoBehaviour
 
     void StartMenuStat()
     {
-        CurrentRoomCamera = rootScene.First(c => c.name == "MenuStatCamera");
-        GameManager.instance.StatMan = rootScene.First(c => c.name == "MenuStatManager").GetComponent<MenuStatManager>();
-        GameManager.instance.LoadMenuStat();
-        CurrentRoomCamera.SetActive(true);
-        MenuCamera.SetActive(false);
+        //CurrentRoomCamera = rootScene.First(c => c.name == "MenuStatCamera");
+        //GameManager.instance.StatMan = rootScene.First(c => c.name == "MenuStatManager").GetComponent<MenuStatManager>();
+        //GameManager.instance.LoadMenuStat();
+        //CurrentRoomCamera.SetActive(true);
+        //MenuCamera.SetActive(false);
     }
 
     public IEnumerator EndMenuStat()

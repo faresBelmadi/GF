@@ -424,10 +424,6 @@ public class JoueurBehavior : CombatBehavior
 
     #endregion Effet
 
-    #region passif
-
-
-    #endregion passif
 
     #region Essence
 

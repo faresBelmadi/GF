@@ -270,8 +270,14 @@ public class EnnemyBehavior : CombatBehavior
     public void DoAction()
     {
         //A Mettre une fois les combats terminer
-        _refBattleMan.LaunchSpellEnnemi(nextAction);
         LaunchAnimBool();
+        _refBattleMan.LaunchSpellEnnemi(nextAction);
+    }
+    
+    public void EndAttackAnimation()
+    {
+        Debug.Log("commencement des degats");
+        GameManager.instance.BattleMan.LaunchSpellEnnemi(nextAction);
     }
 
     public void CreateSpellList()
@@ -413,7 +419,7 @@ public class EnnemyBehavior : CombatBehavior
 
         if (Stat.Radiance <= 0)
         {
-            EndTurn();
+            /*EndTurn();*/ // provoque une fin de tour du joueur a la mort d'un ennemi, est ce que c'est une feature voulu ?
             Dead();
         }
     }
