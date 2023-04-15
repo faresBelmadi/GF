@@ -62,6 +62,7 @@ public class Effet : ScriptableObject
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi);
         return ModifState;
     }
+
     private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
@@ -146,7 +147,7 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * GameManager.instance.BattleMan.EnemyScripts.Count);
                 break;
             case TypeEffet.SoinRadianceMax:
-                ModifState.Radiance +=Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.RadianceMax);
+                ModifState.Radiance +=Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.RadianceMax);
                 break;
             case TypeEffet.SoinRadianceActuelle:
                 ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.Radiance);
@@ -230,13 +231,13 @@ public class Effet : ScriptableObject
             //    break;
 
             case TypeEffet.RemoveAllDebuffProcBuffDebuf:
-                nbProcAfterEffect = RemoveBuffOrDebuffFromList(Cible, true);
+                nbProcAfterEffect = RemoveBuffOrDebuffFromList(Caster, true);
                 break;
-            case TypeEffet.RemoveAllDebuffSelfProcBuffDebuf:
+            case TypeEffet.RemoveAllDebuffSelfProcBuffDebuf://calmer les tensions : retire a la cible les debuff pour ce buff sois
                 nbProcAfterEffect = RemoveBuffOrDebuffFromList(Cible, true);
                 break;
             case TypeEffet.RemoveAllBuffProcBuffDebuf:
-                nbProcAfterEffect = RemoveBuffOrDebuffFromList(Cible, false);
+                nbProcAfterEffect = RemoveBuffOrDebuffFromList(Caster, false);
                 break;
 
             case TypeEffet.RemoveAllDebuffProcDamage:
@@ -276,10 +277,8 @@ public class Effet : ScriptableObject
         var nbBuffDebuffRemoved = tempListBuffDebuff.Count();
         foreach (var buffDebuff in tempListBuffDebuff)
         {
-            if (Cible.ListBuffDebuff.Contains(buffDebuff))
-                Cible.ListBuffDebuff.Remove(buffDebuff);
+            buffDebuff.Temps = -1;
         }
-
         return nbBuffDebuffRemoved;
     }
 }

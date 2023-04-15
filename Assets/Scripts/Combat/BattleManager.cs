@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -308,10 +309,12 @@ public class BattleManager : MonoBehaviour
             PassageEffet(effet, idPlayer, idTarget, SourceEffet.Spell);
             if (effet.AfterEffectToApply != null)
             {
+                player.UpdateBuffDebuffGameObject(player.Stat.ListBuffDebuff);
+                var ennemy = EnemyScripts.First(c => c.combatID == idTarget);
+                ennemy.UpdateBuffDebuffGameObject(ennemy.Stat.ListBuffDebuff);
                 ApplyAfterEffect(effet);
             }
         }
-
         //EnemyScripts.First(c => c.combatID == idTarget).ApplicationBuffDebuff(TimerApplication.Attaque);
         idTarget = -1;
     }
@@ -324,6 +327,8 @@ public class BattleManager : MonoBehaviour
             PassageEffet(effet, currentIdTurn, -1, SourceEffet.Spell);
             if (effet.AfterEffectToApply != null)
             {
+                //var ennemy = EnemyScripts.First(c => c.combatID == Spell.ID);
+                //ennemy.UpdateBuffDebuffGameObject(ennemy.Stat.ListBuffDebuff);
                 ApplyAfterEffect(effet);
             }
         }
@@ -337,8 +342,7 @@ public class BattleManager : MonoBehaviour
         {
             afterEffect.Add(effet.AfterEffectToApply);
         }
-
-        GiveBuffDebuff(afterEffect);
+        GiveBuffDebuff(afterEffect, idTarget);
     }
 
     public void GiveBuffDebuff(List<BuffDebuff> BuffDebuff, int target = -1)
