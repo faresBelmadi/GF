@@ -9,7 +9,15 @@ public class CharacterStat : ScriptableObject
     public int Radiance;
     public int RadianceMax;
     public int RadianceMaxOriginal;
-    public int ForceAme;
+
+    public int ForceAme
+    {
+        get => _forceAme + ForceAmeBonus;
+        set => _forceAme = value;
+    }
+
+    public int _forceAme;
+    public int ForceAmeBonus;
     public int ForceAmeOriginal;
     public int Vitesse;
     public int VitesseOriginal;
@@ -17,7 +25,16 @@ public class CharacterStat : ScriptableObject
     public int ConvictionMin = -10;
     public int ConvictionMax = 10;
     public int ConvictionOriginal;
-    public int Resilience;
+
+    public int Resilience
+    {
+        get => _resilience + Mathf.FloorToInt(ResilienceBonus);
+
+        set => _resilience = value;
+    }
+
+    private int _resilience;
+    public float ResilienceBonus;
     public int ResilienceMin = -10;
     public int ResilienceMax = 10;
     public int ResilienceOriginal;
@@ -38,7 +55,8 @@ public class CharacterStat : ScriptableObject
     public int NbPalier = 3;
     public int PalierChangement = 0;
     public int nbAttaqueRecu = 0;
-    public Action ActionPassif; 
+    public List<Passif> ListPassif;
+    public Action ActionPassif;
 
     public void ModifStateAll(CharacterStat ModifState)
     {
@@ -90,7 +108,7 @@ public class CharacterStat : ScriptableObject
         }
         if (this.Resilience > this.ResilienceMax)
         {
-            this.Resilience = this.ResilienceMax;
+            this.Resilience = this.ResilienceMax - Mathf.FloorToInt(ResilienceBonus);
         }
         else if (this.Resilience < this.ResilienceMin)
         {

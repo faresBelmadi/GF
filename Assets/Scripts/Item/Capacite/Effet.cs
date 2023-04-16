@@ -18,8 +18,7 @@ public class Effet : ScriptableObject
     public bool IsAttaqueEffet;
     public BuffDebuff AfterEffectToApply;
 
-    [System.NonSerialized]
-    public int nbProcAfterEffect;
+    [System.NonSerialized] public int nbProcAfterEffect;
 
     public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTake = 0, JoueurStat Cible = null)
     {
@@ -46,13 +45,14 @@ public class Effet : ScriptableObject
                 ModifState = ResultEffetCommun(Caster);
                 break;
         }
+
         return ModifState;
     }
 
     public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        ModifState = ResultEffetCommun(Caster, LastDamageTaken,Cible);
+        ModifState = ResultEffetCommun(Caster, LastDamageTaken, Cible);
         return ModifState;
     }
 
@@ -66,7 +66,7 @@ public class Effet : ScriptableObject
     private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken,Cible));
+        ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken, Cible));
 
         return ModifState;
     }
@@ -80,10 +80,11 @@ public class Effet : ScriptableObject
         switch (this.TypeEffet)
         {
             case TypeEffet.DegatsForceAme:
-                ModifState.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme)*Caster.MultiplDegat);
+                ModifState.Radiance +=
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
             case TypeEffet.DegatsBrut:
-                ModifState.Radiance += Mathf.FloorToInt(valueToChange*Caster.MultiplDegat);
+                ModifState.Radiance += Mathf.FloorToInt(valueToChange * Caster.MultiplDegat);
                 break;
             case TypeEffet.Conviction:
                 ModifState.Conviction += valueToChange;
@@ -141,19 +142,22 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += valueToChange;
                 break;
             case TypeEffet.SoinFA:
-                ModifState.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme)*Caster.MultiplSoin);
+                ModifState.Radiance +=
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplSoin);
                 break;
             case TypeEffet.SoinFANbEnnemi:
-                ModifState.Radiance += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * GameManager.instance.BattleMan.EnemyScripts.Count);
+                ModifState.Radiance += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) *
+                                        GameManager.instance.BattleMan.EnemyScripts.Count);
                 break;
             case TypeEffet.SoinRadianceMax:
-                ModifState.Radiance +=Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.RadianceMax);
+                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.RadianceMax);
                 break;
             case TypeEffet.SoinRadianceActuelle:
                 ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.Radiance);
                 break;
             case TypeEffet.RandomAttaque:
-                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Random.Range(RandomX, RandomY + 1) * Caster.ForceAme));
+                ModifState.Radiance +=
+                    Mathf.FloorToInt(((Pourcentage / 100f) * Random.Range(RandomX, RandomY + 1) * Caster.ForceAme));
                 break;
             case TypeEffet.AugmentationFaRadianceActuelle:
                 ModifState.ForceAme += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.Radiance);
@@ -161,20 +165,24 @@ public class Effet : ScriptableObject
             case TypeEffet.ConsommeTensionAugmentationFA:
                 ModifState.Tension += -Cible.Tension;
                 var toAdd = Instantiate(FindObjectsOfType<BuffDebuff>().First(c => c.Nom == "Tension convertis en FA"));
-                toAdd.Effet.First().Pourcentage = (int)Cible.Tension;
+                toAdd.Effet.First().Pourcentage = (int) Cible.Tension;
                 Caster.ListBuffDebuff.Add(toAdd);
                 break;
             case TypeEffet.RemoveDebuff:
                 var tempListRD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
-                tempListRD.RemoveAt(Random.Range  (0, tempListRD.Count));
+                tempListRD.RemoveAt(Random.Range(0, tempListRD.Count));
                 break;
             case TypeEffet.AttaqueStackAmant:
-                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Cible.ListBuffDebuff.Count(c => c.Nom == "Amant")) * Caster.ForceAme);
+                ModifState.Radiance +=
+                    Mathf.FloorToInt(((Pourcentage / 100f) * Cible.ListBuffDebuff.Count(c => c.Nom == "Amant")) *
+                                     Caster.ForceAme);
                 break;
             case TypeEffet.AttaqueFADebuff:
                 var tempListAFAD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
 
-                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage + (ValeurBrut * tempListAFAD.Count()) / 100f) * NbAttaque) * Caster.ForceAme);
+                ModifState.Radiance +=
+                    Mathf.FloorToInt(((Pourcentage + (ValeurBrut * tempListAFAD.Count()) / 100f) * NbAttaque) *
+                                     Caster.ForceAme);
                 break;
             case TypeEffet.GainResilienceIncrementale:
                 ModifState.Resilience += ValeurBrut * TimeAlive;
@@ -204,12 +212,13 @@ public class Effet : ScriptableObject
                 percent = Pourcentage;
                 if (((Cible.Radiance / Cible.RadianceMax) * 100) <= 25)
                     percent *= 3;
-                ModifState.Radiance += Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+                ModifState.Radiance +=
+                    Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
 
             case TypeEffet.DegatsRetourSurAttaque:
-               ModifState.Radiance = Mathf.FloorToInt(Pourcentage / 100f * LastDamageTaken); 
-               break;
+                ModifState.Radiance = Mathf.FloorToInt(Pourcentage / 100f * LastDamageTaken);
+                break;
 
             case TypeEffet.BuffResilienceCoupRecu:
                 ModifState.Resilience += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque));
@@ -218,14 +227,15 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += Mathf.FloorToInt(valueToChange - ((Pourcentage / 100) * valueToChange));
                 break;
             case TypeEffet.AugmentationFARadianceManquante:
-                ModifState.ForceAme += Mathf.FloorToInt(((Pourcentage / 100f) * (Caster.RadianceMax - Caster.Radiance)) * NbAttaque);
+                ModifState.ForceAme +=
+                    Mathf.FloorToInt(((Pourcentage / 100f) * (Caster.RadianceMax - Caster.Radiance)) * NbAttaque);
                 break;
 
             case TypeEffet.DamageFaBuff:
                 var nbBuffCaster = Caster.ListBuffDebuff.Count(x => !x.IsDebuff);
                 ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbBuffCaster);
                 break;
-            
+
             //case TypeEffet.RemoveAllTensionProcDamage:
             //    ModifState.Tension = 0;
             //    break;
@@ -233,7 +243,7 @@ public class Effet : ScriptableObject
             case TypeEffet.RemoveAllDebuffProcBuffDebuf:
                 nbProcAfterEffect = RemoveBuffOrDebuffFromList(Caster, true);
                 break;
-            case TypeEffet.RemoveAllDebuffSelfProcBuffDebuf://calmer les tensions : retire a la cible les debuff pour ce buff sois
+            case TypeEffet.RemoveAllDebuffSelfProcBuffDebuf:
                 nbProcAfterEffect = RemoveBuffOrDebuffFromList(Cible, true);
                 break;
             case TypeEffet.RemoveAllBuffProcBuffDebuf:
@@ -263,7 +273,9 @@ public class Effet : ScriptableObject
                     Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * nbDebuffCible);
                 break;
             case TypeEffet.Ponction:
-                var amountPonction = Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);//checker le multipl degat
+                var amountPonction =
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) *
+                                     Caster.MultiplDegat); //checker le multipl degat
                 Caster.Radiance += amountPonction;
                 if (Caster.Radiance > Caster.RadianceMax)
                     Caster.Radiance = Caster.RadianceMax;
@@ -272,16 +284,21 @@ public class Effet : ScriptableObject
             default:
                 break;
         }
+
         return ModifState;
     }
 
     private int RemoveBuffOrDebuffFromList(CharacterStat Cible, bool isDebuff)
     {
-        var tempListBuffDebuff = Cible.ListBuffDebuff.Where(x => x.IsDebuff == isDebuff);
-        var nbBuffDebuffRemoved = tempListBuffDebuff.Count();
-        foreach (var buffDebuff in tempListBuffDebuff)
+        int nbBuffDebuffRemoved = 0;
+        if (Cible.ListBuffDebuff != null)
         {
-            buffDebuff.Temps = -1;
+            var tempListBuffDebuff = Cible.ListBuffDebuff.Where(x => x.IsDebuff == isDebuff);
+            nbBuffDebuffRemoved = tempListBuffDebuff.Count();
+            foreach (var buffDebuff in tempListBuffDebuff)
+            {
+                buffDebuff.Temps = -1;
+            }
         }
         return nbBuffDebuffRemoved;
     }
