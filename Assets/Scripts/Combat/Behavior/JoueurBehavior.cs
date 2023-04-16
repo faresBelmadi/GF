@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -34,6 +35,9 @@ public class JoueurBehavior : CombatBehavior
     public Spell SelectedSpell;
 
     public AnimationControllerAttack AnimationController;
+    
+    private BattleManager _refBattleMan;
+    public bool IsTurn;
 
     #region Divers start & fin
 
@@ -122,16 +126,18 @@ public class JoueurBehavior : CombatBehavior
 
     public void StartPhase()
     {
+        _refBattleMan = GameManager.instance.BattleMan;
         ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
-        ResolvePassif();
         UpdateUI();
     }
 
     public void StartTurn()
     {
+        IsTurn = true;
+        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
+        _refBattleMan.PassifManager.ResolvePassifs();
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
-        ResolvePassif();
         ActivateSpells();
         Stat.Volonter = Stat.VolonterMax;
         UpdateUI();
@@ -139,6 +145,9 @@ public class JoueurBehavior : CombatBehavior
 
     public void EndTurn()
     {
+        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
+        _refBattleMan.PassifManager.ResolvePassifs();
+        IsTurn = false;
         DesactivateSpells();
         EndTurnBM();
     }
@@ -160,7 +169,7 @@ public class JoueurBehavior : CombatBehavior
 
     void Dead()
     {
-        GameManager.instance.BattleMan.DeadPlayer();
+        _refBattleMan.DeadPlayer();
     }
 
     #endregion Divers start & fin
@@ -250,7 +259,7 @@ public class JoueurBehavior : CombatBehavior
 
     private void TakeTarget()
     {
-        GameManager.instance.BattleMan.StartTargeting();
+        _refBattleMan.StartTargeting();
     }
 
     public void Costs()
@@ -277,13 +286,13 @@ public class JoueurBehavior : CombatBehavior
         Costs();
         DesactivateSpells();
         AnimationController.StartAttack(AfterAnim);
-        GameManager.instance.BattleMan.LaunchAnimAttacked();
+        _refBattleMan.LaunchAnimAttacked();
     }
 
     private void AfterAnim()
     {
         //A Mettre une fois les combats terminer
-        GameManager.instance.BattleMan.LaunchSpellJoueur(SelectedSpell);
+        _refBattleMan.LaunchSpellJoueur(SelectedSpell);
         ActivateSpells();
         UpdateUI();
     }
@@ -327,7 +336,7 @@ public class JoueurBehavior : CombatBehavior
             {
                 foreach (var effet in item.Effet)
                 {
-                    GameManager.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
+                    _refBattleMan.PassageEffet(effet, item.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
                     /*if(item.CibleApplication == effet.Cible)
                     {
                         ApplicationEffet(effet);
@@ -377,12 +386,12 @@ public class JoueurBehavior : CombatBehavior
         if (ModifStat.Radiance < 0)
         {
             LastDamageTaken = ModifStat.Radiance;
-            GameManager.instance.BattleMan.CurrentPhaseDamage += LastDamageTaken;
+            _refBattleMan.CurrentPhaseDamage += LastDamageTaken;
 
-            if (LastDamageTaken < GameManager.instance.BattleMan.MostDamage)
+            if (LastDamageTaken < _refBattleMan.MostDamage)
             {
-                GameManager.instance.BattleMan.MostDamage = LastDamageTaken;
-                GameManager.instance.BattleMan.MostDamageID = idCaster;
+                _refBattleMan.MostDamage = LastDamageTaken;
+                _refBattleMan.MostDamageID = idCaster;
             }
 
             if (source == SourceEffet.Spell)
@@ -400,6 +409,9 @@ public class JoueurBehavior : CombatBehavior
             temp.GetComponent<TextAnimDegats>().Value = ModifStat.Radiance;
         }
 
+        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
+        _refBattleMan.PassifManager.ResolvePassifs();
+
         UpdateUI();
 
         if (Stat.Radiance <= 0)
@@ -410,32 +422,6 @@ public class JoueurBehavior : CombatBehavior
 
     #endregion Effet
 
-    #region passif
-
-    public void ResolvePassif()
-    {
-        if (Stat.ListPassif == null)
-            return;
-        foreach (var item in Stat.ListPassif)
-        {
-            switch (item.passif)
-            {
-                case TypePassif.PassifGuerrier1:
-                    // vous avez 1 points de résilience par point de conscience que vous possédez
-                    break;
-                case TypePassif.PassifGuerrier2:
-                    //Lorsque vous terminez un affrontement sans avoir consommé d'Essences, vous récupérez 1 point de Conscience et le total d'Essences obtenu est augmenté de 10%.        
-                    break;
-
-            }
-            
-            
-
-        }
-            
-    }
-
-    #endregion passif
 
     #region Essence
 

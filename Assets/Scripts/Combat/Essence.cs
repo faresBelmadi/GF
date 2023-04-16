@@ -4,7 +4,7 @@ public class Essence : MonoBehaviour
 {
     public GameObject ui;
     public bool isEnd;
-    int amount;
+    public int amount;
 
     public void AddEssence(int _amount)
     {

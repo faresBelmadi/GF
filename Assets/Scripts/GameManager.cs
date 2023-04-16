@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour {
 
     public int ClassIDSelected;
 
+    public PassifRules passifRules;
     public EmotionManager EmotionManager;
 
     [Header("Data")]
@@ -94,7 +95,8 @@ public class GameManager : MonoBehaviour {
                 }
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
-                //TODO : Angela a mis ça en commentaire pour que val puisse faire des test, a voir si c'est a remetre 
+                playerStat.ListPassif = new List<Passif>();
+                //TODO : Angela a mis ï¿½a en commentaire pour que val puisse faire des test, a voir si c'est a remetre 
                 /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
                 {
                     var temp = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item);
@@ -108,9 +110,13 @@ public class GameManager : MonoBehaviour {
                     }
                     playerStat.ListSpell.Add(temp);
                 }*/
-                foreach(var item in classSO.PlayerStat.ListSpell)
+                foreach (var item in classSO.PlayerStat.ListSpell)
                 {
                     playerStat.ListSpell.Add(item);
+                }
+                foreach (var item in classSO.PlayerStat.ListPassif)
+                {
+                    playerStat.ListPassif.Add(item);
                 }
             }
         }

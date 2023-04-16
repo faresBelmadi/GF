@@ -70,8 +70,8 @@ public class Generator : MonoBehaviour
                 }
                 i++;
             } while (!CanSpawn && i < 1000000);
-
-            var t = Instantiate(Spawn,pos,Quaternion.identity,Parent);
+            Vector3 position = new Vector3(pos.x,pos.y,75);
+            var t = Instantiate(Spawn,position,Quaternion.identity,Parent);
             t.name = "room";
             Spawned.Add(pos,t);
         }
@@ -210,10 +210,14 @@ public class Generator : MonoBehaviour
             {
                 if(item2 != null)
                 {
-                    var l = Instantiate(Line,item.Key.transform.position,Quaternion.identity,item.Key.transform);
+                    var temp = item.Key.transform.position;
+                    Vector3 Start = new Vector3(temp.x, temp.y, 75);
+                    var l = Instantiate(Line, Start, Quaternion.identity,item.Key.transform);
                     l.name = "corridor";
-                    l.GetComponent<LineRenderer>().SetPosition(0,item.Key.transform.position);
-                    l.GetComponent<LineRenderer>().SetPosition(1,item2.transform.position);
+                    var temp2 = item2.transform.position;
+                    Vector3 End = new Vector3(temp2.x, temp2.y, 75);
+                    l.GetComponent<LineRenderer>().SetPosition(0,Start);
+                    l.GetComponent<LineRenderer>().SetPosition(1,End);
                     if((Vector2)item2.transform.position != Vector2.zero)
                     {
                         Lines.Add(l);
