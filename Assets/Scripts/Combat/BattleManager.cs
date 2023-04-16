@@ -348,7 +348,7 @@ public class BattleManager : MonoBehaviour
             if (effet.AfterEffectToApply != null)
             {
                 //var ennemy = EnemyScripts.First(c => c.combatID == Spell.ID);
-                //ennemy.UpdateBuffDebuffGameObject(ennemy.Stat.ListBuffDebuff);
+                //ennemy.UpdateBuffDebuffGameObject(ennemy.Stat.ListBuffDebuffGO);
                 ApplyAfterEffect(effet);
             }
         }

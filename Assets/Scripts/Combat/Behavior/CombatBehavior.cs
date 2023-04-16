@@ -11,7 +11,7 @@ using static UnityEditor.Progress;
 public class CombatBehavior : MonoBehaviour
 {
 
-    public List<GameObject> ListBuffDebuffGameObjects = new List<GameObject>();
+    public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
     public GameObject BuffPrefab;
     public Transform BuffContainer;
     public GameObject DebuffPrefab;
@@ -25,13 +25,13 @@ public class CombatBehavior : MonoBehaviour
     {
         if (toAdd.IsDebuff)
         {
-            var t = ListBuffDebuffGameObjects.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == toAdd.Nom);
+            var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == toAdd.Nom);
             if (t == null)
             {
                 t = Instantiate(DebuffPrefab, DebuffContainer.transform);
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.Nom;
                 t.GetComponent<DescriptionHoverTrigger>().Description.text = toAdd.Description;
-                ListBuffDebuffGameObjects.Add(t);
+                ListBuffDebuffGO.Add(t);
             }
             else
             {
@@ -44,13 +44,13 @@ public class CombatBehavior : MonoBehaviour
         }
         else
         {
-            var t = ListBuffDebuffGameObjects.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == toAdd.Nom);
+            var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == toAdd.Nom);
             if (t == null)
             {
                 t = Instantiate(BuffPrefab, BuffContainer.transform);
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.Nom;
                 t.GetComponent<DescriptionHoverTrigger>().Description.text = toAdd.Description;
-                ListBuffDebuffGameObjects.Add(t);
+                ListBuffDebuffGO.Add(t);
             }
             else
             {
@@ -71,7 +71,7 @@ public class CombatBehavior : MonoBehaviour
 
             if (item.Temps < 0)
             {
-                var t = ListBuffDebuffGameObjects.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == item.Nom);
+                var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == item.Nom);
                 if (t != null)
                 {
                     var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;
@@ -80,7 +80,7 @@ public class CombatBehavior : MonoBehaviour
                     s = nb + "";
                     if (nb <= 0)
                     {
-                        ListBuffDebuffGameObjects.Remove(t);
+                        ListBuffDebuffGO.Remove(t);
                         GameObject.Destroy(t);
                     }
                     else

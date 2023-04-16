@@ -58,7 +58,7 @@ public class PassifManager
                         case TypePassif.PassifPapy:
                             foreach (var joueurBehavior in _currentBattleJoueur)
                             {
-                                if (joueurBehavior.ListBuffDebuff.Count >= _rules.nbBuffTriggerPapy)
+                                if (joueurBehavior.ListBuffDebuffGO.Count >= _rules.nbBuffTriggerPapy)
                                 {
                                     behavior.Stat.Tension += behavior.Stat.ValeurPalier;
                                     List<BuffDebuff> tempPapyDebuffs = new List<BuffDebuff>
