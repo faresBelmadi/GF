@@ -253,10 +253,14 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += valueToChange * nbProcDamage;
                 break;
             case TypeEffet.GainFaBuffCible:
-                ModifState.ForceAme += Cible.ListBuffDebuff.Count(x => !x.IsDebuff) * valueToChange;//checker ui
+                var nbBuffCible = Cible.ListBuffDebuff.Count(x => !x.IsDebuff);
+                Caster.ForceAme +=
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * nbBuffCible);
                 break;
             case TypeEffet.GainFaDebuffCible:
-                ModifState.ForceAme += Cible.ListBuffDebuff.Count(x => x.IsDebuff) * valueToChange;
+                var nbDebuffCible = Cible.ListBuffDebuff.Count(x => x.IsDebuff);
+                Caster.ForceAme +=
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * nbDebuffCible);
                 break;
             case TypeEffet.Ponction:
                 var amountPonction = Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);//checker le multipl degat
