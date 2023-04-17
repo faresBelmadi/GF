@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
@@ -17,6 +18,7 @@ public class GameManager : MonoBehaviour {
     public AleaManager AleaMan;
     public AutelManager AutelMan;
     public MenuStatManager StatMan;
+    public EmotionManager EmotionMan;
 
     [Header("Classes & Encounter")]
     public List<ClassPlayer> AllClasses;
@@ -33,27 +35,28 @@ public class GameManager : MonoBehaviour {
     public int ClassIDSelected;
 
     public PassifRules passifRules;
-    public EmotionManager EmotionManager;
 
     [Header("Data")]
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
 
-    private void Awake() {
-        if(instance != null)
+    private void Awake()
+    {
+        if (instance != null)
             Destroy(this.gameObject);
         else
         {
             instance = this;
             DontDestroyOnLoad(this);
-        }
+            EmotionMan = new EmotionManager();
 
-        UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
-        //LoadSave();
-        ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
-        CreateSave();
-        getClassRun();
-        EmotionManager = new EmotionManager();
+
+            UnityEngine.Random.InitState((int) DateTime.Now.Ticks);
+            //LoadSave();
+            ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
+            CreateSave();
+            getClassRun();
+        }
     }
 
     private void LoadSave()
@@ -96,6 +99,7 @@ public class GameManager : MonoBehaviour {
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
                 playerStat.ListPassif = new List<Passif>();
+
                 //TODO : Angela a mis �a en commentaire pour que val puisse faire des test, a voir si c'est a remetre 
                 /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
                 {

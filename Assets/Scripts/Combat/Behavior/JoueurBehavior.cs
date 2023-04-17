@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class JoueurBehavior : CombatBehavior
@@ -43,6 +45,10 @@ public class JoueurBehavior : CombatBehavior
 
     public void StartUp()
     {
+        //TODO Remove when souvenir and emotions working ( should be done directly in Joie.cs)
+        Stat.ListBuffDebuff.ItemAdded += ListBuffDebuff_ItemAdded;
+        Stat.ListBuffDebuff.ItemRemoved += ListBuffDebuff_ItemRemoved;
+
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.ClairvoyanceOriginal = Stat.Clairvoyance;
@@ -321,7 +327,7 @@ public class JoueurBehavior : CombatBehavior
 
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
-        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff.ToList(), Decompte);
+        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte);
 
         ApplicationBuffDebuff(Timer);
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 [System.Serializable]
 public class CharacterStat : ScriptableObject
@@ -44,8 +45,10 @@ public class CharacterStat : ScriptableObject
     public float MultiplSoin = 1;
     public float MultiplDegat = 1;
     public float MultipleBuffDebuff = 1;
-    public ObservableCollection<BuffDebuff> ListBuffDebuff = new ObservableCollection<BuffDebuff>();
+
+    public ObservableList<BuffDebuff> ListBuffDebuff = new ObservableList<BuffDebuff>();
     //public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>();
+
     public int TensionAttaque = 0;
     public int TensionDebuff = 0;
     public int TensionSoin = 0;

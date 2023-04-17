@@ -31,7 +31,8 @@ public class EnnemyBehavior : CombatBehavior
         base.BuffContainer = UICombat.buffParents;
         base.DebuffContainer = UICombat.debuffParents;
 
-
+        //Stat.ListBuffDebuff.ItemAdded += ListBuffDebuff_ItemAdded;
+        //Stat.ListBuffDebuff.ItemRemoved += ListBuffDebuff_ItemRemoved;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.DissimulationOriginal = Stat.Dissimulation;
         Stat.ResilienceOriginal = Stat.Resilience;

@@ -1,4 +1,8 @@
-﻿public class EmotionManager
+﻿using System;
+using UnityEngine;
+using UnityEngine.Rendering;
+
+public class EmotionManager
 {
     public Emotion CreateEmotion(EmotionTypeEnum emotionType)
     {
@@ -7,22 +11,21 @@
             case EmotionTypeEnum.Joie:
                 return new Joie();
             case EmotionTypeEnum.Espoir:
-                return new Emotion();
+                return new Espoir();
             case EmotionTypeEnum.Fierte:
-                return new Emotion();
+                return new Fierte();
             case EmotionTypeEnum.Honte:
-                return new Emotion();
+                return new Honte();
             case EmotionTypeEnum.Nostalgie:
-                return new Emotion();
+                return new Nostalgie();
             case EmotionTypeEnum.Rancune:
-                return new Emotion();
+                return new Rancune();
             case EmotionTypeEnum.Serenite:
-                return new Emotion();
-            case EmotionTypeEnum.frustration:
-                return new Emotion();
+                return new Serenite();
+            case EmotionTypeEnum.Frustration:
+                return new Frustration();
             default:
                 return null;
         }
     }
-
 }

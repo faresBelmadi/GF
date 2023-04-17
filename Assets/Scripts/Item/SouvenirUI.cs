@@ -36,7 +36,7 @@ public class SouvenirUI : MonoBehaviour
             case EmotionTypeEnum.Rancune:
                 DescTemp += "EmotionTypeEnum : Rancune";
                 break;
-            case EmotionTypeEnum.frustration:
+            case EmotionTypeEnum.Frustration:
                 DescTemp += "EmotionTypeEnum : Frustration";
                 break;
             case EmotionTypeEnum.Honte:

@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Emotion", menuName = "Remake/Item/Create New Emotion", order = 11)]
-public class Emotion : ScriptableObject
+public class Emotion
 {
     public string EmotionName;
     public EmotionTypeEnum EmotionTypeEnum;

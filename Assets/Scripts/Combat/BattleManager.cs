@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class BattleManager : MonoBehaviour
@@ -45,6 +46,7 @@ public class BattleManager : MonoBehaviour
     public bool IsLoot;
     public bool ConsumedEssence;
     public int EssenceGained;
+    public UnityEvent capacityUsedEvent = new UnityEvent();
 
     #region Loot
 
@@ -334,6 +336,7 @@ public class BattleManager : MonoBehaviour
             }
         }
         //EnemyScripts.First(c => c.combatID == idTarget).ApplicationBuffDebuff(TimerApplication.Attaque);
+        capacityUsedEvent.Invoke();
         idTarget = -1;
     }
 

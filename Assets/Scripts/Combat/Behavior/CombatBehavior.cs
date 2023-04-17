@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
 
@@ -60,7 +61,7 @@ public class CombatBehavior : MonoBehaviour
         }
     }
 
-    public List<BuffDebuff> DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte Timer)
+    public ObservableList<BuffDebuff> DecompteDebuff(ObservableList<BuffDebuff> BuffDebuff, Decompte Timer)
     {
         foreach (var item in BuffDebuff)
         {
@@ -87,13 +88,46 @@ public class CombatBehavior : MonoBehaviour
             }
         }
 
-        BuffDebuff.RemoveAll(c => c.Temps < 0);
+        var test = BuffDebuff.Where(c => c.Temps < 0).ToList();
+        BuffDebuff.Remove(test.ToArray());
         return BuffDebuff;
     }
 
-    public void UpdateBuffDebuffGameObject(List<BuffDebuff> BuffDebuff)
+    public void UpdateBuffDebuffGameObject(ObservableList<BuffDebuff> BuffDebuff)
     {
         DecompteDebuff(BuffDebuff, Decompte.none);
     }
+
+
+    //TODO Remove when souvenir and emotions working ( should be done directly in Joie.cs)
+
+    #region eventAddBuff
+
+    public static int nbBuff = 0;
+    public void ListBuffDebuff_ItemAdded(ObservableList<BuffDebuff> sender, ListChangedEventArgs<BuffDebuff> e)
+    {
+        nbBuff++;
+        Debug.Log("Buff Debuff Added " + e.index + " - " + e.item.Nom + " - " + nbBuff);
+        Debug.Log(sender.Contains(e.item) + " est ce qu'il y est déja?");
+        if (nbBuff == 2) //checker si les 5 ne sont pas déja appliqué, et si ils ne l'ont pas été de tout le combat?
+        {
+            ApplyBonusJoie();
+            nbBuff = 0;
+        }
+
+    }
+
+    public void ListBuffDebuff_ItemRemoved(ObservableList<BuffDebuff> sender, ListChangedEventArgs<BuffDebuff> e)
+    {
+        Debug.Log("Buff Debuff Removed " + e.index + " - " + e.item.Nom);
+    }
+
+    public void ApplyBonusJoie()
+    {
+        Debug.Log("5 bonus diff reçue");
+        //appliquer un debuff a l'ennemie (sur la prochaine action) de degat de xx par cout d'activation
+    }
+
+    #endregion
 
 }

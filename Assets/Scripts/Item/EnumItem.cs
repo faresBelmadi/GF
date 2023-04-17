@@ -13,7 +13,7 @@ public enum EmotionTypeEnum
     Serenite,
     Espoir,
     Rancune,
-    frustration,
+    Frustration,
     Honte,
     Nostalgie
 }
