@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
     #region UI Reference
+
     public GameObject UIDialogue;
     public GameObject UIJoueur;
     public TextMeshProUGUI MainText;
@@ -15,17 +17,25 @@ public class DialogueManager : MonoBehaviour
     public List<GameObject> RéponseGO;
     public GameObject EndDialogue;
     public BattleManager ManagerBattle;
+
     public AleaManager ManagerAlea;
     //public Button skipButton; 
+
     #endregion UI Reference
+
     #region SO
+
     private Encounter _CurrentEncounterBattle;
     private EncounterAlea _CurrentEncounterAlea;
     private DialogueSO _CurrentDialogue;
+
     #endregion SO
+
     #region Dialogue Property
+
     private int DialogueIndex = 0;
     private int NextDialogueIndex = 0;
+
     #endregion Dialogue Property
 
     public void SetupDialogue(Encounter encounterToSet)
@@ -72,13 +82,14 @@ public class DialogueManager : MonoBehaviour
 
     private string TextePrincipal()
     {
-        if(ManagerBattle == null)
+        if (ManagerBattle == null)
         {
             return _CurrentEncounterAlea.NamePnj + ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
         }
         else
         {
-            return _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom + ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
+            return _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom +
+                   ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
         }
     }
 
@@ -89,6 +100,7 @@ public class DialogueManager : MonoBehaviour
             item.SetActive(false);
             EndDialogue.SetActive(false);
         }
+
         MainTextGO.SetActive(false);
         foreach (var item in Réponse)
         {
@@ -102,6 +114,7 @@ public class DialogueManager : MonoBehaviour
         {
             ApplyConsequence(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences);
         }
+
         NextDialogueIndex = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].IDNextQuestion;
         resetRéponse();
         GoNext();
@@ -109,7 +122,7 @@ public class DialogueManager : MonoBehaviour
 
     void ApplyConsequence(List<ConséquenceSO> consequence)
     {
-        foreach(var Consequence in consequence)
+        foreach (var Consequence in consequence)
         {
             if (ManagerBattle == null)
             {
@@ -117,6 +130,7 @@ public class DialogueManager : MonoBehaviour
                 {
                     ManagerAlea.Stat.ListBuffDebuff.Add(BuffDebuff);
                 }
+
                 foreach (var effet in Consequence.Effects)
                 {
                     ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat));
@@ -124,26 +138,99 @@ public class DialogueManager : MonoBehaviour
             }
             else
             {
-                //TODO : A Terminer une fois les effet et buffdebuff finalisé
                 foreach (var BuffDebuff in Consequence.Buffs)
                 {
-                    switch (Consequence.target)
-                    {
-                        case Cible.joueur:
-                            ManagerBattle.player.Stat.ListBuffDebuff.Add(Instantiate(BuffDebuff));
-                            break;
-                    }
+                    ChoosePathOfExecution(Consequence, BuffDebuff);
                 }
+
                 foreach (var effet in Consequence.Effects)
                 {
-                    switch (Consequence.target)
-                    {
-                        case Cible.joueur:
-                            ManagerBattle.player.Stat.ModifStateAll(effet.ResultEffet(ManagerBattle.player.Stat));
-                            break;
-                    }
+                    ChoosePathOfExecution(Consequence, effet);
+
                 }
             }
+        }
+    }
+
+    private void ChoosePathOfExecution(ConséquenceSO Consequence, ScriptableObject scriptableObject)
+    {
+        switch (Consequence.target)
+        {
+            case Cible.joueur:
+                if (scriptableObject as BuffDebuff)
+                {
+                    ApplyBuffDebuffOnPlayer((BuffDebuff) scriptableObject);
+                }
+                else if (scriptableObject as Effet)
+                {
+                    ApplyEffectOnPlayer((Effet) scriptableObject);
+                }
+
+                break;
+            case Cible.ennemi:
+                if (scriptableObject as BuffDebuff)
+                {
+                    ApplyBuffDebuffOnEnemies((BuffDebuff) scriptableObject);
+                }
+                else if (scriptableObject as Effet)
+                {
+                    ApplyEffectOnEnemies((Effet) scriptableObject);
+                }
+                break;
+            case Cible.All:
+                if (scriptableObject as BuffDebuff)
+                {
+                    ApplyBuffDebuffOnPlayer((BuffDebuff) scriptableObject);
+                    ApplyBuffDebuffOnEnemies((BuffDebuff) scriptableObject);
+                }
+                else if (scriptableObject as Effet)
+                {
+                    ApplyEffectOnPlayer((Effet) scriptableObject);
+                    ApplyEffectOnEnemies((Effet) scriptableObject);
+                }
+                break;
+            case Cible.allEnnemi:
+                break;
+            case Cible.Ally:
+                break;
+            case Cible.AllExceptSelf:
+                break;
+            case Cible.MostDamage:
+                break;
+            case Cible.LastAttacker:
+                break;
+            case Cible.AllAllyExceptSelf:
+                break;
+            case Cible.Self:
+                break;
+        }
+    }
+
+    private void ApplyEffectOnPlayer(Effet scriptableObject)
+    {
+        ManagerBattle.player.Stat.ModifStateAll(scriptableObject.ResultEffet(ManagerBattle.player.Stat));
+    }
+
+    private void ApplyEffectOnEnemies(Effet scriptableObject)
+    {
+        foreach (var enemyScript in ManagerBattle.EnemyScripts)
+        {
+            enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat));
+        }
+    }
+
+    private void ApplyBuffDebuffOnPlayer(BuffDebuff scriptableObject)
+    {
+        ManagerBattle.player.Stat.ListBuffDebuff.Add(Instantiate(scriptableObject));
+        ManagerBattle.player.AddBuffDebuff(scriptableObject);
+    }
+
+    private void ApplyBuffDebuffOnEnemies(BuffDebuff scriptableObject)
+    {
+        foreach (var enemyScript in ManagerBattle.EnemyScripts)
+        {
+            enemyScript.Stat.ListBuffDebuff.Add(Instantiate(scriptableObject));
+            enemyScript.AddBuffDebuff(scriptableObject);
         }
     }
 
