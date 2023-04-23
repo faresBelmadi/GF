@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 [System.Serializable]
 public class BattleManager : MonoBehaviour
 {
-    [Header("Prefab Combat")] public JoueurBehavior player;
+    [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
     public List<EnnemyBehavior> DeadEnemyScripts;

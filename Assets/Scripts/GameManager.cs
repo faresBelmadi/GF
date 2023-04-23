@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour {
                 };
                 for(int i = 0; i < AllSouvenir.Count; i++)
                 {
-                    CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
+                    //CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
                 }
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
@@ -219,9 +219,19 @@ public class GameManager : MonoBehaviour {
         pmm.CurrentRoom = set;
     }
 
-    public void LoadCombat()
+    public void LoadCombatNormal()
     {
-        BattleMan.LoadEnemy(Instantiate(AllEncounter[UnityEngine.Random.Range(0,AllEncounter.Count)]));
+        BattleMan.LoadEnemy(Instantiate(AllEncounter[0]));
+    }
+
+    public void LoadCombatElite()
+    {
+        BattleMan.LoadEnemy(Instantiate(AllEncounter[1]));
+    }
+
+    public void LoadCombatBoss()
+    {
+        BattleMan.LoadEnemy(Instantiate(AllEncounter[2]));
     }
 
     public void LoadEvent()

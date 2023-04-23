@@ -7,7 +7,9 @@ using System.Linq;
 public enum TypeRoom
 {
     NotSet,
-    Combat,
+    CombatNormal,
+    CombatElite,
+    CombatBoss,
     Event,
     Heal,
     Spawn,

@@ -58,23 +58,11 @@ public class Generator : MonoBehaviour
         {
             int i = 0;
             bool CanSpawn = true;
-            Vector2 pos;
-            do
-            {
-               
-                pos = item.Center + (UnityEngine.Random.insideUnitCircle*3);
-                
-                foreach(var item2 in Spawned)
-                {
-                    if(Vector2.Distance(pos,item2.Key) < 3)
-                        CanSpawn = false;
-                }
-                i++;
-            } while (!CanSpawn && i < 1000000);
-            Vector3 position = new Vector3(pos.x,pos.y,75);
-            var t = Instantiate(Spawn,position,Quaternion.identity,Parent);
+            Vector2 pos = item.Center;
+            Vector3 position = new Vector3(pos.x, pos.y, 75);
+            var t = Instantiate(Spawn, position, Quaternion.identity, Parent);
             t.name = "room";
-            Spawned.Add(pos,t);
+            Spawned.Add(pos, t);
         }
     }
 
@@ -239,24 +227,17 @@ public class Generator : MonoBehaviour
     private void InitManager()
     {
         List<Room> ToInit = new List<Room>();
-        int maxConnect = 0;
-        Room MaxConnectRoom;
-        MaxConnectRoom = Spawned.First().Value.GetComponent<Room>();
 
         foreach (var item in Spawned)
         {
             var room = item.Value.GetComponent<Room>();
             ToInit.Add(room);
-            if(room.ConnectedRooms.Count > maxConnect)
-            {
-                maxConnect = room.ConnectedRooms.Count;
-                MaxConnectRoom = room;
-            }
         }
-        
-        ToInit.FirstOrDefault(c => c == MaxConnectRoom).isStart = true;
+
+        ToInit[0].isStart = true;
         roomManager.Init(ToInit);
     }
+
     void ClearGen()
     {
         foreach (var item in Spawned)

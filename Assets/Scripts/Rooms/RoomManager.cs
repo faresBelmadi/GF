@@ -8,7 +8,9 @@ public class RoomManager : MonoBehaviour
 {
     public List<Room> Rooms;
     
-    public Sprite SalleCombat;
+    public Sprite SalleCombatBoss;
+    public Sprite SalleCombatElite;
+    public Sprite SalleCombatNormal;
     public Sprite SalleHeal;
     public Sprite SalleAlea;
     public Sprite SalleStart;
@@ -27,64 +29,18 @@ public class RoomManager : MonoBehaviour
         Room start = Rooms.Find(c => c.isStart == true);
 
         start.Type = TypeRoom.Spawn;
-        var maxCo = FindMaxConnection();
+        Rooms[1].ToSet = SalleCombatNormal;
+        Rooms[1].gameObject.transform.localScale = new Vector3(5,5);
+        Rooms[1].Type = TypeRoom.CombatNormal;
 
-        foreach (var item in start.ConnectedRooms)
-        {
-            item.ToSet = SalleCombat;
-            item.Type = TypeRoom.Combat;
-            foreach (var item2 in item.ConnectedRooms)
-            {
-                if(item2.Type == TypeRoom.NotSet)
-                {
-                    item2.ToSet = SalleCombat;
-                    item2.Type = TypeRoom.Combat;
-                }
-            }
-        }
-        bool healSet = false;
-        foreach (var item in Rooms)
-        {
-            if(item.ConnectedRooms.Count >= maxCo && item != start && !healSet && item.ConnectedRooms.Where(c => c.Type == TypeRoom.Heal).Count() == 0)
-            {
-                item.ToSet = SalleHeal;
-                item.Type = TypeRoom.Heal;
-                healSet = true;
-            }
-            else if(item.ConnectedRooms.Count >= maxCo && item != start && item.ConnectedRooms.Where(c => c.Type == TypeRoom.Event).Count() == 0 && item.Type != TypeRoom.Heal)
-            {
-                item.ToSet = SalleAlea;
-                item.Type = TypeRoom.Event;
-            }
-            else if(item.Type == TypeRoom.NotSet)
-            {
-                healSet = false;
-                bool Combat = true;
-                for (int i = 0; i < item.ConnectedRooms.Count; i++)
-                {
-                    if(item.ConnectedRooms[i].Type != TypeRoom.Combat)
-                    {
-                        Combat = true;
-                    }
-                    else
-                    {
-                        Combat = false;
-                        i = item.ConnectedRooms.Count;
-                    }
-                }
-                if(Combat)
-                {
-                    item.ToSet = SalleCombat;
-                    item.Type = TypeRoom.Combat;
+        Rooms[2].ToSet = SalleCombatElite;
+        Rooms[2].gameObject.transform.localScale = new Vector3(5, 5);
+        Rooms[2].Type = TypeRoom.CombatElite;
 
-                }
-                else
-                {
-                    item.ToSet = SalleCombat;
-                    item.Type = TypeRoom.Combat;
-                }
-            }
-        }
+        Rooms[3].ToSet = SalleCombatBoss;
+        Rooms[3].gameObject.transform.localScale = new Vector3(5, 5);
+        Rooms[3].Type = TypeRoom.CombatBoss;
+        
         GameManager.instance.SetRoom(start);
     }
     

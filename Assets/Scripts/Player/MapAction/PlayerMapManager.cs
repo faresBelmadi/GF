@@ -60,23 +60,31 @@ public class PlayerMapManager : MonoBehaviour
     {
         switch (_currentRoom.Type)
         {
-            case TypeRoom.Spawn:
-                break;
-            case TypeRoom.NotSet:
-                break;
-            case TypeRoom.Combat:
-                StartCoroutine("LoadSceneAsync","BattleScene");
+            case TypeRoom.CombatNormal:
+                StartCoroutine("LoadSceneAsync", "BattleScene Normal");
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
-            case TypeRoom.Heal:
-                StartCoroutine("LoadSceneAsync", "Autel");
-                break;
-            case TypeRoom.Event:
-                StartCoroutine("LoadSceneAsync", "AleaScene");
+            case TypeRoom.CombatElite:
+                StartCoroutine("LoadSceneAsync", "BattleScene Elite");
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
-            case TypeRoom.Visited:
+            case TypeRoom.CombatBoss:
+                StartCoroutine("LoadSceneAsync", "BattleScene Boss");
+                _currentRoom.Type = TypeRoom.Visited;
                 break;
+            //case TypeRoom.Heal:
+            //    StartCoroutine("LoadSceneAsync", "Autel");
+            //    break;
+            //case TypeRoom.Event:
+            //    StartCoroutine("LoadSceneAsync", "AleaScene");
+            //    _currentRoom.Type = TypeRoom.Visited;
+            //    break;
+            //case TypeRoom.Visited:
+            //    break;
+            //case TypeRoom.Spawn:
+            //    break;
+            //case TypeRoom.NotSet:
+            //    break;
             default:
             break;
         }
@@ -84,22 +92,29 @@ public class PlayerMapManager : MonoBehaviour
 
     IEnumerator LoadSceneAsync(string name)
     {
-        yield return SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
-        s = SceneManager.GetSceneByName(name);
+        var toLoad = name.Split(' ');
+        yield return SceneManager.LoadSceneAsync(toLoad[0], LoadSceneMode.Additive);
+        s = SceneManager.GetSceneByName(toLoad[0]);
 
         rootScene = s.GetRootGameObjects();
 
         switch(name)
         {
-            case "BattleScene":
-                StartBattle();
+            case "BattleScene Normal":
+                StartBattle("normal");
                 break;
-            case "AleaScene":
-                StartAlea();
+            case "BattleScene Elite":
+                StartBattle("elite");
                 break;
-            case "Autel":
-                StartAutel();
+            case "BattleScene Boss":
+                StartBattle("boss");
                 break;
+            //case "AleaScene":
+            //    StartAlea();
+            //    break;
+            //case "Autel":
+            //    StartAutel();
+            //    break;
             //case "MenuStat":
             //    StartMenuStat();
             //    break;
@@ -111,11 +126,20 @@ public class PlayerMapManager : MonoBehaviour
         
     }
 
-    void StartBattle()
+    void StartBattle(string enemieType)
     {
         CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
         GameManager.instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
-        GameManager.instance.LoadCombat();
+        if (enemieType.Equals("normal")) 
+            GameManager.instance.LoadCombatNormal();
+        else if (enemieType.Equals("elite"))
+        {
+            GameManager.instance.LoadCombatElite();
+        }
+        else if (enemieType.Equals("boss"))
+        {
+            GameManager.instance.LoadCombatBoss();
+        }
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
     }

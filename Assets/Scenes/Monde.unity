@@ -299,7 +299,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rooms: []
-  SalleCombat: {fileID: 21300000, guid: 5a384bc285457e54fa86bdd619b92fd6, type: 3}
+  SalleCombatBoss: {fileID: 21300000, guid: e912cefaef44fd24e9c1b1d8f8cf8094, type: 3}
+  SalleCombatElite: {fileID: 21300000, guid: 7d767c293b683f840902da72d34028a1, type: 3}
+  SalleCombatNormal: {fileID: 21300000, guid: 5a384bc285457e54fa86bdd619b92fd6, type: 3}
   SalleHeal: {fileID: 21300000, guid: 9b82884ca305d9847949b0a9b0dd0493, type: 3}
   SalleAlea: {fileID: 21300000, guid: 3f72537a3eaf8a942ae5bdccb1b57126, type: 3}
   SalleStart: {fileID: 0}
@@ -891,7 +893,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 499757216}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -195, y: -195, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 7.7999997, y: 7.7999997, z: 7.7999997}
   m_Children:
   - {fileID: 1036427962}
@@ -915,7 +917,7 @@ MonoBehaviour:
   W_RATIO: 0.45
   H_RATIO: 0.45
   BSPTree: []
-  MinMaxRooms: {x: 15, y: 25}
+  MinMaxRooms: {x: 4, y: 25}
 --- !u!114 &499757219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1365,15 +1367,17 @@ MonoBehaviour:
   AllClasses:
   - {fileID: 11400000, guid: dc0d2acc44597d840b432963180f4340, type: 2}
   AllEncounter:
+  - {fileID: 11400000, guid: b1de8a5a3595c8141bc84757e6936ed7, type: 2}
+  - {fileID: 11400000, guid: ed2d97ed41f962c4fbc71996ee8a1a81, type: 2}
   - {fileID: 11400000, guid: ed2d97ed41f962c4fbc71996ee8a1a81, type: 2}
   AllEncounterAlea:
-  - {fileID: 11400000, guid: df13c67171968a04f8a4259a116547ed, type: 2}
+  - {fileID: 0}
   AllSouvenir:
-  - {fileID: 11400000, guid: d216e9499a2bc3c4a8316fcb4592a0ab, type: 2}
-  - {fileID: 11400000, guid: 81cbe3db01a5ab94b85f9fe6da35543a, type: 2}
-  - {fileID: 11400000, guid: ceb119cd7d57eaa4f8086c6b2863cc0f, type: 2}
-  - {fileID: 11400000, guid: 14a79e910a14818449868e17954d2e40, type: 2}
-  - {fileID: 11400000, guid: eae5b7ad6add22e42aee23d68bb66b8b, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   CopyAllSouvenir: []
   classSO: {fileID: 0}
   playerStat: {fileID: 0}
