@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
@@ -97,37 +98,4 @@ public class CombatBehavior : MonoBehaviour
     {
         DecompteDebuff(BuffDebuff, Decompte.none);
     }
-
-
-    //TODO Remove when souvenir and emotions working ( should be done directly in Joie.cs)
-
-    #region eventAddBuff
-
-    public static int nbBuff = 0;
-    public void ListBuffDebuff_ItemAdded(ObservableList<BuffDebuff> sender, ListChangedEventArgs<BuffDebuff> e)
-    {
-        nbBuff++;
-        Debug.Log("Buff Debuff Added " + e.index + " - " + e.item.Nom + " - " + nbBuff);
-        Debug.Log(sender.Contains(e.item) + " est ce qu'il y est déja?");
-        if (nbBuff == 2) //checker si les 5 ne sont pas déja appliqué, et si ils ne l'ont pas été de tout le combat?
-        {
-            ApplyBonusJoie();
-            nbBuff = 0;
-        }
-
-    }
-
-    public void ListBuffDebuff_ItemRemoved(ObservableList<BuffDebuff> sender, ListChangedEventArgs<BuffDebuff> e)
-    {
-        Debug.Log("Buff Debuff Removed " + e.index + " - " + e.item.Nom);
-    }
-
-    public void ApplyBonusJoie()
-    {
-        Debug.Log("5 bonus diff reçue");
-        //appliquer un debuff a l'ennemie (sur la prochaine action) de degat de xx par cout d'activation
-    }
-
-    #endregion
-
 }

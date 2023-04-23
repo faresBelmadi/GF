@@ -35,7 +35,7 @@ public class Souvenir : ScriptableObject
         {
             if (random <= ProcEmotion[i].Pourcentage)
             {
-                //Emotion = GameManager.instance.EmotionMan.CreateEmotion(ProcEmotion[i].EmotionTypeEnum);
+                Emotion = GameManager.instance.EmotionMan.CreateEmotion(ProcEmotion[i].EmotionTypeEnum);
                 //Emotion.EmotionTypeEnum = ProcEmotion[i].EmotionTypeEnum;
 
                 return;

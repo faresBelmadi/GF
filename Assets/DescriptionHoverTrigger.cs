@@ -9,13 +9,13 @@ public class DescriptionHoverTrigger : MonoBehaviour, IPointerEnterHandler, IPoi
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("enter");
+        //Debug.Log("enter");
         ToShow.SetActive(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("exit");
+        //Debug.Log("exit");
         ToShow.SetActive(false);
     }
 

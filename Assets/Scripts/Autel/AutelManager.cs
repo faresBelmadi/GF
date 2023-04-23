@@ -231,6 +231,14 @@ public class AutelManager : MonoBehaviour
                 Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
                 //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 Loot = true;
+
+                //TODO Test Purpose, maybe need to be deleted in futur
+                foreach (var souvenir in Stat.ListSouvenir)
+                {
+                    souvenir.Equiped = true;
+                }
+                //
+
                 EndAutel();
                 return;
             }

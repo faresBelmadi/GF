@@ -4,6 +4,7 @@ using System.Linq;
 using System.Numerics;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
@@ -41,14 +42,17 @@ public class JoueurBehavior : CombatBehavior
     private BattleManager _refBattleMan;
     public bool IsTurn;
 
+    public UnityEvent buffAdded = new UnityEvent();
+
     #region Divers start & fin
+
+    public void Start()
+    {
+        buffAdded.AddListener(GameManager.instance.EmotionMan.BuffDebuffAddedEventTriggered);
+    }
 
     public void StartUp()
     {
-        //TODO Remove when souvenir and emotions working ( should be done directly in Joie.cs)
-        Stat.ListBuffDebuff.ItemAdded += ListBuffDebuff_ItemAdded;
-        Stat.ListBuffDebuff.ItemRemoved += ListBuffDebuff_ItemRemoved;
-
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.ClairvoyanceOriginal = Stat.Clairvoyance;
@@ -140,6 +144,16 @@ public class JoueurBehavior : CombatBehavior
 
     public void StartTurn()
     {
+        if (Stat.ListSouvenir.Any(x=>x.Equiped && x.Emotion.EmotionTypeEnum == EmotionTypeEnum.Frustration))
+        {
+            if (Stat.Conscience < 2)
+            {
+                foreach (var souvenir in Stat.ListSouvenir.Where(x=>x.Equiped && x.Emotion.EmotionTypeEnum == EmotionTypeEnum.Frustration))
+                {
+                    GameManager.instance.EmotionMan.GainBonusDegat();
+                }
+            }
+        }
         IsTurn = true;
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
         _refBattleMan.PassifManager.ResolvePassifs();
@@ -151,6 +165,31 @@ public class JoueurBehavior : CombatBehavior
 
     public void EndTurn()
     {
+        if (Stat.ListSouvenir.Any(x => x.Equiped && x.Emotion.EmotionTypeEnum == EmotionTypeEnum.Frustration))
+        {
+            if (Stat.Volonter >= 1)
+            {
+                foreach (var souvenir in Stat.ListSouvenir.Where(x => x.Equiped && x.Emotion.EmotionTypeEnum == EmotionTypeEnum.Frustration))
+                {
+                    GameManager.instance.EmotionMan.GainTensionPlayer();
+                }
+            }
+        }
+
+        if (Stat.ListSouvenir.Any(x => x.Equiped && x.Emotion.EmotionTypeEnum == EmotionTypeEnum.Serenite))
+        {
+            if (!GameManager.instance.EmotionMan.Attacked)
+            {
+                foreach (var souvenir in Stat.ListSouvenir.Where(x => x.Equiped && x.Emotion.EmotionTypeEnum == EmotionTypeEnum.Serenite))
+                {
+                    GameManager.instance.EmotionMan.ApplyBonusFA();
+                    if (Stat.Radiance / Stat.RadianceMax * 100 >= 25)
+                    {
+                        GameManager.instance.EmotionMan.ApplyTension();
+                    }
+                }
+            }
+        }
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
         _refBattleMan.PassifManager.ResolvePassifs();
         IsTurn = false;
@@ -314,6 +353,10 @@ public class JoueurBehavior : CombatBehavior
             if (toAdd.IsDebuff)
             {
                 ReceiveTension(Source.Buff);
+            }
+            else
+            {
+                buffAdded.Invoke();
             }
             Stat.ListBuffDebuff.Add(Instantiate(toAdd));
             base.AddBuffDebuff(toAdd);

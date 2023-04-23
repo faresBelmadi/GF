@@ -125,7 +125,7 @@ public class PlayerMapManager : MonoBehaviour
         MenuCamera.SetActive(true);
         if (IsLoot == true)
         {
-            LoadMenuStat();
+            //LoadMenuStat();
         }
         yield return SceneManager.UnloadSceneAsync(s);
         
@@ -164,15 +164,15 @@ public class PlayerMapManager : MonoBehaviour
         MenuCamera.SetActive(true);
         if (Loot == true)
         {
-            LoadMenuStat();
+            //LoadMenuStat();
         }
         yield return SceneManager.UnloadSceneAsync(s);
     }
 
-    public void LoadMenuStat()
-    {
-        StartCoroutine("LoadSceneAsync", "MenuStat");
-    }
+    //public void LoadMenuStat()
+    //{
+    //    StartCoroutine("LoadSceneAsync", "MenuStat");
+    //}
 
     void StartMenuStat()
     {

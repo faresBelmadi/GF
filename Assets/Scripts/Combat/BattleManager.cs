@@ -50,6 +50,12 @@ public class BattleManager : MonoBehaviour
 
     #region Loot
 
+
+    public void Start()
+    {
+        capacityUsedEvent.AddListener(GameManager.instance.EmotionMan.CapacityUsed);
+    }
+
     public void Loot()
     {
         int random = UnityEngine.Random.Range(0, 101);
@@ -231,7 +237,13 @@ public class BattleManager : MonoBehaviour
     {
         PassifManager.CurrentEvent = TimerPassif.FinCombat;
         PassifManager.ResolvePassifs();
-        
+
+        if (player.Stat.ListSouvenir.Any(x => x.Equiped && x.Emotion.EmotionTypeEnum == EmotionTypeEnum.Espoir))
+        {
+            if (player.Stat.Radiance / player.Stat.RadianceMax * 100 >= 50)
+                GameManager.instance.EmotionMan.AmplifyStats();
+        }
+
         Loot();
         player.ResetStat();
         player.Stat.Volonter = player.Stat.VolonterMax;

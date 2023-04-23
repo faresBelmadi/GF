@@ -243,7 +243,7 @@ public class GameManager : MonoBehaviour {
 
     public void StartStatJoueur()
     {
-        pmm.LoadMenuStat();
+        //pmm.LoadMenuStat();
     }
 
     //public void LoadMenuStat()
