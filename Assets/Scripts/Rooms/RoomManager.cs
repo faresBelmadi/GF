@@ -28,7 +28,10 @@ public class RoomManager : MonoBehaviour
     {
         Room start = Rooms.Find(c => c.isStart == true);
 
+        start.ToSet = SalleStart;
+        start.gameObject.transform.localScale = new Vector3(5, 5);
         start.Type = TypeRoom.Spawn;
+
         Rooms[1].ToSet = SalleCombatNormal;
         Rooms[1].gameObject.transform.localScale = new Vector3(5,5);
         Rooms[1].Type = TypeRoom.CombatNormal;

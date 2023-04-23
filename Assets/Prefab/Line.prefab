@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7256620218218689696}
   - component: {fileID: -6916432227119156952}
   - component: {fileID: 5394928865319142712}
+  - component: {fileID: 8397783465414553971}
   m_Layer: 0
   m_Name: Line
   m_TagString: Untagged
@@ -44,8 +45,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b022f359085eae94da1bc00e8fc8c773, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnSelected: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  Selected: {fileID: 2100000, guid: f310337a5d28a9a4d9010fe07e636d7f, type: 2}
+  UnSelected: {fileID: 2100000, guid: e10347b09b9f68c4d972a3e297625c81, type: 2}
+  Selected: {fileID: 2100000, guid: 120a678074ce94d408049f3876b6a778, type: 2}
   line: {fileID: 5394928865319142712}
 --- !u!120 &5394928865319142712
 LineRenderer:
@@ -66,7 +67,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e10347b09b9f68c4d972a3e297625c81, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -85,7 +86,7 @@ LineRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -557888767
-  m_SortingLayer: -1
+  m_SortingLayer: -4
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
@@ -154,3 +155,16 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &8397783465414553971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5144414776291373012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65f1c675900d4914b823e06c9599bd24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scaleInUpdate: 0
