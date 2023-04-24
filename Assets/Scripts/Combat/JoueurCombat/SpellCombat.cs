@@ -13,7 +13,7 @@ public class SpellCombat : MonoBehaviour
 
     public Button button;
     public TextMeshProUGUI texte;
-    public GameObject Description;
+    public GameObject DescriptionObject;
     public TextMeshProUGUI TexteDescription;
 
     public void StartUp()

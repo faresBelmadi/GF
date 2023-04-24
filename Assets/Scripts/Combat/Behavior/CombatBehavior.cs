@@ -30,7 +30,7 @@ public class CombatBehavior : MonoBehaviour
             {
                 t = Instantiate(DebuffPrefab, DebuffContainer.transform);
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.Nom;
-                t.GetComponent<DescriptionHoverTrigger>().Description.text = toAdd.Description;
+                t.GetComponent<DescriptionHoverTriggerBuffDebuff>().Description.text = toAdd.Description;
                 ListBuffDebuffGO.Add(t);
             }
             else
@@ -49,7 +49,7 @@ public class CombatBehavior : MonoBehaviour
             {
                 t = Instantiate(BuffPrefab, BuffContainer.transform);
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.Nom;
-                t.GetComponent<DescriptionHoverTrigger>().Description.text = toAdd.Description;
+                t.GetComponent<DescriptionHoverTriggerBuffDebuff>().Description.text = toAdd.Description;
                 ListBuffDebuffGO.Add(t);
             }
             else
