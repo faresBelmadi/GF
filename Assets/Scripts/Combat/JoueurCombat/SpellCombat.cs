@@ -23,15 +23,15 @@ public class SpellCombat : MonoBehaviour
         button.GetComponent<Image>().sprite = Action.Sprite;
         button.onClick.AddListener(ClickAction);
         //texte.text = Action.Nom;
-        TexteDescription.text = Action.Nom + "\nCost : ";
+        TexteDescription.text = Action.Nom + "\nCout : ";
         foreach (var item in Action.Costs)
         {
             if (item.typeCost == TypeCostSpell.volonte)
-                TexteDescription.text += item.Value + "V ";
+                TexteDescription.text += item.Value + " V ";
             if (item.typeCost == TypeCostSpell.radiance)
-                TexteDescription.text += item.Value + "R ";
+                TexteDescription.text += item.Value + " R ";
             if (item.typeCost == TypeCostSpell.conscience)
-                TexteDescription.text += item.Value + "C ";
+                TexteDescription.text += item.Value + " C ";
         }
         TexteDescription.text += "\n";
 
