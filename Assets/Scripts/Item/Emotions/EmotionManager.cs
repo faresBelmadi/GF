@@ -100,14 +100,59 @@ public class EmotionManager
 
     #region Honte
 
+    private int amountRadianceGain;
+    private int amountConvictionGain;
+
+    public void AttackedAgressiveEnnemie()
+    {
+        //vous gagnez un 1 point de
+        //Conviction et XX% de Radiance max. par attaque effectuée
+        amountRadianceGain++;
+        amountConvictionGain++;
+        //return new Stat avec les valeurs
+    }
+
+    public void AttackedUnagressiveEnnemie()
+    {
+        //return new Stat avec les amount mis en -
+        amountRadianceGain = 0;
+        amountConvictionGain = 0;
+    }
     //Lors de chaque affrontement, tant que vous attaquez uniquement des adversaires qui ont des
     //intentions agressives(attaque directe et application de débuff), vous gagnez un 1 point de
     //Conviction et XX% de Radiance max. par attaque effectuée (si la chaine est rompue, les bonus
-    //sont perdus). //tant qu'on sais que l'ennemie vas attaquer, alors faire
+    //sont perdus).
 
     #endregion
 
     #region Nostalgie
+
+    private int amountVolUsed;
+    public void NostalgieVolonteHasBeenUsed()
+    {
+        amountVolUsed++;
+        Debug.Log(amountVolUsed);
+    }
+
+    public void NostalgieCheckEndPhase()
+    {
+        Debug.Log(amountVolUsed);
+        int nbSouv = GameManager.instance.playerStat.ListSouvenir.Count();
+        if (nbSouv <= amountVolUsed)
+        {
+            Debug.Log("Nostalgie Suite");
+           // XX points de Vitesse et + YY points
+            //de Clairvoyance lors de la prochaine Phase
+        }
+        else
+        {
+            for (int i = 0; i < nbSouv; i++)
+            {
+                //récupérez ZZ% de votre Radiance manquante par souvenirs que vous possédez
+            }
+        }
+        amountVolUsed = 0;
+    }
 
     //A la fin d’une Phase, si vous avez dépensé un nombre de points de Volonté supérieur ou égal
     //au nombre de souvenirs que vous possédez, vous aurez +XX points de Vitesse et +YY points
@@ -118,6 +163,12 @@ public class EmotionManager
 
     #region Rancune
 
+    private void Rancune()
+    {
+        GameManager.instance.playerStat.ListBuffDebuff.Any(x => x.IsDebuff);
+        //appliquer -1 en cout en conscience aux spell ( signifie garder le cout originel dans le spell, et le réapliquer quand on perds le souvenir?)
+        // + checker si le cout conscience est tjrs à > 0 ++ degats de X% FA en falt dans le spell direct?
+    }
     //Quand au moins un désavantage (débuff) vous affecte, le nombre de points de Conscience
     //nécessaires pour utiliser une capacité est réduit de 1. Les compétences dont le coût en
     //Conscience n’est pas annulé par cet effet obtiennent un bonus aux dégâts infligés équivalent à
