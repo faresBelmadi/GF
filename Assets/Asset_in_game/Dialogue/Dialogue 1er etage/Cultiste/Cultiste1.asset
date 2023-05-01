@@ -31,15 +31,17 @@ MonoBehaviour:
     - IsEmotion: 0
       whichEmotion: 0
       SeuilClairvoyance: 0
-      IDNextQuestion: 2
+      IDNextQuestion: 4
       "TexteR\xE9ponse": "Comment ca \"les autres \" ? Pour moi, vous \xEAtes tous
         \"les autres\". Vous m'inspirez aucune confiance"
       "cons\xE9quences": []
     - IsEmotion: 0
       whichEmotion: 0
       SeuilClairvoyance: 5
-      IDNextQuestion: 3
-      "TexteR\xE9ponse": 
+      IDNextQuestion: 7
+      "TexteR\xE9ponse": "Si tu veux vraiment survivre, tu peux venir avec moi, mais
+        essaye de pas me gener. Par contre, hors de question que le d\xE9mon derri\xE8re
+        toi vienne aussi."
       "cons\xE9quences": []
   - ID: 1
     Question:
@@ -63,65 +65,88 @@ MonoBehaviour:
         Tu ne peux pas me suivre, m\xEAme avec la meilleure volont\xE9 du monde.
         Retourne aupr\xE8s de ta soeur."
       "cons\xE9quences": []
-    - IsEmotion: 0
-      whichEmotion: 0
-      SeuilClairvoyance: 5
-      IDNextQuestion: 0
-      "TexteR\xE9ponse": 
-      "cons\xE9quences": []
   - ID: 2
     Question:
       IDSpeaker: 1
       type: 1
       Text: "Je vais le dire au ma\xEEtre ! Et il va pas \xEAtre content, \xE7a tu
         peux en \xEAtre certain !"
-    ReponsePossible:
-    - IsEmotion: 0
-      whichEmotion: 0
-      SeuilClairvoyance: 0
-      IDNextQuestion: 2
-      "TexteR\xE9ponse": En regardant ton "maitre", je ne vois ni un homme, ni un
-        protecteur. Alors bonne chance gamine. Maintenant hors de mon chemin
-      "cons\xE9quences": []
-    - IsEmotion: 0
-      whichEmotion: 0
-      SeuilClairvoyance: 0
-      IDNextQuestion: 3
-      "TexteR\xE9ponse": "Je ne suis pas l\xE0 pour survivre petite, mais pour avancer.
-        Tu ne peux pas me suivre, m\xEAme avec la meilleure volont\xE9 du monde.
-        Retourne aupr\xE8s de ta soeur."
-      "cons\xE9quences": []
-    - IsEmotion: 0
-      whichEmotion: 0
-      SeuilClairvoyance: 5
-      IDNextQuestion: 0
-      "TexteR\xE9ponse": 
-      "cons\xE9quences": []
+    ReponsePossible: []
   - ID: 3
     Question:
       IDSpeaker: 1
       type: 1
       Text: "Ma\xEEtre ma\xEEtre ! La grosse brute vient de me pousser ! Il doit
         \xEAtre puni !"
+    ReponsePossible: []
+  - ID: 4
+    Question:
+      IDSpeaker: 1
+      type: 0
+      Text: "Moi aussi le ma\xEEtre me faisait peur au d\xE9but tu sais, mais depuis
+        qu'il ma recueillie on forme une grande famille. Tu pourrais y trouver ta
+        place !"
     ReponsePossible:
     - IsEmotion: 0
       whichEmotion: 0
       SeuilClairvoyance: 0
-      IDNextQuestion: 2
-      "TexteR\xE9ponse": En regardant ton "maitre", je ne vois ni un homme, ni un
-        protecteur. Alors bonne chance gamine. Maintenant hors de mon chemin
+      IDNextQuestion: 5
+      "TexteR\xE9ponse": "J'ai d\xE9j\xE0 une famille o\xF9 se trouve ma place. Tout
+        ce que tu fais c'est m'emp\xEAcher d'aller la retrouver"
       "cons\xE9quences": []
     - IsEmotion: 0
       whichEmotion: 0
       SeuilClairvoyance: 0
-      IDNextQuestion: 3
-      "TexteR\xE9ponse": "Je ne suis pas l\xE0 pour survivre petite, mais pour avancer.
-        Tu ne peux pas me suivre, m\xEAme avec la meilleure volont\xE9 du monde.
-        Retourne aupr\xE8s de ta soeur."
+      IDNextQuestion: 6
+      "TexteR\xE9ponse": "S'il est ton ma\xEEtre, vous n'\xEAtes pas une famille,
+        juste des esclaves. Arr\xEAte de r\xEAver petite. "
+      "cons\xE9quences": []
+  - ID: 5
+    Question:
+      IDSpeaker: 1
+      type: 1
+      Text: Si tu refuses de nous rejoindre, c'est que tu es avec les autres. Tu
+        n'es plus le bienvenu.
+    ReponsePossible: []
+  - ID: 6
+    Question:
+      IDSpeaker: 1
+      type: 1
+      Text: "Tu dis n'importe quoi ! Le ma\xEEtre m'aime pour de vrai ! Je te laisserai
+        pas dire \xE7a de lui !"
+    ReponsePossible: []
+  - ID: 7
+    Question:
+      IDSpeaker: 1
+      type: 0
+      Text: "Mais c'est pas un d\xE9mon, c'est le ma\xEEtre ! Le ma\xEEtre est bon
+        avec nous. Le ma\xEEtre sait ce qu'l nous faut."
+    ReponsePossible:
+    - IsEmotion: 0
+      whichEmotion: 0
+      SeuilClairvoyance: 0
+      IDNextQuestion: 8
+      "TexteR\xE9ponse": "Je vois que tu poss\xE8des d\xE9j\xE0 son esprit, asura,
+        Mais ce sera le dernier enfant sur lequel tu auras appos\xE9 ta marque !"
       "cons\xE9quences": []
     - IsEmotion: 0
       whichEmotion: 0
-      SeuilClairvoyance: 5
-      IDNextQuestion: 0
-      "TexteR\xE9ponse": 
+      SeuilClairvoyance: 0
+      IDNextQuestion: 9
+      "TexteR\xE9ponse": "Ecarte toi gamine ! Toi qui souhaite tant survivre, je
+        te conseille de pas interf\xE9rer."
       "cons\xE9quences": []
+  - ID: 8
+    Question:
+      IDSpeaker: 1
+      type: 1
+      Text: "Non ! Arr\xEAtez \xE7a ! Ne vous en prenez pas au ma\xEEtre ! JE dois
+        prot\xE9ger le mai..."
+    ReponsePossible: []
+  - ID: 9
+    Question:
+      IDSpeaker: 2
+      type: 1
+      Text: "Comment oses-tu donner des ordres \xE0 mes larbins !? Tu aurais mieux
+        fait d'accepter ma proposition intiiale, \xE9tranger !"
+    ReponsePossible: []
