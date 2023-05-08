@@ -14,10 +14,10 @@ public class BSPGen : MonoBehaviour
     {
         List<Container> temp = new List<Container>()
         {
-            new Container(0, 20, 10, 10),
-            new Container(10, 20, 10, 10),
-            new Container(20, 20, 10, 10),
-            new Container(30, 20, 10, 10)
+            new Container(5, 20, 10, 10),
+            new Container(15, 20, 10, 10),
+            new Container(25, 20, 10, 10),
+            new Container(35, 20, 10, 10)
         };
         return temp;
     }
