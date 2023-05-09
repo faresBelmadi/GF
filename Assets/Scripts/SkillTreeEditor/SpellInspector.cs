@@ -24,7 +24,7 @@ public class SpellInspector : Editor
         toggled = new List<bool>();
         Base.Add(serializedObject.FindProperty("Nom"));
         Base.Add(serializedObject.FindProperty("Sprite"));
-        Base.Add(serializedObject.FindProperty("Description"));
+        Base.Add(serializedObject.FindProperty("DescriptionObject"));
         Base.Add(serializedObject.FindProperty("IDSpell"));
         Base.Add(serializedObject.FindProperty("IDChildren"));
         Base.Add(serializedObject.FindProperty("SpellStatue"));

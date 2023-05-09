@@ -48,6 +48,7 @@ public class Room : MonoBehaviour
     {
         oldScale = transform.localScale;
     }
+
     private void SetColor()
     {
         this.GetComponent<SpriteRenderer>().sprite = ToSet;

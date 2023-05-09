@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class DescriptionHoverTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class DescriptionHoverTriggerBuffDebuff : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     public GameObject ToShow;
     public TextMeshProUGUI Description;
@@ -13,7 +13,6 @@ public class DescriptionHoverTrigger : MonoBehaviour, IPointerEnterHandler, IPoi
     {
         Debug.Log("enter");
         ToShow.SetActive(true);
-        ToShow.gameObject.transform.localPosition = new Vector3(0, 450);
     }
 
     public void OnPointerExit(PointerEventData eventData)

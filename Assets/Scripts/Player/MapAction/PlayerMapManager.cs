@@ -30,9 +30,11 @@ public class PlayerMapManager : MonoBehaviour
 
     private void VisualUpdateNew()
     {
+        _currentRoom.GetComponent<SpriteRenderer>().color = Color.white;
         foreach (var item in _currentRoom.ConnectedRooms)
         {
             item.isNavigable = true;
+            item.GetComponent<SpriteRenderer>().color = Color.white;
         }
         foreach (var item in _currentRoom.OwnedCorridors)
         {
@@ -53,6 +55,7 @@ public class PlayerMapManager : MonoBehaviour
             {
                 item.GetComponent<MaterialSelector>().isSelected = false;
             }
+            _currentRoom.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
         }
     }
 

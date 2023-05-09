@@ -94,7 +94,7 @@ public class ContainerCompetence : MonoBehaviour, IPointerEnterHandler, IPointer
 
     #endregion Affichage
 
-    #region Description
+    #region DescriptionObject
 
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -117,5 +117,5 @@ public class ContainerCompetence : MonoBehaviour, IPointerEnterHandler, IPointer
         ZoneDescription.SetActive(false);
     }
 
-    #endregion Description
+    #endregion DescriptionObject
 }
