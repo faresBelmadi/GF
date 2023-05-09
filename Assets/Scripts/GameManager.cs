@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour {
     public SkillTreePrinter SkillTreeUI;
 
     private void Awake() {
-        if(instance != null)
+        if (instance != null)
             Destroy(this.gameObject);
         else
         {
