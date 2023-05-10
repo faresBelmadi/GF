@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI.Extensions;
 
 public class Generator : MonoBehaviour
 {
@@ -205,9 +206,15 @@ public class Generator : MonoBehaviour
                     l.name = "corridor";
                     var temp2 = item2.transform.position;
                     Vector3 End = new Vector3(temp2.x, temp2.y, 75);
-                    l.GetComponent<LineRenderer>().SetPosition(0,Start);
-                    l.GetComponent<LineRenderer>().SetPosition(1,End);
-                    if((Vector2)item2.transform.position != Vector2.zero)
+                    var lineRenderer = l.GetComponent<LineRenderer>();
+                    //lineRenderer.useWorldSpace = false;
+                    lineRenderer.SetPosition(0,Start);
+                    lineRenderer.SetPosition(1,End);
+                    //lineRenderer.positionCount = 10;
+                    var dottedLine = l.GetComponent<DottedLineRenderer>();
+                    if (dottedLine != null) 
+                        dottedLine.ScaleMaterial();
+                    if ((Vector2)item2.transform.position != Vector2.zero)
                     {
                         Lines.Add(l);
                         item.Key.GetComponent<Room>().OwnedCorridors.Add(l);
@@ -223,6 +230,34 @@ public class Generator : MonoBehaviour
             }
         }
     }
+
+    //public void AddLineConnection(MapNode from, MapNode to)
+    //{
+    //    var lineObject = Instantiate(linePrefab, nodeParent.transform);
+    //    var lineRenderer = lineObject.GetComponent<LineRenderer>();
+    //    lineRenderer.sortingOrder = 50;
+    //    var fromPoint = from.transform.position +
+    //                    (to.transform.position - from.transform.position).normalized * offsetFromNodes;
+
+    //    var toPoint = to.transform.position +
+    //                  (from.transform.position - to.transform.position).normalized * offsetFromNodes;
+
+    //    // drawing lines in local space:
+    //    lineObject.transform.position = fromPoint;
+    //    lineRenderer.useWorldSpace = false;
+
+    //    // line renderer with 2 points only does not handle transparency properly:
+    //    lineRenderer.positionCount = linePointsCount;
+    //    for (var i = 0; i < linePointsCount; i++)
+    //    {
+    //        lineRenderer.SetPosition(i,
+    //            Vector3.Lerp(Vector3.zero, toPoint - fromPoint, (float)i / (linePointsCount - 1)));
+    //    }
+    //    var dottedLine = lineObject.GetComponent<DottedLineRenderer>();
+    //    if (dottedLine != null) dottedLine.ScaleMaterial();
+
+    //    lineConnections.Add(new LineConnection(lineRenderer, from, to));
+    //}
 
     private void InitManager()
     {
