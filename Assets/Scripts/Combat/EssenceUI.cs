@@ -13,10 +13,4 @@ public class EssenceUI : MonoBehaviour, IPointerExitHandler
         buttonConsumation.SetActive(false);
         buttonActivation.SetActive(true);
     }
-
-    public void Activate() 
-    {
-        buttonConsumation.SetActive(true);
-        buttonActivation.SetActive(false);
-    }
 }
