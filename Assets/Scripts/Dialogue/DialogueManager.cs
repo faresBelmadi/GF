@@ -167,6 +167,7 @@ public class DialogueManager : MonoBehaviour
                 }
 
                 break;
+            case Cible.allEnnemi:
             case Cible.ennemi:
                 if (scriptableObject as BuffDebuff)
                 {
@@ -188,8 +189,6 @@ public class DialogueManager : MonoBehaviour
                     ApplyEffectOnPlayer((Effet) scriptableObject);
                     ApplyEffectOnEnemies((Effet) scriptableObject);
                 }
-                break;
-            case Cible.allEnnemi:
                 break;
             case Cible.Ally:
                 break;
