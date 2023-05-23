@@ -3,20 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class EssenceUI : MonoBehaviour, IPointerExitHandler
+public class EssenceUI : MonoBehaviour
 {
-    public GameObject buttonActivation;
     public GameObject buttonConsumation;
 
-    public void OnPointerExit(PointerEventData eventData)
-    {
-        buttonConsumation.SetActive(false);
-        buttonActivation.SetActive(true);
-    }
-
-    public void Activate() 
+    public void activate()
     {
         buttonConsumation.SetActive(true);
-        buttonActivation.SetActive(false);
+    }
+
+    public void deactivate()
+    {
+        Invoke("invokedDeactivate", 2f);
+    }
+
+
+    private void invokedDeactivate()
+    {
+        buttonConsumation.SetActive(false);
     }
 }
