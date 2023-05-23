@@ -224,6 +224,7 @@ public class BattleManager : MonoBehaviour
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
+        player.StartFigth();
         StartPhase();
     }
 

@@ -37,7 +37,7 @@ public class JoueurBehavior : CombatBehavior
     public Spell SelectedSpell;
 
     public AnimationControllerAttack AnimationController;
-    
+
     private BattleManager _refBattleMan;
     public bool IsTurn;
 
@@ -126,10 +126,18 @@ public class JoueurBehavior : CombatBehavior
 
     }
 
-    public void StartPhase()
+    public void StartFigth()
     {
         _refBattleMan = GameManager.instance.BattleMan;
         ResetStat();
+        DecompteDebuffJoueur(Decompte.phase, TimerApplication.Persistant);
+        UpdateUI();
+    }
+
+    public void StartPhase()
+    {
+        //_refBattleMan = GameManager.instance.BattleMan;
+        //ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
         UpdateUI();
     }
@@ -334,7 +342,7 @@ public class JoueurBehavior : CombatBehavior
     {
         foreach (var item in Stat.ListBuffDebuff)
         {
-            if(item.timerApplication == Timer || Timer == TimerApplication.Persistant)
+            if(item.timerApplication == Timer)
             {
                 foreach (var effet in item.Effet)
                 {
@@ -376,6 +384,13 @@ public class JoueurBehavior : CombatBehavior
         else
         {
             ModifStat = effet.ResultEffet(Caster, LastDamageTaken,Stat);
+        }
+
+        if (ModifStat.Radiance < 0)
+        {
+            var toRemove = Mathf.FloorToInt(ModifStat.Radiance / Stat.MultiplDef);
+            toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
+            ModifStat.Radiance += toRemove;
         }
 
         Stat.ModifStateAll(ModifStat);

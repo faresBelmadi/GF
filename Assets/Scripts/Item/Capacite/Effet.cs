@@ -96,8 +96,9 @@ public class Effet : ScriptableObject
                 ModifState.ForceAme += valueToChange;
                 break;
             case TypeEffet.RadianceMax:
-                ModifState.RadianceMax += valueToChange;
-                ModifState.Radiance += valueToChange;
+                var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMax);
+                ModifState.RadianceMax += radianceModifier;
+                ModifState.Radiance += radianceModifier;
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:
                 ModifState.ForceAme += LastDamageTaken;

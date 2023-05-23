@@ -76,13 +76,10 @@ public class CharacterStat : ScriptableObject
         this.Resilience += ModifState.Resilience;
         this.Calme += ModifState.Calme;
         this.Essence += ModifState.Essence;
-        RectificationStat();
 
         if (ModifState.Radiance < 0)
         {
-            var toRemove = Mathf.FloorToInt(ModifState.Radiance / this.MultiplDef);
-            toRemove -= Mathf.FloorToInt(((Resilience * 3) / 100f) * toRemove);
-            this.Radiance += toRemove;
+            this.Radiance += ModifState.Radiance;
         }
         else
             this.Radiance += ModifState.Radiance;
