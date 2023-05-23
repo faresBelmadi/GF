@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UiMondeManager : MonoBehaviour
 {
@@ -25,5 +26,11 @@ public class UiMondeManager : MonoBehaviour
         UiMondeHolder.SetActive(true);
         UiSkillTreeHolder.SetActive(false);
         UiStatHolder.SetActive(false);
+    }
+
+    public void RetourMenuPrincipale()
+    {
+        SceneManager.LoadScene("MainMenu");
+        Destroy(GameManager.instance.gameObject);
     }
 }

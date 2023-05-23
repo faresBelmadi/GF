@@ -38,26 +38,41 @@ public class PlayerMapManager : MonoBehaviour
         }
         foreach (var item in _currentRoom.OwnedCorridors)
         {
-            item.GetComponent<MaterialSelector>().isSelected = true;
+            SetLineColor(item, Color.white);
         }
     }
 
+   
     private void VisualUpdateOld()
     {
         if(_currentRoom != null)
         {
             _currentRoom.Type = TypeRoom.Visited;
+            _currentRoom.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
             foreach (var item in _currentRoom.ConnectedRooms)
             {
                 item.isNavigable = false;
             }
             foreach (var item in _currentRoom.OwnedCorridors)
             {
-                item.GetComponent<MaterialSelector>().isSelected = false;
+                SetLineColor(item, Color.gray);
             }
-            _currentRoom.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
         }
     }
+
+    private static void SetLineColor(GameObject item, Color color)
+    {
+        var gradient = item.GetComponent<LineRenderer>().colorGradient;
+        var colorKeys = gradient.colorKeys;
+        for (var j = 0; j < colorKeys.Length; j++)
+        {
+            colorKeys[j].color = color;
+        }
+
+        gradient.colorKeys = colorKeys;
+        item.GetComponent<LineRenderer>().colorGradient = gradient;
+    }
+
 
     private void MapAction()
     {

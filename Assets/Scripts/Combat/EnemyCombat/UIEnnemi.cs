@@ -49,8 +49,8 @@ public class UIEnnemi : MonoBehaviour
     {
         if (TargetingMode)
             Ciblage.SetActive(true);
-        if (debuffParents.childCount > 0 || buffParents.childCount > 0)
-            GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("ShowDescription");
+        //if (debuffParents.childCount > 0 || buffParents.childCount > 0)
+        //    GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("ShowDescription");
     }
 
     private void OnMouseExit()
@@ -58,8 +58,8 @@ public class UIEnnemi : MonoBehaviour
         if (TargetingMode)
             Ciblage.SetActive(false);
 
-        if (debuffParents.childCount > 0 || buffParents.childCount > 0)
-            GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("HideDescription");
+        //if (debuffParents.childCount > 0 || buffParents.childCount > 0)
+        //    GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("HideDescription");
     }
 
     public void SpawnDegatSoin(int value)
