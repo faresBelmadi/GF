@@ -35,7 +35,6 @@ public class EnnemyBehavior : CombatBehavior
         base.BuffContainer = UICombat.buffParents;
         base.DebuffContainer = UICombat.debuffParents;
 
-
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.DissimulationOriginal = Stat.Dissimulation;
         Stat.ResilienceOriginal = Stat.Resilience;
@@ -58,6 +57,13 @@ public class EnnemyBehavior : CombatBehavior
         Stat.Dissimulation = Stat.DissimulationOriginal;
         Stat.Resilience = Stat.ResilienceOriginal;
         Stat.MultipleBuffDebuff = 1;
+
+        Stat.MultiplDegat = 1;
+        Stat.MultiplDef = 1;
+        Stat.MultiplSoin = 1;
+        Stat.MultipleBuffDebuff = 1;
+        Stat.ForceAme = Stat.ForceAmeOriginal;
+        Stat.Conviction = Stat.ConvictionOriginal;
     }
 
     public void StartPhase()
@@ -371,14 +377,26 @@ public class EnnemyBehavior : CombatBehavior
     public void ApplicationEffet(Effet effet, JoueurStat Caster = null, SourceEffet source = SourceEffet.Spell, int idCaster = 0)
     {
         JoueurStat ModifStat;
-        if(Caster == null)
+        if (Caster == null)
         {
-            ModifStat = effet.ResultEffet(Stat, LastDamageTaken);
+            var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
+            if (caster != null)
+                ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken);
+            else
+                ModifStat = effet.ResultEffet(Stat, LastDamageTaken);
         }
         else
         {
             ModifStat = effet.ResultEffet(Caster, LastDamageTaken, Stat);
         }
+
+        if (ModifStat.Radiance < 0)
+        {
+            var toRemove = Mathf.FloorToInt(ModifStat.Radiance / Stat.MultiplDef);
+            toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
+            ModifStat.Radiance = toRemove;
+        }
+
         Stat.ModifStateAll(ModifStat);
 
         if (ModifStat.PalierChangement > 0)

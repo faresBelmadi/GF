@@ -224,7 +224,6 @@ public class BattleManager : MonoBehaviour
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
-        player.StartFigth();
         StartPhase();
     }
 
@@ -496,7 +495,6 @@ public class BattleManager : MonoBehaviour
                 }
                 break;
             case Cible.AllExceptSelf:
-                
                 for (int x = EnemyScripts.Count - 1; x >= 0; x--)
                 {
                     var ennemie = EnemyScripts[x];
@@ -505,7 +503,7 @@ public class BattleManager : MonoBehaviour
                 }
                 if (Caster != idPlayer)
                 {
-                    player.ApplicationEffet(effet, null, source);
+                    player.ApplicationEffet(effet, null, source, Caster);
                 }
                 break;
 

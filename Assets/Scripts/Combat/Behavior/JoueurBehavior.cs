@@ -126,18 +126,10 @@ public class JoueurBehavior : CombatBehavior
 
     }
 
-    public void StartFigth()
+    public void StartPhase()
     {
         _refBattleMan = GameManager.instance.BattleMan;
         ResetStat();
-        DecompteDebuffJoueur(Decompte.phase, TimerApplication.Persistant);
-        UpdateUI();
-    }
-
-    public void StartPhase()
-    {
-        //_refBattleMan = GameManager.instance.BattleMan;
-        //ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
         UpdateUI();
     }
@@ -342,7 +334,7 @@ public class JoueurBehavior : CombatBehavior
     {
         foreach (var item in Stat.ListBuffDebuff)
         {
-            if(item.timerApplication == Timer)
+            if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant)
             {
                 foreach (var effet in item.Effet)
                 {
@@ -379,7 +371,11 @@ public class JoueurBehavior : CombatBehavior
         JoueurStat ModifStat;
         if (Caster == null)
         {
-            ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Cible:null);
+            var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
+            if (caster != null)
+                ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken);
+            else
+                ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Cible:null);
         }
         else
         {
@@ -390,7 +386,7 @@ public class JoueurBehavior : CombatBehavior
         {
             var toRemove = Mathf.FloorToInt(ModifStat.Radiance / Stat.MultiplDef);
             toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
-            ModifStat.Radiance += toRemove;
+            ModifStat.Radiance = toRemove;
         }
 
         Stat.ModifStateAll(ModifStat);
