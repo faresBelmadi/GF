@@ -34,6 +34,7 @@ public class CharacterStat : ScriptableObject
     }
 
     private int _resilience;
+    [HideInInspector]
     public float ResilienceBonus;
     public int ResilienceMin = -10;
     public int ResilienceMax = 10;
@@ -49,11 +50,16 @@ public class CharacterStat : ScriptableObject
     public int TensionDebuff = 0;
     public int TensionSoin = 0;
     public int TensionDot = 0;
+    [HideInInspector]
     public float Tension = 0;
+    [HideInInspector]
     public float TensionMax = 0;
+    [HideInInspector]
     public float ValeurPalier = 0;
     public int NbPalier = 3;
+    [HideInInspector]
     public int PalierChangement = 0;
+    [HideInInspector]
     public int nbAttaqueRecu = 0;
     public List<Passif> ListPassif;
     public Action ActionPassif;

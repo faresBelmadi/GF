@@ -390,7 +390,7 @@ public class BattleManager : MonoBehaviour
 
                         } while (index == origine);
 
-                        var ennemy = EnemyScripts.First(c => c.combatID == index);
+                        var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == index);
                         if (ennemy != null)
                             ennemy.AddDebuff(item, Decompte, Timer);
                         else
@@ -464,9 +464,9 @@ public class BattleManager : MonoBehaviour
                         {
                             index = UnityEngine.Random.Range(1, EnemyScripts.Count + 1);
 
-                        } while (index == Caster);
+                        } while (index == Caster && EnemyScripts.Count > 1);
 
-                        var ennemy = EnemyScripts.First(c => c.combatID == index);
+                        var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == index);
                         if (ennemy != null)
                             ennemy.ApplicationEffet(effet, player.Stat, source, Caster);
                         else
@@ -482,7 +482,7 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
+                    EnemyScripts.First(c => c.combatID == Caster).ApplicationEffet(effet, null, source, Caster);
                 }
 
                 break;
