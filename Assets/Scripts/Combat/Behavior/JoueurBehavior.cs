@@ -406,6 +406,8 @@ public class JoueurBehavior : CombatBehavior
         }
 
         Stat.ModifStateAll(ModifStat);
+        if (Stat.ForceAme < 0)
+            Stat.ForceAme = 0;
 
         if (ModifStat.PalierChangement > 0)
             EnervementTension();
