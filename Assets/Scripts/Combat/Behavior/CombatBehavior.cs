@@ -69,7 +69,7 @@ public class CombatBehavior : MonoBehaviour
             if (item.Decompte == Timer)
                 item.Temps--;
 
-            if (item.Temps < 0)
+            if (item.Temps <= 0)
             {
                 var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == item.Nom);
                 if (t != null)
