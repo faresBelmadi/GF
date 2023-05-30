@@ -316,7 +316,9 @@ public class JoueurBehavior : CombatBehavior
         }
        
 
-        DecompteDebuffJoueur(Decompte, Timer);
+        //DecompteDebuffJoueur(Decompte, Timer);
+        
+        ApplicationBuffDebuff(Timer);
 
         UpdateUI();
     }
