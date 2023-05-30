@@ -193,6 +193,8 @@ public class EnnemyBehavior : CombatBehavior
         }
         if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
             Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
+        if(Stat.Tension < 0)
+            Stat.Tension = 0;
     }
 
     #endregion Tension

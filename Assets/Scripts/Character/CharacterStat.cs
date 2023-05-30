@@ -46,10 +46,10 @@ public class CharacterStat : ScriptableObject
     public float MultiplDegat = 1;
     public float MultipleBuffDebuff = 1;
     public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>();
-    public int TensionAttaque = 0;
-    public int TensionDebuff = 0;
-    public int TensionSoin = 0;
-    public int TensionDot = 0;
+    public int TensionAttaque = 4;
+    public int TensionDebuff = 3;
+    public int TensionSoin = -1;
+    public int TensionDot = 1;
     public float Tension = 0;
     public float TensionMax = 0;
     public float ValeurPalier = 0;
