@@ -20,6 +20,7 @@ public class CombatBehavior : MonoBehaviour
     public Action EndTurnBM;
 
     public int LastDamageTaken;
+    public bool gainedTension;
 
     public void AddBuffDebuff(BuffDebuff toAdd)
     {
