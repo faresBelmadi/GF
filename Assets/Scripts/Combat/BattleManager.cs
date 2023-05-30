@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Networking.Types;
 using UnityEngine.SceneManagement;
 
 [System.Serializable]
@@ -408,8 +409,13 @@ public class BattleManager : MonoBehaviour
                     }
 
                     break;
-                case Cible.AllExceptSelf:
-
+                case Cible.AllAllyExceptSelf:
+                    for (int x = EnemyScripts.Count - 1; x >= 0; x--)
+                    {
+                        var ennemie = EnemyScripts[x];
+                        if (ennemie != null && ennemie.combatID != origine)
+                            ennemie.AddDebuff(item, Decompte, Timer);
+                    }
                     break;
                 case Cible.All:
                     player.AddDebuff(item, Decompte, Timer);

@@ -199,8 +199,6 @@ public class DialogueManager : MonoBehaviour
                     ApplyEffectOnEnemies((Effet) scriptableObject);
                 }
                 break;
-            case Cible.allEnnemi:
-                break;
             case Cible.Ally:
                 break;
             case Cible.AllExceptSelf:
