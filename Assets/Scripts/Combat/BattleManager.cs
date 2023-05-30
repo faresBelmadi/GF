@@ -423,8 +423,13 @@ public class BattleManager : MonoBehaviour
                     {
                         ennemie.AddDebuff(item, Decompte, Timer);
                     }
-
                     break;
+                case Cible.Self:
+                    var self = EnemyScripts.FirstOrDefault(c => c.combatID == origine);
+                    if (self != null)
+                        self.AddDebuff(item, Decompte, Timer);
+                    break;
+
             }
         }
     }
