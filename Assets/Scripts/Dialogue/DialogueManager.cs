@@ -167,7 +167,7 @@ public class DialogueManager : MonoBehaviour
                 }
 
                 break;
-            case Cible.ennemi:
+            case Cible.allEnnemi:
                 if (scriptableObject as BuffDebuff)
                 {
                     ApplyBuffDebuffOnEnemies((BuffDebuff) scriptableObject);
@@ -175,6 +175,16 @@ public class DialogueManager : MonoBehaviour
                 else if (scriptableObject as Effet)
                 {
                     ApplyEffectOnEnemies((Effet) scriptableObject);
+                }
+                break;
+            case Cible.ennemi:
+                if (scriptableObject as BuffDebuff)
+                {
+                    ApplyBuffDebuffOneEnnemi((BuffDebuff) scriptableObject);
+                }
+                else if (scriptableObject as Effet)
+                {
+                    ApplyEffectOneEnnemi((Effet) scriptableObject);
                 }
                 break;
             case Cible.All:
@@ -217,6 +227,11 @@ public class DialogueManager : MonoBehaviour
         {
             enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat));
         }
+    }    
+    private void ApplyEffectOneEnnemi(Effet scriptableObject)
+    {
+        var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0,ManagerBattle.EnemyScripts.Count)];
+            enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat));
     }
 
     private void ApplyBuffDebuffOnPlayer(BuffDebuff scriptableObject)
@@ -232,6 +247,12 @@ public class DialogueManager : MonoBehaviour
             enemyScript.Stat.ListBuffDebuff.Add(Instantiate(scriptableObject));
             enemyScript.AddBuffDebuff(scriptableObject);
         }
+    }   
+    private void ApplyBuffDebuffOneEnnemi(BuffDebuff scriptableObject)
+    {
+        var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0,ManagerBattle.EnemyScripts.Count)];
+            enemyScript.Stat.ListBuffDebuff.Add(Instantiate(scriptableObject));
+            enemyScript.AddBuffDebuff(scriptableObject);
     }
 
     public void StartCombat()
