@@ -142,6 +142,11 @@ public class JoueurBehavior : CombatBehavior
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
         ActivateSpells();
         Stat.Volonter = Stat.VolonterMax;
+        if(!gainedTension)
+        {
+            ApaisementTension();
+        }
+        gainedTension = false;
         UpdateUI();
     }
 
@@ -207,17 +212,25 @@ public class JoueurBehavior : CombatBehavior
         {
             case Source.Attaque:
                 Stat.Tension += Stat.TensionAttaque;
+                gainedTension = true;
                 break;
             case Source.Dot:
                 Stat.Tension += Stat.TensionDot;
+                gainedTension = true;
                 break;
             case Source.Buff:
                 Stat.Tension += Stat.TensionDebuff;
+                gainedTension = true;
                 break;
             case Source.Soin:
                 Stat.Tension += Stat.TensionSoin;
+                gainedTension = true;
                 break;
         }
+        
+        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
+            Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
+
     }
 
     public bool CanHaveAnotherTurn()

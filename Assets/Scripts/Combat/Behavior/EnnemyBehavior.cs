@@ -78,6 +78,12 @@ public class EnnemyBehavior : CombatBehavior
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
         _refBattleMan.PassifManager.ResolvePassifs();
         DecompteDebuffEnnemi(Decompte.tour, TimerApplication.DebutTour);
+        
+        if(!gainedTension)
+        {
+            ApaisementTension();
+        }
+        gainedTension = false;
         if (!skip)
         {
             DoAction();
@@ -170,15 +176,19 @@ public class EnnemyBehavior : CombatBehavior
         {
             case Source.Attaque:
                 Stat.Tension += Stat.TensionAttaque;
+                gainedTension = true;
                 break;
             case Source.Dot:
                 Stat.Tension += Stat.TensionDot;
+                gainedTension = true;
                 break;
             case Source.Buff:
                 Stat.Tension += Stat.TensionDebuff;
+                gainedTension = true;
                 break;
             case Source.Soin:
                 Stat.Tension += Stat.TensionSoin;
+                gainedTension = true;
                 break;
         }
         if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
