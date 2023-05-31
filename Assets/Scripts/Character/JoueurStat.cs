@@ -26,6 +26,7 @@ public class JoueurStat : CharacterStat
         this.ConscienceMax += ModifState.ConscienceMax;
         this.Clairvoyance += ModifState.Clairvoyance;
         base.ModifStateAll(ModifState);
+        RectificationStat();
     }
 
     public new void RectificationStat()

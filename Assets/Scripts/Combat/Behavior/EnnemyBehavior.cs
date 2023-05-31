@@ -333,7 +333,8 @@ public class EnnemyBehavior : CombatBehavior
             Stat.ListBuffDebuff.Add(Instantiate(toAdd));
             base.AddBuffDebuff(toAdd);
         }
-        DecompteDebuffEnnemi(Decompte, Timer);
+        
+        ApplicationBuffDebuff(Timer,true);
 
         UpdateUI();
     }
@@ -347,13 +348,13 @@ public class EnnemyBehavior : CombatBehavior
         UpdateUI();
     }
 
-    public void ApplicationBuffDebuff(TimerApplication Timer)
+    public void ApplicationBuffDebuff(TimerApplication Timer, bool firstApplication = false)
     {
         skip = false;
         ResetStat();
         foreach (var item in Stat.ListBuffDebuff)
         {
-            if (item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant)
+            if (item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant || firstApplication)
             {
                 foreach (var effet in item.Effet)
                 {
@@ -419,11 +420,11 @@ public class EnnemyBehavior : CombatBehavior
 
         if (ModifStat.Radiance < 0)
         {
-            LastDamageTaken = ModifStat.Radiance;
+            LastDamageTaken = -ModifStat.Radiance;
             _refBattleMan.CurrentPhaseDamage += LastDamageTaken;
 
 
-            if (LastDamageTaken < _refBattleMan.MostDamage)
+            if (LastDamageTaken > _refBattleMan.MostDamage)
             {
                 _refBattleMan.MostDamage = LastDamageTaken;
                 _refBattleMan.MostDamageID = idCaster;

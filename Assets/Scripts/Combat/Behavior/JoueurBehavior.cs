@@ -332,7 +332,7 @@ public class JoueurBehavior : CombatBehavior
 
         //DecompteDebuffJoueur(Decompte, Timer);
         
-        ApplicationBuffDebuff(Timer);
+        ApplicationBuffDebuff(Timer,true);
 
         UpdateUI();
     }
@@ -346,11 +346,11 @@ public class JoueurBehavior : CombatBehavior
         UpdateUI();
     }
 
-    public void ApplicationBuffDebuff(TimerApplication Timer)
+    public void ApplicationBuffDebuff(TimerApplication Timer, bool firstApplication = false)
     {
         foreach (var item in Stat.ListBuffDebuff)
         {
-            if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant)
+            if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant || firstApplication)
             {
                 foreach (var effet in item.Effet)
                 {
@@ -406,10 +406,6 @@ public class JoueurBehavior : CombatBehavior
         }
 
         Stat.ModifStateAll(ModifStat);
-        if (Stat.ForceAme < 0)
-            Stat.ForceAme = 0;
-        if (Stat.Resilience > 10)
-            Stat.Resilience = 10;
         if (ModifStat.PalierChangement > 0)
             EnervementTension();
         else if (ModifStat.PalierChangement < 0)
@@ -417,10 +413,10 @@ public class JoueurBehavior : CombatBehavior
 
         if (ModifStat.Radiance < 0)
         {
-            LastDamageTaken = ModifStat.Radiance;
+            LastDamageTaken = -ModifStat.Radiance;
             _refBattleMan.CurrentPhaseDamage += LastDamageTaken;
 
-            if (LastDamageTaken < _refBattleMan.MostDamage)
+            if (LastDamageTaken > _refBattleMan.MostDamage)
             {
                 _refBattleMan.MostDamage = LastDamageTaken;
                 _refBattleMan.MostDamageID = idCaster;

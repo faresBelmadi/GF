@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -17,6 +18,9 @@ public class Effet : ScriptableObject
     private int TimeAlive = 1;
     public bool IsAttaqueEffet;
     public BuffDebuff AfterEffectToApply;
+
+    [SerializeField]
+    public JoueurStat modifstate;
 
     [System.NonSerialized] public int nbProcAfterEffect;
 
@@ -42,10 +46,10 @@ public class Effet : ScriptableObject
                 ModifState.ConscienceMax += valueToChange;
                 break;
             default:
-                ModifState = ResultEffetCommun(Caster);
+                ModifState = ResultEffetCommun(Caster,LastDamageTake);
                 break;
         }
-
+        modifstate = ModifState;
         return ModifState;
     }
 
@@ -53,6 +57,7 @@ public class Effet : ScriptableObject
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, Cible);
+        modifstate = ModifState;
         return ModifState;
     }
 
@@ -60,6 +65,7 @@ public class Effet : ScriptableObject
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi);
+        modifstate = ModifState;
         return ModifState;
     }
 
@@ -67,6 +73,7 @@ public class Effet : ScriptableObject
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken, Cible));
+        modifstate = ModifState;
 
         return ModifState;
     }
@@ -87,7 +94,7 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += Mathf.FloorToInt(valueToChange * Caster.MultiplDegat);
                 break;
             case TypeEffet.Conviction:
-                ModifState.Conviction += valueToChange;
+                ModifState.Conviction += ValeurBrut;
                 break;
             case TypeEffet.AugmentationPourcentageFA:
                 ModifState.ForceAme += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme));
@@ -102,7 +109,7 @@ public class Effet : ScriptableObject
                     ModifState.Radiance += radianceModifier;
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:
-                ModifState.ForceAme += LastDamageTaken;
+                ModifState.ForceAme += Mathf.FloorToInt((Pourcentage / 100f) * LastDamageTaken);
                 break;
             case TypeEffet.Vitesse:
                 ModifState.Vitesse += valueToChange;
@@ -286,7 +293,8 @@ public class Effet : ScriptableObject
             default:
                 break;
         }
-
+        
+        modifstate = ModifState as JoueurStat;
         return ModifState;
     }
 
