@@ -51,6 +51,7 @@ public class JoueurBehavior : CombatBehavior
         Stat.ResilienceOriginal = Stat.Resilience;
         Stat.ConvictionOriginal = Stat.Conviction;
         Stat.ForceAmeOriginal = Stat.ForceAme;
+        isSecondTurn = false;
         foreach (var item in Stat.ListSpell)
         {
             var temp = Instantiate(SpellPrefab, SpellsSpawn.transform);
@@ -156,6 +157,8 @@ public class JoueurBehavior : CombatBehavior
         _refBattleMan.PassifManager.ResolvePassifs();
         IsTurn = false;
         DesactivateSpells();
+        if (isSecondTurn)
+            isSecondTurn = false;
         EndTurnBM();
     }
 
@@ -239,9 +242,9 @@ public class JoueurBehavior : CombatBehavior
         if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
         {
             Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
+            isSecondTurn = true;
             return true;
         }
-
         return false;
     }
 
@@ -347,6 +350,9 @@ public class JoueurBehavior : CombatBehavior
 
     public void ApplicationBuffDebuff(TimerApplication Timer, bool firstApplication = false)
     {
+        if (isSecondTurn)
+            return;
+        ResetStat();
         foreach (var item in Stat.ListBuffDebuff)
         {
             if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant || firstApplication)
