@@ -356,7 +356,7 @@ public class BattleManager : MonoBehaviour
         //player.ApplicationBuffDebuff(TimerApplication.Attaque);
     }
 
-    private void ApplyAfterEffect(Effet effet)
+    private void ApplyAfterEffect(Effet effet) // ICI DANGER: en cas d'after effect Applique 2 fois les buff debuff!
     {
         List<BuffDebuff> afterEffect = new List<BuffDebuff>();
         for (int i = 0; i < effet.nbProcAfterEffect; i++)
@@ -370,7 +370,7 @@ public class BattleManager : MonoBehaviour
     {
         int origine = currentIdTurn;
         Decompte Decompte = Decompte.none;
-        TimerApplication Timer = TimerApplication.Persistant;
+        TimerApplication Timer = TimerApplication.Attaque;
         foreach (var item in BuffDebuff)
         {
             item.IDCombatOrigine = origine;

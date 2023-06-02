@@ -96,7 +96,8 @@ public class CharacterStat : ScriptableObject
         if (this.Conviction > this.ConvictionMax)
         {
             this.Conviction = this.ConvictionMax;
-        }else if(this.Conviction < this.ConvictionMin)
+        }
+        else if (this.Conviction < this.ConvictionMin)
         {
             this.Conviction = this.ConvictionMin;
         }
@@ -109,7 +110,7 @@ public class CharacterStat : ScriptableObject
             this.Resilience = this.ResilienceMin;
         }
 
-        if (this.ForceAme <= 0)
+        if (this.ForceAme < 0)
             this.ForceAme = 0;
     }
 }

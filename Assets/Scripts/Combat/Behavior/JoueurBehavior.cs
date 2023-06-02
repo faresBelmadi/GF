@@ -129,7 +129,7 @@ public class JoueurBehavior : CombatBehavior
     public void StartPhase()
     {
         _refBattleMan = GameManager.instance.BattleMan;
-        ResetStat();
+        //ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
         UpdateUI();
     }
@@ -332,7 +332,7 @@ public class JoueurBehavior : CombatBehavior
 
         //DecompteDebuffJoueur(Decompte, Timer);
         
-        ApplicationBuffDebuff(Timer,true);
+        ApplicationBuffDebuff(Timer/*,true*/);
 
         UpdateUI();
     }
@@ -340,7 +340,6 @@ public class JoueurBehavior : CombatBehavior
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
         Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte);
-
         ApplicationBuffDebuff(Timer);
 
         UpdateUI();
