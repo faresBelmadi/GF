@@ -18,4 +18,5 @@ public class BuffDebuff : ScriptableObject
     public int Temps;
     public Sprite Icon;
     public GameObject SpawnObject;
+    public bool DirectApplication;
 }

@@ -332,7 +332,7 @@ public class JoueurBehavior : CombatBehavior
 
         //DecompteDebuffJoueur(Decompte, Timer);
         
-        ApplicationBuffDebuff(Timer/*,true*/);
+        ApplicationBuffDebuff(Timer);
 
         UpdateUI();
     }
@@ -345,11 +345,11 @@ public class JoueurBehavior : CombatBehavior
         UpdateUI();
     }
 
-    public void ApplicationBuffDebuff(TimerApplication Timer, bool firstApplication = false)
+    public void ApplicationBuffDebuff(TimerApplication Timer)
     {
         foreach (var item in Stat.ListBuffDebuff)
         {
-            if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant || firstApplication)
+            if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant || item.DirectApplication)
             {
                 foreach (var effet in item.Effet)
                 {
@@ -372,8 +372,10 @@ public class JoueurBehavior : CombatBehavior
                         AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
                     }
                 }
+                if (item.DirectApplication)
+                    item.DirectApplication = false;
             }
-            
+
         }
     }
 

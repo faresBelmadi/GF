@@ -334,7 +334,7 @@ public class EnnemyBehavior : CombatBehavior
             base.AddBuffDebuff(toAdd);
         }
         
-        ApplicationBuffDebuff(Timer,true);
+        ApplicationBuffDebuff(Timer);
 
         UpdateUI();
     }
@@ -348,13 +348,13 @@ public class EnnemyBehavior : CombatBehavior
         UpdateUI();
     }
 
-    public void ApplicationBuffDebuff(TimerApplication Timer, bool firstApplication = false)
+    public void ApplicationBuffDebuff(TimerApplication Timer)
     {
         skip = false;
         ResetStat();
         foreach (var item in Stat.ListBuffDebuff)
         {
-            if (item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant || firstApplication)
+            if (item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant || item.DirectApplication)
             {
                 foreach (var effet in item.Effet)
                 {
@@ -377,6 +377,8 @@ public class EnnemyBehavior : CombatBehavior
                         AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
                     }
                 }
+                if (item.DirectApplication)
+                    item.DirectApplication = false;
             }
         }
         if (skip)
