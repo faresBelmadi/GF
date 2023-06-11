@@ -81,49 +81,52 @@ public class JoueurBehavior : CombatBehavior
 
         StatClairvoyanceText.text = Stat.Clairvoyance + "";
 
+        var green = new Color(147, 250, 165);
+        var red = new Color(254, 121, 104);
+
         if (Stat.Clairvoyance > Stat.ClairvoyanceOriginal)
-            StatClairvoyanceText.color = Color.green;
+            StatClairvoyanceText.color = green;
         else if (Stat.Clairvoyance < Stat.ClairvoyanceOriginal)
-            StatClairvoyanceText.color = Color.red;
+            StatClairvoyanceText.color = red;
         else
-            StatClairvoyanceText.color = Color.black;
+            StatClairvoyanceText.color = Color.white;
 
 
         StatForceAmeText.text = Stat.ForceAme + "";
 
         if (Stat.ForceAme > Stat.ForceAmeOriginal)
-            StatForceAmeText.color = Color.green;
+            StatForceAmeText.color = green;
         else if (Stat.ForceAme < Stat.ForceAmeOriginal)
-            StatForceAmeText.color = Color.red;
+            StatForceAmeText.color = red;
         else
-            StatForceAmeText.color = Color.black;
+            StatForceAmeText.color = Color.white;
 
         StatSpeedText.text = Stat.Vitesse + "";
 
         if (Stat.Vitesse > Stat.VitesseOriginal)
-            StatSpeedText.color = Color.green;
+            StatSpeedText.color = green;
         else if (Stat.Vitesse < Stat.VitesseOriginal)
-            StatSpeedText.color = Color.red;
+            StatSpeedText.color = red;
         else
-            StatSpeedText.color = Color.black;
+            StatSpeedText.color = Color.white;
 
         StatConvictionText.text = Stat.Conviction + "";
 
         if (Stat.Conviction > Stat.ConvictionOriginal)
-            StatConvictionText.color = Color.green;
+            StatConvictionText.color = green;
         else if (Stat.Conviction < Stat.ConvictionOriginal)
-            StatConvictionText.color = Color.red;
+            StatConvictionText.color = red;
         else
-            StatConvictionText.color = Color.black;
+            StatConvictionText.color = Color.white;
 
         StatResilienceText.text = Stat.Resilience + "";
 
         if (Stat.Resilience > Stat.ResilienceOriginal)
-            StatResilienceText.color = Color.green;
+            StatResilienceText.color = green;
         else if (Stat.Resilience < Stat.ResilienceOriginal)
-            StatResilienceText.color = Color.red;
+            StatResilienceText.color = red;
         else
-            StatResilienceText.color = Color.black;
+            StatResilienceText.color = Color.white;
 
     }
 
