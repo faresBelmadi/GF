@@ -138,9 +138,9 @@ public class JoueurBehavior : CombatBehavior
     public void StartTurn()
     {
         IsTurn = true;
+        DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
         _refBattleMan.PassifManager.ResolvePassifs();
-        DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
         ActivateSpells();
         Stat.Volonter = Stat.VolonterMax;
         if(!gainedTension)

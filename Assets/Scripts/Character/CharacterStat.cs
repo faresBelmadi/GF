@@ -34,7 +34,7 @@ public class CharacterStat : ScriptableObject
     }
 
     private int _resilience;
-    [HideInInspector]
+    //[HideInInspector]
     public float ResilienceBonus;
     public int ResilienceMin = -10;
     public int ResilienceMax = 10;
@@ -62,7 +62,10 @@ public class CharacterStat : ScriptableObject
     public void ModifStateAll(CharacterStat ModifState)
     {
         if (ModifState.MultiplDef != 1)
-            this.MultiplDef = ModifState.MultiplDef;
+        {
+            var multiplicateurDef = ModifState.MultiplDef % 1;
+            this.MultiplDef += multiplicateurDef;
+        }
         if (ModifState.MultiplSoin != 1)
             this.MultiplSoin = ModifState.MultiplSoin;
         if (ModifState.MultiplDegat != 1)

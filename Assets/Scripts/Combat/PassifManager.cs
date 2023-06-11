@@ -89,7 +89,7 @@ public class PassifManager
                         case TypePassif.PassifGuerrier1:
                             // vous avez 1 points de résilience par point de conscience que vous possédez
                             var resilienceBonus = (behavior.Stat.Conscience / _rules.nbPtsConscience) * _rules.nbPtsResilience;
-                            behavior.Stat.ResilienceBonus = resilienceBonus;
+                            behavior.Stat.Resilience = Mathf.FloorToInt(resilienceBonus);
                             break;
                         case TypePassif.PassifGuerrier2:
                             //Lorsque vous terminez un affrontement sans avoir consommé d'Essences, vous récupérez 1 point de Conscience et le total d'Essences obtenu est augmenté de 10%.        
