@@ -31,6 +31,6 @@ public class ConséquenceSO : ScriptableObject
     public List<Effet> Effects;
 
     [Header("Self is always the player")]
-    public Cible target;
+    public CibleDialogue target;
     public List<int> IdTarget;
 }

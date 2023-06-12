@@ -42,6 +42,22 @@ public enum Cible
     Self
 }
 
+public enum CibleDialogue
+{
+    joueur = 0,
+    joueurOnOneEnnemi = 1,
+    joueurOnAllEnnemi = 4,
+    JoueurOn2ennemi = 2,
+    JoueurOn3ennemi = 3,
+    ennemiOnJoueur = 5,
+    ennemi = 6,
+    allEnnemi = 7,
+    All = 8,
+    AllExceptSelf = 9,
+    AllAllyExceptSelf = 10,
+    Self = 11,
+}
+
 public enum SpellStatus
 {
     locked,
