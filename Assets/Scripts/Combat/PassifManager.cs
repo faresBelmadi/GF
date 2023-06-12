@@ -97,6 +97,7 @@ public class PassifManager
                             {
                                 var essenceAmount = _refBattleManager.ListEssence.First().GetComponent<Essence>().amount;
                                 essenceAmount += (int)Math.Round((double)(_rules.PercentEssenceBonus * 100) / essenceAmount);
+                                _refBattleManager.ListEssence.First().GetComponent<Essence>().amount = essenceAmount;
                                 behavior.Stat.Conscience += Mathf.RoundToInt(_rules.nbPtsConscienceEarned);
                             }
                             break;
