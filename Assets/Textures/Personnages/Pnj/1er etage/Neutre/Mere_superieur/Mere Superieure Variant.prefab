@@ -511,7 +511,7 @@ GameObject:
   - component: {fileID: 7056278643099620015}
   - component: {fileID: 8861888038354109256}
   m_Layer: 5
-  m_Name: SpawnBuff
+  m_Name: SpawnDebuff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1521,7 +1521,7 @@ GameObject:
   - component: {fileID: 8312501903460482509}
   - component: {fileID: 7731261783475245497}
   m_Layer: 5
-  m_Name: SpawnDebuff
+  m_Name: SpawnBuff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1775,10 +1775,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ListBuffDebuffGO: []
   BuffPrefab: {fileID: 8673195161482103611, guid: 60ec796ae1ca68a4a825f65f310e1c7b, type: 3}
-  BuffContainer: {fileID: 8405780653447552937}
+  BuffContainer: {fileID: 2570867546205210983}
   DebuffPrefab: {fileID: 8673195161482103611, guid: 2d80ffd33b61f364e853bdf7ae85c4f4, type: 3}
-  DebuffContainer: {fileID: 2570867546205210983}
+  DebuffContainer: {fileID: 8405780653447552937}
   LastDamageTaken: 0
+  gainedTension: 0
+  isSecondTurn: 0
   Stat: {fileID: 0}
   UICombat: {fileID: 2549400056871793053}
   TensionUI: 0
@@ -1806,8 +1808,8 @@ MonoBehaviour:
   Intention: {fileID: 7562782370754675036}
   TargetingMode: 0
   degatSoinParent: {fileID: 442281504973398282}
-  buffParents: {fileID: 8405780653447552937}
-  debuffParents: {fileID: 2570867546205210983}
+  buffParents: {fileID: 2570867546205210983}
+  debuffParents: {fileID: 8405780653447552937}
   soinPrefab: {fileID: 369757569958449724, guid: 27af5be5d6aa1cb4bab7c465b4dfdeae, type: 3}
   degatPrefab: {fileID: 6455525814061643745, guid: 9a2387407ca1b4e439ff7a03898d83b4, type: 3}
   DebuffSpawned: []

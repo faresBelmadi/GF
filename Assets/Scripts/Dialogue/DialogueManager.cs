@@ -156,7 +156,7 @@ public class DialogueManager : MonoBehaviour
     {
         switch (Consequence.target)
         {
-            case Cible.joueur:
+            case CibleDialogue.joueur:
                 if (scriptableObject as BuffDebuff)
                 {
                     ApplyBuffDebuffOnPlayer((BuffDebuff) scriptableObject);
@@ -167,7 +167,7 @@ public class DialogueManager : MonoBehaviour
                 }
 
                 break;
-            case Cible.allEnnemi:
+            case CibleDialogue.allEnnemi:
                 if (scriptableObject as BuffDebuff)
                 {
                     ApplyBuffDebuffOnEnemies((BuffDebuff) scriptableObject);
@@ -177,7 +177,7 @@ public class DialogueManager : MonoBehaviour
                     ApplyEffectOnEnemies((Effet) scriptableObject);
                 }
                 break;
-            case Cible.ennemi:
+            case CibleDialogue.ennemi:
                 if (scriptableObject as BuffDebuff)
                 {
                     ApplyBuffDebuffOneEnnemi((BuffDebuff) scriptableObject);
@@ -187,7 +187,7 @@ public class DialogueManager : MonoBehaviour
                     ApplyEffectOneEnnemi((Effet) scriptableObject);
                 }
                 break;
-            case Cible.All:
+            case CibleDialogue.All:
                 if (scriptableObject as BuffDebuff)
                 {
                     ApplyBuffDebuffOnPlayer((BuffDebuff) scriptableObject);
@@ -199,17 +199,11 @@ public class DialogueManager : MonoBehaviour
                     ApplyEffectOnEnemies((Effet) scriptableObject);
                 }
                 break;
-            case Cible.Ally:
+            case CibleDialogue.AllExceptSelf:
                 break;
-            case Cible.AllExceptSelf:
+            case CibleDialogue.AllAllyExceptSelf:
                 break;
-            case Cible.MostDamage:
-                break;
-            case Cible.LastAttacker:
-                break;
-            case Cible.AllAllyExceptSelf:
-                break;
-            case Cible.Self:
+            case CibleDialogue.Self:
                 break;
         }
     }
@@ -229,7 +223,7 @@ public class DialogueManager : MonoBehaviour
     private void ApplyEffectOneEnnemi(Effet scriptableObject)
     {
         var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0,ManagerBattle.EnemyScripts.Count)];
-            enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat));
+            enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(((JoueurStat)(CharacterStat)enemyScript.Stat),enemyScript.LastDamageTaken,enemyScript.Stat));
     }
 
     private void ApplyBuffDebuffOnPlayer(BuffDebuff scriptableObject)

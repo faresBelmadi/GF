@@ -95,7 +95,7 @@ public class JoueurBehavior : CombatBehavior
         StatForceAmeText.text = Stat.ForceAme + "";
 
         if (Stat.ForceAme > Stat.ForceAmeOriginal)
-            StatForceAmeText.color = green;
+            StatForceAmeText.color = new Color(147, 250, 165);
         else if (Stat.ForceAme < Stat.ForceAmeOriginal)
             StatForceAmeText.color = red;
         else
@@ -127,7 +127,7 @@ public class JoueurBehavior : CombatBehavior
             StatResilienceText.color = red;
         else
             StatResilienceText.color = Color.white;
-
+        StatForceAmeText.SetAllDirty();
     }
 
     public void StartPhase()
@@ -184,6 +184,12 @@ public class JoueurBehavior : CombatBehavior
     {
         _refBattleMan.DeadPlayer();
     }
+
+    public void FinCombat()
+    {
+        ResetStat();
+    }
+
 
     #endregion Divers start & fin
 
@@ -387,6 +393,7 @@ public class JoueurBehavior : CombatBehavior
 
         }
     }
+
 
     #endregion BuffDebuff
 
