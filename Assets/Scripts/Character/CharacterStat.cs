@@ -28,9 +28,9 @@ public class CharacterStat : ScriptableObject
 
     public int Resilience
     {
-        get => Mathf.FloorToInt(ResilienceBonus);
+        get => _resilience + Mathf.FloorToInt(ResilienceBonus);
 
-        set => ResilienceBonus = value;
+        set => _resilience = value;
     }
 
     private int _resilience;

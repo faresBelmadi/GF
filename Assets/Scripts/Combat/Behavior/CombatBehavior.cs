@@ -21,7 +21,6 @@ public class CombatBehavior : MonoBehaviour
 
     public int LastDamageTaken;
     public bool gainedTension;
-    public bool isSecondTurn = false;
 
     public void AddBuffDebuff(BuffDebuff toAdd)
     {
@@ -66,8 +65,6 @@ public class CombatBehavior : MonoBehaviour
 
     public List<BuffDebuff> DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte Timer)
     {
-        if (isSecondTurn)
-            return BuffDebuff;
         foreach (var item in BuffDebuff)
         {
             if (item.Decompte == Timer)

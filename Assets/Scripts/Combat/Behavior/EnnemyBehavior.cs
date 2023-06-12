@@ -48,7 +48,6 @@ public class EnnemyBehavior : CombatBehavior
             Stat.Buff = Instantiate(Stat.Buff);
         if (Stat.Debuff != null)
             Stat.Debuff = Instantiate(Stat.Debuff);
-        isSecondTurn = false;
     }
 
     public void ResetStat()
@@ -100,8 +99,6 @@ public class EnnemyBehavior : CombatBehavior
         if (!skip)
             EndAnimBool();
         ChooseNextAction();
-        if (isSecondTurn)
-            isSecondTurn = false;
         EndTurnBM();
 
     }
@@ -166,7 +163,6 @@ public class EnnemyBehavior : CombatBehavior
     {
         if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
         {
-            isSecondTurn = true;
             return true;
         }
         return false;
@@ -353,8 +349,6 @@ public class EnnemyBehavior : CombatBehavior
 
     public void ApplicationBuffDebuff(TimerApplication Timer)
     {
-        if (isSecondTurn)
-            return;
         skip = false;
         ResetStat();
         foreach (var item in Stat.ListBuffDebuff)

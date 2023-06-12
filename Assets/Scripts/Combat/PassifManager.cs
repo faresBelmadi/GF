@@ -21,7 +21,7 @@ public class PassifManager
 
     public void ResolvePassifs()
     {
-        
+
         foreach (var behavior in _currentBattleEnemy)
         {
             foreach (var item in behavior.Stat.ListPassif)
@@ -106,7 +106,4 @@ public class PassifManager
         }
 
     }
-
-
-
 }

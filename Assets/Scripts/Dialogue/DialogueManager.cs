@@ -226,6 +226,7 @@ public class DialogueManager : MonoBehaviour
             enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat));
         }
     }    
+
     private void ApplyEffectOneEnnemi(Effet scriptableObject)
     {
         var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0,ManagerBattle.EnemyScripts.Count)];
