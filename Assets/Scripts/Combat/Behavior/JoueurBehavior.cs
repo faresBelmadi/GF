@@ -171,7 +171,7 @@ public class JoueurBehavior : CombatBehavior
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
-        Stat.Resilience = Stat.ResilienceOriginal;
+        //Stat.Resilience = Stat.ResilienceOriginal;
         Stat.ForceAme = Stat.ForceAmeOriginal;
         Stat.Conviction = Stat.ConvictionOriginal;
 
