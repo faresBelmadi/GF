@@ -219,7 +219,7 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.DamageUpTargetLowRadiance:
                 percent = Pourcentage;
-                if (((Cible.Radiance / Cible.RadianceMax) * 100) <= 25)
+                if (((float)Cible.Radiance / (float)Cible.RadianceMax) <= 0.25f)
                     percent *= 3;
                 ModifState.Radiance +=
                     Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
