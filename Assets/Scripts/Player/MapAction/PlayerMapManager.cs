@@ -90,6 +90,9 @@ public class PlayerMapManager : MonoBehaviour
                 StartCoroutine("LoadSceneAsync", "BattleScene Boss");
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
+            case TypeRoom.LevelUp:
+                StartLevelUp();
+                break;
             //case TypeRoom.Heal:
             //    StartCoroutine("LoadSceneAsync", "Autel");
             //    break;
@@ -126,6 +129,9 @@ public class PlayerMapManager : MonoBehaviour
                 break;
             case "BattleScene Boss":
                 StartBattle("boss");
+                break;
+            case "LevelUp":
+                
                 break;
             //case "AleaScene":
             //    StartAlea();
@@ -190,6 +196,12 @@ public class PlayerMapManager : MonoBehaviour
         GameManager.instance.AleaMan = null;
         MenuCamera.SetActive(true);
         yield return SceneManager.UnloadSceneAsync(s);
+    }
+
+    void StartLevelUp()
+    {
+        UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
+        uiMondeManager.EnableSkillTree();
     }
 
     void StartAutel()

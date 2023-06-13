@@ -34,6 +34,11 @@ public class ArbreManager : MonoBehaviour
         EnabledCompetence();
     }
 
+    private void OnEnable()
+    {
+        StartArbreMenuStat(GameManager.instance.playerStat);
+    }
+
     public void StartArbreMenuStat(JoueurStat _Stat)
     {
         Stat = _Stat;
@@ -42,11 +47,11 @@ public class ArbreManager : MonoBehaviour
         InstantiateSpell();
         InstantiateArbre();
         TextStat();
-        for (int i = 0; i < PanelCompetence.Count; i++)
-        {
-            PanelCompetence[i].GetComponent<ContainerCompetence>().Consultation();
-        }
-        this.GetComponentInChildren<ReorderableList>().IsDraggable = false;
+        //for (int i = 0; i < PanelCompetence.Count; i++)
+        //{
+        //    PanelCompetence[i].GetComponent<ContainerCompetence>().Consultation();
+        //}
+        //this.GetComponentInChildren<ReorderableList>().IsDraggable = false;
 
     }
 
@@ -83,14 +88,19 @@ public class ArbreManager : MonoBehaviour
 
     public void InstantiateArbre()
     {
-        for (int i = 1; i < PanelCompetence.Count; i++)
+        //PanelCompetence[0].GetComponent<ContainerCompetence>().LaCompetence = Class.First(c => c.Spell.name == i);
+        //PanelCompetence[0].GetComponent<ContainerCompetence>().Affichage();
+        //ContainerCompetence temp = PanelCompetence[0].GetComponent<ContainerCompetence>();
+        //PanelCompetence[0].GetComponent<ContainerCompetence>().ButtonBuy.onClick.AddListener(() => { Buy(temp); });
+        for (int i = 0; i < PanelCompetence.Count; i++)
         {
             PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence = Class.First(c => c.IDLvl == i);
             PanelCompetence[i].GetComponent<ContainerCompetence>().Affichage();
             ContainerCompetence temp = PanelCompetence[i].GetComponent<ContainerCompetence>();
+            //PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonBuy.onClick.AddListener(() => { Buy(PanelCompetence[i].GetComponent<ContainerCompetence>()); });
             PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonBuy.onClick.AddListener(() => { Buy(temp); });
-            PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.onClick.AddListener(() => { Equip(temp); });
-            PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonUnEquip.onClick.AddListener(() => { UnEquip(temp); });
+            //PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.onClick.AddListener(() => { Equip(temp); });
+            //PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonUnEquip.onClick.AddListener(() => { UnEquip(temp); });
         }
         UpdateCout();
     }
@@ -148,22 +158,22 @@ public class ArbreManager : MonoBehaviour
 
     public void Update()
     {
-        if (SpellEquiped.Count == NbMaxSpell)
-        {
-            for (int i = 0; i < PanelCompetence.Count; i++)
-            {
-                PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.interactable = false;
-            }
-        }
-        else
-        {
-            for (int i = 0; i < PanelCompetence.Count; i++)
-            {
-                PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.interactable = true;
-            }
-        }
-        if (SpellEquiped == null)
-            return;
+        //if (SpellEquiped.Count == NbMaxSpell)
+        //{
+        //    for (int i = 0; i < PanelCompetence.Count; i++)
+        //    {
+        //        PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.interactable = false;
+        //    }
+        //}
+        //else
+        //{
+        //    for (int i = 0; i < PanelCompetence.Count; i++)
+        //    {
+        //        PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonEquip.interactable = true;
+        //    }
+        //}
+        //if (SpellEquiped == null)
+        //    return;
         //SpellEquipedText.text = "Sort Equiper : " + SpellEquiped.Count + "/" + NbMaxSpell;
     }
 
@@ -182,6 +192,7 @@ public class ArbreManager : MonoBehaviour
         UpdateCout();
         TextStat();
         EnabledCompetence();
+        Equip(Competence);
     }
 
     public void Equip(ContainerCompetence Competence)
@@ -200,6 +211,8 @@ public class ArbreManager : MonoBehaviour
 
         Competence.ButtonEquip.gameObject.SetActive(false);
         Competence.ButtonUnEquip.gameObject.SetActive(true);
+        UiMondeManager ui = GameManager.instance.rm.gameObject.GetComponent<UiMondeManager>();
+        ui.EnableMonde();
     }
 
     public void UnEquip(ContainerCompetence Competence)

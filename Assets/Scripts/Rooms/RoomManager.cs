@@ -11,6 +11,7 @@ public class RoomManager : MonoBehaviour
     public Sprite SalleCombatBoss;
     public Sprite SalleCombatElite;
     public Sprite SalleCombatNormal;
+    public Sprite SalleLevelUp;
     public Sprite SalleHeal;
     public Sprite SalleAlea;
     public Sprite SalleStart;
@@ -29,20 +30,28 @@ public class RoomManager : MonoBehaviour
         Room start = Rooms.Find(c => c.isStart == true);
 
         start.ToSet = SalleStart;
-        start.gameObject.transform.localScale = new Vector3(15, 15);
+        start.gameObject.transform.localScale = new Vector3(10, 10);
         start.Type = TypeRoom.Spawn;
 
+        //Rooms[1].ToSet = SalleLevelUp;
+        //Rooms[1].gameObject.transform.localScale = new Vector3(10, 10);
+        //Rooms[1].Type = TypeRoom.LevelUp;
+
         Rooms[1].ToSet = SalleCombatNormal;
-        Rooms[1].gameObject.transform.localScale = new Vector3(15, 15);
+        Rooms[1].gameObject.transform.localScale = new Vector3(10, 10);
         Rooms[1].Type = TypeRoom.CombatNormal;
 
-        Rooms[2].ToSet = SalleCombatElite;
-        Rooms[2].gameObject.transform.localScale = new Vector3(15, 15);
-        Rooms[2].Type = TypeRoom.CombatElite;
+        Rooms[2].ToSet = SalleLevelUp;
+        Rooms[2].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[2].Type = TypeRoom.LevelUp;
 
-        Rooms[3].ToSet = SalleCombatBoss;
-        Rooms[3].gameObject.transform.localScale = new Vector3(15, 15);
-        Rooms[3].Type = TypeRoom.CombatBoss;
+        Rooms[3].ToSet = SalleCombatElite;
+        Rooms[3].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[3].Type = TypeRoom.CombatElite;
+
+        Rooms[4].ToSet = SalleCombatBoss;
+        Rooms[4].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[4].Type = TypeRoom.CombatBoss;
         
         GameManager.instance.SetRoom(start);
     }

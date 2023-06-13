@@ -10,6 +10,7 @@ public enum TypeRoom
     CombatNormal,
     CombatElite,
     CombatBoss,
+    LevelUp,
     Event,
     Heal,
     Spawn,
