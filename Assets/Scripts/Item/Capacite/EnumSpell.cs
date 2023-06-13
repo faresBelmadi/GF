@@ -136,6 +136,7 @@ public enum TypeEffet
     OnKillStunAll=58,
     AugmentationFARadianceManquante=59,
     DamageFaBuff=60,
+    DamageDebuffCible = 75,
     RemoveAllTensionProcDamage=61,
     RemoveAllDebuffProcBuffDebuf=62,
     RemoveAllDebuffSelfProcBuffDebuf=63,

@@ -244,7 +244,11 @@ public class Effet : ScriptableObject
                 var nbBuffCaster = Caster.ListBuffDebuff.Count(x => !x.IsDebuff);
                 ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbBuffCaster);
                 break;
-
+                
+            case TypeEffet.DamageDebuffCible:
+                var nbDebuffCible = Cible.ListBuffDebuff.Count(x => x.IsDebuff);
+                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbDebuffCible);
+                break;
             //case TypeEffet.RemoveAllTensionProcDamage:
             //    ModifState.Tension = 0;
             //    break;
