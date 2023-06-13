@@ -246,8 +246,8 @@ public class Effet : ScriptableObject
                 break;
                 
             case TypeEffet.DamageDebuffCible:
-                var nbDebuffCible = Cible.ListBuffDebuff.Count(x => x.IsDebuff);
-                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbDebuffCible);
+                var nbDebuffCibleDamage = Cible.ListBuffDebuff.Count(x => x.IsDebuff);
+                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbDebuffCibleDamage);
                 break;
             //case TypeEffet.RemoveAllTensionProcDamage:
             //    ModifState.Tension = 0;
