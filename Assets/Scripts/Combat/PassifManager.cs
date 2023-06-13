@@ -82,7 +82,7 @@ public class PassifManager
         {
             foreach (var item in behavior.Stat.ListPassif)
             {
-                if (item.timerPassif == CurrentEvent && behavior.IsTurn == true)
+                if (item.timerPassif == CurrentEvent)
                 {
                     switch (item.passif)
                     {
