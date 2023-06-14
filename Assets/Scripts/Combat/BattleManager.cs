@@ -459,6 +459,7 @@ public class BattleManager : MonoBehaviour
 
                 break;
             case Cible.ennemi:
+
                 if (Caster == target)
                 {
                     EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
@@ -466,8 +467,9 @@ public class BattleManager : MonoBehaviour
                 else
                 {
                     if (target != -1)
-                        EnemyScripts.First(c => c.combatID == target)
-                            .ApplicationEffet(effet, player.Stat, source, Caster);
+                    {
+                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source, Caster);
+                    }
                     else
                     {
                         int index = Caster;

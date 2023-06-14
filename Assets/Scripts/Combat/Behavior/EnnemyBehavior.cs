@@ -78,8 +78,8 @@ public class EnnemyBehavior : CombatBehavior
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
         _refBattleMan.PassifManager.ResolvePassifs();
         DecompteDebuffEnnemi(Decompte.tour, TimerApplication.DebutTour);
-        
-        if(!gainedTension)
+
+        if (!gainedTension)
         {
             ApaisementTension();
         }
@@ -192,7 +192,7 @@ public class EnnemyBehavior : CombatBehavior
         }
         if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
             Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
-        if(Stat.Tension < 0)
+        if (Stat.Tension < 0)
             Stat.Tension = 0;
     }
 
@@ -290,7 +290,7 @@ public class EnnemyBehavior : CombatBehavior
         LaunchAnimBool();
         _refBattleMan.LaunchSpellEnnemi(nextAction);
     }
-    
+
     public void EndAttackAnimation()
     {
         Debug.Log("commencement des degats");
@@ -332,7 +332,7 @@ public class EnnemyBehavior : CombatBehavior
             Stat.ListBuffDebuff.Add(Instantiate(toAdd));
             base.AddBuffDebuff(toAdd);
         }
-        
+
         ApplicationBuffDebuff(Timer);
 
         UpdateUI();
@@ -393,11 +393,21 @@ public class EnnemyBehavior : CombatBehavior
         JoueurStat ModifStat;
         if (Caster == null)
         {
-            var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
-            if (caster != null)
-                ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken);
+            if (idCaster == 0)
+            {
+                Caster = _refBattleMan.player.Stat;
+                ModifStat = effet.ResultEffet(Caster, LastDamageTaken, this.Stat);
+            }
             else
-                ModifStat = effet.ResultEffet(Stat, LastDamageTaken);
+            {
+                var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
+                if (caster != null)
+                    ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken);
+                else
+                    ModifStat = effet.ResultEffet(Stat, LastDamageTaken);
+
+            }
+
         }
         else
         {

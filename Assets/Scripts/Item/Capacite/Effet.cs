@@ -46,7 +46,7 @@ public class Effet : ScriptableObject
                 ModifState.ConscienceMax += valueToChange;
                 break;
             default:
-                ModifState = ResultEffetCommun(Caster,LastDamageTake);
+                ModifState = ResultEffetCommun(Caster, LastDamageTake);
                 break;
         }
         modifstate = ModifState;
@@ -103,10 +103,20 @@ public class Effet : ScriptableObject
                 ModifState.ForceAme += valueToChange;
                 break;
             case TypeEffet.RadianceMax:
-                var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMax);
-                ModifState.RadianceMax += radianceModifier;
-                if (Caster.RadianceMax == Caster.Radiance)
-                    ModifState.Radiance += radianceModifier;
+                if (Cible == null)
+                {
+                    var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMax);
+                    ModifState.RadianceMax += radianceModifier;
+                    if (Caster.RadianceMax == Caster.Radiance)
+                        ModifState.Radiance += radianceModifier;
+                }
+                else
+                {
+                    var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.RadianceMax);
+                    ModifState.RadianceMax += radianceModifier;
+                    if (Cible.RadianceMax == Cible.Radiance)
+                        ModifState.Radiance += radianceModifier;
+                }
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:
                 ModifState.ForceAme += Mathf.FloorToInt((Pourcentage / 100f) * LastDamageTaken);
@@ -174,7 +184,7 @@ public class Effet : ScriptableObject
             case TypeEffet.ConsommeTensionAugmentationFA:
                 ModifState.Tension += -Cible.Tension;
                 var toAdd = Instantiate(FindObjectsOfType<BuffDebuff>().First(c => c.Nom == "Tension convertis en FA"));
-                toAdd.Effet.First().Pourcentage = (int) Cible.Tension;
+                toAdd.Effet.First().Pourcentage = (int)Cible.Tension;
                 Caster.ListBuffDebuff.Add(toAdd);
                 break;
             case TypeEffet.RemoveDebuff:
@@ -244,7 +254,7 @@ public class Effet : ScriptableObject
                 var nbBuffCaster = Caster.ListBuffDebuff.Count(x => !x.IsDebuff);
                 ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbBuffCaster);
                 break;
-                
+
             case TypeEffet.DamageDebuffCible:
                 var nbDebuffCibleDamage = Cible.ListBuffDebuff.Count(x => x.IsDebuff);
                 ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbDebuffCibleDamage);
@@ -294,10 +304,15 @@ public class Effet : ScriptableObject
                     Caster.Radiance = Caster.RadianceMax;
                 ModifState.Radiance += -amountPonction;
                 break;
+            case TypeEffet.DamageAllEvenly:
+
+                ModifState.Radiance +=
+                    Mathf.FloorToInt((((((float)Pourcentage / GameManager.instance.BattleMan.EnemyScripts.Count) / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+                break;
             default:
                 break;
         }
-        
+
         modifstate = ModifState as JoueurStat;
         return ModifState;
     }
