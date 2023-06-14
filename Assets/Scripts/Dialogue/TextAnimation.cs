@@ -24,9 +24,11 @@ public class TextAnimation : MonoBehaviour
 
     IEnumerator ShowLetterByLetter()
     {
-        for(int i=index; i <= originalTexte.Length; i++)
+        for(int i=index; i <= originalTexte.Length; i+=2)
         {
             TextAttached.text = originalTexte.Substring(0, i);
+            if(i+2 > originalTexte.Length)
+                i= originalTexte.Length-2;
             yield return new WaitForSeconds(delai);
         }
     }
