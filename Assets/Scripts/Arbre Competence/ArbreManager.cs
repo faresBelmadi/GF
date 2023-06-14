@@ -211,6 +211,9 @@ public class ArbreManager : MonoBehaviour
 
         Competence.ButtonEquip.gameObject.SetActive(false);
         Competence.ButtonUnEquip.gameObject.SetActive(true);
+
+        GameManager.instance.playerStat.ListSpell.Add(Competence.LaCompetence.Spell);
+
         UiMondeManager ui = GameManager.instance.rm.gameObject.GetComponent<UiMondeManager>();
         ui.EnableMonde();
     }
