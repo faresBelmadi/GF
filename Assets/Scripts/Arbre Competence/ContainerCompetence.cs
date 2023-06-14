@@ -12,12 +12,14 @@ public class ContainerCompetence : MonoBehaviour, IPointerEnterHandler, IPointer
     public TextMeshProUGUI NomSpell, Stat, Cout;
     public Button ButtonBuy, ButtonEquip, ButtonUnEquip;
     public GameObject ZoneDescription, AffichageAchat;
+    public Image SpellSprite;
 
     #region Affichage
 
     public void Affichage()
     {
         NomSpell.text = "Spell :\n" + LaCompetence.Spell.Nom.ToString();
+        SpellSprite.sprite = LaCompetence.Spell.Sprite;
         Stat.text = "";
         foreach(var item in LaCompetence.ModifStat)
         {
