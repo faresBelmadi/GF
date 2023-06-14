@@ -88,7 +88,7 @@ public class JoueurBehavior : CombatBehavior
         else if (Stat.Clairvoyance < Stat.ClairvoyanceOriginal)
             StatClairvoyanceText.color = red;
         else
-            StatClairvoyanceText.color = Color.white;
+            StatClairvoyanceText.color = Color.black;
 
 
         StatForceAmeText.text = Stat.ForceAme + "";
@@ -98,7 +98,7 @@ public class JoueurBehavior : CombatBehavior
         else if (Stat.ForceAme < Stat.ForceAmeOriginal)
             StatForceAmeText.color = red;
         else
-            StatForceAmeText.color = Color.white;
+            StatForceAmeText.color = Color.black;
 
         StatSpeedText.text = Stat.Vitesse + "";
 
@@ -107,7 +107,7 @@ public class JoueurBehavior : CombatBehavior
         else if (Stat.Vitesse < Stat.VitesseOriginal)
             StatSpeedText.color = red;
         else
-            StatSpeedText.color = Color.white;
+            StatSpeedText.color = Color.black;
 
         StatConvictionText.text = Stat.Conviction + "";
 
@@ -116,7 +116,7 @@ public class JoueurBehavior : CombatBehavior
         else if (Stat.Conviction < Stat.ConvictionOriginal)
             StatConvictionText.color = red;
         else
-            StatConvictionText.color = Color.white;
+            StatConvictionText.color = Color.black;
 
         StatResilienceText.text = Stat.Resilience + "";
 
@@ -125,7 +125,7 @@ public class JoueurBehavior : CombatBehavior
         else if (Stat.Resilience < Stat.ResilienceOriginal)
             StatResilienceText.color = red;
         else
-            StatResilienceText.color = Color.white;
+            StatResilienceText.color = Color.black;
         StatForceAmeText.SetAllDirty();
     }
 
