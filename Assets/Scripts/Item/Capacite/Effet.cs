@@ -107,15 +107,12 @@ public class Effet : ScriptableObject
                 {
                     var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMax);
                     ModifState.RadianceMax += radianceModifier;
-                    if (Caster.RadianceMax == Caster.Radiance)
-                        ModifState.Radiance += radianceModifier;
+                    
                 }
                 else
                 {
                     var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.RadianceMax);
                     ModifState.RadianceMax += radianceModifier;
-                    if (Cible.RadianceMax == Cible.Radiance)
-                        ModifState.Radiance += radianceModifier;
                 }
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:

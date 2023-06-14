@@ -86,13 +86,15 @@ public class CharacterStat : ScriptableObject
             this.Radiance += ModifState.Radiance;
         }
         else
+        {
             this.Radiance += ModifState.Radiance;
-        this.Radiance = this.Radiance > this.RadianceMax ? this.RadianceMax : this.Radiance;
+        }
+        
     }
 
     public void RectificationStat()
     {
-        if (this.Radiance > this.RadianceMax)
+        if (this.Radiance > this.RadianceMax && RadianceMax > 0)
         {
             this.Radiance = this.RadianceMax;
         }
@@ -106,14 +108,26 @@ public class CharacterStat : ScriptableObject
         }
         if (this.Resilience > this.ResilienceMax)
         {
-            this.Resilience = this.ResilienceMax;
+            this.Resilience = this.ResilienceMax - (int)ResilienceBonus;
         }
         else if (this.Resilience < this.ResilienceMin)
         {
-            this.Resilience = this.ResilienceMin;
+            this.Resilience = this.ResilienceMin + (int)ResilienceBonus;
         }
 
         if (this.ForceAme < 0)
             this.ForceAme = 0;
+    }
+
+    internal void setZero()
+    {
+        this.Calme = 0;
+        this.Conviction = 0;
+        this.Resilience = 0;
+        this.Essence = 0;
+        this.ForceAme = 0;
+        this.Radiance = 0;
+        this.ResilienceBonus= 0;
+        this.RadianceMax = 0;
     }
 }

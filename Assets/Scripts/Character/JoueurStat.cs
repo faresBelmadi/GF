@@ -41,10 +41,21 @@ public class JoueurStat : CharacterStat
         }
         base.RectificationStat();
     }
+    
+    public new void setZero()
+    {
+        this.Volonter = 0;
+        this.Conscience = 0;
+        this.ConscienceMax = 0;
+        this.Clairvoyance = 0;
+        this.VolonterMax= 0;
+        base.setZero();
+    }
 
     public static JoueurStat CreateFromCharacter(CharacterStat ToCreate)
     {
         JoueurStat ToReturn = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        ToReturn.setZero();
         ToReturn.ModifStateAll(ToCreate);
         return ToReturn;
     }
