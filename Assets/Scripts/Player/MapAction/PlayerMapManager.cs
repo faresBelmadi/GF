@@ -87,8 +87,10 @@ public class PlayerMapManager : MonoBehaviour
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
             case TypeRoom.CombatBoss:
-                StartCoroutine("LoadSceneAsync", "BattleScene Boss");
-                _currentRoom.Type = TypeRoom.Visited;
+                SceneManager.LoadScene("MainMenu");
+                Destroy(GameManager.instance.gameObject);
+                //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
+                
                 break;
             case TypeRoom.LevelUp:
                 StartLevelUp();
