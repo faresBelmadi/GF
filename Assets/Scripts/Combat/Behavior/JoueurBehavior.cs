@@ -245,12 +245,11 @@ public class JoueurBehavior : CombatBehavior
 
     public bool CanHaveAnotherTurn()
     {
-        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
-        {
-            Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
-            return true;
-        }
-        return false;
+        bool can = false;
+        var maxTension = (Stat.ValeurPalier * Stat.NbPalier);
+        if (Stat.Tension >= maxTension)
+            can = true;
+        return can;
     }
 
     #endregion Tension
