@@ -63,8 +63,17 @@ public class CharacterStat : ScriptableObject
     {
         if (ModifState.MultiplDef != 1)
         {
-            var multiplicateurDef = ModifState.MultiplDef % 1;
-            this.MultiplDef += multiplicateurDef;
+            if (ModifState.MultiplDef > 1)
+            {
+                var multiplicateurDef = ModifState.MultiplDef % 1;
+                this.MultiplDef += multiplicateurDef;
+
+            }
+            else
+            {
+                var multiplicateurDef = ModifState.MultiplDef - 1;
+                this.MultiplDef += multiplicateurDef;
+            }
         }
         if (ModifState.MultiplSoin != 1)
             this.MultiplSoin = ModifState.MultiplSoin;
