@@ -28,6 +28,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void SetUp()
     {
+        _refBattleMan = GameManager.instance.BattleMan;
         UICombat = this.GetComponent<UIEnnemi>();
         UpdateUI();
 
@@ -68,7 +69,6 @@ public class EnnemyBehavior : CombatBehavior
 
     public void StartPhase()
     {
-        _refBattleMan = GameManager.instance.BattleMan;
         DecompteDebuffEnnemi(Decompte.phase, TimerApplication.DebutPhase);
     }
 
