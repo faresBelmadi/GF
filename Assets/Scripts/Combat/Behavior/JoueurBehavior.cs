@@ -421,6 +421,7 @@ public class JoueurBehavior : CombatBehavior
             var toRemove = Mathf.FloorToInt(ModifStat.Radiance / Stat.MultiplDef);
             toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
+            getAttacked();
         }
 
         if(effet.IsFirstApplication && effet.TypeEffet == TypeEffet.RadianceMax)
@@ -485,5 +486,16 @@ public class JoueurBehavior : CombatBehavior
         ReceiveTension(source);
     }
 
+
     #endregion Essence
+
+    public void getAttacked()
+    {
+        AnimationController.GetAttacked();
+    }
+    
+    public void endHurtAnim()
+    {
+        AnimationController.EndAnimAttack();
+    }
 }

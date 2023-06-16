@@ -740,6 +740,12 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    public void EndHurtAnimPlayer()
+    {
+        
+        player.endHurtAnim();
+    }
+
     #endregion Animation
 
 }
