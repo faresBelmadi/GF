@@ -229,7 +229,7 @@ public class DialogueManager : MonoBehaviour
 
     private void ApplyBuffDebuffOnPlayer(BuffDebuff scriptableObject)
     {
-        ManagerBattle.player.Stat.ListBuffDebuff.Add(Instantiate(scriptableObject));
+        ManagerBattle.player.AddDebuff(Instantiate(scriptableObject),scriptableObject.Decompte,scriptableObject.timerApplication);
         ManagerBattle.player.AddBuffDebuff(scriptableObject);
     }
 
@@ -237,14 +237,14 @@ public class DialogueManager : MonoBehaviour
     {
         foreach (var enemyScript in ManagerBattle.EnemyScripts)
         {
-            enemyScript.Stat.ListBuffDebuff.Add(Instantiate(scriptableObject));
+            enemyScript.AddDebuff(Instantiate(scriptableObject),scriptableObject.Decompte,scriptableObject.timerApplication);
             enemyScript.AddBuffDebuff(scriptableObject);
         }
     }   
     private void ApplyBuffDebuffOneEnnemi(BuffDebuff scriptableObject)
     {
         var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0,ManagerBattle.EnemyScripts.Count)];
-            enemyScript.Stat.ListBuffDebuff.Add(Instantiate(scriptableObject));
+            enemyScript.AddDebuff(Instantiate(scriptableObject),scriptableObject.Decompte,scriptableObject.timerApplication);
             enemyScript.AddBuffDebuff(scriptableObject);
     }
 

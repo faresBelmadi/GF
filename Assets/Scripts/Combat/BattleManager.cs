@@ -156,6 +156,7 @@ public class BattleManager : MonoBehaviour
 
     void DialogueEnableSetup()
     {
+        player._refBattleMan = this;
         PassifManager = new PassifManager(new List<JoueurBehavior> { player }, EnemyScripts);
         DialogueManager.SetupDialogue(_encounter);
     }

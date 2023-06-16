@@ -38,13 +38,15 @@ public class JoueurBehavior : CombatBehavior
 
     public AnimationControllerAttack AnimationController;
 
-    private BattleManager _refBattleMan;
+    public BattleManager _refBattleMan;
     public bool IsTurn;
 
     #region Divers start & fin
 
+
     public void StartUp()
     {
+        
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.ClairvoyanceOriginal = Stat.Clairvoyance;
@@ -131,7 +133,6 @@ public class JoueurBehavior : CombatBehavior
 
     public void StartPhase()
     {
-        _refBattleMan = GameManager.instance.BattleMan;
         //ResetStat();
         DecompteDebuffJoueur(Decompte.phase, TimerApplication.DebutPhase);
         UpdateUI();
@@ -332,7 +333,14 @@ public class JoueurBehavior : CombatBehavior
             {
                 ReceiveTension(Source.Buff);
             }
-            Stat.ListBuffDebuff.Add(Instantiate(toAdd));
+            var buff = Instantiate(toAdd);
+            buff.Effet = new List<Effet>();
+            foreach (var item in toAdd.Effet)
+            {
+                buff.Effet.Add(Instantiate(item));
+            }
+
+            Stat.ListBuffDebuff.Add(buff);
             base.AddBuffDebuff(toAdd);
         }
        
