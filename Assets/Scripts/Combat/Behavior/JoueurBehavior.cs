@@ -415,11 +415,19 @@ public class JoueurBehavior : CombatBehavior
             ModifStat.Radiance = toRemove;
         }
 
+        if(effet.IsFirstApplication && effet.TypeEffet == TypeEffet.RadianceMax)
+        {
+            effet.IsFirstApplication = false;
+            ModifStat.Radiance += ModifStat.RadianceMax;
+        }
+
         Stat.ModifStateAll(ModifStat);
         if (ModifStat.PalierChangement > 0)
             EnervementTension();
         else if (ModifStat.PalierChangement < 0)
             ApaisementTension();
+
+
 
         if (ModifStat.Radiance < 0)
         {

@@ -421,6 +421,12 @@ public class EnnemyBehavior : CombatBehavior
             ModifStat.Radiance = toRemove;
         }
 
+        if(effet.IsFirstApplication && effet.TypeEffet == TypeEffet.RadianceMax)
+        {
+            effet.IsFirstApplication = false;
+            ModifStat.Radiance += ModifStat.RadianceMax;
+        }
+
         Stat.ModifStateAll(ModifStat);
         Stat.RectificationStat();
 

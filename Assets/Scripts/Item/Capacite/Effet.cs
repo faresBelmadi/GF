@@ -17,6 +17,7 @@ public class Effet : ScriptableObject
     public int NbAttaque;
     private int TimeAlive = 1;
     public bool IsAttaqueEffet;
+    public bool IsFirstApplication = true;
     public BuffDebuff AfterEffectToApply;
 
     [SerializeField]
