@@ -10,7 +10,10 @@ public class StartGame : MonoBehaviour
     {
         PlayerPrefs.SetInt("ClassSelected", classe);
         SceneManager.LoadSceneAsync(1);
+    }
 
-
+    public void Button_Quit()
+    {
+        Application.Quit();
     }
 }
