@@ -419,6 +419,7 @@ public class EnnemyBehavior : CombatBehavior
             var toRemove = Mathf.FloorToInt(ModifStat.Radiance / Stat.MultiplDef);
             toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
+            GetAttacked();
         }
 
         if(effet.IsFirstApplication && effet.TypeEffet == TypeEffet.RadianceMax)
