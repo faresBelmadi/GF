@@ -267,16 +267,18 @@ public class GameManager : MonoBehaviour {
 
     public void DeadPlayer()
     {
-        loadedData.CurrentRun.Ended =true;
-        SaveGame();
-        LoadSave();
-        StartCoroutine(Reload());
+        //loadedData.CurrentRun.Ended =true;
+        //SaveGame();
+        //LoadSave();
+        //StartCoroutine(Reload());
+        SceneManager.LoadScene("MainMenu");
+        Destroy(GameManager.instance.gameObject);
     }
 
-    IEnumerator Reload()
+    public IEnumerator Reload()
     {
         yield return SceneManager.UnloadSceneAsync(1);
-        yield return SceneManager.LoadSceneAsync(1);
+        yield return SceneManager.LoadSceneAsync(0);
         pmm = FindObjectOfType<PlayerMapManager>();
         rm = FindObjectOfType<RoomManager>();
     }

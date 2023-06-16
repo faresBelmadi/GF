@@ -422,6 +422,7 @@ public class EnnemyBehavior : CombatBehavior
         }
 
         Stat.ModifStateAll(ModifStat);
+        Stat.RectificationStat();
 
         if (ModifStat.PalierChangement > 0)
             EnervementTension();
