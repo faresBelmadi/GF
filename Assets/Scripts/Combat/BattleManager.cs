@@ -655,6 +655,7 @@ public class BattleManager : MonoBehaviour
     {
         if (EnemyScripts.FirstOrDefault(c => c.combatID == id) != null)
         {
+            
             nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true);
             IdOrder.RemoveAll(c => c.id == id);
             IdSpeedDictionary.Remove(id);
@@ -664,14 +665,16 @@ public class BattleManager : MonoBehaviour
             SpawnedEnemy.Remove(todestroy);
             Destroy(todestroy);
 
-            if (currentIdTurn == id && IdOrder.Count > 2)
-            {
-                currentIdTurn = IdOrder.FirstOrDefault(c => c.id != currentIdTurn && !c.Played).id;
-            }
-
             if (EnemyScripts.Count <= 0)
                 StartCoroutine("GatherEssence");
 
+            if (currentIdTurn == id && IdOrder.Count > 2)
+            {
+                var enemi = IdOrder.FirstOrDefault(c => c.id != currentIdTurn && !c.Played);
+                if (enemi != null)
+                    currentIdTurn = enemi.id;
+            }
+            EndTurn();
         }
     }
 
