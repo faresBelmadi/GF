@@ -496,7 +496,7 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    EnemyScripts.First(c => c.combatID == Caster).ApplicationEffet(effet, null, source, Caster);
+                    EnemyScripts.FirstOrDefault(c => c.combatID == Caster)?.ApplicationEffet(effet, null, source, Caster);
                 }
 
                 break;
