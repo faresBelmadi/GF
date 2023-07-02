@@ -260,6 +260,18 @@ public class JoueurBehavior : CombatBehavior
     private void DoAction(Spell toDo)
     {
         SelectedSpell = toDo;
+        foreach(GameObject spell in Spells)
+        {
+            var temp = spell.GetComponent<SpellCombat>();
+            if(temp.Action == toDo)
+            {
+                temp.selectedSpell.SetActive(true);
+            }
+            else
+            {
+                temp.selectedSpell.SetActive(false);
+            }
+        }
         TakeTarget();
     }
 
@@ -269,6 +281,12 @@ public class JoueurBehavior : CombatBehavior
         {
             item.GetComponent<SpellCombat>().isTurn = false;
         }
+
+        foreach(GameObject spell in Spells)
+        {
+            spell.GetComponent<SpellCombat>().selectedSpell.SetActive(false);
+        }
+
         EndTurnButton.interactable = false;
     }
 

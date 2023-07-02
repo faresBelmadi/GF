@@ -10,7 +10,7 @@ public class SpellCombat : MonoBehaviour
     public bool isTurn;
     public Spell Action;
     public Action<Spell> Act;
-
+    public GameObject selectedSpell;
     public Button button;
     public TextMeshProUGUI texte;
     public GameObject DescriptionObject;
