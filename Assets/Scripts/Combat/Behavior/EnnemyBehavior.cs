@@ -84,7 +84,13 @@ public class EnnemyBehavior : CombatBehavior
             ApaisementTension();
         }
         gainedTension = false;
-        if (!skip)
+        if (Stat.isStun)
+        {
+            Debug.Log("is stuned");
+            //Stat.isStun = false;
+            EndTurn();
+        }
+        if (!skip && !Stat.isStun)
         {
             DoAction();
         }

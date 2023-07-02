@@ -332,8 +332,28 @@ public class BattleManager : MonoBehaviour
             if (effet.AfterEffectToApply != null)
             {
                 player.UpdateBuffDebuffGameObject(player.Stat.ListBuffDebuff);
-                var ennemy = EnemyScripts.First(c => c.combatID == idTarget);
-                ennemy.UpdateBuffDebuffGameObject(ennemy.Stat.ListBuffDebuff);
+                var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == idTarget);
+                if (ennemy == null)
+                {
+                    Debug.Log("l'ennemi est mort");
+                    if (effet.AfterEffectToApply.Effet.Any(x=>x.TypeEffet == TypeEffet.OnKillStunAll))
+                    {
+                        effet.nbProcAfterEffect++;
+                    }
+                    foreach (var enemyScript in EnemyScripts)
+                    {
+                        enemyScript.UpdateBuffDebuffGameObject(enemyScript.Stat.ListBuffDebuff);
+                    }
+                    //if (effet.AfterEffectToApply.Effet.Any(x=>x.TypeEffet == TypeEffet.OnKillStunAll))
+                    //{
+                    //    //appliquer aux autre l'effet de stun
+
+                    //}
+                }
+                else
+                {
+                    ennemy?.UpdateBuffDebuffGameObject(ennemy.Stat.ListBuffDebuff);
+                }
                 ApplyAfterEffect(effet);
             }
         }
@@ -674,7 +694,8 @@ public class BattleManager : MonoBehaviour
                 if (enemi != null)
                     currentIdTurn = enemi.id;
             }
-            EndTurn();
+            if (currentIdTurn != idPlayer)
+                EndTurn();
         }
     }
 

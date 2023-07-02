@@ -58,6 +58,7 @@ public class CharacterStat : ScriptableObject
     public int nbAttaqueRecu = 0;
     public List<Passif> ListPassif;
     public Action ActionPassif;
+    public bool isStun = false;
 
     public void ModifStateAll(CharacterStat ModifState)
     {
@@ -98,6 +99,8 @@ public class CharacterStat : ScriptableObject
         {
             this.Radiance += ModifState.Radiance;
         }
+
+        this.isStun = ModifState.isStun;
         
     }
 
