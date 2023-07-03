@@ -123,4 +123,9 @@ public class AnimationControllerAttack : MonoBehaviour
         MainAnimator.SetBool("IsAttacked",false);
     }
 
+    public void SendAnimBuff(Action toDO)
+    {
+        MainAnimator.SetBool("Buff",true);
+        toDO.Invoke();
+    }
 }

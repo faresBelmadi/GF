@@ -710,7 +710,7 @@ public class BattleManager : MonoBehaviour
             item.EndTargetingMode();
         }
 
-        player.SendSpell();
+        player.SendSpell(true);
     }
 
     #endregion Targeting
@@ -719,7 +719,11 @@ public class BattleManager : MonoBehaviour
 
     public void LaunchAnimAttacked()
     {
-        EnemyScripts.First(c => c.combatID == idTarget).GetAttacked();
+        var tempEnemy = EnemyScripts.FirstOrDefault(c => c.combatID == idTarget);
+        if(tempEnemy != null)
+        {
+            tempEnemy.GetAttacked();
+        }
     }
 
     public void EndCurrentAttaque()

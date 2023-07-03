@@ -272,7 +272,28 @@ public class JoueurBehavior : CombatBehavior
                 temp.selectedSpell.SetActive(false);
             }
         }
-        TakeTarget();
+        bool isSelf = true;
+        foreach(var effet in SelectedSpell.ActionEffet)
+        {
+            if(effet.Cible != Cible.Self && effet.Cible != Cible.joueur)
+            {
+                isSelf = false;
+            }
+        }        
+        foreach(var buff in SelectedSpell.ActionBuffDebuff)
+        {
+            if(buff.CibleApplication != Cible.Self && buff.CibleApplication != Cible.joueur)
+            {
+                isSelf = false;
+            }
+        }
+        if(!isSelf)
+            TakeTarget();
+        else
+        {
+            _refBattleMan.idTarget = 0;
+            SendSpell(false);
+        }
     }
 
     public void DesactivateSpells()
@@ -323,11 +344,16 @@ public class JoueurBehavior : CombatBehavior
         }
     }
 
-    public void SendSpell()
+    public void SendSpell(bool attack)
     {
         Costs();
         DesactivateSpells();
-        AnimationController.StartAttack(AfterAnim);
+
+        if(attack)
+            AnimationController.StartAttack(AfterAnim);
+        else
+            AnimationController.SendAnimBuff(AfterAnim);
+
         _refBattleMan.LaunchAnimAttacked();
     }
 
