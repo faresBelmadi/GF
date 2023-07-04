@@ -152,6 +152,12 @@ public class JoueurBehavior : CombatBehavior
         }
         gainedTension = false;
         UpdateUI();
+        if (Stat.isStun)
+        {
+            Debug.Log("is stuned");
+            Stat.isStun = false;
+            EndTurn();
+        }
     }
 
     public void EndTurn()

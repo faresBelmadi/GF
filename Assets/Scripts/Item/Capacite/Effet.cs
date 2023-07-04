@@ -307,6 +307,9 @@ public class Effet : ScriptableObject
                 ModifState.Radiance +=
                     Mathf.FloorToInt((((((float)Pourcentage / GameManager.instance.BattleMan.EnemyScripts.Count) / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
+            case TypeEffet.OnKillStunAll:
+                ModifState.isStun = true;
+                break;
             default:
                 break;
         }
