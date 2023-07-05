@@ -50,7 +50,7 @@ public class JoueurBehavior : CombatBehavior
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.ClairvoyanceOriginal = Stat.Clairvoyance;
-        Stat.ResilienceOriginal = Stat.Resilience;
+        Stat.ResilienceOriginal = Stat.Resilience - (int)Stat.ResiliencePassif;
         Stat.ConvictionOriginal = Stat.Conviction;
         Stat.ForceAmeOriginal = Stat.ForceAme;
         foreach (var item in Stat.ListSpell)
@@ -178,7 +178,7 @@ public class JoueurBehavior : CombatBehavior
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
-        //Stat.Resilience = Stat.ResilienceOriginal;
+        Stat.Resilience = Stat.ResilienceOriginal;
         Stat.ForceAme = Stat.ForceAmeOriginal;
         Stat.Conviction = Stat.ConvictionOriginal;
 

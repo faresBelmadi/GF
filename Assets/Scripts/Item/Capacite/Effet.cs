@@ -123,7 +123,7 @@ public class Effet : ScriptableObject
                 ModifState.Vitesse += valueToChange;
                 break;
             case TypeEffet.Resilience:
-                ModifState.Resilience += valueToChange;
+                ModifState._resilience += valueToChange;
                 break;
             case TypeEffet.TensionStep:
                 ModifState.PalierChangement += valueToChange;
@@ -202,10 +202,8 @@ public class Effet : ScriptableObject
                                      Caster.ForceAme);
                 break;
             case TypeEffet.GainResilienceIncrementale:
-                ModifState.Resilience += ValeurBrut * TimeAlive;
+                ModifState._resilience += ValeurBrut * TimeAlive;
                 TimeAlive++;
-                if (ModifState.Resilience > 10)
-                    ModifState.Resilience = 10;
                 break;
             case TypeEffet.DamageLastPhase:
                 ModifState.Radiance += -GameManager.instance.BattleMan.LastPhaseDamage;
@@ -238,7 +236,7 @@ public class Effet : ScriptableObject
                 break;
 
             case TypeEffet.BuffResilienceCoupRecu:
-                ModifState.Resilience += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque));
+                ModifState._resilience += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque));
                 break;
             case TypeEffet.CancelPourcentageDamage:
                 ModifState.Radiance += Mathf.FloorToInt(valueToChange - ((Pourcentage / 100) * valueToChange));

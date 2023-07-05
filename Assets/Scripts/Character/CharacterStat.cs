@@ -28,14 +28,14 @@ public class CharacterStat : ScriptableObject
 
     public int Resilience
     {
-        get => _resilience + Mathf.FloorToInt(ResilienceBonus);
+        get => _resilience + Mathf.FloorToInt(ResiliencePassif);
 
         set => _resilience = value;
     }
 
-    private int _resilience;
+    public int _resilience;
     //[HideInInspector]
-    public float ResilienceBonus;
+    public float ResiliencePassif;
     public int ResilienceMin = -10;
     public int ResilienceMax = 10;
     public int ResilienceOriginal;
@@ -87,7 +87,7 @@ public class CharacterStat : ScriptableObject
         this.ForceAme += ModifState.ForceAme;
         this.Vitesse += ModifState.Vitesse;
         this.Conviction += ModifState.Conviction;
-        this.Resilience += ModifState.Resilience;
+        this._resilience += ModifState._resilience;
         this.Calme += ModifState.Calme;
         this.Essence += ModifState.Essence;
 
@@ -120,11 +120,11 @@ public class CharacterStat : ScriptableObject
         }
         if (this.Resilience > this.ResilienceMax)
         {
-            this.Resilience = this.ResilienceMax - (int)ResilienceBonus;
+            this.Resilience = this.ResilienceMax - (int)ResiliencePassif;
         }
         else if (this.Resilience < this.ResilienceMin)
         {
-            this.Resilience = this.ResilienceMin + (int)ResilienceBonus;
+            this.Resilience = this.ResilienceMin + (int)ResiliencePassif;
         }
 
         if (this.ForceAme < 0)
@@ -139,7 +139,7 @@ public class CharacterStat : ScriptableObject
         this.Essence = 0;
         this.ForceAme = 0;
         this.Radiance = 0;
-        this.ResilienceBonus= 0;
+        this.ResiliencePassif= 0;
         this.RadianceMax = 0;
     }
 }
