@@ -72,7 +72,7 @@ public class EnnemyBehavior : CombatBehavior
         DecompteDebuffEnnemi(Decompte.phase, TimerApplication.DebutPhase);
     }
 
-    public void StartTurn()
+    public void StartTurn() 
     {
         IsTurn = true;
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
