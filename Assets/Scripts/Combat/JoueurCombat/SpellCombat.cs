@@ -83,16 +83,15 @@ public class SpellCombat : MonoBehaviour
         if(isClicable)
         {
             Act(Action);
-            Invoke("PreventInstaDoubleClick",0f);
             isClicable = false;
+            Invoke("PreventInstaDoubleClick",0.01f);
         }
 
     }
 
     //bug : le clic est detecté plusieur fois donc le spell est lancé plusieurs fois. On a jamais eu ce bug avant a cause du systeme de ciblage, mais vu qu'on le bypass pour les buffs, il devient visible.
-    public IEnumerator PreventInstaDoubleClick()
+    public void PreventInstaDoubleClick()
     {
-        yield return new WaitForSeconds(0.01f);
         isClicable = true;
     }
 }
