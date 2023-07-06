@@ -336,7 +336,7 @@ public class EnnemyBehavior : CombatBehavior
                 ReceiveTension(Source.Buff);
             }
             Stat.ListBuffDebuff.Add(Instantiate(toAdd));
-            base.AddBuffDebuff(toAdd);
+            base.AddBuffDebuff(toAdd, Stat);
         }
 
         ApplicationBuffDebuff(Timer);
