@@ -391,7 +391,7 @@ public class JoueurBehavior : CombatBehavior
             }
 
             Stat.ListBuffDebuff.Add(buff);
-            base.AddBuffDebuff(toAdd);
+            base.AddBuffDebuff(toAdd, Stat);
         }
        
 

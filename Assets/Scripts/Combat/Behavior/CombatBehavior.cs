@@ -21,7 +21,7 @@ public class CombatBehavior : MonoBehaviour
     public int LastDamageTaken;
     public bool gainedTension;
 
-    public void AddBuffDebuff(BuffDebuff toAdd)
+    public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
         if (toAdd.IsDebuff)
         {
@@ -30,15 +30,14 @@ public class CombatBehavior : MonoBehaviour
             {
                 t = Instantiate(DebuffPrefab, DebuffContainer.transform);
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.Nom;
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = "1";
                 t.GetComponent<DescriptionHoverTriggerBuffDebuff>().Description.text = toAdd.Description;
                 ListBuffDebuffGO.Add(t);
             }
             else
             {
-                var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;
-                int nb = int.Parse(s);
-                s = nb + 1 + "";
-                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
+                var test = characterStat.ListBuffDebuff.Count(x => x.Nom == toAdd.Nom);
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = test.ToString();
             }
 
         }
@@ -49,15 +48,14 @@ public class CombatBehavior : MonoBehaviour
             {
                 t = Instantiate(BuffPrefab, BuffContainer.transform);
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = toAdd.Nom;
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = "1";
                 t.GetComponent<DescriptionHoverTriggerBuffDebuff>().Description.text = toAdd.Description;
                 ListBuffDebuffGO.Add(t);
             }
             else
             {
-                var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;
-                int nb = int.Parse(s);
-                s = nb + 1 + "";
-                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
+                var test = characterStat.ListBuffDebuff.Count(x => x.Nom == toAdd.Nom);
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = test.ToString();
             }
         }
     }
