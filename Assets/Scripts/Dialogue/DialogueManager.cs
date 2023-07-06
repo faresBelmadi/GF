@@ -229,23 +229,23 @@ public class DialogueManager : MonoBehaviour
 
     private void ApplyBuffDebuffOnPlayer(BuffDebuff scriptableObject)
     {
-        ManagerBattle.player.AddDebuff(Instantiate(scriptableObject),scriptableObject.Decompte,scriptableObject.timerApplication);
-        ManagerBattle.player.AddBuffDebuff(scriptableObject);
+        ManagerBattle.player.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte, scriptableObject.timerApplication);
+        ManagerBattle.player.AddBuffDebuff(scriptableObject, ManagerBattle.player.Stat);
     }
 
     private void ApplyBuffDebuffOnEnemies(BuffDebuff scriptableObject)
     {
         foreach (var enemyScript in ManagerBattle.EnemyScripts)
         {
-            enemyScript.AddDebuff(Instantiate(scriptableObject),scriptableObject.Decompte,scriptableObject.timerApplication);
-            enemyScript.AddBuffDebuff(scriptableObject);
+            enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte, scriptableObject.timerApplication);
+            enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
         }
     }   
     private void ApplyBuffDebuffOneEnnemi(BuffDebuff scriptableObject)
     {
         var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0,ManagerBattle.EnemyScripts.Count)];
-            enemyScript.AddDebuff(Instantiate(scriptableObject),scriptableObject.Decompte,scriptableObject.timerApplication);
-            enemyScript.AddBuffDebuff(scriptableObject);
+        enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte, scriptableObject.timerApplication);
+        enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
     }
 
     public void StartCombat()
