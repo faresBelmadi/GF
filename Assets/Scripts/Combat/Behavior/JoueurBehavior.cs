@@ -333,8 +333,6 @@ public class JoueurBehavior : CombatBehavior
 
     public void Costs() 
     {
-        
-        _refBattleMan.PassifManager.ResolvePassifs();
         foreach (var price in SelectedSpell.Costs)
         {
             switch (price.typeCost)
@@ -370,6 +368,8 @@ public class JoueurBehavior : CombatBehavior
         //A Mettre une fois les combats terminer
         _refBattleMan.LaunchSpellJoueur(SelectedSpell);
         ActivateSpells();
+        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
+        _refBattleMan.PassifManager.ResolvePassifs();
         UpdateUI();
     }
 
