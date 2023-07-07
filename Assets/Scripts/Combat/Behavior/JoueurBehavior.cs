@@ -331,8 +331,10 @@ public class JoueurBehavior : CombatBehavior
         _refBattleMan.StartTargeting();
     }
 
-    public void Costs()
+    public void Costs() 
     {
+        
+        _refBattleMan.PassifManager.ResolvePassifs();
         foreach (var price in SelectedSpell.Costs)
         {
             switch (price.typeCost)
