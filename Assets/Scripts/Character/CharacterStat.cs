@@ -93,11 +93,11 @@ public class CharacterStat : ScriptableObject
 
         if (ModifState.Radiance < 0)
         {
-            this.Radiance += ModifState.Radiance;
+            this.Radiance += Mathf.FloorToInt(ModifState.Radiance * this.MultiplDef);
         }
         else
         {
-            this.Radiance += ModifState.Radiance;
+            this.Radiance += Mathf.FloorToInt(ModifState.Radiance*this.MultiplSoin);
         }
 
         this.isStun = ModifState.isStun;
