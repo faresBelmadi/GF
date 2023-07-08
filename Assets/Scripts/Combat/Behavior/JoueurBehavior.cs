@@ -459,9 +459,9 @@ public class JoueurBehavior : CombatBehavior
         {
             var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
             if (caster != null)
-                ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken);
+                ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken,this.Stat);
             else
-                ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Cible:null);
+                ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Cible:Stat);
         }
         else
         {
