@@ -83,6 +83,7 @@ public enum TypeEffet
     AugmentationBrutFA=6,
     RadianceMax=7,
     AugmentFADernierDegatsSubi=8,
+    AugmentationPourcentageFACible=76,
     MultiplDegat=9,
     MultiplSoin=10,
     MultiplDef=11,
@@ -151,7 +152,6 @@ public enum TypeEffet
     GainFaDebuffCible=72,
     Ponction=73,
     DegatsBrutConsequence=74,
-    AugmentationPourcentageFACible=75,
 
 }
 
