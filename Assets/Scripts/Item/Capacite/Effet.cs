@@ -47,7 +47,7 @@ public class Effet : ScriptableObject
                 ModifState.ConscienceMax += valueToChange;
                 break;
             default:
-                ModifState = ResultEffetCommun(Caster, LastDamageTake);
+                ModifState = ResultEffetCommun(Caster, LastDamageTake,Cible);
                 break;
         }
         modifstate = ModifState;
