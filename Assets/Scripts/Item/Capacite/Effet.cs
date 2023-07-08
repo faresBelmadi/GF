@@ -99,6 +99,9 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.AugmentationPourcentageFA:
                 ModifState.ForceAme += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme));
+                break;            
+            case TypeEffet.AugmentationPourcentageFACible:
+                ModifState.ForceAme += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme));
                 break;
             case TypeEffet.AugmentationBrutFA:
                 ModifState.ForceAme += valueToChange;

@@ -150,7 +150,8 @@ public enum TypeEffet
     GainFaBuffCible=71,
     GainFaDebuffCible=72,
     Ponction=73,
-    DegatsBrutConsequence=74
+    DegatsBrutConsequence=74,
+    AugmentationPourcentageFACible=75,
 
 }
 
