@@ -311,6 +311,10 @@ public class Effet : ScriptableObject
             case TypeEffet.OnKillStunAll:
                 ModifState.isStun = true;
                 break;
+                case TypeEffet.DegatsFaRadianceManquanteCible:
+                ModifState.Radiance +=
+                    Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * (Cible.Radiance * 100f / Cible.RadianceMax));
+                    break;
             default:
                 break;
         }

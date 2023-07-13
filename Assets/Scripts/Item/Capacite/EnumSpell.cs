@@ -116,7 +116,6 @@ public enum TypeEffet
     NoEssence=38,
     DoubleBuffDebuff=39,
     AugmentationRadianceMaxPourcentage=40,
-    //todo Github a fait un rollback ce qui nous a fait perdre tout ces effets dans le effet.cs
     BuffFaCoupRecu=41,
     BuffResilienceCoupRecu=42,
     ConsommeTensionDmgAllExceptCaster=43,
@@ -152,7 +151,8 @@ public enum TypeEffet
     GainFaDebuffCible=72,
     Ponction=73,
     DegatsBrutConsequence=74,
-
+    DegatsFaRadianceManquanteCible = 77
+        //78
 }
 
 public enum TypePassif
