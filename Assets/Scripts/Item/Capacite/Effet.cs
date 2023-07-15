@@ -315,6 +315,10 @@ public class Effet : ScriptableObject
                 ModifState.Radiance +=
                     Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * (Cible.Radiance * 100f / Cible.RadianceMax));
                     break;
+                case TypeEffet.DegatsFaRadianceManquanteCaster:
+                ModifState.Radiance +=
+                    Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * (Caster.Radiance * 100f / Caster.RadianceMax));
+                    break;
             default:
                 break;
         }
