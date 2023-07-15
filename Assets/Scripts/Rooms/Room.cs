@@ -14,7 +14,8 @@ public enum TypeRoom
     Event,
     Heal,
     Spawn,
-    Visited
+    Visited,
+    Tuto
 
 }
 

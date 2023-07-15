@@ -58,7 +58,7 @@ public class DialogueManager : MonoBehaviour
     {
         resetRéponse();
         GoNext();
-    }
+    } 
 
     void GoNext()
     {
