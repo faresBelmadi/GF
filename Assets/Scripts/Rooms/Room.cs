@@ -14,9 +14,7 @@ public enum TypeRoom
     Event,
     Heal,
     Spawn,
-    Visited,
-    Tuto
-
+    Visited
 }
 
 [System.Serializable]

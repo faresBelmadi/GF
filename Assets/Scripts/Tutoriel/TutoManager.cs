@@ -5,16 +5,14 @@ using UnityEngine;
 public class TutoManager : MonoBehaviour
 {
     public Encounter _encounter;
+    public Transform[] spawnPos;
 
     [SerializeField]
     private DialogueManager DialogueManager;
 
-    public void LoadTutorial(Encounter ToSpawn) // appelé dans le gameManager
+    public void Start()
     {
-        _encounter = ToSpawn;
-        //SpawnEnemy();
-        //player.UpdateUI();
-        //player.DesactivateSpells();
+        SpawnEnemy();
         DialogueEnableSetup();
     }
 
@@ -24,32 +22,23 @@ public class TutoManager : MonoBehaviour
         DialogueManager.SetupDialogue(_encounter);
     }
 
-
-
-    void StartTutorial() //Proabblement a deplacer dans le game manager/mapmanager
+    void SpawnEnemy()
     {
-        //CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
-        GameManager.instance
-            .TutoManager = /*rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();*/this;
+        List<Transform> used = new List<Transform>();
+        foreach (var item in _encounter.ToFight)
+        {
+            var index = UnityEngine.Random.Range(0, spawnPos.Length);
+            while (used.Contains(spawnPos[index]))
+            {
+                index = UnityEngine.Random.Range(0, spawnPos.Length);
+            }
 
-        //if (enemieType.Equals("normal"))
-        GameManager.instance.LoadTuto();
-        //else if (enemieType.Equals("elite"))
-        //{
-        //    GameManager.instance.LoadCombatElite();
-        //}
-        //else if (enemieType.Equals("boss"))
-        //{
-        //    GameManager.instance.LoadCombatBoss();
-        //}
-        //CurrentRoomCamera.SetActive(true);
-        //MenuCamera.SetActive(false);
-    }
+            used.Add(spawnPos[index]);
 
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+            var temp = Instantiate(item.Spawnable, spawnPos[index].position, Quaternion.identity, spawnPos[index]);
+            
+            var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
+            Destroy(tempCombatScript);
+        }
     }
 }

@@ -244,13 +244,7 @@ public class GameManager : MonoBehaviour {
     {
         AutelMan.StartAutel();
     }
-
-    public void LoadTuto()
-    {
-        TutoManager.LoadTutorial(AllEncounter[0]);
-        //TutoManager.LoadTutorial(Tutoencounter);
-    }
-
+    
     public void StartStatJoueur()
     {
         pmm.LoadMenuStat();

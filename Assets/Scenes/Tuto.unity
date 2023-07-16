@@ -3074,7 +3074,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1502046456}
+      - m_Target: {fileID: 1502046455}
         m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
         m_MethodName: "GetR\xE9ponse"
         m_Mode: 3
@@ -10338,7 +10338,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1502046457}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
         m_MethodName: KeepEssence
         m_Mode: 1
@@ -11896,8 +11896,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1502046453}
-  - component: {fileID: 1502046457}
-  - component: {fileID: 1502046456}
+  - component: {fileID: 1502046455}
   - component: {fileID: 1502046454}
   m_Layer: 0
   m_Name: TutoManager
@@ -11932,9 +11931,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64e432b0d2890be4bb2586f26ed277f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _encounter: {fileID: 0}
-  DialogueManager: {fileID: 1502046456}
---- !u!114 &1502046456
+  _encounter: {fileID: 11400000, guid: 6a4ccfd7f9baf3f4ebed3698a5a1908e, type: 2}
+  spawnPos:
+  - {fileID: 1455245085}
+  - {fileID: 1948630723}
+  - {fileID: 852291839}
+  - {fileID: 604796743}
+  DialogueManager: {fileID: 1502046455}
+--- !u!114 &1502046455
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -11943,7 +11947,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1502046452}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be9d14f132e4f244898326bc7ba035ba, type: 3}
+  m_Script: {fileID: 11500000, guid: 6c66fcba56e35be46ba68db4cb720140, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   UIDialogue: {fileID: 1367920561}
@@ -11959,51 +11963,8 @@ MonoBehaviour:
   - {fileID: 402346720}
   - {fileID: 1805707615}
   EndDialogue: {fileID: 1918915043}
-  ManagerBattle: {fileID: 1502046457}
+  ManagerBattle: {fileID: 0}
   ManagerAlea: {fileID: 0}
---- !u!114 &1502046457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1502046452}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0e3730a09109fd547bba8300d78af4be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 1533144802}
-  SpawnedEnemy: []
-  EnemyScripts: []
-  DeadEnemyScripts: []
-  spawnPos:
-  - {fileID: 604796743}
-  - {fileID: 1948630723}
-  - {fileID: 852291839}
-  _encounter: {fileID: 0}
-  prefabEssence: {fileID: 2949636703588565037, guid: bb5710fb14e5fd14ca171e5b37c0264d, type: 3}
-  buttonEndCombat: {fileID: 1289437631}
-  passifRules: {fileID: 11400000, guid: 015ed6124c70843498d9f16424db22db, type: 2}
-  IdOrder: []
-  nbPhase: 0
-  ListEssence: []
-  CalmeMoyen: 0
-  CalmeMoyenAdversaire: 0
-  CalmeMoyenJoueur: 0
-  idIndexer: 0
-  currentIdTurn: 0
-  nbTurn: 0
-  idTarget: -1
-  endBattle: 0
-  MostDamage: 0
-  MostDamageID: 0
-  LastPhaseDamage: 0
-  CurrentPhaseDamage: 0
-  DialogueManager: {fileID: 1502046456}
-  IsLoot: 0
-  ConsumedEssence: 0
-  EssenceGained: 0
 --- !u!1 &1502050590
 GameObject:
   m_ObjectHideFlags: 0
@@ -15666,7 +15627,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1502046456}
+      - m_Target: {fileID: 1502046455}
         m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
         m_MethodName: "GetR\xE9ponse"
         m_Mode: 3
@@ -16898,9 +16859,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1502046456}
-        m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
-        m_MethodName: StartCombat
+      - m_Target: {fileID: 1502046455}
+        m_TargetAssemblyTypeName: TutoDialogueManager, Assembly-CSharp
+        m_MethodName: EndDialogueTuto
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -17735,7 +17696,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1502046456}
+      - m_Target: {fileID: 1502046455}
         m_TargetAssemblyTypeName: DialogueManager, Assembly-CSharp
         m_MethodName: "GetR\xE9ponse"
         m_Mode: 3

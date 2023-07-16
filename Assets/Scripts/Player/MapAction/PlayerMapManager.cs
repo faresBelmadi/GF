@@ -95,9 +95,6 @@ public class PlayerMapManager : MonoBehaviour
             case TypeRoom.LevelUp:
                 StartLevelUp();
                 break;
-            case TypeRoom.Tuto:
-                StartCoroutine("LoadSceneAsync", "Tutorial");
-                break;
             //case TypeRoom.Heal:
             //    StartCoroutine("LoadSceneAsync", "Autel");
             //    break;
@@ -138,9 +135,6 @@ public class PlayerMapManager : MonoBehaviour
             case "LevelUp":
 
                 break;
-            case "Tutorial":
-                StartTutorial();
-                break;
             //case "AleaScene":
             //    StartAlea();
             //    break;
@@ -154,28 +148,7 @@ public class PlayerMapManager : MonoBehaviour
                 break;
         }
     }
-
-    void StartTutorial() //Proabblement a deplacer dans le game manager/mapmanager
-    {
-        //CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
-        GameManager.instance
-            .TutoManager = rootScene.First(c => c.name == "TutoManager").GetComponent<TutoManager>(); ;
-
-        //if (enemieType.Equals("normal"))
-        GameManager.instance.LoadTuto();
-        //else if (enemieType.Equals("elite"))
-        //{
-        //    GameManager.instance.LoadCombatElite();
-        //}
-        //else if (enemieType.Equals("boss"))
-        //{
-        //    GameManager.instance.LoadCombatBoss();
-        //}
-        //CurrentRoomCamera.SetActive(true);
-        //MenuCamera.SetActive(false);
-    }
-
-
+    
     void StartBattle(string enemieType)
     {
         CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
