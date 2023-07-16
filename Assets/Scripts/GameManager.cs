@@ -244,7 +244,7 @@ public class GameManager : MonoBehaviour {
     {
         AutelMan.StartAutel();
     }
-    
+        
     public void StartStatJoueur()
     {
         pmm.LoadMenuStat();
