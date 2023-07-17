@@ -142,4 +142,48 @@ public class CharacterStat : ScriptableObject
         this.ResiliencePassif= 0;
         this.RadianceMax = 0;
     }
+
+    public void removeStat(CharacterStat ModifState)
+    {
+        if (ModifState.MultiplDef != 1)
+        {
+            if (ModifState.MultiplDef > 1)
+            {
+                var multiplicateurDef = ModifState.MultiplDef % 1;
+                this.MultiplDef -= multiplicateurDef;
+
+            }
+            else
+            {
+                var multiplicateurDef = ModifState.MultiplDef - 1;
+                this.MultiplDef -= multiplicateurDef;
+            }
+        }
+        if (ModifState.MultiplSoin != 1)
+            this.MultiplSoin = ModifState.MultiplSoin;
+        if (ModifState.MultiplDegat != 1)
+            this.MultiplDegat = ModifState.MultiplDegat;
+        if (ModifState.MultipleBuffDebuff != 1)
+            this.MultipleBuffDebuff = ModifState.MultipleBuffDebuff;
+
+        this.RadianceMax -= ModifState.RadianceMax;
+        this.ForceAme -= ModifState.ForceAme;
+        this.Vitesse -= ModifState.Vitesse;
+        this.Conviction -= ModifState.Conviction;
+        this._resilience -= ModifState._resilience;
+        this.Calme -= ModifState.Calme;
+        this.Essence -= ModifState.Essence;
+
+        if (ModifState.Radiance < 0)
+        {
+            this.Radiance -= Mathf.FloorToInt(ModifState.Radiance * this.MultiplDef);
+        }
+        else
+        {
+            this.Radiance -= Mathf.FloorToInt(ModifState.Radiance*this.MultiplSoin);
+        }
+
+        if(ModifState.isStun)
+        this.isStun = !ModifState.isStun;
+    }
 }

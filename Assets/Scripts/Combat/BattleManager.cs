@@ -331,7 +331,7 @@ public class BattleManager : MonoBehaviour
             PassageEffet(effet, idPlayer, idTarget, SourceEffet.Spell);
             if (effet.AfterEffectToApply != null)
             {
-                player.UpdateBuffDebuffGameObject(player.Stat.ListBuffDebuff);
+                player.UpdateBuffDebuffGameObject(player.Stat.ListBuffDebuff,player.Stat);
                 var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == idTarget);
                 if (ennemy == null)
                 {
@@ -342,7 +342,7 @@ public class BattleManager : MonoBehaviour
                     }
                     foreach (var enemyScript in EnemyScripts)
                     {
-                        enemyScript.UpdateBuffDebuffGameObject(enemyScript.Stat.ListBuffDebuff);
+                        enemyScript.UpdateBuffDebuffGameObject(enemyScript.Stat.ListBuffDebuff,enemyScript.Stat);
                     }
                     //if (effet.AfterEffectToApply.Effet.Any(x=>x.TypeEffet == TypeEffet.OnKillStunAll))
                     //{
@@ -352,7 +352,7 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    ennemy?.UpdateBuffDebuffGameObject(ennemy.Stat.ListBuffDebuff);
+                    ennemy?.UpdateBuffDebuffGameObject(ennemy.Stat.ListBuffDebuff,ennemy?.Stat);
                 }
                 ApplyAfterEffect(effet);
             }
