@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour {
     public RoomManager rm;
     public PlayerMapManager pmm;
     public BattleManager BattleMan;
+    public TutoManager TutoManager;
     public AleaManager AleaMan;
     public AutelManager AutelMan;
     public MenuStatManager StatMan;
@@ -243,7 +244,7 @@ public class GameManager : MonoBehaviour {
     {
         AutelMan.StartAutel();
     }
-
+        
     public void StartStatJoueur()
     {
         pmm.LoadMenuStat();

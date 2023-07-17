@@ -42,10 +42,10 @@ public class PlayerMapManager : MonoBehaviour
         }
     }
 
-   
+
     private void VisualUpdateOld()
     {
-        if(_currentRoom != null)
+        if (_currentRoom != null)
         {
             _currentRoom.Type = TypeRoom.Visited;
             _currentRoom.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
@@ -90,7 +90,7 @@ public class PlayerMapManager : MonoBehaviour
                 SceneManager.LoadScene("MainMenu");
                 Destroy(GameManager.instance.gameObject);
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
-                
+
                 break;
             case TypeRoom.LevelUp:
                 StartLevelUp();
@@ -109,7 +109,7 @@ public class PlayerMapManager : MonoBehaviour
             //case TypeRoom.NotSet:
             //    break;
             default:
-            break;
+                break;
         }
     }
 
@@ -121,7 +121,7 @@ public class PlayerMapManager : MonoBehaviour
 
         rootScene = s.GetRootGameObjects();
 
-        switch(name)
+        switch (name)
         {
             case "BattleScene Normal":
                 StartBattle("normal");
@@ -133,7 +133,7 @@ public class PlayerMapManager : MonoBehaviour
                 StartBattle("boss");
                 break;
             case "LevelUp":
-                
+
                 break;
             //case "AleaScene":
             //    StartAlea();
@@ -145,18 +145,15 @@ public class PlayerMapManager : MonoBehaviour
             //    StartMenuStat();
             //    break;
             default:
-            break;
+                break;
         }
-
-       
-        
     }
-
+    
     void StartBattle(string enemieType)
     {
         CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
         GameManager.instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
-        if (enemieType.Equals("normal")) 
+        if (enemieType.Equals("normal"))
             GameManager.instance.LoadCombatNormal();
         else if (enemieType.Equals("elite"))
         {
@@ -180,7 +177,7 @@ public class PlayerMapManager : MonoBehaviour
             LoadMenuStat();
         }
         yield return SceneManager.UnloadSceneAsync(s);
-        
+
     }
 
     void StartAlea()

@@ -5,11 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class StartGame : MonoBehaviour
 {
+    public bool DoTutorial = true;
 
     public void Button_StartGame(int classe)
     {
         PlayerPrefs.SetInt("ClassSelected", classe);
-        SceneManager.LoadSceneAsync(1);
+        if (DoTutorial)
+            SceneManager.LoadScene("Tuto");
+        else
+            SceneManager.LoadSceneAsync(1);
     }
 
     public void Button_Quit()

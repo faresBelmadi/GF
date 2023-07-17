@@ -19,6 +19,11 @@ public class BSPGen : MonoBehaviour
             new Container(20, 20, 10, 10),
             new Container(40, 20, 10, 10),
             new Container(60, 20, 10, 10)
+            //new Container(20, 0, 10, 10),//start
+            //new Container(40, 20, 10, 10),
+            //new Container(20, 40, 10, 10),
+            //new Container(0, 20, 10, 10),
+            //new Container(60, 20, 10, 10)
         };
         return temp;
     }

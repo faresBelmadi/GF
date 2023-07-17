@@ -58,7 +58,7 @@ public class DialogueManager : MonoBehaviour
     {
         resetRéponse();
         GoNext();
-    }
+    } 
 
     void GoNext()
     {
@@ -82,7 +82,7 @@ public class DialogueManager : MonoBehaviour
 
     private string TextePrincipal()
     {
-        if (ManagerBattle == null)
+        if (ManagerBattle == null && _CurrentEncounterAlea != null)
         {
             return _CurrentEncounterAlea.NamePnj + ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
         }
