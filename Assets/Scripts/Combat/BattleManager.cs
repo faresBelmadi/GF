@@ -326,7 +326,6 @@ public class BattleManager : MonoBehaviour
 
     public void LaunchSpellJoueur(Spell Spell)
     {
-        GiveBuffDebuff(Spell.ActionBuffDebuff, idTarget);
         foreach (var effet in Spell.ActionEffet)
         {
             PassageEffet(effet, idPlayer, idTarget, SourceEffet.Spell);
@@ -359,12 +358,13 @@ public class BattleManager : MonoBehaviour
             }
         }
         //EnemyScripts.First(c => c.combatID == idTarget).ApplicationBuffDebuff(TimerApplication.Attaque);
+        GiveBuffDebuff(Spell.ActionBuffDebuff, idTarget);
         idTarget = -1;
+
     }
 
     public void LaunchSpellEnnemi(EnnemiSpell Spell)
     {
-        GiveBuffDebuff(Spell.debuffsBuffs);
         foreach (var effet in Spell.Effet)
         {
             PassageEffet(effet, currentIdTurn, -1, SourceEffet.Spell);
@@ -375,6 +375,7 @@ public class BattleManager : MonoBehaviour
                 ApplyAfterEffect(effet);
             }
         }
+        GiveBuffDebuff(Spell.debuffsBuffs);
         //player.ApplicationBuffDebuff(TimerApplication.Attaque);
     }
 
