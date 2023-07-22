@@ -326,13 +326,12 @@ public class BattleManager : MonoBehaviour
 
     public void LaunchSpellJoueur(Spell Spell)
     {
-        GiveBuffDebuff(Spell.ActionBuffDebuff, idTarget);
         foreach (var effet in Spell.ActionEffet)
         {
             PassageEffet(effet, idPlayer, idTarget, SourceEffet.Spell);
             if (effet.AfterEffectToApply != null)
             {
-                player.UpdateBuffDebuffGameObject(player.Stat.ListBuffDebuff);
+                player.UpdateBuffDebuffGameObject(player.Stat.ListBuffDebuff,player.Stat);
                 var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == idTarget);
                 if (ennemy == null)
                 {
@@ -343,7 +342,7 @@ public class BattleManager : MonoBehaviour
                     }
                     foreach (var enemyScript in EnemyScripts)
                     {
-                        enemyScript.UpdateBuffDebuffGameObject(enemyScript.Stat.ListBuffDebuff);
+                        enemyScript.UpdateBuffDebuffGameObject(enemyScript.Stat.ListBuffDebuff,enemyScript.Stat);
                     }
                     //if (effet.AfterEffectToApply.Effet.Any(x=>x.TypeEffet == TypeEffet.OnKillStunAll))
                     //{
@@ -353,18 +352,19 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    ennemy?.UpdateBuffDebuffGameObject(ennemy.Stat.ListBuffDebuff);
+                    ennemy?.UpdateBuffDebuffGameObject(ennemy.Stat.ListBuffDebuff,ennemy?.Stat);
                 }
                 ApplyAfterEffect(effet);
             }
         }
         //EnemyScripts.First(c => c.combatID == idTarget).ApplicationBuffDebuff(TimerApplication.Attaque);
+        GiveBuffDebuff(Spell.ActionBuffDebuff, idTarget);
         idTarget = -1;
+
     }
 
     public void LaunchSpellEnnemi(EnnemiSpell Spell)
     {
-        GiveBuffDebuff(Spell.debuffsBuffs);
         foreach (var effet in Spell.Effet)
         {
             PassageEffet(effet, currentIdTurn, -1, SourceEffet.Spell);
@@ -375,6 +375,7 @@ public class BattleManager : MonoBehaviour
                 ApplyAfterEffect(effet);
             }
         }
+        GiveBuffDebuff(Spell.debuffsBuffs);
         //player.ApplicationBuffDebuff(TimerApplication.Attaque);
     }
 

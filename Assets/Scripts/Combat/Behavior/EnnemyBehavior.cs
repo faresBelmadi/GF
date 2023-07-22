@@ -335,35 +335,46 @@ public class EnnemyBehavior : CombatBehavior
             {
                 ReceiveTension(Source.Buff);
             }
-            Stat.ListBuffDebuff.Add(Instantiate(toAdd));
-            base.AddBuffDebuff(toAdd, Stat);
-        }
+            var buff = Instantiate(toAdd);
+            buff.Effet = new List<Effet>();
+            foreach (var item in toAdd.Effet)
+            {
+                buff.Effet.Add(Instantiate(item));
+            }
 
-        ApplicationBuffDebuff(Timer);
+            Stat.ListBuffDebuff.Add(buff);
+            base.AddBuffDebuff(toAdd, Stat);
+
+            ApplicationBuffDebuff(Timer, buff);
+        }
 
         UpdateUI();
     }
 
     private void DecompteDebuffEnnemi(Decompte Decompte, TimerApplication Timer)
     {
-        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte);
-
-        ApplicationBuffDebuff(Timer);
+        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
+        
+        foreach(var item in Stat.ListBuffDebuff)
+        {
+            if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant)
+                ApplicationBuffDebuff(Timer,item);
+        }
 
         UpdateUI();
     }
 
-    public void ApplicationBuffDebuff(TimerApplication Timer)
+    public void ApplicationBuffDebuff(TimerApplication Timer, BuffDebuff toApply)
     {
         skip = false;
-        ResetStat();
-        foreach (var item in Stat.ListBuffDebuff)
-        {
-            if (item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant || item.DirectApplication)
+        //ResetStat();
+        //foreach (var item in Stat.ListBuffDebuff)
+        //{
+            if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant || toApply.DirectApplication)
             {
-                foreach (var effet in item.Effet)
+                foreach (var effet in toApply.Effet)
                 {
-                    _refBattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
+                    _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
                     /*if (item.CibleApplication == effet.Cible)
                     {
                         ApplicationEffet(effet);
@@ -374,18 +385,18 @@ public class EnnemyBehavior : CombatBehavior
                         GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
                     }*/
                 }
-                if (item.IsConsomable == true)
+                if (toApply.IsConsomable == true)
                 {
-                    item.Temps = 0;
-                    foreach (var ToAdd in item.Consomation)
+                    toApply.Temps = 0;
+                    foreach (var ToAdd in toApply.Consomation)
                     {
                         AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
                     }
                 }
-                if (item.DirectApplication)
-                    item.DirectApplication = false;
+                if (toApply.DirectApplication)
+                    toApply.DirectApplication = false;
             }
-        }
+        //}
         if (skip)
             EndTurn();
     }

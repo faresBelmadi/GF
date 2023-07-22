@@ -394,34 +394,38 @@ public class JoueurBehavior : CombatBehavior
 
             Stat.ListBuffDebuff.Add(buff);
             base.AddBuffDebuff(toAdd, Stat);
+            ApplicationBuffDebuff(Timer, buff);
         }
        
 
         //DecompteDebuffJoueur(Decompte, Timer);
         
-        ApplicationBuffDebuff(Timer);
-
         UpdateUI();
     }
 
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
-        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte);
-        ApplicationBuffDebuff(Timer);
+        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
+        
+        foreach(var item in Stat.ListBuffDebuff)
+        {
+            if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant)
+                ApplicationBuffDebuff(Timer,item);
+        }
 
         UpdateUI();
     }
 
-    public void ApplicationBuffDebuff(TimerApplication Timer)
+    public void ApplicationBuffDebuff(TimerApplication Timer, BuffDebuff toApply)
     {
-        ResetStat();
-        foreach (var item in Stat.ListBuffDebuff)
-        {
-            if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant || item.DirectApplication)
+        //ResetStat();
+        //foreach (var item in Stat.ListBuffDebuff)
+        //{
+            if(toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant || toApply.DirectApplication)
             {
-                foreach (var effet in item.Effet)
+                foreach (var effet in toApply.Effet)
                 {
-                    _refBattleMan.PassageEffet(effet, item.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
+                    _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
                     /*if(item.CibleApplication == effet.Cible)
                     {
                         ApplicationEffet(effet);
@@ -432,19 +436,19 @@ public class JoueurBehavior : CombatBehavior
                         GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine);
                     }*/
                 }
-                if (item.IsConsomable == true)
+                if (toApply.IsConsomable == true)
                 {
-                    item.Temps = 0;
-                    foreach (var ToAdd in item.Consomation)
+                    toApply.Temps = 0;
+                    foreach (var ToAdd in toApply.Consomation)
                     {
                         AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
                     }
                 }
-                if (item.DirectApplication)
-                    item.DirectApplication = false;
+                if (toApply.DirectApplication)
+                    toApply.DirectApplication = false;
             }
 
-        }
+        //}
     }
 
 

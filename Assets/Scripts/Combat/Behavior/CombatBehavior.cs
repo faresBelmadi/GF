@@ -60,7 +60,7 @@ public class CombatBehavior : MonoBehaviour
         }
     }
 
-    public List<BuffDebuff> DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte Timer)
+    public List<BuffDebuff> DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte Timer, CharacterStat toChange)
     {
         foreach (var item in BuffDebuff)
         {
@@ -69,6 +69,13 @@ public class CombatBehavior : MonoBehaviour
 
             if (item.Temps < 0)
             {
+                if(item.timerApplication == TimerApplication.Persistant)
+                {
+                    foreach (var effet in item.Effet)
+                    {
+                        toChange.removeStat(effet.modifstate);
+                    }
+                }
                 var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == item.Nom);
                 if (t != null)
                 {
@@ -91,9 +98,9 @@ public class CombatBehavior : MonoBehaviour
         return BuffDebuff;
     }
 
-    public void UpdateBuffDebuffGameObject(List<BuffDebuff> BuffDebuff)
+    public void UpdateBuffDebuffGameObject(List<BuffDebuff> BuffDebuff, CharacterStat toChange)
     {
-        DecompteDebuff(BuffDebuff, Decompte.none);
+        DecompteDebuff(BuffDebuff, Decompte.none,toChange);
     }
 
 }
