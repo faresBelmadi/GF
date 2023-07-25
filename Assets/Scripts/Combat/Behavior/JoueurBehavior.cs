@@ -409,7 +409,7 @@ public class JoueurBehavior : CombatBehavior
         
         foreach(var item in Stat.ListBuffDebuff)
         {
-            if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant)
+            if(item.timerApplication == Timer)
                 ApplicationBuffDebuff(Timer,item);
         }
 
