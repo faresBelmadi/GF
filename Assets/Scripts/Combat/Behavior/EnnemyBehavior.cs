@@ -21,7 +21,7 @@ public class EnnemyBehavior : CombatBehavior
     public bool IsTurn;
     nextActionEnum nextActionType;
     List<EnnemiSpell> Spells;
-
+    public bool isMainEnemy;
     private BattleManager _refBattleMan;
 
     #region Divers start & fin
@@ -109,7 +109,7 @@ public class EnnemyBehavior : CombatBehavior
 
     }
 
-    private void Dead()
+    public void Dead()
     {
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.Death;
         _refBattleMan.PassifManager.ResolvePassifs();

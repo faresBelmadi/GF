@@ -195,8 +195,11 @@ public class BattleManager : MonoBehaviour
     void SpawnEnemy()
     {
         List<Transform> used = new List<Transform>();
-        foreach (var item in _encounter.ToFight)
+        for (int i = 0; i < _encounter.ToFight.Count; i++)
         {
+
+            var item = _encounter.ToFight[i];
+        
             var index = UnityEngine.Random.Range(0, spawnPos.Length);
             while (used.Contains(spawnPos[index]))
             {
@@ -211,6 +214,7 @@ public class BattleManager : MonoBehaviour
             tempCombatScript.Stat = Instantiate(item);
             tempCombatScript.SetUp();
             tempCombatScript.EndTurnBM = EndTurn;
+            tempCombatScript.isMainEnemy = i == _encounter.idMainMob ? true : false;
             SpawnedEnemy.Add(temp);
             EnemyScripts.Add(tempCombatScript);
 
@@ -689,14 +693,22 @@ public class BattleManager : MonoBehaviour
 
     public void DeadEnemy(int id)
     {
-        if (EnemyScripts.FirstOrDefault(c => c.combatID == id) != null)
+        var killed = EnemyScripts.FirstOrDefault(c => c.combatID == id);
+        if (killed != null)
         {
-            
             nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true);
             IdOrder.RemoveAll(c => c.id == id);
             IdSpeedDictionary.Remove(id);
-            var todestroy = EnemyScripts.First(c => c.combatID == id).gameObject;
-            DeadEnemyScripts.Add(EnemyScripts.FirstOrDefault(c => c.combatID == id));
+            if(killed.isMainEnemy)
+            {
+                foreach (var item in EnemyScripts)
+                {
+                    if(item.combatID != killed.combatID)
+                        item.Dead();
+                }
+            }
+            var todestroy = killed.gameObject;
+            DeadEnemyScripts.Add(killed);
             EnemyScripts.RemoveAll(c => c.combatID == id);
             SpawnedEnemy.Remove(todestroy);
             Destroy(todestroy);
