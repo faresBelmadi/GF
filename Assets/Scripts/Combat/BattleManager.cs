@@ -425,6 +425,13 @@ public class BattleManager : MonoBehaviour
                 case Cible.Ally:
 
                     break;
+                case Cible.Martyr:
+                        var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.name == "Martyr");
+                        if (martyr != null)
+                        {
+                            martyr.AddDebuff(item, Decompte,Timer);
+                        }
+                    break;
                 case Cible.allEnnemi:
                     foreach (var ennemie in EnemyScripts)
                     {
@@ -608,6 +615,13 @@ public class BattleManager : MonoBehaviour
                         ennemie.ApplicationEffet(effet, null, source, Caster);
                 }
 
+                break;
+            case Cible.Martyr:
+                var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.name == "Martyr");
+                if (martyr != null)
+                {
+                    martyr.ApplicationEffet(effet, null, source, Caster);
+                }
                 break;
         }
     }

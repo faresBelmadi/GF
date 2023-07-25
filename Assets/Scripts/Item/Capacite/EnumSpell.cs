@@ -30,16 +30,21 @@ public enum TimerPassif
 
 public enum Cible
 {
-    joueur,
-    ennemi,
-    allEnnemi,
-    All,
-    Ally,
-    AllExceptSelf,
-    MostDamage,
-    LastAttacker,
-    AllAllyExceptSelf,
-    Self
+    joueur = 0,
+    ennemi = 1,
+    allEnnemi = 2,
+    All = 3,
+    Ally = 4,
+    AllExceptSelf = 5,
+    MostDamage = 6,
+    LastAttacker = 7,
+    AllAllyExceptSelf = 8,
+    Self = 9,
+    TwoAlliesRadianceHaute = 10,
+    MostRadiance = 11,
+    LessRadiance = 12,
+    HasAmantLessRadiance = 13,
+    Martyr = 14,
 }
 
 public enum CibleDialogue
