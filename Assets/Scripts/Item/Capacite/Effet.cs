@@ -15,6 +15,7 @@ public class Effet : ScriptableObject
     public int RandomX;
     public int RandomY;
     public int NbAttaque;
+    public int ValeurParBuffDebuff;
     private int TimeAlive = 1;
     public bool IsAttaqueEffet;
     public bool IsFirstApplication = true;
@@ -318,6 +319,11 @@ public class Effet : ScriptableObject
                 case TypeEffet.DegatsFaRadianceManquanteCaster:
                 ModifState.Radiance +=
                     Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * (Caster.Radiance * 100f / Caster.RadianceMax));
+                    break;
+                case TypeEffet.DamageFaBuffCible:
+                    var nbBuff = Cible.ListBuffDebuff.Count(x => !x.IsDebuff);
+                    var percentDamage = Pourcentage + (ValeurParBuffDebuff*nbBuff);
+                    ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbBuff);
                     break;
             default:
                 break;

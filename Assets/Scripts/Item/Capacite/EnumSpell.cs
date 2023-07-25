@@ -141,6 +141,7 @@ public enum TypeEffet
     OnKillStunAll=58,
     AugmentationFARadianceManquante=59,
     DamageFaBuff=60,
+    DamageFaBuffCible = 79,
     DamageDebuffCible = 75,
     RemoveAllTensionProcDamage=61,
     RemoveAllDebuffProcBuffDebuf=62,
@@ -158,7 +159,7 @@ public enum TypeEffet
     DegatsBrutConsequence=74,
     DegatsFaRadianceManquanteCible = 77,
     DegatsFaRadianceManquanteCaster = 78,
-        //79
+        //80
 }
 
 public enum TypePassif
