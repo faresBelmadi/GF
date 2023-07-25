@@ -167,7 +167,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public bool CanHaveAnotherTurn()
     {
-        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
+        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier && !Stat.NoTension)
         {
             return true;
         }
@@ -331,7 +331,7 @@ public class EnnemyBehavior : CombatBehavior
     {
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
-            if (toAdd.IsDebuff)
+            if (toAdd.IsDebuff && !Stat.NoTension)
             {
                 ReceiveTension(Source.Buff);
             }
@@ -466,16 +466,17 @@ public class EnnemyBehavior : CombatBehavior
                 _refBattleMan.MostDamageID = idCaster;
             }
 
-            if (source == SourceEffet.Spell)
+            if (source == SourceEffet.Spell && !Stat.NoTension)
                 ReceiveTension(Source.Attaque);
-            else if (source == SourceEffet.BuffDebuff)
+            else if (source == SourceEffet.BuffDebuff && !Stat.NoTension)
                 ReceiveTension(Source.Dot);
 
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
         else if (ModifStat.Radiance > 0)
         {
-            ReceiveTension(Source.Soin);
+            if(!Stat.NoTension)
+                ReceiveTension(Source.Soin);
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
 

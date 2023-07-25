@@ -9,6 +9,7 @@ public class EnnemiStat : CharacterStat
     public string Nom;
     public int Dissimulation;
     public int DissimulationOriginal;
+    public bool NoTension = false;
     public GameObject Spawnable;
     public EnnemiSpell Att1;
     public EnnemiSpell Att2;
