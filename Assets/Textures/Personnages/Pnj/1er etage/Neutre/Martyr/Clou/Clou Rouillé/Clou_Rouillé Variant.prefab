@@ -291,100 +291,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &-7912124398698900807
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1043661544690065412}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.28389442, y: 1.0013008}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 2.7215354, y: 3.0026016}
-  m_EdgeRadius: 0
---- !u!95 &1042224906764741723
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1043661544690065412}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: dc9f24c99db1d4e42879108c1f76543c, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &-1415550008046979870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1043661544690065412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fec9b970d31eee5479309846a749daf4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ListBuffDebuff: []
-  BuffPrefab: {fileID: 8673195161482103611, guid: 60ec796ae1ca68a4a825f65f310e1c7b, type: 3}
-  BuffContainer: {fileID: 6885030964367709138}
-  DebuffPrefab: {fileID: 8673195161482103611, guid: 2d80ffd33b61f364e853bdf7ae85c4f4, type: 3}
-  DebuffContainer: {fileID: 1115919325498001825}
-  LastDamageTaken: 0
-  Stat: {fileID: 0}
-  UICombat: {fileID: 5697043441305073498}
-  TensionUI: 0
-  combatID: 0
-  nextAction: {fileID: 0}
-  EssencePrefab: {fileID: 2949636703588565037, guid: bb5710fb14e5fd14ca171e5b37c0264d, type: 3}
---- !u!114 &5697043441305073498
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1043661544690065412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceea535c8d6026142879907e8e6876ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthSlider: {fileID: 1453367152484879594}
-  TensionSlider: {fileID: 3111178565975955851}
-  HpText: {fileID: 6919326983727195238}
-  NameText: {fileID: 6087983130671074038}
-  Ciblage: {fileID: 204191522337790986}
-  Intention: {fileID: 1719063386221373097}
-  TargetingMode: 0
-  degatSoinParent: {fileID: 3339000746788691670}
-  buffParents: {fileID: 6885030964367709138}
-  debuffParents: {fileID: 1115919325498001825}
-  soinPrefab: {fileID: 369757569958449724, guid: 27af5be5d6aa1cb4bab7c465b4dfdeae, type: 3}
-  degatPrefab: {fileID: 6455525814061643745, guid: 9a2387407ca1b4e439ff7a03898d83b4, type: 3}
-  DebuffSpawned: []
 --- !u!1 &1174202098217371491
 GameObject:
   m_ObjectHideFlags: 0
@@ -615,6 +521,102 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!61 &-7912124398698900807
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043661544690065412}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.28389442, y: 1.0013008}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.7215354, y: 3.0026016}
+  m_EdgeRadius: 0
+--- !u!95 &1042224906764741723
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043661544690065412}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: dc9f24c99db1d4e42879108c1f76543c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-1415550008046979870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043661544690065412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fec9b970d31eee5479309846a749daf4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ListBuffDebuffGO: []
+  BuffPrefab: {fileID: 8673195161482103611, guid: 60ec796ae1ca68a4a825f65f310e1c7b, type: 3}
+  BuffContainer: {fileID: 6885030964367709138}
+  DebuffPrefab: {fileID: 8673195161482103611, guid: 2d80ffd33b61f364e853bdf7ae85c4f4, type: 3}
+  DebuffContainer: {fileID: 1115919325498001825}
+  LastDamageTaken: 0
+  gainedTension: 0
+  Stat: {fileID: 0}
+  UICombat: {fileID: 5697043441305073498}
+  TensionUI: 0
+  combatID: 0
+  nextAction: {fileID: 0}
+  EssencePrefab: {fileID: 2949636703588565037, guid: bb5710fb14e5fd14ca171e5b37c0264d, type: 3}
+  IsTurn: 0
+--- !u!114 &5697043441305073498
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043661544690065412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceea535c8d6026142879907e8e6876ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthSlider: {fileID: 1453367152484879594}
+  TensionSlider: {fileID: 3111178565975955851}
+  HpText: {fileID: 6919326983727195238}
+  NameText: {fileID: 6087983130671074038}
+  Ciblage: {fileID: 204191522337790986}
+  Intention: {fileID: 1719063386221373097}
+  TargetingMode: 0
+  degatSoinParent: {fileID: 3339000746788691670}
+  buffParents: {fileID: 6885030964367709138}
+  debuffParents: {fileID: 1115919325498001825}
+  soinPrefab: {fileID: 369757569958449724, guid: 27af5be5d6aa1cb4bab7c465b4dfdeae, type: 3}
+  degatPrefab: {fileID: 6455525814061643745, guid: 9a2387407ca1b4e439ff7a03898d83b4, type: 3}
+  DebuffSpawned: []
 --- !u!1 &2140134482530767170
 GameObject:
   m_ObjectHideFlags: 0
@@ -2185,6 +2187,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8209518174213035848, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8209518174213035848, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1807297057
+      objectReference: {fileID: 0}
+    - target: {fileID: -8209518174213035848, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
@@ -2207,6 +2217,14 @@ PrefabInstance:
     - target: {fileID: -6505628322825462082, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
       propertyPath: m_Bounds.m_Extent.y
       value: 1.127875
+      objectReference: {fileID: 0}
+    - target: {fileID: -6495251228353360301, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: -6495251228353360301, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1807297057
       objectReference: {fileID: 0}
     - target: {fileID: -6495251228353360301, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -2309,6 +2327,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 583840969365234625, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 583840969365234625, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1807297057
+      objectReference: {fileID: 0}
+    - target: {fileID: 583840969365234625, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
@@ -2349,6 +2375,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1279064698496801765, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1279064698496801765, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1807297057
+      objectReference: {fileID: 0}
+    - target: {fileID: 1279064698496801765, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
@@ -2379,6 +2413,14 @@ PrefabInstance:
     - target: {fileID: 3129682504074199547, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3957634663025145993, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3957634663025145993, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1807297057
       objectReference: {fileID: 0}
     - target: {fileID: 3957634663025145993, guid: f1c1c23730ce6d446aea9fc098263dbf, type: 3}
       propertyPath: m_Materials.Array.data[0]
