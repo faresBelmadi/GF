@@ -430,7 +430,7 @@ public class BattleManager : MonoBehaviour
 
                     break;
                 case Cible.Martyr:
-                        var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.name == "Martyr");
+                        var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.Nom == "Martyr");
                         if (martyr != null)
                         {
                             martyr.AddDebuff(item, Decompte,Timer);
