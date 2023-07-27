@@ -187,7 +187,7 @@ public class Effet : ScriptableObject
                 ModifState.Tension += -Cible.Tension;
                 var toAdd = Instantiate(AfterEffectToApply);
                 toAdd.Effet.First().ValeurBrut = (int)Cible.Tension * ValeurBrut;
-                Caster.ListBuffDebuff.Add(toAdd);
+                GameManager.instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
                 break;
             case TypeEffet.RemoveDebuff:
                 var tempListRD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
