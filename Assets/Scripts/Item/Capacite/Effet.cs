@@ -185,9 +185,10 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.ConsommeTensionAugmentationFA:
                 ModifState.Tension += -Cible.Tension;
-                var toAdd = Instantiate(AfterEffectToApply);
+                var toAdd = AfterEffectToApply;
                 toAdd.Effet.First().ValeurBrut = (int)Cible.Tension * ValeurBrut;
                 GameManager.instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
+                toAdd.Effet.First().ValeurBrut = 0;
                 break;
             case TypeEffet.RemoveDebuff:
                 var tempListRD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
