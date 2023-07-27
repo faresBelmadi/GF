@@ -185,8 +185,8 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.ConsommeTensionAugmentationFA:
                 ModifState.Tension += -Cible.Tension;
-                var toAdd = Instantiate(FindObjectsOfType<BuffDebuff>().First(c => c.Nom == "Tension convertis en FA"));
-                toAdd.Effet.First().Pourcentage = (int)Cible.Tension;
+                var toAdd = Instantiate(AfterEffectToApply);
+                toAdd.Effet.First().ValeurBrut = (int)Cible.Tension * ValeurBrut;
                 Caster.ListBuffDebuff.Add(toAdd);
                 break;
             case TypeEffet.RemoveDebuff:
