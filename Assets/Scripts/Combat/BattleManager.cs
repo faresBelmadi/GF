@@ -521,7 +521,7 @@ public class BattleManager : MonoBehaviour
                 {
                     if (target != -1)
                     {
-                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source, Caster);
+                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
                     }
                     else
                     {
@@ -534,9 +534,9 @@ public class BattleManager : MonoBehaviour
 
                         var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == index);
                         if (ennemy != null)
-                            ennemy.ApplicationEffet(effet, player.Stat, source, Caster);
+                            ennemy.ApplicationEffet(effet, null, source, Caster);
                         else
-                            EnemyScripts.First().ApplicationEffet(effet, player.Stat, source, Caster);
+                            EnemyScripts.First().ApplicationEffet(effet, null, source, Caster);
                     }
                 }
 
@@ -624,7 +624,7 @@ public class BattleManager : MonoBehaviour
                     else
                     {
                         EnemyScripts.First(c => c.combatID == target)
-                            .ApplicationEffet(effet, player.Stat, source, Caster);
+                            .ApplicationEffet(effet, null, source, Caster);
                     }
                 }
 
@@ -649,9 +649,9 @@ public class BattleManager : MonoBehaviour
 
                         var ennemyAlly = EnemyScripts.FirstOrDefault(c => c.combatID == indexAlly);
                         if (ennemyAlly != null)
-                            ennemyAlly.ApplicationEffet(effet, player.Stat, source, Caster);
+                            ennemyAlly.ApplicationEffet(effet, null, source, Caster);
                         else
-                            EnemyScripts.First().ApplicationEffet(effet, player.Stat, source, Caster);
+                            EnemyScripts.First().ApplicationEffet(effet, null, source, Caster);
                     break;
             case Cible.Martyr:
                 var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.Nom == "Martyr");
