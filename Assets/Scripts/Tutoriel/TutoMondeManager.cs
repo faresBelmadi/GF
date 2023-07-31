@@ -10,7 +10,6 @@ public class TutoMondeManager : MonoBehaviour
     public Text TutoTextDisplay;
     public string[] TutoMondeText;
     public int indexTextTuto = 0;
-
     public List<GameObject> AllGameObjectsToDisplay;
 
     void LateUpdate()
@@ -18,9 +17,7 @@ public class TutoMondeManager : MonoBehaviour
         if (Input.anyKeyDown)
         {
             ChangeTextTuto();
-
         }
-
     }
 
     private void ChangeTextTuto()
@@ -29,6 +26,7 @@ public class TutoMondeManager : MonoBehaviour
         if (indexTextTuto >= TutoMondeText.Length)
         {
             indexTextTuto = 0;
+            TutoManager.Instance.StepTuto++;
             SceneManager.LoadScene("Tuto");
         }
         else

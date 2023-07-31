@@ -1,44 +1,36 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 
 public class TutoManager : MonoBehaviour
 {
-    public Encounter _encounter;
-    public Transform[] spawnPos;
-
+    public Encounter[] _encounter;
+    
     [SerializeField]
     private DialogueManager DialogueManager;
 
-    public void Start()
-    {
-        SpawnEnemy();
-        DialogueEnableSetup();
-    }
+    public int StepTuto;
 
+    private static TutoManager instance;
 
-    void DialogueEnableSetup()
+    private void Awake()
     {
-        DialogueManager.SetupDialogue(_encounter);
-    }
-
-    void SpawnEnemy()
-    {
-        List<Transform> used = new List<Transform>();
-        foreach (var item in _encounter.ToFight)
+        if (instance == null)
         {
-            var index = UnityEngine.Random.Range(0, spawnPos.Length);
-            while (used.Contains(spawnPos[index]))
-            {
-                index = UnityEngine.Random.Range(0, spawnPos.Length);
-            }
-
-            used.Add(spawnPos[index]);
-
-            var temp = Instantiate(item.Spawnable, spawnPos[index].position, Quaternion.identity, spawnPos[index]);
-            
-            var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
-            Destroy(tempCombatScript);
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+            StepTuto = 0;
+        }
+        else
+        {
+            Destroy(gameObject);
         }
     }
+
+    public static TutoManager Instance
+    {
+        get { return instance; }
+    }
+
 }

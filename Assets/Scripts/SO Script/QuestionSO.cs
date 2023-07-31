@@ -27,5 +27,8 @@ public enum TypeQuestion
 {
     dialogue,
     startCombat,
-    endCombat
+    endCombat,
+    Tutodialogue,
+    TutoDialogueAndAction,
+    EndTutoDialogue
 }

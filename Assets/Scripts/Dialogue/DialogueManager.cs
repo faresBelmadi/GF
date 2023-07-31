@@ -27,13 +27,13 @@ public class DialogueManager : MonoBehaviour
 
     private Encounter _CurrentEncounterBattle;
     private EncounterAlea _CurrentEncounterAlea;
-    private DialogueSO _CurrentDialogue;
+    internal DialogueSO _CurrentDialogue;
 
     #endregion SO
 
     #region Dialogue Property
 
-    private int DialogueIndex = 0;
+    internal int DialogueIndex = 0;
     private int NextDialogueIndex = 0;
 
     #endregion Dialogue Property

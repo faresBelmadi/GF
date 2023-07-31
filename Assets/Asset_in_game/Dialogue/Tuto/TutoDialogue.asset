@@ -36,7 +36,9 @@ MonoBehaviour:
     Question:
       IDSpeaker: 0
       type: 0
-      Text: Tu est mort
+      Text: "Ah oui c'est vrai... Bon \xE9coute mon vieux, je vais pas passer par
+        quatres chemins, tu es mort. Mais ne t'en fait pas tu peux revenir \xE0 la
+        vie.\nPeut \xEAtre..."
     ReponsePossible:
     - IsEmotion: 0
       whichEmotion: 0
@@ -47,7 +49,31 @@ MonoBehaviour:
   - ID: 2
     Question:
       IDSpeaker: 1
-      type: 1
+      type: 4
+      Text: "Okok Calme toi, c'est normal d'etre perdu, \xE7a va vitre te revenir"
+    ReponsePossible:
+    - IsEmotion: 0
+      whichEmotion: 0
+      SeuilClairvoyance: 0
+      IDNextQuestion: 3
+      "TexteR\xE9ponse": Suivant
+      "cons\xE9quences": []
+  - ID: 3
+    Question:
+      IDSpeaker: 1
+      type: 3
+      Text: "\xE7a c'est tes pv"
+    ReponsePossible:
+    - IsEmotion: 0
+      whichEmotion: 0
+      SeuilClairvoyance: 0
+      IDNextQuestion: 4
+      "TexteR\xE9ponse": Suivant
+      "cons\xE9quences": []
+  - ID: 4
+    Question:
+      IDSpeaker: 1
+      type: 5
       Text: "Suis moi je vais t\u2019expliquer, d\u2019ailleurs moi c\u2019est george,
         je suis ton observateur, et c\u2019est moi qui jugerais en quoi tu te reincarne\u2026Si
         tu arrive jusqu\u2019\xE0 cette \xE9tape, mais rappel toi, je dois t\u2019observer
