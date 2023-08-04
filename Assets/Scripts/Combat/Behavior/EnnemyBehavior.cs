@@ -385,7 +385,7 @@ public class EnnemyBehavior : CombatBehavior
                         GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
                     }*/
                 }
-                if (toApply.IsConsomable == true)
+                if (toApply.IsConsomable == true && !toApply.DirectApplication)
                 {
                     toApply.Temps = 0;
                     foreach (var ToAdd in toApply.Consomation)

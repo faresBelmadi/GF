@@ -11,6 +11,8 @@ public class Souvenir : ScriptableObject
     public List<PourcentageEmotion> ProcEmotion;
     public Emotion Emotion;
     public List<ModificationStatSouvenir> ModificationStat;
+    public bool IsClass;
+    public int ClassId = 0;
 
     public string Nom;
     [TextArea(5, 10)]
