@@ -90,6 +90,7 @@ public class CharacterStat : ScriptableObject
         this._resilience += ModifState._resilience;
         this.Calme += ModifState.Calme;
         this.Essence += ModifState.Essence;
+        this.Tension += ModifState.Tension;
 
         if (ModifState.Radiance < 0)
         {
@@ -173,6 +174,7 @@ public class CharacterStat : ScriptableObject
         this._resilience -= ModifState._resilience;
         this.Calme -= ModifState.Calme;
         this.Essence -= ModifState.Essence;
+        this.Tension -= ModifState.Tension;
 
         if (ModifState.Radiance < 0)
         {

@@ -409,7 +409,7 @@ public class JoueurBehavior : CombatBehavior
         
         foreach(var item in Stat.ListBuffDebuff)
         {
-            if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant)
+            if(item.timerApplication == Timer)
                 ApplicationBuffDebuff(Timer,item);
         }
 
@@ -436,7 +436,7 @@ public class JoueurBehavior : CombatBehavior
                         GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine);
                     }*/
                 }
-                if (toApply.IsConsomable == true)
+                if (toApply.IsConsomable == true && !toApply.DirectApplication)
                 {
                     toApply.Temps = 0;
                     foreach (var ToAdd in toApply.Consomation)

@@ -106,23 +106,31 @@ public class BattleManager : MonoBehaviour
     {
         foreach (var item in EnemyScripts)
         {
-            item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.Calme;
-            item.Stat.ValeurPalier = (item.Stat.TensionMax) / item.Stat.NbPalier;
+            if(!item.Stat.NoTension)
+            {
+                item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.Calme;
+                item.Stat.ValeurPalier = (item.Stat.TensionMax) / item.Stat.NbPalier;
+            }
         }
     }
 
     void CalcCalmeMoyen()
     {
         float tempCalmeEnemy = 0;
+        int count = 0;
         for (int i = 0; i < EnemyScripts.Count; i++)
         {
-            tempCalmeEnemy += EnemyScripts[i].Stat.Calme;
+            if(!EnemyScripts[i].Stat.NoTension)
+            {
+                tempCalmeEnemy += EnemyScripts[i].Stat.Calme;
+                count++;
+            }
         }
 
         CalmeMoyenJoueur = player.Stat.Calme;
-        CalmeMoyenAdversaire = tempCalmeEnemy / EnemyScripts.Count;
+        CalmeMoyenAdversaire = tempCalmeEnemy / count;
         //remplacer 1 par une variable si le cas de plusieurs personnage jouable arrive
-        CalmeMoyen = (tempCalmeEnemy + player.Stat.Calme) / (EnemyScripts.Count + 1);
+        CalmeMoyen = (tempCalmeEnemy + player.Stat.Calme) / (count + 1);
     }
 
     private bool CheckTension(int key)
@@ -195,8 +203,11 @@ public class BattleManager : MonoBehaviour
     void SpawnEnemy()
     {
         List<Transform> used = new List<Transform>();
-        foreach (var item in _encounter.ToFight)
+        for (int i = 0; i < _encounter.ToFight.Count; i++)
         {
+
+            var item = _encounter.ToFight[i];
+        
             var index = UnityEngine.Random.Range(0, spawnPos.Length);
             while (used.Contains(spawnPos[index]))
             {
@@ -211,6 +222,7 @@ public class BattleManager : MonoBehaviour
             tempCombatScript.Stat = Instantiate(item);
             tempCombatScript.SetUp();
             tempCombatScript.EndTurnBM = EndTurn;
+            tempCombatScript.isMainEnemy = i == _encounter.idMainMob ? true : false;
             SpawnedEnemy.Add(temp);
             EnemyScripts.Add(tempCombatScript);
 
@@ -412,7 +424,7 @@ public class BattleManager : MonoBehaviour
                         {
                             index = UnityEngine.Random.Range(1, EnemyScripts.Count + 1);
 
-                        } while (index == origine);
+                        } while (index == origine && EnemyScripts.Count>1);
 
                         var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == index);
                         if (ennemy != null)
@@ -423,7 +435,25 @@ public class BattleManager : MonoBehaviour
 
                     break;
                 case Cible.Ally:
+                        int indexAlly;
+                        do
+                        {
+                            indexAlly = UnityEngine.Random.Range(1, EnemyScripts.Count + 1);
 
+                        } while (indexAlly == origine && EnemyScripts.Count>1);
+
+                        var ennemyAlly = EnemyScripts.FirstOrDefault(c => c.combatID == indexAlly);
+                        if (ennemyAlly != null)
+                            ennemyAlly.AddDebuff(item, Decompte, Timer);
+                        else
+                            EnemyScripts.First().AddDebuff(item, Decompte, Timer);
+                    break;
+                case Cible.Martyr:
+                        var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.Nom == "Martyr");
+                        if (martyr != null)
+                        {
+                            martyr.AddDebuff(item, Decompte,Timer);
+                        }
                     break;
                 case Cible.allEnnemi:
                     foreach (var ennemie in EnemyScripts)
@@ -491,7 +521,7 @@ public class BattleManager : MonoBehaviour
                 {
                     if (target != -1)
                     {
-                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, player.Stat, source, Caster);
+                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
                     }
                     else
                     {
@@ -504,9 +534,9 @@ public class BattleManager : MonoBehaviour
 
                         var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == index);
                         if (ennemy != null)
-                            ennemy.ApplicationEffet(effet, player.Stat, source, Caster);
+                            ennemy.ApplicationEffet(effet, null, source, Caster);
                         else
-                            EnemyScripts.First().ApplicationEffet(effet, player.Stat, source, Caster);
+                            EnemyScripts.First().ApplicationEffet(effet, null, source, Caster);
                     }
                 }
 
@@ -594,7 +624,7 @@ public class BattleManager : MonoBehaviour
                     else
                     {
                         EnemyScripts.First(c => c.combatID == target)
-                            .ApplicationEffet(effet, player.Stat, source, Caster);
+                            .ApplicationEffet(effet, null, source, Caster);
                     }
                 }
 
@@ -608,6 +638,27 @@ public class BattleManager : MonoBehaviour
                         ennemie.ApplicationEffet(effet, null, source, Caster);
                 }
 
+                break;
+                case Cible.Ally:
+                        int indexAlly = Caster;
+                        do
+                        {
+                            indexAlly = UnityEngine.Random.Range(1, EnemyScripts.Count + 1);
+
+                        } while (indexAlly == Caster && EnemyScripts.Count > 1);
+
+                        var ennemyAlly = EnemyScripts.FirstOrDefault(c => c.combatID == indexAlly);
+                        if (ennemyAlly != null)
+                            ennemyAlly.ApplicationEffet(effet, null, source, Caster);
+                        else
+                            EnemyScripts.First().ApplicationEffet(effet, null, source, Caster);
+                    break;
+            case Cible.Martyr:
+                var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.Nom == "Martyr");
+                if (martyr != null)
+                {
+                    martyr.ApplicationEffet(effet, null, source, Caster);
+                }
                 break;
         }
     }
@@ -675,14 +726,22 @@ public class BattleManager : MonoBehaviour
 
     public void DeadEnemy(int id)
     {
-        if (EnemyScripts.FirstOrDefault(c => c.combatID == id) != null)
+        var killed = EnemyScripts.FirstOrDefault(c => c.combatID == id);
+        if (killed != null)
         {
-            
             nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true);
             IdOrder.RemoveAll(c => c.id == id);
             IdSpeedDictionary.Remove(id);
-            var todestroy = EnemyScripts.First(c => c.combatID == id).gameObject;
-            DeadEnemyScripts.Add(EnemyScripts.FirstOrDefault(c => c.combatID == id));
+            if(killed.isMainEnemy)
+            {
+                foreach (var item in EnemyScripts)
+                {
+                    if(item.combatID != killed.combatID)
+                        item.Dead();
+                }
+            }
+            var todestroy = killed.gameObject;
+            DeadEnemyScripts.Add(killed);
             EnemyScripts.RemoveAll(c => c.combatID == id);
             SpawnedEnemy.Remove(todestroy);
             Destroy(todestroy);

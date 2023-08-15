@@ -30,16 +30,21 @@ public enum TimerPassif
 
 public enum Cible
 {
-    joueur,
-    ennemi,
-    allEnnemi,
-    All,
-    Ally,
-    AllExceptSelf,
-    MostDamage,
-    LastAttacker,
-    AllAllyExceptSelf,
-    Self
+    joueur = 0,
+    ennemi = 1,
+    allEnnemi = 2,
+    All = 3,
+    Ally = 4,
+    AllExceptSelf = 5,
+    MostDamage = 6,
+    LastAttacker = 7,
+    AllAllyExceptSelf = 8,
+    Self = 9,
+    TwoAlliesRadianceHaute = 10,
+    MostRadiance = 11,
+    LessRadiance = 12,
+    HasAmantLessRadiance = 13,
+    Martyr = 14,
 }
 
 public enum CibleDialogue
@@ -136,6 +141,7 @@ public enum TypeEffet
     OnKillStunAll=58,
     AugmentationFARadianceManquante=59,
     DamageFaBuff=60,
+    DamageFaBuffCible = 79,
     DamageDebuffCible = 75,
     RemoveAllTensionProcDamage=61,
     RemoveAllDebuffProcBuffDebuf=62,
@@ -153,7 +159,7 @@ public enum TypeEffet
     DegatsBrutConsequence=74,
     DegatsFaRadianceManquanteCible = 77,
     DegatsFaRadianceManquanteCaster = 78,
-        //79
+        //80
 }
 
 public enum TypePassif

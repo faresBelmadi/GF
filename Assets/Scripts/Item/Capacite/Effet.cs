@@ -15,6 +15,7 @@ public class Effet : ScriptableObject
     public int RandomX;
     public int RandomY;
     public int NbAttaque;
+    public int ValeurParBuffDebuff;
     private int TimeAlive = 1;
     public bool IsAttaqueEffet;
     public bool IsFirstApplication = true;
@@ -184,9 +185,10 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.ConsommeTensionAugmentationFA:
                 ModifState.Tension += -Cible.Tension;
-                var toAdd = Instantiate(FindObjectsOfType<BuffDebuff>().First(c => c.Nom == "Tension convertis en FA"));
-                toAdd.Effet.First().Pourcentage = (int)Cible.Tension;
-                Caster.ListBuffDebuff.Add(toAdd);
+                var toAdd = AfterEffectToApply;
+                toAdd.Effet.First().ValeurBrut = (int)Cible.Tension * ValeurBrut;
+                GameManager.instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
+                toAdd.Effet.First().ValeurBrut = 0;
                 break;
             case TypeEffet.RemoveDebuff:
                 var tempListRD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
@@ -256,7 +258,8 @@ public class Effet : ScriptableObject
 
             case TypeEffet.DamageDebuffCible:
                 var nbDebuffCibleDamage = Cible.ListBuffDebuff.Count(x => x.IsDebuff);
-                ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * nbDebuffCibleDamage);
+                var percentDamages = Pourcentage + (ValeurParBuffDebuff*nbDebuffCibleDamage);
+                ModifState.Radiance += Mathf.FloorToInt(((percentDamages / 100f) * Caster.ForceAme));
                 break;
             //case TypeEffet.RemoveAllTensionProcDamage:
             //    ModifState.Tension = 0;
@@ -318,6 +321,11 @@ public class Effet : ScriptableObject
                 case TypeEffet.DegatsFaRadianceManquanteCaster:
                 ModifState.Radiance +=
                     Mathf.FloorToInt(((Pourcentage / 100f) * Caster.ForceAme) * (Caster.Radiance * 100f / Caster.RadianceMax));
+                    break;
+                case TypeEffet.DamageFaBuffCible:
+                    var nbBuff = Cible.ListBuffDebuff.Count(x => !x.IsDebuff);
+                    var percentDamage = Pourcentage + (ValeurParBuffDebuff*nbBuff);
+                    ModifState.Radiance += Mathf.FloorToInt(((percentDamage / 100f) * Caster.ForceAme));
                     break;
             default:
                 break;

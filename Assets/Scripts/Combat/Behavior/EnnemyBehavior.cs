@@ -21,7 +21,7 @@ public class EnnemyBehavior : CombatBehavior
     public bool IsTurn;
     nextActionEnum nextActionType;
     List<EnnemiSpell> Spells;
-
+    public bool isMainEnemy;
     private BattleManager _refBattleMan;
 
     #region Divers start & fin
@@ -109,7 +109,7 @@ public class EnnemyBehavior : CombatBehavior
 
     }
 
-    private void Dead()
+    public void Dead()
     {
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.Death;
         _refBattleMan.PassifManager.ResolvePassifs();
@@ -167,7 +167,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public bool CanHaveAnotherTurn()
     {
-        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
+        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier && !Stat.NoTension)
         {
             return true;
         }
@@ -331,7 +331,7 @@ public class EnnemyBehavior : CombatBehavior
     {
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
-            if (toAdd.IsDebuff)
+            if (toAdd.IsDebuff && !Stat.NoTension)
             {
                 ReceiveTension(Source.Buff);
             }
@@ -357,7 +357,7 @@ public class EnnemyBehavior : CombatBehavior
         
         foreach(var item in Stat.ListBuffDebuff)
         {
-            if(item.timerApplication == Timer || item.timerApplication == TimerApplication.Persistant)
+            if(item.timerApplication == Timer)
                 ApplicationBuffDebuff(Timer,item);
         }
 
@@ -385,7 +385,7 @@ public class EnnemyBehavior : CombatBehavior
                         GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
                     }*/
                 }
-                if (toApply.IsConsomable == true)
+                if (toApply.IsConsomable == true && !toApply.DirectApplication)
                 {
                     toApply.Temps = 0;
                     foreach (var ToAdd in toApply.Consomation)
@@ -466,16 +466,17 @@ public class EnnemyBehavior : CombatBehavior
                 _refBattleMan.MostDamageID = idCaster;
             }
 
-            if (source == SourceEffet.Spell)
+            if (source == SourceEffet.Spell && !Stat.NoTension)
                 ReceiveTension(Source.Attaque);
-            else if (source == SourceEffet.BuffDebuff)
+            else if (source == SourceEffet.BuffDebuff && !Stat.NoTension)
                 ReceiveTension(Source.Dot);
 
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
         else if (ModifStat.Radiance > 0)
         {
-            ReceiveTension(Source.Soin);
+            if(!Stat.NoTension)
+                ReceiveTension(Source.Soin);
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
 
