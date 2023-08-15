@@ -31,7 +31,7 @@ public class ContainerCompetence : MonoBehaviour, IPointerEnterHandler, IPointer
         }
         else
         {
-            Cout.text = "Cout : " + LaCompetence.Essence.ToString();
+            Cout.text = "Cout : " + LaCompetence.EssenceCost.ToString();
         }
         if(LaCompetence.Bought == true)
         {

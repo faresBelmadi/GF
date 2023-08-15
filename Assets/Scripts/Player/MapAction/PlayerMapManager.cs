@@ -199,8 +199,9 @@ public class PlayerMapManager : MonoBehaviour
 
     void StartLevelUp()
     {
-        UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
-        uiMondeManager.EnableSkillTree();
+        SceneManager.LoadScene("Autel");
+        //UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
+        //uiMondeManager.EnableSkillTree();
     }
 
     void StartAutel()

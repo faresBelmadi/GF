@@ -124,15 +124,15 @@ public class ArbreManager : MonoBehaviour
         for (int i = 1; i < PanelCompetence.Count; i++)
         {
             PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonBuy.interactable = false;
-            if (Stat.Essence >= PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.Essence)
+            if (Stat.Essence >= PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.EssenceCost)
             {
-                for (int y = 0; y < PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.IDLier.Count; y++)
-                {
-                    if (Class.First(c => c.IDLvl == PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.IDLier[y]).Bought == true)
-                    {
-                        PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonBuy.interactable = true;
-                    }
-                }
+                //for (int y = 0; y < PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.IDLier.Count; y++)
+                //{
+                //    if (Class.First(c => c.IDLvl == PanelCompetence[i].GetComponent<ContainerCompetence>().LaCompetence.IDLier[y]).Bought == true)
+                //    {
+                //        PanelCompetence[i].GetComponent<ContainerCompetence>().ButtonBuy.interactable = true;
+                //    }
+                //}
             }
         }
     }
@@ -141,14 +141,14 @@ public class ArbreManager : MonoBehaviour
     {
         foreach (var item in PanelCompetence)
         {
-            item.GetComponent<ContainerCompetence>().LaCompetence.Essence = item.GetComponent<ContainerCompetence>().LaCompetence.EssenceOriginal;
-            for (int i = 0; i < item.GetComponent<ContainerCompetence>().LaCompetence.IDLier.Count; i++)
-            {
-                if (Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).Bought == true && Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).IDLvl != 0)
-                {
-                    item.GetComponent<ContainerCompetence>().LaCompetence.Essence -= ReductionCout;
-                }
-            }
+            item.GetComponent<ContainerCompetence>().LaCompetence.EssenceCost = item.GetComponent<ContainerCompetence>().LaCompetence.EssenceCostOriginal;
+            //for (int i = 0; i < item.GetComponent<ContainerCompetence>().LaCompetence.IDLier.Count; i++)
+            //{
+            //    if (Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).Bought == true && Class.First(c => c.IDLvl == item.GetComponent<ContainerCompetence>().LaCompetence.IDLier[i]).IDLvl != 0)
+            //    {
+            //        item.GetComponent<ContainerCompetence>().LaCompetence.Essence -= ReductionCout;
+            //    }
+            //}
             if (item.GetComponent<ContainerCompetence>().LaCompetence.IDLvl != 0)
             {
                 item.GetComponent<ContainerCompetence>().Affichage();
@@ -183,7 +183,7 @@ public class ArbreManager : MonoBehaviour
 
     public void Buy(ContainerCompetence Competence)
     {
-        Stat.Essence -= Competence.LaCompetence.Essence;
+        Stat.Essence -= Competence.LaCompetence.EssenceCost;
         Competence.LaCompetence.Bought = true;
         Competence.AffichageAchat.GetComponent<Image>().sprite = Competence.Acheter;
         Competence.ButtonBuy.gameObject.SetActive(false);
