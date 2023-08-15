@@ -6,6 +6,7 @@ using TMPro;
 using System.Linq;
 using Unity.Jobs;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine.SceneManagement;
 
 public class NewAutelManager : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class NewAutelManager : MonoBehaviour
     public List<GameObject> AllLink;
 
     public Button BuyButton;
+
+    public Button RetourButton;
 
     void FixedUpdate()
     {
@@ -91,5 +94,8 @@ public class NewAutelManager : MonoBehaviour
         capa.Bought = true;
         capa.Equiped = true;
         GameManager.instance.playerStat.ListSpell.Add(capa.Spell);
+        RetourButton.onClick.RemoveAllListeners();
+        //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
+        RetourButton.onClick.AddListener(delegate { StartCoroutine(GameManager.instance.pmm.EndAutel(false)); });
     }
 }
