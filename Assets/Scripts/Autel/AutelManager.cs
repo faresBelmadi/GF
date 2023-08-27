@@ -4,379 +4,98 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
+using Unity.Jobs;
+using UnityEditor.Experimental.GraphView;
+using UnityEngine.SceneManagement;
 
-//TODO : Remettre les lignes en commentaire qui retire la possibilité de loot le souvneir loot
 public class AutelManager : MonoBehaviour
 {
-    public bool Loot = false;
-    public JoueurStat Stat;
+    public GameObject MenuUiPanel;
+    public GameObject LevelUpUiPanel;
+
     public TextMeshProUGUI EssenceText;
-    public int Etage = 1;
+    public TextMeshProUGUI DescriptionSpellText;
+    public TextMeshProUGUI CostCapaText;
 
-    public GameObject ButtonLvlup, ButtonItem;
-    public GameObject ButtonChoix1, ButtonChoix2, ButtonChoix3, ButtonReturn;
-    public TextMeshProUGUI TextCoutChoix1, TextCoutChoix2, TextCoutChoix3;
-    public List<int> CoutChoix1, CoutChoix2, CoutChoix3, CoutStatChoix3;
-    public List<LootRarity> LootRarityForChoix1;
-    public GameObject SpawnSouvenirChoix3, SouvenirChoix3;
-    public GameObject SouvenirPrefab;
+    public List<GameObject> AllSpellsIcon;
+    public List<GameObject> AllLink;
 
-    public GameObject RetourButton;
+    public Button BuyButton;
 
-    public GameObject ArbreCompetencePrefab;
-    public GameObject ArbreCompetence, Canvas, AutelMenu;
+    public Button RetourButton;
 
-    #region Start & End
-
-    public void StartAutel()
+    void FixedUpdate()
     {
-        Stat = GameManager.instance.playerStat;
-        InstantiateSouvenirChoix3();
-        UpdateCoutChoix();
+        EssenceText.text = "Essence : " + GameManager.instance.playerStat.Essence;
     }
 
-    public void InstantiateSouvenirChoix3()
+    public void ShowMenuUiPanel()
     {
-        SouvenirChoix3 = Instantiate(SouvenirPrefab, SpawnSouvenirChoix3.transform);
-        switch (Etage)
+        LevelUpUiPanel.SetActive(false);
+        MenuUiPanel.SetActive(true);
+    }
+
+    public void SetLvlUpActive()
+    {
+        LevelUpUiPanel.SetActive(true);
+        MenuUiPanel.SetActive(false);
+        SetUpAllSpells();
+    }
+
+    private void SetUpAllSpells()
+    {
+        var listOfCompetences = GameManager.instance.classSO.Competences;
+
+        foreach (var capa in listOfCompetences)
         {
-            case 1:
-                if(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare) == null)
+            if (capa.Spell?.Sprite)
+                AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.Sprite;
+            //spellIcon.gameObject.GetComponent<Image>().sprite = GameManager.instance.playerStat.ListSpell[0].Sprite;
+        }
+    }
+
+    public void SelectSpell(int Id)
+    {
+        var listOfCompetences = GameManager.instance.classSO.Competences;
+
+        foreach (var capa in listOfCompetences)
+        {
+            if (capa.Spell?.IDSpell == Id)
+            {
+
+                DescriptionSpellText.text = capa.Spell.Description;
+                CostCapaText.text = "cout : " + capa.EssenceCost;
+                if (capa.EssenceCost <= GameManager.instance.playerStat.Essence)
                 {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique));
+                    BuyButton.onClick.AddListener(delegate { BuyCapa(capa); });
+                    BuyButton.GetComponent<Image>().color = Color.white;
                 }
                 else
                 {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare));
+                    BuyButton.onClick.RemoveAllListeners();
+                    BuyButton.GetComponent<Image>().color = Color.gray;
                 }
-                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
-                break;
-            case 2:
-                if (GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique) == null)
-                {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare));
-                }
-                else
-                {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique));
-                }
-                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
-                break;
-            case 3:
-                if (GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Legendaire) == null)
-                {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique));
-                }
-                else
-                {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Legendaire));
-                }
-                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
-                break;
+            }
         }
     }
 
-    public void EndAutel()
+    public void BuyCapa(Competence capa)
     {
-        GameManager.instance.playerStat = Stat;
-        StartCoroutine(GameManager.instance.pmm.EndAutel(Loot));
-    }
-
-    #endregion Start & End
-
-    #region Update
-
-    public void UpdateCoutChoix()
-    {
-        switch (Etage)
+        if (capa.Bought)
         {
-            case 1:
-                TextCoutChoix1.text = "Cout : " + CoutChoix1[0].ToString() + " essence";
-                TextCoutChoix2.text = "Cout : " + CoutChoix2[0].ToString() + " essence";
-                TextCoutChoix3.text = "Cout : " + CoutChoix3[0].ToString() + " essence\n" + CoutStatChoix3[0].ToString() + " point de Calme";
-                break;
-            case 2:
-                TextCoutChoix1.text = "Cout : " + CoutChoix1[1].ToString() + " essence";
-                TextCoutChoix2.text = "Cout : " + CoutChoix2[1].ToString() + " essence";
-                TextCoutChoix3.text = "Cout : " + CoutChoix3[1].ToString() + " essence\n" + CoutStatChoix3[1].ToString() + " point de Radiance";
-                break;
-            case 3:
-                TextCoutChoix1.text = "Cout : " + CoutChoix1[2].ToString() + " essence";
-                TextCoutChoix2.text = "Cout : " + CoutChoix2[2].ToString() + " essence";
-                TextCoutChoix3.text = "Cout : " + CoutChoix3[2].ToString() + " essence\n" + CoutStatChoix3[2].ToString() + " point de Clairvoyance";
-                break;
-        }
-    }
-
-    public void Update()
-    {
-        UpdateCoutChoix();
-        EssenceText.text = "Essence : " + Stat.Essence;
-        if (Stat.Essence < CoutChoix1[Etage-1])
-        {
-            ButtonChoix1.GetComponentInChildren<Button>().interactable = false;
-        }
-        if (Stat.Essence < CoutChoix2[Etage-1])
-        {
-            ButtonChoix2.GetComponentInChildren<Button>().interactable = false;
-        }
-        if (Stat.Essence < CoutChoix3[Etage-1])
-        {
-            ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
-        }
-        switch (Etage)
-        {
-            case 1:
-                if (Stat.Calme < CoutStatChoix3[Etage - 1])
-                {
-                    ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
-                }
-                break;
-            case 2:
-                if (Stat.Radiance < CoutStatChoix3[Etage - 1])
-                {
-                    ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
-                }
-                break;
-            case 3:
-                if (Stat.Clairvoyance < CoutStatChoix3[Etage - 1])
-                {
-                    ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
-                }
-                break;
-        }
-    }
-
-    #endregion Update
-
-    #region LvlUp
-
-    public void Lvlup()
-    {
-        //Set Active prefab arbre de compétence
-
-        ArbreCompetencePrefab.SetActive(true);
-        //ArbreCompetence = Instantiate(ArbreCompetencePrefab, Canvas.transform);
-        //ArbreCompetence.GetComponentInChildren<RetourArbre>().gameObject.GetComponent<Button>().onClick.AddListener(NonAfficherArbre);
-        //ArbreCompetence.GetComponent<ArbreManager>().StartArbre(Stat);
-        AutelMenu.SetActive(false);
-    }
-
-    public void NonAfficherArbre()
-    {
-        Stat = ArbreCompetence.GetComponent<ArbreManager>().Stat;
-        ArbreCompetence.GetComponent<ArbreManager>().ReordableSpell();
-        Stat.ListSpell.Clear();
-        Stat.ListSpell = ArbreCompetence.GetComponent<ArbreManager>().SpellEquiped;
-        GameManager.instance.classSO.Competences = ArbreCompetence.GetComponent<ArbreManager>().Class;
-        AutelMenu.SetActive(true);
-        Destroy(ArbreCompetence);
-        EndAutel();
-    }
-
-    #endregion LvlUp
-
-    #region Item
-
-    public void Item()
-    {
-
-        ButtonLvlup.SetActive(false);
-        ButtonItem.SetActive(false);
-        ButtonChoix1.SetActive(true);
-        ButtonChoix2.SetActive(true);
-        ButtonChoix3.SetActive(true);
-        ButtonReturn.SetActive(true);
-    }
-
-    public void Return()
-    {
-        ArbreCompetencePrefab.SetActive(false);
-        AutelMenu.SetActive(true);
-        ButtonLvlup.SetActive(true);
-        ButtonItem.SetActive(true);
-        ButtonChoix1.SetActive(false);
-        ButtonChoix2.SetActive(false);
-        ButtonChoix3.SetActive(false);
-        ButtonReturn.SetActive(false);
-    }
-
-    #endregion Item
-
-    #region Les Choix
-
-    public void Choix1()
-    {
-        CoutChoix(1);
-        Stat.Conscience += 2;
-        int random = UnityEngine.Random.Range(0, 101);
-        Debug.Log("Loot : " + random);
-        if (random > 51)
-        {
-            EndAutel();
+            BuyButton.onClick.RemoveAllListeners();
+            BuyButton.GetComponent<Image>().color = Color.gray;
             return;
         }
-        LootRarityForChoix1.Sort((x, y) => x.Pourcentage.CompareTo(y.Pourcentage));
-        int PourcentageTotal = 0;
-        for (int i = 0; i < LootRarityForChoix1.Count; i++)
-        {
-            PourcentageTotal += LootRarityForChoix1[i].Pourcentage;
-        }
-        random = UnityEngine.Random.Range(0, PourcentageTotal + 1);
-        Debug.Log("Rarity : " + random);
-        for (int i = 0; i < LootRarityForChoix1.Count; i++)
-        {
-            if (random <= LootRarityForChoix1[i].Pourcentage && GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter) != null)
-            {
-                string NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter).Nom;
-                Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
-                //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                Loot = true;
-                EndAutel();
-                return;
-            }
-            else
-            {
-                random -= LootRarityForChoix1[i].Pourcentage;
-            }
-        }
-        EndAutel();
+        Debug.Log("capa acheté");
+        //if already bougth
+        
+        GameManager.instance.playerStat.Essence -= capa.EssenceCost;
+        capa.Bought = true;
+        capa.Equiped = true;
+        GameManager.instance.playerStat.ListSpell.Add(capa.Spell);
+        RetourButton.onClick.RemoveAllListeners();
+        //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
+        RetourButton.onClick.AddListener(delegate { StartCoroutine(GameManager.instance.pmm.EndAutel(false)); });
     }
-
-    public void Choix2()
-    {
-        CoutChoix(2);
-        Stat.Conscience += 3;
-        string NameLoot;
-        switch (Etage)
-        {
-            case 1:
-                if(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare) == null)
-                {
-                    NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).Nom;
-                    Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
-                    //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                else
-                {
-                    NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare).Nom;
-                    Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
-                    //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                break;
-            case 2:
-                if (GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare) == null)
-                {
-                    NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).Nom;
-                    Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
-                    //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                else
-                {
-                    NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare).Nom;
-                    Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
-                    //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                break;
-            case 3:
-                if (GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique) == null)
-                {
-                    NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Legendaire).Nom;
-                    Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
-                    //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                else
-                {
-                    NameLoot = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).Nom;
-                    Stat.ListSouvenir.Add(Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
-                    //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                break;
-        }
-        Loot = true;
-        EndAutel();
-    }
-
-    public void Choix3()
-    {
-        CoutChoix(3);
-        Stat.Conscience += 3;
-        Stat.ListSouvenir.Add(SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir);
-        //GameManager.instance.CopyAllSouvenir.Remove(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir.Nom));
-        Loot = true;
-        EndAutel();
-    }
-
-    public void CoutChoix(int Choix)
-    {
-        switch (Etage)
-        {
-            case 1:
-                switch (Choix)
-                {
-                    case 1:
-                        Stat.Essence -= CoutChoix1[0];
-                        break;
-                    case 2:
-                        Stat.Essence -= CoutChoix2[0];
-                        break;
-                    case 3:
-                        Stat.Essence -= CoutChoix3[0];
-                        Stat.Calme -= CoutStatChoix3[0];
-                        break;
-                }
-                break;
-            case 2:
-                switch (Choix)
-                {
-                    case 1:
-                        Stat.Essence -= CoutChoix1[1];
-                        break;
-                    case 2:
-                        Stat.Essence -= CoutChoix2[1];
-                        break;
-                    case 3:
-                        Stat.Essence -= CoutChoix3[1];
-                        Stat.Radiance -= CoutStatChoix3[1];
-                        break;
-                }
-                break;
-            case 3:
-                switch (Choix)
-                {
-                    case 1:
-                        Stat.Essence -= CoutChoix1[2];
-                        break;
-                    case 2:
-                        Stat.Essence -= CoutChoix2[2];
-                        break;
-                    case 3:
-                        Stat.Essence -= CoutChoix3[2];
-                        Stat.Clairvoyance -= CoutStatChoix3[2];
-                        break;
-                }
-                break;
-        }
-    }
-
-    #endregion Les Choix
-
-    #region Temp Test
-
-    public void Etage1()
-    {
-        Etage = 1;
-    }
-
-    public void Etage2()
-    {
-        Etage = 2;
-    }
-
-    public void Etage3()
-    {
-        Etage = 3;
-    }
-
-    #endregion Temp Test
 }

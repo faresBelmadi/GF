@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
     public BattleManager BattleMan;
     public TutoManager TutoManager;
     public AleaManager AleaMan;
-    public AutelManager AutelMan;
+    public OldAutelManager OldAutelMan;
     public MenuStatManager StatMan;
 
     [Header("Classes & Encounter")]
@@ -242,7 +242,7 @@ public class GameManager : MonoBehaviour {
 
     public void LoadAutel()
     {
-        AutelMan.StartAutel();
+        OldAutelMan.StartAutel();
     }
         
     public void StartStatJoueur()

@@ -35,7 +35,7 @@ public class RoomManager : MonoBehaviour
 
         //Rooms[1].ToSet = SalleLevelUp;
         //Rooms[1].gameObject.transform.localScale = new Vector3(10, 10);
-        //Rooms[1].Type = TypeRoom.LevelUp;
+        //Rooms[1].Type = TypeRoom.Autel;
 
         Rooms[1].ToSet = SalleCombatNormal;
         Rooms[1].gameObject.transform.localScale = new Vector3(10, 10);

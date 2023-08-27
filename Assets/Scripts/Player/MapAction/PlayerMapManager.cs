@@ -95,6 +95,11 @@ public class PlayerMapManager : MonoBehaviour
             case TypeRoom.LevelUp:
                 StartLevelUp();
                 break;
+            case TypeRoom.Autel:
+                StartCoroutine("LoadSceneAsync", "Autel");
+                _currentRoom.Type = TypeRoom.Visited;
+                break;
+                //StartAutel();
             //case TypeRoom.Heal:
             //    StartCoroutine("LoadSceneAsync", "Autel");
             //    break;
@@ -138,9 +143,9 @@ public class PlayerMapManager : MonoBehaviour
             //case "AleaScene":
             //    StartAlea();
             //    break;
-            //case "Autel":
-            //    StartAutel();
-            //    break;
+            case "Autel":
+                StartAutel();
+                break;
             //case "MenuStat":
             //    StartMenuStat();
             //    break;
@@ -199,16 +204,16 @@ public class PlayerMapManager : MonoBehaviour
 
     void StartLevelUp()
     {
-        SceneManager.LoadScene("Autel");
-        //UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
-        //uiMondeManager.EnableSkillTree();
+        //SceneManager.LoadScene("Autel");
+        UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
+        uiMondeManager.EnableSkillTree();
     }
 
     void StartAutel()
     {
         CurrentRoomCamera = rootScene.First(c => c.name == "AutelCamera");
-        GameManager.instance.AutelMan = rootScene.First(c => c.name == "AutelManager").GetComponent<AutelManager>();
-        GameManager.instance.LoadAutel();
+        //GameManager.instance.OldAutelMan = rootScene.First(c => c.name == "OldAutelManager").GetComponent<OldAutelManager>();
+        //GameManager.instance.LoadAutel();
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
     }
@@ -216,7 +221,7 @@ public class PlayerMapManager : MonoBehaviour
     public IEnumerator EndAutel(bool Loot)
     {
         CurrentRoomCamera.SetActive(false);
-        GameManager.instance.AutelMan = null;
+        //GameManager.instance.OldAutelMan = null;
         MenuCamera.SetActive(true);
         if (Loot == true)
         {
