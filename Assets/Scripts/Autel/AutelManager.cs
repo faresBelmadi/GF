@@ -28,10 +28,12 @@ public class AutelManager : MonoBehaviour
 
     public TextMeshProUGUI ValeurRadiance, ValeurFA, ValeurVitesse, ValeurConviction, ValeurResilience, ValeurCalme, ValeurVolonter, ValeurConscience, ValeurClairvoyance;
     public TextMeshProUGUI ModifRadiance, ModifFA, ModifVitesse, ModifConviction, ModifResilience, ModifCalme, ModifVolonter, ModifConscience, ModifClairvoyance;
+    
 
     void FixedUpdate()
     {
         EssenceText.text = "Essence : " + GameManager.instance.playerStat.Essence;
+        SetUpStatsDescription();
     }
 
     public void ShowMenuUiPanel()
@@ -63,7 +65,7 @@ public class AutelManager : MonoBehaviour
 
     public void SetUpStatsDescription()
     {
-        var stats = GameManager.instance.classSO.PlayerStat;
+        JoueurStat stats = GameManager.instance.playerStat;
         ValeurRadiance.text = stats.RadianceMax.ToString();
         ValeurFA.text = stats.ForceAme.ToString(); 
         ValeurVitesse.text = stats.VitesseOriginal.ToString(); 
@@ -74,12 +76,13 @@ public class AutelManager : MonoBehaviour
         ValeurConscience.text = stats.Conscience.ToString(); 
         ValeurClairvoyance.text = stats.Clairvoyance.ToString();
 
-        ModifRadiance.text = ModifFA.text = ModifVitesse.text = ModifConviction.text = ModifResilience.text =
-            ModifCalme.text = ModifVolonter.text = ModifConscience.text = ModifClairvoyance.text = "";
+        //ModifRadiance.text = ModifFA.text = ModifVitesse.text = ModifConviction.text = ModifResilience.text =
+        //    ModifCalme.text = ModifVolonter.text = ModifConscience.text = ModifClairvoyance.text = "";
     }
 
     public void SelectSpell(int Id)
     {
+        BuyButton.onClick.RemoveAllListeners();
         var listOfCompetences = GameManager.instance.classSO.Competences;
 
         foreach (var capa in listOfCompetences)
@@ -186,9 +189,52 @@ public class AutelManager : MonoBehaviour
         GameManager.instance.playerStat.Essence -= capa.EssenceCost;
         capa.Bought = true;
         capa.Equiped = true;
-        GameManager.instance.playerStat.ListSpell.Add(capa.Spell);
+         GameManager.instance.playerStat.ListSpell.Add(capa.Spell);
+        SetStatBougthCapa(capa);
         RetourButton.onClick.RemoveAllListeners();
         //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
         RetourButton.onClick.AddListener(delegate { StartCoroutine(GameManager.instance.pmm.EndAutel(false)); });
     }
+
+    public void SetStatBougthCapa(Competence capa)
+    {
+        JoueurStat modifJoueurStat = new JoueurStat();
+        foreach (var modifStat in capa.ModifStat)
+        {
+            var value = modifStat.Valeur;
+            switch (modifStat.StatModif)
+            {
+                case StatModif.Calme:
+                    modifJoueurStat.Calme = value;
+                    break;
+                case StatModif.Clairvoyance:
+                    modifJoueurStat.Clairvoyance = value;
+                    break;
+                case StatModif.ConscienceMax:
+                    modifJoueurStat.ConscienceMax = value;
+                    break;
+                case StatModif.Conviction:
+                    modifJoueurStat.Conviction = value;
+                    break;
+                case StatModif.ForceAme:
+                    modifJoueurStat.ForceAme = value;
+                    break;
+                case StatModif.RadianceMax:
+                    modifJoueurStat.RadianceMax = value;
+                    break;
+                case StatModif.Resilience:
+                    modifJoueurStat.Resilience = value; 
+                    break;
+                case StatModif.VolonterMax:
+                    modifJoueurStat.VolonterMax = value;
+                    break;
+                case StatModif.Vitesse:
+                    modifJoueurStat.Vitesse = value;
+                    break;
+            }
+
+        }
+        GameManager.instance.playerStat.ModifStateAll(modifJoueurStat);
+    }
+
 }
