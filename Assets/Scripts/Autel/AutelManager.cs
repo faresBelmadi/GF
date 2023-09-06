@@ -68,12 +68,12 @@ public class AutelManager : MonoBehaviour
         JoueurStat stats = GameManager.instance.playerStat;
         ValeurRadiance.text = stats.RadianceMax.ToString();
         ValeurFA.text = stats.ForceAme.ToString(); 
-        ValeurVitesse.text = stats.VitesseOriginal.ToString(); 
-        ValeurConviction.text = stats.ConvictionOriginal.ToString(); 
+        ValeurVitesse.text = stats.Vitesse.ToString(); 
+        ValeurConviction.text = stats.Conviction.ToString(); 
         ValeurResilience.text = stats.Resilience.ToString(); 
         ValeurCalme.text = stats.Calme.ToString();
-        ValeurVolonter.text = stats.Volonter.ToString();
-        ValeurConscience.text = stats.Conscience.ToString(); 
+        ValeurVolonter.text = stats.VolonterMax.ToString();
+        ValeurConscience.text = stats.ConscienceMax.ToString(); 
         ValeurClairvoyance.text = stats.Clairvoyance.ToString();
 
         //ModifRadiance.text = ModifFA.text = ModifVitesse.text = ModifConviction.text = ModifResilience.text =
@@ -93,7 +93,7 @@ public class AutelManager : MonoBehaviour
                 DescriptionSpellText.text = capa.Spell.Description;
                 CostCapaText.text = "cout : " + capa.EssenceCost;
                 ModifStatCapa(capa);
-                if (capa.EssenceCost <= GameManager.instance.playerStat.Essence)
+                if (capa.EssenceCost <= GameManager.instance.playerStat.Essence && !capa.Bought)
                 {
                     BuyButton.onClick.AddListener(delegate { BuyCapa(capa); });
                     BuyButton.GetComponent<Image>().color = Color.white;
@@ -187,10 +187,14 @@ public class AutelManager : MonoBehaviour
         //if already bougth
         
         GameManager.instance.playerStat.Essence -= capa.EssenceCost;
+        var capaClassSO = GameManager.instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == capa.IDLvl);
+        capaClassSO.Bought = true;
+        capaClassSO.Equiped = true;
         capa.Bought = true;
         capa.Equiped = true;
          GameManager.instance.playerStat.ListSpell.Add(capa.Spell);
         SetStatBougthCapa(capa);
+        CheckLinkCapa(capa);
         RetourButton.onClick.RemoveAllListeners();
         //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
         RetourButton.onClick.AddListener(delegate { StartCoroutine(GameManager.instance.pmm.EndAutel(false)); });
@@ -221,6 +225,7 @@ public class AutelManager : MonoBehaviour
                     break;
                 case StatModif.RadianceMax:
                     modifJoueurStat.RadianceMax = value;
+                    modifJoueurStat.Radiance = value;
                     break;
                 case StatModif.Resilience:
                     modifJoueurStat.Resilience = value; 
@@ -232,9 +237,29 @@ public class AutelManager : MonoBehaviour
                     modifJoueurStat.Vitesse = value;
                     break;
             }
-
         }
         GameManager.instance.playerStat.ModifStateAll(modifJoueurStat);
     }
 
+    public void CheckLinkCapa(Competence capa)
+    {
+        if (capa.IDLier == null)
+            return;
+        foreach (var id in capa.IDLier)
+        {
+            var capaLier = GameManager.instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == id);
+            if (capa.lvlCapa == 1)
+            {
+                capaLier.EssenceCost -= capaLier.EssenceCost / 100 * 25;
+            }
+            else if(capa.lvlCapa == 2)
+            {
+                capaLier.EssenceCost -= capaLier.EssenceCost / 100 * 50;
+            }
+            else
+            {
+                Debug.Log("lvl capa ni a 1 ni a 2");
+            }
+        }
+    }
 }

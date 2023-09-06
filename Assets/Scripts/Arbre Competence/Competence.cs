@@ -9,7 +9,8 @@ public class Competence
     public Spell Spell;
     public List<ModifStat> ModifStat;
     public int EssenceCostOriginal, EssenceCost;
-    //public List<int> IDLier;
+    public List<int> IDLier;
+    public int lvlCapa;
     public bool Bought;
     public bool Equiped;
 }
