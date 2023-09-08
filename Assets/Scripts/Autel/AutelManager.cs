@@ -113,20 +113,14 @@ public class AutelManager : MonoBehaviour
             ModifCalme.text = ModifVolonter.text = ModifConscience.text = ModifClairvoyance.text = "";
         foreach (var modifStat in capa.ModifStat)
         {
-            var value = modifStat.Valeur.ToString();
+            var value = modifStat.Valeur > 0 ? "+" + modifStat.Valeur : modifStat.Valeur.ToString();
             Color colorTxt;
-            if (modifStat.Valeur < 0)
-            {
-                colorTxt = Color.red;
-            }
-            else
-            {
-                colorTxt = Color.green;
-            }
+            colorTxt = modifStat.Valeur < 0 ? Color.red : Color.green;
             switch (modifStat.StatModif)
             {
                 case StatModif.Calme:
                     ModifCalme.text = value;
+                    colorTxt = modifStat.Valeur > 0 ? Color.red : Color.green;
                     ModifCalme.color = colorTxt;
                     ModifCalme.faceColor = colorTxt;
                     break;
