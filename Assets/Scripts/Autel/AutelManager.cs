@@ -256,4 +256,9 @@ public class AutelManager : MonoBehaviour
             }
         }
     }
+
+    public void RetourMap()
+    {
+        StartCoroutine(GameManager.instance.pmm.EndAutel(false));
+    }
 }
