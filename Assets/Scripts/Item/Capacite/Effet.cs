@@ -192,7 +192,8 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.RemoveDebuff:
                 var tempListRD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
-                tempListRD.RemoveAt(Random.Range(0, tempListRD.Count));
+                if(tempListRD.Count > 0)
+                    tempListRD.RemoveAt(Random.Range(0, tempListRD.Count));
                 break;
             case TypeEffet.AttaqueStackAmant:
                 ModifState.Radiance +=
