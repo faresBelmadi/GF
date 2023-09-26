@@ -370,33 +370,35 @@ public class EnnemyBehavior : CombatBehavior
         //ResetStat();
         //foreach (var item in Stat.ListBuffDebuff)
         //{
-            if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant || toApply.DirectApplication)
+            if(toApply.IsConsomable && toApply.TimingConsomationMinimum <= 1)
             {
-                foreach (var effet in toApply.Effet)
+                if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant || toApply.DirectApplication)
                 {
-                    _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
-                    /*if (item.CibleApplication == effet.Cible)
+                    foreach (var effet in toApply.Effet)
                     {
-                        ApplicationEffet(effet);
+                        _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
+                        /*if (item.CibleApplication == effet.Cible)
+                        {
+                            ApplicationEffet(effet);
+                        }
+                        else
+                        {
+                            //A Mettre une fois les combats terminer
+                            GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
+                        }*/
                     }
-                    else
+                    if (toApply.IsConsomable == true && !toApply.DirectApplication)
                     {
-                        //A Mettre une fois les combats terminer
-                        GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
-                    }*/
-                }
-                if (toApply.IsConsomable == true && !toApply.DirectApplication)
-                {
-                    toApply.Temps = 0;
-                    foreach (var ToAdd in toApply.Consomation)
-                    {
-                        AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
+                        toApply.Temps = 0;
+                        foreach (var ToAdd in toApply.Consomation)
+                        {
+                            AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
+                        }
                     }
+                    if (toApply.DirectApplication)
+                        toApply.DirectApplication = false;
                 }
-                if (toApply.DirectApplication)
-                    toApply.DirectApplication = false;
             }
-        //}
         if (skip)
             EndTurn();
     }

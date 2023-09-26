@@ -9,6 +9,7 @@ public class BuffDebuff : ScriptableObject
     public string Description;
     public List<Effet> Effet;
     public bool IsConsomable;
+    public int TimingConsomationMinimum = 1;
     public List<BuffDebuff> Consomation;
     public bool IsDebuff;
     public Cible CibleApplication;

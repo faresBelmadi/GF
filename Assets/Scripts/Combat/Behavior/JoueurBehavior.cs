@@ -421,7 +421,9 @@ public class JoueurBehavior : CombatBehavior
         //ResetStat();
         //foreach (var item in Stat.ListBuffDebuff)
         //{
-            if(toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant || toApply.DirectApplication)
+        if(toApply.IsConsomable && toApply.TimingConsomationMinimum <= 1)
+        {
+            if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant || toApply.DirectApplication)
             {
                 foreach (var effet in toApply.Effet)
                 {
@@ -448,7 +450,7 @@ public class JoueurBehavior : CombatBehavior
                     toApply.DirectApplication = false;
             }
 
-        //}
+        }
     }
 
 
