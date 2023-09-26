@@ -26,8 +26,9 @@ public class TutoMondeManager : MonoBehaviour
         if (indexTextTuto >= TutoMondeText.Length)
         {
             indexTextTuto = 0;
-            TutoManager.Instance.StepTuto++;
-            SceneManager.LoadScene("Tuto");
+            //TutoManager.Instance.StepTuto++;
+            SceneManager.LoadScene("TutoAutel");
+            //SceneManager.LoadScene("Tuto");
         }
         else
         {
