@@ -26,9 +26,28 @@ public class AutelManager : MonoBehaviour
 
     public Button RetourButton;
 
-    public TextMeshProUGUI ValeurRadiance, ValeurFA, ValeurVitesse, ValeurConviction, ValeurResilience, ValeurCalme, ValeurVolonter, ValeurConscience, ValeurClairvoyance;
-    public TextMeshProUGUI ModifRadiance, ModifFA, ModifVitesse, ModifConviction, ModifResilience, ModifCalme, ModifVolonter, ModifConscience, ModifClairvoyance;
-    
+    public TextMeshProUGUI ValeurRadiance,
+        ValeurFA,
+        ValeurVitesse,
+        ValeurConviction,
+        ValeurResilience,
+        ValeurCalme,
+        ValeurVolonter,
+        ValeurConscience,
+        ValeurClairvoyance;
+
+    public TextMeshProUGUI ModifRadiance,
+        ModifFA,
+        ModifVitesse,
+        ModifConviction,
+        ModifResilience,
+        ModifCalme,
+        ModifVolonter,
+        ModifConscience,
+        ModifClairvoyance;
+
+    public Sprite checkMark;
+
 
     void FixedUpdate()
     {
@@ -57,6 +76,8 @@ public class AutelManager : MonoBehaviour
         {
             if (capa.Spell?.Sprite)
                 AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.Sprite;
+            if (!capa.isBuyable)
+                AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().color = Color.gray;
             //spellIcon.gameObject.GetComponent<Image>().sprite = GameManager.instance.playerStat.ListSpell[0].Sprite;
         }
 
@@ -67,13 +88,13 @@ public class AutelManager : MonoBehaviour
     {
         JoueurStat stats = GameManager.instance.playerStat;
         ValeurRadiance.text = stats.RadianceMax.ToString();
-        ValeurFA.text = stats.ForceAme.ToString(); 
-        ValeurVitesse.text = stats.Vitesse.ToString(); 
-        ValeurConviction.text = stats.Conviction.ToString(); 
-        ValeurResilience.text = stats.Resilience.ToString(); 
+        ValeurFA.text = stats.ForceAme.ToString();
+        ValeurVitesse.text = stats.Vitesse.ToString();
+        ValeurConviction.text = stats.Conviction.ToString();
+        ValeurResilience.text = stats.Resilience.ToString();
         ValeurCalme.text = stats.Calme.ToString();
         ValeurVolonter.text = stats.VolonterMax.ToString();
-        ValeurConscience.text = stats.ConscienceMax.ToString(); 
+        ValeurConscience.text = stats.ConscienceMax.ToString();
         ValeurClairvoyance.text = stats.Clairvoyance.ToString();
 
         //ModifRadiance.text = ModifFA.text = ModifVitesse.text = ModifConviction.text = ModifResilience.text =
@@ -93,7 +114,7 @@ public class AutelManager : MonoBehaviour
                 DescriptionSpellText.text = capa.Spell.Description;
                 CostCapaText.text = "cout : " + capa.EssenceCost;
                 ModifStatCapa(capa);
-                if (capa.EssenceCost <= GameManager.instance.playerStat.Essence && !capa.Bought)
+                if (capa.EssenceCost <= GameManager.instance.playerStat.Essence && !capa.Bought && capa.isBuyable)
                 {
                     BuyButton.onClick.AddListener(delegate { BuyCapa(capa); });
                     BuyButton.GetComponent<Image>().color = Color.white;
@@ -165,33 +186,34 @@ public class AutelManager : MonoBehaviour
                     ModifVitesse.faceColor = colorTxt;
                     break;
             }
-                
+
         }
     }
 
     public void BuyCapa(Competence capa)
     {
-        if (capa.Bought)
-        {
-            BuyButton.onClick.RemoveAllListeners();
-            BuyButton.GetComponent<Image>().color = Color.gray;
-            return;
-        }
         Debug.Log("capa acheté");
-        //if already bougth
-        
+
         GameManager.instance.playerStat.Essence -= capa.EssenceCost;
         var capaClassSO = GameManager.instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == capa.IDLvl);
         capaClassSO.Bought = true;
         capaClassSO.Equiped = true;
         capa.Bought = true;
         capa.Equiped = true;
-         GameManager.instance.playerStat.ListSpell.Add(capa.Spell);
+        GameManager.instance.playerStat.ListSpell.Add(capa.Spell);
         SetStatBougthCapa(capa);
         CheckLinkCapa(capa);
+
+        var test = AllSpellsIcon[capa.Spell.IDSpell].GetComponentsInChildren<Image>();
+        test[1].sprite = checkMark;
+        test[1].rectTransform.localScale = new Vector3(1,1,1);
+
         RetourButton.onClick.RemoveAllListeners();
         //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
         RetourButton.onClick.AddListener(delegate { StartCoroutine(GameManager.instance.pmm.EndAutel(false)); });
+
+        BuyButton.onClick.RemoveAllListeners();
+        BuyButton.GetComponent<Image>().color = Color.gray;
     }
 
     public void SetStatBougthCapa(Competence capa)
@@ -222,7 +244,7 @@ public class AutelManager : MonoBehaviour
                     modifJoueurStat.Radiance = value;
                     break;
                 case StatModif.Resilience:
-                    modifJoueurStat.Resilience = value; 
+                    modifJoueurStat.Resilience = value;
                     break;
                 case StatModif.VolonterMax:
                     modifJoueurStat.VolonterMax = value;
@@ -232,6 +254,7 @@ public class AutelManager : MonoBehaviour
                     break;
             }
         }
+
         GameManager.instance.playerStat.ModifStateAll(modifJoueurStat);
     }
 
@@ -242,17 +265,23 @@ public class AutelManager : MonoBehaviour
         foreach (var id in capa.IDLier)
         {
             var capaLier = GameManager.instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == id);
-            if (capa.lvlCapa == 1)
+            if (capaLier != null)
             {
-                capaLier.EssenceCost -= capaLier.EssenceCost / 100 * 25;
-            }
-            else if(capa.lvlCapa == 2)
-            {
-                capaLier.EssenceCost -= capaLier.EssenceCost / 100 * 50;
-            }
-            else
-            {
-                Debug.Log("lvl capa ni a 1 ni a 2");
+                if (capa.lvlCapa == 1)
+                {
+                    capaLier.EssenceCost -= capaLier.EssenceCost / 100 * 25;
+                }
+                else if (capa.lvlCapa == 2)
+                {
+                    capaLier.EssenceCost -= capaLier.EssenceCost / 100 * 50;
+                }
+                else
+                {
+                    Debug.Log("lvl capa ni a 1 ni a 2");
+                }
+
+                capaLier.isBuyable = true;
+                AllSpellsIcon[capaLier.Spell.IDSpell].GetComponent<Image>().color = Color.white;
             }
         }
     }
