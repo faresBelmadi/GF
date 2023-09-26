@@ -39,10 +39,13 @@ ScriptedImporter:
     convertToNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
     isReadable: 0
     streamingMipmaps: 1
     streamingMipmapsPriority: 0
     vTOnly: 0
+    ignoreMipmapLimit: 0
     nPOTScale: 1
     sRGBTexture: 1
     spriteMode: 2
@@ -61,7 +64,10 @@ ScriptedImporter:
     textureType: 8
     textureShape: 1
     singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -95,7 +101,6 @@ ScriptedImporter:
       width: 0
       height: 0
     spriteID: 
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -103,8 +108,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
   - name: deco_bas
@@ -119,7 +124,6 @@ ScriptedImporter:
       width: 84
       height: 84
     spriteID: 155f39106788e74489966a08fd6e4f8e
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -127,8 +131,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -3, y: -253}
+    uvTransform: {x: 548, y: 4}
+    spritePosition: {x: 552, y: 257}
   - name: deco_haut
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -141,7 +145,6 @@ ScriptedImporter:
       width: 75
       height: 78
     spriteID: f54f74df25a3c8d4184415042fd8a200
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -149,8 +152,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 578, y: -507}
+    uvTransform: {x: 641, y: 4}
+    spritePosition: {x: 63, y: 511}
   - name: deco_cadre
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -163,7 +166,6 @@ ScriptedImporter:
       width: 537
       height: 297
     spriteID: 9f9ea6209b4de8a4b8b92bf69ae00248
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -171,25 +173,40 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -82, y: -267}
+    uvTransform: {x: 1, y: 1}
+    spritePosition: {x: 86, y: 271}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
   platformSettings: []
   mosaicLayers: 1
+  characterMode: 1
   documentPivot: {x: 0, y: 0}
   documentAlignment: 7
   importHiddenLayers: 0
-  importedTextureWidth: 1024
-  importedTextureHeight: 1024
-  documentSize: {x: 700, y: 700}
+  layerMappingOption: 2
+  generatePhysicsShape: 0
   paperDollMode: 0
   keepDupilcateSpriteName: 0
+  skeletonAssetReferenceID: 
+  padding: 4
+  spriteSizeExpand: 0
   spriteCategoryList:
     categories: []
-  textureActualWidth: 1024
-  textureActualHeight: 1024
   spritePackingTag: 
   resliceFromLayer: 0
-  characterMode: 1
   mosaicPSDLayers: []
   rigPSDLayers:
   - name: deco_bas
@@ -199,6 +216,9 @@ ScriptedImporter:
     spriteID: 155f39106788e74489966a08fd6e4f8e
     layerID: 29
     mosaicPosition: {x: 549, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: deco_haut
     spriteName: deco_haut
     isGroup: 0
@@ -206,6 +226,9 @@ ScriptedImporter:
     spriteID: f54f74df25a3c8d4184415042fd8a200
     layerID: 28
     mosaicPosition: {x: 641, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: deco_cadre
     spriteName: deco_cadre
     isGroup: 0
@@ -213,13 +236,17 @@ ScriptedImporter:
     spriteID: 9f9ea6209b4de8a4b8b92bf69ae00248
     layerID: 2
     mosaicPosition: {x: 4, y: 4}
-  characterData:
-    bones: []
-    parts: []
-    dimension: {x: 0, y: 0}
-    characterGroups: []
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  spriteSizeExpandChanged: 0
   generateGOHierarchy: 0
   textureAssetName: descriptif_spells Texture
   prefabAssetName: descriptif_spells Prefab
   spriteLibAssetName: descriptif_spells Sprite Lib
+  skeletonAssetName: 
   secondarySpriteTextures: []

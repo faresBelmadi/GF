@@ -21,10 +21,13 @@ ScriptedImporter:
     convertToNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
     isReadable: 0
     streamingMipmaps: 1
     streamingMipmapsPriority: 0
     vTOnly: 0
+    ignoreMipmapLimit: 0
     nPOTScale: 1
     sRGBTexture: 1
     spriteMode: 2
@@ -43,7 +46,10 @@ ScriptedImporter:
     textureType: 8
     textureShape: 1
     singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -77,7 +83,6 @@ ScriptedImporter:
       width: 0
       height: 0
     spriteID: 
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -85,8 +90,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
   - name: justes notes
@@ -101,23 +106,34 @@ ScriptedImporter:
       width: 231
       height: 184
     spriteID: c97ba95c56c719641a00777a284ae1f2
-    internalID: 0
     spriteBone:
     - name: Note gauche
+      guid: 
       position: {x: 16.74881, y: 72.22206, z: 0}
       rotation: {x: 0, y: 0, z: 0.5048459, w: 0.8632095}
       length: 62.16407
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Note milieu
+      guid: 
       position: {x: 111.56497, y: 131.72403, z: 0}
       rotation: {x: 0, y: 0, z: 0.7168567, w: 0.6972205}
       length: 52.265827
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Note droite
+      guid: 
       position: {x: 206.38116, y: 99.31238, z: 0}
       rotation: {x: 0, y: 0, z: 0.72774243, w: 0.6858506}
       length: 57.183567
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 140.118, y: 168.918}
@@ -1227,8 +1243,8 @@ ScriptedImporter:
     - {x: 14, y: 99}
     - {x: 100, y: 16}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 224, y: -177}
+    uvTransform: {x: 248, y: 4}
+    spritePosition: {x: 24, y: 181}
   - name: fausses notes
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -1241,23 +1257,34 @@ ScriptedImporter:
       width: 236
       height: 196
     spriteID: c25e9db55466eda4bac87f94d54b2940
-    internalID: 0
     spriteBone:
     - name: Note gauche
+      guid: 
       position: {x: 12.748798, y: 72.22206, z: 0}
       rotation: {x: 0, y: 0, z: 0.5048459, w: 0.8632095}
       length: 62.16407
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Note milieu
+      guid: 
       position: {x: 107.56497, y: 131.72403, z: 0}
       rotation: {x: 0, y: 0, z: 0.7168567, w: 0.6972205}
       length: 52.265827
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Note droite
+      guid: 
       position: {x: 202.38115, y: 99.31238, z: 0}
       rotation: {x: 0, y: 0, z: 0.72774243, w: 0.6858506}
       length: 57.183567
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 108.47, y: 134.173}
@@ -2365,8 +2392,8 @@ ScriptedImporter:
     - {x: 0, y: 100}
     - {x: 101, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -24, y: -177}
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 28, y: 181}
   - name: 1.idle_bouche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -2374,23 +2401,30 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 711
-      y: 290
+      x: 852
+      y: 281
       width: 59
       height: 32
     spriteID: 087c45151a08f0f4c86672653d2d0695
-    internalID: 0
     spriteBone:
     - name: bouche choriste bas
+      guid: 
       position: {x: 30.092123, y: -23.268652, z: 0}
       rotation: {x: 0, y: 0, z: 0.69437474, w: 0.71961373}
       length: 40.661392
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tete choriste bas
+      guid: 
       position: {x: 25.272339, y: -10.937134, z: 0}
       rotation: {x: 0, y: 0, z: 0.7071054, w: 0.70710826}
       length: 52.729393
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 35.772003, y: 1.4989929}
@@ -2762,8 +2796,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 592, y: 170}
+    uvTransform: {x: 852, y: 281}
+    spritePosition: {x: 119, y: 120}
   - name: 1.idle_tete
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -2771,18 +2805,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 883
+      x: 799
       y: 208
       width: 94
       height: 55
     spriteID: c5a57f75d1cac7543a0b1e76d60f8a1d
-    internalID: 0
     spriteBone:
     - name: Tete choriste bas
+      guid: 
       position: {x: 43.27234, y: -3.9371338, z: 0}
       rotation: {x: 0, y: 0, z: 0.7071054, w: 0.70710826}
       length: 52.729393
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 56.875, y: 1.5040283}
@@ -3156,8 +3193,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 782, y: 95}
+    uvTransform: {x: 799, y: 208}
+    spritePosition: {x: 101, y: 113}
   - name: 1._dmg_bouche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -3165,23 +3202,30 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 541
-      y: 385
+      x: 356
+      y: 348
       width: 53
       height: 29
     spriteID: 9e79f61fa0fcd2545b3f906318d51b05
-    internalID: 0
     spriteBone:
     - name: bouche choriste bas
+      guid: 
       position: {x: 30.092073, y: -23.268677, z: 0}
       rotation: {x: 0, y: 0, z: 0.69437474, w: 0.71961373}
       length: 40.661392
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tete choriste bas
+      guid: 
       position: {x: 22.272339, y: -13.937134, z: 0}
       rotation: {x: 0, y: 0, z: 0.7071054, w: 0.70710826}
       length: 52.729393
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 32.378998, y: 0.071014404}
@@ -3623,8 +3667,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 419, y: 262}
+    uvTransform: {x: 356, y: 348}
+    spritePosition: {x: 122, y: 123}
   - name: 1.dmg_tete
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -3637,13 +3681,16 @@ ScriptedImporter:
       width: 94
       height: 56
     spriteID: 7f5901dd93414b443ba54925fa401f69
-    internalID: 0
     spriteBone:
     - name: Tete choriste bas
+      guid: 
       position: {x: 43.27234, y: -3.9371338, z: 0}
       rotation: {x: 0, y: 0, z: 0.7071054, w: 0.70710826}
       length: 52.729393
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 56.89801, y: 1.4179688}
@@ -3987,8 +4034,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 786, y: 29}
+    uvTransform: {x: 887, y: 142}
+    spritePosition: {x: 101, y: 113}
   - name: 1.cravatte
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -3996,18 +4043,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 428
+      x: 246
+      y: 427
       width: 17
       height: 73
     spriteID: 29bf6795e63f1c441944b6b0ab7cacd2
-    internalID: 0
     spriteBone:
     - name: Cravate choriste bas
+      guid: 
       position: {x: 9.723846, y: 63.131287, z: 0}
       rotation: {x: 0, y: 0, z: -0.7191878, w: 0.69481575}
       length: 56.14905
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 16, y: 2}
@@ -4469,8 +4519,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -132, y: 399}
+    uvTransform: {x: 246, y: 427}
+    spritePosition: {x: 136, y: 29}
   - name: 1.corps
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -4483,28 +4533,43 @@ ScriptedImporter:
       width: 121
       height: 132
     spriteID: 49b55a61afc40c34d8420a7e59d29ca2
-    internalID: 0
     spriteBone:
     - name: Corps choriste bas
+      guid: 
       position: {x: 63.57437, y: 6.915451, z: 0}
       rotation: {x: 0, y: 0, z: 0.70171374, w: 0.712459}
       length: 59.660473
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Colerette bas droite
+      guid: 
       position: {x: 73.4314, y: 103.611725, z: 0}
       rotation: {x: 0, y: 0, z: 0.31032956, w: 0.9506291}
       length: 31.156296
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Colerette bas gauche
+      guid: 
       position: {x: 53.113647, y: 105.54675, z: 0}
       rotation: {x: 0, y: 0, z: 0.94978327, w: 0.31290877}
       length: 27.671513
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Corps choriste bas_3
+      guid: 
       position: {x: 59.660473, y: -0.000010801204, z: 0}
       rotation: {x: 0, y: 0, z: 0.020342203, w: 0.9997931}
       length: 38.358032
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 30.319, y: 0.10501099}
@@ -4894,8 +4959,8 @@ ScriptedImporter:
     - {x: 32, y: 31}
     - {x: 0, y: 32}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 203, y: 204}
+    uvTransform: {x: 284, y: 208}
+    spritePosition: {x: 81, y: 4}
   - name: 1.flammeches
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -4908,18 +4973,25 @@ ScriptedImporter:
       width: 184
       height: 51
     spriteID: f15e4275e68af8e4eaa4cbf1f3b0ea6c
-    internalID: 0
     spriteBone:
     - name: Corps choriste bas
+      guid: 
       position: {x: 100.57434, y: 5.915451, z: 0}
       rotation: {x: 0, y: 0, z: 0.70171374, w: 0.712459}
       length: 59.660473
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Corps choriste droite
+      guid: 
       position: {x: 117.20404, y: 165.01599, z: 0}
       rotation: {x: 0, y: 0, z: 0.58891356, w: 0.80819607}
       length: 44.21275
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 127.953, y: 39.192993}
@@ -5946,8 +6018,8 @@ ScriptedImporter:
     - {x: 92, y: 47}
     - {x: 27, y: 93}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 443, y: 140}
+    uvTransform: {x: 487, y: 145}
+    spritePosition: {x: 44, y: 5}
   - name: halo soin
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -5960,13 +6032,16 @@ ScriptedImporter:
       width: 130
       height: 115
     spriteID: bf690f2c1685c0f409eec573eeb89d50
-    internalID: 0
     spriteBone:
     - name: Tete choriste bas
+      guid: 
       position: {x: 59.27234, y: 27.062866, z: 0}
       rotation: {x: 0, y: 0, z: 0.7071054, w: 0.70710826}
       length: 52.729393
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 64.013, y: 0.980011}
@@ -6351,8 +6426,8 @@ ScriptedImporter:
     - {x: 27, y: 26}
     - {x: 27, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 328, y: 126}
+    uvTransform: {x: 413, y: 208}
+    spritePosition: {x: 85, y: 82}
   - name: 2.idle_bouche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -6360,23 +6435,30 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 682
-      y: 331
+      x: 631
+      y: 298
       width: 51
       height: 40
     spriteID: a35aef5bfe591b3429bb565606d8820a
-    internalID: 0
     spriteBone:
     - name: Bouche choriste gauche
+      guid: 
       position: {x: 26.112516, y: -0.57752275, z: 0}
       rotation: {x: 0, y: 0, z: -0.0055377497, w: 0.9999847}
       length: 25.874495
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tete choriste gauche
+      guid: 
       position: {x: -12.0672, y: 9.715515, z: 0}
       rotation: {x: 0, y: 0, z: 0.25408304, w: 0.9671824}
       length: 56.103245
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 46.851013, y: 3.8890076}
@@ -6721,8 +6803,8 @@ ScriptedImporter:
     - {x: 26, y: 27}
     - {x: 0, y: 27}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 590, y: 132}
+    uvTransform: {x: 631, y: 298}
+    spritePosition: {x: 92, y: 199}
   - name: 2.idle_tete
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -6730,18 +6812,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 711
-      y: 208
+      x: 162
+      y: 427
       width: 76
       height: 74
     spriteID: bb83f0119825da2418242029e8e67707
-    internalID: 0
     spriteBone:
     - name: Tete choriste gauche
+      guid: 
       position: {x: 12.9328, y: 27.715515, z: 0}
       rotation: {x: 0, y: 0, z: 0.25408304, w: 0.9671824}
       length: 56.103245
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 40.979996, y: 2.0180054}
@@ -7097,8 +7182,8 @@ ScriptedImporter:
     - {x: 28, y: 27}
     - {x: 28, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 644, y: 27}
+    uvTransform: {x: 162, y: 427}
+    spritePosition: {x: 67, y: 181}
   - name: 2.dmg_bouche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -7111,18 +7196,25 @@ ScriptedImporter:
       width: 48
       height: 48
     spriteID: a2750a27ed0e55543b48223b9407bc8a
-    internalID: 0
     spriteBone:
     - name: Bouche choriste gauche
+      guid: 
       position: {x: 26.112585, y: -0.57755166, z: 0}
       rotation: {x: 0, y: 0, z: -0.0055377497, w: 0.9999847}
       length: 25.874495
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tete choriste gauche
+      guid: 
       position: {x: -11.0672, y: 6.715515, z: 0}
       rotation: {x: 0, y: 0, z: 0.25408304, w: 0.9671824}
       length: 56.103245
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 48, y: 4.2070312}
@@ -7521,8 +7613,8 @@ ScriptedImporter:
     - {x: 0, y: 30}
     - {x: 35, y: 20}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 726, y: -74}
+    uvTransform: {x: 817, y: 128}
+    spritePosition: {x: 91, y: 202}
   - name: 2.dmg_tete
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -7535,18 +7627,25 @@ ScriptedImporter:
       width: 72
       height: 82
     spriteID: dff524eeaf31c26499865d9f12f119b8
-    internalID: 0
     spriteBone:
     - name: Tete choriste gauche
+      guid: 
       position: {x: 12.9328, y: 27.715515, z: 0}
       rotation: {x: 0, y: 0, z: 0.25408304, w: 0.9671824}
       length: 56.103245
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: bouche choriste 2
+      guid: 
       position: {x: 25.809025, y: -1.9926419, z: 0}
       rotation: {x: 0, y: 0, z: -0.4931649, w: 0.86993587}
       length: 34.580994
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 40.976013, y: 2.0219994}
@@ -7913,8 +8012,8 @@ ScriptedImporter:
     - {x: 29, y: 28}
     - {x: 29, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 484, y: 27}
+    uvTransform: {x: 551, y: 208}
+    spritePosition: {x: 67, y: 181}
   - name: 2.atk_langue
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -7922,18 +8021,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 551
-      y: 298
+      x: 417
+      y: 348
       width: 47
       height: 21
     spriteID: 1132daab347de6146961d35c5af222b3
-    internalID: 0
     spriteBone:
     - name: langue
+      guid: 
       position: {x: 10.65863, y: 6.903595, z: 0}
       rotation: {x: 0, y: 0, z: 0.17798638, w: 0.984033}
       length: 27.050781
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 21.322998, y: 2.8619995}
@@ -8265,8 +8367,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 24, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 445, y: 88}
+    uvTransform: {x: 417, y: 348}
+    spritePosition: {x: 106, y: 210}
   - name: 2.atk_bouche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -8274,18 +8376,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 626
-      y: 331
+      x: 796
+      y: 281
       width: 48
       height: 48
     spriteID: 0a49f957ca22e8e448c0e94ce7f27cc0
-    internalID: 0
     spriteBone:
     - name: Bouche choriste gauche
+      guid: 
       position: {x: 11.957703, y: 19.04663, z: 0}
       rotation: {x: 0, y: 0, z: 0.24872313, w: 0.96857464}
       length: 25.874493
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 45.972992, y: 3.8950195}
@@ -8684,8 +8789,8 @@ ScriptedImporter:
     - {x: 0, y: 30}
     - {x: 35, y: 20}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 535, y: 129}
+    uvTransform: {x: 796, y: 281}
+    spritePosition: {x: 91, y: 202}
   - name: 2.atk_tete
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -8698,13 +8803,16 @@ ScriptedImporter:
       width: 72
       height: 82
     spriteID: 6ad96c99d62a69f469d8ea97da502085
-    internalID: 0
     spriteBone:
     - name: Tete choriste gauche
+      guid: 
       position: {x: 12.9328, y: 27.715515, z: 0}
       rotation: {x: 0, y: 0, z: 0.25408304, w: 0.9671824}
       length: 56.103245
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 40.975998, y: 2.0219727}
@@ -9060,8 +9168,8 @@ ScriptedImporter:
     - {x: 28, y: 27}
     - {x: 28, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 564, y: 27}
+    uvTransform: {x: 631, y: 208}
+    spritePosition: {x: 67, y: 181}
   - name: 2.colerette
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -9069,18 +9177,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 413
-      y: 331
+      x: 284
+      y: 348
       width: 64
       height: 74
     spriteID: 1629838bf5d9976488f21abc706c3536
-    internalID: 0
     spriteBone:
     - name: Colerette gauche
+      guid: 
       position: {x: 9.615051, y: 63.744568, z: 0}
       rotation: {x: 0, y: 0, z: -0.4358162, w: 0.9000357}
       length: 64.74744
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 54.595, y: 0.3959961}
@@ -9562,8 +9673,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 363, y: 172}
+    uvTransform: {x: 284, y: 348}
+    spritePosition: {x: 50, y: 159}
   - name: 2.noeud
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -9571,28 +9682,39 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 485
-      y: 331
+      x: 92
+      y: 428
       width: 48
       height: 77
     spriteID: e6605a65beada3a41ba08c22592195ad
-    internalID: 0
     spriteBone:
     - name: cravate choriste gauche
+      guid: 
       position: {x: 24.250793, y: 70.24341, z: 0}
       rotation: {x: 0, y: 0, z: -0.7433649, w: 0.66888624}
       length: 50.59126
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: cravate choriste gauche_1
+      guid: 
       position: {x: 53.075233, y: -5.0882826, z: 0}
       rotation: {x: 0, y: 0, z: 0.07640571, w: 0.99707687}
       length: 10.170396
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: cravate choriste gauche_2
+      guid: 
       position: {x: 55.32332, y: 5.851498, z: 0}
       rotation: {x: 0, y: 0, z: -0.10797544, w: 0.99415356}
       length: 10.708401
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 24.472, y: 0.42800903}
@@ -9948,8 +10070,8 @@ ScriptedImporter:
     - {x: 28, y: 27}
     - {x: 0, y: 28}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 409, y: 238}
+    uvTransform: {x: 92, y: 428}
+    spritePosition: {x: 76, y: 93}
   - name: 2.corps
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -9962,18 +10084,25 @@ ScriptedImporter:
       width: 114
       height: 211
     spriteID: 21235ba3c6bfeea419295a8e2a3b664a
-    internalID: 0
     spriteBone:
     - name: Corps choriste gauche
+      guid: 
       position: {x: 45.782608, y: 10.035797, z: 0}
       rotation: {x: 0, y: 0, z: 0.66212326, w: 0.74939495}
       length: 100.6968
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: corps choriste gauche superieur
+      guid: 
       position: {x: 100.69678, y: -0.000010694133, z: 0}
       rotation: {x: 0, y: 0, z: 0.016958559, w: 0.99985623}
       length: 83.38091
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 28.438, y: 5.380005}
@@ -10413,8 +10542,8 @@ ScriptedImporter:
     - {x: 32, y: 31}
     - {x: 0, y: 32}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 149, y: 196}
+    uvTransform: {x: 162, y: 208}
+    spritePosition: {x: 13, y: 12}
   - name: 2.flammeche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -10427,13 +10556,16 @@ ScriptedImporter:
       width: 131
       height: 130
     spriteID: 1285a255a6e28544c97d8baec2953ea7
-    internalID: 0
     spriteBone:
     - name: Corps choriste gauche
+      guid: 
       position: {x: 56.782593, y: 19.0358, z: 0}
       rotation: {x: 0, y: 0, z: 0.66212326, w: 0.74939495}
       length: 100.6968
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 11, y: 124}
@@ -11158,8 +11290,8 @@ ScriptedImporter:
     - {x: 64, y: 28}
     - {x: 41, y: 65}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 885, y: 1}
+    uvTransform: {x: 887, y: 4}
+    spritePosition: {x: 2, y: 3}
   - name: 3.idle_bouche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -11167,23 +11299,30 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 741
-      y: 331
+      x: 919
+      y: 281
       width: 49
       height: 38
     spriteID: 36e8d1a5b46a3534686fb068426d7ce2
-    internalID: 0
     spriteBone:
     - name: Tete choriste droite
+      guid: 
       position: {x: 7.7491455, y: -5.897217, z: 0}
       rotation: {x: 0, y: 0, z: 0.49607804, w: 0.86827797}
       length: 53.347126
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: 'bouche hauteur '
+      guid: 
       position: {x: 28.273848, y: -2.0737758, z: 0}
       rotation: {x: 0, y: 0, z: 0.75458074, w: 0.6562072}
       length: 9.436275
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 20.994995, y: 1.0209961}
@@ -11517,8 +11656,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 574, y: 113}
+    uvTransform: {x: 919, y: 281}
+    spritePosition: {x: 167, y: 218}
   - name: 3.idle_tete
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -11526,18 +11665,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 729
-      y: 128
+      x: 4
+      y: 428
       width: 80
       height: 65
     spriteID: a351c689a8e04b44e9e461ba2566cbe9
-    internalID: 0
     spriteBone:
     - name: Tete choriste droite
+      guid: 
       position: {x: 15.7491455, y: 4.102783, z: 0}
       rotation: {x: 0, y: 0, z: 0.49607804, w: 0.86827797}
       length: 53.347126
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 40.402008, y: 0.28399658}
@@ -11861,8 +12003,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 570, y: -80}
+    uvTransform: {x: 4, y: 428}
+    spritePosition: {x: 159, y: 208}
   - name: 3.atk_bouche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -11870,23 +12012,30 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 795
-      y: 281
+      x: 551
+      y: 298
       width: 54
       height: 41
     spriteID: 66d54961d51ca654e8a7aa2c1ea25f43
-    internalID: 0
     spriteBone:
     - name: Tete choriste droite
+      guid: 
       position: {x: 7.7491455, y: -4.897217, z: 0}
       rotation: {x: 0, y: 0, z: 0.49607804, w: 0.86827797}
       length: 53.347126
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: 'bouche hauteur '
+      guid: 
       position: {x: 28.273842, y: -2.0737824, z: 0}
       rotation: {x: 0, y: 0, z: 0.75458074, w: 0.6562072}
       length: 9.436275
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 27.518005, y: 0.68899536}
@@ -12330,8 +12479,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 628, y: 64}
+    uvTransform: {x: 551, y: 298}
+    spritePosition: {x: 167, y: 217}
   - name: 3.atk_tete
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -12339,18 +12488,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 284
-      y: 348
+      x: 729
+      y: 128
       width: 80
       height: 66
     spriteID: bd894451bae2bb44eb1ef2749f1bebfc
-    internalID: 0
     spriteBone:
     - name: Tete choriste droite
+      guid: 
       position: {x: 15.7491455, y: 4.102783, z: 0}
       rotation: {x: 0, y: 0, z: 0.49607804, w: 0.86827797}
       length: 53.347126
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 41.623993, y: 0.28601074}
@@ -12674,8 +12826,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 125, y: 140}
+    uvTransform: {x: 729, y: 128}
+    spritePosition: {x: 159, y: 208}
   - name: 3_dmg_bouche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -12683,23 +12835,30 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 626
-      y: 387
+      x: 679
+      y: 145
       width: 39
       height: 27
     spriteID: 5cea740b894e0bb45b8d03cc605acbc4
-    internalID: 0
     spriteBone:
     - name: Tete choriste droite
+      guid: 
       position: {x: 10.7491455, y: -3.8972168, z: 0}
       rotation: {x: 0, y: 0, z: 0.49607804, w: 0.86827797}
       length: 53.347126
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: 'bouche hauteur '
+      guid: 
       position: {x: 28.273848, y: -2.0737512, z: 0}
       rotation: {x: 0, y: 0, z: 0.75458074, w: 0.6562072}
       length: 9.436275
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 39, y: 0.3670044}
@@ -13051,8 +13210,8 @@ ScriptedImporter:
     - {x: 23, y: 24}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 462, y: 171}
+    uvTransform: {x: 679, y: 145}
+    spritePosition: {x: 164, y: 216}
   - name: 3_dmg_tete
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -13060,18 +13219,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 795
+      x: 711
       y: 208
       width: 80
       height: 65
     spriteID: 8028fb1adadf5cc4097daa9300bab798
-    internalID: 0
     spriteBone:
     - name: Tete choriste droite
+      guid: 
       position: {x: 15.7491455, y: 4.102783, z: 0}
       rotation: {x: 0, y: 0, z: 0.49607804, w: 0.86827797}
       length: 53.347126
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 40.384003, y: 0.28100586}
@@ -13395,8 +13557,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 636, y: 0}
+    uvTransform: {x: 711, y: 208}
+    spritePosition: {x: 159, y: 208}
   - name: 3.collerette
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -13404,23 +13566,30 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 541
-      y: 331
+      x: 711
+      y: 281
       width: 77
       height: 46
     spriteID: 48d0abbd637d6e046954677c9ac58f5f
-    internalID: 0
     spriteBone:
     - name: Colerette droite gauche
+      guid: 
       position: {x: 12.590332, y: 22.037811, z: 0}
       rotation: {x: 0, y: 0, z: 0.89442736, w: 0.44721323}
       length: 16.931473
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Colerette droite droite
+      guid: 
       position: {x: 32.90808, y: 11.878937, z: 0}
       rotation: {x: 0, y: 0, z: 0.092541285, w: 0.9957089}
       length: 39.374878
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 28.031998, y: 0.75}
@@ -13773,8 +13942,8 @@ ScriptedImporter:
     - {x: 25, y: 24}
     - {x: 0, y: 25}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 389, y: 139}
+    uvTransform: {x: 711, y: 281}
+    spritePosition: {x: 152, y: 192}
   - name: 3.chaines
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -13782,23 +13951,30 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 883
-      y: 271
+      x: 901
+      y: 208
       width: 99
       height: 45
     spriteID: ced23074abfd24345861607e20294bcb
-    internalID: 0
     spriteBone:
     - name: collier gauche
+      guid: 
       position: {x: 28.88269, y: 29.850037, z: 0}
       rotation: {x: 0, y: 0, z: 0.99825734, w: 0.059011806}
       length: 28.741774
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Collier droite
+      guid: 
       position: {x: 49.20044, y: 18.723633, z: 0}
       rotation: {x: 0, y: 0, z: -0.2401471, w: 0.97073656}
       length: 40.46526
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 86, y: 1}
@@ -14176,8 +14352,8 @@ ScriptedImporter:
     - {x: 30, y: 29}
     - {x: 0, y: 30}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 756, y: 111}
+    uvTransform: {x: 901, y: 208}
+    spritePosition: {x: 127, y: 160}
   - name: 3.croix
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -14185,18 +14361,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 990
-      y: 271
+      x: 989
+      y: 142
       width: 20
       height: 37
     spriteID: e0dca7dda6793324f93b6c03b249fdae
-    internalID: 0
     spriteBone:
     - name: Collier milieu
+      guid: 
       position: {x: 14.041565, y: 36.463745, z: 0}
       rotation: {x: 0, y: 0, z: -0.8226178, w: 0.56859463}
       length: 23.270636
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 5.6600037, y: 0.27801514}
@@ -14475,8 +14654,8 @@ ScriptedImporter:
     - {x: 21, y: 20}
     - {x: 0, y: 21}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 838, y: 121}
+    uvTransform: {x: 989, y: 142}
+    spritePosition: {x: 152, y: 150}
   - name: 3.corps
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -14489,18 +14668,25 @@ ScriptedImporter:
       width: 150
       height: 212
     spriteID: b2c8a1a425f7ae543b598e7045dcda32
-    internalID: 0
     spriteBone:
     - name: Corps choriste droite
+      guid: 
       position: {x: 134.8768, y: 0.22501892, z: 0}
       rotation: {x: 0, y: 0, z: -0.15185823, w: 0.9884023}
       length: 44.21274
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: corps choriste droite
+      guid: 
       position: {x: 82.55609, y: 22.140594, z: 0}
       rotation: {x: 0, y: 0, z: 0.70481473, w: 0.7093915}
       length: 134.70395
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 46.192, y: 0.40100098}
@@ -14952,8 +15138,8 @@ ScriptedImporter:
     - {x: 34, y: 33}
     - {x: 0, y: 34}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -74, y: 195}
+    uvTransform: {x: 4, y: 208}
+    spritePosition: {x: 78, y: 13}
   - name: 3.flammeches
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -14966,13 +15152,16 @@ ScriptedImporter:
       width: 150
       height: 116
     spriteID: def9f09be3cdf82429ccd67095f2604e
-    internalID: 0
     spriteBone:
     - name: Corps choriste droite
+      guid: 
       position: {x: 50.20404, y: 167.01599, z: 0}
       rotation: {x: 0, y: 0, z: 0.58891356, w: 0.80819607}
       length: 44.21275
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 147.11798, y: 8.882}
@@ -15551,8 +15740,8 @@ ScriptedImporter:
     - {x: 41, y: 40}
     - {x: 0, y: 41}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 618, y: 1}
+    uvTransform: {x: 729, y: 4}
+    spritePosition: {x: 111, y: 3}
   - name: halo soin_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -15565,18 +15754,25 @@ ScriptedImporter:
       width: 234
       height: 133
     spriteID: 471ba4b983942ce4299a9965315fbf7a
-    internalID: 0
     spriteBone:
     - name: "Lumi\xE8re droite"
+      guid: 
       position: {x: 145.42432, y: 105.69867, z: 0}
       rotation: {x: 0, y: 0, z: -0.20985524, w: 0.9777325}
       length: 74.26718
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: "Lumi\xE8re gauche"
+      guid: 
       position: {x: 25.45282, y: 61.67688, z: 0}
       rotation: {x: 0, y: 0, z: 0.29841325, w: 0.9544368}
       length: 59.446896
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 195.95, y: 4.950989}
@@ -16104,497 +16300,298 @@ ScriptedImporter:
     - {x: 40, y: 39}
     - {x: 0, y: 40}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 448, y: -174}
-  platformSettings: []
-  mosaicLayers: 1
-  documentPivot: {x: 0, y: 0}
-  documentAlignment: 7
-  importHiddenLayers: 0
-  importedTextureWidth: 1024
-  importedTextureHeight: 1024
-  documentSize: {x: 275, y: 475}
-  paperDollMode: 0
-  keepDupilcateSpriteName: 0
-  spriteCategoryList:
-    categories: []
-  textureActualWidth: 1024
-  textureActualHeight: 1024
-  spritePackingTag: 
-  resliceFromLayer: 0
-  characterMode: 1
-  mosaicPSDLayers: []
-  rigPSDLayers:
-  - name: justes notes
-    spriteName: justes notes
-    isGroup: 0
-    parentIndex: -1
-    spriteID: c97ba95c56c719641a00777a284ae1f2
-    layerID: 56
-    mosaicPosition: {x: 248, y: 4}
-  - name: fausses notes
-    spriteName: fausses notes
-    isGroup: 0
-    parentIndex: -1
-    spriteID: c25e9db55466eda4bac87f94d54b2940
-    layerID: 55
-    mosaicPosition: {x: 4, y: 4}
-  - name: 1
-    spriteName: 
-    isGroup: 1
-    parentIndex: -1
-    spriteID: 00000000000000000000000000000000
-    layerID: 54
-    mosaicPosition: {x: 0, y: 0}
-  - name: idle/atk
-    spriteName: 
-    isGroup: 1
-    parentIndex: 2
-    spriteID: 00000000000000000000000000000000
-    layerID: 53
-    mosaicPosition: {x: 0, y: 0}
-  - name: 1.idle_bouche
-    spriteName: 1.idle_bouche
-    isGroup: 0
-    parentIndex: 3
-    spriteID: 087c45151a08f0f4c86672653d2d0695
-    layerID: 52
-    mosaicPosition: {x: 711, y: 290}
-  - name: 1.idle_tete
-    spriteName: 1.idle_tete
-    isGroup: 0
-    parentIndex: 3
-    spriteID: c5a57f75d1cac7543a0b1e76d60f8a1d
-    layerID: 51
-    mosaicPosition: {x: 883, y: 208}
-  - name: dmg
-    spriteName: 
-    isGroup: 1
-    parentIndex: 2
-    spriteID: 00000000000000000000000000000000
-    layerID: 49
-    mosaicPosition: {x: 0, y: 0}
-  - name: 1._dmg_bouche
-    spriteName: 1._dmg_bouche
-    isGroup: 0
-    parentIndex: 6
-    spriteID: 9e79f61fa0fcd2545b3f906318d51b05
-    layerID: 48
-    mosaicPosition: {x: 541, y: 385}
-  - name: 1.dmg_tete
-    spriteName: 1.dmg_tete
-    isGroup: 0
-    parentIndex: 6
-    spriteID: 7f5901dd93414b443ba54925fa401f69
-    layerID: 47
-    mosaicPosition: {x: 887, y: 142}
-  - name: 1.cravatte
-    spriteName: 1.cravatte
-    isGroup: 0
-    parentIndex: 2
-    spriteID: 29bf6795e63f1c441944b6b0ab7cacd2
-    layerID: 45
-    mosaicPosition: {x: 4, y: 428}
-  - name: 1.corps
-    spriteName: 1.corps
-    isGroup: 0
-    parentIndex: 2
-    spriteID: 49b55a61afc40c34d8420a7e59d29ca2
-    layerID: 44
-    mosaicPosition: {x: 284, y: 208}
-  - name: 1.flammeches
-    spriteName: 1.flammeches
-    isGroup: 0
-    parentIndex: 2
-    spriteID: f15e4275e68af8e4eaa4cbf1f3b0ea6c
-    layerID: 43
-    mosaicPosition: {x: 487, y: 145}
-  - name: halo soin
-    spriteName: halo soin
-    isGroup: 0
-    parentIndex: -1
-    spriteID: bf690f2c1685c0f409eec573eeb89d50
-    layerID: 41
-    mosaicPosition: {x: 413, y: 208}
-  - name: 2
-    spriteName: 
-    isGroup: 1
-    parentIndex: -1
-    spriteID: 00000000000000000000000000000000
-    layerID: 40
-    mosaicPosition: {x: 0, y: 0}
-  - name: idle
-    spriteName: 
-    isGroup: 1
-    parentIndex: 13
-    spriteID: 00000000000000000000000000000000
-    layerID: 39
-    mosaicPosition: {x: 0, y: 0}
-  - name: 2.idle_bouche
-    spriteName: 2.idle_bouche
-    isGroup: 0
-    parentIndex: 14
-    spriteID: a35aef5bfe591b3429bb565606d8820a
-    layerID: 38
-    mosaicPosition: {x: 682, y: 331}
-  - name: 2.idle_tete
-    spriteName: 2.idle_tete
-    isGroup: 0
-    parentIndex: 14
-    spriteID: bb83f0119825da2418242029e8e67707
-    layerID: 37
-    mosaicPosition: {x: 711, y: 208}
-  - name: dmg
-    spriteName: 
-    isGroup: 1
-    parentIndex: 13
-    spriteID: 00000000000000000000000000000000
-    layerID: 35
-    mosaicPosition: {x: 0, y: 0}
-  - name: 2.dmg_bouche
-    spriteName: 2.dmg_bouche
-    isGroup: 0
-    parentIndex: 17
-    spriteID: a2750a27ed0e55543b48223b9407bc8a
-    layerID: 34
-    mosaicPosition: {x: 817, y: 128}
-  - name: 2.dmg_tete
-    spriteName: 2.dmg_tete
-    isGroup: 0
-    parentIndex: 17
-    spriteID: dff524eeaf31c26499865d9f12f119b8
-    layerID: 33
-    mosaicPosition: {x: 551, y: 208}
-  - name: atk
-    spriteName: 
-    isGroup: 1
-    parentIndex: 13
-    spriteID: 00000000000000000000000000000000
-    layerID: 31
-    mosaicPosition: {x: 0, y: 0}
-  - name: 2.atk_langue
-    spriteName: 2.atk_langue
-    isGroup: 0
-    parentIndex: 20
-    spriteID: 1132daab347de6146961d35c5af222b3
-    layerID: 30
-    mosaicPosition: {x: 551, y: 298}
-  - name: 2.atk_bouche
-    spriteName: 2.atk_bouche
-    isGroup: 0
-    parentIndex: 20
-    spriteID: 0a49f957ca22e8e448c0e94ce7f27cc0
-    layerID: 29
-    mosaicPosition: {x: 626, y: 331}
-  - name: 2.atk_tete
-    spriteName: 2.atk_tete
-    isGroup: 0
-    parentIndex: 20
-    spriteID: 6ad96c99d62a69f469d8ea97da502085
-    layerID: 28
-    mosaicPosition: {x: 631, y: 208}
-  - name: 2.colerette
-    spriteName: 2.colerette
-    isGroup: 0
-    parentIndex: 13
-    spriteID: 1629838bf5d9976488f21abc706c3536
-    layerID: 26
-    mosaicPosition: {x: 413, y: 331}
-  - name: 2.noeud
-    spriteName: 2.noeud
-    isGroup: 0
-    parentIndex: 13
-    spriteID: e6605a65beada3a41ba08c22592195ad
-    layerID: 25
-    mosaicPosition: {x: 485, y: 331}
-  - name: 2.corps
-    spriteName: 2.corps
-    isGroup: 0
-    parentIndex: 13
-    spriteID: 21235ba3c6bfeea419295a8e2a3b664a
-    layerID: 24
-    mosaicPosition: {x: 162, y: 208}
-  - name: 2.flammeche
-    spriteName: 2.flammeche
-    isGroup: 0
-    parentIndex: 13
-    spriteID: 1285a255a6e28544c97d8baec2953ea7
-    layerID: 23
-    mosaicPosition: {x: 887, y: 4}
-  - name: 3
-    spriteName: 
-    isGroup: 1
-    parentIndex: -1
-    spriteID: 00000000000000000000000000000000
-    layerID: 21
-    mosaicPosition: {x: 0, y: 0}
-  - name: idle
-    spriteName: 
-    isGroup: 1
-    parentIndex: 28
-    spriteID: 00000000000000000000000000000000
-    layerID: 20
-    mosaicPosition: {x: 0, y: 0}
-  - name: 3.idle_bouche
-    spriteName: 3.idle_bouche
-    isGroup: 0
-    parentIndex: 29
-    spriteID: 36e8d1a5b46a3534686fb068426d7ce2
-    layerID: 19
-    mosaicPosition: {x: 741, y: 331}
-  - name: 3.idle_tete
-    spriteName: 3.idle_tete
-    isGroup: 0
-    parentIndex: 29
-    spriteID: a351c689a8e04b44e9e461ba2566cbe9
-    layerID: 18
-    mosaicPosition: {x: 729, y: 128}
-  - name: atk
-    spriteName: 
-    isGroup: 1
-    parentIndex: 28
-    spriteID: 00000000000000000000000000000000
-    layerID: 16
-    mosaicPosition: {x: 0, y: 0}
-  - name: 3.atk_bouche
-    spriteName: 3.atk_bouche
-    isGroup: 0
-    parentIndex: 32
-    spriteID: 66d54961d51ca654e8a7aa2c1ea25f43
-    layerID: 15
-    mosaicPosition: {x: 795, y: 281}
-  - name: 3.atk_tete
-    spriteName: 3.atk_tete
-    isGroup: 0
-    parentIndex: 32
-    spriteID: bd894451bae2bb44eb1ef2749f1bebfc
-    layerID: 14
-    mosaicPosition: {x: 284, y: 348}
-  - name: dmg
-    spriteName: 
-    isGroup: 1
-    parentIndex: 28
-    spriteID: 00000000000000000000000000000000
-    layerID: 12
-    mosaicPosition: {x: 0, y: 0}
-  - name: 3_dmg_bouche
-    spriteName: 3_dmg_bouche
-    isGroup: 0
-    parentIndex: 35
-    spriteID: 5cea740b894e0bb45b8d03cc605acbc4
-    layerID: 11
-    mosaicPosition: {x: 626, y: 387}
-  - name: 3_dmg_tete
-    spriteName: 3_dmg_tete
-    isGroup: 0
-    parentIndex: 35
-    spriteID: 8028fb1adadf5cc4097daa9300bab798
-    layerID: 10
-    mosaicPosition: {x: 795, y: 208}
-  - name: 3.collerette
-    spriteName: 3.collerette
-    isGroup: 0
-    parentIndex: 28
-    spriteID: 48d0abbd637d6e046954677c9ac58f5f
-    layerID: 8
-    mosaicPosition: {x: 541, y: 331}
-  - name: 3.chaines
-    spriteName: 3.chaines
-    isGroup: 0
-    parentIndex: 28
-    spriteID: ced23074abfd24345861607e20294bcb
-    layerID: 7
-    mosaicPosition: {x: 883, y: 271}
-  - name: 3.croix
-    spriteName: 3.croix
-    isGroup: 0
-    parentIndex: 28
-    spriteID: e0dca7dda6793324f93b6c03b249fdae
-    layerID: 6
-    mosaicPosition: {x: 990, y: 271}
-  - name: 3.corps
-    spriteName: 3.corps
-    isGroup: 0
-    parentIndex: 28
-    spriteID: b2c8a1a425f7ae543b598e7045dcda32
-    layerID: 5
-    mosaicPosition: {x: 4, y: 208}
-  - name: 3.flammeches
-    spriteName: 3.flammeches
-    isGroup: 0
-    parentIndex: 28
-    spriteID: def9f09be3cdf82429ccd67095f2604e
-    layerID: 4
-    mosaicPosition: {x: 729, y: 4}
-  - name: halo soin
-    spriteName: halo soin_1
-    isGroup: 0
-    parentIndex: -1
-    spriteID: 471ba4b983942ce4299a9965315fbf7a
-    layerID: 2
-    mosaicPosition: {x: 487, y: 4}
+    uvTransform: {x: 487, y: 4}
+    spritePosition: {x: 39, y: 178}
   characterData:
     bones:
     - name: Corps choriste bas
+      guid: 
       position: {x: 144.57437, y: 10.915444, z: 0}
       rotation: {x: 0, y: 0, z: 0.70171374, w: 0.712459}
       length: 59.660477
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tete choriste bas
+      guid: 
       position: {x: 98.1315, y: 1.7933942, z: 0}
       rotation: {x: 0, y: 0, z: 0.007596043, w: 0.9999712}
       length: 52.729393
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Cravate choriste bas
+      guid: 
       position: {x: 81.223946, y: 0.084783085, z: 0}
       rotation: {x: 0, y: 0, z: -0.9999536, w: -0.009636202}
       length: 56.14904
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Corps choriste gauche
+      guid: 
       position: {x: 58.782608, y: 22.0358, z: 0}
       rotation: {x: 0, y: 0, z: 0.66212326, w: 0.74939495}
       length: 100.6968
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tete choriste gauche
+      guid: 
       position: {x: 87.184425, y: -0.95000225, z: 0}
       rotation: {x: 0, y: 0, z: -0.46506536, w: 0.88527644}
       length: 56.103245
       parentId: 26
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Corps choriste droite
+      guid: 
       position: {x: 134.87675, y: 0.22501071, z: 0}
       rotation: {x: 0, y: 0, z: -0.15185823, w: 0.9884023}
       length: 44.212746
       parentId: 27
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tete choriste droite
+      guid: 
       position: {x: 44.212746, y: 0.0000069008165, z: 0}
       rotation: {x: 0, y: 0, z: -0.110412374, w: 0.99388593}
       length: 53.34712
       parentId: 5
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Collier milieu
+      guid: 
       position: {x: 151.35545, y: -4.5059557, z: 0}
       rotation: {x: 0, y: 0, z: -0.984312, w: -0.17643702}
       length: 23.270626
       parentId: 27
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: collier gauche
+      guid: 
       position: {x: 154.67593, y: 5.674623, z: 0}
       rotation: {x: 0, y: 0, z: 0.6665628, w: 0.7454489}
       length: 28.741777
       parentId: 27
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Collier droite
+      guid: 
       position: {x: 143.68127, y: -14.714729, z: 0}
       rotation: {x: 0, y: 0, z: -0.8545477, w: 0.519373}
       length: 40.465252
       parentId: 27
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Note gauche
+      guid: 
       position: {x: 40.7488, y: 253.22206, z: 0}
       rotation: {x: 0, y: 0, z: 0.5048459, w: 0.8632095}
       length: 62.164066
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Note milieu
+      guid: 
       position: {x: 135.56497, y: 312.72403, z: 0}
       rotation: {x: 0, y: 0, z: 0.7168567, w: 0.6972205}
       length: 52.265823
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Note droite
+      guid: 
       position: {x: 230.38115, y: 280.31238, z: 0}
       rotation: {x: 0, y: 0, z: 0.72774243, w: 0.6858506}
       length: 57.183567
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Colerette gauche
+      guid: 
       position: {x: -10.799246, y: 22.203619, z: 0}
       rotation: {x: 0, y: 0, z: -0.65019757, w: 0.7597652}
       length: 64.74744
       parentId: 4
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Colerette droite gauche
+      guid: 
       position: {x: -3.4918044, y: 9.734102, z: 0}
       rotation: {x: 0, y: 0, z: 0.5547589, w: 0.83201116}
       length: 16.931467
       parentId: 6
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Colerette droite droite
+      guid: 
       position: {x: -1.9257216, y: -12.927783, z: 0}
       rotation: {x: 0, y: 0, z: -0.4135977, w: 0.91045976}
       length: 39.374874
       parentId: 6
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Colerette bas gauche
+      guid: 
       position: {x: 0.483846, y: 10.1587105, z: 0}
       rotation: {x: 0, y: 0, z: 0.45034006, w: 0.89285713}
       length: 27.671518
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Colerette bas droite
+      guid: 
       position: {x: -1.4510993, y: -10.159046, z: 0}
       rotation: {x: 0, y: 0, z: -0.45275834, w: 0.8916333}
       length: 31.156294
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: "Lumi\xE8re gauche"
+      guid: 
       position: {x: 64.45284, y: 239.67688, z: 0}
       rotation: {x: 0, y: 0, z: 0.29841325, w: 0.9544368}
       length: 59.446896
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: "Lumi\xE8re droite"
+      guid: 
       position: {x: 184.42433, y: 283.69867, z: 0}
       rotation: {x: 0, y: 0, z: -0.20985524, w: 0.9777325}
       length: 74.26718
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: cravate choriste gauche
+      guid: 
       position: {x: 43.712337, y: -25.254501, z: 0}
       rotation: {x: 0, y: 0, z: -0.9999688, w: -0.007898368}
       length: 50.59126
       parentId: 26
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: cravate choriste gauche_1
+      guid: 
       position: {x: 53.075256, y: -5.0882673, z: 0}
       rotation: {x: 0, y: 0, z: 0.07640569, w: 0.9970768}
       length: 10.170396
       parentId: 20
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: cravate choriste gauche_2
+      guid: 
       position: {x: 55.323345, y: 5.851508, z: 0}
       rotation: {x: 0, y: 0, z: -0.10797546, w: 0.99415356}
       length: 10.708402
       parentId: 20
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Bouche choriste gauche
+      guid: 
       position: {x: 26.112637, y: -0.577551, z: 0}
       rotation: {x: 0, y: 0, z: -0.0055377427, w: 0.9999847}
       length: 25.87449
       parentId: 4
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: bouche choriste bas
+      guid: 
       position: {x: 30.092121, y: -23.26863, z: 0}
       rotation: {x: 0, y: 0, z: 0.6943747, w: 0.7196137}
       length: 40.661407
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: bouche choriste 2
+      guid: 
       position: {x: 25.808994, y: -1.9926443, z: 0}
       rotation: {x: 0, y: 0, z: -0.49316487, w: 0.86993587}
       length: 34.580994
       parentId: 4
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: corps choriste gauche superieur
+      guid: 
       position: {x: 100.69679, y: -0.000003448556, z: 0}
       rotation: {x: 0, y: 0, z: 0.016958559, w: 0.99985623}
       length: 83.38091
       parentId: 3
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: corps choriste droite
+      guid: 
       position: {x: 160.55609, y: 35.14059, z: 0}
       rotation: {x: 0, y: 0, z: 0.70481473, w: 0.7093915}
       length: 134.70395
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: cou/machoire
+      guid: 
       position: {x: 7.791967, y: -27.097807, z: 0}
       rotation: {x: 0, y: 0, z: 0.0230684, w: 0.9997339}
       length: 29.176058
       parentId: 4
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: 'bouche hauteur '
+      guid: 
       position: {x: 28.273796, y: -2.073727, z: 0}
       rotation: {x: 0, y: 0, z: 0.7545808, w: 0.65620714}
       length: 9.436274
       parentId: 6
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Corps choriste bas_3
+      guid: 
       position: {x: 59.66048, y: -0.000008517151, z: 0}
       rotation: {x: 0, y: 0, z: 0.020342203, w: 0.9997931}
       length: 38.358036
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: langue
+      guid: 
       position: {x: 36.008305, y: -10.919505, z: 0}
       rotation: {x: 0, y: 0, z: -0.077880815, w: 0.9969627}
       length: 27.050781
       parentId: 4
+      color:
+        serializedVersion: 2
+        rgba: 0
     parts:
     - spritePosition:
         x: 24
@@ -16895,8 +16892,483 @@ ScriptedImporter:
       order: 0
     dimension: {x: 0, y: 0}
     characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  platformSettings: []
+  mosaicLayers: 1
+  characterMode: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 7
+  importHiddenLayers: 0
+  layerMappingOption: 2
+  generatePhysicsShape: 0
+  paperDollMode: 0
+  keepDupilcateSpriteName: 0
+  skeletonAssetReferenceID: 
+  padding: 4
+  spriteSizeExpand: 0
+  spriteCategoryList:
+    categories: []
+  spritePackingTag: 
+  resliceFromLayer: 0
+  mosaicPSDLayers: []
+  rigPSDLayers:
+  - name: justes notes
+    spriteName: justes notes
+    isGroup: 0
+    parentIndex: -1
+    spriteID: c97ba95c56c719641a00777a284ae1f2
+    layerID: 56
+    mosaicPosition: {x: 248, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: fausses notes
+    spriteName: fausses notes
+    isGroup: 0
+    parentIndex: -1
+    spriteID: c25e9db55466eda4bac87f94d54b2940
+    layerID: 55
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 1
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: db3f82b1fa329f6438131abf9c5f2af4
+    layerID: 54
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: idle/atk
+    spriteName: 
+    isGroup: 1
+    parentIndex: 2
+    spriteID: ba13fc27dab53db4181c05ecf7995f0f
+    layerID: 53
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: 1.idle_bouche
+    spriteName: 1.idle_bouche
+    isGroup: 0
+    parentIndex: 3
+    spriteID: 087c45151a08f0f4c86672653d2d0695
+    layerID: 52
+    mosaicPosition: {x: 852, y: 281}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 1.idle_tete
+    spriteName: 1.idle_tete
+    isGroup: 0
+    parentIndex: 3
+    spriteID: c5a57f75d1cac7543a0b1e76d60f8a1d
+    layerID: 51
+    mosaicPosition: {x: 799, y: 208}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: dmg
+    spriteName: 
+    isGroup: 1
+    parentIndex: 2
+    spriteID: adf10fb3cf3c7b94aa0301de2710696a
+    layerID: 49
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: 1._dmg_bouche
+    spriteName: 1._dmg_bouche
+    isGroup: 0
+    parentIndex: 6
+    spriteID: 9e79f61fa0fcd2545b3f906318d51b05
+    layerID: 48
+    mosaicPosition: {x: 356, y: 348}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 1.dmg_tete
+    spriteName: 1.dmg_tete
+    isGroup: 0
+    parentIndex: 6
+    spriteID: 7f5901dd93414b443ba54925fa401f69
+    layerID: 47
+    mosaicPosition: {x: 887, y: 142}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 1.cravatte
+    spriteName: 1.cravatte
+    isGroup: 0
+    parentIndex: 2
+    spriteID: 29bf6795e63f1c441944b6b0ab7cacd2
+    layerID: 45
+    mosaicPosition: {x: 246, y: 427}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 1.corps
+    spriteName: 1.corps
+    isGroup: 0
+    parentIndex: 2
+    spriteID: 49b55a61afc40c34d8420a7e59d29ca2
+    layerID: 44
+    mosaicPosition: {x: 284, y: 208}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 1.flammeches
+    spriteName: 1.flammeches
+    isGroup: 0
+    parentIndex: 2
+    spriteID: f15e4275e68af8e4eaa4cbf1f3b0ea6c
+    layerID: 43
+    mosaicPosition: {x: 487, y: 145}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: halo soin
+    spriteName: halo soin
+    isGroup: 0
+    parentIndex: -1
+    spriteID: bf690f2c1685c0f409eec573eeb89d50
+    layerID: 41
+    mosaicPosition: {x: 413, y: 208}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 2
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: cd54268327eb6ee47b2141d1ee69cbb9
+    layerID: 40
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: idle
+    spriteName: 
+    isGroup: 1
+    parentIndex: 13
+    spriteID: 64144f799c0113a45aa28d8389e32be7
+    layerID: 39
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: 2.idle_bouche
+    spriteName: 2.idle_bouche
+    isGroup: 0
+    parentIndex: 14
+    spriteID: a35aef5bfe591b3429bb565606d8820a
+    layerID: 38
+    mosaicPosition: {x: 631, y: 298}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 2.idle_tete
+    spriteName: 2.idle_tete
+    isGroup: 0
+    parentIndex: 14
+    spriteID: bb83f0119825da2418242029e8e67707
+    layerID: 37
+    mosaicPosition: {x: 162, y: 427}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: dmg
+    spriteName: 
+    isGroup: 1
+    parentIndex: 13
+    spriteID: a8536a4f7a028ee46a0b3633d9beac7c
+    layerID: 35
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: 2.dmg_bouche
+    spriteName: 2.dmg_bouche
+    isGroup: 0
+    parentIndex: 17
+    spriteID: a2750a27ed0e55543b48223b9407bc8a
+    layerID: 34
+    mosaicPosition: {x: 817, y: 128}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 2.dmg_tete
+    spriteName: 2.dmg_tete
+    isGroup: 0
+    parentIndex: 17
+    spriteID: dff524eeaf31c26499865d9f12f119b8
+    layerID: 33
+    mosaicPosition: {x: 551, y: 208}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: atk
+    spriteName: 
+    isGroup: 1
+    parentIndex: 13
+    spriteID: 4593443a261902947a9464e3a22a2581
+    layerID: 31
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: 2.atk_langue
+    spriteName: 2.atk_langue
+    isGroup: 0
+    parentIndex: 20
+    spriteID: 1132daab347de6146961d35c5af222b3
+    layerID: 30
+    mosaicPosition: {x: 417, y: 348}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 2.atk_bouche
+    spriteName: 2.atk_bouche
+    isGroup: 0
+    parentIndex: 20
+    spriteID: 0a49f957ca22e8e448c0e94ce7f27cc0
+    layerID: 29
+    mosaicPosition: {x: 796, y: 281}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 2.atk_tete
+    spriteName: 2.atk_tete
+    isGroup: 0
+    parentIndex: 20
+    spriteID: 6ad96c99d62a69f469d8ea97da502085
+    layerID: 28
+    mosaicPosition: {x: 631, y: 208}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 2.colerette
+    spriteName: 2.colerette
+    isGroup: 0
+    parentIndex: 13
+    spriteID: 1629838bf5d9976488f21abc706c3536
+    layerID: 26
+    mosaicPosition: {x: 284, y: 348}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 2.noeud
+    spriteName: 2.noeud
+    isGroup: 0
+    parentIndex: 13
+    spriteID: e6605a65beada3a41ba08c22592195ad
+    layerID: 25
+    mosaicPosition: {x: 92, y: 428}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 2.corps
+    spriteName: 2.corps
+    isGroup: 0
+    parentIndex: 13
+    spriteID: 21235ba3c6bfeea419295a8e2a3b664a
+    layerID: 24
+    mosaicPosition: {x: 162, y: 208}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 2.flammeche
+    spriteName: 2.flammeche
+    isGroup: 0
+    parentIndex: 13
+    spriteID: 1285a255a6e28544c97d8baec2953ea7
+    layerID: 23
+    mosaicPosition: {x: 887, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 3
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: a29a456d6e569704ab6567000a3a15e8
+    layerID: 21
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: idle
+    spriteName: 
+    isGroup: 1
+    parentIndex: 28
+    spriteID: cf01ac036f9f9b2499b3bc8cccb722a4
+    layerID: 20
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: 3.idle_bouche
+    spriteName: 3.idle_bouche
+    isGroup: 0
+    parentIndex: 29
+    spriteID: 36e8d1a5b46a3534686fb068426d7ce2
+    layerID: 19
+    mosaicPosition: {x: 919, y: 281}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 3.idle_tete
+    spriteName: 3.idle_tete
+    isGroup: 0
+    parentIndex: 29
+    spriteID: a351c689a8e04b44e9e461ba2566cbe9
+    layerID: 18
+    mosaicPosition: {x: 4, y: 428}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: atk
+    spriteName: 
+    isGroup: 1
+    parentIndex: 28
+    spriteID: e21c4d5b6a186a544baae954c9fc00b0
+    layerID: 16
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: 3.atk_bouche
+    spriteName: 3.atk_bouche
+    isGroup: 0
+    parentIndex: 32
+    spriteID: 66d54961d51ca654e8a7aa2c1ea25f43
+    layerID: 15
+    mosaicPosition: {x: 551, y: 298}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 3.atk_tete
+    spriteName: 3.atk_tete
+    isGroup: 0
+    parentIndex: 32
+    spriteID: bd894451bae2bb44eb1ef2749f1bebfc
+    layerID: 14
+    mosaicPosition: {x: 729, y: 128}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: dmg
+    spriteName: 
+    isGroup: 1
+    parentIndex: 28
+    spriteID: 95977128b9267d441815da87837f15de
+    layerID: 12
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: 3_dmg_bouche
+    spriteName: 3_dmg_bouche
+    isGroup: 0
+    parentIndex: 35
+    spriteID: 5cea740b894e0bb45b8d03cc605acbc4
+    layerID: 11
+    mosaicPosition: {x: 679, y: 145}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 3_dmg_tete
+    spriteName: 3_dmg_tete
+    isGroup: 0
+    parentIndex: 35
+    spriteID: 8028fb1adadf5cc4097daa9300bab798
+    layerID: 10
+    mosaicPosition: {x: 711, y: 208}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 3.collerette
+    spriteName: 3.collerette
+    isGroup: 0
+    parentIndex: 28
+    spriteID: 48d0abbd637d6e046954677c9ac58f5f
+    layerID: 8
+    mosaicPosition: {x: 711, y: 281}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 3.chaines
+    spriteName: 3.chaines
+    isGroup: 0
+    parentIndex: 28
+    spriteID: ced23074abfd24345861607e20294bcb
+    layerID: 7
+    mosaicPosition: {x: 901, y: 208}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 3.croix
+    spriteName: 3.croix
+    isGroup: 0
+    parentIndex: 28
+    spriteID: e0dca7dda6793324f93b6c03b249fdae
+    layerID: 6
+    mosaicPosition: {x: 989, y: 142}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 3.corps
+    spriteName: 3.corps
+    isGroup: 0
+    parentIndex: 28
+    spriteID: b2c8a1a425f7ae543b598e7045dcda32
+    layerID: 5
+    mosaicPosition: {x: 4, y: 208}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: 3.flammeches
+    spriteName: 3.flammeches
+    isGroup: 0
+    parentIndex: 28
+    spriteID: def9f09be3cdf82429ccd67095f2604e
+    layerID: 4
+    mosaicPosition: {x: 729, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: halo soin
+    spriteName: halo soin_1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 471ba4b983942ce4299a9965315fbf7a
+    layerID: 2
+    mosaicPosition: {x: 487, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  spriteSizeExpandChanged: 0
   generateGOHierarchy: 0
   textureAssetName: Choristes_neuf Texture
   prefabAssetName: Choristes_neuf Prefab
   spriteLibAssetName: Choristes_neuf Sprite Lib
+  skeletonAssetName: 
   secondarySpriteTextures: []

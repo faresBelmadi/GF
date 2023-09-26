@@ -21,10 +21,13 @@ ScriptedImporter:
     convertToNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
     isReadable: 0
     streamingMipmaps: 1
     streamingMipmapsPriority: 0
     vTOnly: 0
+    ignoreMipmapLimit: 0
     nPOTScale: 1
     sRGBTexture: 1
     spriteMode: 2
@@ -43,7 +46,10 @@ ScriptedImporter:
     textureType: 8
     textureShape: 1
     singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -77,7 +83,6 @@ ScriptedImporter:
       width: 0
       height: 0
     spriteID: 
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -85,8 +90,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
   - name: Idle_Tentacule_4_serpents_1
@@ -96,12 +101,11 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 668
+      x: 784
       y: 4
       width: 70
       height: 51
     spriteID: 77bea29d28e89a3478b04c2b0471c005
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -109,9 +113,30 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 624, y: -29}
+    uvTransform: {x: 784, y: 4}
+    spritePosition: {x: 44, y: 33}
   - name: Idle_Tentacule_4_serpents_2
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 663
+      y: 4
+      width: 113
+      height: 53
+    spriteID: 806d5117c2acbcb49ab322e9ca4b9859
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 663, y: 4}
+    spritePosition: {x: 20, y: 2}
+  - name: Idle_Tentacule_4_serpents
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -120,32 +145,9 @@ ScriptedImporter:
       serializedVersion: 2
       x: 547
       y: 4
-      width: 113
-      height: 53
-    spriteID: 806d5117c2acbcb49ab322e9ca4b9859
-    internalID: 0
-    spriteBone: []
-    spriteOutline: []
-    vertices: []
-    spritePhysicsOutline: []
-    indices: 
-    edges: []
-    tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 527, y: 2}
-  - name: Idle_Tentacule_4_serpents
-    originalName: 
-    pivot: {x: 0.5, y: 0.5}
-    alignment: 0
-    border: {x: 0, y: 0, z: 0, w: 0}
-    rect:
-      serializedVersion: 2
-      x: 4
-      y: 76
       width: 108
       height: 88
     spriteID: 1de1102f6c006fc47807d47e4a95c38f
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,8 +155,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 3, y: 74}
+    uvTransform: {x: 546, y: 4}
+    spritePosition: {x: 1, y: 2}
   - name: Idle_Tentacule_4
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -167,7 +169,6 @@ ScriptedImporter:
       width: 535
       height: 64
     spriteID: 3425353669ef0574f8cb74b0e8fb0a0e
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -175,25 +176,40 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 2, y: -4}
+    uvTransform: {x: 3, y: 4}
+    spritePosition: {x: 2, y: 8}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
   platformSettings: []
   mosaicLayers: 1
+  characterMode: 1
   documentPivot: {x: 0, y: 0}
   documentAlignment: 7
   importHiddenLayers: 0
-  importedTextureWidth: 1024
-  importedTextureHeight: 1024
-  documentSize: {x: 537, y: 91}
+  layerMappingOption: 2
+  generatePhysicsShape: 0
   paperDollMode: 0
   keepDupilcateSpriteName: 0
+  skeletonAssetReferenceID: 
+  padding: 4
+  spriteSizeExpand: 0
   spriteCategoryList:
     categories: []
-  textureActualWidth: 1024
-  textureActualHeight: 1024
   spritePackingTag: 
   resliceFromLayer: 0
-  characterMode: 1
   mosaicPSDLayers: []
   rigPSDLayers:
   - name: Idle_Tentacule_4_serpents_1
@@ -202,21 +218,30 @@ ScriptedImporter:
     parentIndex: -1
     spriteID: 77bea29d28e89a3478b04c2b0471c005
     layerID: 18
-    mosaicPosition: {x: 668, y: 4}
+    mosaicPosition: {x: 784, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Idle_Tentacule_4_serpents_2
     spriteName: Idle_Tentacule_4_serpents_2
     isGroup: 0
     parentIndex: -1
     spriteID: 806d5117c2acbcb49ab322e9ca4b9859
     layerID: 19
-    mosaicPosition: {x: 547, y: 4}
+    mosaicPosition: {x: 663, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Idle_Tentacule_4_serpents
     spriteName: Idle_Tentacule_4_serpents
     isGroup: 0
     parentIndex: -1
     spriteID: 1de1102f6c006fc47807d47e4a95c38f
     layerID: 14
-    mosaicPosition: {x: 4, y: 76}
+    mosaicPosition: {x: 547, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Idle_Tentacule_4
     spriteName: Idle_Tentacule_4
     isGroup: 0
@@ -224,13 +249,17 @@ ScriptedImporter:
     spriteID: 3425353669ef0574f8cb74b0e8fb0a0e
     layerID: 9
     mosaicPosition: {x: 4, y: 4}
-  characterData:
-    bones: []
-    parts: []
-    dimension: {x: 0, y: 0}
-    characterGroups: []
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  spriteSizeExpandChanged: 0
   generateGOHierarchy: 0
   textureAssetName: Lonis_Tentacules_4 Texture
   prefabAssetName: Lonis_Tentacules_4 Prefab
   spriteLibAssetName: Lonis_Tentacules_4 Sprite Lib
+  skeletonAssetName: 
   secondarySpriteTextures: []

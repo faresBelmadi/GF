@@ -21,10 +21,13 @@ ScriptedImporter:
     convertToNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
     isReadable: 0
     streamingMipmaps: 1
     streamingMipmapsPriority: 0
     vTOnly: 0
+    ignoreMipmapLimit: 0
     nPOTScale: 1
     sRGBTexture: 1
     spriteMode: 2
@@ -43,7 +46,10 @@ ScriptedImporter:
     textureType: 8
     textureShape: 1
     singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -77,7 +83,6 @@ ScriptedImporter:
       width: 0
       height: 0
     spriteID: 
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -85,8 +90,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
   - name: chainon_4
@@ -101,18 +106,25 @@ ScriptedImporter:
       width: 30
       height: 32
     spriteID: 90ceac9b483c5144a802ef9a9048d161
-    internalID: 0
     spriteBone:
     - name: Maillon 4
+      guid: 
       position: {x: 24.682856, y: -0.000022407281, z: 0}
       rotation: {x: 0, y: 0, z: -0.46608567, w: 0.88473964}
       length: 25.00961
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Maillon 3
+      guid: 
       position: {x: 21.037949, y: 50.96344, z: 0}
       rotation: {x: 0, y: 0, z: -0.6390297, w: 0.769182}
       length: 24.682856
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 6.778, y: 0.45899963}
@@ -402,8 +414,8 @@ ScriptedImporter:
     - {x: 22, y: 21}
     - {x: 0, y: 22}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -57, y: 102}
+    uvTransform: {x: 55, y: 176}
+    spritePosition: {x: 112, y: 74}
   - name: chainon_3
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -416,23 +428,34 @@ ScriptedImporter:
       width: 29
       height: 35
     spriteID: 75f55762602cba1408969117b4b720cb
-    internalID: 0
     spriteBone:
     - name: Maillon 4
+      guid: 
       position: {x: 24.682837, y: -0.000035454967, z: 0}
       rotation: {x: 0, y: 0, z: -0.4660856, w: 0.8847396}
       length: 25.009611
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Maillon 3
+      guid: 
       position: {x: 21.278805, y: 0.000002793031, z: 0}
       rotation: {x: 0, y: 0, z: -0.32851586, w: 0.94449854}
       length: 24.682856
       parentId: 2
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Maillon 2
+      guid: 
       position: {x: -2.0014648, y: 48.94644, z: 0}
       rotation: {x: 0, y: 0, z: -0.35087407, w: 0.93642265}
       length: 21.278805
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 25.321999, y: 0.56799316}
@@ -733,8 +756,8 @@ ScriptedImporter:
     - {x: 23, y: 22}
     - {x: 0, y: 23}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -64, y: 43}
+    uvTransform: {x: 50, y: 120}
+    spritePosition: {x: 119, y: 90}
   - name: chainon_2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -747,23 +770,34 @@ ScriptedImporter:
       width: 32
       height: 69
     spriteID: ce2f8a52fb62f6244a9f4de66c7d503a
-    internalID: 0
     spriteBone:
     - name: Maillon 3
+      guid: 
       position: {x: 21.27881, y: -0.00002945563, z: 0}
       rotation: {x: 0, y: 0, z: -0.32851583, w: 0.9444984}
       length: 24.682854
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Maillon 2
+      guid: 
       position: {x: 15.415668, y: 0.000005291483, z: 0}
       rotation: {x: 0, y: 0, z: 0.024759501, w: 0.9996935}
       length: 21.278807
       parentId: 2
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Maillon 1
+      guid: 
       position: {x: -5.1056747, y: 72.63939, z: 0}
       rotation: {x: 0, y: 0, z: -0.37395188, w: 0.92744815}
       length: 15.415661
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 27.375, y: 36.697998}
@@ -976,8 +1010,8 @@ ScriptedImporter:
     - {x: 15, y: 14}
     - {x: 0, y: 15}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -56, y: -21}
+    uvTransform: {x: 55, y: 53}
+    spritePosition: {x: 111, y: 77}
   - name: chainon_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -990,23 +1024,34 @@ ScriptedImporter:
       width: 55
       height: 44
     spriteID: a24ad33c0e7ea424784ef33a0bf76901
-    internalID: 0
     spriteBone:
     - name: Maillon 2
+      guid: 
       position: {x: 15.415684, y: -0.000016515463, z: 0}
       rotation: {x: 0, y: 0, z: 0.024759505, w: 0.9996935}
       length: 21.278805
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Maillon 1
+      guid: 
       position: {x: 132.04391, y: -10.600843, z: 0}
       rotation: {x: 0, y: 0, z: -0.9306921, w: 0.3658036}
       length: 15.415658
       parentId: 2
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Clou
+      guid: 
       position: {x: 29.604202, y: -111.78848, z: 0}
       rotation: {x: 0, y: 0, z: 0.7263757, w: 0.6872979}
       length: 201.00511
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 51.874, y: 0.43400002}
@@ -1350,8 +1395,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -18, y: -125}
+    uvTransform: {x: 55, y: 4}
+    spritePosition: {x: 73, y: 129}
   - name: clou
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -1364,13 +1409,16 @@ ScriptedImporter:
       width: 43
       height: 226
     spriteID: d0e486c511e76e5439287b8e4aec3524
-    internalID: 0
     spriteBone:
     - name: Clou
+      guid: 
       position: {x: 32.604202, y: 10.211517, z: 0}
       rotation: {x: 0, y: 0, z: 0.7263757, w: 0.6872979}
       length: 201.00511
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 35.724, y: 15.988998}
@@ -1829,89 +1877,55 @@ ScriptedImporter:
     - {x: 40, y: 22}
     - {x: 41, y: 15}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -66, y: -3}
-  platformSettings: []
-  mosaicLayers: 1
-  documentPivot: {x: 0, y: 0}
-  documentAlignment: 7
-  importHiddenLayers: 0
-  importedTextureWidth: 128
-  importedTextureHeight: 256
-  documentSize: {x: 183, y: 238}
-  paperDollMode: 0
-  keepDupilcateSpriteName: 0
-  spriteCategoryList:
-    categories: []
-  textureActualWidth: 128
-  textureActualHeight: 256
-  spritePackingTag: 
-  resliceFromLayer: 0
-  characterMode: 1
-  mosaicPSDLayers: []
-  rigPSDLayers:
-  - name: chainon_4
-    spriteName: chainon_4
-    isGroup: 0
-    parentIndex: -1
-    spriteID: 90ceac9b483c5144a802ef9a9048d161
-    layerID: 6
-    mosaicPosition: {x: 55, y: 176}
-  - name: chainon_3
-    spriteName: chainon_3
-    isGroup: 0
-    parentIndex: -1
-    spriteID: 75f55762602cba1408969117b4b720cb
-    layerID: 5
-    mosaicPosition: {x: 55, y: 133}
-  - name: chainon_2
-    spriteName: chainon_2
-    isGroup: 0
-    parentIndex: -1
-    spriteID: ce2f8a52fb62f6244a9f4de66c7d503a
-    layerID: 4
-    mosaicPosition: {x: 55, y: 56}
-  - name: chainon_1
-    spriteName: chainon_1
-    isGroup: 0
-    parentIndex: -1
-    spriteID: a24ad33c0e7ea424784ef33a0bf76901
-    layerID: 3
-    mosaicPosition: {x: 55, y: 4}
-  - name: clou
-    spriteName: clou
-    isGroup: 0
-    parentIndex: -1
-    spriteID: d0e486c511e76e5439287b8e4aec3524
-    layerID: 2
-    mosaicPosition: {x: 4, y: 4}
+    uvTransform: {x: 4, y: -3}
+    spritePosition: {x: 70, y: 7}
   characterData:
     bones:
     - name: Clou
+      guid: 
       position: {x: 102.6042, y: 17.211517, z: 0}
       rotation: {x: 0, y: 0, z: 0.7263757, w: 0.6872979}
       length: 201.0051
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Maillon 1
+      guid: 
       position: {x: 132.04388, y: -10.600845, z: 0}
       rotation: {x: 0, y: -0, z: -0.9306921, w: 0.36580357}
       length: 15.415661
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Maillon 2
+      guid: 
       position: {x: 15.415657, y: 0.0000032350235, z: 0}
       rotation: {x: 0, y: 0, z: 0.024759518, w: 0.99969345}
       length: 21.278805
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Maillon 3
+      guid: 
       position: {x: 21.278807, y: -0.000013307133, z: 0}
       rotation: {x: 0, y: 0, z: -0.32851583, w: 0.9444985}
       length: 24.682854
       parentId: 2
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Maillon 4
+      guid: 
       position: {x: 24.682848, y: -0.000007762994, z: 0}
       rotation: {x: 0, y: 0, z: -0.4660857, w: 0.88473964}
       length: 25.009611
       parentId: 3
+      color:
+        serializedVersion: 2
+        rgba: 0
     parts:
     - spritePosition:
         x: 112
@@ -1960,8 +1974,93 @@ ScriptedImporter:
       order: 0
     dimension: {x: 0, y: 0}
     characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  platformSettings: []
+  mosaicLayers: 1
+  characterMode: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 7
+  importHiddenLayers: 0
+  layerMappingOption: 2
+  generatePhysicsShape: 0
+  paperDollMode: 0
+  keepDupilcateSpriteName: 0
+  skeletonAssetReferenceID: 
+  padding: 4
+  spriteSizeExpand: 0
+  spriteCategoryList:
+    categories: []
+  spritePackingTag: 
+  resliceFromLayer: 0
+  mosaicPSDLayers: []
+  rigPSDLayers:
+  - name: chainon_4
+    spriteName: chainon_4
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 90ceac9b483c5144a802ef9a9048d161
+    layerID: 6
+    mosaicPosition: {x: 55, y: 176}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: chainon_3
+    spriteName: chainon_3
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 75f55762602cba1408969117b4b720cb
+    layerID: 5
+    mosaicPosition: {x: 55, y: 133}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: chainon_2
+    spriteName: chainon_2
+    isGroup: 0
+    parentIndex: -1
+    spriteID: ce2f8a52fb62f6244a9f4de66c7d503a
+    layerID: 4
+    mosaicPosition: {x: 55, y: 56}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: chainon_1
+    spriteName: chainon_1
+    isGroup: 0
+    parentIndex: -1
+    spriteID: a24ad33c0e7ea424784ef33a0bf76901
+    layerID: 3
+    mosaicPosition: {x: 55, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: clou
+    spriteName: clou
+    isGroup: 0
+    parentIndex: -1
+    spriteID: d0e486c511e76e5439287b8e4aec3524
+    layerID: 2
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  spriteSizeExpandChanged: 0
   generateGOHierarchy: 0
   textureAssetName: "Clou_Rouill\xE9 Texture"
   prefabAssetName: "Clou_Rouill\xE9 Prefab"
   spriteLibAssetName: "Clou_Rouill\xE9 Sprite Lib"
+  skeletonAssetName: 
   secondarySpriteTextures: []
