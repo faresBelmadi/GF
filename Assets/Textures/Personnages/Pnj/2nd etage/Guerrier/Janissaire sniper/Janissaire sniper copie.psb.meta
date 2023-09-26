@@ -21,10 +21,13 @@ ScriptedImporter:
     convertToNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
     isReadable: 0
     streamingMipmaps: 1
     streamingMipmapsPriority: 0
     vTOnly: 0
+    ignoreMipmapLimit: 0
     nPOTScale: 1
     sRGBTexture: 1
     spriteMode: 2
@@ -43,7 +46,10 @@ ScriptedImporter:
     textureType: 8
     textureShape: 1
     singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -77,7 +83,6 @@ ScriptedImporter:
       width: 0
       height: 0
     spriteID: 
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -85,8 +90,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
   - name: "pr\xE9pare_bras_gauche_poudre"
@@ -96,18 +101,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 472
-      y: 227
+      x: 982
+      y: 200
       width: 13
       height: 19
     spriteID: 4178f285596c90340a204c3c4e5c12c8
-    internalID: 0
     spriteBone:
     - name: Poudre
+      guid: 
       position: {x: 3.5784302, y: 6.711853, z: 0}
       rotation: {x: 0, y: 0, z: 0.5887393, w: 0.808323}
       length: 10.069922
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 10.7630005, y: 3.0299988}
@@ -296,8 +304,8 @@ ScriptedImporter:
     - {x: 11, y: 10}
     - {x: 0, y: 11}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 163, y: -55}
+    uvTransform: {x: 982, y: 200}
+    spritePosition: {x: 309, y: 282}
   - name: "pr\xE9pare_bras_gauche_poudre_fum\xE9e"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -305,28 +313,39 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 363
-      y: 254
+      x: 945
+      y: 120
       width: 61
       height: 72
     spriteID: c40846a6ad9fbba44ade57718bfe01f8
-    internalID: 0
     spriteBone:
     - name: Fumee haut
+      guid: 
       position: {x: 14.81768, y: 0.000043309952, z: 0}
       rotation: {x: 0, y: 0, z: -0.62261444, w: 0.7825288}
       length: 16.636272
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Fummee milieu
+      guid: 
       position: {x: 12.294541, y: 0.000002522991, z: 0}
       rotation: {x: 0, y: 0, z: 0.65427196, w: 0.75625944}
       length: 14.817707
       parentId: 2
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Fumee bas
+      guid: 
       position: {x: 35.36502, y: 9.944366, z: 0}
       rotation: {x: 0, y: 0, z: 0.53861916, w: 0.8425494}
       length: 12.294531
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 36.93799, y: 1.0480042}
@@ -781,8 +800,8 @@ ScriptedImporter:
     - {x: 37, y: 36}
     - {x: 0, y: 37}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 82, y: -43}
+    uvTransform: {x: 945, y: 120}
+    spritePosition: {x: 281, y: 297}
   - name: "pr\xE9pare_bras_gauche_main_poudre"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -790,18 +809,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 861
-      y: 372
+      x: 504
+      y: 470
       width: 33
       height: 36
     spriteID: 41a0ed29458bc05418bb203454270fa2
-    internalID: 0
     spriteBone:
     - name: Prepare main gauche
+      guid: 
       position: {x: 14.776855, y: 2.0689697, z: 0}
       rotation: {x: 0, y: 0, z: 0.69620454, w: 0.7178435}
       length: 21.807274
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 18.205017, y: 0.46200562}
@@ -1103,8 +1125,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 578, y: 87}
+    uvTransform: {x: 504, y: 470}
+    spritePosition: {x: 283, y: 285}
   - name: "pr\xE9pare_mousquet_poudre_baton"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -1112,18 +1134,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 253
-      y: 4
+      x: 4
+      y: 254
       width: 174
       height: 218
     spriteID: af9f1d9c20419a941b5e088212c66479
-    internalID: 0
     spriteBone:
     - name: Prepare mousquet
+      guid: 
       position: {x: 166.6243, y: 14.851913, z: 0}
       rotation: {x: 0, y: 0, z: -0.86245525, w: -0.5061335}
       length: 106.668335
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 160.876, y: 24.163002}
@@ -1424,8 +1449,8 @@ ScriptedImporter:
     - {x: 25, y: 6}
     - {x: 2, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 49, y: -171}
+    uvTransform: {x: 4, y: 254}
+    spritePosition: {x: 204, y: 175}
   - name: "pr\xE9pare_bras_droit_main"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -1433,18 +1458,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 890
-      y: 322
+      x: 901
+      y: 296
       width: 48
       height: 41
     spriteID: 951c7a210544b024a96b232497964f2d
-    internalID: 0
     spriteBone:
     - name: Prepare main droit
+      guid: 
       position: {x: 41.222656, y: 25.511719, z: 0}
       rotation: {x: 0, y: 0, z: -0.9599276, w: 0.2802482}
       length: 24.3754
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 28.92102, y: 0.4580078}
@@ -1736,8 +1764,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 541, y: 151}
+    uvTransform: {x: 901, y: 296}
+    spritePosition: {x: 349, y: 171}
   - name: "pr\xE9pare_mousquet"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -1745,18 +1773,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 4
-      y: 254
+      x: 253
+      y: 4
       width: 170
       height: 292
     spriteID: e54f58db9556b954ca2f8ee7e2f1eef0
-    internalID: 0
     spriteBone:
     - name: Prepare mousquet
+      guid: 
       position: {x: 62.6243, y: 188.85193, z: 0}
       rotation: {x: 0, y: 0, z: -0.86245525, w: -0.5061335}
       length: 106.668335
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 169.22299, y: 0.477005}
@@ -2474,8 +2505,8 @@ ScriptedImporter:
     - {x: 64, y: 29}
     - {x: 65, y: 33}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -304, y: 253}
+    uvTransform: {x: 253, y: 4}
+    spritePosition: {x: 308, y: 1}
   - name: "pr\xE9pare_bras_gauche_main_baton"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -2483,18 +2514,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 689
-      y: 254
+      x: 325
+      y: 422
       width: 48
       height: 78
     spriteID: 172bad7c15a93c84bb5795fd770d5bef
-    internalID: 0
     spriteBone:
     - name: Prepare main gauche
+      guid: 
       position: {x: 21.776855, y: 12.06897, z: 0}
       rotation: {x: 0, y: 0, z: 0.69620454, w: 0.7178435}
       length: 21.807274
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 48, y: 1}
@@ -2838,8 +2872,8 @@ ScriptedImporter:
     - {x: 25, y: 26}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 413, y: -21}
+    uvTransform: {x: 325, y: 422}
+    spritePosition: {x: 276, y: 275}
   - name: "pr\xE9pare_bras_gauche_avant_bras"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -2847,18 +2881,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 429
-      y: 496
+      x: 629
+      y: 405
       width: 35
       height: 45
     spriteID: 0c74af8a91599804eb864a5b840e1dc8
-    internalID: 0
     spriteBone:
     - name: Prepare AB gauche
+      guid: 
       position: {x: 15.22876, y: 11.602844, z: 0}
       rotation: {x: 0, y: 0, z: 0.8144079, w: 0.58029294}
       length: 25.884874
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 27.51001, y: 0.84298706}
@@ -3219,8 +3256,8 @@ ScriptedImporter:
     - {x: 23, y: 22}
     - {x: 0, y: 23}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 138, y: 245}
+    uvTransform: {x: 629, y: 405}
+    spritePosition: {x: 291, y: 251}
   - name: "pr\xE9pare_bras_droit_avant_bras"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -3228,18 +3265,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 182
-      y: 509
+      x: 871
+      y: 346
       width: 43
       height: 37
     spriteID: c17744224e07dda48a139aec9e7ac680
-    internalID: 0
     spriteBone:
     - name: Pepare AB droit
+      guid: 
       position: {x: 36.01532, y: 39.36444, z: 0}
       rotation: {x: 0, y: 0, z: -0.91281563, w: 0.40837198}
       length: 38.700615
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 11.662994, y: 0.49798584}
@@ -3600,8 +3640,8 @@ ScriptedImporter:
     - {x: 23, y: 22}
     - {x: 0, y: 23}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -198, y: 323}
+    uvTransform: {x: 871, y: 346}
+    spritePosition: {x: 380, y: 186}
   - name: tir_bras_gauche_main
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -3609,18 +3649,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 812
-      y: 372
+      x: 806
+      y: 405
       width: 41
       height: 29
     spriteID: 888f49912e0328e4586d94c5a2055c4d
-    internalID: 0
     spriteBone:
     - name: Tir main gauche
+      guid: 
       position: {x: 25.569092, y: -0.757843, z: 0}
       rotation: {x: 0, y: 0, z: 0.8011954, w: 0.59840286}
       length: 19.963604
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 29.757019, y: 0.07598877}
@@ -3920,8 +3963,8 @@ ScriptedImporter:
     - {x: 22, y: 21}
     - {x: 0, y: 22}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 550, y: 68}
+    uvTransform: {x: 806, y: 405}
+    spritePosition: {x: 262, y: 304}
   - name: tir_bras_droit_main
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -3929,18 +3972,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 953
-      y: 323
+      x: 822
+      y: 346
       width: 41
       height: 39
     spriteID: 276bd3bec5ac53b41bfd36423d32233f
-    internalID: 0
     spriteBone:
     - name: Joue_Tir main droite
+      guid: 
       position: {x: 38.798157, y: 20.464355, z: 0}
       rotation: {x: 0, y: 0, z: 0.9979524, w: 0.06396075}
       length: 24.59839
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 29.323975, y: 0.7330017}
@@ -4231,8 +4277,8 @@ ScriptedImporter:
     - {x: 23, y: 22}
     - {x: 0, y: 23}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 587, y: 53}
+    uvTransform: {x: 822, y: 346}
+    spritePosition: {x: 366, y: 270}
   - name: tir_bras_gauche_avant_bras
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -4240,18 +4286,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 689
-      y: 340
+      x: 60
+      y: 480
       width: 48
       height: 24
     spriteID: 446941afbb4014644a5edf623f3a0e47
-    internalID: 0
     spriteBone:
     - name: Joue_Tir AB droit
+      guid: 
       position: {x: 41.3407, y: 9.908569, z: 0}
       rotation: {x: 0, y: 0, z: 0.9968227, w: 0.079652116}
       length: 34.986477
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 39.89801, y: 0.5419922}
@@ -4593,8 +4642,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 291, y: 65}
+    uvTransform: {x: 60, y: 480}
+    spritePosition: {x: 398, y: 275}
   - name: tir_mousquet_balle
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -4602,18 +4651,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 980
-      y: 233
+      x: 855
+      y: 439
       width: 15
       height: 11
     spriteID: b5365ba6af8dd0f4992d110c4c7a8a50
-    internalID: 0
     spriteBone:
     - name: Tir balle
+      guid: 
       position: {x: 14.13031, y: 9.720963, z: 0}
       rotation: {x: 0, y: 0, z: -0.9465154, w: 0.32265884}
       length: 14.620352
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 4.997986, y: 0.06500244}
@@ -4877,8 +4929,8 @@ ScriptedImporter:
     - {x: 22, y: 1}
     - {x: 23, y: 6}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 894, y: 20}
+    uvTransform: {x: 855, y: 439}
+    spritePosition: {x: 86, y: 213}
   - name: "tir_mousquet_\xE9tincelle"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -4886,18 +4938,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 391
-      y: 372
+      x: 575
+      y: 346
       width: 65
       height: 45
     spriteID: f1a05a48710b0db4b816ab36d9f0278a
-    internalID: 0
     spriteBone:
     - name: Tir etincelle
+      guid: 
       position: {x: 20.063385, y: 10.560913, z: 0}
       rotation: {x: 0, y: 0, z: 0.17191966, w: 0.985111}
       length: 35.15265
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 8.010986, y: 0.66101074}
@@ -5253,8 +5308,8 @@ ScriptedImporter:
     - {x: 28, y: 27}
     - {x: 28, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 345, y: 182}
+    uvTransform: {x: 575, y: 346}
+    spritePosition: {x: 46, y: 190}
   - name: "tir_mousquet_train\xE9e"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -5262,18 +5317,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 751
-      y: 120
+      x: 253
+      y: 304
       width: 140
       height: 110
     spriteID: 164b9639efc32d241a04e586389bc000
-    internalID: 0
     spriteBone:
     - name: Tir trainee
+      guid: 
       position: {x: 16.93634, y: 11.418335, z: 0}
       rotation: {x: 0, y: 0, z: 0.7000015, w: 0.7141414}
       length: 82.70324
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 26, y: 4}
@@ -6383,8 +6441,8 @@ ScriptedImporter:
     - {x: 100, y: 12}
     - {x: 23, y: 101}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 643, y: -130}
+    uvTransform: {x: 253, y: 304}
+    spritePosition: {x: 108, y: 250}
   - name: "tir_mousquet_fum\xE9e"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -6392,18 +6450,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 566
-      y: 254
+      x: 642
+      y: 227
       width: 43
       height: 91
     spriteID: 41afa702941b72447ae22d10c6817786
-    internalID: 0
     spriteBone:
     - name: Tir fumee
+      guid: 
       position: {x: 18.091553, y: 16.027466, z: 0}
       rotation: {x: 0, y: 0, z: 0.6541975, w: 0.7563238}
       length: 52.80878
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 22.429016, y: 4.5559998}
@@ -6758,8 +6819,8 @@ ScriptedImporter:
     - {x: 27, y: 26}
     - {x: 0, y: 27}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 479, y: -84}
+    uvTransform: {x: 642, y: 227}
+    spritePosition: {x: 87, y: 338}
   - name: tir_mousquet
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -6767,18 +6828,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 435
+      x: 431
       y: 120
       width: 308
       height: 99
     spriteID: 51213a44f4c32ff499d5af81b7b3906e
-    internalID: 0
     spriteBone:
     - name: Tir mousquet
+      guid: 
       position: {x: 155.55225, y: 57.73712, z: 0}
       rotation: {x: 0, y: 0, z: 0.99434596, w: 0.106188826}
       length: 72.50738
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 291.588, y: 1.7770004}
@@ -7529,8 +7593,8 @@ ScriptedImporter:
     - {x: 67, y: 55}
     - {x: 15, y: 68}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 326, y: -144}
+    uvTransform: {x: 431, y: 120}
+    spritePosition: {x: 109, y: 264}
   - name: tir_mousquet_aura
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -7538,18 +7602,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 320
-      y: 431
+      x: 962
+      y: 227
       width: 55
       height: 56
     spriteID: d7c2d261b580869448229510916f4288
-    internalID: 0
     spriteBone:
     - name: Tir aura onde
+      guid: 
       position: {x: 24.706451, y: 33.651123, z: 0}
       rotation: {x: 0, y: 0, z: -0.4340488, w: 0.9008894}
       length: 27.066727
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 29.054993, y: 1.4869995}
@@ -7840,8 +7907,8 @@ ScriptedImporter:
     - {x: 23, y: 22}
     - {x: 0, y: 23}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 233, y: 233}
+    uvTransform: {x: 962, y: 227}
+    spritePosition: {x: 87, y: 198}
   - name: tir_bras_gauche_avant_bras_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -7849,18 +7916,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 577
-      y: 372
+      x: 922
+      y: 346
       width: 36
       height: 44
     spriteID: d23d5970d54f0f44e8357e82df2366ff
-    internalID: 0
     spriteBone:
     - name: Tir AB gauche
+      guid: 
       position: {x: 32.315002, y: 8.955627, z: 0}
       rotation: {x: 0, y: 0, z: 0.92590904, w: 0.37774658}
       length: 30.430285
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 29.44397, y: 0.45401}
@@ -8211,8 +8281,8 @@ ScriptedImporter:
     - {x: 23, y: 22}
     - {x: 0, y: 23}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 300, y: 99}
+    uvTransform: {x: 922, y: 346}
+    spritePosition: {x: 277, y: 273}
   - name: tir_bras_droit
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -8220,18 +8290,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 432
-      y: 254
+      x: 866
+      y: 4
       width: 72
       height: 59
     spriteID: 69a21126870b01b4bbd59585c507deff
-    internalID: 0
     spriteBone:
     - name: Joue bras droit
+      guid: 
       position: {x: 33.286407, y: 26.584076, z: 0}
       rotation: {x: 0, y: 0, z: 0.30517748, w: 0.95229554}
       length: 33.24712
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 33.565002, y: 4.2569885}
@@ -8727,8 +8800,8 @@ ScriptedImporter:
     - {x: 37, y: 38}
     - {x: 38, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 53, y: 15}
+    uvTransform: {x: 866, y: 4}
+    spritePosition: {x: 379, y: 239}
   - name: joue_bras_gauche_main
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -8736,18 +8809,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 902
-      y: 372
+      x: 116
+      y: 480
       width: 44
       height: 26
     spriteID: 61462b04d5c4afe458fd2fc7a58b675f
-    internalID: 0
     spriteBone:
     - name: Joue main gauche
+      guid: 
       position: {x: 38.90204, y: 9.8012085, z: 0}
       rotation: {x: 0, y: 0, z: 0.9969751, w: 0.07772099}
       length: 21.845549
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 26.038025, y: 0.76901245}
@@ -9037,8 +9113,8 @@ ScriptedImporter:
     - {x: 22, y: 21}
     - {x: 0, y: 22}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 667, y: 120}
+    uvTransform: {x: 116, y: 480}
+    spritePosition: {x: 235, y: 252}
   - name: joue_bras_droit_main
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -9046,18 +9122,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 665
-      y: 372
+      x: 715
+      y: 405
       width: 40
       height: 39
     spriteID: 651fdb9f58aad814c9f405ce0240a582
-    internalID: 0
     spriteBone:
     - name: Joue_Tir main droite
+      guid: 
       position: {x: 37.798157, y: 16.464355, z: 0}
       rotation: {x: 0, y: 0, z: 0.9979524, w: 0.06396075}
       length: 24.59839
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 28.466003, y: 0.81900024}
@@ -9337,8 +9416,8 @@ ScriptedImporter:
     - {x: 22, y: 21}
     - {x: 0, y: 22}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 298, y: 98}
+    uvTransform: {x: 715, y: 405}
+    spritePosition: {x: 367, y: 274}
   - name: joue_bras_droit_avant_bras
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -9346,18 +9425,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 363
-      y: 334
+      x: 758
+      y: 346
       width: 56
       height: 30
     spriteID: 61f3567135ca5844f92cb3f8b4441a98
-    internalID: 0
     spriteBone:
     - name: Joue_Tir AB droit
+      guid: 
       position: {x: 50.340668, y: 12.908569, z: 0}
       rotation: {x: 0, y: 0, z: 0.9968227, w: 0.079652116}
       length: 34.986477
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 47.294006, y: 1.57901}
@@ -9819,8 +9901,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -26, y: 62}
+    uvTransform: {x: 758, y: 346}
+    spritePosition: {x: 389, y: 272}
   - name: joue_mousquet
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -9828,18 +9910,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 435
+      x: 431
       y: 4
       width: 304
       height: 108
     spriteID: a8f8f8df46a54724892414de8b7e1fcb
-    internalID: 0
     spriteBone:
     - name: Joue mousquet
+      guid: 
       position: {x: 253.9076, y: 83.817474, z: 0}
       rotation: {x: 0, y: 0, z: 0.9889585, w: -0.14819294}
       length: 192.01643
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 11.016998, y: 1.4239998}
@@ -10662,8 +10747,8 @@ ScriptedImporter:
     - {x: 74, y: 18}
     - {x: 75, y: 56}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 323, y: -214}
+    uvTransform: {x: 431, y: 4}
+    spritePosition: {x: 112, y: 218}
   - name: joue_bras_gauche_avant_bras
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -10671,18 +10756,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 756
-      y: 372
+      x: 4
+      y: 480
       width: 48
       height: 25
     spriteID: 62195f1628d43974e9ba9e8743f2f681
-    internalID: 0
     spriteBone:
     - name: Joue AB gauche
+      guid: 
       position: {x: 45.90912, y: 10.723236, z: 0}
       rotation: {x: 0, y: 0, z: 0.99708873, w: 0.07625055}
       length: 33.395412
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 40.03601, y: 0.11401367}
@@ -11054,8 +11142,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 495, y: 126}
+    uvTransform: {x: 4, y: 480}
+    spritePosition: {x: 261, y: 246}
   - name: joue_bras_droit
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -11063,18 +11151,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 617
-      y: 254
+      x: 253
+      y: 422
       width: 64
       height: 60
     spriteID: 6e95e53ab09c70d48a508572c53f4942
-    internalID: 0
     spriteBone:
     - name: Joue bras droit
+      guid: 
       position: {x: 29.286377, y: 29.584076, z: 0}
       rotation: {x: 0, y: 0, z: 0.30517748, w: 0.95229554}
       length: 33.24712
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 30.408997, y: 4.5809937}
@@ -11573,8 +11664,8 @@ ScriptedImporter:
     - {x: 41, y: 40}
     - {x: 41, y: 31}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 234, y: 18}
+    uvTransform: {x: 252, y: 422}
+    spritePosition: {x: 383, y: 236}
   - name: idle_mousquet_main_gauche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -11582,18 +11673,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 954
-      y: 372
+      x: 590
+      y: 468
       width: 30
       height: 38
     spriteID: e74af1d5f5e1e4246b4719ea1eddfee7
-    internalID: 0
     spriteBone:
     - name: Idle main gauche
+      guid: 
       position: {x: 20.81482, y: 1.0984802, z: 0}
       rotation: {x: 0, y: 0, z: -0.8451998, w: -0.53445035}
       length: 23.940948
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 24.341003, y: 0.25}
@@ -11894,8 +11988,8 @@ ScriptedImporter:
     - {x: 23, y: 22}
     - {x: 0, y: 23}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 670, y: 96}
+    uvTransform: {x: 590, y: 468}
+    spritePosition: {x: 284, y: 276}
   - name: idle_mousquet_main_droite
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -11903,18 +11997,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 617
-      y: 322
+      x: 702
+      y: 346
       width: 48
       height: 40
     spriteID: 736be65bad9f5804e9861c1412789465
-    internalID: 0
     spriteBone:
     - name: Idle main droite
+      guid: 
       position: {x: 38.624878, y: 19.715454, z: 0}
       rotation: {x: 0, y: 0, z: -0.9867322, w: 0.16235654}
       length: 26.315487
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 33.685974, y: 1.4960022}
@@ -12162,8 +12259,8 @@ ScriptedImporter:
     - {x: 20, y: 19}
     - {x: 0, y: 20}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 239, y: 146}
+    uvTransform: {x: 702, y: 346}
+    spritePosition: {x: 378, y: 176}
   - name: idle_mousquet
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -12176,13 +12273,16 @@ ScriptedImporter:
       width: 241
       height: 242
     spriteID: 24aafd26af6550847aef313a282f3d91
-    internalID: 0
     spriteBone:
     - name: Idle mousquet
+      guid: 
       position: {x: 198.85431, y: 59.28633, z: 0}
       rotation: {x: 0, y: 0, z: -0.93191826, w: -0.36266837}
       length: 176.43588
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 228.228, y: 0.4909973}
@@ -12975,8 +13075,8 @@ ScriptedImporter:
     - {x: 51, y: 71}
     - {x: 60, y: 72}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -185, y: -153}
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 189, y: 157}
   - name: idle_mousquet_bras_gauche_avant_bras
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -12984,18 +13084,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 472
-      y: 496
+      x: 672
+      y: 405
       width: 35
       height: 45
     spriteID: 2faa02b40afb1b24aa7d6f26bad68d39
-    internalID: 0
     spriteBone:
     - name: Idle AB gauche
+      guid: 
       position: {x: 24.478424, y: 3.30484, z: 0}
       rotation: {x: 0, y: 0, z: -0.84555715, w: -0.53388506}
       length: 34.106747
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 28.039001, y: 0.9710083}
@@ -13356,8 +13459,8 @@ ScriptedImporter:
     - {x: 23, y: 22}
     - {x: 0, y: 23}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 177, y: 253}
+    uvTransform: {x: 672, y: 405}
+    spritePosition: {x: 295, y: 243}
   - name: idle_mousquet_bras_droit_avant_bras
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -13365,18 +13468,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 713
-      y: 372
+      x: 763
+      y: 405
       width: 35
       height: 43
     spriteID: bf42f7d4f409729478410fb45927f3ba
-    internalID: 0
     spriteBone:
     - name: Idle AB droit
+      guid: 
       position: {x: 27.288452, y: 40.608826, z: 0}
       rotation: {x: 0, y: 0, z: -0.841942, w: 0.5395681}
       length: 35.102814
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 15.08197, y: 2.1409912}
@@ -13737,8 +13843,8 @@ ScriptedImporter:
     - {x: 23, y: 22}
     - {x: 0, y: 23}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 309, y: 185}
+    uvTransform: {x: 763, y: 405}
+    spritePosition: {x: 404, y: 187}
   - name: "pr\xE9pare_t\xEAte"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -13746,18 +13852,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 823
-      y: 254
+      x: 771
+      y: 227
       width: 59
       height: 57
     spriteID: 5f5f20880f5e7384a8ab817f07cb146e
-    internalID: 0
     spriteBone:
     - name: All tete
+      guid: 
       position: {x: 29.474182, y: 4.393402, z: 0}
       rotation: {x: 0, y: 0, z: 0.7066188, w: 0.7075945}
       length: 48.513287
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 15, y: 1}
@@ -14082,8 +14191,8 @@ ScriptedImporter:
     - {x: 27, y: 26}
     - {x: 27, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 477, y: -43}
+    uvTransform: {x: 771, y: 227}
+    spritePosition: {x: 346, y: 297}
   - name: "pr\xE9pare_t\xEAte_cou"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -14091,18 +14200,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 320
-      y: 495
+      x: 962
+      y: 291
       width: 51
       height: 46
     spriteID: 07051647b7a81214db8fb454201e5882
-    internalID: 0
     spriteBone:
     - name: All corps
+      guid: 
       position: {x: 15.982025, y: -53.099243, z: 0}
       rotation: {x: 0, y: 0, z: 0.68165386, w: 0.7316748}
       length: 77.68704
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 26.855988, y: 4.1650085}
@@ -14436,8 +14548,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -34, y: 218}
+    uvTransform: {x: 962, y: 291}
+    spritePosition: {x: 354, y: 277}
   - name: "joue_t\xEAte_oeil_droit"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -14445,18 +14557,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 247
-      y: 524
+      x: 891
+      y: 405
       width: 29
       height: 22
     spriteID: 47bc8fa38368f1541b13300ffabf0f79
-    internalID: 0
     spriteBone:
     - name: All oeil droit
+      guid: 
       position: {x: 22.078339, y: 9.275391, z: 0}
       rotation: {x: 0, y: 0, z: 0.9918714, w: -0.12724465}
       length: 13.440358
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 15.080994, y: 0.79901123}
@@ -14711,8 +14826,8 @@ ScriptedImporter:
     - {x: 17, y: 16}
     - {x: 0, y: 17}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -125, y: 198}
+    uvTransform: {x: 891, y: 405}
+    spritePosition: {x: 372, y: 326}
   - name: "joue_t\xEAte_oeil_gauche"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -14720,18 +14835,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 615
-      y: 431
+      x: 401
+      y: 346
       width: 11
       height: 21
     spriteID: 57e0b03e53cf3174e8c9412edd0261e2
-    internalID: 0
     spriteBone:
     - name: All oeil gauche
+      guid: 
       position: {x: 6.8482666, y: 8.678528, z: 0}
       rotation: {x: 0, y: 0, z: 0.99815977, w: -0.060639814}
       length: 5.8386846
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 6.049011, y: 0.7200012}
@@ -14962,8 +15080,8 @@ ScriptedImporter:
     - {x: 19, y: 2}
     - {x: 20, y: 8}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 260, y: 102}
+    uvTransform: {x: 401, y: 346}
+    spritePosition: {x: 355, y: 329}
   - name: "degats_t\xEAte_oeil_droit"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -14971,18 +15089,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 756
-      y: 405
+      x: 253
+      y: 490
       width: 29
       height: 18
     spriteID: 15c2b37c7432d444c847b0273d0fc87b
-    internalID: 0
     spriteBone:
     - name: All oeil droit
+      guid: 
       position: {x: 22.07837, y: 9.275391, z: 0}
       rotation: {x: 0, y: 0, z: 0.9918714, w: -0.12724465}
       length: 13.440358
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 16.914978, y: 1.5130005}
@@ -15236,8 +15357,8 @@ ScriptedImporter:
     - {x: 16, y: 15}
     - {x: 16, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 384, y: 79}
+    uvTransform: {x: 253, y: 490}
+    spritePosition: {x: 372, y: 326}
   - name: "degats_t\xEAte_bec_haut"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -15245,18 +15366,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 992
-      y: 372
+      x: 855
+      y: 405
       width: 28
       height: 26
     spriteID: 31ca967c48d4c7242970a80eb0a2d588
-    internalID: 0
     spriteBone:
     - name: All bec haut
+      guid: 
       position: {x: 20.460754, y: 18.579071, z: 0}
       rotation: {x: 0, y: 0, z: 0.934203, w: -0.35674185}
       length: 16.118122
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 6.953003, y: 3.0490112}
@@ -15513,8 +15637,8 @@ ScriptedImporter:
     - {x: 19, y: 18}
     - {x: 19, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 641, y: 57}
+    uvTransform: {x: 855, y: 405}
+    spritePosition: {x: 351, y: 315}
   - name: "degats_t\xEAte_bec_bas"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -15522,18 +15646,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 992
-      y: 406
+      x: 993
+      y: 95
       width: 27
       height: 17
     spriteID: dcfe6af5fa9dbc24c96a232db1ef0f34
-    internalID: 0
     spriteBone:
     - name: All bec bas
+      guid: 
       position: {x: 22.376953, y: 10.018982, z: 0}
       rotation: {x: 0, y: 0, z: 0.99689025, w: -0.07880241}
       length: 18.894173
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 6.0369873, y: 2.145996}
@@ -15756,8 +15883,8 @@ ScriptedImporter:
     - {x: 15, y: 14}
     - {x: 15, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 635, y: 97}
+    uvTransform: {x: 993, y: 95}
+    spritePosition: {x: 357, y: 309}
   - name: "degats_t\xEAte_oeil_gauche"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -15765,18 +15892,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 493
-      y: 227
+      x: 1003
+      y: 200
       width: 10
       height: 19
     spriteID: d4b3305e4c1078140952c8ef226e3b7a
-    internalID: 0
     spriteBone:
     - name: All oeil gauche
+      guid: 
       position: {x: 5.8482666, y: 6.678528, z: 0}
       rotation: {x: 0, y: 0, z: 0.99815977, w: -0.060639814}
       length: 5.8386846
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 10, y: 1}
@@ -15955,8 +16085,8 @@ ScriptedImporter:
     - {x: 0, y: 10}
     - {x: 15, y: 7}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 137, y: -104}
+    uvTransform: {x: 1003, y: 200}
+    spritePosition: {x: 356, y: 331}
   - name: "idle_t\xEAte_oeil_droit"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -15964,18 +16094,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 435
-      y: 227
+      x: 945
+      y: 200
       width: 29
       height: 18
     spriteID: ddfb4a9065d88ba4a8b70a73b1d16224
-    internalID: 0
     spriteBone:
     - name: All oeil droit
+      guid: 
       position: {x: 22.078339, y: 9.275391, z: 0}
       rotation: {x: 0, y: 0, z: 0.9918714, w: -0.12724465}
       length: 13.440358
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 22.993988, y: 3.4369965}
@@ -16219,8 +16352,8 @@ ScriptedImporter:
     - {x: 16, y: 15}
     - {x: 0, y: 16}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 63, y: -99}
+    uvTransform: {x: 945, y: 200}
+    spritePosition: {x: 372, y: 326}
   - name: "idle_t\xEAte_bec_dessus"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -16228,18 +16361,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 383
-      y: 511
+      x: 547
+      y: 470
       width: 26
       height: 29
     spriteID: ca10e0e4ddbc394458c69e20ea9d378a
-    internalID: 0
     spriteBone:
     - name: All bec haut
+      guid: 
       position: {x: 17.460754, y: 25.579102, z: 0}
       rotation: {x: 0, y: 0, z: 0.934203, w: -0.35674185}
       length: 16.118122
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 5.345001, y: 1.8800049}
@@ -16507,8 +16643,8 @@ ScriptedImporter:
     - {x: 20, y: 19}
     - {x: 20, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 29, y: 203}
+    uvTransform: {x: 547, y: 470}
+    spritePosition: {x: 354, y: 308}
   - name: "idle_t\xEAte_bec_dessous"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -16516,18 +16652,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 285
-      y: 525
+      x: 290
+      y: 490
       width: 27
       height: 13
     spriteID: 2e5002b5646f9fc44872ab9d50871f86
-    internalID: 0
     spriteBone:
     - name: All bec bas
+      guid: 
       position: {x: 22.376923, y: 6.018982, z: 0}
       rotation: {x: 0, y: 0, z: 0.99689025, w: -0.07880241}
       length: 18.894173
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 9.583008, y: 0.20098877}
@@ -16830,8 +16969,8 @@ ScriptedImporter:
     - {x: 0, y: 27}
     - {x: 27, y: 14}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -72, y: 212}
+    uvTransform: {x: 290, y: 490}
+    spritePosition: {x: 357, y: 313}
   - name: "idle_t\xEAte_oeil_gauche"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -16839,18 +16978,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 511
-      y: 227
+      x: 168
+      y: 480
       width: 10
       height: 19
     spriteID: 162e65dc2b5f28d4fb11663b7dd6d43c
-    internalID: 0
     spriteBone:
     - name: All oeil gauche
+      guid: 
       position: {x: 5.8482666, y: 6.678528, z: 0}
       rotation: {x: 0, y: 0, z: 0.99815977, w: -0.060639814}
       length: 5.8386846
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 10, y: 1}
@@ -17029,8 +17171,8 @@ ScriptedImporter:
     - {x: 0, y: 10}
     - {x: 15, y: 7}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 155, y: -104}
+    uvTransform: {x: 168, y: 480}
+    spritePosition: {x: 356, y: 331}
   - name: "idle_t\xEAte"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -17038,18 +17180,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 953
-      y: 254
+      x: 901
+      y: 227
       width: 53
       height: 61
     spriteID: 85d789d5a95df314c8169f7c928c6116
-    internalID: 0
     spriteBone:
     - name: All tete
+      guid: 
       position: {x: 19.474182, y: 4.393402, z: 0}
       rotation: {x: 0, y: 0, z: 0.7066188, w: 0.7075945}
       length: 48.513287
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 40.033997, y: 0.8840027}
@@ -17373,8 +17518,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 597, y: -43}
+    uvTransform: {x: 901, y: 227}
+    spritePosition: {x: 356, y: 297}
   - name: "idle_t\xEAte_cou"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -17382,18 +17527,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 464
-      y: 372
+      x: 771
+      y: 292
       width: 51
       height: 46
     spriteID: f795d76ea65912741b11bbbdd5412d50
-    internalID: 0
     spriteBone:
     - name: All corps
+      guid: 
       position: {x: 15.982025, y: -53.099243, z: 0}
       rotation: {x: 0, y: 0, z: 0.68165386, w: 0.7316748}
       length: 77.68704
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 26.261993, y: 3.473999}
@@ -17727,8 +17875,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 26, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 110, y: 95}
+    uvTransform: {x: 771, y: 292}
+    spritePosition: {x: 354, y: 277}
   - name: idle_ceinture_arme
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -17736,18 +17884,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 182
-      y: 372
+      x: 186
+      y: 254
       width: 57
       height: 129
     spriteID: 3306b4f1b5f13964f9d505792ab43987
-    internalID: 0
     spriteBone:
     - name: All epee
+      guid: 
       position: {x: 19.246216, y: 86.67206, z: 0}
       rotation: {x: 0, y: 0, z: -0.6060685, w: 0.79541254}
       length: 73.342606
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 57, y: 1}
@@ -18187,8 +18338,8 @@ ScriptedImporter:
     - {x: 0, y: 31}
     - {x: 39, y: 27}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -204, y: 286}
+    uvTransform: {x: 186, y: 254}
+    spritePosition: {x: 386, y: 86}
   - name: idle_ceinture
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -18196,18 +18347,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 432
-      y: 321
+      x: 866
+      y: 71
       width: 69
       height: 31
     spriteID: ee52a31135c364148815afec979d1b8d
-    internalID: 0
     spriteBone:
     - name: All ceinture
+      guid: 
       position: {x: 5.3490906, y: 11.424194, z: 0}
       rotation: {x: 0, y: 0, z: 0.039317295, w: 0.99922675}
       length: 55.455883
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 38.00299, y: 0.68499756}
@@ -18621,8 +18775,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 95, y: 129}
+    uvTransform: {x: 866, y: 71}
+    spritePosition: {x: 337, y: 192}
   - name: idle_ceinture_tissu_1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -18630,18 +18784,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 581
-      y: 431
+      x: 993
+      y: 64
       width: 26
       height: 23
     spriteID: fd216619ff22d654ab20d01deac9dd27
-    internalID: 0
     spriteBone:
     - name: All ceinture tissu haut
+      guid: 
       position: {x: 4.2426147, y: 15.394165, z: 0}
       rotation: {x: 0, y: 0, z: -0.26693478, w: 0.96371466}
       length: 9.527877
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 20.04303, y: 1.8930054}
@@ -18864,8 +19021,8 @@ ScriptedImporter:
     - {x: 15, y: 14}
     - {x: 0, y: 15}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 232, y: 222}
+    uvTransform: {x: 993, y: 64}
+    spritePosition: {x: 349, y: 209}
   - name: idle_ceinture_tissu_2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -18873,18 +19030,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 554
-      y: 431
+      x: 993
+      y: 4
       width: 19
       height: 52
     spriteID: e338c567e6b1ac54082ccbc54971d0a4
-    internalID: 0
     spriteBone:
     - name: All ceinture tissu bas droit
+      guid: 
       position: {x: 7.935913, y: 38.713684, z: 0}
       rotation: {x: 0, y: 0, z: -0.6679565, w: 0.7442004}
       length: 38.230175
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 19, y: 7.7269897}
@@ -19266,8 +19426,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 185, y: 278}
+    uvTransform: {x: 993, y: 4}
+    spritePosition: {x: 369, y: 153}
   - name: idle_ceinture_tissu_3
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -19275,23 +19435,30 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 1002
-      y: 323
+      x: 401
+      y: 304
       width: 13
       height: 34
     spriteID: fa6a80c17dc00794f91c7db291963958
-    internalID: 0
     spriteBone:
     - name: All ceinture tissu bas centre
+      guid: 
       position: {x: 11.451538, y: 21.734863, z: 0}
       rotation: {x: 0, y: 0, z: -0.7796934, w: 0.6261614}
       length: 15.907506
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All ceinture tissu bas gauche
+      guid: 
       position: {x: 8.999023, y: 25.168365, z: 0}
       rotation: {x: 0, y: 0, z: -0.84475845, w: 0.5351477}
       length: 16.455976
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 11.158997, y: 2.9830017}
@@ -19576,8 +19743,8 @@ ScriptedImporter:
     - {x: 17, y: 16}
     - {x: 17, y: 0}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 648, y: 150}
+    uvTransform: {x: 401, y: 304}
+    spritePosition: {x: 354, y: 173}
   - name: idle_hanches_tissus_gauche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -19585,18 +19752,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 285
-      y: 372
+      x: 469
+      y: 346
       width: 27
       height: 145
     spriteID: d15002759ea092943b8efe6fb7caef7a
-    internalID: 0
     spriteBone:
     - name: All chemise bas gauche
+      guid: 
       position: {x: 13.140747, y: 134.01819, z: 0}
       rotation: {x: 0, y: 0, z: -0.7299323, w: 0.6835195}
       length: 123.904564
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 9.1910095, y: 0.49700928}
@@ -20298,8 +20468,8 @@ ScriptedImporter:
     - {x: 63, y: 17}
     - {x: 64, y: 16}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -44, y: 313}
+    uvTransform: {x: 469, y: 346}
+    spritePosition: {x: 329, y: 59}
   - name: idle_hanches_tissus_droite
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -20307,18 +20477,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 247
-      y: 372
+      x: 431
+      y: 346
       width: 30
       height: 144
     spriteID: 910a2e960c0006b46ace6415a5ddb874
-    internalID: 0
     spriteBone:
     - name: All chemise bas droit
+      guid: 
       position: {x: 9.622528, y: 100.34949, z: 0}
       rotation: {x: 0, y: 0, z: -0.64672846, w: 0.76272035}
       length: 75.888084
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 28.661987, y: 1.1359863}
@@ -20791,8 +20964,8 @@ ScriptedImporter:
     - {x: 0, y: 24}
     - {x: 26, y: 13}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -136, y: 305}
+    uvTransform: {x: 431, y: 346}
+    spritePosition: {x: 383, y: 67}
   - name: idle_hanches_tissus_milieu
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -20800,18 +20973,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 899
-      y: 120
+      x: 431
+      y: 227
       width: 73
       height: 111
     spriteID: daa5ebfb03dc8bd4f800c4f135d17ce1
-    internalID: 0
     spriteBone:
     - name: All tissu hanche
+      guid: 
       position: {x: 31.31604, y: 72.13551, z: 0}
       rotation: {x: 0, y: 0, z: -0.7023772, w: 0.7118049}
       length: 59.887074
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 73, y: 1}
@@ -21187,8 +21363,8 @@ ScriptedImporter:
     - {x: 28, y: 27}
     - {x: 0, y: 28}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 564, y: 22}
+    uvTransform: {x: 431, y: 227}
+    spritePosition: {x: 335, y: 98}
   - name: degats_jambe_droite
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -21196,18 +21372,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 905
-      y: 4
+      x: 186
+      y: 391
       width: 50
       height: 103
     spriteID: 5603c14b87ae2464d95a34295a8eed24
-    internalID: 0
     spriteBone:
     - name: All jambe droite
+      guid: 
       position: {x: 16.569946, y: 117.6673, z: 0}
       rotation: {x: 0, y: 0, z: -0.676873, w: 0.73609984}
       length: 66.80735
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 39.382996, y: 0.4889984}
@@ -21570,8 +21749,8 @@ ScriptedImporter:
     - {x: 25, y: 24}
     - {x: 0, y: 25}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 543, y: -39}
+    uvTransform: {x: 186, y: 391}
+    spritePosition: {x: 362, y: 43}
   - name: degats_jambe_droite_pied
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -21579,18 +21758,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 429
-      y: 431
+      x: 504
+      y: 405
       width: 35
       height: 57
     spriteID: d88333231ada3b34e90bc89c96e231bb
-    internalID: 0
     spriteBone:
     - name: All pied droit
+      guid: 
       position: {x: 6.509369, y: 42.49823, z: 0}
       rotation: {x: 0, y: 0, z: -0.78237104, w: 0.6228126}
       length: 30.849552
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 24.75299, y: 0.07299805}
@@ -21892,8 +22074,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 51, y: 427}
+    uvTransform: {x: 504, y: 405}
+    spritePosition: {x: 378, y: 4}
   - name: degats_jambe_gauche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -21901,18 +22083,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 309
-      y: 254
+      x: 891
+      y: 120
       width: 46
       height: 97
     spriteID: 530faabb7e2db6143b0e4ac4ee5b8311
-    internalID: 0
     spriteBone:
     - name: Degat mollet gauche
+      guid: 
       position: {x: 12.796753, y: 50.479675, z: 0}
       rotation: {x: 0, y: 0, z: -0.6597958, w: 0.751445}
       length: 47.842247
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 28.168, y: 0.94299316}
@@ -22295,8 +22480,8 @@ ScriptedImporter:
     - {x: 25, y: 24}
     - {x: 0, y: 25}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -23, y: 213}
+    uvTransform: {x: 891, y: 120}
+    spritePosition: {x: 332, y: 41}
   - name: degats_jambe_gauche_pied
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -22304,18 +22489,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 523
-      y: 372
+      x: 838
+      y: 295
       width: 46
       height: 43
     spriteID: 72e2486d362fccf438b86aae2d147f01
-    internalID: 0
     spriteBone:
     - name: Degat pied gauche
+      guid: 
       position: {x: 34.98462, y: 34.039307, z: 0}
       rotation: {x: 0, y: 0, z: -0.9089473, w: 0.41691115}
       length: 35.83308
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 23.840027, y: 0.0010070801}
@@ -22649,8 +22837,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 207, y: 362}
+    uvTransform: {x: 838, y: 295}
+    spritePosition: {x: 316, y: 10}
   - name: idle_jambe_droite
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -22658,23 +22846,30 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 258
-      y: 254
+      x: 815
+      y: 4
       width: 43
       height: 104
     spriteID: f1be9d72566c9d749b560b25bed1e62b
-    internalID: 0
     spriteBone:
     - name: All jambe droite
+      guid: 
       position: {x: 17.569916, y: 118.6673, z: 0}
       rotation: {x: 0, y: 0, z: -0.676873, w: 0.73609984}
       length: 66.80735
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All mollet droit
+      guid: 
       position: {x: 66.807396, y: -0.000029356284, z: 0}
       rotation: {x: 0, y: 0, z: -0.03822068, w: 0.99926937}
       length: 47.597317
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 35.532013, y: 2.2340088}
@@ -23068,8 +23263,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -103, y: 212}
+    uvTransform: {x: 815, y: 4}
+    spritePosition: {x: 361, y: 42}
   - name: idle_jambe_droite_pied
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -23077,18 +23272,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 472
-      y: 431
+      x: 547
+      y: 405
       width: 35
       height: 57
     spriteID: a73f98952c6353f4a9ce0af030d8c24d
-    internalID: 0
     spriteBone:
     - name: All pied droit
+      guid: 
       position: {x: 20.509369, y: 44.49823, z: 0}
       rotation: {x: 0, y: 0, z: -0.78237104, w: 0.6228126}
       length: 30.849552
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 24.931, y: 0.07400513}
@@ -23390,8 +23588,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 108, y: 429}
+    uvTransform: {x: 547, y: 405}
+    spritePosition: {x: 364, y: 2}
   - name: idle_jambe_gauche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -23399,18 +23597,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 963
-      y: 4
+      x: 833
+      y: 120
       width: 50
       height: 95
     spriteID: c1940e83c1ab1bd46b730036ba210f7f
-    internalID: 0
     spriteBone:
     - name: All mollet gauche
+      guid: 
       position: {x: 13.167236, y: 60.648422, z: 0}
       rotation: {x: 0, y: 0, z: -0.5610195, w: 0.82780266}
       length: 61.5544
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 47, y: 3}
@@ -23782,8 +23983,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 626, y: -37}
+    uvTransform: {x: 833, y: 120}
+    spritePosition: {x: 337, y: 41}
   - name: idle_jambe_gauche_pied
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -23791,18 +23992,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 823
-      y: 319
+      x: 648
+      y: 346
       width: 46
       height: 45
     spriteID: b8303d966702aeb4a8eb615c87753196
-    internalID: 0
     spriteBone:
     - name: All pied gauche
+      guid: 
       position: {x: 28.00879, y: 38.958527, z: 0}
       rotation: {x: 0, y: 0, z: -0.85213834, w: 0.52331656}
       length: 33.608437
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 6.6660156, y: 0.0020141602}
@@ -24125,8 +24329,8 @@ ScriptedImporter:
     - {x: 25, y: 24}
     - {x: 0, y: 25}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 479, y: 313}
+    uvTransform: {x: 648, y: 346}
+    spritePosition: {x: 344, y: 6}
   - name: "idle_hanches_tissus_derri\xE8re"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -24135,17 +24339,20 @@ ScriptedImporter:
     rect:
       serializedVersion: 2
       x: 747
-      y: 4
+      y: 120
       width: 78
       height: 88
     spriteID: 65909b3028d53844f949801c37970999
-    internalID: 0
     spriteBone:
     - name: All cape
+      guid: 
       position: {x: 38.961792, y: 78.36006, z: 0}
       rotation: {x: 0, y: 0, z: -0.6931448, w: 0.7207984}
       length: 68.42184
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 33.153015, y: 0.37200165}
@@ -24490,8 +24697,8 @@ ScriptedImporter:
     - {x: 27, y: 26}
     - {x: 0, y: 27}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 413, y: -53}
+    uvTransform: {x: 747, y: 120}
+    spritePosition: {x: 334, y: 57}
   - name: idle_torse_veste_droite
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -24499,18 +24706,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 833
+      x: 743
       y: 4
       width: 64
       height: 100
     spriteID: d778518365d5d1e49afba58b211cf6d2
-    internalID: 0
     spriteBone:
     - name: All chemise haut droite
+      guid: 
       position: {x: 38.16284, y: 85.13153, z: 0}
       rotation: {x: 0, y: 0, z: 0.8118958, w: -0.58380246}
       length: 60.473003
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 17.190002, y: 1.5219994}
@@ -24964,8 +25174,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 461, y: -201}
+    uvTransform: {x: 743, y: 4}
+    spritePosition: {x: 372, y: 205}
   - name: idle_torse_veste_gauche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -24973,18 +25183,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 980
-      y: 120
+      x: 946
+      y: 4
       width: 39
       height: 105
     spriteID: b9c0c28618ee6fa4eb5331cbe7d4f5d3
-    internalID: 0
     spriteBone:
     - name: All chemise haut gauche
+      guid: 
       position: {x: 19.557861, y: 87.12619, z: 0}
       rotation: {x: 0, y: 0, z: -0.7136624, w: 0.7004898}
       length: 68.88966
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 25, y: 1}
@@ -25347,8 +25560,8 @@ ScriptedImporter:
     - {x: 25, y: 24}
     - {x: 0, y: 25}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 651, y: -86}
+    uvTransform: {x: 946, y: 4}
+    spritePosition: {x: 329, y: 206}
   - name: idle_torse_collier
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -25356,18 +25569,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 621
-      y: 372
+      x: 966
+      y: 346
       width: 36
       height: 44
     spriteID: 2a8016bb6472a524aaa2f641e06a0305
-    internalID: 0
     spriteBone:
     - name: All collier
+      guid: 
       position: {x: 7.343384, y: 7.517456, z: 0}
       rotation: {x: 0, y: 0, z: -0.07530256, w: 0.99716073}
       length: 11.011539
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 18.554993, y: 1.3370056}
@@ -25745,8 +25961,8 @@ ScriptedImporter:
     - {x: 30, y: 29}
     - {x: 0, y: 30}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 264, y: 127}
+    uvTransform: {x: 966, y: 346}
+    spritePosition: {x: 357, y: 245}
   - name: idle_torse
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -25754,18 +25970,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 182
-      y: 254
+      x: 512
+      y: 227
       width: 68
       height: 110
     spriteID: 05a5345655a77c1448dc02b3a22de193
-    internalID: 0
     spriteBone:
     - name: All corps
+      guid: 
       position: {x: 27.982025, y: 21.900757, z: 0}
       rotation: {x: 0, y: 0, z: 0.68165386, w: 0.7316748}
       length: 77.68704
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 40.897003, y: 1.2389984}
@@ -26139,8 +26358,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -160, y: 52}
+    uvTransform: {x: 512, y: 227}
+    spritePosition: {x: 342, y: 202}
   - name: "pr\xE9pare_bras_droit"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -26148,18 +26367,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 512
-      y: 254
+      x: 588
+      y: 227
       width: 46
       height: 87
     spriteID: c1e353b7fe85a8346854c2df7eeecde1
-    internalID: 0
     spriteBone:
     - name: Idle_Prepare bras droit
+      guid: 
       position: {x: 31.056458, y: 71.6322, z: 0}
       rotation: {x: 0, y: 0, z: -0.66004103, w: 0.7512296}
       length: 48.42605
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 32.547974, y: 3.373993}
@@ -26551,8 +26773,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 118, y: 50}
+    uvTransform: {x: 588, y: 227}
+    spritePosition: {x: 394, y: 204}
   - name: "pr\xE9pare_bras_gauche"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -26560,18 +26782,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 745
-      y: 311
+      x: 693
+      y: 284
       width: 63
       height: 51
     spriteID: e5bdf02c43a17f844a7c61f37f2e8ebd
-    internalID: 0
     spriteBone:
     - name: Idle_Joue_Prepare bras gauche
+      guid: 
       position: {x: 33.800415, y: 31.881653, z: 0}
       rotation: {x: 0, y: 0, z: 0.9552566, w: -0.2957785}
       length: 37.442657
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 24.698975, y: 0.46398926}
@@ -27013,8 +27238,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 441, y: 65}
+    uvTransform: {x: 693, y: 284}
+    spritePosition: {x: 304, y: 246}
   - name: tir_bras_gauche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -27022,12 +27247,11 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 745
-      y: 254
+      x: 693
+      y: 227
       width: 70
       height: 49
     spriteID: 2cafafcdbbe7c8148b53bbde93d4f0bb
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices:
@@ -27372,8 +27596,8 @@ ScriptedImporter:
     - {x: 26, y: 25}
     - {x: 0, y: 26}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 451, y: 5}
+    uvTransform: {x: 693, y: 227}
+    spritePosition: {x: 294, y: 249}
   - name: joue_bras_gauche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -27381,18 +27605,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 320
-      y: 372
+      x: 504
+      y: 346
       width: 63
       height: 51
     spriteID: 725034e31d0ce984fb732b3339075898
-    internalID: 0
     spriteBone:
     - name: Idle_Joue_Prepare bras gauche
+      guid: 
       position: {x: 42.800446, y: 34.881653, z: 0}
       rotation: {x: 0, y: 0, z: 0.9552566, w: -0.2957785}
       length: 37.442657
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 22.497986, y: 0.29501343}
@@ -27774,8 +28001,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 25, y: 129}
+    uvTransform: {x: 504, y: 346}
+    spritePosition: {x: 295, y: 243}
   - name: idle_bras_droit
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -27783,18 +28010,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 383
-      y: 431
+      x: 381
+      y: 422
       width: 38
       height: 72
     spriteID: 832bcd2aefe2b5349857033f1639cf90
-    internalID: 0
     spriteBone:
     - name: Idle_Prepare bras droit
+      guid: 
       position: {x: 21.056458, y: 56.632202, z: 0}
       rotation: {x: 0, y: 0, z: -0.66004103, w: 0.7512296}
       length: 48.42605
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 21.947998, y: 0.041992188}
@@ -28257,8 +28487,8 @@ ScriptedImporter:
     - {x: 25, y: 24}
     - {x: 0, y: 25}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -21, y: 212}
+    uvTransform: {x: 381, y: 422}
+    spritePosition: {x: 404, y: 219}
   - name: "idle_bras_droit_derri\xE8re_\xE9paule"
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -28266,18 +28496,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 515
-      y: 431
+      x: 590
+      y: 405
       width: 31
       height: 55
     spriteID: 206bb6f10e93bc244b27c8b3159608ba
-    internalID: 0
     spriteBone:
     - name: Idle_Prepare bras droit
+      guid: 
       position: {x: 20.056458, y: 38.632202, z: 0}
       rotation: {x: 0, y: 0, z: -0.66004103, w: 0.7512296}
       length: 48.42605
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 6.807007, y: 1.2600098}
@@ -28599,8 +28832,8 @@ ScriptedImporter:
     - {x: 24, y: 23}
     - {x: 0, y: 24}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 110, y: 194}
+    uvTransform: {x: 590, y: 405}
+    spritePosition: {x: 405, y: 237}
   - name: idle_bras_gauche
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -28608,18 +28841,21 @@ ScriptedImporter:
     border: {x: 0, y: 0, z: 0, w: 0}
     rect:
       serializedVersion: 2
-      x: 890
-      y: 254
+      x: 838
+      y: 227
       width: 55
       height: 60
     spriteID: 280b85c752b092041b3f7a45828e9db4
-    internalID: 0
     spriteBone:
     - name: Idle_Joue_Prepare bras gauche
+      guid: 
       position: {x: 27.800415, y: 40.881653, z: 0}
       rotation: {x: 0, y: 0, z: 0.9552566, w: -0.2957785}
       length: 37.442657
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     spriteOutline: []
     vertices:
     - position: {x: 26.848999, y: 2.3399963}
@@ -29050,1001 +29286,550 @@ ScriptedImporter:
     - {x: 23, y: 22}
     - {x: 0, y: 23}
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 580, y: 17}
-  platformSettings: []
-  mosaicLayers: 1
-  documentPivot: {x: 0, y: 0}
-  documentAlignment: 7
-  importHiddenLayers: 0
-  importedTextureWidth: 1024
-  importedTextureHeight: 1024
-  documentSize: {x: 500, y: 475}
-  paperDollMode: 0
-  keepDupilcateSpriteName: 0
-  spriteCategoryList:
-    categories: []
-  textureActualWidth: 1024
-  textureActualHeight: 1024
-  spritePackingTag: 
-  resliceFromLayer: 0
-  characterMode: 1
-  mosaicPSDLayers: []
-  rigPSDLayers:
-  - name: Mousquet
-    spriteName: 
-    isGroup: 1
-    parentIndex: -1
-    spriteID: 00000000000000000000000000000000
-    layerID: 120
-    mosaicPosition: {x: 0, y: 0}
-  - name: "Pr\xE9pare_Mousquet"
-    spriteName: 
-    isGroup: 1
-    parentIndex: 0
-    spriteID: 00000000000000000000000000000000
-    layerID: 119
-    mosaicPosition: {x: 0, y: 0}
-  - name: Poudre
-    spriteName: 
-    isGroup: 1
-    parentIndex: 1
-    spriteID: 00000000000000000000000000000000
-    layerID: 118
-    mosaicPosition: {x: 0, y: 0}
-  - name: "pr\xE9pare_bras_gauche_poudre"
-    spriteName: "pr\xE9pare_bras_gauche_poudre"
-    isGroup: 0
-    parentIndex: 2
-    spriteID: 4178f285596c90340a204c3c4e5c12c8
-    layerID: 117
-    mosaicPosition: {x: 472, y: 227}
-  - name: "pr\xE9pare_bras_gauche_poudre_fum\xE9e"
-    spriteName: "pr\xE9pare_bras_gauche_poudre_fum\xE9e"
-    isGroup: 0
-    parentIndex: 2
-    spriteID: c40846a6ad9fbba44ade57718bfe01f8
-    layerID: 116
-    mosaicPosition: {x: 363, y: 254}
-  - name: "pr\xE9pare_bras_gauche_main_poudre"
-    spriteName: "pr\xE9pare_bras_gauche_main_poudre"
-    isGroup: 0
-    parentIndex: 2
-    spriteID: 41a0ed29458bc05418bb203454270fa2
-    layerID: 115
-    mosaicPosition: {x: 861, y: 372}
-  - name: "pr\xE9pare_mousquet_poudre_baton"
-    spriteName: "pr\xE9pare_mousquet_poudre_baton"
-    isGroup: 0
-    parentIndex: 2
-    spriteID: af9f1d9c20419a941b5e088212c66479
-    layerID: 114
-    mosaicPosition: {x: 253, y: 4}
-  - name: "pr\xE9pare_bras_droit_main"
-    spriteName: "pr\xE9pare_bras_droit_main"
-    isGroup: 0
-    parentIndex: 1
-    spriteID: 951c7a210544b024a96b232497964f2d
-    layerID: 112
-    mosaicPosition: {x: 890, y: 322}
-  - name: "pr\xE9pare_mousquet"
-    spriteName: "pr\xE9pare_mousquet"
-    isGroup: 0
-    parentIndex: 1
-    spriteID: e54f58db9556b954ca2f8ee7e2f1eef0
-    layerID: 111
-    mosaicPosition: {x: 4, y: 254}
-  - name: Baton
-    spriteName: 
-    isGroup: 1
-    parentIndex: 1
-    spriteID: 00000000000000000000000000000000
-    layerID: 110
-    mosaicPosition: {x: 0, y: 0}
-  - name: "pr\xE9pare_bras_gauche_main_baton"
-    spriteName: "pr\xE9pare_bras_gauche_main_baton"
-    isGroup: 0
-    parentIndex: 9
-    spriteID: 172bad7c15a93c84bb5795fd770d5bef
-    layerID: 109
-    mosaicPosition: {x: 689, y: 254}
-  - name: "pr\xE9pare_bras_gauche_avant_bras"
-    spriteName: "pr\xE9pare_bras_gauche_avant_bras"
-    isGroup: 0
-    parentIndex: 1
-    spriteID: 0c74af8a91599804eb864a5b840e1dc8
-    layerID: 107
-    mosaicPosition: {x: 429, y: 496}
-  - name: "pr\xE9pare_bras_droit_avant_bras"
-    spriteName: "pr\xE9pare_bras_droit_avant_bras"
-    isGroup: 0
-    parentIndex: 1
-    spriteID: c17744224e07dda48a139aec9e7ac680
-    layerID: 106
-    mosaicPosition: {x: 182, y: 509}
-  - name: Tir_Mousquet
-    spriteName: 
-    isGroup: 1
-    parentIndex: 0
-    spriteID: 00000000000000000000000000000000
-    layerID: 104
-    mosaicPosition: {x: 0, y: 0}
-  - name: tir_bras_gauche_main
-    spriteName: tir_bras_gauche_main
-    isGroup: 0
-    parentIndex: 13
-    spriteID: 888f49912e0328e4586d94c5a2055c4d
-    layerID: 103
-    mosaicPosition: {x: 812, y: 372}
-  - name: tir_bras_droit_main
-    spriteName: tir_bras_droit_main
-    isGroup: 0
-    parentIndex: 13
-    spriteID: 276bd3bec5ac53b41bfd36423d32233f
-    layerID: 102
-    mosaicPosition: {x: 953, y: 323}
-  - name: tir_bras_gauche_avant_bras
-    spriteName: tir_bras_gauche_avant_bras
-    isGroup: 0
-    parentIndex: 13
-    spriteID: 446941afbb4014644a5edf623f3a0e47
-    layerID: 101
-    mosaicPosition: {x: 689, y: 340}
-  - name: tir_mousquet_balle
-    spriteName: tir_mousquet_balle
-    isGroup: 0
-    parentIndex: 13
-    spriteID: b5365ba6af8dd0f4992d110c4c7a8a50
-    layerID: 100
-    mosaicPosition: {x: 980, y: 233}
-  - name: "tir_mousquet_\xE9tincelle"
-    spriteName: "tir_mousquet_\xE9tincelle"
-    isGroup: 0
-    parentIndex: 13
-    spriteID: f1a05a48710b0db4b816ab36d9f0278a
-    layerID: 99
-    mosaicPosition: {x: 391, y: 372}
-  - name: "tir_mousquet_train\xE9e"
-    spriteName: "tir_mousquet_train\xE9e"
-    isGroup: 0
-    parentIndex: 13
-    spriteID: 164b9639efc32d241a04e586389bc000
-    layerID: 98
-    mosaicPosition: {x: 751, y: 120}
-  - name: "tir_mousquet_fum\xE9e"
-    spriteName: "tir_mousquet_fum\xE9e"
-    isGroup: 0
-    parentIndex: 13
-    spriteID: 41afa702941b72447ae22d10c6817786
-    layerID: 97
-    mosaicPosition: {x: 566, y: 254}
-  - name: tir_mousquet
-    spriteName: tir_mousquet
-    isGroup: 0
-    parentIndex: 13
-    spriteID: 51213a44f4c32ff499d5af81b7b3906e
-    layerID: 96
-    mosaicPosition: {x: 435, y: 120}
-  - name: tir_mousquet_aura
-    spriteName: tir_mousquet_aura
-    isGroup: 0
-    parentIndex: 13
-    spriteID: d7c2d261b580869448229510916f4288
-    layerID: 95
-    mosaicPosition: {x: 320, y: 431}
-  - name: tir_bras_gauche_avant_bras
-    spriteName: tir_bras_gauche_avant_bras_1
-    isGroup: 0
-    parentIndex: 13
-    spriteID: d23d5970d54f0f44e8357e82df2366ff
-    layerID: 94
-    mosaicPosition: {x: 577, y: 372}
-  - name: tir_bras_droit
-    spriteName: tir_bras_droit
-    isGroup: 0
-    parentIndex: 13
-    spriteID: 69a21126870b01b4bbd59585c507deff
-    layerID: 93
-    mosaicPosition: {x: 432, y: 254}
-  - name: Joue_Mousquet
-    spriteName: 
-    isGroup: 1
-    parentIndex: 0
-    spriteID: 00000000000000000000000000000000
-    layerID: 91
-    mosaicPosition: {x: 0, y: 0}
-  - name: joue_bras_gauche_main
-    spriteName: joue_bras_gauche_main
-    isGroup: 0
-    parentIndex: 25
-    spriteID: 61462b04d5c4afe458fd2fc7a58b675f
-    layerID: 90
-    mosaicPosition: {x: 902, y: 372}
-  - name: joue_bras_droit_main
-    spriteName: joue_bras_droit_main
-    isGroup: 0
-    parentIndex: 25
-    spriteID: 651fdb9f58aad814c9f405ce0240a582
-    layerID: 89
-    mosaicPosition: {x: 665, y: 372}
-  - name: joue_bras_droit_avant_bras
-    spriteName: joue_bras_droit_avant_bras
-    isGroup: 0
-    parentIndex: 25
-    spriteID: 61f3567135ca5844f92cb3f8b4441a98
-    layerID: 88
-    mosaicPosition: {x: 363, y: 334}
-  - name: joue_mousquet
-    spriteName: joue_mousquet
-    isGroup: 0
-    parentIndex: 25
-    spriteID: a8f8f8df46a54724892414de8b7e1fcb
-    layerID: 87
-    mosaicPosition: {x: 435, y: 4}
-  - name: joue_bras_gauche_avant_bras
-    spriteName: joue_bras_gauche_avant_bras
-    isGroup: 0
-    parentIndex: 25
-    spriteID: 62195f1628d43974e9ba9e8743f2f681
-    layerID: 86
-    mosaicPosition: {x: 756, y: 372}
-  - name: joue_bras_droit
-    spriteName: joue_bras_droit
-    isGroup: 0
-    parentIndex: 25
-    spriteID: 6e95e53ab09c70d48a508572c53f4942
-    layerID: 85
-    mosaicPosition: {x: 617, y: 254}
-  - name: idle_mousquet
-    spriteName: 
-    isGroup: 1
-    parentIndex: 0
-    spriteID: 00000000000000000000000000000000
-    layerID: 83
-    mosaicPosition: {x: 0, y: 0}
-  - name: idle_mousquet_main_gauche
-    spriteName: idle_mousquet_main_gauche
-    isGroup: 0
-    parentIndex: 32
-    spriteID: e74af1d5f5e1e4246b4719ea1eddfee7
-    layerID: 82
-    mosaicPosition: {x: 954, y: 372}
-  - name: idle_mousquet_main_droite
-    spriteName: idle_mousquet_main_droite
-    isGroup: 0
-    parentIndex: 32
-    spriteID: 736be65bad9f5804e9861c1412789465
-    layerID: 81
-    mosaicPosition: {x: 617, y: 322}
-  - name: idle_mousquet
-    spriteName: idle_mousquet
-    isGroup: 0
-    parentIndex: 32
-    spriteID: 24aafd26af6550847aef313a282f3d91
-    layerID: 80
-    mosaicPosition: {x: 4, y: 4}
-  - name: idle_mousquet_bras_gauche_avant_bras
-    spriteName: idle_mousquet_bras_gauche_avant_bras
-    isGroup: 0
-    parentIndex: 32
-    spriteID: 2faa02b40afb1b24aa7d6f26bad68d39
-    layerID: 79
-    mosaicPosition: {x: 472, y: 496}
-  - name: idle_mousquet_bras_droit_avant_bras
-    spriteName: idle_mousquet_bras_droit_avant_bras
-    isGroup: 0
-    parentIndex: 32
-    spriteID: bf42f7d4f409729478410fb45927f3ba
-    layerID: 78
-    mosaicPosition: {x: 713, y: 372}
-  - name: "T\xEAte"
-    spriteName: 
-    isGroup: 1
-    parentIndex: -1
-    spriteID: 00000000000000000000000000000000
-    layerID: 75
-    mosaicPosition: {x: 0, y: 0}
-  - name: "Pr\xE9pare_T\xEAte"
-    spriteName: 
-    isGroup: 1
-    parentIndex: 38
-    spriteID: 00000000000000000000000000000000
-    layerID: 74
-    mosaicPosition: {x: 0, y: 0}
-  - name: "pr\xE9pare_t\xEAte"
-    spriteName: "pr\xE9pare_t\xEAte"
-    isGroup: 0
-    parentIndex: 39
-    spriteID: 5f5f20880f5e7384a8ab817f07cb146e
-    layerID: 73
-    mosaicPosition: {x: 823, y: 254}
-  - name: "pr\xE9pare_t\xEAte_cou"
-    spriteName: "pr\xE9pare_t\xEAte_cou"
-    isGroup: 0
-    parentIndex: 39
-    spriteID: 07051647b7a81214db8fb454201e5882
-    layerID: 72
-    mosaicPosition: {x: 320, y: 495}
-  - name: "Joue_T\xEAte"
-    spriteName: 
-    isGroup: 1
-    parentIndex: 38
-    spriteID: 00000000000000000000000000000000
-    layerID: 70
-    mosaicPosition: {x: 0, y: 0}
-  - name: "joue_t\xEAte_oeil_droit"
-    spriteName: "joue_t\xEAte_oeil_droit"
-    isGroup: 0
-    parentIndex: 42
-    spriteID: 47bc8fa38368f1541b13300ffabf0f79
-    layerID: 69
-    mosaicPosition: {x: 247, y: 524}
-  - name: "joue_t\xEAte_oeil_gauche"
-    spriteName: "joue_t\xEAte_oeil_gauche"
-    isGroup: 0
-    parentIndex: 42
-    spriteID: 57e0b03e53cf3174e8c9412edd0261e2
-    layerID: 68
-    mosaicPosition: {x: 615, y: 431}
-  - name: "Degats_T\xEAte"
-    spriteName: 
-    isGroup: 1
-    parentIndex: 38
-    spriteID: 00000000000000000000000000000000
-    layerID: 66
-    mosaicPosition: {x: 0, y: 0}
-  - name: "degats_t\xEAte_oeil_droit"
-    spriteName: "degats_t\xEAte_oeil_droit"
-    isGroup: 0
-    parentIndex: 45
-    spriteID: 15c2b37c7432d444c847b0273d0fc87b
-    layerID: 65
-    mosaicPosition: {x: 756, y: 405}
-  - name: "degats_t\xEAte_bec_haut"
-    spriteName: "degats_t\xEAte_bec_haut"
-    isGroup: 0
-    parentIndex: 45
-    spriteID: 31ca967c48d4c7242970a80eb0a2d588
-    layerID: 64
-    mosaicPosition: {x: 992, y: 372}
-  - name: "degats_t\xEAte_bec_bas"
-    spriteName: "degats_t\xEAte_bec_bas"
-    isGroup: 0
-    parentIndex: 45
-    spriteID: dcfe6af5fa9dbc24c96a232db1ef0f34
-    layerID: 63
-    mosaicPosition: {x: 992, y: 406}
-  - name: "degats_t\xEAte_oeil_gauche"
-    spriteName: "degats_t\xEAte_oeil_gauche"
-    isGroup: 0
-    parentIndex: 45
-    spriteID: d4b3305e4c1078140952c8ef226e3b7a
-    layerID: 62
-    mosaicPosition: {x: 493, y: 227}
-  - name: "idle_t\xEAte"
-    spriteName: 
-    isGroup: 1
-    parentIndex: 38
-    spriteID: 00000000000000000000000000000000
-    layerID: 60
-    mosaicPosition: {x: 0, y: 0}
-  - name: "idle_t\xEAte_oeil_droit"
-    spriteName: "idle_t\xEAte_oeil_droit"
-    isGroup: 0
-    parentIndex: 50
-    spriteID: ddfb4a9065d88ba4a8b70a73b1d16224
-    layerID: 59
-    mosaicPosition: {x: 435, y: 227}
-  - name: "idle_t\xEAte_bec_dessus"
-    spriteName: "idle_t\xEAte_bec_dessus"
-    isGroup: 0
-    parentIndex: 50
-    spriteID: ca10e0e4ddbc394458c69e20ea9d378a
-    layerID: 58
-    mosaicPosition: {x: 383, y: 511}
-  - name: "idle_t\xEAte_bec_dessous"
-    spriteName: "idle_t\xEAte_bec_dessous"
-    isGroup: 0
-    parentIndex: 50
-    spriteID: 2e5002b5646f9fc44872ab9d50871f86
-    layerID: 57
-    mosaicPosition: {x: 285, y: 525}
-  - name: "idle_t\xEAte_oeil_gauche"
-    spriteName: "idle_t\xEAte_oeil_gauche"
-    isGroup: 0
-    parentIndex: 50
-    spriteID: 162e65dc2b5f28d4fb11663b7dd6d43c
-    layerID: 56
-    mosaicPosition: {x: 511, y: 227}
-  - name: "idle_t\xEAte"
-    spriteName: "idle_t\xEAte"
-    isGroup: 0
-    parentIndex: 50
-    spriteID: 85d789d5a95df314c8169f7c928c6116
-    layerID: 55
-    mosaicPosition: {x: 953, y: 254}
-  - name: "idle_t\xEAte_cou"
-    spriteName: "idle_t\xEAte_cou"
-    isGroup: 0
-    parentIndex: 50
-    spriteID: f795d76ea65912741b11bbbdd5412d50
-    layerID: 54
-    mosaicPosition: {x: 464, y: 372}
-  - name: idle_bas_corps
-    spriteName: 
-    isGroup: 1
-    parentIndex: -1
-    spriteID: 00000000000000000000000000000000
-    layerID: 51
-    mosaicPosition: {x: 0, y: 0}
-  - name: idle_ceinture
-    spriteName: 
-    isGroup: 1
-    parentIndex: 57
-    spriteID: 00000000000000000000000000000000
-    layerID: 50
-    mosaicPosition: {x: 0, y: 0}
-  - name: idle_ceinture_arme
-    spriteName: idle_ceinture_arme
-    isGroup: 0
-    parentIndex: 58
-    spriteID: 3306b4f1b5f13964f9d505792ab43987
-    layerID: 49
-    mosaicPosition: {x: 182, y: 372}
-  - name: idle_ceinture
-    spriteName: idle_ceinture
-    isGroup: 0
-    parentIndex: 58
-    spriteID: ee52a31135c364148815afec979d1b8d
-    layerID: 48
-    mosaicPosition: {x: 432, y: 321}
-  - name: idle_ceinture_tissu_1
-    spriteName: idle_ceinture_tissu_1
-    isGroup: 0
-    parentIndex: 58
-    spriteID: fd216619ff22d654ab20d01deac9dd27
-    layerID: 47
-    mosaicPosition: {x: 581, y: 431}
-  - name: idle_ceinture_tissu_2
-    spriteName: idle_ceinture_tissu_2
-    isGroup: 0
-    parentIndex: 58
-    spriteID: e338c567e6b1ac54082ccbc54971d0a4
-    layerID: 46
-    mosaicPosition: {x: 554, y: 431}
-  - name: idle_ceinture_tissu_3
-    spriteName: idle_ceinture_tissu_3
-    isGroup: 0
-    parentIndex: 58
-    spriteID: fa6a80c17dc00794f91c7db291963958
-    layerID: 45
-    mosaicPosition: {x: 1002, y: 323}
-  - name: idle_hanches_tissus
-    spriteName: 
-    isGroup: 1
-    parentIndex: 57
-    spriteID: 00000000000000000000000000000000
-    layerID: 43
-    mosaicPosition: {x: 0, y: 0}
-  - name: idle_hanches_tissus_gauche
-    spriteName: idle_hanches_tissus_gauche
-    isGroup: 0
-    parentIndex: 64
-    spriteID: d15002759ea092943b8efe6fb7caef7a
-    layerID: 42
-    mosaicPosition: {x: 285, y: 372}
-  - name: idle_hanches_tissus_droite
-    spriteName: idle_hanches_tissus_droite
-    isGroup: 0
-    parentIndex: 64
-    spriteID: 910a2e960c0006b46ace6415a5ddb874
-    layerID: 41
-    mosaicPosition: {x: 247, y: 372}
-  - name: idle_hanches_tissus_milieu
-    spriteName: idle_hanches_tissus_milieu
-    isGroup: 0
-    parentIndex: 64
-    spriteID: daa5ebfb03dc8bd4f800c4f135d17ce1
-    layerID: 40
-    mosaicPosition: {x: 899, y: 120}
-  - name: Degats_Jambes
-    spriteName: 
-    isGroup: 1
-    parentIndex: 57
-    spriteID: 00000000000000000000000000000000
-    layerID: 38
-    mosaicPosition: {x: 0, y: 0}
-  - name: degats_jambe_droite
-    spriteName: degats_jambe_droite
-    isGroup: 0
-    parentIndex: 68
-    spriteID: 5603c14b87ae2464d95a34295a8eed24
-    layerID: 37
-    mosaicPosition: {x: 905, y: 4}
-  - name: degats_jambe_droite_pied
-    spriteName: degats_jambe_droite_pied
-    isGroup: 0
-    parentIndex: 68
-    spriteID: d88333231ada3b34e90bc89c96e231bb
-    layerID: 36
-    mosaicPosition: {x: 429, y: 431}
-  - name: degats_jambe_gauche
-    spriteName: degats_jambe_gauche
-    isGroup: 0
-    parentIndex: 68
-    spriteID: 530faabb7e2db6143b0e4ac4ee5b8311
-    layerID: 35
-    mosaicPosition: {x: 309, y: 254}
-  - name: degats_jambe_gauche_pied
-    spriteName: degats_jambe_gauche_pied
-    isGroup: 0
-    parentIndex: 68
-    spriteID: 72e2486d362fccf438b86aae2d147f01
-    layerID: 34
-    mosaicPosition: {x: 523, y: 372}
-  - name: idle_jambes
-    spriteName: 
-    isGroup: 1
-    parentIndex: 57
-    spriteID: 00000000000000000000000000000000
-    layerID: 32
-    mosaicPosition: {x: 0, y: 0}
-  - name: idle_jambe_droite
-    spriteName: idle_jambe_droite
-    isGroup: 0
-    parentIndex: 73
-    spriteID: f1be9d72566c9d749b560b25bed1e62b
-    layerID: 31
-    mosaicPosition: {x: 258, y: 254}
-  - name: idle_jambe_droite_pied
-    spriteName: idle_jambe_droite_pied
-    isGroup: 0
-    parentIndex: 73
-    spriteID: a73f98952c6353f4a9ce0af030d8c24d
-    layerID: 30
-    mosaicPosition: {x: 472, y: 431}
-  - name: idle_jambe_gauche
-    spriteName: idle_jambe_gauche
-    isGroup: 0
-    parentIndex: 73
-    spriteID: c1940e83c1ab1bd46b730036ba210f7f
-    layerID: 29
-    mosaicPosition: {x: 963, y: 4}
-  - name: idle_jambe_gauche_pied
-    spriteName: idle_jambe_gauche_pied
-    isGroup: 0
-    parentIndex: 73
-    spriteID: b8303d966702aeb4a8eb615c87753196
-    layerID: 28
-    mosaicPosition: {x: 823, y: 319}
-  - name: "idle_hanches_tissus_derri\xE8re"
-    spriteName: "idle_hanches_tissus_derri\xE8re"
-    isGroup: 0
-    parentIndex: 57
-    spriteID: 65909b3028d53844f949801c37970999
-    layerID: 26
-    mosaicPosition: {x: 747, y: 4}
-  - name: idle_torse
-    spriteName: 
-    isGroup: 1
-    parentIndex: -1
-    spriteID: 00000000000000000000000000000000
-    layerID: 24
-    mosaicPosition: {x: 0, y: 0}
-  - name: idle_torse_veste_droite
-    spriteName: idle_torse_veste_droite
-    isGroup: 0
-    parentIndex: 79
-    spriteID: d778518365d5d1e49afba58b211cf6d2
-    layerID: 23
-    mosaicPosition: {x: 833, y: 4}
-  - name: idle_torse_veste_gauche
-    spriteName: idle_torse_veste_gauche
-    isGroup: 0
-    parentIndex: 79
-    spriteID: b9c0c28618ee6fa4eb5331cbe7d4f5d3
-    layerID: 22
-    mosaicPosition: {x: 980, y: 120}
-  - name: idle_torse_collier
-    spriteName: idle_torse_collier
-    isGroup: 0
-    parentIndex: 79
-    spriteID: 2a8016bb6472a524aaa2f641e06a0305
-    layerID: 21
-    mosaicPosition: {x: 621, y: 372}
-  - name: idle_torse
-    spriteName: idle_torse
-    isGroup: 0
-    parentIndex: 79
-    spriteID: 05a5345655a77c1448dc02b3a22de193
-    layerID: 20
-    mosaicPosition: {x: 182, y: 254}
-  - name: Bras
-    spriteName: 
-    isGroup: 1
-    parentIndex: -1
-    spriteID: 00000000000000000000000000000000
-    layerID: 18
-    mosaicPosition: {x: 0, y: 0}
-  - name: "Pr\xE9pare_Bras"
-    spriteName: 
-    isGroup: 1
-    parentIndex: 84
-    spriteID: 00000000000000000000000000000000
-    layerID: 17
-    mosaicPosition: {x: 0, y: 0}
-  - name: "pr\xE9pare_bras_droit"
-    spriteName: "pr\xE9pare_bras_droit"
-    isGroup: 0
-    parentIndex: 85
-    spriteID: c1e353b7fe85a8346854c2df7eeecde1
-    layerID: 16
-    mosaicPosition: {x: 512, y: 254}
-  - name: "pr\xE9pare_bras_gauche"
-    spriteName: "pr\xE9pare_bras_gauche"
-    isGroup: 0
-    parentIndex: 85
-    spriteID: e5bdf02c43a17f844a7c61f37f2e8ebd
-    layerID: 15
-    mosaicPosition: {x: 745, y: 311}
-  - name: Tir_Bras
-    spriteName: 
-    isGroup: 1
-    parentIndex: 84
-    spriteID: 00000000000000000000000000000000
-    layerID: 13
-    mosaicPosition: {x: 0, y: 0}
-  - name: tir_bras_gauche
-    spriteName: tir_bras_gauche
-    isGroup: 0
-    parentIndex: 88
-    spriteID: 2cafafcdbbe7c8148b53bbde93d4f0bb
-    layerID: 12
-    mosaicPosition: {x: 745, y: 254}
-  - name: Joue_Bras
-    spriteName: 
-    isGroup: 1
-    parentIndex: 84
-    spriteID: 00000000000000000000000000000000
-    layerID: 10
-    mosaicPosition: {x: 0, y: 0}
-  - name: joue_bras_gauche
-    spriteName: joue_bras_gauche
-    isGroup: 0
-    parentIndex: 90
-    spriteID: 725034e31d0ce984fb732b3339075898
-    layerID: 9
-    mosaicPosition: {x: 320, y: 372}
-  - name: idle_bras
-    spriteName: 
-    isGroup: 1
-    parentIndex: 84
-    spriteID: 00000000000000000000000000000000
-    layerID: 7
-    mosaicPosition: {x: 0, y: 0}
-  - name: idle_bras_droit
-    spriteName: idle_bras_droit
-    isGroup: 0
-    parentIndex: 92
-    spriteID: 832bcd2aefe2b5349857033f1639cf90
-    layerID: 6
-    mosaicPosition: {x: 383, y: 431}
-  - name: "idle_bras_droit_derri\xE8re_\xE9paule"
-    spriteName: "idle_bras_droit_derri\xE8re_\xE9paule"
-    isGroup: 0
-    parentIndex: 92
-    spriteID: 206bb6f10e93bc244b27c8b3159608ba
-    layerID: 5
-    mosaicPosition: {x: 515, y: 431}
-  - name: idle_bras_gauche
-    spriteName: idle_bras_gauche
-    isGroup: 0
-    parentIndex: 92
-    spriteID: 280b85c752b092041b3f7a45828e9db4
-    layerID: 4
-    mosaicPosition: {x: 890, y: 254}
+    uvTransform: {x: 838, y: 227}
+    spritePosition: {x: 310, y: 237}
   characterData:
     bones:
     - name: All corps
+      guid: 
       position: {x: 369.98203, y: 223.90076, z: 0}
       rotation: {x: 0, y: 0, z: 0.68165386, w: 0.7316748}
       length: 77.687035
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All tete
+      guid: 
       position: {x: 77.68704, y: 0.000009634143, z: 0}
       rotation: {x: 0, y: 0, z: 0.034680624, w: 0.99939847}
       length: 48.51329
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All bec bas
+      guid: 
       position: {x: 17.630934, y: -3.878417, z: 0}
       rotation: {x: 0, y: 0, z: 0.7610773, w: 0.6486612}
       length: 18.894173
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All bec haut
+      guid: 
       position: {x: 32.180115, y: 4.0578356, z: 0}
       rotation: {x: 0, y: 0, z: 0.91311735, w: 0.4076968}
       length: 16.118126
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All oeil droit
+      guid: 
       position: {x: 33.907642, y: -18.557386, z: 0}
       rotation: {x: 0, y: 0, z: 0.79175615, w: 0.6108373}
       length: 13.44036
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All oeil gauche
+      guid: 
       position: {x: 36.266273, y: 13.675971, z: 0}
       rotation: {x: 0, y: 0, z: 0.7491416, w: 0.66241}
       length: 5.8386855
       parentId: 1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Idle_Prepare bras droit
+      guid: 
       position: {x: 55.49557, y: -51.279427, z: 0}
       rotation: {x: 0, y: 0, z: -0.99501395, w: 0.09973623}
       length: 48.42605
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Idle AB droit
+      guid: 
       position: {x: 48.426056, y: -0.0000015283913, z: 0}
       rotation: {x: 0, y: 0, z: -0.27635464, w: 0.96105576}
       length: 35.10282
       parentId: 6
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Idle main droite
+      guid: 
       position: {x: 35.10282, y: -0.0000042458414, z: 0}
       rotation: {x: 0, y: 0, z: -0.39571437, w: 0.9183737}
       length: 26.315489
       parentId: 7
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Idle bras gauche
+      guid: 
       position: {x: 62.998306, y: 55.462746, z: 0}
       rotation: {x: 0, y: 0, z: -0.9992196, w: 0.039499965}
       length: 44.35908
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Idle AB gauche
+      guid: 
       position: {x: 44.359093, y: 0.000011016109, z: 0}
       rotation: {x: 0, y: -0, z: -0.9763154, w: 0.21635248}
       length: 34.106747
       parentId: 9
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Idle main gauche
+      guid: 
       position: {x: 34.106743, y: -0.000015230856, z: 0}
       rotation: {x: 0, y: 0, z: -0.00066875905, w: 0.99999976}
       length: 23.94094
       parentId: 10
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All ceinture
+      guid: 
       position: {x: -22.378857, y: 26.116184, z: 0}
       rotation: {x: 0, y: 0, z: -0.65235937, w: 0.7579099}
       length: 55.45588
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All noeud ceinture
+      guid: 
       position: {x: 29.2653, y: -9.955696, z: 0}
       rotation: {x: 0, y: 0, z: 0.8374477, w: 0.5465175}
       length: 20.713737
       parentId: 12
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All ceinture tissu haut
+      guid: 
       position: {x: 12.507523, y: 20.049175, z: 0}
       rotation: {x: 0, y: 0, z: -0.304619, w: 0.9524743}
       length: 9.527876
       parentId: 12
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All ceinture tissu bas droit
+      guid: 
       position: {x: 33.55974, y: -14.39191, z: 0}
       rotation: {x: 0, y: 0, z: -0.6966999, w: 0.7173627}
       length: 38.230175
       parentId: 12
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All ceinture tissu bas gauche
+      guid: 
       position: {x: 20.173134, y: -6.862141, z: 0}
       rotation: {x: 0, y: 0, z: -0.86514586, w: 0.50152034}
       length: 16.455975
       parentId: 12
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All ceinture tissu bas centre
+      guid: 
       position: {x: 22.348282, y: -10.477732, z: 0}
       rotation: {x: 0, y: 0, z: -0.80370957, w: 0.5950218}
       length: 15.907504
       parentId: 12
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All jambe gauche
+      guid: 
       position: {x: -50.372204, y: 14.401798, z: 0}
       rotation: {x: 0, y: 0, z: -0.99974793, w: 0.022452248}
       length: 73.048706
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All mollet gauche
+      guid: 
       position: {x: 73.04872, y: 0.0000025692352, z: 0}
       rotation: {x: 0, y: 0, z: 0.20131946, w: 0.9795256}
       length: 61.5544
       parentId: 18
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All pied gauche
+      guid: 
       position: {x: 60.74766, y: -0.71746445, z: 0}
       rotation: {x: 0, y: 0, z: -0.41181162, w: 0.911269}
       length: 33.608433
       parentId: 19
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All jambe droite
+      guid: 
       position: {x: -62.46812, y: -13.036762, z: 0}
       rotation: {x: 0, y: 0, z: -0.9970162, w: 0.07719258}
       length: 66.807365
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All mollet droit
+      guid: 
       position: {x: 66.80737, y: -0.000005553481, z: 0}
       rotation: {x: 0, y: 0, z: -0.03822068, w: 0.99926937}
       length: 47.597317
       parentId: 21
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All pied droit
+      guid: 
       position: {x: 47.59732, y: 0.00003789612, z: 0}
       rotation: {x: 0, y: 0, z: -0.116462655, w: 0.99319506}
       length: 30.849554
       parentId: 22
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All epee
+      guid: 
       position: {x: -48.60747, y: -38.797626, z: 0}
       rotation: {x: 0, y: 0, z: -0.98564106, w: 0.16885439}
       length: 73.3426
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All chemise haut gauche
+      guid: 
       position: {x: 67.53761, y: 26.264494, z: 0}
       rotation: {x: 0, y: 0, z: -0.9996604, w: 0.026060024}
       length: 68.88966
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All chemise haut droite
+      guid: 
       position: {x: 68.90567, y: -35.398, z: 0}
       rotation: {x: 0, y: 0, z: 0.99199486, w: 0.12627836}
       length: 60.47301
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All chemise bas gauche
+      guid: 
       position: {x: -32.77357, y: 25.58834, z: 0}
       rotation: {x: 0, y: 0, z: -0.9999968, w: 0.0025528008}
       length: 123.90456
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All chemise bas droit
+      guid: 
       position: {x: -54.8092, y: -26.581812, z: 0}
       rotation: {x: 0, y: 0, z: -0.9931062, w: 0.1172183}
       length: 75.88809
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Idle_Joue_Prepare bras gauche
+      guid: 
       position: {x: 51.570736, y: 35.917297, z: 0}
       rotation: {x: 0, y: 0, z: 0.90055573, w: 0.43474066}
       length: 37.44266
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Joue AB gauche
+      guid: 
       position: {x: 37.44267, y: -0.000012168599, z: 0}
       rotation: {x: 0, y: 0, z: -0.36775622, w: 0.9299222}
       length: 33.395412
       parentId: 29
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Joue main gauche
+      guid: 
       position: {x: 33.39541, y: 0.000026964828, z: 0}
       rotation: {x: 0, y: 0, z: -0.0014748314, w: 0.999999}
       length: 21.845547
       parentId: 30
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Pepare AB droit
+      guid: 
       position: {x: 48.686226, y: -15.43499, z: 0}
       rotation: {x: 0, y: 0, z: -0.41619182, w: 0.90927684}
       length: 38.700615
       parentId: 6
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Prepare main droit
+      guid: 
       position: {x: 38.700653, y: -0.0000020704692, z: 0}
       rotation: {x: 0, y: 0, z: -0.13619258, w: 0.9906824}
       length: 24.375402
       parentId: 32
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Prepare AB gauche
+      guid: 
       position: {x: 34.681484, y: -5.235329, z: 0}
       rotation: {x: 0, y: -0, z: -0.795213, w: 0.6063303}
       length: 25.88487
       parentId: 29
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Prepare main gauche
+      guid: 
       position: {x: 25.884861, y: -0.000010707397, z: 0}
       rotation: {x: 0, y: 0, z: -0.1806148, w: 0.98355395}
       length: 21.807268
       parentId: 34
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Degat mollet gauche
+      guid: 
       position: {x: 83.35285, y: -5.105918, z: 0}
       rotation: {x: 0, y: 0, z: 0.07769618, w: 0.9969771}
       length: 47.84225
       parentId: 18
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Degat pied gauche
+      guid: 
       position: {x: 47.84224, y: -0.000015438342, z: 0}
       rotation: {x: 0, y: 0, z: -0.40794763, w: 0.91300535}
       length: 35.833084
       parentId: 36
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All tissu hanche
+      guid: 
       position: {x: -53.889893, y: -0.14418024, z: 0}
       rotation: {x: 0, y: -0, z: -0.9991163, w: 0.042031612}
       length: 59.88707
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All cape
+      guid: 
       position: {x: -88.108505, y: -9.231823, z: 0}
       rotation: {x: 0, y: -0, z: -0.9984916, w: 0.054905165}
       length: 68.42184
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: All collier
+      guid: 
       position: {x: 28.146486, y: 7.6475906, z: 0}
       rotation: {x: 0, y: -0, z: -0.7348155, w: 0.6782671}
       length: 11.011539
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Poudre
+      guid: 
       position: {x: 312.57843, y: 288.71185, z: 0}
       rotation: {x: 0, y: 0, z: 0.5887393, w: 0.808323}
       length: 10.069922
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Fumee bas
+      guid: 
       position: {x: 18.51503, y: 1.9892179, z: 0}
       rotation: {x: 0, y: 0, z: -0.06066367, w: 0.9981583}
       length: 12.294531
       parentId: 41
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Fummee milieu
+      guid: 
       position: {x: 12.294521, y: 0.0000035691482, z: 0}
       rotation: {x: 0, y: 0, z: 0.65427196, w: 0.7562594}
       length: 14.817707
       parentId: 42
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Fumee haut
+      guid: 
       position: {x: 14.817716, y: -0.0000000379805, z: 0}
       rotation: {x: 0, y: 0, z: -0.62261444, w: 0.7825288}
       length: 16.636276
       parentId: 43
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Prepare mousquet
+      guid: 
       position: {x: 20.103127, y: -4.930959, z: 0}
       rotation: {x: 0, y: -0, z: -0.727553, w: 0.6860515}
       length: 106.66836
       parentId: 33
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Joue bras droit
+      guid: 
       position: {x: 44.569794, y: -39.25169, z: 0}
       rotation: {x: 0, y: 0, z: -0.42584527, w: 0.904796}
       length: 33.24712
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Joue_Tir AB droit
+      guid: 
       position: {x: 33.247093, y: 0.0000047529393, z: 0}
       rotation: {x: 0, y: -0, z: 0.9249618, w: 0.38006014}
       length: 34.98648
       parentId: 46
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Joue_Tir main droite
+      guid: 
       position: {x: 34.986465, y: 0.0000068397403, z: 0}
       rotation: {x: 0, y: 0, z: 0.015731445, w: 0.9998763}
       length: 24.598389
       parentId: 47
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Joue mousquet
+      guid: 
       position: {x: 40.02169, y: -6.295487, z: 0}
       rotation: {x: 0, y: 0, z: 0.21114404, w: 0.97745496}
       length: 192.01645
       parentId: 48
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Idle mousquet
+      guid: 
       position: {x: 20.662788, y: -28.704617, z: 0}
       rotation: {x: 0, y: 0, z: -0.5091596, w: 0.8606721}
       length: 176.43584
       parentId: 8
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tir main gauche
+      guid: 
       position: {x: 57.798252, y: 42.500923, z: 0}
       rotation: {x: 0, y: -0, z: 0.76993203, w: 0.63812596}
       length: 22.509613
       parentId: 0
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tir AB gauche
+      guid: 
       position: {x: 22.509619, y: 0.000008045643, z: 0}
       rotation: {x: 0, y: 0, z: -0.4307469, w: 0.9024728}
       length: 30.430285
       parentId: 51
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tir main gauche
+      guid: 
       position: {x: 30.430283, y: 0.000003448069, z: 0}
       rotation: {x: 0, y: 0, z: -0.25141785, w: 0.96787864}
       length: 19.963606
       parentId: 52
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tir mousquet
+      guid: 
       position: {x: 24.267178, y: 16.820864, z: 0}
       rotation: {x: 0, y: 0, z: 0.5099415, w: 0.8602091}
       length: 72.507355
       parentId: 53
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tir trainee
+      guid: 
       position: {x: 124.93633, y: 261.41833, z: 0}
       rotation: {x: 0, y: 0, z: 0.7000015, w: 0.7141414}
       length: 82.70324
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tir fumee
+      guid: 
       position: {x: 105.09152, y: 354.02747, z: 0}
       rotation: {x: 0, y: 0, z: 0.6541975, w: 0.7563238}
       length: 52.808777
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tir balle
+      guid: 
       position: {x: 100.13032, y: 222.72096, z: 0}
       rotation: {x: 0, y: 0, z: -0.9465154, w: 0.32265884}
       length: 14.620353
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tir etincelle
+      guid: 
       position: {x: 66.06339, y: 200.56093, z: 0}
       rotation: {x: 0, y: 0, z: 0.17191966, w: 0.985111}
       length: 35.15265
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     - name: Tir aura onde
+      guid: 
       position: {x: 111.70646, y: 231.65114, z: 0}
       rotation: {x: 0, y: 0, z: -0.4340488, w: 0.9008894}
       length: 27.066729
       parentId: -1
+      color:
+        serializedVersion: 2
+        rgba: 0
     parts:
     - spritePosition:
         x: 309
@@ -30705,8 +30490,1003 @@ ScriptedImporter:
       order: 0
     dimension: {x: 0, y: 0}
     characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  platformSettings: []
+  mosaicLayers: 1
+  characterMode: 1
+  documentPivot: {x: 0, y: 0}
+  documentAlignment: 7
+  importHiddenLayers: 0
+  layerMappingOption: 2
+  generatePhysicsShape: 0
+  paperDollMode: 0
+  keepDupilcateSpriteName: 0
+  skeletonAssetReferenceID: 
+  padding: 4
+  spriteSizeExpand: 0
+  spriteCategoryList:
+    categories: []
+  spritePackingTag: 
+  resliceFromLayer: 0
+  mosaicPSDLayers: []
+  rigPSDLayers:
+  - name: Mousquet
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: ec8b32b10194d0a42a0ceb6166d7607b
+    layerID: 120
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "Pr\xE9pare_Mousquet"
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: a9bee6604abbf7e478f72dab3350041c
+    layerID: 119
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: Poudre
+    spriteName: 
+    isGroup: 1
+    parentIndex: 1
+    spriteID: c7bb041c461496d4aaccc8d45217bee0
+    layerID: 118
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "pr\xE9pare_bras_gauche_poudre"
+    spriteName: "pr\xE9pare_bras_gauche_poudre"
+    isGroup: 0
+    parentIndex: 2
+    spriteID: 4178f285596c90340a204c3c4e5c12c8
+    layerID: 117
+    mosaicPosition: {x: 982, y: 200}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "pr\xE9pare_bras_gauche_poudre_fum\xE9e"
+    spriteName: "pr\xE9pare_bras_gauche_poudre_fum\xE9e"
+    isGroup: 0
+    parentIndex: 2
+    spriteID: c40846a6ad9fbba44ade57718bfe01f8
+    layerID: 116
+    mosaicPosition: {x: 945, y: 120}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "pr\xE9pare_bras_gauche_main_poudre"
+    spriteName: "pr\xE9pare_bras_gauche_main_poudre"
+    isGroup: 0
+    parentIndex: 2
+    spriteID: 41a0ed29458bc05418bb203454270fa2
+    layerID: 115
+    mosaicPosition: {x: 504, y: 470}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "pr\xE9pare_mousquet_poudre_baton"
+    spriteName: "pr\xE9pare_mousquet_poudre_baton"
+    isGroup: 0
+    parentIndex: 2
+    spriteID: af9f1d9c20419a941b5e088212c66479
+    layerID: 114
+    mosaicPosition: {x: 4, y: 254}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "pr\xE9pare_bras_droit_main"
+    spriteName: "pr\xE9pare_bras_droit_main"
+    isGroup: 0
+    parentIndex: 1
+    spriteID: 951c7a210544b024a96b232497964f2d
+    layerID: 112
+    mosaicPosition: {x: 901, y: 296}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "pr\xE9pare_mousquet"
+    spriteName: "pr\xE9pare_mousquet"
+    isGroup: 0
+    parentIndex: 1
+    spriteID: e54f58db9556b954ca2f8ee7e2f1eef0
+    layerID: 111
+    mosaicPosition: {x: 253, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Baton
+    spriteName: 
+    isGroup: 1
+    parentIndex: 1
+    spriteID: cc39360d854966248810ab85c7650af7
+    layerID: 110
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "pr\xE9pare_bras_gauche_main_baton"
+    spriteName: "pr\xE9pare_bras_gauche_main_baton"
+    isGroup: 0
+    parentIndex: 9
+    spriteID: 172bad7c15a93c84bb5795fd770d5bef
+    layerID: 109
+    mosaicPosition: {x: 325, y: 422}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "pr\xE9pare_bras_gauche_avant_bras"
+    spriteName: "pr\xE9pare_bras_gauche_avant_bras"
+    isGroup: 0
+    parentIndex: 1
+    spriteID: 0c74af8a91599804eb864a5b840e1dc8
+    layerID: 107
+    mosaicPosition: {x: 629, y: 405}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "pr\xE9pare_bras_droit_avant_bras"
+    spriteName: "pr\xE9pare_bras_droit_avant_bras"
+    isGroup: 0
+    parentIndex: 1
+    spriteID: c17744224e07dda48a139aec9e7ac680
+    layerID: 106
+    mosaicPosition: {x: 871, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Tir_Mousquet
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: afd34b3dec1a5924aa2b577957114b7f
+    layerID: 104
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: tir_bras_gauche_main
+    spriteName: tir_bras_gauche_main
+    isGroup: 0
+    parentIndex: 13
+    spriteID: 888f49912e0328e4586d94c5a2055c4d
+    layerID: 103
+    mosaicPosition: {x: 806, y: 405}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: tir_bras_droit_main
+    spriteName: tir_bras_droit_main
+    isGroup: 0
+    parentIndex: 13
+    spriteID: 276bd3bec5ac53b41bfd36423d32233f
+    layerID: 102
+    mosaicPosition: {x: 822, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: tir_bras_gauche_avant_bras
+    spriteName: tir_bras_gauche_avant_bras
+    isGroup: 0
+    parentIndex: 13
+    spriteID: 446941afbb4014644a5edf623f3a0e47
+    layerID: 101
+    mosaicPosition: {x: 60, y: 480}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: tir_mousquet_balle
+    spriteName: tir_mousquet_balle
+    isGroup: 0
+    parentIndex: 13
+    spriteID: b5365ba6af8dd0f4992d110c4c7a8a50
+    layerID: 100
+    mosaicPosition: {x: 855, y: 439}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "tir_mousquet_\xE9tincelle"
+    spriteName: "tir_mousquet_\xE9tincelle"
+    isGroup: 0
+    parentIndex: 13
+    spriteID: f1a05a48710b0db4b816ab36d9f0278a
+    layerID: 99
+    mosaicPosition: {x: 575, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "tir_mousquet_train\xE9e"
+    spriteName: "tir_mousquet_train\xE9e"
+    isGroup: 0
+    parentIndex: 13
+    spriteID: 164b9639efc32d241a04e586389bc000
+    layerID: 98
+    mosaicPosition: {x: 253, y: 304}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "tir_mousquet_fum\xE9e"
+    spriteName: "tir_mousquet_fum\xE9e"
+    isGroup: 0
+    parentIndex: 13
+    spriteID: 41afa702941b72447ae22d10c6817786
+    layerID: 97
+    mosaicPosition: {x: 642, y: 227}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: tir_mousquet
+    spriteName: tir_mousquet
+    isGroup: 0
+    parentIndex: 13
+    spriteID: 51213a44f4c32ff499d5af81b7b3906e
+    layerID: 96
+    mosaicPosition: {x: 431, y: 120}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: tir_mousquet_aura
+    spriteName: tir_mousquet_aura
+    isGroup: 0
+    parentIndex: 13
+    spriteID: d7c2d261b580869448229510916f4288
+    layerID: 95
+    mosaicPosition: {x: 962, y: 227}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: tir_bras_gauche_avant_bras
+    spriteName: tir_bras_gauche_avant_bras_1
+    isGroup: 0
+    parentIndex: 13
+    spriteID: d23d5970d54f0f44e8357e82df2366ff
+    layerID: 94
+    mosaicPosition: {x: 922, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: tir_bras_droit
+    spriteName: tir_bras_droit
+    isGroup: 0
+    parentIndex: 13
+    spriteID: 69a21126870b01b4bbd59585c507deff
+    layerID: 93
+    mosaicPosition: {x: 866, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Joue_Mousquet
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: 201b016318931c74f95af9a0f1dcf17b
+    layerID: 91
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: joue_bras_gauche_main
+    spriteName: joue_bras_gauche_main
+    isGroup: 0
+    parentIndex: 25
+    spriteID: 61462b04d5c4afe458fd2fc7a58b675f
+    layerID: 90
+    mosaicPosition: {x: 116, y: 480}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: joue_bras_droit_main
+    spriteName: joue_bras_droit_main
+    isGroup: 0
+    parentIndex: 25
+    spriteID: 651fdb9f58aad814c9f405ce0240a582
+    layerID: 89
+    mosaicPosition: {x: 715, y: 405}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: joue_bras_droit_avant_bras
+    spriteName: joue_bras_droit_avant_bras
+    isGroup: 0
+    parentIndex: 25
+    spriteID: 61f3567135ca5844f92cb3f8b4441a98
+    layerID: 88
+    mosaicPosition: {x: 758, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: joue_mousquet
+    spriteName: joue_mousquet
+    isGroup: 0
+    parentIndex: 25
+    spriteID: a8f8f8df46a54724892414de8b7e1fcb
+    layerID: 87
+    mosaicPosition: {x: 431, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: joue_bras_gauche_avant_bras
+    spriteName: joue_bras_gauche_avant_bras
+    isGroup: 0
+    parentIndex: 25
+    spriteID: 62195f1628d43974e9ba9e8743f2f681
+    layerID: 86
+    mosaicPosition: {x: 4, y: 480}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: joue_bras_droit
+    spriteName: joue_bras_droit
+    isGroup: 0
+    parentIndex: 25
+    spriteID: 6e95e53ab09c70d48a508572c53f4942
+    layerID: 85
+    mosaicPosition: {x: 253, y: 422}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_mousquet
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: b3b051e11911cba418eb5e2d24fc15eb
+    layerID: 83
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: idle_mousquet_main_gauche
+    spriteName: idle_mousquet_main_gauche
+    isGroup: 0
+    parentIndex: 32
+    spriteID: e74af1d5f5e1e4246b4719ea1eddfee7
+    layerID: 82
+    mosaicPosition: {x: 590, y: 468}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_mousquet_main_droite
+    spriteName: idle_mousquet_main_droite
+    isGroup: 0
+    parentIndex: 32
+    spriteID: 736be65bad9f5804e9861c1412789465
+    layerID: 81
+    mosaicPosition: {x: 702, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_mousquet
+    spriteName: idle_mousquet
+    isGroup: 0
+    parentIndex: 32
+    spriteID: 24aafd26af6550847aef313a282f3d91
+    layerID: 80
+    mosaicPosition: {x: 4, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_mousquet_bras_gauche_avant_bras
+    spriteName: idle_mousquet_bras_gauche_avant_bras
+    isGroup: 0
+    parentIndex: 32
+    spriteID: 2faa02b40afb1b24aa7d6f26bad68d39
+    layerID: 79
+    mosaicPosition: {x: 672, y: 405}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_mousquet_bras_droit_avant_bras
+    spriteName: idle_mousquet_bras_droit_avant_bras
+    isGroup: 0
+    parentIndex: 32
+    spriteID: bf42f7d4f409729478410fb45927f3ba
+    layerID: 78
+    mosaicPosition: {x: 763, y: 405}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "T\xEAte"
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 50aa4d156f29c1a4a90f0e31aca3f4dd
+    layerID: 75
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "Pr\xE9pare_T\xEAte"
+    spriteName: 
+    isGroup: 1
+    parentIndex: 38
+    spriteID: bca54a5a1db999847a38d5a23eda00d8
+    layerID: 74
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "pr\xE9pare_t\xEAte"
+    spriteName: "pr\xE9pare_t\xEAte"
+    isGroup: 0
+    parentIndex: 39
+    spriteID: 5f5f20880f5e7384a8ab817f07cb146e
+    layerID: 73
+    mosaicPosition: {x: 771, y: 227}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "pr\xE9pare_t\xEAte_cou"
+    spriteName: "pr\xE9pare_t\xEAte_cou"
+    isGroup: 0
+    parentIndex: 39
+    spriteID: 07051647b7a81214db8fb454201e5882
+    layerID: 72
+    mosaicPosition: {x: 962, y: 291}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "Joue_T\xEAte"
+    spriteName: 
+    isGroup: 1
+    parentIndex: 38
+    spriteID: bd0a84a55ac559a4aacd8d4dba00a705
+    layerID: 70
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "joue_t\xEAte_oeil_droit"
+    spriteName: "joue_t\xEAte_oeil_droit"
+    isGroup: 0
+    parentIndex: 42
+    spriteID: 47bc8fa38368f1541b13300ffabf0f79
+    layerID: 69
+    mosaicPosition: {x: 891, y: 405}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "joue_t\xEAte_oeil_gauche"
+    spriteName: "joue_t\xEAte_oeil_gauche"
+    isGroup: 0
+    parentIndex: 42
+    spriteID: 57e0b03e53cf3174e8c9412edd0261e2
+    layerID: 68
+    mosaicPosition: {x: 401, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "Degats_T\xEAte"
+    spriteName: 
+    isGroup: 1
+    parentIndex: 38
+    spriteID: e75efeac4d7e9284e802eba97421bcbf
+    layerID: 66
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "degats_t\xEAte_oeil_droit"
+    spriteName: "degats_t\xEAte_oeil_droit"
+    isGroup: 0
+    parentIndex: 45
+    spriteID: 15c2b37c7432d444c847b0273d0fc87b
+    layerID: 65
+    mosaicPosition: {x: 253, y: 490}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "degats_t\xEAte_bec_haut"
+    spriteName: "degats_t\xEAte_bec_haut"
+    isGroup: 0
+    parentIndex: 45
+    spriteID: 31ca967c48d4c7242970a80eb0a2d588
+    layerID: 64
+    mosaicPosition: {x: 855, y: 405}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "degats_t\xEAte_bec_bas"
+    spriteName: "degats_t\xEAte_bec_bas"
+    isGroup: 0
+    parentIndex: 45
+    spriteID: dcfe6af5fa9dbc24c96a232db1ef0f34
+    layerID: 63
+    mosaicPosition: {x: 993, y: 95}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "degats_t\xEAte_oeil_gauche"
+    spriteName: "degats_t\xEAte_oeil_gauche"
+    isGroup: 0
+    parentIndex: 45
+    spriteID: d4b3305e4c1078140952c8ef226e3b7a
+    layerID: 62
+    mosaicPosition: {x: 1003, y: 200}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "idle_t\xEAte"
+    spriteName: 
+    isGroup: 1
+    parentIndex: 38
+    spriteID: 534dc93e8c0e70f42b424be29a29e6b7
+    layerID: 60
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "idle_t\xEAte_oeil_droit"
+    spriteName: "idle_t\xEAte_oeil_droit"
+    isGroup: 0
+    parentIndex: 50
+    spriteID: ddfb4a9065d88ba4a8b70a73b1d16224
+    layerID: 59
+    mosaicPosition: {x: 945, y: 200}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "idle_t\xEAte_bec_dessus"
+    spriteName: "idle_t\xEAte_bec_dessus"
+    isGroup: 0
+    parentIndex: 50
+    spriteID: ca10e0e4ddbc394458c69e20ea9d378a
+    layerID: 58
+    mosaicPosition: {x: 547, y: 470}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "idle_t\xEAte_bec_dessous"
+    spriteName: "idle_t\xEAte_bec_dessous"
+    isGroup: 0
+    parentIndex: 50
+    spriteID: 2e5002b5646f9fc44872ab9d50871f86
+    layerID: 57
+    mosaicPosition: {x: 290, y: 490}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "idle_t\xEAte_oeil_gauche"
+    spriteName: "idle_t\xEAte_oeil_gauche"
+    isGroup: 0
+    parentIndex: 50
+    spriteID: 162e65dc2b5f28d4fb11663b7dd6d43c
+    layerID: 56
+    mosaicPosition: {x: 168, y: 480}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "idle_t\xEAte"
+    spriteName: "idle_t\xEAte"
+    isGroup: 0
+    parentIndex: 50
+    spriteID: 85d789d5a95df314c8169f7c928c6116
+    layerID: 55
+    mosaicPosition: {x: 901, y: 227}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "idle_t\xEAte_cou"
+    spriteName: "idle_t\xEAte_cou"
+    isGroup: 0
+    parentIndex: 50
+    spriteID: f795d76ea65912741b11bbbdd5412d50
+    layerID: 54
+    mosaicPosition: {x: 771, y: 292}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_bas_corps
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 61ba2c8750fbd5a41895d3c8f7631d04
+    layerID: 51
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: idle_ceinture
+    spriteName: 
+    isGroup: 1
+    parentIndex: 57
+    spriteID: b52aabd21d7790a4880742f6d4da15f3
+    layerID: 50
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: idle_ceinture_arme
+    spriteName: idle_ceinture_arme
+    isGroup: 0
+    parentIndex: 58
+    spriteID: 3306b4f1b5f13964f9d505792ab43987
+    layerID: 49
+    mosaicPosition: {x: 186, y: 254}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_ceinture
+    spriteName: idle_ceinture
+    isGroup: 0
+    parentIndex: 58
+    spriteID: ee52a31135c364148815afec979d1b8d
+    layerID: 48
+    mosaicPosition: {x: 866, y: 71}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_ceinture_tissu_1
+    spriteName: idle_ceinture_tissu_1
+    isGroup: 0
+    parentIndex: 58
+    spriteID: fd216619ff22d654ab20d01deac9dd27
+    layerID: 47
+    mosaicPosition: {x: 993, y: 64}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_ceinture_tissu_2
+    spriteName: idle_ceinture_tissu_2
+    isGroup: 0
+    parentIndex: 58
+    spriteID: e338c567e6b1ac54082ccbc54971d0a4
+    layerID: 46
+    mosaicPosition: {x: 993, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_ceinture_tissu_3
+    spriteName: idle_ceinture_tissu_3
+    isGroup: 0
+    parentIndex: 58
+    spriteID: fa6a80c17dc00794f91c7db291963958
+    layerID: 45
+    mosaicPosition: {x: 401, y: 304}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_hanches_tissus
+    spriteName: 
+    isGroup: 1
+    parentIndex: 57
+    spriteID: b91e034789c022a43bfc5ea09aae490c
+    layerID: 43
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: idle_hanches_tissus_gauche
+    spriteName: idle_hanches_tissus_gauche
+    isGroup: 0
+    parentIndex: 64
+    spriteID: d15002759ea092943b8efe6fb7caef7a
+    layerID: 42
+    mosaicPosition: {x: 469, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_hanches_tissus_droite
+    spriteName: idle_hanches_tissus_droite
+    isGroup: 0
+    parentIndex: 64
+    spriteID: 910a2e960c0006b46ace6415a5ddb874
+    layerID: 41
+    mosaicPosition: {x: 431, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_hanches_tissus_milieu
+    spriteName: idle_hanches_tissus_milieu
+    isGroup: 0
+    parentIndex: 64
+    spriteID: daa5ebfb03dc8bd4f800c4f135d17ce1
+    layerID: 40
+    mosaicPosition: {x: 431, y: 227}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Degats_Jambes
+    spriteName: 
+    isGroup: 1
+    parentIndex: 57
+    spriteID: cd74255b24ebfe445971d888bcd80ba8
+    layerID: 38
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: degats_jambe_droite
+    spriteName: degats_jambe_droite
+    isGroup: 0
+    parentIndex: 68
+    spriteID: 5603c14b87ae2464d95a34295a8eed24
+    layerID: 37
+    mosaicPosition: {x: 186, y: 391}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: degats_jambe_droite_pied
+    spriteName: degats_jambe_droite_pied
+    isGroup: 0
+    parentIndex: 68
+    spriteID: d88333231ada3b34e90bc89c96e231bb
+    layerID: 36
+    mosaicPosition: {x: 504, y: 405}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: degats_jambe_gauche
+    spriteName: degats_jambe_gauche
+    isGroup: 0
+    parentIndex: 68
+    spriteID: 530faabb7e2db6143b0e4ac4ee5b8311
+    layerID: 35
+    mosaicPosition: {x: 891, y: 120}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: degats_jambe_gauche_pied
+    spriteName: degats_jambe_gauche_pied
+    isGroup: 0
+    parentIndex: 68
+    spriteID: 72e2486d362fccf438b86aae2d147f01
+    layerID: 34
+    mosaicPosition: {x: 838, y: 295}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_jambes
+    spriteName: 
+    isGroup: 1
+    parentIndex: 57
+    spriteID: f2ea3c1191aa6e64b94f92b962507269
+    layerID: 32
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: idle_jambe_droite
+    spriteName: idle_jambe_droite
+    isGroup: 0
+    parentIndex: 73
+    spriteID: f1be9d72566c9d749b560b25bed1e62b
+    layerID: 31
+    mosaicPosition: {x: 815, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_jambe_droite_pied
+    spriteName: idle_jambe_droite_pied
+    isGroup: 0
+    parentIndex: 73
+    spriteID: a73f98952c6353f4a9ce0af030d8c24d
+    layerID: 30
+    mosaicPosition: {x: 547, y: 405}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_jambe_gauche
+    spriteName: idle_jambe_gauche
+    isGroup: 0
+    parentIndex: 73
+    spriteID: c1940e83c1ab1bd46b730036ba210f7f
+    layerID: 29
+    mosaicPosition: {x: 833, y: 120}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_jambe_gauche_pied
+    spriteName: idle_jambe_gauche_pied
+    isGroup: 0
+    parentIndex: 73
+    spriteID: b8303d966702aeb4a8eb615c87753196
+    layerID: 28
+    mosaicPosition: {x: 648, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "idle_hanches_tissus_derri\xE8re"
+    spriteName: "idle_hanches_tissus_derri\xE8re"
+    isGroup: 0
+    parentIndex: 57
+    spriteID: 65909b3028d53844f949801c37970999
+    layerID: 26
+    mosaicPosition: {x: 747, y: 120}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_torse
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: 619b662945475c44f9c54d35cb765fdd
+    layerID: 24
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: idle_torse_veste_droite
+    spriteName: idle_torse_veste_droite
+    isGroup: 0
+    parentIndex: 79
+    spriteID: d778518365d5d1e49afba58b211cf6d2
+    layerID: 23
+    mosaicPosition: {x: 743, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_torse_veste_gauche
+    spriteName: idle_torse_veste_gauche
+    isGroup: 0
+    parentIndex: 79
+    spriteID: b9c0c28618ee6fa4eb5331cbe7d4f5d3
+    layerID: 22
+    mosaicPosition: {x: 946, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_torse_collier
+    spriteName: idle_torse_collier
+    isGroup: 0
+    parentIndex: 79
+    spriteID: 2a8016bb6472a524aaa2f641e06a0305
+    layerID: 21
+    mosaicPosition: {x: 966, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_torse
+    spriteName: idle_torse
+    isGroup: 0
+    parentIndex: 79
+    spriteID: 05a5345655a77c1448dc02b3a22de193
+    layerID: 20
+    mosaicPosition: {x: 512, y: 227}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Bras
+    spriteName: 
+    isGroup: 1
+    parentIndex: -1
+    spriteID: b7fa8a8e7c637b441b54d1a0195fff52
+    layerID: 18
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "Pr\xE9pare_Bras"
+    spriteName: 
+    isGroup: 1
+    parentIndex: 84
+    spriteID: 047845faafe91b54d9d5f05559003197
+    layerID: 17
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "pr\xE9pare_bras_droit"
+    spriteName: "pr\xE9pare_bras_droit"
+    isGroup: 0
+    parentIndex: 85
+    spriteID: c1e353b7fe85a8346854c2df7eeecde1
+    layerID: 16
+    mosaicPosition: {x: 588, y: 227}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "pr\xE9pare_bras_gauche"
+    spriteName: "pr\xE9pare_bras_gauche"
+    isGroup: 0
+    parentIndex: 85
+    spriteID: e5bdf02c43a17f844a7c61f37f2e8ebd
+    layerID: 15
+    mosaicPosition: {x: 693, y: 284}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Tir_Bras
+    spriteName: 
+    isGroup: 1
+    parentIndex: 84
+    spriteID: 9f91806c1a08dd4419ea531c4c65b0c0
+    layerID: 13
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: tir_bras_gauche
+    spriteName: tir_bras_gauche
+    isGroup: 0
+    parentIndex: 88
+    spriteID: 2cafafcdbbe7c8148b53bbde93d4f0bb
+    layerID: 12
+    mosaicPosition: {x: 693, y: 227}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Joue_Bras
+    spriteName: 
+    isGroup: 1
+    parentIndex: 84
+    spriteID: c568b69167e6ee14aa24521c97d36ee5
+    layerID: 10
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: joue_bras_gauche
+    spriteName: joue_bras_gauche
+    isGroup: 0
+    parentIndex: 90
+    spriteID: 725034e31d0ce984fb732b3339075898
+    layerID: 9
+    mosaicPosition: {x: 504, y: 346}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_bras
+    spriteName: 
+    isGroup: 1
+    parentIndex: 84
+    spriteID: 3b6a75a8d5f59394286d411e2bfa77dd
+    layerID: 7
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: idle_bras_droit
+    spriteName: idle_bras_droit
+    isGroup: 0
+    parentIndex: 92
+    spriteID: 832bcd2aefe2b5349857033f1639cf90
+    layerID: 6
+    mosaicPosition: {x: 381, y: 422}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "idle_bras_droit_derri\xE8re_\xE9paule"
+    spriteName: "idle_bras_droit_derri\xE8re_\xE9paule"
+    isGroup: 0
+    parentIndex: 92
+    spriteID: 206bb6f10e93bc244b27c8b3159608ba
+    layerID: 5
+    mosaicPosition: {x: 590, y: 405}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: idle_bras_gauche
+    spriteName: idle_bras_gauche
+    isGroup: 0
+    parentIndex: 92
+    spriteID: 280b85c752b092041b3f7a45828e9db4
+    layerID: 4
+    mosaicPosition: {x: 838, y: 227}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  spriteSizeExpandChanged: 0
   generateGOHierarchy: 0
   textureAssetName: Janissaire sniper copie Texture
   prefabAssetName: Janissaire sniper copie Prefab
   spriteLibAssetName: Janissaire sniper copie Sprite Lib
+  skeletonAssetName: 
   secondarySpriteTextures: []

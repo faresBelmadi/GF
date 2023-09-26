@@ -21,10 +21,13 @@ ScriptedImporter:
     convertToNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
+    swizzle: 50462976
     isReadable: 0
     streamingMipmaps: 1
     streamingMipmapsPriority: 0
     vTOnly: 0
+    ignoreMipmapLimit: 0
     nPOTScale: 1
     sRGBTexture: 1
     spriteMode: 2
@@ -43,7 +46,10 @@ ScriptedImporter:
     textureType: 8
     textureShape: 1
     singleChannelComponent: 0
+    flipbookRows: 0
+    flipbookColumns: 0
     ignorePngGamma: 0
+    cookieMode: 0
     filterMode: 1
     aniso: 1
     mipBias: 0
@@ -77,7 +83,6 @@ ScriptedImporter:
       width: 0
       height: 0
     spriteID: 
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -85,8 +90,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
     uvTransform: {x: 0, y: 0}
+    spritePosition: {x: 0, y: 0}
   mosaicSpriteImportData: []
   rigSpriteImportData:
   - name: Requin_2_Serpents_1
@@ -101,7 +106,6 @@ ScriptedImporter:
       width: 15
       height: 19
     spriteID: df3a05f4983436744a0e3d985607085f
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -109,8 +113,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 211, y: -17}
+    uvTransform: {x: 466, y: 71}
+    spritePosition: {x: 255, y: 88}
   - name: Requin_2_Serpents_2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -123,7 +127,6 @@ ScriptedImporter:
       width: 28
       height: 15
     spriteID: 4793bdfeba75f22449744be072f892d2
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -131,8 +134,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 198, y: -48}
+    uvTransform: {x: 466, y: 48}
+    spritePosition: {x: 268, y: 96}
   - name: Requin_2_Serpents_3
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -145,7 +148,6 @@ ScriptedImporter:
       width: 35
       height: 36
     spriteID: 7869c381f114a3d48889126df8310050
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -153,8 +155,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 184, y: -53}
+    uvTransform: {x: 466, y: 3}
+    spritePosition: {x: 282, y: 57}
   - name: Requin_2_Serpents
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -167,7 +169,6 @@ ScriptedImporter:
       width: 75
       height: 57
     spriteID: bacf431ad04e43145b53cc98c290a983
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -175,8 +176,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -228, y: 54}
+    uvTransform: {x: 40, y: 107}
+    spritePosition: {x: 300, y: 54}
   - name: Requin_2_Dessous
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -189,7 +190,6 @@ ScriptedImporter:
       width: 60
       height: 127
     spriteID: 2afdd6205d4321641a509914a3d7d8ad
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -197,8 +197,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: -42, y: 107}
+    uvTransform: {x: 4, y: 108}
+    spritePosition: {x: 46, y: 1}
   - name: Requin_2_Aura
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -211,7 +211,6 @@ ScriptedImporter:
       width: 76
       height: 87
     spriteID: e39051dfb30b2d04eb376af278db8940
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -219,8 +218,8 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 363, y: -24}
+    uvTransform: {x: 382, y: 4}
+    spritePosition: {x: 19, y: 28}
   - name: Requin_2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
@@ -233,7 +232,6 @@ ScriptedImporter:
       width: 370
       height: 96
     spriteID: e6a0c1d6bc3aed4429dd8e0c821541fe
-    internalID: 0
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -241,25 +239,40 @@ ScriptedImporter:
     indices: 
     edges: []
     tessellationDetail: 0
-    parentGroupIndex: -1
-    uvTransform: {x: 2, y: -20}
+    uvTransform: {x: 4, y: 4}
+    spritePosition: {x: 2, y: 24}
+  characterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
+  sharedRigSpriteImportData: []
+  sharedRigCharacterData:
+    bones: []
+    parts: []
+    dimension: {x: 0, y: 0}
+    characterGroups: []
+    pivot: {x: 0, y: 0}
+    boneReadOnly: 0
   platformSettings: []
   mosaicLayers: 1
+  characterMode: 1
   documentPivot: {x: 0, y: 0}
   documentAlignment: 7
   importHiddenLayers: 0
-  importedTextureWidth: 512
-  importedTextureHeight: 512
-  documentSize: {x: 377, y: 130}
+  layerMappingOption: 2
+  generatePhysicsShape: 0
   paperDollMode: 0
   keepDupilcateSpriteName: 0
+  skeletonAssetReferenceID: 
+  padding: 4
+  spriteSizeExpand: 0
   spriteCategoryList:
     categories: []
-  textureActualWidth: 512
-  textureActualHeight: 512
   spritePackingTag: 
   resliceFromLayer: 0
-  characterMode: 1
   mosaicPSDLayers: []
   rigPSDLayers:
   - name: Requin_2_Serpents_1
@@ -269,6 +282,9 @@ ScriptedImporter:
     spriteID: df3a05f4983436744a0e3d985607085f
     layerID: 25
     mosaicPosition: {x: 466, y: 71}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Requin_2_Serpents_2
     spriteName: Requin_2_Serpents_2
     isGroup: 0
@@ -276,6 +292,9 @@ ScriptedImporter:
     spriteID: 4793bdfeba75f22449744be072f892d2
     layerID: 26
     mosaicPosition: {x: 466, y: 48}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Requin_2_Serpents_3
     spriteName: Requin_2_Serpents_3
     isGroup: 0
@@ -283,6 +302,19 @@ ScriptedImporter:
     spriteID: 7869c381f114a3d48889126df8310050
     layerID: 27
     mosaicPosition: {x: 466, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: Requin_2_Serpents_4
+    spriteName: 
+    isGroup: 0
+    parentIndex: -1
+    spriteID: 40bab303898fb1442b3767deaf5eceb0
+    layerID: 28
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 0
   - name: Requin_2_Serpents
     spriteName: Requin_2_Serpents
     isGroup: 0
@@ -290,6 +322,9 @@ ScriptedImporter:
     spriteID: bacf431ad04e43145b53cc98c290a983
     layerID: 4
     mosaicPosition: {x: 72, y: 108}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Requin_2_Dessous
     spriteName: Requin_2_Dessous
     isGroup: 0
@@ -297,6 +332,9 @@ ScriptedImporter:
     spriteID: 2afdd6205d4321641a509914a3d7d8ad
     layerID: 7
     mosaicPosition: {x: 4, y: 108}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Requin_2_Aura
     spriteName: Requin_2_Aura
     isGroup: 0
@@ -304,6 +342,9 @@ ScriptedImporter:
     spriteID: e39051dfb30b2d04eb376af278db8940
     layerID: 8
     mosaicPosition: {x: 382, y: 4}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
   - name: Requin_2
     spriteName: Requin_2
     isGroup: 0
@@ -311,13 +352,17 @@ ScriptedImporter:
     spriteID: e6a0c1d6bc3aed4429dd8e0c821541fe
     layerID: 23
     mosaicPosition: {x: 4, y: 4}
-  characterData:
-    bones: []
-    parts: []
-    dimension: {x: 0, y: 0}
-    characterGroups: []
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  sharedRigPSDLayers: []
+  pSDLayerImportSetting: []
+  importFileNodeState: 1
+  platformSettingsDirtyTick: 0
+  spriteSizeExpandChanged: 0
   generateGOHierarchy: 0
   textureAssetName: Lonis_Requins_2 Texture
   prefabAssetName: Lonis_Requins_2 Prefab
   spriteLibAssetName: Lonis_Requins_2 Sprite Lib
+  skeletonAssetName: 
   secondarySpriteTextures: []
