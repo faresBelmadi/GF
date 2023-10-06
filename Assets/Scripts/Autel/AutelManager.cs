@@ -111,7 +111,7 @@ public class AutelManager : MonoBehaviour
             if (capa.Spell?.IDSpell == Id)
             {
 
-                DescriptionSpellText.text = capa.Spell.Description;
+                DescriptionSpellText.text = $"<allcaps><b> {capa.Spell.Nom} </b></allcaps> \n" + capa.Spell.Description;
                 CostCapaText.text = "cout : " + capa.EssenceCost;
                 ModifStatCapa(capa);
                 if (capa.EssenceCost <= GameManager.instance.playerStat.Essence && !capa.Bought && capa.isBuyable)
