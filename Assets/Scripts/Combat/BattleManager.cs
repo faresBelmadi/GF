@@ -731,14 +731,16 @@ public class BattleManager : MonoBehaviour
             nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true);
             IdOrder.RemoveAll(c => c.id == id);
             IdSpeedDictionary.Remove(id);
-            if(killed.isMainEnemy)
+            if (killed.isMainEnemy)
             {
-                foreach (var item in EnemyScripts)
+                List<EnnemyBehavior> tempList = new List<EnnemyBehavior>(EnemyScripts);
+                foreach (var item in tempList)
                 {
-                    if(item.combatID != killed.combatID)
+                    if (item.combatID != killed.combatID)
                         item.Dead();
                 }
             }
+
             var todestroy = killed.gameObject;
             DeadEnemyScripts.Add(killed);
             EnemyScripts.RemoveAll(c => c.combatID == id);
@@ -754,6 +756,7 @@ public class BattleManager : MonoBehaviour
                 if (enemi != null)
                     currentIdTurn = enemi.id;
             }
+
             if (currentIdTurn != idPlayer)
                 EndTurn();
         }
