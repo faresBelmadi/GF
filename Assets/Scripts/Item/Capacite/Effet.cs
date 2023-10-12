@@ -238,7 +238,7 @@ public class Effet : ScriptableObject
                 break;
 
             case TypeEffet.DegatsRetourSurAttaque:
-                ModifState.Radiance += Mathf.FloorToInt(Pourcentage / 100f * LastDamageTaken);
+                ModifState.Radiance += Mathf.FloorToInt(Pourcentage / 100f * Caster.ForceAme);
                 break;
 
             case TypeEffet.BuffResilienceCoupRecu:
