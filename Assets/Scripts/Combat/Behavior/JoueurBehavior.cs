@@ -522,10 +522,22 @@ public class JoueurBehavior : CombatBehavior
             temp.GetComponent<TextAnimDegats>().Value = ModifStat.Radiance;
         }
 
+        if(effet.IsAttaqueEffet)
+        {
+            foreach (var item in Stat.ListBuffDebuff)
+            {
+                if (item.timerApplication == TimerApplication.Attaque)
+                    ApplicationBuffDebuff(TimerApplication.Attaque, item);
+            }
+        }
+
+
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
         _refBattleMan.PassifManager.ResolvePassifs();
 
+
         UpdateUI();
+
 
         if (Stat.Radiance <= 0)
         {
