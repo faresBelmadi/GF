@@ -13,4 +13,5 @@ public class Competence
     public int lvlCapa;
     public bool Bought;
     public bool Equiped;
+    public bool isBuyable;
 }
