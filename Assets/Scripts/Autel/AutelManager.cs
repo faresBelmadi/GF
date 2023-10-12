@@ -15,6 +15,7 @@ public class AutelManager : MonoBehaviour
     public GameObject MenuUiPanel;
     public GameObject LevelUpUiPanel;
 
+    [Header("Arbre")]
     public TextMeshProUGUI EssenceText;
     public TextMeshProUGUI DescriptionSpellText;
     public TextMeshProUGUI CostCapaText;
@@ -28,7 +29,16 @@ public class AutelManager : MonoBehaviour
 
     public TextMeshProUGUI ValeurRadiance, ValeurFA, ValeurVitesse, ValeurConviction, ValeurResilience, ValeurCalme, ValeurVolonter, ValeurConscience, ValeurClairvoyance;
     public TextMeshProUGUI ModifRadiance, ModifFA, ModifVitesse, ModifConviction, ModifResilience, ModifCalme, ModifVolonter, ModifConscience, ModifClairvoyance;
-    
+
+
+    [Header("Shop")]
+    public TextMeshProUGUI TextComp1, TextComp2, TextComp3;
+    public TextMeshProUGUI TextCoutComp1, TextCoutComp2, TextCoutComp3;
+
+    public Image IconSouvenirComp3;
+
+    public Button Comp1, Comp2, Comp3;
+
 
     void FixedUpdate()
     {
@@ -260,5 +270,18 @@ public class AutelManager : MonoBehaviour
     public void RetourMap()
     {
         StartCoroutine(GameManager.instance.pmm.EndAutel(false));
+    }
+
+
+
+
+    public void GetSouvenirs()
+    {
+
+    }
+
+    public void CoutChoix()
+    {
+
     }
 }
