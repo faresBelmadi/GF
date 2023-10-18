@@ -177,9 +177,11 @@ public class PlayerMapManager : MonoBehaviour
         CurrentRoomCamera.SetActive(false);
         GameManager.instance.BattleMan = null;
         MenuCamera.SetActive(true);
-        if (IsLoot == true)
+        if (IsLoot)
         {
-            LoadMenuStat();
+            //Afficher le menutStat
+            // + PopUp new Souvenir
+            ShowMenuStat();
         }
         yield return SceneManager.UnloadSceneAsync(s);
 
@@ -225,21 +227,23 @@ public class PlayerMapManager : MonoBehaviour
         MenuCamera.SetActive(true);
         if (Loot == true)
         {
-            LoadMenuStat();
+            ShowMenuStat();
         }
         yield return SceneManager.UnloadSceneAsync(s);
     }
 
-    public void LoadMenuStat()
+    public void ShowMenuStat()
     {
-        StartCoroutine("LoadSceneAsync", "MenuStat");
+        UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
+        uiMondeManager.EnableStat();
+        //StartCoroutine("LoadSceneAsync", "MenuStat");
     }
 
     void StartMenuStat()
     {
         //CurrentRoomCamera = rootScene.First(c => c.name == "MenuStatCamera");
         //GameManager.instance.StatMan = rootScene.First(c => c.name == "MenuStatManager").GetComponent<MenuStatManager>();
-        //GameManager.instance.LoadMenuStat();
+        //GameManager.instance.ShowMenuStat();
         //CurrentRoomCamera.SetActive(true);
         //MenuCamera.SetActive(false);
     }

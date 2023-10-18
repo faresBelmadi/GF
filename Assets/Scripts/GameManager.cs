@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour {
                 };
                 for(int i = 0; i < AllSouvenir.Count; i++)
                 {
-                    //CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
+                    CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
                 }
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
@@ -247,10 +247,10 @@ public class GameManager : MonoBehaviour {
         
     public void StartStatJoueur()
     {
-        pmm.LoadMenuStat();
+        pmm.ShowMenuStat();
     }
 
-    //public void LoadMenuStat()
+    //public void ShowMenuStat()
     //{
     //    StatMan.StartMenuStat();
     //}

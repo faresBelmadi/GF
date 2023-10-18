@@ -43,6 +43,7 @@ namespace UnityEngine.UI.Extensions
         private CanvasGroup _canvasGroup;
         internal bool isValid;
 
+        private Vector3 OriginalScale;
 
         #region IBeginDragHandler Members
 
