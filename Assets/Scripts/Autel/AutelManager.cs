@@ -14,6 +14,9 @@ public class AutelManager : MonoBehaviour
 {
     public GameObject MenuUiPanel;
     public GameObject LevelUpUiPanel;
+    public GameObject ShopUiPanel;
+    public int Etage = 1;
+    public JoueurStat stats;
 
     [Header("Arbre")]
     public TextMeshProUGUI EssenceText;
@@ -50,6 +53,15 @@ public class AutelManager : MonoBehaviour
     public Sprite checkMark;
 
 
+    [Header("Shop")]
+    public GameObject ButtonChoix1, ButtonChoix2, ButtonChoix3, ButtonReturn;
+    public List<int> CoutChoix1, CoutChoix2, CoutChoix3, CoutStatChoix3;
+    public List<LootRarity> LootRarityForChoix1;
+    public GameObject SpawnSouvenirChoix3, SouvenirChoix3;
+    public GameObject SouvenirPrefab;
+    public List<Souvenir> listAllSouvenir;
+
+
     void FixedUpdate()
     {
         EssenceText.text = "Essence : " + GameManager.instance.playerStat.Essence;
@@ -58,8 +70,16 @@ public class AutelManager : MonoBehaviour
 
     public void ShowMenuUiPanel()
     {
+        ShopUiPanel.SetActive(false);
         LevelUpUiPanel.SetActive(false);
         MenuUiPanel.SetActive(true);
+    }
+
+    public void SetShopActive()
+    {
+        ShopUiPanel.SetActive(true);
+        MenuUiPanel.SetActive(false);
+        SetUpShop();
     }
 
     public void SetLvlUpActive()
@@ -87,7 +107,7 @@ public class AutelManager : MonoBehaviour
 
     public void SetUpStatsDescription()
     {
-        JoueurStat stats = GameManager.instance.playerStat;
+        stats = GameManager.instance.playerStat;
         ValeurRadiance.text = stats.RadianceMax.ToString();
         ValeurFA.text = stats.ForceAme.ToString();
         ValeurVitesse.text = stats.Vitesse.ToString();
@@ -295,13 +315,106 @@ public class AutelManager : MonoBehaviour
 
 
 
-    public void GetSouvenirs()
+    public void SetUpShop()
     {
-
+        SetUpStatsDescription();
     }
 
-    public void CoutChoix()
+    public void GetSouvenirs()
     {
+        listAllSouvenir = GameManager.instance.CopyAllSouvenir;
+    }
 
+    public void CoutChoix(int Choix)
+    {
+        switch (Etage)
+        {
+            case 1:
+                switch (Choix)
+                {
+                    case 1:
+                        stats.Essence -= CoutChoix1[0];
+                        break;
+                    case 2:
+                        stats.Essence -= CoutChoix2[0];
+                        break;
+                    case 3:
+                        stats.Essence -= CoutChoix3[0];
+                        stats.Calme -= CoutStatChoix3[0];
+                        break;
+                }
+                break;
+            case 2:
+                switch (Choix)
+                {
+                    case 1:
+                        stats.Essence -= CoutChoix1[1];
+                        break;
+                    case 2:
+                        stats.Essence -= CoutChoix2[1];
+                        break;
+                    case 3:
+                        stats.Essence -= CoutChoix3[1];
+                        stats.Radiance -= CoutStatChoix3[1];
+                        break;
+                }
+                break;
+            case 3:
+                switch (Choix)
+                {
+                    case 1:
+                        stats.Essence -= CoutChoix1[2];
+                        break;
+                    case 2:
+                        stats.Essence -= CoutChoix2[2];
+                        break;
+                    case 3:
+                        stats.Essence -= CoutChoix3[2];
+                        stats.Clairvoyance -= CoutStatChoix3[2];
+                        break;
+                }
+                break;
+        }
+    }
+
+    public void initChoix3()
+    {
+        SouvenirChoix3 = Instantiate(SouvenirPrefab, SpawnSouvenirChoix3.transform);
+        switch (Etage)
+        {
+            case 1:
+                if(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare) == null)
+                {
+                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique));
+                }
+                else
+                {
+                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare));
+                }
+                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
+                break;
+            case 2:
+                if (listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique) == null)
+                {
+                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare));
+                }
+                else
+                {
+                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique));
+                }
+                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
+                break;
+            case 3:
+                if (listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Legendaire) == null)
+                {
+                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique));
+                }
+                else
+                {
+                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Legendaire));
+                }
+                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
+                break;
+        }
     }
 }

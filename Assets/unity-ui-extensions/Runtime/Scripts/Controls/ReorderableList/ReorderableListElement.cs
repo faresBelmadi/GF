@@ -43,6 +43,7 @@ namespace UnityEngine.UI.Extensions
         private CanvasGroup _canvasGroup;
         internal bool isValid;
 
+        private Vector3 OriginalScale;
 
         #region IBeginDragHandler Members
 
@@ -375,7 +376,8 @@ namespace UnityEngine.UI.Extensions
                         return;
                     }
                     RefreshSizes();
-                    _draggingObject.SetParent(_currentReorderableListRaycasted.Content, false);
+                    _draggingObject.SetParent(_currentReorderableListRaycasted.Content, true);
+                    //_draggingObject.SetParent(_currentReorderableListRaycasted.Content, false);
                     _draggingObject.rotation = _currentReorderableListRaycasted.transform.rotation;
                     _draggingObject.SetSiblingIndex(_fakeElement.GetSiblingIndex());
                     // Force refreshing both lists because otherwise we get inappropriate FromList in ReorderableListEventStruct 

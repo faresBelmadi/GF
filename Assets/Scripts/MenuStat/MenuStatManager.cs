@@ -96,10 +96,10 @@ public class MenuStatManager : MonoBehaviour
 
     #region Update
 
-    //void Update()
-    //{
-    //    UpdateStatUI();
-    //}
+    void Update()
+    {
+        UpdateStatUI();
+    }
 
     public void UpdateStatUI()
     {
@@ -386,7 +386,7 @@ public class MenuStatManager : MonoBehaviour
     {
         StatTemp.ListSouvenir = EquipedSouvenir;
         GameManager.instance.playerStat = StatTemp;
-        StartCoroutine(GameManager.instance.pmm.EndMenuStat());
+        GameManager.instance.pmm.EndMenuStat();
     }
 
     #endregion End
