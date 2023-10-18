@@ -71,15 +71,16 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < _encounter.LootRarity.Count; i++)
         {
             if (random <= _encounter.LootRarity[i].Pourcentage &&
-                GameManager.instance.CopyAllSouvenir.FirstOrDefault(c =>
-                    c.Rarete == _encounter.LootRarity[i].rareter) != null)
+                GameManager.instance.CopyAllSouvenir.Any(x => x.Rarete == _encounter.LootRarity[i].rareter))
             {
-                string NameLoot = GameManager.instance.CopyAllSouvenir
-                    .FirstOrDefault(c => c.Rarete == _encounter.LootRarity[i].rareter).Nom;
-                player.Stat.ListSouvenir.Add(
-                    Instantiate(GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
-                GameManager.instance.CopyAllSouvenir.Remove(
-                    GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
+                var allSouvenirRareter = GameManager.instance.CopyAllSouvenir
+                    .Where(x => x.Rarete == _encounter.LootRarity[i].rareter).ToList();
+                int randomSouvenir = UnityEngine.Random.Range(0, allSouvenirRareter.Count());
+
+                string NameLoot = allSouvenirRareter[randomSouvenir].Nom;
+                var newSouvenir = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot);
+                player.Stat.ListSouvenir.Add(Instantiate(newSouvenir));
+                GameManager.instance.CopyAllSouvenir.Remove(newSouvenir);
                 IsLoot = true;
                 return;
             }
