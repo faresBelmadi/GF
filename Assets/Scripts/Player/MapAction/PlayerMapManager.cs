@@ -248,11 +248,14 @@ public class PlayerMapManager : MonoBehaviour
         //MenuCamera.SetActive(false);
     }
 
-    public IEnumerator EndMenuStat()
+    public void EndMenuStat()
     {
-        CurrentRoomCamera.SetActive(false);
+        //CurrentRoomCamera.SetActive(false);
         GameManager.instance.StatMan = null;
-        MenuCamera.SetActive(true);
-        yield return SceneManager.UnloadSceneAsync(s);
+        //MenuCamera.SetActive(true);
+        //yield return SceneManager.UnloadSceneAsync(s);
+
+        UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
+        uiMondeManager.EnableMonde();
     }
 }
