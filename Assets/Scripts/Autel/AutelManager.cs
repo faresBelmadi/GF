@@ -353,6 +353,7 @@ public class AutelManager : MonoBehaviour
 
     public void RetourMap()
     {
+        GameManager.instance.playerStat.ListSouvenir = stats.ListSouvenir;
         StartCoroutine(GameManager.instance.pmm.EndAutel(Loot));
     }
 
@@ -361,7 +362,8 @@ public class AutelManager : MonoBehaviour
 
     public void SetUpShop()
     {
-        SetUpStatsDescription();
+        GetSouvenirs();
+        initChoix3();
     }
 
     public void GetSouvenirs()

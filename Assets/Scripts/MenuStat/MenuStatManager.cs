@@ -24,14 +24,18 @@ public class MenuStatManager : MonoBehaviour
 
     public GameObject ArbreCompetencePrefab;
     public GameObject ArbreCompetence, Canvas, Menu;
- 
+
     #region Start
 
-    public void Start/*MenuStat*/()
+    public void OnEnable/*MenuStat*/()
     {
+        foreach (var item in Souvenir)
+        {
+            Destroy(item);
+        }
         Stat = GameManager.instance.playerStat;
         StatTemp = Instantiate(Stat);
-        foreach (var item in Stat.ListSouvenir)
+        foreach (var item in StatTemp.ListSouvenir)
         {
             GameObject temp;
             if (item.Equiped == true)
