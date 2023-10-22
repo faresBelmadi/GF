@@ -63,44 +63,53 @@ public class AutelManager : MonoBehaviour
     public GameObject SouvenirPrefab;
     public List<Souvenir> listAllSouvenir;
 
+    private void Start()
+    {
+        stats = GameManager.instance.playerStat;
 
+        SetUpStatsDescription();
+    }
     void FixedUpdate()
     {
         EssenceText.text = "Essence : " + stats.Essence;
         SetUpStatsDescription();
-        UpdateCoutChoix();
-        if (stats.Essence < CoutChoix1[Etage - 1])
+        if(ShopUiPanel.activeInHierarchy == true)
         {
-            ButtonChoix1.GetComponentInChildren<Button>().interactable = false;
-        }
-        if (stats.Essence < CoutChoix2[Etage - 1])
-        {
-            ButtonChoix2.GetComponentInChildren<Button>().interactable = false;
-        }
-        if (stats.Essence < CoutChoix3[Etage - 1])
-        {
-            ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
-        }
-        switch (Etage)
-        {
-            case 1:
-                if (stats.Calme < CoutStatChoix3[Etage - 1])
-                {
-                    ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
-                }
-                break;
-            case 2:
-                if (stats.Radiance < CoutStatChoix3[Etage - 1])
-                {
-                    ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
-                }
-                break;
-            case 3:
-                if (stats.Clairvoyance < CoutStatChoix3[Etage - 1])
-                {
-                    ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
-                }
-                break;
+                UpdateCoutChoix();
+            if (stats.Essence < CoutChoix1[Etage - 1])
+            {
+                ButtonChoix1.GetComponentInChildren<Button>().interactable = false;
+            }
+            if (stats.Essence < CoutChoix2[Etage - 1])
+            {
+                ButtonChoix2.GetComponentInChildren<Button>().interactable = false;
+            }
+            if (stats.Essence < CoutChoix3[Etage - 1])
+            {
+                ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
+            }
+            switch (Etage)
+            {
+                case 1:
+                    if (stats.Calme < CoutStatChoix3[Etage - 1])
+                    {
+                        ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
+                    }
+                    break;
+                case 2:
+                    if (stats.Radiance < CoutStatChoix3[Etage - 1])
+                    {
+                        ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
+                    }
+                    break;
+                case 3:
+                    if (stats.Clairvoyance < CoutStatChoix3[Etage - 1])
+                    {
+                        ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
+                    }
+                    break;
+            }
+
         }
     }
 
@@ -138,7 +147,6 @@ public class AutelManager : MonoBehaviour
             //spellIcon.gameObject.GetComponent<Image>().sprite = GameManager.instance.playerStat.ListSpell[0].Sprite;
         }
 
-        SetUpStatsDescription();
     }
 
     public void SetUpStatsDescription()
