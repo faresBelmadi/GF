@@ -401,7 +401,7 @@ public class AutelManager : MonoBehaviour
                         break;
                     case 3:
                         stats.Essence -= CoutChoix3[1];
-                        stats.Radiance -= CoutStatChoix3[1];
+                        stats.RadianceMax -= CoutStatChoix3[1];
                         break;
                 }
                 break;
@@ -426,6 +426,7 @@ public class AutelManager : MonoBehaviour
     public void initChoix3()
     {
         SouvenirChoix3 = Instantiate(SouvenirPrefab, SpawnSouvenirChoix3.transform);
+        listAllSouvenir = listAllSouvenir.OrderBy(a => UnityEngine.Random.value).ToList();
         switch (Etage)
         {
             case 1:
