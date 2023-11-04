@@ -18,6 +18,7 @@ public class Souvenir : ScriptableObject
     [TextArea(5, 10)]
     public string Description;
     public Sprite Icon;
+    public Spell SouvenirSpell;
 
     private void Awake()
     {

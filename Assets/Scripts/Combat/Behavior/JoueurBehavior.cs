@@ -56,12 +56,31 @@ public class JoueurBehavior : CombatBehavior
         foreach (var item in Stat.ListSpell)
         {
             var temp = Instantiate(SpellPrefab, SpellsSpawn.transform);
-            temp.GetComponent<SpellCombat>().Action = item;
+            Spell SpelleToUse = CheckSouvenirSpell(item);
+            temp.GetComponent<SpellCombat>().Action = SpelleToUse;
             temp.GetComponent<SpellCombat>().Act = DoAction;
             temp.GetComponent<SpellCombat>().StartUp();
 
             Spells.Add(temp);
         }
+    }
+
+    private Spell CheckSouvenirSpell(Spell item)
+    {
+        if (Stat.ListSouvenir == null || Stat.ListSouvenir.Count == 0)
+            return item;
+        foreach (var souvenir in Stat.ListSouvenir)
+        {
+            if (souvenir.SouvenirSpell != null && souvenir.Equiped)
+            {
+                if (souvenir.SouvenirSpell.IDSpell == item.IDSpell)
+                {
+                    return souvenir.SouvenirSpell;
+                }
+            }
+        }
+
+        return item;
     }
 
     public void UpdateUI()
