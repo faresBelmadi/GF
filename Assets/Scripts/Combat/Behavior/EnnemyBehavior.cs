@@ -294,6 +294,7 @@ public class EnnemyBehavior : CombatBehavior
     {
         //A Mettre une fois les combats terminer
         LaunchAnimBool();
+        DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
         _refBattleMan.LaunchSpellEnnemi(nextAction);
     }
 
@@ -370,35 +371,34 @@ public class EnnemyBehavior : CombatBehavior
         //ResetStat();
         //foreach (var item in Stat.ListBuffDebuff)
         //{
-            if(toApply.IsConsomable && toApply.TimingConsomationMinimum <= 1)
+        if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant || toApply.DirectApplication)
+        {
+            foreach (var effet in toApply.Effet)
             {
-                if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant || toApply.DirectApplication)
+                _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
+                /*if (item.CibleApplication == effet.Cible)
                 {
-                    foreach (var effet in toApply.Effet)
-                    {
-                        _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
-                        /*if (item.CibleApplication == effet.Cible)
-                        {
-                            ApplicationEffet(effet);
-                        }
-                        else
-                        {
-                            //A Mettre une fois les combats terminer
-                            GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
-                        }*/
-                    }
-                    if (toApply.IsConsomable == true && !toApply.DirectApplication)
-                    {
-                        toApply.Temps = 0;
-                        foreach (var ToAdd in toApply.Consomation)
-                        {
-                            AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
-                        }
-                    }
-                    if (toApply.DirectApplication)
-                        toApply.DirectApplication = false;
+                    ApplicationEffet(effet);
+                }
+                else
+                {
+                    //A Mettre une fois les combats terminer
+                    GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
+                }*/
+            }
+            if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1)
+            {
+                toApply.Temps = 0;
+                foreach (var ToAdd in toApply.Consomation)
+                {
+                    AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
                 }
             }
+            else
+                toApply.TimingConsomationMinimum--;
+            if (toApply.DirectApplication)
+                toApply.DirectApplication = false;
+        }
         if (skip)
             EndTurn();
     }
@@ -520,6 +520,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void GetAttacked()
     {
+        DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
         this.GetComponent<Animator>().SetBool("IsAttacked", true);
     }
 

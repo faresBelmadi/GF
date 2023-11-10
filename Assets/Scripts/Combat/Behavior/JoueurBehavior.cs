@@ -467,7 +467,7 @@ public class JoueurBehavior : CombatBehavior
                     }
                 }
                 else
-                toApply.TimingConsomationMinimum--;
+                    toApply.TimingConsomationMinimum--;
 
                 if (toApply.DirectApplication)
                     toApply.DirectApplication = false;
