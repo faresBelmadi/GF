@@ -360,6 +360,9 @@ public class JoueurBehavior : CombatBehavior
         else
             AnimationController.SendAnimBuff(AfterAnim);
 
+
+        DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
+
         _refBattleMan.LaunchAnimAttacked();
     }
 
@@ -561,6 +564,8 @@ public class JoueurBehavior : CombatBehavior
 
     public void getAttacked()
     {
+        
+        DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
         AnimationController.GetAttacked();
     }
     
