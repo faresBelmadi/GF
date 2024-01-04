@@ -53,8 +53,7 @@ public class TutoAutelManager : MonoBehaviour
     {
         if (currentStep >= Explications.Length)
         {
-            TutoManager.Instance.StepTuto++;
-            SceneManager.LoadScene("Tuto");
+            TutoManager.Instance.NextStep();
         }
         else
         {

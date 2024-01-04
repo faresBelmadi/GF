@@ -20,14 +20,16 @@ public class TutoBattleManager : MonoBehaviour
 
     void DialogueEnableSetup()
     {
-        DialogueManager.SetupDialogue(TutoManager.Instance._encounter[TutoManager.Instance.StepTuto]);
+        Debug.Log("Battle Tuto" + TutoManager.Instance.StepBatlleTuto);
+        DialogueManager.SetupDialogue(TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto]);
     }
 
     void SpawnEnemy()
     {
         List<Transform> used = new List<Transform>();
-        foreach (var item in TutoManager.Instance._encounter[TutoManager.Instance.StepTuto].ToFight)
+        foreach (var item in TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight)
         {
+            //changer pour que le 0 apparaissent tjrs en pos1 et l'autre en pos 3
             var index = UnityEngine.Random.Range(0, spawnPos.Length);
             while (used.Contains(spawnPos[index]))
             {

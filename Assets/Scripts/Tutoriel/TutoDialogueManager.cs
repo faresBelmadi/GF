@@ -9,12 +9,18 @@ using UnityEngine.UI;
 
 public class TutoDialogueManager : DialogueManager
 {
-    public GameObject HpHolder;
+    public GameObject UiHolder;
+    public Image Hpfill;
+    public GameObject Conscience;
+    public Image ConscienceFill;
 
+    //public RectTransform positionDialogueOriginal;
+    //public RectTransform positionDialogueUp;
     public void EndDialogueTuto()
     {
         Debug.Log("Dialogue Tuto Fini!");
-        SceneManager.LoadScene("TutoMonde");
+        TutoManager.Instance.NextStep();
+        //SceneManager.LoadScene("TutoMonde");
     }
 
     public void GetRéponse(int i)
@@ -22,9 +28,34 @@ public class TutoDialogueManager : DialogueManager
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.TutoDialogueAndAction)
         {
             Debug.Log(DialogueIndex);
-            if (DialogueIndex == 2)
+            if (DialogueIndex == 1 && TutoManager.Instance.StepBatlleTuto == 0)
             {
-                HpHolder.SetActive(true);
+                UiHolder.SetActive(true);
+                Hpfill.fillAmount = 0.1f;
+                //Dialogue move up
+            }
+            if (DialogueIndex == 4 && TutoManager.Instance.StepBatlleTuto == 0)
+            {
+                //UiHolder.SetActive(true);
+                Hpfill.fillAmount = 1f;
+                //Dialogue move up
+            }
+
+            if ((DialogueIndex == 2 || DialogueIndex == 5) && TutoManager.Instance.StepBatlleTuto == 1)
+            {
+                UiHolder.SetActive(true);
+                Hpfill.fillAmount = 1f;
+                Conscience.SetActive(true);
+                ConscienceFill.fillAmount = 0.2f;
+            }
+            if ((DialogueIndex == 3 || DialogueIndex == 6) && TutoManager.Instance.StepBatlleTuto == 1)
+            {
+                //UiHolder.SetActive(true);
+                //Hpfill.fillAmount = 1f;
+                //Conscience.SetActive(true);
+                ConscienceFill.fillAmount = 0.1f;
+                //GoeargeTapeLeMob
+                //Remplacer le mob par de l'essence
             }
         }
         base.GetRéponse(i);
