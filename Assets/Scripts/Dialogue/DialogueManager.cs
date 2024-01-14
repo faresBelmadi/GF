@@ -250,9 +250,20 @@ public class DialogueManager : MonoBehaviour
 
     public void StartCombat()
     {
-        UIJoueur.SetActive(true);
-        UIDialogue.SetActive(false);
-        GameManager.instance.BattleMan.StartCombat();
+        if (TutoManager.Instance != null)
+        {
+           var gO = GameObject.Find("TutoPanel");
+           var child = gO.transform.GetChild(0);
+           child.gameObject.SetActive(true);
+           UIDialogue.SetActive(false);
+           gO.GetComponent<TutoPanel>().ShowExplication();
+        }
+        else
+        {
+            UIJoueur.SetActive(true);
+            UIDialogue.SetActive(false);
+            GameManager.instance.BattleMan.StartCombat();
+        }
     }
 
     public void EndDialogueFonction()

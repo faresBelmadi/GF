@@ -207,7 +207,7 @@ public class BattleManager : MonoBehaviour
         {
 
             var item = _encounter.ToFight[i];
-        
+
             var index = UnityEngine.Random.Range(0, spawnPos.Length);
             while (used.Contains(spawnPos[index]))
             {
@@ -217,19 +217,25 @@ public class BattleManager : MonoBehaviour
             used.Add(spawnPos[index]);
 
             var temp = Instantiate(item.Spawnable, spawnPos[index].position, Quaternion.identity, spawnPos[index]);
+            if (temp != null)
+            {
+                SpawnedEnemy.Add(temp);
+            }
             var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
             //instantiate tout les so modifiable
-            tempCombatScript.Stat = Instantiate(item);
-            tempCombatScript.SetUp();
-            tempCombatScript.EndTurnBM = EndTurn;
-            tempCombatScript.isMainEnemy = i == _encounter.idMainMob ? true : false;
-            SpawnedEnemy.Add(temp);
-            EnemyScripts.Add(tempCombatScript);
+            if (tempCombatScript != null)
+            {
+                tempCombatScript.Stat = Instantiate(item);
+                tempCombatScript.SetUp();
+                tempCombatScript.EndTurnBM = EndTurn;
+                tempCombatScript.isMainEnemy = i == _encounter.idMainMob ? true : false;
+                EnemyScripts.Add(tempCombatScript);
 
-            IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
-            tempCombatScript.combatID = idIndexer;
-            tempCombatScript.ChooseNextAction();
-            idIndexer++;
+                IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
+                tempCombatScript.combatID = idIndexer;
+                tempCombatScript.ChooseNextAction();
+                idIndexer++;
+            }
         }
     }
 
@@ -253,7 +259,12 @@ public class BattleManager : MonoBehaviour
         player.Stat.Tension = 0;
         GameManager.instance.playerStat = player.Stat;
         Debug.Log(IsLoot);
-        StartCoroutine(GameManager.instance.pmm.EndBattle(IsLoot));
+        if (TutoManager.Instance != null)
+        {
+            SceneManager.LoadScene("Tuto");
+        }
+        else 
+            StartCoroutine(GameManager.instance.pmm.EndBattle(IsLoot));
     }
 
     #endregion Mise en place combat & fin
@@ -749,7 +760,23 @@ public class BattleManager : MonoBehaviour
             Destroy(todestroy);
 
             if (EnemyScripts.Count <= 0)
-                StartCoroutine("GatherEssence");
+            {
+                if (TutoManager.Instance != null)
+                {
+                    //TutoManager.Instance.NextStep();
+                    var gO = GameObject.Find("TutoPanel");
+                    var child = gO.transform.GetChild(0);
+                    child.gameObject.SetActive(true);
+                    //UIDialogue.SetActive(false);
+                    gO.GetComponent<TutoPanel>().ShowExplication();
+                    //Ici le TutoPanel
+                }
+                else
+                {
+                    StartCoroutine("GatherEssence");
+                }
+
+            }
 
             if (currentIdTurn == id && IdOrder.Count > 2)
             {

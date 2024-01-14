@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI.Extensions;
@@ -7,9 +8,8 @@ using UnityEngine.UI.Extensions;
 public class TutoManager : MonoBehaviour
 {
     public Encounter[] _encounter;
-    
-    [SerializeField]
-    private DialogueManager DialogueManager;
+
+    [SerializeField] private DialogueManager DialogueManager;
 
     public int StepTuto;
     public int StepMapTuto;
@@ -46,19 +46,59 @@ public class TutoManager : MonoBehaviour
 
     private void LoadNextStep()
     {
-        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 6)
+        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 5 || StepTuto == 7)
         {
             StepMapTuto++;
             SceneManager.LoadScene("TutoMonde");
         }
-        else if (StepTuto == 2 || StepTuto == 5 || StepTuto == 7)
+        else if (StepTuto == 2 /*|| StepTuto == 7 */|| StepTuto == 8)
         {
             StepBatlleTuto++;
             SceneManager.LoadScene("Tuto");
         }
-        else if(StepTuto == 4)
+        else if (StepTuto == 6)
+        {
+            StepBatlleTuto++;
+            StartCoroutine("LoadSceneAsync", "TutoBattle");
+            //LoadSceneAsync("TutoBattle");
+        }
+        else if (StepTuto == 4)
         {
             SceneManager.LoadScene("TutoAutel");
         }
+    }
+
+    //public GameObject MenuCamera;
+    public GameObject CurrentRoomCamera;
+    GameObject[] rootScene;
+    Scene s;
+
+    IEnumerator LoadSceneAsync(string name)
+    {
+        yield return SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
+        s = SceneManager.GetSceneByName(name);
+
+        rootScene = s.GetRootGameObjects();
+        StartBattle();
+    }
+
+    //public void LoadSceneAsync(string name)
+    //{
+    //    SceneManager.LoadScene(name);
+    //    s = SceneManager.GetSceneByName(name);
+
+    //    rootScene = s.GetRootGameObjects(); 
+    //    StartBattle();
+    //}
+
+    void StartBattle()
+    {
+        CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
+        var BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
+        //TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto]
+        BattleMan.LoadEnemy(Instantiate(TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto]));
+        CurrentRoomCamera.SetActive(true);
+        SceneManager.UnloadSceneAsync("TutoMonde");
+        //MenuCamera.SetActive(false);
     }
 }

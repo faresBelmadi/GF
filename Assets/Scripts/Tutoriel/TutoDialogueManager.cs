@@ -9,6 +9,8 @@ using UnityEngine.UI;
 
 public class TutoDialogueManager : DialogueManager
 {
+    public TutoBattleManager TutoBattleManager;
+    public GameObject CrystauxEssence;
     public GameObject UiHolder;
     public Image Hpfill;
     public GameObject Conscience;
@@ -27,7 +29,6 @@ public class TutoDialogueManager : DialogueManager
     {
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.TutoDialogueAndAction)
         {
-            Debug.Log(DialogueIndex);
             if (DialogueIndex == 1 && TutoManager.Instance.StepBatlleTuto == 0)
             {
                 UiHolder.SetActive(true);
@@ -50,11 +51,11 @@ public class TutoDialogueManager : DialogueManager
             }
             if ((DialogueIndex == 3 || DialogueIndex == 6) && TutoManager.Instance.StepBatlleTuto == 1)
             {
-                //UiHolder.SetActive(true);
-                //Hpfill.fillAmount = 1f;
-                //Conscience.SetActive(true);
                 ConscienceFill.fillAmount = 0.1f;
                 //GoeargeTapeLeMob
+                var toDelete = TutoBattleManager.spawnPos[2].GetChild(0);
+                Destroy(toDelete.gameObject);
+                Instantiate(CrystauxEssence, TutoBattleManager.spawnPos[2].position, Quaternion.identity, TutoBattleManager.spawnPos[2]);
                 //Remplacer le mob par de l'essence
             }
         }

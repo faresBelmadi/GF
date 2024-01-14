@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
+using static UnityEditor.Progress;
 
 public class TutoBattleManager : MonoBehaviour
 {
@@ -27,21 +29,36 @@ public class TutoBattleManager : MonoBehaviour
     void SpawnEnemy()
     {
         List<Transform> used = new List<Transform>();
-        foreach (var item in TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight)
+        int posIndex = 0;
+        for (int i = 0; i < TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight.Count; i++)
         {
-            //changer pour que le 0 apparaissent tjrs en pos1 et l'autre en pos 3
-            var index = UnityEngine.Random.Range(0, spawnPos.Length);
-            while (used.Contains(spawnPos[index]))
-            {
-                index = UnityEngine.Random.Range(0, spawnPos.Length);
-            }
+            var ennemi = TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight[i];
+            var temp = Instantiate(ennemi.Spawnable, spawnPos[posIndex].position, Quaternion.identity, spawnPos[posIndex]);
 
-            used.Add(spawnPos[index]);
-
-            var temp = Instantiate(item.Spawnable, spawnPos[index].position, Quaternion.identity, spawnPos[index]);
-            
             var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
             Destroy(tempCombatScript);
+            posIndex += 2;
         }
+        //foreach (var item in TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight)
+        //{
+        //    //changer pour que le 0 apparaissent tjrs en pos1 et l'autre en pos 3
+        //    var index = UnityEngine.Random.Range(0, spawnPos.Length);
+        //    while (used.Contains(spawnPos[index]))
+        //    {
+        //        index = UnityEngine.Random.Range(0, spawnPos.Length);
+        //    }
+
+        //    used.Add(spawnPos[index]);
+
+        //    var temp = Instantiate(item.Spawnable, spawnPos[index].position, Quaternion.identity, spawnPos[index]);
+            
+        //    var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
+        //    Destroy(tempCombatScript);
+        //}
+    }
+
+    public void SwapEnemy()
+    {
+
     }
 }
