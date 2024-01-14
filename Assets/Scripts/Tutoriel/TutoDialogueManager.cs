@@ -15,6 +15,7 @@ public class TutoDialogueManager : DialogueManager
     public Image Hpfill;
     public GameObject Conscience;
     public Image ConscienceFill;
+    public GameObject JoueurHolder;
 
     //public RectTransform positionDialogueOriginal;
     //public RectTransform positionDialogueUp;
@@ -33,13 +34,11 @@ public class TutoDialogueManager : DialogueManager
             {
                 UiHolder.SetActive(true);
                 Hpfill.fillAmount = 0.1f;
-                //Dialogue move up
             }
+
             if (DialogueIndex == 4 && TutoManager.Instance.StepBatlleTuto == 0)
             {
-                //UiHolder.SetActive(true);
                 Hpfill.fillAmount = 1f;
-                //Dialogue move up
             }
 
             if ((DialogueIndex == 2 || DialogueIndex == 5) && TutoManager.Instance.StepBatlleTuto == 1)
@@ -49,16 +48,35 @@ public class TutoDialogueManager : DialogueManager
                 Conscience.SetActive(true);
                 ConscienceFill.fillAmount = 0.2f;
             }
+
             if ((DialogueIndex == 3 || DialogueIndex == 6) && TutoManager.Instance.StepBatlleTuto == 1)
             {
                 ConscienceFill.fillAmount = 0.1f;
                 //GoeargeTapeLeMob
                 var toDelete = TutoBattleManager.spawnPos[2].GetChild(0);
                 Destroy(toDelete.gameObject);
-                Instantiate(CrystauxEssence, TutoBattleManager.spawnPos[2].position, Quaternion.identity, TutoBattleManager.spawnPos[2]);
-                //Remplacer le mob par de l'essence
+                Instantiate(CrystauxEssence, TutoBattleManager.spawnPos[2].position, Quaternion.identity,
+                    TutoBattleManager.spawnPos[2]);
+            }
+
+            if (DialogueIndex == 0 && TutoManager.Instance.StepBatlleTuto == 3)
+            {
+                TutoBattleManager.used[1].gameObject.SetActive(true);
+            }
+
+            if (DialogueIndex == 5 && TutoManager.Instance.StepBatlleTuto == 3)
+            {
+                JoueurHolder.SetActive(false);
+            }
+
+            if (DialogueIndex == 6 && TutoManager.Instance.StepBatlleTuto == 3)
+            {
+                Destroy(GameManager.instance.gameObject);
+                SceneManager.LoadSceneAsync(1);
+                Destroy(TutoManager.Instance.gameObject);
             }
         }
+        
         base.GetRéponse(i);
     }
 }

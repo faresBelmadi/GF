@@ -13,6 +13,8 @@ public class TutoBattleManager : MonoBehaviour
     [SerializeField]
     private DialogueManager DialogueManager;
 
+    public List<Transform> used = new List<Transform>();
+
     public void Start()
     {
         SpawnEnemy();
@@ -22,22 +24,25 @@ public class TutoBattleManager : MonoBehaviour
 
     void DialogueEnableSetup()
     {
-        Debug.Log("Battle Tuto" + TutoManager.Instance.StepBatlleTuto);
         DialogueManager.SetupDialogue(TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto]);
     }
 
     void SpawnEnemy()
     {
-        List<Transform> used = new List<Transform>();
         int posIndex = 0;
         for (int i = 0; i < TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight.Count; i++)
         {
             var ennemi = TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight[i];
             var temp = Instantiate(ennemi.Spawnable, spawnPos[posIndex].position, Quaternion.identity, spawnPos[posIndex]);
-
+            used.Add(spawnPos[posIndex]);
             var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
             Destroy(tempCombatScript);
             posIndex += 2;
+        }
+
+        if (TutoManager.Instance.StepBatlleTuto == 3)
+        {
+            used[1].gameObject.SetActive(false);
         }
         //foreach (var item in TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight)
         //{

@@ -21,8 +21,6 @@ public class TutoMondeManager : MonoBehaviour
 
     private void DisplayInfoTutoMonde()
     {
-        Debug.Log("Map Tuto" + TutoManager.Instance.StepMapTuto);
-
         TutoTextDisplay.text = TutoMondeText[TutoManager.Instance.StepMapTuto.ToString()];
     }
 
@@ -34,6 +32,8 @@ public class TutoMondeManager : MonoBehaviour
         TutoMondeText.Add("2",
             "Cependant, tu ne vas pas garder ces cristaux éternellement. Avançons, que je puisse te montrer comment rendre un dernier hommage à ces âme fragmentées.");
         TutoMondeText.Add("3",
+            "Tu vas avoir l’occasion de retrouver tes sensations : j’ai l’impression que quelqu’un t’attend avec impatience et a hâte de régler ses comptes avec toi.");
+        TutoMondeText.Add("4",
             "C’est là que nos routes se séparent. Je parie que tu en avais assez de m’avoir dans les parages, pas vrai ?");
     }
 

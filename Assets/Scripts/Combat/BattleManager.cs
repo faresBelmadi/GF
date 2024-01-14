@@ -261,7 +261,13 @@ public class BattleManager : MonoBehaviour
         Debug.Log(IsLoot);
         if (TutoManager.Instance != null)
         {
-            SceneManager.LoadScene("Tuto");
+            TutoManager.Instance.Loot();
+            var gO = GameObject.Find("TutoPanel");
+            var child = gO.transform.GetChild(0);
+            child.gameObject.SetActive(true);
+            //UIDialogue.SetActive(false);
+            var tutoPanelScript = gO.GetComponent<TutoPanel>();
+            tutoPanelScript.ShowExplication();
         }
         else 
             StartCoroutine(GameManager.instance.pmm.EndBattle(IsLoot));
@@ -768,7 +774,9 @@ public class BattleManager : MonoBehaviour
                     var child = gO.transform.GetChild(0);
                     child.gameObject.SetActive(true);
                     //UIDialogue.SetActive(false);
-                    gO.GetComponent<TutoPanel>().ShowExplication();
+                    var tutoPanelScript = gO.GetComponent<TutoPanel>();
+                    tutoPanelScript.ShowExplication();
+                    tutoPanelScript.UIJoueur.SetActive(false);
                     //Ici le TutoPanel
                 }
                 else

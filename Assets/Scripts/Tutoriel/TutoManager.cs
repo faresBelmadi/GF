@@ -51,7 +51,7 @@ public class TutoManager : MonoBehaviour
             StepMapTuto++;
             SceneManager.LoadScene("TutoMonde");
         }
-        else if (StepTuto == 2 /*|| StepTuto == 7 */|| StepTuto == 8)
+        else if (StepTuto == 2 || StepTuto == 8)
         {
             StepBatlleTuto++;
             SceneManager.LoadScene("Tuto");
@@ -64,7 +64,8 @@ public class TutoManager : MonoBehaviour
         }
         else if (StepTuto == 4)
         {
-            SceneManager.LoadScene("TutoAutel");
+            //SceneManager.LoadScene("TutoAutel");
+            SceneManager.LoadScene("TutoAutel OLD");
         }
     }
 
@@ -100,5 +101,12 @@ public class TutoManager : MonoBehaviour
         CurrentRoomCamera.SetActive(true);
         SceneManager.UnloadSceneAsync("TutoMonde");
         //MenuCamera.SetActive(false);
+    }
+
+    public void Loot()
+    {
+        var gO = GameObject.Find("StatPrefab");
+        gO.transform.GetChild(0).gameObject.SetActive(true);
+        gO.transform.GetChild(1).gameObject.SetActive(true);
     }
 }

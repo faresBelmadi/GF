@@ -65,7 +65,7 @@ public class DialogueManager : MonoBehaviour
         DialogueIndex = NextDialogueIndex;
         MainText.text = TextePrincipal();
         MainTextGO.SetActive(true);
-        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
+        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat || _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
         {
             EndDialogue.SetActive(true);
         }

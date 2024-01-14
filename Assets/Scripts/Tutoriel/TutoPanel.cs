@@ -26,6 +26,10 @@ public class TutoPanel : MonoBehaviour
             StartCombat();
         else if (IndexExplication == 13)
             GatherEssence();
+        else if (IndexExplication == 16)
+        {
+            TutoManager.Instance.NextStep();
+        }
         else 
             ShowExplication();
     }
