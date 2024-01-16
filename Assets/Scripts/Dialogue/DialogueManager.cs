@@ -65,9 +65,16 @@ public class DialogueManager : MonoBehaviour
         DialogueIndex = NextDialogueIndex;
         MainText.text = TextePrincipal();
         MainTextGO.SetActive(true);
-        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat || _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
+        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat ||
+            _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
         {
             EndDialogue.SetActive(true);
+            var test3 = EndDialogue.GetComponentInChildren<TextMeshProUGUI>();
+            if (test3 != null)
+            {
+                Debug.Log("test3");
+                test3.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse + "3";
+            }
         }
         else
         {
@@ -84,12 +91,12 @@ public class DialogueManager : MonoBehaviour
     {
         if (ManagerBattle == null && _CurrentEncounterAlea != null)
         {
-            return _CurrentEncounterAlea.NamePnj + ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
+            return "<allcaps><u><b>" + _CurrentEncounterAlea.NamePnj + ": </b></u></allcaps> " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
         }
         else
         {
-            return _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom +
-                   ": " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
+            return "<allcaps><u><b>" + _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom +
+                   ": </b></u></allcaps>" + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
         }
     }
 
@@ -98,8 +105,8 @@ public class DialogueManager : MonoBehaviour
         foreach (var item in RéponseGO)
         {
             item.SetActive(false);
-            EndDialogue.SetActive(false);
         }
+        EndDialogue.SetActive(false);
 
         MainTextGO.SetActive(false);
         foreach (var item in Réponse)
