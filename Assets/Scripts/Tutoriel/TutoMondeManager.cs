@@ -22,6 +22,35 @@ public class TutoMondeManager : MonoBehaviour
     private void DisplayInfoTutoMonde()
     {
         TutoTextDisplay.text = TutoMondeText[TutoManager.Instance.StepMapTuto.ToString()];
+        if (TutoManager.Instance.StepMapTuto == 1)
+        {
+            AllGameObjectsToDisplay[0].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            AllGameObjectsToDisplay[2].gameObject.SetActive(false);
+            AllGameObjectsToDisplay[3].gameObject.SetActive(false);
+            AllGameObjectsToDisplay[4].gameObject.SetActive(false);
+        }
+        else if (TutoManager.Instance.StepMapTuto == 2)
+        {
+            AllGameObjectsToDisplay[0].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            AllGameObjectsToDisplay[1].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            AllGameObjectsToDisplay[3].gameObject.SetActive(false);
+            AllGameObjectsToDisplay[4].gameObject.SetActive(false);
+        }
+        else if (TutoManager.Instance.StepMapTuto == 3)
+        {
+            AllGameObjectsToDisplay[0].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            AllGameObjectsToDisplay[1].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            AllGameObjectsToDisplay[2].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            AllGameObjectsToDisplay[4].gameObject.SetActive(false);
+        }
+        else if (TutoManager.Instance.StepMapTuto == 4)
+        {
+            AllGameObjectsToDisplay[0].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            AllGameObjectsToDisplay[1].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            AllGameObjectsToDisplay[2].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            AllGameObjectsToDisplay[3].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+        }
+
     }
 
     private void CreateDictionary()

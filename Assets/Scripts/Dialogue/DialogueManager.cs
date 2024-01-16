@@ -72,7 +72,6 @@ public class DialogueManager : MonoBehaviour
             var test3 = EndDialogue.GetComponentInChildren<TextMeshProUGUI>();
             if (test3 != null)
             {
-                Debug.Log("test3");
                 test3.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse + "3";
             }
         }

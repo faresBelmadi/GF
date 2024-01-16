@@ -55,7 +55,7 @@ public class TutoPanel : MonoBehaviour
 
     public void GatherEssence()
     {
-        //UIJoueur.SetActive(true);
+        UIJoueur.SetActive(false);
         //UIDialogue.SetActive(false);
         GameManager.instance.BattleMan.StartCoroutine("GatherEssence");
         this.transform.GetChild(0).gameObject.SetActive(false);
