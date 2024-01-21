@@ -156,10 +156,12 @@ public enum TypeEffet
     GainFaBuffCible=71,
     GainFaDebuffCible=72,
     Ponction=73,
-    DegatsBrutConsequence=74,
+    PonctionForceAme=80,
+    DegatsBrutConsequence =74,
     DegatsFaRadianceManquanteCible = 77,
     DegatsFaRadianceManquanteCaster = 78,
-        //80
+
+        //81
 }
 
 public enum TypePassif

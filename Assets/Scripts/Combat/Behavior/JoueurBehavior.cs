@@ -379,6 +379,9 @@ public class JoueurBehavior : CombatBehavior
         else
             AnimationController.SendAnimBuff(AfterAnim);
 
+
+        DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
+
         _refBattleMan.LaunchAnimAttacked();
     }
 
@@ -440,8 +443,6 @@ public class JoueurBehavior : CombatBehavior
         //ResetStat();
         //foreach (var item in Stat.ListBuffDebuff)
         //{
-        if(toApply.IsConsomable && toApply.TimingConsomationMinimum <= 1)
-        {
             if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant || toApply.DirectApplication)
             {
                 foreach (var effet in toApply.Effet)
@@ -457,7 +458,7 @@ public class JoueurBehavior : CombatBehavior
                         GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine);
                     }*/
                 }
-                if (toApply.IsConsomable == true && !toApply.DirectApplication)
+                if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1)
                 {
                     toApply.Temps = 0;
                     foreach (var ToAdd in toApply.Consomation)
@@ -465,11 +466,14 @@ public class JoueurBehavior : CombatBehavior
                         AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
                     }
                 }
+                else
+                    toApply.TimingConsomationMinimum--;
+
                 if (toApply.DirectApplication)
                     toApply.DirectApplication = false;
             }
 
-        }
+        
     }
 
 
@@ -580,6 +584,8 @@ public class JoueurBehavior : CombatBehavior
 
     public void getAttacked()
     {
+        
+        DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
         AnimationController.GetAttacked();
     }
     

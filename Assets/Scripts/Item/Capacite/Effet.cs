@@ -300,7 +300,7 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.Ponction:
                 var amountPonction =
-                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) *
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.Radiance) *
                                      Caster.MultiplDegat); //checker le multipl degat
                 Caster.Radiance += amountPonction;
                 if (Caster.Radiance > Caster.RadianceMax)
@@ -328,6 +328,15 @@ public class Effet : ScriptableObject
                     var percentDamage = Pourcentage + (ValeurParBuffDebuff*nbBuff);
                     ModifState.Radiance += Mathf.FloorToInt(((percentDamage / 100f) * Caster.ForceAme));
                     break;
+            case TypeEffet.PonctionForceAme:
+                var amountPonctionFA =
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) *
+                                     Caster.MultiplDegat); //checker le multipl degat
+                Caster.Radiance += amountPonctionFA;
+                if (Caster.Radiance > Caster.RadianceMax)
+                    Caster.Radiance = Caster.RadianceMax;
+                ModifState.Radiance += -amountPonctionFA;
+                break;
             default:
                 break;
         }
