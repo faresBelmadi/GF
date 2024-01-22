@@ -63,24 +63,24 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTaken, EnnemiStat CibleEnnemi = null)
+    public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTaken, EnnemiStat CibleEnnemi = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi);
+        ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi, NbEnnemies);
         modifstate = ModifState;
         return ModifState;
     }
 
-    private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null)
+    private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken, Cible));
+        ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken, Cible, NbEnnemies));
         modifstate = ModifState;
 
         return ModifState;
     }
 
-    private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null)
+    private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
     {
         int valueToChange = ValeurBrut * NbAttaque;
         CharacterStat ModifState = ScriptableObject.CreateInstance("CharacterStat") as CharacterStat;
@@ -310,7 +310,7 @@ public class Effet : ScriptableObject
             case TypeEffet.DamageAllEvenly:
 
                 ModifState.Radiance +=
-                    Mathf.FloorToInt((((((float)Pourcentage / GameManager.instance.BattleMan.EnemyScripts.Count) / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+                    Mathf.FloorToInt((((((float)Pourcentage / NbEnnemies) / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
             case TypeEffet.OnKillStunAll:
                 ModifState.isStun = true;

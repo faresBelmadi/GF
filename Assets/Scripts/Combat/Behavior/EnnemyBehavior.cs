@@ -407,7 +407,7 @@ public class EnnemyBehavior : CombatBehavior
 
     #region Effet
 
-    public void ApplicationEffet(Effet effet, JoueurStat Caster = null, SourceEffet source = SourceEffet.Spell, int idCaster = 0)
+    public void ApplicationEffet(Effet effet, JoueurStat Caster = null, SourceEffet source = SourceEffet.Spell, int idCaster = 0, int NbEnnemies = 1)
     {
         JoueurStat ModifStat;
         if (Caster == null)
@@ -415,7 +415,7 @@ public class EnnemyBehavior : CombatBehavior
             if (idCaster == 0)
             {
                 Caster = _refBattleMan.player.Stat;
-                ModifStat = effet.ResultEffet(Caster, LastDamageTaken, this.Stat);
+                ModifStat = effet.ResultEffet(Caster, LastDamageTaken, this.Stat, NbEnnemies);
             }
             else
             {

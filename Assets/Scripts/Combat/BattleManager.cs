@@ -570,11 +570,12 @@ public class BattleManager : MonoBehaviour
 
                 break;
             case Cible.allEnnemi:
-                for(int x = EnemyScripts.Count-1; x >= 0; x--)
+                var nbEnemies = EnemyScripts.Count;
+                for (int x = EnemyScripts.Count-1; x >= 0; x--)
                 {
                     var ennemie = EnemyScripts[x];
                     if(ennemie != null)
-                        ennemie.ApplicationEffet(effet, null, source, Caster);
+                        ennemie.ApplicationEffet(effet, null, source, Caster, nbEnemies);
                 }
                 break;
             case Cible.AllExceptSelf:
