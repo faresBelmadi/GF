@@ -1574,7 +1574,6 @@ GameObject:
   m_Component:
   - component: {fileID: 499757217}
   - component: {fileID: 499757218}
-  - component: {fileID: 499757219}
   m_Layer: 0
   m_Name: Rooms
   m_TagString: Untagged
@@ -1614,76 +1613,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef022e3fbc1fcb041ab91cc113478e32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &499757219
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 499757216}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ce594ece45fb4a44a2f87fb5c9de632, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  config: {fileID: 499757218}
-  ResultBsp:
-  - Center: {x: 0, y: 0}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 0, y: 10}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 10, y: 0}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 10, y: 10}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 2, y: 3}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: -5, y: 10}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 5, y: 3}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 7, y: 6}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 6, y: 10}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 3, y: 9}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  Lines: []
-  Spawn: {fileID: 3953995495360769024, guid: 0292d751d2d47d54498418b50e7f59b0, type: 3}
-  Parent: {fileID: 499757217}
-  Line: {fileID: 5144414776291373012, guid: 004d0a0c8479d7548a5ab6fefc086945, type: 3}
-  CrossCheck: {fileID: 1036427961}
-  roomManager: {fileID: 141422495}
 --- !u!1 &517867278
 GameObject:
   m_ObjectHideFlags: 0
@@ -2326,7 +2255,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Combat Elite
+  m_text: Combat de Classe
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2460,7 +2389,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Start
+  m_text: "Al\xE9a"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2844,8 +2773,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1036427962}
-  - component: {fileID: 1036427961}
-  - component: {fileID: 1036427963}
   m_Layer: 0
   m_Name: Edge
   m_TagString: Untagged
@@ -2853,47 +2780,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!68 &1036427961
-EdgeCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1036427960}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_EdgeRadius: 0
-  m_Points:
-  - {x: -5, y: 10}
-  - {x: 3, y: 9}
-  m_AdjacentStartPoint: {x: 0, y: 0}
-  m_AdjacentEndPoint: {x: 0, y: 0}
-  m_UseAdjacentStartPoint: 0
-  m_UseAdjacentEndPoint: 0
 --- !u!4 &1036427962
 Transform:
   m_ObjectHideFlags: 0
@@ -2914,33 +2800,6 @@ Transform:
   - {fileID: 939688902}
   m_Father: {fileID: 499757217}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!50 &1036427963
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1036427960}
-  m_BodyType: 2
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!1 &1057772157
 GameObject:
   m_ObjectHideFlags: 0
@@ -4229,7 +4088,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 499757219}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: Generator, Assembly-CSharp
         m_MethodName: ButtonClick
         m_Mode: 1
@@ -4411,7 +4270,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Fin
+  m_text: "Al\xE9a"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4630,7 +4489,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Combat Normal
+  m_text: Combat Commun
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

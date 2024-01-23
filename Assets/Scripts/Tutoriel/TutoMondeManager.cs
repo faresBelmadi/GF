@@ -11,9 +11,11 @@ public class TutoMondeManager : MonoBehaviour
     public Dictionary<string, string> TutoMondeText;
     public int indexTextTuto = 0;
     public List<GameObject> AllGameObjectsToDisplay;
+    private bool alreadyClicked;
 
     public void Start()
     {
+        alreadyClicked = false;
         indexTextTuto = TutoManager.Instance.StepTuto;
         CreateDictionary();
         DisplayInfoTutoMonde();
@@ -68,8 +70,9 @@ public class TutoMondeManager : MonoBehaviour
 
     void LateUpdate()
     {
-        if (Input.anyKeyDown)
+        if (Input.anyKeyDown && !alreadyClicked)
         {
+            alreadyClicked = true;
             ChangeTextTuto();
         }
     }

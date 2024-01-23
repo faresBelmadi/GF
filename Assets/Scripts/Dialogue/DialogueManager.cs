@@ -16,6 +16,7 @@ public class DialogueManager : MonoBehaviour
     public List<TextMeshProUGUI> Réponse;
     public List<GameObject> RéponseGO;
     public GameObject EndDialogue;
+    public TextMeshProUGUI EndText;
     public BattleManager ManagerBattle;
 
     public AleaManager ManagerAlea;
@@ -69,10 +70,15 @@ public class DialogueManager : MonoBehaviour
             _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
         {
             EndDialogue.SetActive(true);
-            var test3 = EndDialogue.GetComponentInChildren<TextMeshProUGUI>();
-            if (test3 != null)
+            if (EndText!=null)
+                EndText.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
+            else
             {
-                test3.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse + "3";
+                var Text = EndDialogue.GetComponentInChildren<TextMeshProUGUI>();
+                if (Text != null)
+                {
+                    Text.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
+                }
             }
         }
         else
