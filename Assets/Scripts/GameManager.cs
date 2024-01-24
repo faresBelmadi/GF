@@ -56,7 +56,12 @@ public class GameManager : MonoBehaviour {
 
     private void LoadSave()
     {
-        #if UNITY_EDITOR
+        if (playerStat != null && TutoManager.Instance != null)
+        {
+            Debug.Log("Coucouuuuuuu");
+            return;
+        }
+#if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
         #else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
@@ -257,6 +262,11 @@ public class GameManager : MonoBehaviour {
     
     void getClassRun()
     {
+        if (classSO != null && TutoManager.Instance != null)
+        {
+            Debug.Log("Coucouuuuuuu");
+            return;
+        }
         classSO = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID));
         classSO.PlayerStat = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID).PlayerStat);
         classSO.PlayerStat.ListSpell.Clear();
