@@ -111,13 +111,17 @@ public class Effet : ScriptableObject
                 if (Cible == null)
                 {
                     var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMax);
+                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.Radiance);
                     ModifState.RadianceMax += radianceModifier;
+                    ModifState.Radiance += radianceActModifier;
                     
                 }
                 else
                 {
                     var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.RadianceMax);
+                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.Radiance);
                     ModifState.RadianceMax += radianceModifier;
+                    ModifState.Radiance += radianceActModifier;
                 }
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:
