@@ -505,11 +505,11 @@ public class JoueurBehavior : CombatBehavior
             getAttacked();
         }
 
-        if(effet.IsFirstApplication && effet.TypeEffet == TypeEffet.RadianceMax)
-        {
-            effet.IsFirstApplication = false;
-            ModifStat.Radiance += ModifStat.RadianceMax;
-        }
+        //if(effet.IsFirstApplication && effet.TypeEffet == TypeEffet.RadianceMax)
+        //{
+        //    effet.IsFirstApplication = false;
+        //    ModifStat.Radiance += ModifStat.RadianceMax;
+        //}
 
         Stat.ModifStateAll(ModifStat);
         if (ModifStat.PalierChangement > 0)
