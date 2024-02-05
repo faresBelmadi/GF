@@ -70,7 +70,13 @@ public class Effet : ScriptableObject
         modifstate = ModifState;
         return ModifState;
     }
-
+    public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken, EnnemiStat CibleEnnemi = null, int NbEnnemies = 1)
+    {
+        JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi, NbEnnemies);
+        modifstate = ModifState;
+        return ModifState;
+    }
     private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
@@ -340,6 +346,43 @@ public class Effet : ScriptableObject
                 if (Caster.Radiance > Caster.RadianceMax)
                     Caster.Radiance = Caster.RadianceMax;
                 ModifState.Radiance += -amountPonctionFA;
+                break;
+            case TypeEffet.PremiereAttaqueJeanne:
+                var JeanneStat = (EnnemiStat) Caster;
+                int percentageFa = 0;
+                if (JeanneStat.Divin <= 25)
+                {
+                    percentageFa = 0;
+                    nbProcAfterEffect = 1;
+                }
+                else if (JeanneStat.Divin > 25 && JeanneStat.Divin <= 50)
+                {
+                    percentageFa = 20;
+                    nbProcAfterEffect = 2;
+                }
+                else if (JeanneStat.Divin > 50)
+                {
+                    percentageFa = 40;
+                    nbProcAfterEffect = 4;
+                }
+                ModifState.Radiance +=
+                    Mathf.FloorToInt(((percentageFa + Pourcentage / 100f)  * Caster.ForceAme) * Caster.MultiplDegat);
+                //Application de Hérétique nb dépende du truc 
+                break;
+            case TypeEffet.DeuxiemeAttaqueJeanne:
+                var JeanneStat2 = (EnnemiStat)Caster;
+                ModifState.Radiance +=
+                    Mathf.FloorToInt(((JeanneStat2.Divin + Pourcentage / 100f) * Caster.ForceAme) * Caster.MultiplDegat);
+                break;
+            case TypeEffet.SupportJeanne:
+                var JeanneStat3 = (EnnemiStat)Caster;
+                JeanneStat3.Divin -= 20;
+                ModifState.Radiance += Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMax);
+                break;
+            case TypeEffet.UltimeJeanne:
+                var JeanneStat4 = (EnnemiStat) Caster;
+                ModifState.Radiance += Mathf.FloorToInt(JeanneStat4.Divin / 100f * Caster.ForceAme);
+                JeanneStat4.Divin = -30;
                 break;
             default:
                 break;

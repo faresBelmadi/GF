@@ -15,4 +15,6 @@ public class EnnemiStat : CharacterStat
     public EnnemiSpell Att2;
     public EnnemiSpell Buff;
     public EnnemiSpell Debuff;
+    //Uniquement pour Jeanne
+    public int Divin;
 }

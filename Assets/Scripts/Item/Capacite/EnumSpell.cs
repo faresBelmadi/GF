@@ -160,8 +160,11 @@ public enum TypeEffet
     DegatsBrutConsequence =74,
     DegatsFaRadianceManquanteCible = 77,
     DegatsFaRadianceManquanteCaster = 78,
-
-        //81
+    PremiereAttaqueJeanne = 81,
+    DeuxiemeAttaqueJeanne = 82,
+    SupportJeanne = 83,
+    UltimeJeanne = 84,
+        //85
 }
 
 public enum TypePassif
