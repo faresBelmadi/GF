@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PassifManager
 {
@@ -31,6 +32,28 @@ public class PassifManager
                     switch (item.passif)
                     {
                         case TypePassif.PassifJeanne:
+                            int rand;
+                            if (behavior.nextAction.Name == "UltimeJeanne")
+                                rand = Random.Range(1,4);
+                            else
+                                rand = Random.Range(0, 4);
+                            if (rand == 0)
+                            {
+                                behavior.Stat.Tension += behavior.Stat.Divin;
+                                behavior.Stat.Divin = 0;
+                            }
+                            else
+                            {
+                                behavior.Stat.Divin += rand * 10;
+                            }
+                            var pourcentagePVActuel = (behavior.Stat.Radiance / behavior.Stat.RadianceMax) * 100f;
+                            behavior.Stat.RadianceMax += behavior.Stat.Divin * 10;
+                            behavior.Stat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * behavior.Stat.RadianceMax);
+
+                            behavior.Stat.ForceAme += behavior.Stat.Divin * 2;
+                            //if (behavior.Stat.Radiance > behavior.Stat.RadianceMax)
+                            //    behavior.Stat.RadianceMax = behavior.Stat.Divin;
+
                             break;
                         //case TypePassif.PassifCameleon:
                         //    break;

@@ -6,6 +6,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR;
 
 public class EnnemyBehavior : CombatBehavior
 {
@@ -245,6 +246,10 @@ public class EnnemyBehavior : CombatBehavior
             CreateSpellList();
 
         nextAction = Spells.First();
+
+        if (nextAction.Name == "UltimeJeanne" && Stat.Divin < 70) //si on est Jeanne et qu'on veux cast l'ult on doit avoir 70+ de Divin, sinon on prend une autre
+            ChooseNextAction();
+
         foreach (var item in Spells)
         {
             if (nextAction.IsAttaque && colere)
