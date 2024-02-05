@@ -70,7 +70,13 @@ public class Effet : ScriptableObject
         modifstate = ModifState;
         return ModifState;
     }
-
+    public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken, EnnemiStat CibleEnnemi = null, int NbEnnemies = 1)
+    {
+        JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi, NbEnnemies);
+        modifstate = ModifState;
+        return ModifState;
+    }
     private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
@@ -111,13 +117,17 @@ public class Effet : ScriptableObject
                 if (Cible == null)
                 {
                     var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMax);
+                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.Radiance);
                     ModifState.RadianceMax += radianceModifier;
+                    ModifState.Radiance += radianceActModifier;
                     
                 }
                 else
                 {
                     var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.RadianceMax);
+                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.Radiance);
                     ModifState.RadianceMax += radianceModifier;
+                    ModifState.Radiance += radianceActModifier;
                 }
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:

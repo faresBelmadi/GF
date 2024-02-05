@@ -6,6 +6,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.WSA;
 using UnityEngine.XR;
 
 public class EnnemyBehavior : CombatBehavior
@@ -24,6 +25,7 @@ public class EnnemyBehavior : CombatBehavior
     List<EnnemiSpell> Spells;
     public bool isMainEnemy;
     private BattleManager _refBattleMan;
+    List<BuffDebuff> tempAddList = new List<BuffDebuff>();
 
     #region Divers start & fin
 
@@ -360,13 +362,16 @@ public class EnnemyBehavior : CombatBehavior
     private void DecompteDebuffEnnemi(Decompte Decompte, TimerApplication Timer)
     {
         Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
-        
         foreach(var item in Stat.ListBuffDebuff)
         {
             if(item.timerApplication == Timer)
                 ApplicationBuffDebuff(Timer,item);
         }
-
+        foreach(var item in tempAddList)
+        {
+            AddDebuff(item, Decompte.none, TimerApplication.Persistant);
+        }
+        tempAddList.Clear();
         UpdateUI();
     }
 
@@ -391,12 +396,12 @@ public class EnnemyBehavior : CombatBehavior
                     GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
                 }*/
             }
-            if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1)
+            if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1 && toApply.Temps > 0)
             {
                 toApply.Temps = 0;
                 foreach (var ToAdd in toApply.Consomation)
                 {
-                    AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
+                    tempAddList.Add(ToAdd);
                 }
             }
             else
@@ -426,9 +431,9 @@ public class EnnemyBehavior : CombatBehavior
             {
                 var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
                 if (caster != null)
-                    ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken);
+                    ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken,this.Stat);
                 else
-                    ModifStat = effet.ResultEffet(Stat, LastDamageTaken);
+                    ModifStat = effet.ResultEffet(Stat, LastDamageTaken,null,1);
 
             }
 
@@ -443,7 +448,8 @@ public class EnnemyBehavior : CombatBehavior
             var toRemove = Mathf.FloorToInt(ModifStat.Radiance / Stat.MultiplDef);
             toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
-            GetAttacked();
+            if(source != SourceEffet.BuffDebuff)
+                GetAttacked();
         }
 
         if(effet.IsFirstApplication && effet.TypeEffet == TypeEffet.RadianceMax)

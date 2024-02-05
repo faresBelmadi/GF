@@ -70,8 +70,12 @@ public class DialogueManager : MonoBehaviour
             _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
         {
             EndDialogue.SetActive(true);
-            if (EndText!=null)
-                EndText.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
+            if (EndText != null)
+            {
+                if(EndText.text == null || EndText.text == "")
+                    EndText.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
+
+            }
             else
             {
                 var Text = EndDialogue.GetComponentInChildren<TextMeshProUGUI>();

@@ -73,7 +73,13 @@ public class CombatBehavior : MonoBehaviour
                 {
                     foreach (var effet in item.Effet)
                     {
-                        toChange.removeStat(effet.modifstate);
+                        if (effet.TypeEffet != TypeEffet.RadianceMax)
+                            toChange.removeStat(effet.modifstate);
+                        else
+                        {
+                            effet.modifstate.Radiance = Mathf.FloorToInt((effet.Pourcentage / 100f) * toChange.Radiance);
+                            toChange.removeStat(effet.modifstate);
+                        }
                     }
                 }
                 var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == item.Nom);
