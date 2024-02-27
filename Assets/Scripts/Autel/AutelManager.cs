@@ -269,9 +269,8 @@ public class AutelManager : MonoBehaviour
         SetStatBougthCapa(capa);
         CheckLinkCapa(capa);
 
-        var test = AllSpellsIcon[capa.Spell.IDSpell].GetComponentsInChildren<Image>();
-        test[1].sprite = checkMark;
-        test[1].rectTransform.localScale = new Vector3(1,1,1);
+        var CheckMark = AllSpellsIcon[capa.Spell.IDSpell].transform.GetChild(0);
+        CheckMark.gameObject.SetActive(true);
 
         RetourButton.onClick.RemoveAllListeners();
         //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
