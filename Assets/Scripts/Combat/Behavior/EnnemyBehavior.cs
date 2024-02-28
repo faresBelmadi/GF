@@ -26,7 +26,6 @@ public class EnnemyBehavior : CombatBehavior
     public bool isMainEnemy;
     private BattleManager _refBattleMan;
     List<BuffDebuff> tempAddList = new List<BuffDebuff>();
-    List<BuffDebuff> tempRemoveList = new List<BuffDebuff>();
 
     #region Divers start & fin
 
