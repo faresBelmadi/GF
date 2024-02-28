@@ -26,6 +26,7 @@ public class EnnemyBehavior : CombatBehavior
     public bool isMainEnemy;
     private BattleManager _refBattleMan;
     List<BuffDebuff> tempAddList = new List<BuffDebuff>();
+    List<BuffDebuff> tempRemoveList = new List<BuffDebuff>();
 
     #region Divers start & fin
 
@@ -361,16 +362,17 @@ public class EnnemyBehavior : CombatBehavior
 
     private void DecompteDebuffEnnemi(Decompte Decompte, TimerApplication Timer)
     {
-        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
+        DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
         foreach(var item in Stat.ListBuffDebuff)
         {
             if(item.timerApplication == Timer)
                 ApplicationBuffDebuff(Timer,item);
         }
-        foreach(var item in tempAddList)
+        foreach (var item in tempAddList)
         {
             AddDebuff(item, Decompte.none, TimerApplication.Persistant);
         }
+        Stat.ListBuffDebuff = base.UpdateBuffDebuffGameObject(Stat.ListBuffDebuff, this.Stat);
         tempAddList.Clear();
         UpdateUI();
     }
@@ -398,7 +400,7 @@ public class EnnemyBehavior : CombatBehavior
             }
             if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1 && toApply.Temps > 0)
             {
-                toApply.Temps = 0;
+                toApply.Temps = -1;
                 foreach (var ToAdd in toApply.Consomation)
                 {
                     tempAddList.Add(ToAdd);

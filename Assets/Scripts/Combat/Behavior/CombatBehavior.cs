@@ -60,16 +60,23 @@ public class CombatBehavior : MonoBehaviour
         }
     }
 
-    public List<BuffDebuff> DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte Timer, CharacterStat toChange)
+    public void DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte Timer, CharacterStat toChange)
     {
         foreach (var item in BuffDebuff)
         {
             if (item.Decompte == Timer)
                 item.Temps--;
+        }
 
+    }
+
+    public List<BuffDebuff> UpdateBuffDebuffGameObject(List<BuffDebuff> BuffDebuff, CharacterStat toChange)
+    {
+        foreach (var item in BuffDebuff)
+        {
             if (item.Temps < 0)
             {
-                if(item.timerApplication == TimerApplication.Persistant)
+                if (item.timerApplication == TimerApplication.Persistant)
                 {
                     foreach (var effet in item.Effet)
                     {
@@ -103,10 +110,4 @@ public class CombatBehavior : MonoBehaviour
         BuffDebuff.RemoveAll(c => c.Temps < 0);
         return BuffDebuff;
     }
-
-    public void UpdateBuffDebuffGameObject(List<BuffDebuff> BuffDebuff, CharacterStat toChange)
-    {
-        DecompteDebuff(BuffDebuff, Decompte.none,toChange);
-    }
-
-}
+}   

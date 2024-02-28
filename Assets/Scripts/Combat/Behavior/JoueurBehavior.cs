@@ -427,14 +427,14 @@ public class JoueurBehavior : CombatBehavior
 
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
-        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
+        DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
         
         foreach(var item in Stat.ListBuffDebuff)
         {
             if(item.timerApplication == Timer)
                 ApplicationBuffDebuff(Timer,item);
         }
-
+        Stat.ListBuffDebuff = UpdateBuffDebuffGameObject(Stat.ListBuffDebuff, Stat);
         UpdateUI();
     }
 
@@ -460,7 +460,7 @@ public class JoueurBehavior : CombatBehavior
                 }
                 if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1)
                 {
-                    toApply.Temps = 0;
+                    toApply.Temps = -1;
                     foreach (var ToAdd in toApply.Consomation)
                     {
                         AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
