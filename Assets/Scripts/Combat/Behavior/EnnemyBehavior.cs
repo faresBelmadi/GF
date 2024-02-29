@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.WSA;
 using UnityEngine.XR;
+using static UnityEditor.Progress;
 
 public class EnnemyBehavior : CombatBehavior
 {
@@ -249,9 +250,6 @@ public class EnnemyBehavior : CombatBehavior
 
         nextAction = Spells.First();
 
-        if (nextAction.Name == "UltimeJeanne" && Stat.Divin < 70) //si on est Jeanne et qu'on veux cast l'ult on doit avoir 70+ de Divin, sinon on prend une autre
-            ChooseNextAction();
-
         foreach (var item in Spells)
         {
             if (nextAction.IsAttaque && colere)
@@ -259,7 +257,15 @@ public class EnnemyBehavior : CombatBehavior
 
             }
             else if (item.Weight < nextAction.Weight)
-                nextAction = item;
+            {
+                if (item.name == "UltimeJeanne")
+                {
+                    if (Stat.Divin >= 70)
+                        nextAction = item;
+                }
+                else
+                    nextAction = item;
+            }
         }
 
         nextAction.Weight += nextAction.AddedWeight;

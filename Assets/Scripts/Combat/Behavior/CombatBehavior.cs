@@ -36,8 +36,8 @@ public class CombatBehavior : MonoBehaviour
             }
             else
             {
-                var test = characterStat.ListBuffDebuff.Count(x => x.Nom == toAdd.Nom);
-                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = test.ToString();
+                var NbBuffDebuff = characterStat.ListBuffDebuff.Count(x => x.Nom == toAdd.Nom);
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = NbBuffDebuff.ToString();
             }
 
         }
