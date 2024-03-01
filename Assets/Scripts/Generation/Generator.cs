@@ -57,8 +57,8 @@ public class Generator : MonoBehaviour
     {
         foreach (var item in ResultBsp)
         {
-            int i = 0;
-            bool CanSpawn = true;
+            //int i = 0;
+            //bool CanSpawn = true;
             Vector2 pos = item.Center;
             Vector3 position = new Vector3(pos.x, pos.y, 75);
             var t = Instantiate(Spawn, position, Quaternion.identity, Parent);

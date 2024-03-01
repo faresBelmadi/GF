@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.WSA;
 using UnityEngine.XR;
+using static UnityEditor.Progress;
 
 public class EnnemyBehavior : CombatBehavior
 {
@@ -249,9 +250,6 @@ public class EnnemyBehavior : CombatBehavior
 
         nextAction = Spells.First();
 
-        if (nextAction.Name == "UltimeJeanne" && Stat.Divin < 70) //si on est Jeanne et qu'on veux cast l'ult on doit avoir 70+ de Divin, sinon on prend une autre
-            ChooseNextAction();
-
         foreach (var item in Spells)
         {
             if (nextAction.IsAttaque && colere)
@@ -259,7 +257,15 @@ public class EnnemyBehavior : CombatBehavior
 
             }
             else if (item.Weight < nextAction.Weight)
-                nextAction = item;
+            {
+                if (item.name == "UltimeJeanne")
+                {
+                    if (Stat.Divin >= 70)
+                        nextAction = item;
+                }
+                else
+                    nextAction = item;
+            }
         }
 
         nextAction.Weight += nextAction.AddedWeight;
@@ -361,16 +367,17 @@ public class EnnemyBehavior : CombatBehavior
 
     private void DecompteDebuffEnnemi(Decompte Decompte, TimerApplication Timer)
     {
-        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
+        DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
         foreach(var item in Stat.ListBuffDebuff)
         {
             if(item.timerApplication == Timer)
                 ApplicationBuffDebuff(Timer,item);
         }
-        foreach(var item in tempAddList)
+        foreach (var item in tempAddList)
         {
             AddDebuff(item, Decompte.none, TimerApplication.Persistant);
         }
+        Stat.ListBuffDebuff = base.UpdateBuffDebuffGameObject(Stat.ListBuffDebuff, this.Stat);
         tempAddList.Clear();
         UpdateUI();
     }
@@ -398,7 +405,7 @@ public class EnnemyBehavior : CombatBehavior
             }
             if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1 && toApply.Temps > 0)
             {
-                toApply.Temps = 0;
+                toApply.Temps = -1;
                 foreach (var ToAdd in toApply.Consomation)
                 {
                     tempAddList.Add(ToAdd);

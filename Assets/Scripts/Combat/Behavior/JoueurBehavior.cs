@@ -18,6 +18,7 @@ public class JoueurBehavior : CombatBehavior
     public GameObject SpellPrefab;
     public GameObject SpellsSpawn;
     public Button EndTurnButton;
+    List<BuffDebuff> tempAddList = new List<BuffDebuff>();
 
     public Slider RadianceSlider;
     public Slider VolonteSlider;
@@ -427,14 +428,18 @@ public class JoueurBehavior : CombatBehavior
 
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
-        Stat.ListBuffDebuff = DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
-        
-        foreach(var item in Stat.ListBuffDebuff)
-        {
-            if(item.timerApplication == Timer)
-                ApplicationBuffDebuff(Timer,item);
-        }
+        DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
 
+        foreach (var item in Stat.ListBuffDebuff)
+        {
+            if (item.timerApplication == Timer)
+                ApplicationBuffDebuff(Timer, item);
+        }
+        foreach (var item in tempAddList)
+        {
+            AddDebuff(item, Decompte.none, TimerApplication.Persistant);
+        }
+        Stat.ListBuffDebuff = UpdateBuffDebuffGameObject(Stat.ListBuffDebuff, Stat);
         UpdateUI();
     }
 
@@ -458,15 +463,15 @@ public class JoueurBehavior : CombatBehavior
                         GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine);
                     }*/
                 }
-                if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1)
+                if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1 && toApply.Temps > 0)
                 {
-                    toApply.Temps = 0;
+                    toApply.Temps = -1;
                     foreach (var ToAdd in toApply.Consomation)
                     {
-                        AddDebuff(ToAdd, Decompte.none, TimerApplication.Persistant);
+                        tempAddList.Add(ToAdd);
                     }
                 }
-                else
+            else
                     toApply.TimingConsomationMinimum--;
 
                 if (toApply.DirectApplication)
@@ -502,7 +507,8 @@ public class JoueurBehavior : CombatBehavior
             var toRemove = Mathf.FloorToInt(ModifStat.Radiance / Stat.MultiplDef);
             toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
-            getAttacked();
+            if(effet.IsAttaqueEffet)
+                getAttacked();
         }
 
         //if(effet.IsFirstApplication && effet.TypeEffet == TypeEffet.RadianceMax)

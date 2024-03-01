@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -31,8 +32,12 @@ public class PassifManager
                 {
                     switch (item.passif)
                     {
-                        case TypePassif.PassifJeanne:
+                        case TypePassif.PassifJeanneFinAction:
+                            UpdateDivinInfoDisplay(behavior);
+                            break;
+                        case TypePassif.PassifJeanneDebutTour:
                             int rand;
+
                             if (behavior.nextAction.Name == "UltimeJeanne")
                                 rand = Random.Range(1,4);
                             else
@@ -51,9 +56,9 @@ public class PassifManager
                             behavior.Stat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * behavior.Stat.RadianceMax);
 
                             behavior.Stat.ForceAme += behavior.Stat.Divin * 2;
-                            //if (behavior.Stat.Radiance > behavior.Stat.RadianceMax)
-                            //    behavior.Stat.RadianceMax = behavior.Stat.Divin;
 
+                            UpdateDivinInfoDisplay(behavior);
+                            
                             break;
                         //case TypePassif.PassifCameleon:
                         //    break;
@@ -129,5 +134,20 @@ public class PassifManager
             }
         }
 
+    }
+
+    public void UpdateDivinInfoDisplay(EnnemyBehavior behavior)
+    {
+        if (!behavior.Stat.ListBuffDebuff.Any(x => x.Nom == "Current Divin"))
+        {
+            _rules.CurrentDivin.Description = behavior.Stat.Divin.ToString();
+            behavior.AddBuffDebuff(_rules.CurrentDivin, behavior.Stat);
+        }
+
+        var currentDivin = behavior.ListBuffDebuffGO.FirstOrDefault(x =>
+            x.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text ==
+            "Current Divin");
+        currentDivin.GetComponent<DescriptionHoverTriggerBuffDebuff>().Description.text =
+            "Divin : " + behavior.Stat.Divin;
     }
 }

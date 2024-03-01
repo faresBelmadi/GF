@@ -32,12 +32,10 @@ public class PassifRules : ScriptableObject
     public int PercentQuarterLife;
 
     [Header("Passif Jeanne")]
-    public BuffDebuff TrenteDivin;
-    public BuffDebuff VingtDivin;
-    public BuffDebuff DixDivin;
-    public float nbPtsRadianceJeanne;
-    public float nbPtsForceAmeJeanne;
-    public float nbPtsDivinJeanne;
+    public BuffDebuff CurrentDivin;
+    //public float nbPtsRadianceJeanne;
+    //public float nbPtsForceAmeJeanne;
+    //public float nbPtsDivinJeanne;
 
     [Header("Passif Papa")]
     public float nbPercentBuffForceAmePapa;
