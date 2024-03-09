@@ -371,8 +371,9 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.DeuxiemeAttaqueJeanne:
                 var JeanneStat2 = (EnnemiStat)Caster;
-                ModifState.Radiance +=
-                    Mathf.FloorToInt(((JeanneStat2.Divin + Pourcentage / 100f) * Caster.ForceAme) * Caster.MultiplDegat);
+                var divin = JeanneStat2.Divin > 0? JeanneStat2.Divin : JeanneStat2.Divin * -1;
+                var TotalPercentage = -(divin + (Pourcentage * -1));
+                Mathf.FloorToInt(((TotalPercentage / 100f) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
             case TypeEffet.SupportJeanne:
                 var JeanneStat3 = (EnnemiStat)Caster;
