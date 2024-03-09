@@ -51,7 +51,7 @@ public class PassifManager
                             {
                                 behavior.Stat.Divin += rand * 10;
                             }
-                            var pourcentagePVActuel = (behavior.Stat.Radiance / behavior.Stat.RadianceMax) * 100f;
+                            var pourcentagePVActuel = (float)behavior.Stat.Radiance / (float)behavior.Stat.RadianceMax * 100f;
                             behavior.Stat.RadianceMax += behavior.Stat.Divin * 10;
                             behavior.Stat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * behavior.Stat.RadianceMax);
 
