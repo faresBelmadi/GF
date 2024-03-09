@@ -1,6 +1,7 @@
-﻿/// Credit drHogan 
+﻿
+using TMPro;
+/// Credit drHogan 
 /// Sourced from - http://www.hammerandravens.com/multi-use-tooltip-system-in-unity3d/
-
 namespace UnityEngine.UI.Extensions
 {
     [AddComponentMenu("UI/Extensions/HoverTooltip")]
@@ -11,7 +12,7 @@ namespace UnityEngine.UI.Extensions
         public int verticalPadding;
 
         //tooltip text
-        public Text thisText;
+        public TextMeshProUGUI thisText;
 
         //horizontal layout of the tooltip
         public HorizontalLayoutGroup hlG;

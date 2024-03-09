@@ -12,13 +12,12 @@ public class RunData
 [System.Serializable]
 public class PlayerData
 {
-    public int HP;
-    public int Volonté;
+    public int Radiance;
+    public int Volonter;
     public int Conscience;
     public int Essence;
-    public int dmg;
-    public int armor;
-    public int Speed;
+    public int ForceAme;
+    public int Vitesse;
     
     public List<int> BoughtSpellID;
 }

@@ -20,7 +20,7 @@ public class SpellUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
         ResetLine();
         UpdateButton();
 
-        buttonText.text = LinkedSpell.Name;
+        buttonText.text = LinkedSpell.Nom;
     }
 
     public void UpdateVisual() {
@@ -30,9 +30,9 @@ public class SpellUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 
     public void ButtonPressed()
     {
-        if(GameManager.instance.playerStat.Essence >= LinkedSpell.CostUnlocked)
+        if(GameManager.instance.playerStat.Essence >= LinkedSpell.CostUnlock)
         {
-            LinkedSpell.Status = SpellStatus.bought;
+            LinkedSpell.SpellStatue = SpellStatus.bought;
             GameManager.instance.SkillTreeUI.UpdateSkillTree(this);
             UpdateVisual();
         }
@@ -42,7 +42,7 @@ public class SpellUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
     {
         foreach (var item in Lines)
         {
-            switch (LinkedSpell.Status)
+            switch (LinkedSpell.SpellStatue)
             {
                 case SpellStatus.unlocked:
                     item.GetComponent<UILineRenderer>().color = Color.blue;  
@@ -59,7 +59,7 @@ public class SpellUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
     }    
     private void UpdateButton()
     {
-        if(LinkedSpell.Status == SpellStatus.unlocked)
+        if(LinkedSpell.SpellStatue == SpellStatus.unlocked)
             this.GetComponent<Button>().interactable = true;
         else
             this.GetComponent<Button>().interactable = false;

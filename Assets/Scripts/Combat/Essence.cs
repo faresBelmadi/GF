@@ -6,7 +6,7 @@ public class Essence : MonoBehaviour
 {
     public GameObject ui;
     public bool isEnd;
-    int amount;
+    public int amount;
 
     public void AddEssence(int _amount)
     {
@@ -19,9 +19,12 @@ public class Essence : MonoBehaviour
             GameManager.instance.BattleMan.ConsumeEndBattle(amount);
         else
             GameManager.instance.BattleMan.Consume(Mathf.FloorToInt(amount/2));
-            
-        GameManager.instance.BattleMan.ListEssence.Remove(this.gameObject);
-        Destroy(this.gameObject);
+
+        if(GameManager.instance.BattleMan != null)
+        {
+            GameManager.instance.BattleMan.ListEssence.Remove(this.gameObject);
+            Destroy(this.gameObject);
+        }
     }
 
     public int getEssence()

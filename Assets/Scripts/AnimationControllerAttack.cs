@@ -113,4 +113,19 @@ public class AnimationControllerAttack : MonoBehaviour
         ToMove.position = Target.position;
     }
     
+    public void GetAttacked()
+    {
+        MainAnimator.SetBool("IsAttacked",true);
+    }
+
+    public void EndAnimAttack()
+    {
+        MainAnimator.SetBool("IsAttacked",false);
+    }
+
+    public void SendAnimBuff(Action toDO)
+    {
+        MainAnimator.SetBool("Buff",true);
+        toDO.Invoke();
+    }
 }

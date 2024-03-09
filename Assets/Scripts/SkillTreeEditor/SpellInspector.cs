@@ -22,17 +22,17 @@ public class SpellInspector : Editor
     private void OnEnable() {
         Base = new List<SerializedProperty>();
         toggled = new List<bool>();
-        Base.Add(serializedObject.FindProperty("Name"));
-        Base.Add(serializedObject.FindProperty("IconSprite"));
+        Base.Add(serializedObject.FindProperty("Nom"));
+        Base.Add(serializedObject.FindProperty("Sprite"));
         Base.Add(serializedObject.FindProperty("Description"));
-        Base.Add(serializedObject.FindProperty("ID"));
-        Base.Add(serializedObject.FindProperty("idChildren"));
-        Base.Add(serializedObject.FindProperty("Status"));
-        Base.Add(serializedObject.FindProperty("isAvailable"));
-        Base.Add(serializedObject.FindProperty("CostUnlocked"));
+        Base.Add(serializedObject.FindProperty("IDSpell"));
+        Base.Add(serializedObject.FindProperty("IDChildren"));
+        Base.Add(serializedObject.FindProperty("SpellStatue"));
+        Base.Add(serializedObject.FindProperty("IsAvailable"));
+        Base.Add(serializedObject.FindProperty("CostUnlock"));
         Base.Add(serializedObject.FindProperty("Costs"));
-        Effet = serializedObject.FindProperty("Effet");
-        DebuffsBuffs = serializedObject.FindProperty("debuffsBuffs");
+        Effet = serializedObject.FindProperty("ActionEffet");
+        DebuffsBuffs = serializedObject.FindProperty("ActionBuffDebuff");
     }
     public override void OnInspectorGUI() {
         serializedObject.Update();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI.Extensions;
 
 public class Generator : MonoBehaviour
 {
@@ -56,25 +57,13 @@ public class Generator : MonoBehaviour
     {
         foreach (var item in ResultBsp)
         {
-            int i = 0;
-            bool CanSpawn = true;
-            Vector2 pos;
-            do
-            {
-               
-                pos = item.Center + (UnityEngine.Random.insideUnitCircle*3);
-                
-                foreach(var item2 in Spawned)
-                {
-                    if(Vector2.Distance(pos,item2.Key) < 3)
-                        CanSpawn = false;
-                }
-                i++;
-            } while (!CanSpawn && i < 1000000);
-
-            var t = Instantiate(Spawn,pos,Quaternion.identity,Parent);
+            //int i = 0;
+            //bool CanSpawn = true;
+            Vector2 pos = item.Center;
+            Vector3 position = new Vector3(pos.x, pos.y, 75);
+            var t = Instantiate(Spawn, position, Quaternion.identity, Parent);
             t.name = "room";
-            Spawned.Add(pos,t);
+            Spawned.Add(pos, t);
         }
     }
 
@@ -211,11 +200,21 @@ public class Generator : MonoBehaviour
             {
                 if(item2 != null)
                 {
-                    var l = Instantiate(Line,item.Key.transform.position,Quaternion.identity,item.Key.transform);
+                    var temp = item.Key.transform.position;
+                    Vector3 Start = new Vector3(temp.x, temp.y, 75);
+                    var l = Instantiate(Line, Start, Quaternion.identity,item.Key.transform);
                     l.name = "corridor";
-                    l.GetComponent<LineRenderer>().SetPosition(0,item.Key.transform.position);
-                    l.GetComponent<LineRenderer>().SetPosition(1,item2.transform.position);
-                    if((Vector2)item2.transform.position != Vector2.zero)
+                    var temp2 = item2.transform.position;
+                    Vector3 End = new Vector3(temp2.x, temp2.y, 75);
+                    var lineRenderer = l.GetComponent<LineRenderer>();
+                    //lineRenderer.useWorldSpace = false;
+                    lineRenderer.SetPosition(0,Start);
+                    lineRenderer.SetPosition(1,End);
+                    //lineRenderer.positionCount = 10;
+                    var dottedLine = l.GetComponent<DottedLineRenderer>();
+                    if (dottedLine != null) 
+                        dottedLine.ScaleMaterial();
+                    if ((Vector2)item2.transform.position != Vector2.zero)
                     {
                         Lines.Add(l);
                         item.Key.GetComponent<Room>().OwnedCorridors.Add(l);
@@ -232,27 +231,48 @@ public class Generator : MonoBehaviour
         }
     }
 
+    //public void AddLineConnection(MapNode from, MapNode to)
+    //{
+    //    var lineObject = Instantiate(linePrefab, nodeParent.transform);
+    //    var lineRenderer = lineObject.GetComponent<LineRenderer>();
+    //    lineRenderer.sortingOrder = 50;
+    //    var fromPoint = from.transform.position +
+    //                    (to.transform.position - from.transform.position).normalized * offsetFromNodes;
+
+    //    var toPoint = to.transform.position +
+    //                  (from.transform.position - to.transform.position).normalized * offsetFromNodes;
+
+    //    // drawing lines in local space:
+    //    lineObject.transform.position = fromPoint;
+    //    lineRenderer.useWorldSpace = false;
+
+    //    // line renderer with 2 points only does not handle transparency properly:
+    //    lineRenderer.positionCount = linePointsCount;
+    //    for (var i = 0; i < linePointsCount; i++)
+    //    {
+    //        lineRenderer.SetPosition(i,
+    //            Vector3.Lerp(Vector3.zero, toPoint - fromPoint, (float)i / (linePointsCount - 1)));
+    //    }
+    //    var dottedLine = lineObject.GetComponent<DottedLineRenderer>();
+    //    if (dottedLine != null) dottedLine.ScaleMaterial();
+
+    //    lineConnections.Add(new LineConnection(lineRenderer, from, to));
+    //}
+
     private void InitManager()
     {
         List<Room> ToInit = new List<Room>();
-        int maxConnect = 0;
-        Room MaxConnectRoom;
-        MaxConnectRoom = Spawned.First().Value.GetComponent<Room>();
 
         foreach (var item in Spawned)
         {
             var room = item.Value.GetComponent<Room>();
             ToInit.Add(room);
-            if(room.ConnectedRooms.Count > maxConnect)
-            {
-                maxConnect = room.ConnectedRooms.Count;
-                MaxConnectRoom = room;
-            }
         }
-        
-        ToInit.FirstOrDefault(c => c == MaxConnectRoom).isStart = true;
+
+        ToInit[0].isStart = true;
         roomManager.Init(ToInit);
     }
+
     void ClearGen()
     {
         foreach (var item in Spawned)

@@ -2,13 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public enum Emotion
-{
-    joie,
-    honte,
-}
-
 [System.Serializable]
 public struct RéponseSO
 {

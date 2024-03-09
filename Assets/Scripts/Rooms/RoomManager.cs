@@ -8,8 +8,12 @@ public class RoomManager : MonoBehaviour
 {
     public List<Room> Rooms;
     
-    public Sprite SalleCombat;
+    public Sprite SalleCombatBoss;
+    public Sprite SalleCombatElite;
+    public Sprite SalleCombatNormal;
+    public Sprite SalleLevelUp;
     public Sprite SalleHeal;
+    public Sprite SalleAlea;
     public Sprite SalleStart;
     
 
@@ -25,60 +29,34 @@ public class RoomManager : MonoBehaviour
     {
         Room start = Rooms.Find(c => c.isStart == true);
 
+        start.ToSet = SalleStart;
+        start.gameObject.transform.localScale = new Vector3(10, 10);
         start.Type = TypeRoom.Spawn;
-        var maxCo = FindMaxConnection();
 
-        foreach (var item in start.ConnectedRooms)
-        {
-            item.ToSet = SalleCombat;
-            item.Type = TypeRoom.Combat;
-            foreach (var item2 in item.ConnectedRooms)
-            {
-                if(item2.Type == TypeRoom.NotSet)
-                {
-                    item2.ToSet = SalleCombat;
-                    item2.Type = TypeRoom.Combat;
-                }
-            }
-        }
-        bool healSet = false;
-        foreach (var item in Rooms)
-        {
-            if(item.ConnectedRooms.Count >= maxCo && item != start && !healSet && item.ConnectedRooms.Where(c => c.Type == TypeRoom.Heal).Count() == 0)
-            {
-                item.ToSet = SalleHeal;
-                item.Type = TypeRoom.Heal;
-                healSet = true;
-            }
-            else if(item.Type == TypeRoom.NotSet)
-            {
-                healSet = false;
-                bool Combat = true;
-                for (int i = 0; i < item.ConnectedRooms.Count; i++)
-                {
-                    if(item.ConnectedRooms[i].Type != TypeRoom.Combat)
-                    {
-                        Combat = true;
-                    }
-                    else
-                    {
-                        Combat = false;
-                        i = item.ConnectedRooms.Count;
-                    }
-                }
-                if(Combat)
-                {
-                    item.ToSet = SalleCombat;
-                    item.Type = TypeRoom.Combat;
+        //Rooms[1].ToSet = SalleLevelUp;
+        //Rooms[1].gameObject.transform.localScale = new Vector3(10, 10);
+        //Rooms[1].Type = TypeRoom.Autel;
 
-                }
-                else
-                {
-                    item.ToSet = SalleCombat;
-                    item.Type = TypeRoom.Combat;
-                }
-            }
-        }
+        Rooms[1].ToSet = SalleCombatNormal;
+        Rooms[1].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[1].Type = TypeRoom.CombatNormal;
+
+        //Rooms[2].ToSet = SalleCombatNormal;
+        //Rooms[2].gameObject.transform.localScale = new Vector3(10, 10);
+        //Rooms[2].Type = TypeRoom.CombatNormal;
+
+        Rooms[2].ToSet = SalleLevelUp;
+        Rooms[2].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[2].Type = TypeRoom.Autel;
+
+        Rooms[3].ToSet = SalleCombatElite;
+        Rooms[3].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[3].Type = TypeRoom.CombatElite;
+
+        Rooms[4].ToSet = SalleCombatBoss;
+        Rooms[4].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[4].Type = TypeRoom.CombatBoss;
+        
         GameManager.instance.SetRoom(start);
     }
     
