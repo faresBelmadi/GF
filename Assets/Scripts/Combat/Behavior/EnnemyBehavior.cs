@@ -258,7 +258,7 @@ public class EnnemyBehavior : CombatBehavior
             }
             else if (item.Weight < nextAction.Weight)
             {
-                if (item.name == "UltimeJeanne")
+                if (item.name.Contains("UltimeJeanne"))
                 {
                     if (Stat.Divin >= 70)
                         nextAction = item;
