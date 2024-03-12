@@ -109,4 +109,9 @@ public class TutoManager : MonoBehaviour
         gO.transform.GetChild(0).gameObject.SetActive(true);
         gO.transform.GetChild(1).gameObject.SetActive(true);
     }
+
+    public void SkipTutoDuringTuto()
+    {
+        SceneManager.LoadSceneAsync(1);
+    }
 }

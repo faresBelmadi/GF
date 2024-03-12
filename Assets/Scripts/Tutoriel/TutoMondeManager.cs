@@ -68,16 +68,16 @@ public class TutoMondeManager : MonoBehaviour
             "C’est là que nos routes se séparent. Je parie que tu en avais assez de m’avoir dans les parages, pas vrai ?");
     }
 
-    void LateUpdate()
-    {
-        if (Input.anyKeyDown && !alreadyClicked)
-        {
-            alreadyClicked = true;
-            ChangeTextTuto();
-        }
-    }
+    //void LateUpdate()
+    //{
+    //    if (Input.anyKeyDown && !alreadyClicked)
+    //    {
+    //        alreadyClicked = true;
+    //        GoNextStepTuto();
+    //    }
+    //}
 
-    private void ChangeTextTuto()
+    public void GoNextStepTuto()
     {
         TutoManager.Instance.NextStep();
     }
