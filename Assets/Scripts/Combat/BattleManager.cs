@@ -208,7 +208,12 @@ public class BattleManager : MonoBehaviour
 
             var item = _encounter.ToFight[i];
 
-            var index = UnityEngine.Random.Range(0, spawnPos.Length);
+            int index = 0;
+            if (_encounter.ToFight.Count == 1)
+                index = 2;
+            else 
+                index = UnityEngine.Random.Range(0, spawnPos.Length);
+
             while (used.Contains(spawnPos[index]))
             {
                 index = UnityEngine.Random.Range(0, spawnPos.Length);
