@@ -678,6 +678,9 @@ public class BattleManager : MonoBehaviour
                     martyr.ApplicationEffet(effet, null, source, Caster);
                 }
                 break;
+
+            case Cible.LastAttacker:
+                break;
         }
     }
 
