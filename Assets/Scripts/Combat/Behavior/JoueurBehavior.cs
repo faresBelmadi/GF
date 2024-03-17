@@ -206,6 +206,7 @@ public class JoueurBehavior : CombatBehavior
 
     void Dead()
     {
+        ResetStat();
         _refBattleMan.DeadPlayer();
     }
 

@@ -69,11 +69,10 @@ public class DialogueManager : MonoBehaviour
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat ||
             _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
         {
-            EndDialogue.SetActive(true);
             if (EndText != null)
             {
-                if(EndText.text == null || EndText.text == "")
-                    EndText.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
+                //if(EndText.text == null || EndText.text == "")
+                EndText.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
 
             }
             else
@@ -84,6 +83,7 @@ public class DialogueManager : MonoBehaviour
                     Text.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
                 }
             }
+            EndDialogue.SetActive(true);
         }
         else
         {

@@ -9,7 +9,7 @@ public class EssenceUI : MonoBehaviour
 
     public void activate()
     {
-        if (TutoManager.Instance != null)
+        if (TutoManager.Instance != null && TutoManager.Instance.StepBatlleTuto != 2)
             return;
         buttonConsumation.SetActive(true);
     }

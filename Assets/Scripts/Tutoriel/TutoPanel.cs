@@ -17,7 +17,8 @@ public class TutoPanel : MonoBehaviour
 
     public GameObject UIDialogue;
     public GameObject UIJoueur;
-
+    public GameObject SpawnPos0;
+    public GameObject EndBattleButton;
 
     public void ShowNextExplication()
     {
@@ -59,6 +60,8 @@ public class TutoPanel : MonoBehaviour
         //UIDialogue.SetActive(false);
         GameManager.instance.BattleMan.StartCoroutine("GatherEssence");
         this.transform.GetChild(0).gameObject.SetActive(false);
+        SpawnPos0.transform.GetChild(0).gameObject.SetActive(false);
+        EndBattleButton.SetActive(false);
     }
 
     public void StartCombat()
