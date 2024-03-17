@@ -40,13 +40,10 @@ public class TutoAutelManager : MonoBehaviour
         ChangeTextTuto();
     }
 
-    public void Update()
+    public void ContinueButton()
     {
-        if (Input.anyKeyDown)
-        {
-            ChangeTextTuto();
-            currentStep++;
-        }
+        currentStep++;
+        ChangeTextTuto();
     }
 
     private void ChangeTextTuto()

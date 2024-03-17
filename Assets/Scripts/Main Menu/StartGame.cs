@@ -11,6 +11,8 @@ public class StartGame : MonoBehaviour
     public void Button_StartGame(int classe)
     {
         PlayerPrefs.SetInt("ClassSelected", classe);
+        if (TutoManager.Instance != null)
+            Destroy(TutoManager.Instance.gameObject);
         if (DoTutoCheck.isOn)
             SceneManager.LoadScene("Tuto");
         else

@@ -9,6 +9,8 @@ public class EssenceUI : MonoBehaviour
 
     public void activate()
     {
+        if (TutoManager.Instance != null)
+            return;
         buttonConsumation.SetActive(true);
     }
 

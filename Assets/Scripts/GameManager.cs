@@ -282,6 +282,10 @@ public class GameManager : MonoBehaviour {
         //SaveGame();
         //LoadSave();
         //StartCoroutine(Reload());
+        
+        //ResetJoueurStat à 0
+        GameManager.instance.playerStat.ResetStat();
+
         SceneManager.LoadScene("MainMenu");
         Destroy(GameManager.instance.gameObject);
     }
