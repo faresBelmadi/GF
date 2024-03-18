@@ -47,11 +47,11 @@ public class JoueurBehavior : CombatBehavior
 
     public void StartUp()
     {
-        
+
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.ClairvoyanceOriginal = Stat.Clairvoyance;
-        Stat.ResilienceOriginal = Stat.Resilience - (int)Stat.ResiliencePassif;
+        Stat.ResilienceOriginal = Stat.Resilience - (int) Stat.ResiliencePassif;
         Stat.ConvictionOriginal = Stat.Conviction;
         Stat.ForceAmeOriginal = Stat.ForceAme;
         foreach (var item in Stat.ListSpell)
@@ -166,10 +166,11 @@ public class JoueurBehavior : CombatBehavior
         _refBattleMan.PassifManager.ResolvePassifs();
         ActivateSpells();
         Stat.Volonter = Stat.VolonterMax;
-        if(!gainedTension)
+        if (!gainedTension)
         {
             ApaisementTension();
         }
+
         gainedTension = false;
         UpdateUI();
         if (Stat.isStun)
@@ -222,7 +223,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void EnervementTension()
     {
-        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        var t = (int) ((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
         if (t >= Stat.NbPalier)
             t = Stat.NbPalier;
         else
@@ -234,7 +235,7 @@ public class JoueurBehavior : CombatBehavior
     public void ApaisementTension()
     {
 
-        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        var t = (int) ((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
         if (t <= 0)
             t = 0;
         else
@@ -264,10 +265,10 @@ public class JoueurBehavior : CombatBehavior
                 gainedTension = true;
                 break;
         }
-        
+
         if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
             Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
-        if(Stat.Tension < 0)
+        if (Stat.Tension < 0)
             Stat.Tension = 0;
     }
 
@@ -287,10 +288,10 @@ public class JoueurBehavior : CombatBehavior
     private void DoAction(Spell toDo)
     {
         SelectedSpell = toDo;
-        foreach(GameObject spell in Spells)
+        foreach (GameObject spell in Spells)
         {
             var temp = spell.GetComponent<SpellCombat>();
-            if(temp.Action == toDo)
+            if (temp.Action == toDo)
             {
                 temp.selectedSpell.SetActive(true);
             }
@@ -299,22 +300,25 @@ public class JoueurBehavior : CombatBehavior
                 temp.selectedSpell.SetActive(false);
             }
         }
+
         bool isSelf = true;
-        foreach(var effet in SelectedSpell.ActionEffet)
+        foreach (var effet in SelectedSpell.ActionEffet)
         {
-            if(effet.Cible != Cible.Self && effet.Cible != Cible.joueur)
-            {
-                isSelf = false;
-            }
-        }        
-        foreach(var buff in SelectedSpell.ActionBuffDebuff)
-        {
-            if(buff.CibleApplication != Cible.Self && buff.CibleApplication != Cible.joueur)
+            if (effet.Cible != Cible.Self && effet.Cible != Cible.joueur)
             {
                 isSelf = false;
             }
         }
-        if(!isSelf)
+
+        foreach (var buff in SelectedSpell.ActionBuffDebuff)
+        {
+            if (buff.CibleApplication != Cible.Self && buff.CibleApplication != Cible.joueur)
+            {
+                isSelf = false;
+            }
+        }
+
+        if (!isSelf)
             TakeTarget();
         else
         {
@@ -330,7 +334,7 @@ public class JoueurBehavior : CombatBehavior
             item.GetComponent<SpellCombat>().isTurn = false;
         }
 
-        foreach(GameObject spell in Spells)
+        foreach (GameObject spell in Spells)
         {
             spell.GetComponent<SpellCombat>().selectedSpell.SetActive(false);
         }
@@ -344,6 +348,7 @@ public class JoueurBehavior : CombatBehavior
         {
             item.GetComponent<SpellCombat>().isTurn = true;
         }
+
         EndTurnButton.interactable = true;
     }
 
@@ -352,7 +357,7 @@ public class JoueurBehavior : CombatBehavior
         _refBattleMan.StartTargeting();
     }
 
-    public void Costs() 
+    public void Costs()
     {
         foreach (var price in SelectedSpell.Costs)
         {
@@ -376,7 +381,7 @@ public class JoueurBehavior : CombatBehavior
         Costs();
         DesactivateSpells();
 
-        if(attack)
+        if (attack)
             AnimationController.StartAttack(AfterAnim);
         else
             AnimationController.SendAnimBuff(AfterAnim);
@@ -409,6 +414,7 @@ public class JoueurBehavior : CombatBehavior
             {
                 ReceiveTension(Source.Buff);
             }
+
             var buff = Instantiate(toAdd);
             buff.Effet = new List<Effet>();
             foreach (var item in toAdd.Effet)
@@ -420,26 +426,28 @@ public class JoueurBehavior : CombatBehavior
             base.AddBuffDebuff(toAdd, Stat);
             ApplicationBuffDebuff(Timer, buff);
         }
-       
+
 
         //DecompteDebuffJoueur(Decompte, Timer);
-        
+
         UpdateUI();
     }
 
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
-        DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
+        DecompteDebuff(Stat.ListBuffDebuff, Decompte, this.Stat);
 
         foreach (var item in Stat.ListBuffDebuff)
         {
             if (item.timerApplication == Timer)
                 ApplicationBuffDebuff(Timer, item);
         }
+
         foreach (var item in tempAddList)
         {
             AddDebuff(item, Decompte.none, TimerApplication.Persistant);
         }
+
         Stat.ListBuffDebuff = UpdateBuffDebuffGameObject(Stat.ListBuffDebuff, Stat);
         UpdateUI();
     }
@@ -449,37 +457,39 @@ public class JoueurBehavior : CombatBehavior
         //ResetStat();
         //foreach (var item in Stat.ListBuffDebuff)
         //{
-            if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant || toApply.DirectApplication)
+        if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant ||
+            toApply.DirectApplication)
+        {
+            foreach (var effet in toApply.Effet)
             {
-                foreach (var effet in toApply.Effet)
+                _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
+                /*if(item.CibleApplication == effet.Cible)
                 {
-                    _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
-                    /*if(item.CibleApplication == effet.Cible)
-                    {
-                        ApplicationEffet(effet);
-                    }
-                    else
-                    {
-                        //A Mettre une fois les combats terminer
-                        GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine);
-                    }*/
+                    ApplicationEffet(effet);
                 }
-                if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1 && toApply.Temps > 0)
+                else
                 {
-                    toApply.Temps = -1;
-                    foreach (var ToAdd in toApply.Consomation)
-                    {
-                        tempAddList.Add(ToAdd);
-                    }
-                }
-            else
-                    toApply.TimingConsomationMinimum--;
-
-                if (toApply.DirectApplication)
-                    toApply.DirectApplication = false;
+                    //A Mettre une fois les combats terminer
+                    GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine);
+                }*/
             }
 
-        
+            if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1 && toApply.Temps > 0)
+            {
+                toApply.Temps = -1;
+                foreach (var ToAdd in toApply.Consomation)
+                {
+                    tempAddList.Add(ToAdd);
+                }
+            }
+            else
+                toApply.TimingConsomationMinimum--;
+
+            if (toApply.DirectApplication)
+                toApply.DirectApplication = false;
+        }
+
+
     }
 
 
@@ -487,20 +497,21 @@ public class JoueurBehavior : CombatBehavior
 
     #region Effet
 
-    public void ApplicationEffet(Effet effet, EnnemiStat Caster = null, SourceEffet source = SourceEffet.Spell, int idCaster = 0)
+    public void ApplicationEffet(Effet effet, EnnemiStat Caster = null, SourceEffet source = SourceEffet.Spell,
+        int idCaster = 0)
     {
         JoueurStat ModifStat;
         if (Caster == null)
         {
             var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
             if (caster != null)
-                ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken,this.Stat);
+                ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, this.Stat);
             else
-                ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Cible:Stat);
+                ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Cible: Stat);
         }
         else
         {
-            ModifStat = effet.ResultEffet(Caster, LastDamageTaken,Stat);
+            ModifStat = effet.ResultEffet(Caster, LastDamageTaken, Stat);
         }
 
         if (ModifStat.Radiance < 0)
@@ -508,7 +519,7 @@ public class JoueurBehavior : CombatBehavior
             var toRemove = Mathf.FloorToInt(ModifStat.Radiance / Stat.MultiplDef);
             toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
-            if(effet.IsAttaqueEffet)
+            if (effet.IsAttaqueEffet)
                 getAttacked();
         }
 
@@ -545,14 +556,14 @@ public class JoueurBehavior : CombatBehavior
             var temp = Instantiate(DamagePrefab, DamageSpawn);
             temp.GetComponent<TextAnimDegats>().Value = ModifStat.Radiance;
         }
-        else if(ModifStat.Radiance > 0)
+        else if (ModifStat.Radiance > 0)
         {
             ReceiveTension(Source.Soin);
             var temp = Instantiate(SoinPrefab, DamageSpawn);
             temp.GetComponent<TextAnimDegats>().Value = ModifStat.Radiance;
         }
 
-        if(effet.IsAttaqueEffet)
+        if (effet.IsAttaqueEffet)
         {
             foreach (var item in Stat.ListBuffDebuff)
             {
@@ -591,11 +602,11 @@ public class JoueurBehavior : CombatBehavior
 
     public void getAttacked()
     {
-        
+
         DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
         AnimationController.GetAttacked();
     }
-    
+
     public void endHurtAnim()
     {
         AnimationController.EndAnimAttack();

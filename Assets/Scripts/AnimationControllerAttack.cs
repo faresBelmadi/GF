@@ -25,7 +25,7 @@ public class AnimationControllerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("waiting for input");
+        //Debug.Log("waiting for input");
         if(Input.GetKeyDown(keyStart))
         {
         }
