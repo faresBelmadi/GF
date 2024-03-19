@@ -319,11 +319,11 @@ public class JoueurBehavior : CombatBehavior
         }
 
         if (!isSelf)
-            TakeTarget();
+            TakeTarget(SelectedSpell.IDSpell);
         else
         {
             _refBattleMan.idTarget = 0;
-            SendSpell(false);
+            SendSpell(false, SelectedSpell.IDSpell);
         }
     }
 
@@ -352,9 +352,9 @@ public class JoueurBehavior : CombatBehavior
         EndTurnButton.interactable = true;
     }
 
-    private void TakeTarget()
+    private void TakeTarget(int IdSpell)
     {
-        _refBattleMan.StartTargeting();
+        _refBattleMan.StartTargeting(IdSpell);
     }
 
     public void Costs()
@@ -376,15 +376,15 @@ public class JoueurBehavior : CombatBehavior
         }
     }
 
-    public void SendSpell(bool attack)
+    public void SendSpell(bool attack, int IdSpell)
     {
         Costs();
         DesactivateSpells();
 
-        if (attack)
-            AnimationController.StartAttack(AfterAnim);
-        else
-            AnimationController.SendAnimBuff(AfterAnim);
+        //if (attack)
+            AnimationController.StartAttack(AfterAnim, IdSpell);
+        //else
+        //    AnimationController.SendAnimBuff(AfterAnim, IdSpell);
 
 
         DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);

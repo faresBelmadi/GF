@@ -828,13 +828,13 @@ public class BattleManager : MonoBehaviour
 
     #region Targeting
 
-    public void StartTargeting()
+    public void StartTargeting(int IdSpell)
     {
         StopCoroutine(Target);
-        StartCoroutine(Target);
+        StartCoroutine(Target, IdSpell);
     }
 
-    private IEnumerator Targeting()
+    private IEnumerator Targeting(int IdSpell)
     {
         foreach (var item in EnemyScripts)
         {
@@ -851,7 +851,7 @@ public class BattleManager : MonoBehaviour
             item.EndTargetingMode();
         }
 
-        player.SendSpell(true);
+        player.SendSpell(true, IdSpell);
     }
 
     #endregion Targeting
