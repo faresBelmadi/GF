@@ -60,7 +60,7 @@ public class TutoPanel : MonoBehaviour
         //UIDialogue.SetActive(false);
         GameManager.instance.BattleMan.StartCoroutine("GatherEssence");
         this.transform.GetChild(0).gameObject.SetActive(false);
-        SpawnPos0.transform.GetChild(0).gameObject.SetActive(false);
+        //SpawnPos0.transform.GetChild(0).gameObject.SetActive(false);
         EndBattleButton.SetActive(false);
     }
 

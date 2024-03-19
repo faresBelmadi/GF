@@ -72,8 +72,12 @@ public class DialogueManager : MonoBehaviour
             if (EndText != null)
             {
                 //if(EndText.text == null || EndText.text == "")
-                EndText.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
-
+                if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible != null)
+                    EndText.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
+                else
+                {
+                    EndText.text = "Continuer";
+                }
             }
             else
             {
