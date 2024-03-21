@@ -140,15 +140,20 @@ public class AutelManager : MonoBehaviour
                 AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().color = Color.gray;
                 capa.isBuyable = false;
             }
-            if (capa.IDLvl == 13 || capa.IDLvl == 14)
+            //if (capa.IDLvl == 13 || capa.IDLvl == 14)
+            //{
+            //    AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.Sprite;
+            //    capa.isBuyable = true;
+            //}
+            if (capa.Spell?.Sprite)
             {
                 AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.Sprite;
+
+                //DEMO ONLY
                 capa.isBuyable = true;
             }
-            if (capa.Spell?.Sprite)
-                AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.Sprite;
-            if (!capa.isBuyable)
-                AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().color = Color.gray;
+            //if (!capa.isBuyable)
+            //    AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().color = Color.gray;
 
         }
 
