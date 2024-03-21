@@ -1,13 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Linq;
-using Unity.Jobs;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine.SceneManagement;
-using static System.Net.Mime.MediaTypeNames;
 using Image = UnityEngine.UI.Image;
 
 public class AutelManager : MonoBehaviour
@@ -140,11 +135,21 @@ public class AutelManager : MonoBehaviour
 
         foreach (var capa in listOfCompetences)
         {
+            if (ShouldIgnoreCapaLier(capa.IDLvl))
+            {
+                AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().color = Color.gray;
+                capa.isBuyable = false;
+            }
+            if (capa.IDLvl == 13 || capa.IDLvl == 14)
+            {
+                AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.Sprite;
+                capa.isBuyable = true;
+            }
             if (capa.Spell?.Sprite)
                 AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.Sprite;
             if (!capa.isBuyable)
                 AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().color = Color.gray;
-            //spellIcon.gameObject.GetComponent<Image>().sprite = GameManager.instance.playerStat.ListSpell[0].Sprite;
+
         }
 
     }
@@ -326,10 +331,15 @@ public class AutelManager : MonoBehaviour
     {
         if (capa.IDLier == null)
             return;
+        //if (capa.IDLvl == 15)
+        //{
+        //    capa.IDLier.Add(14);
+        //    capa.IDLier.Add(13);
+        //}
         foreach (var id in capa.IDLier)
         {
             var capaLier = GameManager.instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == id);
-            if (capaLier != null)
+            if (capaLier != null && !ShouldIgnoreCapaLier(capaLier.IDLvl))
             {
                 if (capa.lvlCapa == 1)
                 {
@@ -348,6 +358,15 @@ public class AutelManager : MonoBehaviour
                 AllSpellsIcon[capaLier.Spell.IDSpell].GetComponent<Image>().color = Color.white;
             }
         }
+
+        
+    }
+
+    private bool ShouldIgnoreCapaLier(int id)
+    {
+        if (id == 16 || id == 9 || id == 5 || id == 7 || id == 8)
+            return true;
+        return false;
     }
 
     public void RetourMap()

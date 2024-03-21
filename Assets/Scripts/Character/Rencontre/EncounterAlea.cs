@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Alea Encounter", menuName = "Encounter/Create New Alea", order = 11)]
 public class EncounterAlea : ScriptableObject

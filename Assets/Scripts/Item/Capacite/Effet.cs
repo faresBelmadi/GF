@@ -1,8 +1,4 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Effect", menuName = "Capacité/Create New Effet", order = 11)]

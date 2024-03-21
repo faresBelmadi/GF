@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.PostProcessing;
 
 [CreateAssetMenu(fileName = "New Encounter", menuName = "Encounter/Create New Encounter", order = 11)]
 public class Encounter : ScriptableObject

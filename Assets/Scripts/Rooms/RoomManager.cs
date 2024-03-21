@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomManager : MonoBehaviour
@@ -49,14 +46,25 @@ public class RoomManager : MonoBehaviour
         Rooms[2].gameObject.transform.localScale = new Vector3(10, 10);
         Rooms[2].Type = TypeRoom.Autel;
 
-        Rooms[3].ToSet = SalleCombatElite;
+        Rooms[3].ToSet = SalleCombatNormal;
         Rooms[3].gameObject.transform.localScale = new Vector3(10, 10);
-        Rooms[3].Type = TypeRoom.CombatElite;
+        Rooms[3].Type = TypeRoom.CombatNormal;
 
-        Rooms[4].ToSet = SalleCombatBoss;
+        Rooms[4].ToSet = SalleLevelUp;
         Rooms[4].gameObject.transform.localScale = new Vector3(10, 10);
-        Rooms[4].Type = TypeRoom.CombatBoss;
-        
+        Rooms[4].Type = TypeRoom.Autel;
+
+        Rooms[5].ToSet = SalleCombatElite;
+        Rooms[5].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[5].Type = TypeRoom.CombatElite;
+
+        Rooms[6].ToSet = SalleLevelUp;
+        Rooms[6].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[6].Type = TypeRoom.Autel;
+
+        Rooms[7].ToSet = SalleCombatBoss;
+        Rooms[7].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[7].Type = TypeRoom.CombatBoss;
         GameManager.instance.SetRoom(start);
     }
     

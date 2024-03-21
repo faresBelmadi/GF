@@ -1,14 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
-using System.Linq;
-using Unity.Jobs;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine.SceneManagement;
-using static System.Net.Mime.MediaTypeNames;
-using Image = UnityEngine.UI.Image;
+﻿using UnityEngine;
 using Text = UnityEngine.UI.Text;
 
 public class TutoAutelManager : MonoBehaviour

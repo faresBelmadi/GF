@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI.Extensions;
-using static UnityEditor.Progress;
 
 public class TutoBattleManager : MonoBehaviour
 {

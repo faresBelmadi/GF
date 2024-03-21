@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -72,7 +69,9 @@ public class DialogueManager : MonoBehaviour
             if (EndText != null)
             {
                 //if(EndText.text == null || EndText.text == "")
-                if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible != null)
+                if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible != null &&
+                    _CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count > 0 &&
+                     !string.IsNullOrEmpty(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse))
                     EndText.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
                 else
                 {
