@@ -15,6 +15,8 @@ public class TutoManager : MonoBehaviour
 
     private static TutoManager instance;
 
+    public bool ShowSoulConsumation;
+
     private void Awake()
     {
         if (instance == null)
@@ -24,6 +26,7 @@ public class TutoManager : MonoBehaviour
             StepTuto = 0;
             StepMapTuto = 0;
             StepBatlleTuto = 0;
+            ShowSoulConsumation = false;
         }
         else
         {

@@ -6,7 +6,7 @@ public class EssenceUI : MonoBehaviour
 
     public void activate()
     {
-        if (TutoManager.Instance != null && TutoManager.Instance.StepBatlleTuto != 2)
+        if (TutoManager.Instance != null && !TutoManager.Instance.ShowSoulConsumation)
             return;
         buttonConsumation.SetActive(true);
     }

@@ -270,6 +270,10 @@ public class BattleManager : MonoBehaviour
             //UIDialogue.SetActive(false);
             var tutoPanelScript = gO.GetComponent<TutoPanel>();
             tutoPanelScript.ShowExplication();
+            //HideSoul
+            //Hidepos4 child
+            GameObject.Find("Soul(Clone)").SetActive(false);
+            buttonEndCombat.SetActive(false);
         }
         else
             StartCoroutine(GameManager.instance.pmm.EndBattle(IsLoot));
