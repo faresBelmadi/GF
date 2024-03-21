@@ -46,25 +46,29 @@ public class RoomManager : MonoBehaviour
         Rooms[2].gameObject.transform.localScale = new Vector3(10, 10);
         Rooms[2].Type = TypeRoom.Autel;
 
-        Rooms[3].ToSet = SalleCombatNormal;
+        Rooms[3].ToSet = SalleCombatElite;
         Rooms[3].gameObject.transform.localScale = new Vector3(10, 10);
-        Rooms[3].Type = TypeRoom.CombatNormal;
+        Rooms[3].Type = TypeRoom.CombatElite;
 
         Rooms[4].ToSet = SalleLevelUp;
         Rooms[4].gameObject.transform.localScale = new Vector3(10, 10);
         Rooms[4].Type = TypeRoom.Autel;
 
-        Rooms[5].ToSet = SalleCombatElite;
+        Rooms[5].ToSet = SalleCombatNormal;
         Rooms[5].gameObject.transform.localScale = new Vector3(10, 10);
-        Rooms[5].Type = TypeRoom.CombatElite;
+        Rooms[5].Type = TypeRoom.CombatNormal;
 
         Rooms[6].ToSet = SalleLevelUp;
         Rooms[6].gameObject.transform.localScale = new Vector3(10, 10);
         Rooms[6].Type = TypeRoom.Autel;
 
-        Rooms[7].ToSet = SalleCombatBoss;
+        Rooms[7].ToSet = SalleCombatElite;
         Rooms[7].gameObject.transform.localScale = new Vector3(10, 10);
-        Rooms[7].Type = TypeRoom.CombatBoss;
+        Rooms[7].Type = TypeRoom.CombatElite;
+
+        Rooms[8].ToSet = SalleCombatBoss;
+        Rooms[8].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[8].Type = TypeRoom.CombatBoss;
         GameManager.instance.SetRoom(start);
     }
     

@@ -388,6 +388,9 @@ public class MenuStatManager : MonoBehaviour
     public void End()
     {
         StatTemp.ListSouvenir = EquipedSouvenir;
+        Souvenir.Clear();
+        NbSlotsEquiped = 0;
+        EquipedSouvenir.Clear();
         GameManager.instance.playerStat = StatTemp;
         GameManager.instance.pmm.EndMenuStat();
     }
