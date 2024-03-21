@@ -433,8 +433,8 @@ public class JoueurBehavior : CombatBehavior
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
         DecompteDebuff(Stat.ListBuffDebuff, Decompte, this.Stat);
-
-        foreach (var item in Stat.ListBuffDebuff)
+        var tempListBuffDebuff = Stat.ListBuffDebuff;
+        foreach (var item in tempListBuffDebuff)
         {
             if (item.timerApplication == Timer)
                 ApplicationBuffDebuff(Timer, item);
