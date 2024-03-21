@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
     public List<ClassPlayer> AllClasses;
 
     public List<Encounter> AllEncounter;
+    public int EncounterIndex;
     public List<EncounterAlea> AllEncounterAlea;
 
     public List<Souvenir> AllSouvenir;
@@ -223,6 +224,12 @@ public class GameManager : MonoBehaviour {
     public void SetRoom(Room set)
     {
         pmm.CurrentRoom = set;
+    }
+
+    public void LoadCombat()
+    {
+        BattleMan.LoadEnemy(Instantiate(AllEncounter[EncounterIndex]));
+        EncounterIndex++;
     }
 
     public void LoadCombatNormal()
