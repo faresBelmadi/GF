@@ -114,5 +114,6 @@ public class TutoManager : MonoBehaviour
     public void SkipTutoDuringTuto()
     {
         SceneManager.LoadSceneAsync(1);
+        Destroy(this.gameObject);
     }
 }
