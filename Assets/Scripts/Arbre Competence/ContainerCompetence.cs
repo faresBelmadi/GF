@@ -16,6 +16,7 @@ public class ContainerCompetence : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void Affichage()
     {
+        LaCompetence.EssenceCostOriginal = LaCompetence.EssenceCost = LaCompetence.Spell.CostUnlock;
         NomSpell.text = "Spell :\n" + LaCompetence.Spell.Nom.ToString();
         SpellSprite.sprite = LaCompetence.Spell.Sprite;
         Stat.text = "";
