@@ -1,9 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -69,12 +66,17 @@ public class DialogueManager : MonoBehaviour
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat ||
             _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
         {
-            EndDialogue.SetActive(true);
             if (EndText != null)
             {
-                if(EndText.text == null || EndText.text == "")
+                //if(EndText.text == null || EndText.text == "")
+                if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible != null &&
+                    _CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count > 0 &&
+                     !string.IsNullOrEmpty(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse))
                     EndText.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
-
+                else
+                {
+                    EndText.text = "Continuer";
+                }
             }
             else
             {
@@ -84,6 +86,7 @@ public class DialogueManager : MonoBehaviour
                     Text.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
                 }
             }
+            EndDialogue.SetActive(true);
         }
         else
         {

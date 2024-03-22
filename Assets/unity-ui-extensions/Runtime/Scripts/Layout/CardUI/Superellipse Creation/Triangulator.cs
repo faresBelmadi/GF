@@ -3,7 +3,6 @@
 /// Sourced from - https://github.com/ryanslikesocool/Unity-Card-UI
 /// </summary>
 
-using UnityEngine;
 using System.Collections.Generic;
 
 namespace UnityEngine.UI.Extensions

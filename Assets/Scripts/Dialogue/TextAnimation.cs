@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -13,7 +12,7 @@ public class TextAnimation : MonoBehaviour
     private void OnEnable() {
         TextAttached = transform.GetComponent<TextMeshProUGUI>();
         originalTexte = TextAttached.text;
-        index = originalTexte.IndexOf(':');
+        index = originalTexte.Contains('>') ? originalTexte.LastIndexOf('>') + 1 : originalTexte.IndexOf(':');
         if(index == -1)
         {
             index = 0;

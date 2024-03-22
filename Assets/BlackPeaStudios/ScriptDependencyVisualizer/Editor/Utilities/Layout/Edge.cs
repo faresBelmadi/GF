@@ -1,7 +1,4 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace BPS
+﻿namespace BPS
 {
 	public class Edge
 	{

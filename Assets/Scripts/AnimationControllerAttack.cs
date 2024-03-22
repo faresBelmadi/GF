@@ -25,48 +25,50 @@ public class AnimationControllerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("waiting for input");
+        //Debug.Log("waiting for input");
         if(Input.GetKeyDown(keyStart))
         {
         }
     }
 
-    public void StartAttack(Action ToDo)
+    public void StartAttack(Action ToDo, int IdSpell)
     {
         tempAction = ToDo;
         Debug.Log("spell detected");
-        StartCoroutine("StartAnimation");
+        StartCoroutine("StartAnimation", IdSpell);
     }
 
-    IEnumerator StartAnimation()
+    IEnumerator StartAnimation(int IdSpell)
     {
         Debug.Log("Start animation");
         Debug.Log("Change pose to Transition");
 
-        yield return LerpPosition(Main.transform,Waypoints[0].transform,TimeTransition);
-        OmbreIdle.GetComponent<SpriteRenderer>().enabled = true;
-        MainAnimator.SetBool("Transition",true);
-        yield return LerpPosition(Main.transform,Waypoints[1].transform,TimeTransition);
-        OmbreTransition[0].GetComponent<SpriteRenderer>().enabled = true;
-        yield return LerpPosition(Main.transform,Waypoints[2].transform,TimeTransition);
-        OmbreTransition[1].GetComponent<SpriteRenderer>().enabled = true;
-        yield return LerpPosition(Main.transform,Waypoints[3].transform,TimeTransition);
-        //OmbreTransition[2].GetComponent<SpriteRenderer>().enabled = true;
-        MainAnimator.SetBool("Transition",false);
-        MainAnimator.SetBool("Attaque",true);
-        yield return LerpPosition(Main.transform,Waypoints[4].transform,TimeAttaque);
-        MainAnimator.SetBool("Attaque",false);
-        yield return LerpPosition(Main.transform,Waypoints[3].transform,TimeTransition);
-        //OmbreTransition[2].GetComponent<SpriteRenderer>().enabled = false;
-        yield return LerpPosition(Main.transform,Waypoints[2].transform,TimeTransition);
-        OmbreTransition[1].GetComponent<SpriteRenderer>().enabled = false;
-        yield return LerpPosition(Main.transform,Waypoints[1].transform,TimeTransition);
-        OmbreTransition[0].GetComponent<SpriteRenderer>().enabled = false;
-        yield return LerpPosition(Main.transform,Waypoints[0].transform,TimeTransition);
-        OmbreIdle.GetComponent<SpriteRenderer>().enabled = false;
-        if(tempAction != null)
+        //yield return LerpPosition(Main.transform,Waypoints[0].transform,TimeTransition);
+        //OmbreIdle.GetComponent<SpriteRenderer>().enabled = true;
+        //MainAnimator.SetBool("Transition", true);
+        //yield return LerpPosition(Main.transform,Waypoints[1].transform,TimeTransition);
+        //OmbreTransition[0].GetComponent<SpriteRenderer>().enabled = true;
+        //yield return LerpPosition(Main.transform,Waypoints[2].transform,TimeTransition);
+        //OmbreTransition[1].GetComponent<SpriteRenderer>().enabled = true;
+        //yield return LerpPosition(Main.transform,Waypoints[3].transform,TimeTransition);
+        ////OmbreTransition[2].GetComponent<SpriteRenderer>().enabled = true;
+        //MainAnimator.SetBool("Transition",false);
+        MainAnimator.SetBool("" + IdSpell, true);
+        yield return new WaitForFixedUpdate();
+        //yield return LerpPosition(Main.transform,Waypoints[4].transform,TimeAttaque);
+        MainAnimator.SetBool("" + IdSpell, false);
+        //yield return LerpPosition(Main.transform,Waypoints[3].transform,TimeTransition);
+        ////OmbreTransition[2].GetComponent<SpriteRenderer>().enabled = false;
+        //yield return LerpPosition(Main.transform,Waypoints[2].transform,TimeTransition);
+        //OmbreTransition[1].GetComponent<SpriteRenderer>().enabled = false;
+        //yield return LerpPosition(Main.transform,Waypoints[1].transform,TimeTransition);
+        //OmbreTransition[0].GetComponent<SpriteRenderer>().enabled = false;
+        //yield return LerpPosition(Main.transform,Waypoints[0].transform,TimeTransition);
+        //OmbreIdle.GetComponent<SpriteRenderer>().enabled = false;
+
+        if (tempAction != null)
             tempAction();
-        
+
         // Debug.Log("Starting animation");
         // yield return new WaitForSeconds(TimeIdleDisappear);
         // Idle.SetActive(false);
@@ -115,7 +117,7 @@ public class AnimationControllerAttack : MonoBehaviour
     
     public void GetAttacked()
     {
-        MainAnimator.SetBool("IsAttacked",true);
+        MainAnimator.SetBool("IsAttacked", true);
     }
 
     public void EndAnimAttack()
@@ -123,9 +125,9 @@ public class AnimationControllerAttack : MonoBehaviour
         MainAnimator.SetBool("IsAttacked",false);
     }
 
-    public void SendAnimBuff(Action toDO)
+    public void SendAnimBuff(Action toDO, int IdSpell)
     {
-        MainAnimator.SetBool("Buff",true);
+        MainAnimator.SetBool("" + IdSpell,true);
         toDO.Invoke();
     }
 }

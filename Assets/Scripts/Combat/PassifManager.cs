@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -14,6 +13,8 @@ public class PassifManager
     private List<EnnemyBehavior> _currentBattleEnemy;
     private List<JoueurBehavior> _currentBattleJoueur;
     public TimerPassif CurrentEvent;
+
+    private int StartTurnDivin;
 
     public PassifManager(List<JoueurBehavior> currentBattleJoueur, List<EnnemyBehavior> currentBattleEnnemiStats)
     {
@@ -33,12 +34,13 @@ public class PassifManager
                     switch (item.passif)
                     {
                         case TypePassif.PassifJeanneFinAction:
+                            UpdateJeanneStat(behavior);
                             UpdateDivinInfoDisplay(behavior);
                             break;
                         case TypePassif.PassifJeanneDebutTour:
                             int rand;
 
-                            if (behavior.nextAction.Name == "UltimeJeanne")
+                            if (behavior.nextAction.Name.Contains("UltimeJeanne"))
                                 rand = Random.Range(1,4);
                             else
                                 rand = Random.Range(0, 4);
@@ -51,14 +53,11 @@ public class PassifManager
                             {
                                 behavior.Stat.Divin += rand * 10;
                             }
-                            var pourcentagePVActuel = (behavior.Stat.Radiance / behavior.Stat.RadianceMax) * 100f;
-                            behavior.Stat.RadianceMax += behavior.Stat.Divin * 10;
-                            behavior.Stat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * behavior.Stat.RadianceMax);
 
-                            behavior.Stat.ForceAme += behavior.Stat.Divin * 2;
-
+                            StartTurnDivin = -1000;
+                            UpdateJeanneStat(behavior);
+                            StartTurnDivin = behavior.Stat.Divin;
                             UpdateDivinInfoDisplay(behavior);
-                            
                             break;
                         //case TypePassif.PassifCameleon:
                         //    break;
@@ -134,6 +133,18 @@ public class PassifManager
             }
         }
 
+    }
+
+    private void UpdateJeanneStat(EnnemyBehavior behavior)
+    {
+        if (StartTurnDivin != behavior.Stat.Divin)
+        {
+            var pourcentagePVActuel = (float)behavior.Stat.Radiance / (float)behavior.Stat.RadianceMax * 100f;
+            behavior.Stat.RadianceMax += behavior.Stat.Divin * 10;
+            behavior.Stat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * behavior.Stat.RadianceMax);
+
+            behavior.Stat.ForceAme += behavior.Stat.Divin * 2;
+        }
     }
 
     public void UpdateDivinInfoDisplay(EnnemyBehavior behavior)

@@ -1,9 +1,7 @@
 using UnityEngine;
-using System.Collections;
 using UnityEditor;
 using System.Text;
 using System;
-using System.Linq;
 
 #if UNITY_EDITOR
 //We use scriptable object because in the future we will need the messages that unity calls on scriptable objects

@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Video;
 
 public class PlayerMapManager : MonoBehaviour
 {
@@ -158,16 +156,17 @@ public class PlayerMapManager : MonoBehaviour
     {
         CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
         GameManager.instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
-        if (enemieType.Equals("normal"))
-            GameManager.instance.LoadCombatNormal();
-        else if (enemieType.Equals("elite"))
-        {
-            GameManager.instance.LoadCombatElite();
-        }
-        else if (enemieType.Equals("boss"))
-        {
-            GameManager.instance.LoadCombatBoss();
-        }
+        //if (enemieType.Equals("normal"))
+        //    GameManager.instance.LoadCombatNormal();
+        //else if (enemieType.Equals("elite"))
+        //{
+        //    GameManager.instance.LoadCombatElite();
+        //}
+        //else if (enemieType.Equals("boss"))
+        //{
+        //    GameManager.instance.LoadCombatBoss();
+        //}
+        GameManager.instance.LoadCombat();
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
     }

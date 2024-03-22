@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -34,6 +33,7 @@ public class CharacterStat : ScriptableObject
     }
 
     public int _resilience;
+
     //[HideInInspector]
     public float ResiliencePassif;
     public int ResilienceMin = -10;
@@ -76,6 +76,7 @@ public class CharacterStat : ScriptableObject
                 this.MultiplDef += multiplicateurDef;
             }
         }
+
         if (ModifState.MultiplSoin != 1)
             this.MultiplSoin = ModifState.MultiplSoin;
         if (ModifState.MultiplDegat != 1)
@@ -98,11 +99,11 @@ public class CharacterStat : ScriptableObject
         }
         else
         {
-            this.Radiance += Mathf.FloorToInt(ModifState.Radiance*this.MultiplSoin);
+            this.Radiance += Mathf.FloorToInt(ModifState.Radiance * this.MultiplSoin);
         }
 
         this.isStun = ModifState.isStun;
-        
+
     }
 
     public void RectificationStat()
@@ -111,6 +112,7 @@ public class CharacterStat : ScriptableObject
         {
             this.Radiance = this.RadianceMax;
         }
+
         if (this.Conviction > this.ConvictionMax)
         {
             this.Conviction = this.ConvictionMax;
@@ -119,13 +121,14 @@ public class CharacterStat : ScriptableObject
         {
             this.Conviction = this.ConvictionMin;
         }
+
         if (this.Resilience > this.ResilienceMax)
         {
-            this.Resilience = this.ResilienceMax - (int)ResiliencePassif;
+            this.Resilience = this.ResilienceMax - (int) ResiliencePassif;
         }
         else if (this.Resilience < this.ResilienceMin)
         {
-            this.Resilience = this.ResilienceMin + (int)ResiliencePassif;
+            this.Resilience = this.ResilienceMin + (int) ResiliencePassif;
         }
 
         if (this.ForceAme < 0)
@@ -140,7 +143,7 @@ public class CharacterStat : ScriptableObject
         this.Essence = 0;
         this.ForceAme = 0;
         this.Radiance = 0;
-        this.ResiliencePassif= 0;
+        this.ResiliencePassif = 0;
         this.RadianceMax = 0;
     }
 
@@ -160,6 +163,7 @@ public class CharacterStat : ScriptableObject
                 this.MultiplDef -= multiplicateurDef;
             }
         }
+
         if (ModifState.MultiplSoin != 1)
             this.MultiplSoin = ModifState.MultiplSoin;
         if (ModifState.MultiplDegat != 1)
@@ -182,10 +186,36 @@ public class CharacterStat : ScriptableObject
         }
         else
         {
-            this.Radiance -= Mathf.FloorToInt(ModifState.Radiance*this.MultiplSoin);
+            this.Radiance -= Mathf.FloorToInt(ModifState.Radiance * this.MultiplSoin);
         }
 
-        if(ModifState.isStun)
-        this.isStun = !ModifState.isStun;
+        if (ModifState.isStun)
+            this.isStun = !ModifState.isStun;
+    }
+
+    public void ResetStat()
+    {
+        this.RadianceMax = this.RadianceMaxOriginal;
+        this.Radiance = this.RadianceMaxOriginal;
+        this.ForceAme = this.ForceAmeOriginal;
+        this.Vitesse = this.VitesseOriginal;
+        this.Conviction = this.ConvictionOriginal;
+        this.Resilience = this.ResilienceOriginal;
+        this.Calme = 0;
+        this.MultiplDef = 1;
+        this.MultiplSoin = 1;
+        this.MultiplDegat = 1;
+        this.MultipleBuffDebuff = 1;
+        this.TensionAttaque = 4;
+        this.TensionDebuff = 3;
+        this.TensionSoin = -1;
+        this.TensionDot = 1;
+        this.Tension = 0;
+        this.TensionMax = 0;
+        this.ValeurPalier = 0;
+        this.PalierChangement = 0;
+        this.nbAttaqueRecu = 0;
+        this.isStun = false;
+        this.ListBuffDebuff.Clear();
     }
 }

@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour {
     public List<ClassPlayer> AllClasses;
 
     public List<Encounter> AllEncounter;
+    public int EncounterIndex;
     public List<EncounterAlea> AllEncounterAlea;
 
     public List<Souvenir> AllSouvenir;
@@ -225,6 +226,12 @@ public class GameManager : MonoBehaviour {
         pmm.CurrentRoom = set;
     }
 
+    public void LoadCombat()
+    {
+        BattleMan.LoadEnemy(Instantiate(AllEncounter[EncounterIndex]));
+        EncounterIndex++;
+    }
+
     public void LoadCombatNormal()
     {
         BattleMan.LoadEnemy(Instantiate(AllEncounter[0]));
@@ -282,6 +289,10 @@ public class GameManager : MonoBehaviour {
         //SaveGame();
         //LoadSave();
         //StartCoroutine(Reload());
+
+        //ResetJoueurStat à 0
+        GameManager.instance.playerStat.ResetStat();
+
         SceneManager.LoadScene("MainMenu");
         Destroy(GameManager.instance.gameObject);
     }

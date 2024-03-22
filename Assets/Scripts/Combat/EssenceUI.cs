@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using UnityEngine;
 
 public class EssenceUI : MonoBehaviour
 {
@@ -9,6 +6,8 @@ public class EssenceUI : MonoBehaviour
 
     public void activate()
     {
+        if (TutoManager.Instance != null && !TutoManager.Instance.ShowSoulConsumation)
+            return;
         buttonConsumation.SetActive(true);
     }
 

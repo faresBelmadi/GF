@@ -4,7 +4,6 @@
 /// Updated by SionDarksideJ - Fixed implementation as it assumed GO's we automatically assigned to instances
 
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace UnityEngine.UI.Extensions
 {

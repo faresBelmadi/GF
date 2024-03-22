@@ -1,9 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI.Extensions;
 
 public class TutoManager : MonoBehaviour
 {
@@ -17,6 +15,8 @@ public class TutoManager : MonoBehaviour
 
     private static TutoManager instance;
 
+    public bool ShowSoulConsumation;
+
     private void Awake()
     {
         if (instance == null)
@@ -26,6 +26,7 @@ public class TutoManager : MonoBehaviour
             StepTuto = 0;
             StepMapTuto = 0;
             StepBatlleTuto = 0;
+            ShowSoulConsumation = false;
         }
         else
         {
@@ -108,5 +109,11 @@ public class TutoManager : MonoBehaviour
         var gO = GameObject.Find("StatPrefab");
         gO.transform.GetChild(0).gameObject.SetActive(true);
         gO.transform.GetChild(1).gameObject.SetActive(true);
+    }
+
+    public void SkipTutoDuringTuto()
+    {
+        SceneManager.LoadSceneAsync(1);
+        Destroy(this.gameObject);
     }
 }

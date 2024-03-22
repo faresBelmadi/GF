@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -17,7 +15,8 @@ public class TutoPanel : MonoBehaviour
 
     public GameObject UIDialogue;
     public GameObject UIJoueur;
-
+    public GameObject SpawnPos0;
+    public GameObject EndBattleButton;
 
     public void ShowNextExplication()
     {
@@ -26,6 +25,8 @@ public class TutoPanel : MonoBehaviour
             StartCombat();
         else if (IndexExplication == 13)
             GatherEssence();
+        else if (IndexExplication == 14)
+            TutoManager.Instance.ShowSoulConsumation = false;
         else if (IndexExplication == 16)
         {
             TutoManager.Instance.NextStep();
@@ -57,8 +58,11 @@ public class TutoPanel : MonoBehaviour
     {
         UIJoueur.SetActive(false);
         //UIDialogue.SetActive(false);
+        TutoManager.Instance.ShowSoulConsumation = true;
         GameManager.instance.BattleMan.StartCoroutine("GatherEssence");
         this.transform.GetChild(0).gameObject.SetActive(false);
+        //SpawnPos0.transform.GetChild(0).gameObject.SetActive(false);
+        EndBattleButton.SetActive(false);
     }
 
     public void StartCombat()

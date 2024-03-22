@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI.Extensions;
@@ -389,6 +388,9 @@ public class MenuStatManager : MonoBehaviour
     public void End()
     {
         StatTemp.ListSouvenir = EquipedSouvenir;
+        Souvenir.Clear();
+        NbSlotsEquiped = 0;
+        EquipedSouvenir.Clear();
         GameManager.instance.playerStat = StatTemp;
         GameManager.instance.pmm.EndMenuStat();
     }

@@ -1,8 +1,4 @@
-﻿
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Effect", menuName = "Capacité/Create New Effet", order = 11)]
@@ -365,14 +361,16 @@ public class Effet : ScriptableObject
                     percentageFa = 40;
                     nbProcAfterEffect = 4;
                 }
+                var totalPercentage = -(percentageFa + (Pourcentage * -1));
                 ModifState.Radiance +=
-                    Mathf.FloorToInt(((percentageFa + Pourcentage / 100f)  * Caster.ForceAme) * Caster.MultiplDegat);
+                    Mathf.FloorToInt(((totalPercentage / 100f)  * Caster.ForceAme) * Caster.MultiplDegat);
                 //Application de Hérétique nb dépende du truc 
                 break;
             case TypeEffet.DeuxiemeAttaqueJeanne:
                 var JeanneStat2 = (EnnemiStat)Caster;
-                ModifState.Radiance +=
-                    Mathf.FloorToInt(((JeanneStat2.Divin + Pourcentage / 100f) * Caster.ForceAme) * Caster.MultiplDegat);
+                var divin = JeanneStat2.Divin > 0? JeanneStat2.Divin : JeanneStat2.Divin * -1;
+                var TotalPercentage = -(divin + (Pourcentage * -1));
+                ModifState.Radiance += Mathf.FloorToInt(((TotalPercentage / 100f) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
             case TypeEffet.SupportJeanne:
                 var JeanneStat3 = (EnnemiStat)Caster;
@@ -381,7 +379,7 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.UltimeJeanne:
                 var JeanneStat4 = (EnnemiStat) Caster;
-                ModifState.Radiance += Mathf.FloorToInt(JeanneStat4.Divin / 100f * Caster.ForceAme);
+                ModifState.Radiance += Mathf.FloorToInt(-JeanneStat4.Divin / 100f * Caster.ForceAme);
                 JeanneStat4.Divin = -30;
                 break;
             default:
