@@ -137,14 +137,16 @@ public class PassifManager
 
     private void UpdateJeanneStat(EnnemyBehavior behavior)
     {
-        if (StartTurnDivin != behavior.Stat.Divin)
-        {
+        //if (StartTurnDivin != behavior.Stat.Divin)
+        //{
             var pourcentagePVActuel = (float)behavior.Stat.Radiance / (float)behavior.Stat.RadianceMax * 100f;
+            behavior.Stat.RadianceMax = behavior.Stat.RadianceMaxOriginal;
             behavior.Stat.RadianceMax += behavior.Stat.Divin * 10;
             behavior.Stat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * behavior.Stat.RadianceMax);
 
+            behavior.Stat.ForceAme = behavior.Stat.ForceAmeOriginal;
             behavior.Stat.ForceAme += behavior.Stat.Divin * 2;
-        }
+            //}
     }
 
     public void UpdateDivinInfoDisplay(EnnemyBehavior behavior)
