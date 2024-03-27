@@ -421,7 +421,7 @@ public class JoueurBehavior : CombatBehavior
 
             Stat.ListBuffDebuff.Add(buff);
             base.AddBuffDebuff(toAdd, Stat);
-            if(Timer != TimerApplication.Attaque)
+            if(toAdd.timerApplication != TimerApplication.Attaque)
                 ApplicationBuffDebuff(Timer, buff);
         }
 
