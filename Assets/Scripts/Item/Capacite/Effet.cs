@@ -112,16 +112,17 @@ public class Effet : ScriptableObject
             case TypeEffet.RadianceMax:
                 if (Cible == null)
                 {
-                    var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMax);
-                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.Radiance);
+                    
+                    var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMaxOriginal);
+                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Caster.Radiance / Caster.RadianceMax) * Caster.RadianceMaxOriginal));
                     ModifState.RadianceMax += radianceModifier;
                     ModifState.Radiance += radianceActModifier;
                     
                 }
                 else
                 {
-                    var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.RadianceMax);
-                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.Radiance);
+                    var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.RadianceMaxOriginal);
+                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Cible.Radiance / Cible.RadianceMax) * Cible.RadianceMaxOriginal));
                     ModifState.RadianceMax += radianceModifier;
                     ModifState.Radiance += radianceActModifier;
                 }
