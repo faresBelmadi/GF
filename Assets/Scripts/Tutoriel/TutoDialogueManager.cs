@@ -56,7 +56,7 @@ public class TutoDialogueManager : DialogueManager
 
             if (DialogueIndex == 0 && TutoManager.Instance.StepBatlleTuto == 3)
             {
-                TutoBattleManager.used[1].gameObject.SetActive(true);
+                TutoBattleManager.used[0].gameObject.SetActive(true);
             }
 
             if (DialogueIndex == 5 && TutoManager.Instance.StepBatlleTuto == 3)

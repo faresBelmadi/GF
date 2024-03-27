@@ -38,7 +38,7 @@ public class TutoBattleManager : MonoBehaviour
 
         if (TutoManager.Instance.StepBatlleTuto == 3)
         {
-            used[1].gameObject.SetActive(false);
+            used[0].gameObject.SetActive(false);
         }
         //foreach (var item in TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight)
         //{
