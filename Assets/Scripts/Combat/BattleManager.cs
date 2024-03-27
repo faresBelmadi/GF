@@ -30,7 +30,6 @@ public class BattleManager : MonoBehaviour
     [SerializeField] int idIndexer = 0;
     int idPlayer;
     public int currentIdTurn;
-    public int lastIdTurn;
     public int nbTurn;
     public int idTarget = -1;
     public bool endBattle;
@@ -702,7 +701,7 @@ public class BattleManager : MonoBehaviour
                 break;
 
             case Cible.LastAttacker:
-                var LastEnnemy = EnemyScripts.FirstOrDefault(c => c.combatID == lastIdTurn);
+                var LastEnnemy = EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn);
 
                 LastEnnemy.ApplicationEffet(effet, null, source, Caster);
                 break;

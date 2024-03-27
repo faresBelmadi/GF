@@ -375,6 +375,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void SendSpell(bool attack, int IdSpell)
     {
+        DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
         Costs();
         DesactivateSpells();
 
@@ -384,7 +385,6 @@ public class JoueurBehavior : CombatBehavior
         //    AnimationController.SendAnimBuff(AfterAnim, IdSpell);
 
 
-        DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
 
         _refBattleMan.LaunchAnimAttacked();
     }
@@ -421,7 +421,8 @@ public class JoueurBehavior : CombatBehavior
 
             Stat.ListBuffDebuff.Add(buff);
             base.AddBuffDebuff(toAdd, Stat);
-            ApplicationBuffDebuff(Timer, buff);
+            if(Timer != TimerApplication.Attaque)
+                ApplicationBuffDebuff(Timer, buff);
         }
 
 
@@ -454,9 +455,11 @@ public class JoueurBehavior : CombatBehavior
         //ResetStat();
         //foreach (var item in Stat.ListBuffDebuff)
         //{
-        if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant ||
-            toApply.DirectApplication)
+        
+        if ((toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant ||
+            toApply.DirectApplication))
         {
+            
             foreach (var effet in toApply.Effet)
             {
                 _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
