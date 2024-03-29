@@ -193,6 +193,7 @@ public class JoueurBehavior : CombatBehavior
         Stat.MultiplDef = 1;
         Stat.MultiplSoin = 1;
         Stat.MultipleBuffDebuff = 1;
+        Stat.Radiance = Mathf.RoundToInt(Stat.Radiance / Stat.RadianceMax) * Stat.RadianceMaxOriginal;
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
@@ -329,6 +330,7 @@ public class JoueurBehavior : CombatBehavior
         foreach (var item in Spells)
         {
             item.GetComponent<SpellCombat>().isTurn = false;
+            item.GetComponent<SpellCombat>().isUsable = false;
         }
 
         foreach (GameObject spell in Spells)
@@ -344,6 +346,7 @@ public class JoueurBehavior : CombatBehavior
         foreach (var item in Spells)
         {
             item.GetComponent<SpellCombat>().isTurn = true;
+            item.GetComponent<SpellCombat>().isUsable = true;
         }
 
         EndTurnButton.interactable = true;

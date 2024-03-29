@@ -7,6 +7,7 @@ public class SpellCombat : MonoBehaviour
 { 
     public bool isTurn;
     private bool isClicable = true;
+    public bool isUsable = true;
     public Spell Action;
     public Action<Spell> Act;
     public GameObject selectedSpell;
@@ -39,7 +40,7 @@ public class SpellCombat : MonoBehaviour
 
     private void Update()
     {
-        if (isTurn)
+        if (isTurn && isUsable)
             button.interactable = CheckPrice();
         else
             button.interactable = false;
@@ -47,7 +48,7 @@ public class SpellCombat : MonoBehaviour
 
     private bool CheckPrice()
     {
-        if(GameManager.instance.BattleMan != null)
+        if(GameManager.instance.BattleMan != null && isUsable)
         {
             var stat = GameManager.instance.BattleMan.player.Stat;
             foreach (var price in Action.Costs)
