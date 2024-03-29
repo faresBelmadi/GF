@@ -554,13 +554,13 @@ public class JoueurBehavior : CombatBehavior
                 ReceiveTension(Source.Dot);
 
             var temp = Instantiate(DamagePrefab, DamageSpawn);
-            temp.GetComponent<TextAnimDegats>().Value = ModifStat.Radiance;
+            temp.GetComponent<TextAnimDegats>().Value = Mathf.FloorToInt(ModifStat.Radiance * Stat.MultiplDef);
         }
         else if (ModifStat.Radiance > 0)
         {
             ReceiveTension(Source.Soin);
             var temp = Instantiate(SoinPrefab, DamageSpawn);
-            temp.GetComponent<TextAnimDegats>().Value = ModifStat.Radiance;
+            temp.GetComponent<TextAnimDegats>().Value = Mathf.FloorToInt(ModifStat.Radiance * Stat.MultiplSoin);
         }
 
         if (effet.IsAttaqueEffet)
