@@ -329,6 +329,7 @@ public class JoueurBehavior : CombatBehavior
         foreach (var item in Spells)
         {
             item.GetComponent<SpellCombat>().isTurn = false;
+            item.GetComponent<SpellCombat>().isUsable = false;
         }
 
         foreach (GameObject spell in Spells)
@@ -344,6 +345,7 @@ public class JoueurBehavior : CombatBehavior
         foreach (var item in Spells)
         {
             item.GetComponent<SpellCombat>().isTurn = true;
+            item.GetComponent<SpellCombat>().isUsable = true;
         }
 
         EndTurnButton.interactable = true;
