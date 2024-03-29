@@ -193,7 +193,7 @@ public class JoueurBehavior : CombatBehavior
         Stat.MultiplDef = 1;
         Stat.MultiplSoin = 1;
         Stat.MultipleBuffDebuff = 1;
-        Stat.Radiance = Mathf.RoundToInt(Stat.Radiance / Stat.RadianceMax) * Stat.RadianceMaxOriginal;
+        Stat.Radiance = Mathf.RoundToInt((Stat.Radiance / (Stat.RadianceMax*1f)) * Stat.RadianceMaxOriginal);
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
