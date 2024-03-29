@@ -193,6 +193,7 @@ public class JoueurBehavior : CombatBehavior
         Stat.MultiplDef = 1;
         Stat.MultiplSoin = 1;
         Stat.MultipleBuffDebuff = 1;
+        Stat.Radiance = Mathf.RoundToInt(Stat.Radiance / Stat.RadianceMax) * Stat.RadianceMaxOriginal;
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
@@ -435,7 +436,7 @@ public class JoueurBehavior : CombatBehavior
 
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
-        DecompteDebuff(Stat.ListBuffDebuff, Decompte, this.Stat);
+        DecoTmpteDebuff(Stat.ListBuffDebuff, Decompte, this.Stat);
         var tempListBuffDebuff = Stat.ListBuffDebuff;
         foreach (var item in tempListBuffDebuff)
         {
