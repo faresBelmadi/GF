@@ -516,7 +516,7 @@ public class JoueurBehavior : CombatBehavior
 
         if (ModifStat.Radiance < 0)
         {
-            var toRemove = Mathf.FloorToInt(ModifStat.Radiance / Stat.MultiplDef);
+            var toRemove = ModifStat.Radiance;
             toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
             if (effet.IsAttaqueEffet)
