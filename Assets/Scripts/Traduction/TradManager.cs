@@ -10,6 +10,7 @@ public class TradManager : MonoBehaviour
 {
     public static TradManager instance;
 
+    //0 = fr, 1 = en, 2 = zh, etc
     public int IdLanguage
     {
         get
@@ -18,11 +19,8 @@ public class TradManager : MonoBehaviour
         }
     }
 
-    //0 = fr, 1 = en, 2 = zh, etc
     public Dictionary<string, List<string>> DialogueDictionary = new Dictionary<string, List<string>>();
-    //0 = fr, 1 = en, 2 = zh, etc
     public Dictionary<string, List<string>> CapaDictionary = new Dictionary<string, List<string>>();
-    //0 = fr, 1 = en, 2 = zh, etc
     public Dictionary<string, List<string>> MiscDictionary = new Dictionary<string, List<string>>();
 
     private void Awake()
@@ -58,7 +56,6 @@ public class TradManager : MonoBehaviour
         #endif
 
         var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
-        var styled = new StringBuilder();
         foreach (var row in sheet)
         {
             row.RemoveAll(c => c == "");
@@ -69,16 +66,7 @@ public class TradManager : MonoBehaviour
                 templist.RemoveAt(0);
                 DialogueDictionary.Add(row[0],templist);
             }
-            foreach (var cell in row)
-            {
-                styled.Append(cell);
-                styled.Append(" | ");
-            }
-
-            styled.AppendLine();
         }
-
-        Debug.Log(styled.ToString());         // Unity
 
         foreach (var item in DialogueDictionary)
         {
@@ -95,7 +83,6 @@ public class TradManager : MonoBehaviour
 #endif
 
         var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
-        var styled = new StringBuilder();
         foreach (var row in sheet)
         {
             row.RemoveAll(c => c == "");
@@ -106,16 +93,8 @@ public class TradManager : MonoBehaviour
                 templist.RemoveAt(0);
                 CapaDictionary.Add(row[0], templist);
             }
-            foreach (var cell in row)
-            {
-                styled.Append(cell);
-                styled.Append(" | ");
-            }
 
-            styled.AppendLine();
         }
-
-        Debug.Log(styled.ToString());         // Unity
 
         foreach (var item in CapaDictionary)
         {
@@ -132,7 +111,6 @@ public class TradManager : MonoBehaviour
 #endif
 
         var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
-        var styled = new StringBuilder();
         foreach (var row in sheet)
         {
             row.RemoveAll(c => c == "");
@@ -143,16 +121,7 @@ public class TradManager : MonoBehaviour
                 templist.RemoveAt(0);
                 MiscDictionary.Add(row[0], templist);
             }
-            foreach (var cell in row)
-            {
-                styled.Append(cell);
-                styled.Append(" | ");
-            }
-
-            styled.AppendLine();
         }
-
-        Debug.Log(styled.ToString());         // Unity
 
         foreach (var item in MiscDictionary)
         {
