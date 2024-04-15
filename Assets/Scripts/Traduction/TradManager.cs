@@ -10,7 +10,13 @@ public class TradManager : MonoBehaviour
 {
     public static TradManager instance;
 
-    public int IdLanguage = 1;
+    public int IdLanguage
+    {
+        get
+        {
+            return int.Parse(PlayerPrefs.GetString("Lang"));
+        }
+    }
 
     //0 = fr, 1 = en, 2 = zh, etc
     public Dictionary<string, List<string>> DialogueDictionary = new Dictionary<string, List<string>>();
