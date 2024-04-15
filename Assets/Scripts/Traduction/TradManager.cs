@@ -13,7 +13,11 @@ public class TradManager : MonoBehaviour
     public int IdLanguage = 1;
 
     //0 = fr, 1 = en, 2 = zh, etc
-    public Dictionary<string,List<string>> DialogueDictionary = new Dictionary<string,List<string>>();
+    public Dictionary<string, List<string>> DialogueDictionary = new Dictionary<string, List<string>>();
+    //0 = fr, 1 = en, 2 = zh, etc
+    public Dictionary<string, List<string>> CapaDictionary = new Dictionary<string, List<string>>();
+    //0 = fr, 1 = en, 2 = zh, etc
+    public Dictionary<string, List<string>> MiscDictionary = new Dictionary<string, List<string>>();
 
     private void Awake()
     {
@@ -28,11 +32,18 @@ public class TradManager : MonoBehaviour
 
     public void LoadTrad()
     {
-#if UNITY_EDITOR
-        string path = "Assets/Asset_in_game/Traduction/GameTraductionFile.csv";
-#else
-                string path = Application.persistentDataPath + "/Asset_in_game/Traduction/GameTraductionFile.csv";
-#endif
+        LoadTradDialogue();
+        //LoadTradCapa();
+        //LoadTradMisc();
+    }
+
+    private void LoadTradDialogue()
+    {
+        #if UNITY_EDITOR
+                string path = "Assets/Asset_in_game/Traduction/GameTraductionFile.csv";
+        #else
+                        string path = Application.persistentDataPath + "/Asset_in_game/Traduction/GameTraductionFile.csv";
+        #endif
 
         var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
         var styled = new StringBuilder();
@@ -58,6 +69,80 @@ public class TradManager : MonoBehaviour
         Debug.Log(styled.ToString());         // Unity
 
         foreach (var item in DialogueDictionary)
+        {
+            Debug.Log(item.Key + " | " + item.Value.Count);
+        }
+    }
+
+    private void LoadTradCapa()
+    {
+#if UNITY_EDITOR
+        string path = "Assets/Asset_in_game/Traduction/GameTraductionFile.csv";
+#else
+                        string path = Application.persistentDataPath + "/Asset_in_game/Traduction/GameTraductionFile.csv";
+#endif
+
+        var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
+        var styled = new StringBuilder();
+        foreach (var row in sheet)
+        {
+            row.RemoveAll(c => c == "");
+            if (row.Count > 0)
+            {
+                List<string> templist = new List<string>();
+                templist.AddRange(row);
+                templist.RemoveAt(0);
+                CapaDictionary.Add(row[0], templist);
+            }
+            foreach (var cell in row)
+            {
+                styled.Append(cell);
+                styled.Append(" | ");
+            }
+
+            styled.AppendLine();
+        }
+
+        Debug.Log(styled.ToString());         // Unity
+
+        foreach (var item in CapaDictionary)
+        {
+            Debug.Log(item.Key + " | " + item.Value.Count);
+        }
+    }
+
+    private void LoadTradMisc()
+    {
+#if UNITY_EDITOR
+        string path = "Assets/Asset_in_game/Traduction/GameTraductionFile.csv";
+#else
+                        string path = Application.persistentDataPath + "/Asset_in_game/Traduction/GameTraductionFile.csv";
+#endif
+
+        var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
+        var styled = new StringBuilder();
+        foreach (var row in sheet)
+        {
+            row.RemoveAll(c => c == "");
+            if (row.Count > 0)
+            {
+                List<string> templist = new List<string>();
+                templist.AddRange(row);
+                templist.RemoveAt(0);
+                MiscDictionary.Add(row[0], templist);
+            }
+            foreach (var cell in row)
+            {
+                styled.Append(cell);
+                styled.Append(" | ");
+            }
+
+            styled.AppendLine();
+        }
+
+        Debug.Log(styled.ToString());         // Unity
+
+        foreach (var item in MiscDictionary)
         {
             Debug.Log(item.Key + " | " + item.Value.Count);
         }
