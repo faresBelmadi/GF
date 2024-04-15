@@ -14,7 +14,7 @@ public class TradManager : MonoBehaviour
     {
         get
         {
-            return int.Parse(PlayerPrefs.GetString("Lang"));
+            return PlayerPrefs.GetInt("Lang");
         }
     }
 
@@ -33,6 +33,12 @@ public class TradManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(this);
+        }
+
+        if (!PlayerPrefs.HasKey("Lang"))
+        {
+            PlayerPrefs.SetInt("Lang", 1);
+            PlayerPrefs.Save();
         }
     }
 
