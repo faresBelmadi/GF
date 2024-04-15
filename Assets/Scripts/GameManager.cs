@@ -290,7 +290,7 @@ public class GameManager : MonoBehaviour {
         //LoadSave();
         //StartCoroutine(Reload());
 
-        //ResetJoueurStat à 0
+        //ResetJoueurStat ?0
         GameManager.instance.playerStat.ResetStat();
 
         SceneManager.LoadScene("MainMenu");
