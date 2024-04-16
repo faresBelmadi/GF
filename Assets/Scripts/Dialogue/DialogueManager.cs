@@ -71,8 +71,8 @@ public class DialogueManager : MonoBehaviour
                 //if(EndText.text == null || EndText.text == "")
                 if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible != null &&
                     _CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count > 0 &&
-                     !string.IsNullOrEmpty(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse))
-                    EndText.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
+                     !string.IsNullOrEmpty(TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].IdStringReponse][TradManager.instance.IdLanguage]))
+                    EndText.text = TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].IdStringReponse][TradManager.instance.IdLanguage];
                 else
                 {
                     EndText.text = "Continuer";
@@ -83,7 +83,7 @@ public class DialogueManager : MonoBehaviour
                 var Text = EndDialogue.GetComponentInChildren<TextMeshProUGUI>();
                 if (Text != null)
                 {
-                    Text.text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].TexteRéponse;
+                    Text.text = TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].IdStringReponse][TradManager.instance.IdLanguage];
                 }
             }
             EndDialogue.SetActive(true);
@@ -92,7 +92,7 @@ public class DialogueManager : MonoBehaviour
         {
             for (int i = 0; i < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count; i++)
             {
-                Réponse[i].text = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].TexteRéponse;
+                Réponse[i].text = TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].IdStringReponse][TradManager.instance.IdLanguage];
                 RéponseGO[i].SetActive(true);
                 //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
             }
@@ -103,12 +103,12 @@ public class DialogueManager : MonoBehaviour
     {
         if (ManagerBattle == null && _CurrentEncounterAlea != null)
         {
-            return "<allcaps><u><b>" + _CurrentEncounterAlea.NamePnj + ": </b></u></allcaps> " + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
+            return "<allcaps><u><b>" + _CurrentEncounterAlea.NamePnj + ": </b></u></allcaps> " + TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion][TradManager.instance.IdLanguage];
         }
         else
         {
             return "<allcaps><u><b>" + _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom +
-                   ": </b></u></allcaps>" + _CurrentDialogue.Questions[DialogueIndex].Question.Text;
+                   ": </b></u></allcaps>" + TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion][TradManager.instance.IdLanguage];
         }
     }
 

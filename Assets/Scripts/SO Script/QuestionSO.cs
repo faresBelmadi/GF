@@ -17,8 +17,7 @@ public struct QuestionSO
     [Tooltip("cet identifiant correspond a l'emplacement de l'ennemi dans la liste de rencontre")]
     public int IDSpeaker;
     public TypeQuestion type;
-    [TextArea(10,10)]
-    public string Text;
+    public string IdStringQuestion;
 }
 
 public enum TypeQuestion
