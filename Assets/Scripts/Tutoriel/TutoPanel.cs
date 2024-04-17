@@ -37,7 +37,8 @@ public class TutoPanel : MonoBehaviour
 
     public void ShowExplication()
     {
-        TextExplication.text = ExplicationListe[IndexExplication];
+        TextExplication.text = TradManager.instance.DialogueDictionary[ExplicationListe[IndexExplication]][TradManager.instance.IdLanguage];
+
         var sprite = ExplicationImageListe[IndexExplication];
         if (sprite != null)
         {
@@ -49,9 +50,9 @@ public class TutoPanel : MonoBehaviour
 
         var reponse = ReponseListe[IndexExplication];
         if (reponse is not (null or ""))
-            TextReponse.text = reponse;
+            TextReponse.text = TradManager.instance.DialogueDictionary[reponse][TradManager.instance.IdLanguage];
         else
-            TextReponse.text = "Continuer";
+            TextReponse.text = "Continue"; // a Rajouter dans le dossier de Trad
     }
 
     public void GatherEssence()
