@@ -38,6 +38,8 @@ public class TradManager : MonoBehaviour
             PlayerPrefs.SetInt("Lang", 1);
             PlayerPrefs.Save();
         }
+
+        LoadTrad();
     }
 
     public void LoadTrad()
