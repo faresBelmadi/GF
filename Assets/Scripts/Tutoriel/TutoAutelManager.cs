@@ -44,10 +44,10 @@ public class TutoAutelManager : MonoBehaviour
         }
         else
         {
-            //description.text = TradManager.instance.DialogueDictionary[Explications[currentStep]][TradManager.instance.IdLanguage];
-            //ObjectToSetVisible[currentStep].SetActive(true);
-            description.text = Explications[currentStep];
+            description.text = TradManager.instance.DialogueDictionary[Explications[currentStep]][TradManager.instance.IdLanguage];
             ObjectToSetVisible[currentStep].SetActive(true);
+            //description.text = Explications[currentStep];
+            //ObjectToSetVisible[currentStep].SetActive(true);
         }
     }
     //void FixedUpdate()
