@@ -56,14 +56,10 @@ public class TutoMondeManager : MonoBehaviour
     private void CreateDictionary()
     {
         TutoMondeText = new Dictionary<string, string>();
-        TutoMondeText.Add("1",
-            "Ce “vieux parchemin” te permettra de ne pas te perdre sur le chemin de ta prochaine vie. Avance jusqu’à la prochaine étape, je dois encore te montrer certaines choses.");
-        TutoMondeText.Add("2",
-            "Cependant, tu ne vas pas garder ces cristaux éternellement. Avançons, que je puisse te montrer comment rendre un dernier hommage à ces âme fragmentées.");
-        TutoMondeText.Add("3",
-            "Tu vas avoir l’occasion de retrouver tes sensations : j’ai l’impression que quelqu’un t’attend avec impatience et a hâte de régler ses comptes avec toi.");
-        TutoMondeText.Add("4",
-            "C’est là que nos routes se séparent. Je parie que tu en avais assez de m’avoir dans les parages, pas vrai ?");
+        TutoMondeText.Add("1", TradManager.instance.DialogueDictionary["TutoQ9"][TradManager.instance.IdLanguage]);
+        TutoMondeText.Add("2", TradManager.instance.DialogueDictionary["TutoQ20"][TradManager.instance.IdLanguage]);
+        TutoMondeText.Add("3", TradManager.instance.DialogueDictionary["TutoQ25"][TradManager.instance.IdLanguage]);
+        TutoMondeText.Add("4", TradManager.instance.DialogueDictionary["TutoQ45"][TradManager.instance.IdLanguage]);
     }
 
     //void LateUpdate()
