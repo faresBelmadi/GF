@@ -5,7 +5,9 @@ using UnityEngine;
 public class BuffDebuff : ScriptableObject
 {
     public string Nom;
+    public string idTradName;
     public string Description;
+    public string idTradDescription;
     public List<Effet> Effet;
     public bool IsConsomable;
     public int TimingConsomationMinimum = 1;
