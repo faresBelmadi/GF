@@ -6,8 +6,10 @@ using UnityEngine;
 public class Spell : ScriptableObject
 {
     public string Nom;
+    public string idTradName;
     [TextArea(5, 10)]
     public string Description;
+    public string idTradDescription;
     public int IDSpell;
     public List<int> IDChildren;
     public SpellStatus SpellStatue;

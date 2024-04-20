@@ -45,7 +45,7 @@ public class TradManager : MonoBehaviour
     public void LoadTrad()
     {
         LoadTradDialogue();
-        //LoadTradCapa();
+        LoadTradCapa();
         //LoadTradMisc();
     }
 
@@ -70,18 +70,18 @@ public class TradManager : MonoBehaviour
             }
         }
 
-        foreach (var item in DialogueDictionary)
-        {
-            Debug.Log(item.Key + " | " + item.Value.Count);
-        }
+        //foreach (var item in DialogueDictionary)
+        //{
+        //    Debug.Log(item.Key + " | " + item.Value.Count);
+        //}
     }
 
     private void LoadTradCapa()
     {
 #if UNITY_EDITOR
-        string path = "Assets/Asset_in_game/Traduction/GameTraductionFile.csv";
+        string path = "Assets/Asset_in_game/Traduction/CapaTraductionFile.csv";
 #else
-                        string path = Application.persistentDataPath + "/Asset_in_game/Traduction/GameTraductionFile.csv";
+                        string path = Application.persistentDataPath + "/Asset_in_game/Traduction/CapaTraductionFile.csv";
 #endif
 
         var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
