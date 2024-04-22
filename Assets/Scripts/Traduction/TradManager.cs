@@ -53,9 +53,9 @@ public class TradManager : MonoBehaviour
     {
         #if UNITY_EDITOR
                 string path = "Assets/Asset_in_game/Traduction/GameTraductionFile.csv";
-        #else
-                        string path = Application.persistentDataPath + "/Asset_in_game/Traduction/GameTraductionFile.csv";
-        #endif
+#else
+                        string path = Application.dataPath + "/StreamingAssets/Traduction/GameTraductionFile.csv";
+#endif
 
         var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
         foreach (var row in sheet)
@@ -81,7 +81,7 @@ public class TradManager : MonoBehaviour
 #if UNITY_EDITOR
         string path = "Assets/Asset_in_game/Traduction/CapaTraductionFile.csv";
 #else
-                        string path = Application.persistentDataPath + "/Asset_in_game/Traduction/CapaTraductionFile.csv";
+                        string path = Application.dataPath + "/StreamingAssets/Traduction/CapaTraductionFile.csv";
 #endif
 
         var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
@@ -109,7 +109,7 @@ public class TradManager : MonoBehaviour
 #if UNITY_EDITOR
         string path = "Assets/Asset_in_game/Traduction/GameTraductionFile.csv";
 #else
-                        string path = Application.persistentDataPath + "/Asset_in_game/Traduction/GameTraductionFile.csv";
+                        string path = Application.dataPath + "/StreamingAssets/Traduction/GameTraductionFile.csv";
 #endif
 
         var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
