@@ -65,8 +65,8 @@ public class TutoManager : MonoBehaviour
         }
         else if (StepTuto == 4)
         {
-            //SceneManager.LoadScene("TutoAutel");
-            SceneManager.LoadScene("TutoAutel OLD");
+            SceneManager.LoadScene("TutoAutel");
+            //SceneManager.LoadScene("TutoAutel OLD");
         }
     }
 
