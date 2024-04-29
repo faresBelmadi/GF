@@ -52,7 +52,7 @@ public class TradManager : MonoBehaviour
     private void LoadTradDialogue()
     {
         #if UNITY_EDITOR
-                string path = "Assets/Asset_in_game/Traduction/GameTraductionFile.csv";
+                string path = "Assets/StreamingAssets/Traduction/GameTraductionFile.csv";
 #else
                         string path = Application.dataPath + "/StreamingAssets/Traduction/GameTraductionFile.csv";
 #endif
@@ -79,7 +79,7 @@ public class TradManager : MonoBehaviour
     private void LoadTradCapa()
     {
 #if UNITY_EDITOR
-        string path = "Assets/Asset_in_game/Traduction/CapaTraductionFile.csv";
+        string path = "Assets/StreamingAssets/Traduction/CapaTraductionFile.csv";
 #else
                         string path = Application.dataPath + "/StreamingAssets/Traduction/CapaTraductionFile.csv";
 #endif
@@ -107,7 +107,7 @@ public class TradManager : MonoBehaviour
     private void LoadTradMisc()
     {
 #if UNITY_EDITOR
-        string path = "Assets/Asset_in_game/Traduction/GameTraductionFile.csv";
+        string path = "Assets/StreamingAssets/Traduction/GameTraductionFile.csv";
 #else
                         string path = Application.dataPath + "/StreamingAssets/Traduction/GameTraductionFile.csv";
 #endif

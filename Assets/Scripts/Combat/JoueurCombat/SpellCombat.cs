@@ -38,17 +38,17 @@ public class SpellCombat : MonoBehaviour
         TexteDescription.text += TradManager.instance.CapaDictionary[Action.idTradDescription][TradManager.instance.IdLanguage];
     }
 
-    private void Update()
-    {
-        if (isTurn && isUsable)
-            button.interactable = CheckPrice();
-        else
-            button.interactable = false;
-    }
+    //private void Update()
+    //{
+    //    if (isTurn && isUsable)
+    //        button.interactable = CheckPrice();
+    //    else
+    //        button.interactable = false;
+    //}
 
-    private bool CheckPrice()
+    public bool CheckPrice()
     {
-        if(GameManager.instance.BattleMan != null && isUsable)
+        if(GameManager.instance.BattleMan != null)
         {
             var stat = GameManager.instance.BattleMan.player.Stat;
             foreach (var price in Action.Costs)

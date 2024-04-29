@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -161,8 +162,8 @@ public class JoueurBehavior : CombatBehavior
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
         _refBattleMan.PassifManager.ResolvePassifs();
-        ActivateSpells();
         Stat.Volonter = Stat.VolonterMax;
+        ActivateSpells();
         if (!gainedTension)
         {
             ApaisementTension();
@@ -329,8 +330,7 @@ public class JoueurBehavior : CombatBehavior
     {
         foreach (var item in Spells)
         {
-            item.GetComponent<SpellCombat>().isTurn = false;
-            item.GetComponent<SpellCombat>().isUsable = false;
+            item.GetComponent<SpellCombat>().button.interactable = false;
         }
 
         foreach (GameObject spell in Spells)
@@ -345,8 +345,7 @@ public class JoueurBehavior : CombatBehavior
     {
         foreach (var item in Spells)
         {
-            item.GetComponent<SpellCombat>().isTurn = true;
-            item.GetComponent<SpellCombat>().isUsable = true;
+            item.GetComponent<SpellCombat>().button.interactable = item.GetComponent<SpellCombat>().CheckPrice();
         }
 
         EndTurnButton.interactable = true;
@@ -378,16 +377,11 @@ public class JoueurBehavior : CombatBehavior
 
     public void SendSpell(bool attack, int IdSpell)
     {
+        DesactivateSpells();
         DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
         Costs();
-        DesactivateSpells();
 
-        //if (attack)
-            AnimationController.StartAttack(AfterAnim, IdSpell);
-        //else
-        //    AnimationController.SendAnimBuff(AfterAnim, IdSpell);
-
-
+        AnimationController.StartAttack(AfterAnim, IdSpell);
 
         _refBattleMan.LaunchAnimAttacked();
     }
@@ -396,10 +390,10 @@ public class JoueurBehavior : CombatBehavior
     {
         //A Mettre une fois les combats terminer
         _refBattleMan.LaunchSpellJoueur(SelectedSpell);
-        ActivateSpells();
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
         _refBattleMan.PassifManager.ResolvePassifs();
         UpdateUI();
+        ActivateSpells();
     }
 
     #endregion Spell

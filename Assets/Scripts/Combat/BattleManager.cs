@@ -446,7 +446,8 @@ public class BattleManager : MonoBehaviour
                     break;
                 case Cible.ennemi:
                     if (target != -1)
-                        EnemyScripts.First(c => c.combatID == target).AddDebuff(item, Decompte, Timer);
+                        if (EnemyScripts.FirstOrDefault(c => c.combatID == target) != null)
+                            EnemyScripts.First(c => c.combatID == target).AddDebuff(item, Decompte, Timer);
                     else
                     {
                         int index;
@@ -554,7 +555,8 @@ public class BattleManager : MonoBehaviour
                 {
                     if (target != -1)
                     {
-                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
+                        if(EnemyScripts.FirstOrDefault(c => c.combatID == target) != null)
+                            EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
                     }
                     else
                     {
