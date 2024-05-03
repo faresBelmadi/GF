@@ -17,6 +17,7 @@ public class PlayerData
     public int Essence;
     public int ForceAme;
     public int Vitesse;
+    public int Clairvoyance;
     
     public List<int> BoughtSpellID;
 }

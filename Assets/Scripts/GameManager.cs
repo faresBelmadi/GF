@@ -91,6 +91,8 @@ public class GameManager : MonoBehaviour {
                     ForceAme = loadedData.CurrentRun.player.ForceAme,
                     Vitesse = loadedData.CurrentRun.player.Vitesse,
                     Calme = classSO.PlayerStat.Calme,
+                    Clairvoyance = loadedData.CurrentRun.player.Clairvoyance,
+                    ClairvoyanceOriginal = loadedData.CurrentRun.player.Clairvoyance,
                     SlotsSouvenir = classSO.PlayerStat.SlotsSouvenir
                 };
                 for(int i = 0; i < AllSouvenir.Count; i++)
@@ -100,7 +102,7 @@ public class GameManager : MonoBehaviour {
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
                 playerStat.ListPassif = new List<Passif>();
-                //TODO : Angela a mis ça en commentaire pour que val puisse faire des test, a voir si c'est a remetre 
+                //TODO : Angela a mis ï¿½a en commentaire pour que val puisse faire des test, a voir si c'est a remetre 
                 /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
                 {
                     var temp = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item);
@@ -150,6 +152,7 @@ public class GameManager : MonoBehaviour {
             ForceAme = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ForceAme,
             Vitesse = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Vitesse,
             Volonter = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Volonter,
+            Clairvoyance = AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Clairvoyance,
             BoughtSpellID = boughtspells
         };
         string json = JsonUtility.ToJson(data);
