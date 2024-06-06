@@ -1,6 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class DescriptionHoverTriggerBuffDebuff : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -11,8 +12,37 @@ public class DescriptionHoverTriggerBuffDebuff : MonoBehaviour, IPointerEnterHan
     {
         Debug.Log("enter");
         ToShow.SetActive(true);
+        if (!IsFullyVisibleFrom(ToShow.GetComponent<RectTransform>()))
+        {
+            while (!IsFullyVisibleFrom(ToShow.GetComponent<RectTransform>()))
+                ToShow.transform.Translate(-1,0,0);
+        }
     }
 
+    private bool IsFullyVisibleFrom(RectTransform rectTransform)
+    {
+        return CountCornersVisibleFrom(rectTransform, FindAnyObjectByType<Camera>()) == 4;
+    }
+
+    private static int CountCornersVisibleFrom(RectTransform rectTransform, Camera camera)
+    {
+        Rect screenBounds = new Rect(0f, 0f, Screen.width, Screen.height); // Screen space bounds (assumes camera renders across the entire screen)
+        Vector3[] objectCorners = new Vector3[4];
+        rectTransform.GetWorldCorners(objectCorners);
+
+        int visibleCorners = 0;
+        Vector3 tempScreenSpaceCorner; // Cached
+        for (var i = 0; i < objectCorners.Length; i++) // For each corner in rectTransform
+        {
+            tempScreenSpaceCorner = camera.WorldToScreenPoint(objectCorners[i]); // Transform world space position of corner to screen space
+            if (screenBounds.Contains(tempScreenSpaceCorner)) // If the corner is inside the screen
+            {
+                visibleCorners++;
+            }
+        }
+        return visibleCorners;
+    }
+    
     public void OnPointerExit(PointerEventData eventData)
     {
         Debug.Log("exit");
