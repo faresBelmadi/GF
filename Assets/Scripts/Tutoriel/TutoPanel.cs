@@ -7,7 +7,7 @@ public class TutoPanel : MonoBehaviour
 {
     public List<string> ExplicationListe;
     public List<string> ReponseListe;
-    public List<Sprite> ExplicationImageListe;
+    public List<Image> ExplicationImageListe;
     public int IndexExplication;
     public TextMeshProUGUI TextExplication;
     public TextMeshProUGUI TextReponse;
@@ -15,11 +15,16 @@ public class TutoPanel : MonoBehaviour
 
     public GameObject UIDialogue;
     public GameObject UIJoueur;
+    public GameObject UIJoueurTutoExplication;
     public GameObject SpawnPos0;
     public GameObject EndBattleButton;
 
     public void ShowNextExplication()
     {
+        if (ExplicationImageListe[IndexExplication] != null)
+        {
+            ExplicationImageListe[IndexExplication].gameObject.SetActive(false);
+        }
         IndexExplication++;
         if (IndexExplication == 8)
             StartCombat();
@@ -37,16 +42,17 @@ public class TutoPanel : MonoBehaviour
 
     public void ShowExplication()
     {
+        if (IndexExplication == 0)
+            UIJoueurTutoExplication.SetActive(true);
+
         TextExplication.text = TradManager.instance.DialogueDictionary[ExplicationListe[IndexExplication]][TradManager.instance.IdLanguage];
 
-        var sprite = ExplicationImageListe[IndexExplication];
-        if (sprite != null)
+        if (ExplicationImageListe[IndexExplication] != null)
         {
-            ImageExplication.enabled = true;
-            ImageExplication.sprite = sprite;
+            ExplicationImageListe[IndexExplication].gameObject.SetActive(true);
         }
-        else
-            ImageExplication.enabled = false;
+        //else
+        //    ImageExplication.enabled = false;
 
         var reponse = ReponseListe[IndexExplication];
         if (reponse is not (null or ""))
@@ -68,6 +74,7 @@ public class TutoPanel : MonoBehaviour
 
     public void StartCombat()
     {
+        UIJoueurTutoExplication.SetActive(false);
         UIJoueur.SetActive(true);
         UIDialogue.SetActive(false);
         GameManager.instance.BattleMan.StartCombat();
