@@ -152,6 +152,12 @@ public class AutelManager : MonoBehaviour
                 //DEMO ONLY
                 capa.isBuyable = true;
             }
+
+            if (capa.Bought)
+            {
+                var CheckMark = AllSpellsIcon[capa.Spell.IDSpell].transform.GetChild(0);
+                CheckMark.gameObject.SetActive(true);
+            }
             //if (!capa.isBuyable)
             //    AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().color = Color.gray;
 
