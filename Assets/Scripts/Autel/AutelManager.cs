@@ -10,6 +10,7 @@ public class AutelManager : MonoBehaviour
     public GameObject MenuUiPanel;
     public GameObject LevelUpUiPanel;
     public GameObject ShopUiPanel;
+    public GameObject StatUiPanel;
     public int Etage = 1;
     public JoueurStat stats;
 
@@ -66,8 +67,8 @@ public class AutelManager : MonoBehaviour
     }
     void FixedUpdate()
     {
-        EssenceText.text = "Essence : " + stats.Essence;
-        SetUpStatsDescription();
+        //EssenceText.text = "Essence : " + stats.Essence;
+        //SetUpStatsDescription();
         if(ShopUiPanel.activeInHierarchy == true)
         {
                 UpdateCoutChoix();
@@ -211,7 +212,7 @@ public class AutelManager : MonoBehaviour
 
     public void ModifStatCapa(Competence capa)
     {
-        ModifRadiance.text = ModifFA.text = ModifVitesse.text = ModifConviction.text = ModifResilience.text =
+          ModifRadiance.text = ModifFA.text = ModifVitesse.text = ModifConviction.text = ModifResilience.text =
             ModifCalme.text = ModifVolonter.text = ModifConscience.text = ModifClairvoyance.text = "";
         foreach (var modifStat in capa.ModifStat)
         {
