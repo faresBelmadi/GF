@@ -67,9 +67,9 @@ public class AutelManager : MonoBehaviour
     }
     void FixedUpdate()
     {
-        //EssenceText.text = "Essence : " + stats.Essence;
-        //SetUpStatsDescription();
-        if(ShopUiPanel.activeInHierarchy == true)
+        EssenceText.text = "Essence : " + stats.Essence;
+        SetUpStatsDescription();
+        if (ShopUiPanel.activeInHierarchy == true)
         {
                 UpdateCoutChoix();
             if (stats.Essence < CoutChoix1[Etage - 1])
