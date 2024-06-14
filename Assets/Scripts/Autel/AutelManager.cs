@@ -53,6 +53,7 @@ public class AutelManager : MonoBehaviour
     public bool Loot = false;
     public GameObject ButtonChoix1, ButtonChoix2, ButtonChoix3, ButtonReturn;
     public TextMeshProUGUI TextCoutChoix1, TextCoutChoix2, TextCoutChoix3;
+    public TextMeshProUGUI TextDescriptionChoix3;
     public List<int> CoutChoix1, CoutChoix2, CoutChoix3, CoutStatChoix3;
     public List<LootRarity> LootRarityForChoix1;
     public GameObject SpawnSouvenirChoix3, SouvenirChoix3;
@@ -111,9 +112,11 @@ public class AutelManager : MonoBehaviour
 
     public void ShowMenuUiPanel()
     {
+        DescriptionSpellText.text = string.Empty;
         ShopUiPanel.SetActive(false);
         LevelUpUiPanel.SetActive(false);
         MenuUiPanel.SetActive(true);
+
     }
 
     public void SetShopActive()
@@ -493,6 +496,7 @@ public class AutelManager : MonoBehaviour
                 SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
                 break;
         }
+        TextDescriptionChoix3.text += SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir.Description;
     }
 
     public void UpdateCoutChoix()
