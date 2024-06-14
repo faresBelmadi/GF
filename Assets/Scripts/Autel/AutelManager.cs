@@ -221,12 +221,14 @@ public class AutelManager : MonoBehaviour
         {
             var value = modifStat.Valeur > 0 ? "+" + modifStat.Valeur : modifStat.Valeur.ToString();
             Color colorTxt;
-            colorTxt = modifStat.Valeur < 0 ? Color.red : Color.green;
+            colorTxt = modifStat.Valeur < 0 ? new Color(0.71f,0.11f,0.02f) : new Color(0.28f, 0.55f, 0.17f);
+
+            //vert : 071,139,42 rouge : 180,29,4
             switch (modifStat.StatModif)
             {
                 case StatModif.Calme:
                     ModifCalme.text = value;
-                    colorTxt = modifStat.Valeur > 0 ? Color.red : Color.green;
+                    colorTxt = modifStat.Valeur > 0 ? new Color(0.71f, 0.11f, 0.02f) : new Color(0.28f, 0.55f, 0.17f);
                     ModifCalme.color = colorTxt;
                     ModifCalme.faceColor = colorTxt;
                     break;
