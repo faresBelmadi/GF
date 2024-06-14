@@ -113,6 +113,7 @@ public class AutelManager : MonoBehaviour
     public void ShowMenuUiPanel()
     {
         DescriptionSpellText.text = string.Empty;
+        emptyStat();
         ShopUiPanel.SetActive(false);
         LevelUpUiPanel.SetActive(false);
         MenuUiPanel.SetActive(true);
@@ -276,8 +277,20 @@ public class AutelManager : MonoBehaviour
 
         }
     }
+    public void emptyStat()
+    {
+        ModifCalme.text = string.Empty;
+        ModifClairvoyance.text = string.Empty;
+        ModifConscience.text = string.Empty;
+        ModifConviction.text = string.Empty;
+        ModifFA.text = string.Empty;
+        ModifRadiance.text = string.Empty;
+        ModifResilience.text = string.Empty;
+        ModifVolonter.text = string.Empty;
+        ModifVitesse.text = string.Empty;
+    }
 
-    public void BuyCapa(Competence capa)
+        public void BuyCapa(Competence capa)
     {
         Debug.Log("capa acheté");
 
