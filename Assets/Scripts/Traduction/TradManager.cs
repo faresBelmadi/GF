@@ -98,10 +98,10 @@ public class TradManager : MonoBehaviour
 
         }
 
-        foreach (var item in CapaDictionary)
-        {
-            Debug.Log(item.Key + " | " + item.Value.Count);
-        }
+        //foreach (var item in CapaDictionary)
+        //{
+        //    Debug.Log(item.Key + " | " + item.Value.Count);
+        //}
     }
 
     private void LoadTradMisc()

@@ -20,38 +20,52 @@ public class CombatBehavior : MonoBehaviour
 
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
+        string buffDebuffName;
+        string buffDebuffDescription;
+        if (!String.IsNullOrEmpty(toAdd.idTradName) && !String.IsNullOrEmpty(toAdd.idTradDescription))
+        {
+            Debug.Log("OUI");
+            buffDebuffName = TradManager.instance.CapaDictionary[toAdd.idTradName][TradManager.instance.IdLanguage];
+            buffDebuffDescription = TradManager.instance.CapaDictionary[toAdd.idTradDescription][TradManager.instance.IdLanguage];
+        }
+        else
+        {
+            Debug.Log("NON");
+            buffDebuffName = toAdd.name;
+            buffDebuffDescription = toAdd.Description;
+        }
         if (toAdd.IsDebuff)
         {
-            var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == TradManager.instance.CapaDictionary[toAdd.idTradName][TradManager.instance.IdLanguage]);
+            var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == buffDebuffName);
             if (t == null)
             {
                 t = Instantiate(DebuffPrefab, DebuffContainer.transform);
-                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = TradManager.instance.CapaDictionary[toAdd.idTradName][TradManager.instance.IdLanguage];
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = buffDebuffName;
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = "1";
-                t.GetComponent<DescriptionHoverTriggerBuffDebuff>().Description.text = TradManager.instance.CapaDictionary[toAdd.idTradDescription][TradManager.instance.IdLanguage];
+                t.GetComponent<DescriptionHoverTriggerBuffDebuff>().Description.text = buffDebuffDescription;
                 ListBuffDebuffGO.Add(t);
             }
             else
             {
-                var NbBuffDebuff = characterStat.ListBuffDebuff.Count(x => x.Nom == TradManager.instance.CapaDictionary[toAdd.idTradName][TradManager.instance.IdLanguage]);
+                var NbBuffDebuff = characterStat.ListBuffDebuff.Count(x => x.Nom == buffDebuffName);
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = NbBuffDebuff.ToString();
             }
 
         }
         else
         {
-            var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == TradManager.instance.CapaDictionary[toAdd.idTradName][TradManager.instance.IdLanguage]);
+            var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == buffDebuffName);
             if (t == null)
             {
                 t = Instantiate(BuffPrefab, BuffContainer.transform);
-                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = TradManager.instance.CapaDictionary[toAdd.idTradName][TradManager.instance.IdLanguage];
+                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text = buffDebuffName;
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = "1";
-                t.GetComponent<DescriptionHoverTriggerBuffDebuff>().Description.text = TradManager.instance.CapaDictionary[toAdd.idTradDescription][TradManager.instance.IdLanguage];
+                t.GetComponent<DescriptionHoverTriggerBuffDebuff>().Description.text = buffDebuffDescription;
                 ListBuffDebuffGO.Add(t);
             }
             else
             {
-                var test = characterStat.ListBuffDebuff.Count(x => x.Nom == TradManager.instance.CapaDictionary[toAdd.idTradName][TradManager.instance.IdLanguage]);
+                var test = characterStat.ListBuffDebuff.Count(x => x.Nom == buffDebuffName);
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = test.ToString();
             }
         }
@@ -86,7 +100,16 @@ public class CombatBehavior : MonoBehaviour
                         }
                     }
                 }
-                var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == TradManager.instance.CapaDictionary[item.idTradName][TradManager.instance.IdLanguage]);
+                string buffDebuffName;
+                if (item.idTradName != null && item.idTradDescription != null)
+                {
+                    buffDebuffName = TradManager.instance.CapaDictionary[item.idTradName][TradManager.instance.IdLanguage];
+                }
+                else
+                {
+                    buffDebuffName = item.name;
+                }
+                var t = ListBuffDebuffGO.FirstOrDefault(c => c.GetComponentInChildren<TextMeshProUGUI>().text == buffDebuffName);
                 if (t != null)
                 {
                     var s = t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text;

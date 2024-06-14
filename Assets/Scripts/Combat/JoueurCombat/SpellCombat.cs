@@ -23,7 +23,19 @@ public class SpellCombat : MonoBehaviour
         button.GetComponent<Image>().sprite = Action.Sprite;
         button.onClick.AddListener(ClickAction);
         //texte.text = Action.Nom;
-        TexteDescription.text = "<color=white><size=150%>" + TradManager.instance.CapaDictionary[Action.idTradName][TradManager.instance.IdLanguage] + "</size></color>\n<u>Cout :</u> ";
+        string buffDebuffName;
+        string buffDebuffDescription;
+        if (Action.idTradName != null && Action.idTradDescription != null)
+        {
+            buffDebuffName = TradManager.instance.CapaDictionary[Action.idTradName][TradManager.instance.IdLanguage];
+            buffDebuffDescription = TradManager.instance.CapaDictionary[Action.idTradDescription][TradManager.instance.IdLanguage];
+        }
+        else
+        {
+            buffDebuffName = Action.name;
+            buffDebuffDescription = Action.Description;
+        }
+        TexteDescription.text = "<color=white><size=150%>" + buffDebuffName + "</size></color>\n<u>Cout :</u> ";
         foreach (var item in Action.Costs)
         {
             if (item.typeCost == TypeCostSpell.volonte)
@@ -35,7 +47,7 @@ public class SpellCombat : MonoBehaviour
         }
         TexteDescription.text += "\n";
 
-        TexteDescription.text += TradManager.instance.CapaDictionary[Action.idTradDescription][TradManager.instance.IdLanguage];
+        TexteDescription.text += buffDebuffDescription;
     }
 
     //private void Update()
