@@ -72,7 +72,7 @@ public class AutelManager : MonoBehaviour
         SetUpStatsDescription();
         if (ShopUiPanel.activeInHierarchy == true)
         {
-                UpdateCoutChoix();
+            UpdateCoutChoix();
             if (stats.Essence < CoutChoix1[Etage - 1])
             {
                 ButtonChoix1.GetComponentInChildren<Button>().interactable = false;
