@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.WSA;
 
 public class SpellCombat : MonoBehaviour
 { 
@@ -25,13 +27,37 @@ public class SpellCombat : MonoBehaviour
         //texte.text = Action.Nom;
         string buffDebuffName;
         string buffDebuffDescription;
-        if (Action.idTradName != null && Action.idTradDescription != null)
+        if (!string.IsNullOrEmpty(Action.idTradName) && !string.IsNullOrEmpty(Action.idTradDescription))
         {
-            buffDebuffName = TradManager.instance.CapaDictionary[Action.idTradName][TradManager.instance.IdLanguage];
-            buffDebuffDescription = TradManager.instance.CapaDictionary[Action.idTradDescription][TradManager.instance.IdLanguage];
+            if (TradManager.instance.CapaDictionary.TryGetValue(Action.idTradName,
+                    out List<string> capaNameAllLangueList) &&
+                TradManager.instance.CapaDictionary.TryGetValue(Action.idTradDescription,
+                    out List<string> capaDescAllLangueList)
+                && TradManager.instance.IdLanguage != -1000)
+            {
+                buffDebuffName = capaNameAllLangueList[TradManager.instance.IdLanguage];
+                buffDebuffDescription = capaDescAllLangueList[TradManager.instance.IdLanguage];
+            }
+            else
+            {
+                if (!TradManager.instance.CapaDictionary.TryGetValue(Action.idTradName,
+                        out List<string> osef))
+                    Debug.Log("idTradName not in dictionary");
+                if (!TradManager.instance.CapaDictionary.TryGetValue(Action.idTradDescription,
+                        out List<string> osef2))
+                    Debug.Log("idTradDescription not in dictionary");
+                if (TradManager.instance.IdLanguage == -1000)
+                    Debug.Log("IdLanguage not in dictionary");
+                buffDebuffName = Action.name;
+                buffDebuffDescription = Action.Description;
+            }
         }
         else
         {
+            if (string.IsNullOrEmpty(Action.idTradName))
+                Debug.Log("IdTradName est null/empty pour " + Action.name);
+            if (string.IsNullOrEmpty(Action.idTradDescription))
+                Debug.Log("idTradDescription est null/empty pour " + Action.name);
             buffDebuffName = Action.name;
             buffDebuffDescription = Action.Description;
         }

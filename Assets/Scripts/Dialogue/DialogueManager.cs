@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -63,16 +65,29 @@ public class DialogueManager : MonoBehaviour
         DialogueIndex = NextDialogueIndex;
         MainText.text = TextePrincipal();
         MainTextGO.SetActive(true);
-        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat ||
-            _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
+        var currentQuestionType = _CurrentDialogue.Questions[DialogueIndex].Question.type;
+        var currentPossibleResponseList = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible;
+        if ( currentQuestionType == TypeQuestion.startCombat ||
+             currentQuestionType == TypeQuestion.EndTutoDialogue)
         {
+            string DialogueTrad;
+            if (!string.IsNullOrEmpty(currentPossibleResponseList[0].IdStringReponse))
+            {
+                DialogueTrad =
+                    TradManager.instance.DialogueDictionary[currentPossibleResponseList[0].IdStringReponse][
+                        TradManager.instance.IdLanguage];
+            }
+            else
+            {
+                DialogueTrad = "ID_DIALOGUE_NOT_IMPLEMENTED";
+            }
             if (EndText != null)
             {
                 //if(EndText.text == null || EndText.text == "")
-                if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible != null &&
-                    _CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count > 0 &&
-                     !string.IsNullOrEmpty(TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].IdStringReponse][TradManager.instance.IdLanguage]))
-                    EndText.text = TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].IdStringReponse][TradManager.instance.IdLanguage];
+                if (currentPossibleResponseList != null &&
+                    currentPossibleResponseList.Count > 0 &&
+                    !string.IsNullOrEmpty(DialogueTrad))
+                    EndText.text = DialogueTrad;
                 else
                 {
                     EndText.text = "Continuer";
@@ -83,16 +98,27 @@ public class DialogueManager : MonoBehaviour
                 var Text = EndDialogue.GetComponentInChildren<TextMeshProUGUI>();
                 if (Text != null)
                 {
-                    Text.text = TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[0].IdStringReponse][TradManager.instance.IdLanguage];
+                    Text.text = DialogueTrad;
                 }
             }
             EndDialogue.SetActive(true);
         }
         else
         {
-            for (int i = 0; i < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count; i++)
+            for (int i = 0; i < currentPossibleResponseList.Count; i++)
             {
-                Réponse[i].text = TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].IdStringReponse][TradManager.instance.IdLanguage];
+                string response;
+                if (!string.IsNullOrEmpty(currentPossibleResponseList[i].IdStringReponse))
+                {
+                    response =
+                        TradManager.instance.DialogueDictionary[currentPossibleResponseList[i].IdStringReponse][
+                            TradManager.instance.IdLanguage];
+                }
+                else
+                {
+                    response = "ID_DIALOGUE_NOT_IMPLEMENTED";
+                }
+                Réponse[i].text = response;
                 RéponseGO[i].SetActive(true);
                 //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
             }
@@ -101,17 +127,28 @@ public class DialogueManager : MonoBehaviour
 
     private string TextePrincipal()
     {
+        string dialogueTrad;
+        if (!string.IsNullOrEmpty(_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion))
+        {
+            dialogueTrad =
+                TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion]
+                    [TradManager.instance.IdLanguage];
+        }
+        else
+        {
+            dialogueTrad = "ID_DIALOGUE_NOT_IMPLEMENTED";
+        }
         if (ManagerBattle == null && _CurrentEncounterAlea != null)
         {
-            return "<allcaps><u><b>" + _CurrentEncounterAlea.NamePnj + ": </b></u></allcaps> " + TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion][TradManager.instance.IdLanguage];
+            return "<allcaps><u><b>" + _CurrentEncounterAlea.NamePnj + ": </b></u></allcaps> " + dialogueTrad;
         }
         else
         {
             return "<allcaps><u><b>" + _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom +
-                   ": </b></u></allcaps>" + TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion][TradManager.instance.IdLanguage];
+                   ": </b></u></allcaps>" + dialogueTrad;
         }
     }
-
+     
     void resetRéponse()
     {
         foreach (var item in RéponseGO)

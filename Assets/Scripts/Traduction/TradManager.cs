@@ -15,7 +15,8 @@ public class TradManager : MonoBehaviour
     {
         get
         {
-            return PlayerPrefs.GetInt("Lang");
+            var value = PlayerPrefs.GetInt("Lang", -1000); 
+            return value;
         }
     }
 
