@@ -457,8 +457,10 @@ public class JoueurBehavior : CombatBehavior
         {
             
             foreach (var effet in toApply.Effet)
-            {
-                _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
+            { 
+                if((toApply.timerApplication != TimerApplication.Attaque) || (toApply.timerApplication == TimerApplication.Attaque && !IsTurn))
+                    _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
+    
                 /*if(item.CibleApplication == effet.Cible)
                 {
                     ApplicationEffet(effet);
