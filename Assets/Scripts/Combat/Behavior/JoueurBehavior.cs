@@ -89,7 +89,7 @@ public class JoueurBehavior : CombatBehavior
         TensionSlider.value = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
         TensionSlider.maxValue = Stat.NbPalier;
         VolonteSlider.value = Stat.Volonter;
-        VolonteSlider.maxValue = Stat.VolonterMax;
+        //VolonteSlider.maxValue = Stat.VolonterMax;
         ConscienceSlider.value = Stat.Conscience;
         ConscienceSlider.maxValue = Stat.ConscienceMax;
 
