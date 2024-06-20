@@ -243,7 +243,12 @@ public class Effet : ScriptableObject
                 ModifState.Radiance +=
                     Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
-
+            case TypeEffet.UntilDeath:
+                ModifState.Radiance +=
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+                if (ModifState.Radiance < Cible.Radiance)
+                    Caster.Radiance -= Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);
+                break;
             case TypeEffet.DegatsRetourSurAttaque:
                 ModifState.Radiance += Mathf.FloorToInt(Pourcentage / 100f * Caster.ForceAme);
                 break;

@@ -135,6 +135,7 @@ public enum TypeEffet
     DamageAllEvenly=56,
     DamageUpTargetLowRadiance=57,
     OnKillStunAll=58,
+    UntilDeath=86,
     AugmentationFARadianceManquante=59,
     DamageFaBuff=60,
     DamageFaBuffCible = 79,
@@ -161,7 +162,7 @@ public enum TypeEffet
     DeuxiemeAttaqueJeanne = 82,
     SupportJeanne = 83,
     UltimeJeanne = 84,
-        //86
+        //87
 }
 
 public enum TypePassif
