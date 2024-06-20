@@ -272,7 +272,10 @@ public class Effet : ScriptableObject
             //case TypeEffet.RemoveAllTensionProcDamage:
             //    ModifState.Tension = 0;
             //    break;
-
+            case TypeEffet.RemoveAllTensionProcBuffDebuff:
+                nbProcAfterEffect = Mathf.RoundToInt(Caster.Tension / Caster.ValeurPalier);
+                Caster.Tension = 0;
+                break;
             case TypeEffet.RemoveAllDebuffProcBuffDebuf:
                 nbProcAfterEffect = RemoveBuffOrDebuffFromList(Caster, true);
                 break;

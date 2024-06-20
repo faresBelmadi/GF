@@ -139,8 +139,9 @@ public enum TypeEffet
     DamageFaBuff=60,
     DamageFaBuffCible = 79,
     DamageDebuffCible = 75,
-    RemoveAllTensionProcDamage=61,
-    RemoveAllDebuffProcBuffDebuf=62,
+    RemoveAllTensionProcDamage = 61,
+    RemoveAllTensionProcBuffDebuff = 85,
+    RemoveAllDebuffProcBuffDebuf =62,
     RemoveAllDebuffSelfProcBuffDebuf=63,
     RemoveAllBuffProcBuffDebuf=64,
     RemoveAllDebuffProcDamage=65, 
@@ -160,7 +161,7 @@ public enum TypeEffet
     DeuxiemeAttaqueJeanne = 82,
     SupportJeanne = 83,
     UltimeJeanne = 84,
-        //85
+        //86
 }
 
 public enum TypePassif
