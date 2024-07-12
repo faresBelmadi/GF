@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -17,8 +18,15 @@ public class JoueurBehavior : CombatBehavior
     public Button EndTurnButton;
     List<BuffDebuff> tempAddList = new List<BuffDebuff>();
 
-    public Slider RadianceSlider;
-    public Slider VolonteSlider;
+    //public Slider RadianceSlider;
+    //[SerializeField] private Image HpBarDelta;
+    //[SerializeField] private Image HpBar;
+    //[SerializeField] private float HitsustainTime;
+    //[SerializeField] private float HitfallOffSpeed;
+    [SerializeField] private ProgressBarManager HPBarManager;
+
+    [SerializeField] private Slider VolonteSlider;
+    [SerializeField] private Image VolonteBarBack;
     public Slider TensionSlider;
     public Slider ConscienceSlider;
 
@@ -41,7 +49,8 @@ public class JoueurBehavior : CombatBehavior
 
     #region Divers start & fin
 
-
+    private int currentHp = 0;
+    //private Coroutine playerGetDamagedRoutine;
     public void StartUp()
     {
 
@@ -61,6 +70,8 @@ public class JoueurBehavior : CombatBehavior
 
             Spells.Add(temp);
         }
+
+        InitUI();
     }
 
     private Spell CheckSouvenirSpell(Spell item)
@@ -80,16 +91,31 @@ public class JoueurBehavior : CombatBehavior
 
         return item;
     }
-
+    private void InitUI()
+    {
+        //HPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
+        HPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
+        //targetHpFill = (float)Stat.Radiance / (float)Stat.RadianceMax;
+        //HpBar.fillAmount = targetHpFill;
+        //HpBarDelta.fillAmount = targetHpFill;
+        //VolonteBarBack.rectTransform.offsetMax = new Vector2(-50 * (7 - Stat.VolonterMax), 0f);
+    }
     public void UpdateUI()
     {
-        RadianceSlider.value = Stat.Radiance;
-        RadianceSlider.minValue = 0;
-        RadianceSlider.maxValue = Stat.RadianceMax;
+        if(Stat.Radiance != currentHp) 
+        {
+            HPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
+            //if (playerGetDamagedRoutine != null) StopCoroutine(playerGetDamagedRoutine);
+            //playerGetDamagedRoutine = StartCoroutine(PlayerGetDamagedCoroutine());
+            //targetHpFill = Stat.Radiance / Stat.RadianceMax;
+        }currentHp = Stat.Radiance;
+        //RadianceSlider.value = Stat.Radiance;
+        //RadianceSlider.minValue = 0;
+        //RadianceSlider.maxValue = Stat.RadianceMax;
         TensionSlider.value = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
         TensionSlider.maxValue = Stat.NbPalier;
         VolonteSlider.value = Stat.Volonter;
-        //VolonteSlider.maxValue = Stat.VolonterMax;
+        VolonteSlider.maxValue = Stat.VolonterMax;
         ConscienceSlider.value = Stat.Conscience;
         ConscienceSlider.maxValue = Stat.ConscienceMax;
 
@@ -609,4 +635,26 @@ public class JoueurBehavior : CombatBehavior
     {
         AnimationController.EndAnimAttack();
     }
+    /*
+    IEnumerator PlayerGetDamagedCoroutine()
+    {
+        Debug.Log("Update HP Bars");
+        float oldHpProportion = targetHpFill;
+        targetHpFill = (float)Stat.Radiance / (float)Stat.RadianceMax;
+        float delta = oldHpProportion - targetHpFill;
+
+
+        HpBar.fillAmount = targetHpFill;
+        yield return new WaitForSecondsRealtime(HitsustainTime);
+        float timer = 0f;
+        do
+        {
+            Debug.Log($"{HpBarDelta.fillAmount}/{HpBar.fillAmount}");
+            HpBarDelta.fillAmount -= Time.unscaledDeltaTime * HitfallOffSpeed;
+            timer += Time.unscaledDeltaTime;
+            yield return null;
+        } while (HpBarDelta.fillAmount > HpBar.fillAmount);
+        playerGetDamagedRoutine = null;
+    }
+    */
 }

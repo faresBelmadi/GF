@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -7,8 +8,10 @@ using UnityEngine.UI;
 public class UIEnnemi : MonoBehaviour
 {
 
-    public Slider healthSlider;
-    public Slider TensionSlider;
+    //public Slider healthSlider;
+    [SerializeField] private ProgressBarManager HPBarManager;
+    [SerializeField] private ProgressBarManager TensionBarManager;
+    //public Slider TensionSlider;
 
     public TextMeshProUGUI HpText;
     public TextMeshProUGUI NameText;
@@ -27,15 +30,23 @@ public class UIEnnemi : MonoBehaviour
 
     public void UpdateHp(int newHp, int newMaxHp)
     {
+        if (!HPBarManager) return;
+        HPBarManager.UpdatePBar(newHp, newMaxHp);
+        /*
         healthSlider.value = newHp;
         healthSlider.maxValue = newMaxHp;
+        */
         HpText.text = newHp + "/" + newMaxHp;
     }
 
     public void UpdateTension(int newTension, int nbPalier)
     {
+        if (!TensionBarManager) return;
+        TensionBarManager.UpdatePBar(newTension, nbPalier);
+        /*
         TensionSlider.value = newTension;
         TensionSlider.maxValue = nbPalier;
+        */
     }
 
     public void UpdateNom(string nom)
@@ -85,5 +96,5 @@ public class UIEnnemi : MonoBehaviour
             Ciblage.SetActive(false);
         }
     }
-
+    
 }

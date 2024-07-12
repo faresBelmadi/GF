@@ -21,6 +21,8 @@ public class EnnemyBehavior : CombatBehavior
     private BattleManager _refBattleMan;
     List<BuffDebuff> tempAddList = new List<BuffDebuff>();
 
+    private int currentHp = 0;
+    private int currentTension = 0;
     #region Divers start & fin
 
     public void SetUp()
@@ -210,9 +212,13 @@ public class EnnemyBehavior : CombatBehavior
 
     private void UpdateUI()
     {
+        if(currentHp!=Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
+        currentHp = Stat.Radiance;
+        
         TensionUI = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
-        UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
-        UICombat.UpdateTension(TensionUI, Stat.NbPalier);
+        if(currentTension != TensionUI) UICombat.UpdateTension(TensionUI, Stat.NbPalier);
+        currentTension = TensionUI;
+
         string[] t = Stat.Nom.Split('(');
         UICombat.UpdateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
