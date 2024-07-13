@@ -219,6 +219,8 @@ public class PlayerMapManager : MonoBehaviour
         //GameManager.instance.LoadAutel();
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
+
+        // AudioManager.instance.PlayMusic(MusicType.LevelUpMusic);
     }
 
     public IEnumerator EndAutel(bool Loot)
@@ -230,6 +232,7 @@ public class PlayerMapManager : MonoBehaviour
         {
             ShowMenuStat();
         }
+        AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
         yield return SceneManager.UnloadSceneAsync(s);
     }
 
