@@ -166,6 +166,7 @@ public class PlayerMapManager : MonoBehaviour
         //{
         //    GameManager.instance.LoadCombatBoss();
         //}
+        AudioManager.instance.PlayMusic(MusicType.CombatMusic);
         GameManager.instance.LoadCombat();
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
@@ -182,6 +183,7 @@ public class PlayerMapManager : MonoBehaviour
             // + PopUp new Souvenir
             ShowMenuStat();
         }
+        AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
         yield return SceneManager.UnloadSceneAsync(s);
 
     }
