@@ -23,12 +23,14 @@ public class JoueurBehavior : CombatBehavior
     //[SerializeField] private Image HpBar;
     //[SerializeField] private float HitsustainTime;
     //[SerializeField] private float HitfallOffSpeed;
-    [SerializeField] private ProgressBarManager HPBarManager;
+    [SerializeField] private ProgressBarManager hPBarManager;
+    [SerializeField] private ProgressBarManager tensionBarManager;
+    [SerializeField] private ProgressBarManager conscienceBarManager;
 
     [SerializeField] private Slider VolonteSlider;
     [SerializeField] private Image VolonteBarBack;
-    public Slider TensionSlider;
-    public Slider ConscienceSlider;
+    //public Slider TensionSlider;
+    //public Slider ConscienceSlider;
 
     public TextMeshProUGUI TensionText;
     public TextMeshProUGUI HpText;
@@ -49,7 +51,9 @@ public class JoueurBehavior : CombatBehavior
 
     #region Divers start & fin
 
-    private int currentHp = 0;
+    private int currentHp = -1;
+    private float currentTens = -1;
+    private int currentCons = -1;
     //private Coroutine playerGetDamagedRoutine;
     public void StartUp()
     {
@@ -94,7 +98,9 @@ public class JoueurBehavior : CombatBehavior
     private void InitUI()
     {
         //HPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
-        HPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
+        hPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
+        tensionBarManager.InitPBar(0, Stat.NbPalier);
+        conscienceBarManager.InitPBar(Stat.Conscience, Stat.ConscienceMax);
         //targetHpFill = (float)Stat.Radiance / (float)Stat.RadianceMax;
         //HpBar.fillAmount = targetHpFill;
         //HpBarDelta.fillAmount = targetHpFill;
@@ -104,20 +110,27 @@ public class JoueurBehavior : CombatBehavior
     {
         if(Stat.Radiance != currentHp) 
         {
-            HPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
-            //if (playerGetDamagedRoutine != null) StopCoroutine(playerGetDamagedRoutine);
-            //playerGetDamagedRoutine = StartCoroutine(PlayerGetDamagedCoroutine());
-            //targetHpFill = Stat.Radiance / Stat.RadianceMax;
+            hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
         }currentHp = Stat.Radiance;
-        //RadianceSlider.value = Stat.Radiance;
-        //RadianceSlider.minValue = 0;
-        //RadianceSlider.maxValue = Stat.RadianceMax;
-        TensionSlider.value = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
-        TensionSlider.maxValue = Stat.NbPalier;
+
+        if (Stat.Tension != currentTens)
+        {
+            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax), Stat.NbPalier);
+        }
+        currentTens = Stat.Tension;
+        
+        if (Stat.Conscience != currentCons)
+        {
+            conscienceBarManager.UpdatePBar(Stat.Conscience, Stat.ConscienceMax);
+        }
+        currentCons = Stat.Conscience;
+
+        //TensionSlider.value = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
+        //TensionSlider.maxValue = Stat.NbPalier;
+        //ConscienceSlider.value = Stat.Conscience;
+        //ConscienceSlider.maxValue = Stat.ConscienceMax;
         VolonteSlider.value = Stat.Volonter;
         VolonteSlider.maxValue = Stat.VolonterMax;
-        ConscienceSlider.value = Stat.Conscience;
-        ConscienceSlider.maxValue = Stat.ConscienceMax;
 
         HpText.text = Stat.Radiance + "/" + Stat.RadianceMax;
 
@@ -635,26 +648,4 @@ public class JoueurBehavior : CombatBehavior
     {
         AnimationController.EndAnimAttack();
     }
-    /*
-    IEnumerator PlayerGetDamagedCoroutine()
-    {
-        Debug.Log("Update HP Bars");
-        float oldHpProportion = targetHpFill;
-        targetHpFill = (float)Stat.Radiance / (float)Stat.RadianceMax;
-        float delta = oldHpProportion - targetHpFill;
-
-
-        HpBar.fillAmount = targetHpFill;
-        yield return new WaitForSecondsRealtime(HitsustainTime);
-        float timer = 0f;
-        do
-        {
-            Debug.Log($"{HpBarDelta.fillAmount}/{HpBar.fillAmount}");
-            HpBarDelta.fillAmount -= Time.unscaledDeltaTime * HitfallOffSpeed;
-            timer += Time.unscaledDeltaTime;
-            yield return null;
-        } while (HpBarDelta.fillAmount > HpBar.fillAmount);
-        playerGetDamagedRoutine = null;
-    }
-    */
 }

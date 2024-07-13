@@ -13,7 +13,7 @@ public class ProgressBarManager : MonoBehaviour
     [SerializeField] private Color HitColor;
     [SerializeField] private Color HealColor;
 
-    private Coroutine playerGetDamagedRoutine;
+    private Coroutine SmoothProgressRoutine;
     private float valueBuffer;
 
     public void InitPBar(int value, int max)
@@ -23,13 +23,15 @@ public class ProgressBarManager : MonoBehaviour
     }
     public void UpdatePBar(int value, int max)
     {
-        if (playerGetDamagedRoutine != null) StopCoroutine(playerGetDamagedRoutine);
-        playerGetDamagedRoutine = StartCoroutine(PlayerGetDamagedCoroutine(value, max));
+        //Debug.Log($"Trigger Update Bars: {value}/{max}");
+        if (!this.isActiveAndEnabled) return;
+        if (SmoothProgressRoutine != null) StopCoroutine(SmoothProgressRoutine);
+        SmoothProgressRoutine = StartCoroutine(SmoothUpdateBarCoroutine(value, max));
 
     }
-    IEnumerator PlayerGetDamagedCoroutine(int value, int max)
+    IEnumerator SmoothUpdateBarCoroutine(int value, int max)
     {
-        //Debug.Log("Update HP Bars");
+        //Debug.Log($"Update Bars: {value}/{max}");
         float oldValue = valueBuffer;
         valueBuffer = (float)value / (float)max;
         bool isHeal = valueBuffer > oldValue ? true : false;
@@ -43,14 +45,17 @@ public class ProgressBarManager : MonoBehaviour
         instantBar.fillAmount = valueBuffer;
         
         yield return new WaitForSecondsRealtime(hitsustainTime);
-        do
+        while ((!isHeal && delayedBar.fillAmount > instantBar.fillAmount)
+            || (isHeal && delayedBar.fillAmount < instantBar.fillAmount))
         {
-            delayedBar.fillAmount += isHeal?1f:-1f* Time.unscaledDeltaTime * hitfallOffSpeed;
+            float step = Time.unscaledDeltaTime * hitfallOffSpeed;
+            //Debug.Log($"Process Delayed Bar:({value}/{max}) +={step}\n{delayedBar.fillAmount}/{instantBar.fillAmount}");
+            delayedBar.fillAmount += (isHeal?1f:-1f)* step;
             yield return null;
-        } while ((!isHeal && delayedBar.fillAmount > instantBar.fillAmount)
-            || (isHeal && delayedBar.fillAmount < instantBar.fillAmount));
+        }
         delayedBar.fillAmount = instantBar.fillAmount;
-        playerGetDamagedRoutine = null;
+        //Debug.Log($"End Update Bars: {value}/{max}\nFill: {instantBar.fillAmount}\nDeltaFill:{delayedBar.fillAmount}\n");
+        SmoothProgressRoutine = null;
     }
 
 }
