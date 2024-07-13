@@ -8,10 +8,8 @@ using UnityEngine.UI;
 public class UIEnnemi : MonoBehaviour
 {
 
-    //public Slider healthSlider;
     [SerializeField] private ProgressBarManager HPBarManager;
     [SerializeField] private ProgressBarManager TensionBarManager;
-    //public Slider TensionSlider;
 
     public TextMeshProUGUI HpText;
     public TextMeshProUGUI NameText;
@@ -32,10 +30,6 @@ public class UIEnnemi : MonoBehaviour
     {
         if (!HPBarManager) return;
         HPBarManager.UpdatePBar(newHp, newMaxHp);
-        /*
-        healthSlider.value = newHp;
-        healthSlider.maxValue = newMaxHp;
-        */
         HpText.text = newHp + "/" + newMaxHp;
     }
 
@@ -43,10 +37,6 @@ public class UIEnnemi : MonoBehaviour
     {
         if (!TensionBarManager) return;
         TensionBarManager.UpdatePBar(newTension, nbPalier);
-        /*
-        TensionSlider.value = newTension;
-        TensionSlider.maxValue = nbPalier;
-        */
     }
 
     public void UpdateNom(string nom)

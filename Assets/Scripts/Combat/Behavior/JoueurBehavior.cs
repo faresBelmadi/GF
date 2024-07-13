@@ -18,19 +18,12 @@ public class JoueurBehavior : CombatBehavior
     public Button EndTurnButton;
     List<BuffDebuff> tempAddList = new List<BuffDebuff>();
 
-    //public Slider RadianceSlider;
-    //[SerializeField] private Image HpBarDelta;
-    //[SerializeField] private Image HpBar;
-    //[SerializeField] private float HitsustainTime;
-    //[SerializeField] private float HitfallOffSpeed;
     [SerializeField] private ProgressBarManager hPBarManager;
     [SerializeField] private ProgressBarManager tensionBarManager;
     [SerializeField] private ProgressBarManager conscienceBarManager;
 
     [SerializeField] private Slider VolonteSlider;
     [SerializeField] private Image VolonteBarBack;
-    //public Slider TensionSlider;
-    //public Slider ConscienceSlider;
 
     public TextMeshProUGUI TensionText;
     public TextMeshProUGUI HpText;
@@ -54,7 +47,6 @@ public class JoueurBehavior : CombatBehavior
     private int currentHp = -1;
     private float currentTens = -1;
     private int currentCons = -1;
-    //private Coroutine playerGetDamagedRoutine;
     public void StartUp()
     {
 
@@ -97,17 +89,13 @@ public class JoueurBehavior : CombatBehavior
     }
     private void InitUI()
     {
-        //HPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
         hPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
         tensionBarManager.InitPBar(0, Stat.NbPalier);
         conscienceBarManager.InitPBar(Stat.Conscience, Stat.ConscienceMax);
-        //targetHpFill = (float)Stat.Radiance / (float)Stat.RadianceMax;
-        //HpBar.fillAmount = targetHpFill;
-        //HpBarDelta.fillAmount = targetHpFill;
-        //VolonteBarBack.rectTransform.offsetMax = new Vector2(-50 * (7 - Stat.VolonterMax), 0f);
     }
     public void UpdateUI()
     {
+        //ProgressBar Updates
         if(Stat.Radiance != currentHp) 
         {
             hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
@@ -125,12 +113,9 @@ public class JoueurBehavior : CombatBehavior
         }
         currentCons = Stat.Conscience;
 
-        //TensionSlider.value = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
-        //TensionSlider.maxValue = Stat.NbPalier;
-        //ConscienceSlider.value = Stat.Conscience;
-        //ConscienceSlider.maxValue = Stat.ConscienceMax;
         VolonteSlider.value = Stat.Volonter;
         VolonteSlider.maxValue = Stat.VolonterMax;
+
 
         HpText.text = Stat.Radiance + "/" + Stat.RadianceMax;
 

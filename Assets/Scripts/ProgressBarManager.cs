@@ -23,7 +23,6 @@ public class ProgressBarManager : MonoBehaviour
     }
     public void UpdatePBar(int value, int max)
     {
-        //Debug.Log($"Trigger Update Bars: {value}/{max}");
         if (!this.isActiveAndEnabled) return;
         if (SmoothProgressRoutine != null) StopCoroutine(SmoothProgressRoutine);
         SmoothProgressRoutine = StartCoroutine(SmoothUpdateBarCoroutine(value, max));
@@ -31,7 +30,6 @@ public class ProgressBarManager : MonoBehaviour
     }
     IEnumerator SmoothUpdateBarCoroutine(int value, int max)
     {
-        //Debug.Log($"Update Bars: {value}/{max}");
         float oldValue = valueBuffer;
         valueBuffer = (float)value / (float)max;
         bool isHeal = valueBuffer > oldValue ? true : false;
@@ -49,12 +47,10 @@ public class ProgressBarManager : MonoBehaviour
             || (isHeal && delayedBar.fillAmount < instantBar.fillAmount))
         {
             float step = Time.unscaledDeltaTime * hitfallOffSpeed;
-            //Debug.Log($"Process Delayed Bar:({value}/{max}) +={step}\n{delayedBar.fillAmount}/{instantBar.fillAmount}");
             delayedBar.fillAmount += (isHeal?1f:-1f)* step;
             yield return null;
         }
         delayedBar.fillAmount = instantBar.fillAmount;
-        //Debug.Log($"End Update Bars: {value}/{max}\nFill: {instantBar.fillAmount}\nDeltaFill:{delayedBar.fillAmount}\n");
         SmoothProgressRoutine = null;
     }
 
