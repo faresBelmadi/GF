@@ -59,6 +59,32 @@ public class CombatBehavior : MonoBehaviour
 
         if (toAdd.IsDebuff)
         {
+            GameObject buffObject = null;
+            foreach (GameObject presentBuffObject in ListBuffDebuffGO)
+            {
+                if(presentBuffObject.GetComponent<BuffDebuffComponant>().buffName == buffDebuffName)
+                {
+                    buffObject = presentBuffObject;
+                    break;
+                }
+            }
+            if (buffObject)
+            {
+                int buffCnt = characterStat.ListBuffDebuff.Count(x => x.Nom == buffDebuffName);
+                buffObject.GetComponent<BuffDebuffComponant>().buffCntLabel.text = buffCnt.ToString();
+            }
+            else
+            {
+                buffObject = Instantiate(DebuffPrefab, DebuffContainer.transform);
+                BuffDebuffComponant buffComp = buffObject.GetComponent<BuffDebuffComponant>();
+                buffComp.buffName = buffDebuffName;
+                buffComp.buffNameLabel.text = buffDebuffName;
+                buffComp.buffCntLabel.text = "1";
+                buffComp.buffDescriptionLabel.text = buffDebuffDescription;
+                ListBuffDebuffGO.Add(buffObject);
+            }
+            //OLD-----------------------------------------------------------------------------------------------------
+            /*
             var t = ListBuffDebuffGO.FirstOrDefault(c =>
                 c.GetComponentInChildren<TextMeshProUGUI>().text == buffDebuffName);
             if (t == null)
@@ -76,10 +102,37 @@ public class CombatBehavior : MonoBehaviour
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text =
                     NbBuffDebuff.ToString();
             }
+            */
 
         }
         else
         {
+            GameObject buffObject = null;
+            foreach (GameObject presentBuffObject in ListBuffDebuffGO)
+            {
+                if (presentBuffObject.GetComponent<BuffDebuffComponant>().buffName == buffDebuffName)
+                {
+                    buffObject = presentBuffObject;
+                    break;
+                }
+            }
+            if (buffObject)
+            {
+                int buffCnt = characterStat.ListBuffDebuff.Count(x => x.Nom == buffDebuffName);
+                buffObject.GetComponent<BuffDebuffComponant>().buffCntLabel.text = buffCnt.ToString();
+            }
+            else
+            {
+                buffObject = Instantiate(BuffPrefab, BuffContainer.transform);
+                BuffDebuffComponant buffComp = buffObject.GetComponent<BuffDebuffComponant>();
+                buffComp.buffName = buffDebuffName;
+                buffComp.buffNameLabel.text = buffDebuffName;
+                buffComp.buffCntLabel.text = "1";
+                buffComp.buffDescriptionLabel.text = buffDebuffDescription;
+                ListBuffDebuffGO.Add(buffObject);
+            }
+            //OLD-----------------------------------------------------------------------------------------------------
+            /*
             var t = ListBuffDebuffGO.FirstOrDefault(c =>
                 c.GetComponentInChildren<TextMeshProUGUI>().text == buffDebuffName);
             if (t == null)
@@ -97,6 +150,7 @@ public class CombatBehavior : MonoBehaviour
                 t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text =
                     test.ToString();
             }
+            */
         }
     }
 
