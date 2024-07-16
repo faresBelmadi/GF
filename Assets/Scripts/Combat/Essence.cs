@@ -6,7 +6,7 @@ public class Essence : MonoBehaviour
     public bool isEnd;
     public int amount;
 
-    public int Heal { get => Mathf.FloorToInt(amount / 2); }
+    public int Heal { get => (isEnd) ? amount : Mathf.FloorToInt(amount / 2); }
 
     public void AddEssence(int _amount)
     {
