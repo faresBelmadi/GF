@@ -3044,6 +3044,7 @@ MonoBehaviour:
   hitfallOffSpeed: 1.25
   HitColor: {r: 0.6320754, g: 0.6320754, b: 0.6320754, a: 0.6392157}
   HealColor: {r: 0.6313726, g: 0.6313726, b: 0.6313726, a: 0.6392157}
+  bloomSystem: {fileID: 1143486257}
 --- !u!1 &367137842
 GameObject:
   m_ObjectHideFlags: 0
@@ -5932,7 +5933,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: feeca0b34fb01b949957fd86ff2e30a3, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 0.5058824}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -8119,6 +8120,7 @@ MonoBehaviour:
   hitfallOffSpeed: 1
   HitColor: {r: 0.8207547, g: 0.8207547, b: 0.8207547, a: 0.6392157}
   HealColor: {r: 1, g: 0, b: 0, a: 0.8352941}
+  bloomSystem: {fileID: 0}
 --- !u!1 &933736448
 GameObject:
   m_ObjectHideFlags: 0
@@ -9475,6 +9477,7 @@ GameObject:
   - component: {fileID: 1143486256}
   - component: {fileID: 1143486255}
   - component: {fileID: 1143486254}
+  - component: {fileID: 1143486257}
   m_Layer: 5
   m_Name: FillBG
   m_TagString: Untagged
@@ -9558,8 +9561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.008405906, b: 0, a: 1}
+  m_Material: {fileID: 2100000, guid: feeca0b34fb01b949957fd86ff2e30a3, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -9584,6 +9587,103 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1143486252}
   m_CullTransparentMesh: 0
+--- !u!114 &1143486257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1143486252}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05357cfbf0a6ca14ab1d309c38fadf75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bloomDuration: 2
+  loop: 1
+  bloomIntensity: 2.5
+  bloomIntensityShape:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.31877258
+      value: 0.7169799
+      inSlope: -0.10452563
+      outSlope: -0.10452563
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.18976523
+    - serializedVersion: 3
+      time: 0.41412592
+      value: 0.23938762
+      inSlope: -0.49735653
+      outSlope: -0.49735653
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.66977197
+      value: 0.9917975
+      inSlope: -0.06363668
+      outSlope: -0.06363668
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.11141199
+      outWeight: 0.43505964
+    - serializedVersion: 3
+      time: 0.99786377
+      value: -0.0023498535
+      inSlope: 0.000043094413
+      outSlope: 0.000043094413
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  bloomGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  bloomMaterial: {fileID: 2100000, guid: feeca0b34fb01b949957fd86ff2e30a3, type: 2}
 --- !u!1 &1148294272
 GameObject:
   m_ObjectHideFlags: 0
@@ -13332,6 +13432,7 @@ MonoBehaviour:
   hitfallOffSpeed: 0.5
   HitColor: {r: 0.745283, g: 0.14413491, b: 0.14413491, a: 1}
   HealColor: {r: 0.39441663, g: 0.8962264, b: 0.26633143, a: 1}
+  bloomSystem: {fileID: 0}
 --- !u!1 &1526502092
 GameObject:
   m_ObjectHideFlags: 0
@@ -15040,6 +15141,55 @@ Transform:
   m_Children:
   - {fileID: 367137843}
   m_Father: {fileID: 934459984}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1734180876
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1734180878}
+  - component: {fileID: 1734180877}
+  m_Layer: 0
+  m_Name: Global Volume
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1734180877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734180876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 172515602e62fb746b5d573b38a5fe58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IsGlobal: 1
+  priority: 0
+  blendDistance: 0
+  weight: 1
+  sharedProfile: {fileID: 11400000, guid: be09d53f878f2ff4aa21cde7452f0001, type: 2}
+--- !u!4 &1734180878
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1734180876}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -173.79846, y: -0.4328878, z: 12.06162}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1739477418
 GameObject:
@@ -17160,6 +17310,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1333137631031568628, guid: f1e692327d8d82f46ba3e8559d80fa1a, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1333137631031568629, guid: f1e692327d8d82f46ba3e8559d80fa1a, type: 3}
       propertyPath: m_Name
       value: BattleCamera
@@ -17705,3 +17859,4 @@ SceneRoots:
   - {fileID: 1256237558}
   - {fileID: 67803115}
   - {fileID: 1502046453}
+  - {fileID: 1734180878}
