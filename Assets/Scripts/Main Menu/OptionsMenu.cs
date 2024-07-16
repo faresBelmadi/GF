@@ -14,22 +14,11 @@ public class OptionsMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        Debug.Log("Enable");
         _masterVolumeSlider.value = AudioManager.instance.MasterVolume;
         _musicVolumeSlider.value = AudioManager.instance.MusicVolume;
         _SFXVolumeSlider.value = AudioManager.instance.SFXVolume;
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void SaveMasterVolume()
     {

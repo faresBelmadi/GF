@@ -5,3 +5,11 @@ public enum MusicType
     CombatMusic,
     LevelUpMusic
 }
+public enum SFXType
+{
+    DamageSFX,
+    HealthDownSFX,
+    HealthUpSFX,
+    BuffSFX,
+    DebuffSFX
+}
