@@ -104,6 +104,9 @@ public class JoueurBehavior : CombatBehavior
         if (Stat.Tension != currentTens)
         {
             tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax), Stat.NbPalier);
+            
+            tensionBarManager.ToggleBloomPulses(((Stat.Tension * Stat.NbPalier) / Stat.TensionMax) >= Stat.NbPalier);
+            
         }
         currentTens = Stat.Tension;
         

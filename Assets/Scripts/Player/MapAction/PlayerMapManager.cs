@@ -85,10 +85,14 @@ public class PlayerMapManager : MonoBehaviour
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
             case TypeRoom.CombatBoss:
+                StartCoroutine("LoadSceneAsync", "BattleScene Boss");
+                _currentRoom.Type = TypeRoom.Visited;
+                //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
+                break;
+            case TypeRoom.End:
                 SceneManager.LoadScene("MainMenu");
                 Destroy(GameManager.instance.gameObject);
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
-
                 break;
             case TypeRoom.LevelUp:
                 StartLevelUp();
@@ -166,6 +170,7 @@ public class PlayerMapManager : MonoBehaviour
         //{
         //    GameManager.instance.LoadCombatBoss();
         //}
+        //AudioManager.instance.PlayMusic(MusicType.CombatMusic);
         GameManager.instance.LoadCombat();
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
@@ -182,6 +187,7 @@ public class PlayerMapManager : MonoBehaviour
             // + PopUp new Souvenir
             ShowMenuStat();
         }
+        AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
         yield return SceneManager.UnloadSceneAsync(s);
 
     }
@@ -217,6 +223,8 @@ public class PlayerMapManager : MonoBehaviour
         //GameManager.instance.LoadAutel();
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
+
+        AudioManager.instance.PlayMusic(MusicType.LevelUpMusic);
     }
 
     public IEnumerator EndAutel(bool Loot)
@@ -228,6 +236,8 @@ public class PlayerMapManager : MonoBehaviour
         {
             ShowMenuStat();
         }
+        
+        AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
         yield return SceneManager.UnloadSceneAsync(s);
     }
 
