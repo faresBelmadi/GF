@@ -43,18 +43,7 @@ public class TextDisplayer : MonoBehaviour
         }
         StartCoroutine(AnimText(_type));
     }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-       
-    }
-
+   
     private IEnumerator AnimText(TextAnimationType type)
     {
         _tmpText.ForceMeshUpdate();
