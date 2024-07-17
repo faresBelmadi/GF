@@ -12,7 +12,7 @@ public class ProgressBarManager : MonoBehaviour
 
     [SerializeField] private Color HitColor;
     [SerializeField] private Color HealColor;
-
+    [SerializeField] private PulseBloom_System bloomSystem;
     private Coroutine SmoothProgressRoutine;
     private float valueBuffer;
 
@@ -26,7 +26,17 @@ public class ProgressBarManager : MonoBehaviour
         if (!this.isActiveAndEnabled) return;
         if (SmoothProgressRoutine != null) StopCoroutine(SmoothProgressRoutine);
         SmoothProgressRoutine = StartCoroutine(SmoothUpdateBarCoroutine(value, max));
+    }
 
+    public void ToggleBloomPulses()
+    {
+        bloomSystem.OnToggleLoop();
+        bloomSystem.TriggerBloom();
+    }
+    public void ToggleBloomPulses(bool state)
+    {
+        bloomSystem.loop = state;
+        if(state)bloomSystem.TriggerBloom();
     }
     IEnumerator SmoothUpdateBarCoroutine(int value, int max)
     {
