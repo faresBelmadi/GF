@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -40,7 +41,8 @@ public class Generator : MonoBehaviour
         ClearGen();
         Generate();
         SpawnRoom();
-        CreateCorridor();
+        //CreateCorridor(); //Keep it for the real thing
+        CreateCorridorDEMO(); //Only for demo
         SpawnCorridor();
         InitManager();
         ClearUseless();
@@ -64,6 +66,22 @@ public class Generator : MonoBehaviour
             Spawned.Add(pos, t);
         }
     }
+
+    void CreateCorridorDEMO()
+    {
+        for (var i = 0; i < ResultBsp.Count; i++)
+        {
+            Spawned.TryGetValue(ResultBsp[i].Center, out GameObject obj);
+            List<GameObject> lienList = new List<GameObject>();
+            if (i + 1 < ResultBsp.Count)
+            {
+                Spawned.TryGetValue(ResultBsp[i + 1].Center, out GameObject nextObj);
+                lienList.Add(nextObj);
+            }
+            Corridors.Add(obj, lienList);
+        }
+    }
+
 
     void CreateCorridor()
     {
