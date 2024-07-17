@@ -11,7 +11,7 @@ public class DialogueManager : MonoBehaviour
     public GameObject UIDialogue;
     [Tooltip("Font size for dialogue options")]
     [SerializeField]
-    private float _fontSize = 36f;
+    private float _fontSize = 34f;
     public GameObject UIJoueur;
     public TextMeshProUGUI MainText;
     public GameObject MainTextGO;
