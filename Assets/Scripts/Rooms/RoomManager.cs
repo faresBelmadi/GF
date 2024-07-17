@@ -12,7 +12,8 @@ public class RoomManager : MonoBehaviour
     public Sprite SalleHeal;
     public Sprite SalleAlea;
     public Sprite SalleStart;
-    
+    public Sprite SalleEnd;
+
 
 
     public void Init(List<Room> _rooms)
@@ -66,9 +67,17 @@ public class RoomManager : MonoBehaviour
         Rooms[7].gameObject.transform.localScale = new Vector3(10, 10);
         Rooms[7].Type = TypeRoom.CombatElite;
 
-        Rooms[8].ToSet = SalleCombatBoss;
+        Rooms[8].ToSet = SalleLevelUp;
         Rooms[8].gameObject.transform.localScale = new Vector3(10, 10);
-        Rooms[8].Type = TypeRoom.CombatBoss;
+        Rooms[8].Type = TypeRoom.Autel;
+
+        Rooms[9].ToSet = SalleCombatBoss;
+        Rooms[9].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[9].Type = TypeRoom.CombatBoss;
+
+        Rooms[10].ToSet = SalleEnd;
+        Rooms[10].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[10].Type = TypeRoom.End; 
         GameManager.instance.SetRoom(start);
     }
     

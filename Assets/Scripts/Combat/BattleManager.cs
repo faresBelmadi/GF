@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 [System.Serializable]
@@ -751,6 +752,7 @@ public class BattleManager : MonoBehaviour
         temp.GetComponent<Essence>().isEnd = true;
         ListEssence.Add(temp);
         buttonEndCombat.SetActive(true);
+        buttonEndCombat.GetComponentInChildren<TMP_Text>().text += $" ({amount})";
         endBattle = true;
     }
 
