@@ -9,6 +9,9 @@ public class DialogueManager : MonoBehaviour
     #region UI Reference
 
     public GameObject UIDialogue;
+    [Tooltip("Font size for dialogue options")]
+    [SerializeField]
+    private float _fontSize = 36f;
     public GameObject UIJoueur;
     public TextMeshProUGUI MainText;
     public GameObject MainTextGO;
@@ -37,7 +40,15 @@ public class DialogueManager : MonoBehaviour
     private int NextDialogueIndex = 0;
 
     #endregion Dialogue Property
-
+    private void Start()
+    {
+        TMP_Text[] dialogArray = UIDialogue.GetComponentsInChildren<TMP_Text>(true);
+        for (int i = 0; i< dialogArray.Length; i++)
+        {
+            dialogArray[i].enableAutoSizing = false;
+            dialogArray[i].fontSize = _fontSize;
+        }
+    }
     public void SetupDialogue(Encounter encounterToSet)
     {
         _CurrentDialogue = encounterToSet.DialogueRencontre;
@@ -65,14 +76,24 @@ public class DialogueManager : MonoBehaviour
         DialogueIndex = NextDialogueIndex;
         MainText.text = TextePrincipal();
         MainTextGO.SetActive(true);
-       
-        MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += GetAnswerList;
-        
+        TextDisplayer textDisplayer = MainText.GetComponent<TextDisplayer>();
+        if (textDisplayer != null )
+        {
+            MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += GetAnswerList;
+        }
+        else
+        {
+            GetAnswerList();
+        }
     }
 
     private void GetAnswerList()
     {
-        MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= GetAnswerList;
+        TextDisplayer textDisplayer = MainText.GetComponent<TextDisplayer>();
+        if (textDisplayer != null)
+        {
+            MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= GetAnswerList;
+        }
         var currentQuestionType = _CurrentDialogue.Questions[DialogueIndex].Question.type;
         var currentPossibleResponseList = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible;
         if ( currentQuestionType == TypeQuestion.startCombat ||
