@@ -1,8 +1,17 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class EssenceUI : MonoBehaviour
 {
     public GameObject buttonConsumation;
+
+    [SerializeField]
+    private Essence _essenceRootObject;
+
+    private void Start()
+    {
+        buttonConsumation.GetComponentInChildren<TMP_Text>().text += $" ({_essenceRootObject.Heal})";
+    }
 
     public void activate()
     {

@@ -216,7 +216,6 @@ GameObject:
   - component: {fileID: 422324509109625915}
   - component: {fileID: 117689542936519202}
   - component: {fileID: 7969064053862163997}
-  - component: {fileID: 2688317585644144824}
   - component: {fileID: 417407691678910915}
   m_Layer: 0
   m_Name: BoutonBgEvent
@@ -326,51 +325,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &2688317585644144824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4665432732403880541}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 417407691678910915}
-          m_TargetAssemblyTypeName: EssenceUI, Assembly-CSharp
-          m_MethodName: activate
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-  - eventID: 1
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 417407691678910915}
-          m_TargetAssemblyTypeName: EssenceUI, Assembly-CSharp
-          m_MethodName: deactivate
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!114 &417407691678910915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -384,6 +338,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonConsumation: {fileID: 8850870118723294631}
+  _essenceRootObject: {fileID: 6344377308093138453}
 --- !u!1 &7501522666751623225
 GameObject:
   m_ObjectHideFlags: 0
@@ -476,7 +431,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 71.45
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -536,7 +491,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2560222258409390523
 RectTransform:
   m_ObjectHideFlags: 0
