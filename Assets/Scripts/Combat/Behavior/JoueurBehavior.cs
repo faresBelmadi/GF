@@ -446,7 +446,7 @@ public class JoueurBehavior : CombatBehavior
         }
 
 
-        //DecompteDebuffJoueur(Decompte, Timer);
+        DecompteDebuffJoueur(Decompte, Timer);
 
         UpdateUI();
     }

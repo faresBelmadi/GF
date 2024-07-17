@@ -9,6 +9,8 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
 {
     [SerializeField] public Image buffSprite;
     [SerializeField] public TextMeshProUGUI buffCntLabel;
+    [SerializeField] public GameObject buffTimeHolder;
+    [SerializeField] public TextMeshProUGUI buffTimeLabel;
     [SerializeField] public GameObject popUpPanle;
     [SerializeField] public TextMeshProUGUI buffNameLabel;
     [SerializeField] public TextMeshProUGUI buffDescriptionLabel;
@@ -51,15 +53,4 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
         popUpPanle.SetActive(false);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
