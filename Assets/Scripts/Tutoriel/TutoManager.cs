@@ -50,21 +50,25 @@ public class TutoManager : MonoBehaviour
         if (StepTuto == 1 || StepTuto == 3 || StepTuto == 5 || StepTuto == 7)
         {
             StepMapTuto++;
+            AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
             SceneManager.LoadScene("TutoMonde");
         }
         else if (StepTuto == 2 || StepTuto == 8)
         {
             StepBatlleTuto++;
+            AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
             SceneManager.LoadScene("Tuto");
         }
         else if (StepTuto == 6)
         {
             StepBatlleTuto++;
+            AudioManager.instance.PlayMusic(MusicType.CombatMusic);
             StartCoroutine("LoadSceneAsync", "TutoBattle");
             //LoadSceneAsync("TutoBattle");
         }
         else if (StepTuto == 4)
         {
+            AudioManager.instance.PlayMusic(MusicType.LevelUpMusic);
             SceneManager.LoadScene("TutoAutel");
             //SceneManager.LoadScene("TutoAutel OLD");
         }
