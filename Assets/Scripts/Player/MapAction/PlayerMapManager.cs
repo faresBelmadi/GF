@@ -170,7 +170,7 @@ public class PlayerMapManager : MonoBehaviour
         //{
         //    GameManager.instance.LoadCombatBoss();
         //}
-        AudioManager.instance.PlayMusic(MusicType.CombatMusic);
+        //AudioManager.instance.PlayMusic(MusicType.CombatMusic);
         GameManager.instance.LoadCombat();
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
