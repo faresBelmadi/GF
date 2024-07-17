@@ -58,13 +58,21 @@ public class DialogueManager : MonoBehaviour
     {
         resetRéponse();
         GoNext();
-    } 
+    }
 
     void GoNext()
     {
         DialogueIndex = NextDialogueIndex;
         MainText.text = TextePrincipal();
         MainTextGO.SetActive(true);
+       
+        MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += GetAnswerList;
+        
+    }
+
+    private void GetAnswerList()
+    {
+        MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= GetAnswerList;
         var currentQuestionType = _CurrentDialogue.Questions[DialogueIndex].Question.type;
         var currentPossibleResponseList = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible;
         if ( currentQuestionType == TypeQuestion.startCombat ||

@@ -7,24 +7,28 @@ using UnityEngine;
 [RequireComponent(typeof(TMP_Text))]
 public class TextDisplayer : MonoBehaviour
 {
+    #region enum
     public enum TextAnimationType
     {
         LetterByLetter,
         LineByLine,
         WordByWord
     }
-    TMP_Text _tmpText;
+    #endregion
+
+
     [SerializeField]
     private TextAnimationType _type;
-
-
     [SerializeField]
     private float _delay = 0.05f;
+    
+    private TMP_Text _tmpText;
+
+    public event Action OnDisplayAnimFinish;
     private void OnEnable()
     {
         _tmpText = GetComponent<TMP_Text>();
         
-        Debug.Log("words : " + _tmpText.textInfo.wordCount);
         switch (_type)
         {
             case TextAnimationType.WordByWord:
@@ -58,6 +62,7 @@ public class TextDisplayer : MonoBehaviour
         {
             yield return new WaitForSeconds(_delay);
         }
+        OnDisplayAnimFinish?.Invoke();
     }
     /// <summary>
     /// Affiche l'element suivant de l'animation, renvoie True lorsque c'est finit
