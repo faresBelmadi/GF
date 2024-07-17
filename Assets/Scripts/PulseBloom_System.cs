@@ -8,7 +8,10 @@ using UnityEngine.UI;
 public class PulseBloom_System : MonoBehaviour
 {
 
-
+    [SerializeField]
+    bool startActive = false;
+    [SerializeField]
+    float defaultIntensity = 0f;
     [SerializeField]
     float bloomDuration = 1f;
     [SerializeField]
@@ -27,7 +30,7 @@ public class PulseBloom_System : MonoBehaviour
     private void Start()
     {
         bloomMaterial.SetFloat("_Intensity", .5f);
-        //TriggerBloom();
+        if(startActive) TriggerBloom();
     }
     public void TriggerBloom(bool doOverride = false)
     {
