@@ -87,15 +87,15 @@ public class CombatBehavior : MonoBehaviour
             DebuffContainer.GetComponent<VerticalLayoutGroup>().spacing = 3;
         }
     }
-    private string[] GetBuffNameAndDescription(BuffDebuff toAdd)
+    private string[] GetBuffNameAndDescription(BuffDebuff buff)
     {
         string buffDebuffName;
         string buffDebuffDescription;
-        if (!string.IsNullOrEmpty(toAdd.idTradName) && !string.IsNullOrEmpty(toAdd.idTradDescription))
+        if (!string.IsNullOrEmpty(buff.idTradName) && !string.IsNullOrEmpty(buff.idTradDescription))
         {
-            if (TradManager.instance.CapaDictionary.TryGetValue(toAdd.idTradName,
+            if (TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
                     out List<string> capaNameAllLangueList) &&
-                TradManager.instance.CapaDictionary.TryGetValue(toAdd.idTradDescription,
+                TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
                     out List<string> capaDescAllLangueList)
                 && TradManager.instance.IdLanguage != -1000)
             {
@@ -104,30 +104,30 @@ public class CombatBehavior : MonoBehaviour
             }
             else
             {
-                if (!TradManager.instance.CapaDictionary.TryGetValue(toAdd.idTradName,
+                if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
                         out List<string> osef))
                     Debug.Log("idTradName not in dictionary");
-                if (!TradManager.instance.CapaDictionary.TryGetValue(toAdd.idTradDescription,
+                if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
                         out List<string> osef2))
                     Debug.Log("idTradDescription not in dictionary");
                 if (TradManager.instance.IdLanguage == -1000)
                     Debug.Log("IdLanguage not in dictionary");
-                buffDebuffName = toAdd.name;
-                buffDebuffDescription = toAdd.Description;
+                buffDebuffName = buff.name;
+                buffDebuffDescription = buff.Description;
             }
         }
         else
         {
-            if (string.IsNullOrEmpty(toAdd.idTradName))
-                Debug.Log("IdTradName est null/empty pour " + toAdd.name);
-            if (string.IsNullOrEmpty(toAdd.idTradDescription))
-                Debug.Log("idTradDescription est null/empty pour " + toAdd.name);
-            buffDebuffName = toAdd.name;
-            buffDebuffDescription = toAdd.Description;
+            if (string.IsNullOrEmpty(buff.idTradName))
+                Debug.Log("IdTradName est null/empty pour " + buff.name);
+            if (string.IsNullOrEmpty(buff.idTradDescription))
+                Debug.Log("idTradDescription est null/empty pour " + buff.name);
+            buffDebuffName = buff.name;
+            buffDebuffDescription = buff.Description;
         }
         return new string[2] { buffDebuffName, buffDebuffDescription };
     }
-
+    
     public void DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte Timer, CharacterStat toChange)
     {
         Debug.Log($"Decompte Buffs: {Timer.ToString()}");
@@ -167,8 +167,6 @@ public class CombatBehavior : MonoBehaviour
 
     public List<BuffDebuff> UpdateBuffDebuffGameObject(List<BuffDebuff> BuffDebuff, CharacterStat toChange)
     {
-        Debug.Log($"Update Buffs GO?\nUntouched");
-
         foreach (var item in BuffDebuff)
         {
             if (item.Temps < 0)
@@ -206,6 +204,37 @@ public class CombatBehavior : MonoBehaviour
                     buffDebuffName = item.name;
                 }
 
+                GameObject buffObject = null;
+                foreach (GameObject presentBuffObject in ListBuffDebuffGO)
+                {
+                    if (presentBuffObject.GetComponent<BuffDebuffComponant>().buffName == GetBuffNameAndDescription(item)[0])
+                    {
+                        buffObject = presentBuffObject;
+                        break;
+                    }
+                }
+                if (buffObject)
+                {
+                    BuffDebuffComponant buffComponant = buffObject.GetComponent<BuffDebuffComponant>();
+                    //VERRY DIRTY
+                    int buffCnt = int.Parse(buffComponant.buffCntLabel.text);
+                    buffCnt--;
+                    if(buffCnt > 0)
+                    {
+                        buffComponant.buffCntLabel.text = buffCnt.ToString();
+                        buffComponant.buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
+                    }
+                    else
+                    {
+                        ListBuffDebuffGO.Remove(buffObject);
+                        Destroy(buffObject);
+                    }
+                }
+                else
+                {
+                    Debug.Log("ERROR: Buff Not Found");
+                }
+                /*
                 var t = ListBuffDebuffGO.FirstOrDefault(c =>
                     c.GetComponentInChildren<TextMeshProUGUI>().text == buffDebuffName);
                 if (t != null)
@@ -222,6 +251,7 @@ public class CombatBehavior : MonoBehaviour
                     else
                         t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
                 }
+                */
             }
         }
 
