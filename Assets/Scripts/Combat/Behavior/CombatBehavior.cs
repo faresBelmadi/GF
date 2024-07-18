@@ -218,7 +218,7 @@ public class CombatBehavior : MonoBehaviour
                     //VERY DIRTY
                     int buffCnt = int.Parse(buffComponant.buffCntLabel.text);
                     buffCnt--;
-                    if(buffCnt >= 0)
+                    if(buffCnt > 0)
                     {
                         buffComponant.buffCntLabel.text = buffCnt.ToString();
                         buffComponant.buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
