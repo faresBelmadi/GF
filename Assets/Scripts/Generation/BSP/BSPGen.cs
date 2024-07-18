@@ -21,7 +21,7 @@ public class BSPGen : MonoBehaviour
             new Container(27, 20, 10, 10),
             new Container(34, 30, 10, 10),
             new Container(44, 30, 10, 10),
-            new Container(51, 20, 10, 10),
+            //new Container(51, 20, 10, 10),
             new Container(61, 20, 10, 10)
             //new Container(20, 0, 10, 10),//start
             //new Container(40, 20, 10, 10),

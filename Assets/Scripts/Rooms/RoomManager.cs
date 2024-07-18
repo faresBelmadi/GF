@@ -71,13 +71,13 @@ public class RoomManager : MonoBehaviour
         Rooms[8].gameObject.transform.localScale = new Vector3(10, 10);
         Rooms[8].Type = TypeRoom.Autel;
 
-        Rooms[9].ToSet = SalleCombatBoss;
-        Rooms[9].gameObject.transform.localScale = new Vector3(10, 10);
-        Rooms[9].Type = TypeRoom.CombatBoss;
+        //Rooms[9].ToSet = SalleCombatBoss;
+        //Rooms[9].gameObject.transform.localScale = new Vector3(10, 10);
+        //Rooms[9].Type = TypeRoom.CombatBoss;
 
-        Rooms[10].ToSet = SalleEnd;
-        Rooms[10].gameObject.transform.localScale = new Vector3(10, 10);
-        Rooms[10].Type = TypeRoom.End; 
+        Rooms[9].ToSet = SalleEnd;
+        Rooms[9].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[9].Type = TypeRoom.End; 
         GameManager.instance.SetRoom(start);
     }
     
