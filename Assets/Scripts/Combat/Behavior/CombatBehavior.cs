@@ -39,6 +39,7 @@ public class CombatBehavior : MonoBehaviour
         {
             int buffCnt = characterStat.ListBuffDebuff.Count(x => x.Nom == buffDebuffName);
             buffObject.GetComponent<BuffDebuffComponant>().buffCntLabel.text = buffCnt.ToString();
+            buffObject.GetComponent<BuffDebuffComponant>().buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
             //buffObject.GetComponent<BuffDebuffComponant>().buffTimeLabel.text = toAdd.Temps.ToString();
         }
         else
@@ -53,8 +54,9 @@ public class CombatBehavior : MonoBehaviour
             buffComp.buffName = buffDebuffName;
             buffComp.buffNameLabel.text = buffDebuffName;
             buffComp.buffCntLabel.text = "1";
-            buffComp.buffTimeLabel.text = toAdd.Temps.ToString();
+            //buffComp.buffTimeLabel.text = toAdd.Temps.ToString();
             buffComp.buffDescriptionLabel.text = buffDebuffDescription;
+            buffComp.buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
             ListBuffDebuffGO.Add(buffObject);
         }
         //buffObject.GetComponent<EnflateSystem>().TriggerInflation();
@@ -136,6 +138,7 @@ public class CombatBehavior : MonoBehaviour
                 Debug.Log($"Decompte {item.Nom} from {gameObject.name}");
 
                 item.Temps--;
+                /*
                 GameObject buffObject = null;
                 foreach (GameObject presentBuffObject in ListBuffDebuffGO)
                 {
@@ -154,6 +157,7 @@ public class CombatBehavior : MonoBehaviour
                 {
                     Debug.Log("Buff Not Found");
                 }
+                */
             }
 
 

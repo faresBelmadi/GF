@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class EnflateSystem : MonoBehaviour
 {
+    public bool triggerOnStart= false;
+
     [SerializeField] float duration;
     [SerializeField] float amplitude;
     [SerializeField] AnimationCurve curve;
@@ -14,9 +16,18 @@ public class EnflateSystem : MonoBehaviour
     {
         baseLocalScale = transform.localScale;
     }
-
+    private void Start()
+    {
+        if(triggerOnStart)TriggerInflation();
+        triggerOnStart = false;
+    }
     public void TriggerInflation()
     {
+        if (!isActiveAndEnabled)
+        {
+            triggerOnStart = true;
+            return;
+        }
         if( inflateRoutine != null ) StopCoroutine( inflateRoutine );
         inflateRoutine = StartCoroutine(InflateCoroutine());
     }

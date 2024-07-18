@@ -8,9 +8,9 @@ using UnityEngine.UI;
 public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] public Image buffSprite;
+    [SerializeField] public GameObject buffCntHolder;
     [SerializeField] public TextMeshProUGUI buffCntLabel;
-    [SerializeField] public GameObject buffTimeHolder;
-    [SerializeField] public TextMeshProUGUI buffTimeLabel;
+    //[SerializeField] public TextMeshProUGUI buffTimeLabel;
     [SerializeField] public GameObject popUpPanle;
     [SerializeField] public TextMeshProUGUI buffNameLabel;
     [SerializeField] public TextMeshProUGUI buffDescriptionLabel;
