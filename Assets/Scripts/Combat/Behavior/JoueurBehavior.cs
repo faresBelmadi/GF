@@ -7,16 +7,16 @@ using UnityEngine.UI;
 
 public class JoueurBehavior : CombatBehavior
 {
-    public JoueurStat Stat;
-
-    public List<GameObject> Spells;
-    public Transform DamageSpawn;
-    public GameObject DamagePrefab;
-    public GameObject SoinPrefab;
-    public GameObject SpellPrefab;
-    public GameObject SpellsSpawn;
-    public Button EndTurnButton;
-    List<BuffDebuff> tempAddList = new List<BuffDebuff>();
+    [SerializeField] public JoueurStat Stat;
+    
+    [SerializeField] private List<GameObject> Spells;
+    [SerializeField] private Transform DamageSpawn;
+    [SerializeField] private GameObject DamagePrefab;
+    [SerializeField] private GameObject SoinPrefab;
+    [SerializeField] private GameObject SpellPrefab;
+    [SerializeField] private GameObject SpellsSpawn;
+    [SerializeField] private Button EndTurnButton;
+    [SerializeField] private List<BuffDebuff> tempAddList = new List<BuffDebuff>();
 
     [SerializeField] private ProgressBarManager hPBarManager;
     [SerializeField] private ProgressBarManager tensionBarManager;
@@ -25,28 +25,40 @@ public class JoueurBehavior : CombatBehavior
     [SerializeField] private Slider VolonteSlider;
     [SerializeField] private Image VolonteBarBack;
 
-    public TextMeshProUGUI TensionText;
-    public TextMeshProUGUI HpText;
-    public TextMeshProUGUI VolontéText;
-    public TextMeshProUGUI ConscienceText;
-    public TextMeshProUGUI StatSpeedText;
-    public TextMeshProUGUI StatForceAmeText;
-    public TextMeshProUGUI StatResilienceText;
-    public TextMeshProUGUI StatClairvoyanceText;
-    public TextMeshProUGUI StatConvictionText;
+    [SerializeField] private Color green = new Color(0.58f, 0.98f, 0.65f);
+    [SerializeField] private Color red = new Color(0.996f, 0.47f, 0.40f);
+    [SerializeField] private TextMeshProUGUI TensionText;
+    [SerializeField] private TextMeshProUGUI HpText;
+    [SerializeField] private TextMeshProUGUI VolontéText;
+    [SerializeField] private TextMeshProUGUI ConscienceText;
+    [SerializeField] private TextMeshProUGUI StatForceAmeText;
+    [SerializeField] private TextMeshProUGUI StatSpeedText;
+    [SerializeField] private TextMeshProUGUI StatResilienceText;
+    [SerializeField] private TextMeshProUGUI StatConvictionText;
+    [SerializeField] private TextMeshProUGUI StatClairvoyanceText;
+    [SerializeField] private Image StatForceAmeBg;
+    [SerializeField] private Image StatSpeedBg;
+    [SerializeField] private Image StatResilienceBg;
+    [SerializeField] private Image StatConvictionBg;
+    [SerializeField] private Image StatClairvoyanceBg;
 
-    public Spell SelectedSpell;
+    [SerializeField] private Spell SelectedSpell;
 
-    public AnimationControllerAttack AnimationController;
+    [SerializeField] private AnimationControllerAttack AnimationController;
 
-    public BattleManager _refBattleMan;
-    public bool IsTurn;
+    [SerializeField] private BattleManager _refBattleMan;
+    [SerializeField] private bool IsTurn;
 
     #region Divers start & fin
 
     private int currentHp = -1;
     private float currentTens = -1;
     private int currentCons = -1;
+    public void InitRefBattleMan(BattleManager battleManager)
+    {
+        _refBattleMan = battleManager;
+    }
+
     public void StartUp()
     {
 
@@ -126,53 +138,50 @@ public class JoueurBehavior : CombatBehavior
 
         StatClairvoyanceText.text = Stat.Clairvoyance + "";
 
-        var green = new Color(147, 250, 165);
-        var red = new Color(254, 121, 104);
 
         if (Stat.Clairvoyance > Stat.ClairvoyanceOriginal)
-            StatClairvoyanceText.color = green;
+            StatClairvoyanceBg.color = green;
         else if (Stat.Clairvoyance < Stat.ClairvoyanceOriginal)
-            StatClairvoyanceText.color = red;
+            StatClairvoyanceBg.color = red;
         else
-            StatClairvoyanceText.color = Color.black;
+            StatClairvoyanceBg.color = Color.white;
 
 
         StatForceAmeText.text = Stat.ForceAme + "";
 
         if (Stat.ForceAme > Stat.ForceAmeOriginal)
-            StatForceAmeText.color = new Color(147, 250, 165);
+            StatForceAmeBg.color = new Color(147, 250, 165);
         else if (Stat.ForceAme < Stat.ForceAmeOriginal)
-            StatForceAmeText.color = red;
+            StatForceAmeBg.color = red;
         else
-            StatForceAmeText.color = Color.black;
+            StatForceAmeBg.color = Color.white;
 
         StatSpeedText.text = Stat.Vitesse + "";
 
         if (Stat.Vitesse > Stat.VitesseOriginal)
-            StatSpeedText.color = green;
+            StatSpeedBg.color = green;
         else if (Stat.Vitesse < Stat.VitesseOriginal)
-            StatSpeedText.color = red;
+            StatSpeedBg.color = red;
         else
-            StatSpeedText.color = Color.black;
+            StatSpeedBg.color = Color.white;
 
         StatConvictionText.text = Stat.Conviction + "";
 
         if (Stat.Conviction > Stat.ConvictionOriginal)
-            StatConvictionText.color = green;
+            StatConvictionBg.color = green;
         else if (Stat.Conviction < Stat.ConvictionOriginal)
-            StatConvictionText.color = red;
+            StatConvictionBg.color = red;
         else
-            StatConvictionText.color = Color.black;
+            StatConvictionBg.color = Color.white;
 
         StatResilienceText.text = Stat.Resilience + "";
 
         if (Stat.Resilience > Stat.ResilienceOriginal)
-            StatResilienceText.color = green;
+            StatResilienceBg.color = green;
         else if (Stat.Resilience < Stat.ResilienceOriginal)
-            StatResilienceText.color = red;
+            StatResilienceBg.color = red;
         else
-            StatResilienceText.color = Color.black;
-        StatForceAmeText.SetAllDirty();
+            StatResilienceBg.color = Color.white;
     }
 
     public void StartPhase()
