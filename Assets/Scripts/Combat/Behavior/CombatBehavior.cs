@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.WSA;
 
 public class CombatBehavior : MonoBehaviour
 {
-
+    [SerializeField] Sprite[] buffsSprites;  
     public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
     public GameObject BuffPrefab;
     public Transform BuffContainer;
-    public GameObject DebuffPrefab;
     public Transform DebuffContainer;
 
     public Action EndTurnBM;
@@ -20,13 +21,81 @@ public class CombatBehavior : MonoBehaviour
 
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
+        
+        string[] buffDebuffInfos = GetBuffNameAndDescription(toAdd);
+        string buffDebuffName = buffDebuffInfos[0];
+        string buffDebuffDescription = buffDebuffInfos[1];
+
+        GameObject buffObject = null;
+        foreach (GameObject presentBuffObject in ListBuffDebuffGO)
+        {
+            if (presentBuffObject.GetComponent<BuffDebuffComponant>().buffName == buffDebuffName)
+            {
+                buffObject = presentBuffObject;
+                break;
+            }
+        }
+        if (buffObject)
+        {
+            int buffCnt = characterStat.ListBuffDebuff.Count(x => x.Nom == buffDebuffName);
+            buffObject.GetComponent<BuffDebuffComponant>().buffCntLabel.text = buffCnt.ToString();
+            buffObject.GetComponent<BuffDebuffComponant>().buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
+            //buffObject.GetComponent<BuffDebuffComponant>().buffTimeLabel.text = toAdd.Temps.ToString();
+        }
+        else
+        {
+            buffObject = Instantiate(BuffPrefab, toAdd.IsDebuff? DebuffContainer.transform : BuffContainer.transform);
+            ControlBuffBarsSize();
+            BuffDebuffComponant buffComp = buffObject.GetComponent<BuffDebuffComponant>();
+            //buffComp.buffSprite.sprite = CorrespondingSprite
+            //TEMP
+            buffComp.buffSprite.sprite = buffsSprites[toAdd.IsDebuff ? 1 : 0];
+
+            buffComp.buffName = buffDebuffName;
+            buffComp.buffNameLabel.text = buffDebuffName;
+            buffComp.buffCntLabel.text = "1";
+            //buffComp.buffTimeLabel.text = toAdd.Temps.ToString();
+            buffComp.buffDescriptionLabel.text = buffDebuffDescription;
+            buffComp.buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
+            ListBuffDebuffGO.Add(buffObject);
+        }
+        //buffObject.GetComponent<EnflateSystem>().TriggerInflation();
+    }
+    private void ControlBuffBarsSize()
+    {
+        if (ListBuffDebuffGO.Count <= 0) return;
+
+        float limit = 400f;
+        float buffHeight = ListBuffDebuffGO[0].GetComponent<RectTransform>().rect.height;
+        int buffCnt = BuffContainer.childCount - 1;
+        int deBuffCnt = DebuffContainer.childCount - 1;
+        Debug.Log($"Limit:{limit}\nBuffHeight:{buffHeight}\nBuffCnt: {buffCnt}");
+        if ((buffCnt * buffHeight) > limit)
+        {
+            BuffContainer.GetComponent<VerticalLayoutGroup>().spacing = -limit*(1-limit/(buffCnt*buffHeight))/buffCnt;
+        }
+        else
+        {
+            BuffContainer.GetComponent<VerticalLayoutGroup>().spacing = 3;
+        }
+        if ((deBuffCnt * buffHeight) > limit)
+        {
+            DebuffContainer.GetComponent<VerticalLayoutGroup>().spacing = -limit * (1 - limit / (deBuffCnt * buffHeight)) / deBuffCnt;
+        }
+        else
+        {
+            DebuffContainer.GetComponent<VerticalLayoutGroup>().spacing = 3;
+        }
+    }
+    private string[] GetBuffNameAndDescription(BuffDebuff buff)
+    {
         string buffDebuffName;
         string buffDebuffDescription;
-        if (!string.IsNullOrEmpty(toAdd.idTradName) && !string.IsNullOrEmpty(toAdd.idTradDescription))
+        if (!string.IsNullOrEmpty(buff.idTradName) && !string.IsNullOrEmpty(buff.idTradDescription))
         {
-            if (TradManager.instance.CapaDictionary.TryGetValue(toAdd.idTradName,
+            if (TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
                     out List<string> capaNameAllLangueList) &&
-                TradManager.instance.CapaDictionary.TryGetValue(toAdd.idTradDescription,
+                TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
                     out List<string> capaDescAllLangueList)
                 && TradManager.instance.IdLanguage != -1000)
             {
@@ -35,77 +104,63 @@ public class CombatBehavior : MonoBehaviour
             }
             else
             {
-                if (!TradManager.instance.CapaDictionary.TryGetValue(toAdd.idTradName,
+                if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
                         out List<string> osef))
                     Debug.Log("idTradName not in dictionary");
-                if (!TradManager.instance.CapaDictionary.TryGetValue(toAdd.idTradDescription,
+                if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
                         out List<string> osef2))
                     Debug.Log("idTradDescription not in dictionary");
                 if (TradManager.instance.IdLanguage == -1000)
                     Debug.Log("IdLanguage not in dictionary");
-                buffDebuffName = toAdd.name;
-                buffDebuffDescription = toAdd.Description;
+                buffDebuffName = buff.name;
+                buffDebuffDescription = buff.Description;
             }
         }
         else
         {
-            if (string.IsNullOrEmpty(toAdd.idTradName))
-                Debug.Log("IdTradName est null/empty pour " + toAdd.name);
-            if (string.IsNullOrEmpty(toAdd.idTradDescription))
-                Debug.Log("idTradDescription est null/empty pour " + toAdd.name);
-            buffDebuffName = toAdd.name;
-            buffDebuffDescription = toAdd.Description;
+            if (string.IsNullOrEmpty(buff.idTradName))
+                Debug.Log("IdTradName est null/empty pour " + buff.name);
+            if (string.IsNullOrEmpty(buff.idTradDescription))
+                Debug.Log("idTradDescription est null/empty pour " + buff.name);
+            buffDebuffName = buff.name;
+            buffDebuffDescription = buff.Description;
         }
-
-        if (toAdd.IsDebuff)
-        {
-            var t = ListBuffDebuffGO.FirstOrDefault(c =>
-                c.GetComponentInChildren<TextMeshProUGUI>().text == buffDebuffName);
-            if (t == null)
-            {
-                t = Instantiate(DebuffPrefab, DebuffContainer.transform);
-                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text =
-                    buffDebuffName;
-                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = "1";
-                t.GetComponent<DescriptionHoverTriggerBuffDebuff>().Description.text = buffDebuffDescription;
-                ListBuffDebuffGO.Add(t);
-            }
-            else
-            {
-                var NbBuffDebuff = characterStat.ListBuffDebuff.Count(x => x.Nom == buffDebuffName);
-                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text =
-                    NbBuffDebuff.ToString();
-            }
-
-        }
-        else
-        {
-            var t = ListBuffDebuffGO.FirstOrDefault(c =>
-                c.GetComponentInChildren<TextMeshProUGUI>().text == buffDebuffName);
-            if (t == null)
-            {
-                t = Instantiate(BuffPrefab, BuffContainer.transform);
-                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNom").text =
-                    buffDebuffName;
-                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = "1";
-                t.GetComponent<DescriptionHoverTriggerBuffDebuff>().Description.text = buffDebuffDescription;
-                ListBuffDebuffGO.Add(t);
-            }
-            else
-            {
-                var test = characterStat.ListBuffDebuff.Count(x => x.Nom == buffDebuffName);
-                t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text =
-                    test.ToString();
-            }
-        }
+        return new string[2] { buffDebuffName, buffDebuffDescription };
     }
-
+    
     public void DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte Timer, CharacterStat toChange)
     {
+        Debug.Log($"Decompte Buffs: {Timer.ToString()}");
         foreach (var item in BuffDebuff)
         {
-            if (item.Decompte == Timer)
+            if (item.Decompte == Timer) 
+            {
+                Debug.Log($"Decompte {item.Nom} from {gameObject.name}");
+
                 item.Temps--;
+                /*
+                GameObject buffObject = null;
+                foreach (GameObject presentBuffObject in ListBuffDebuffGO)
+                {
+                    if (presentBuffObject.GetComponent<BuffDebuffComponant>().buffName == GetBuffNameAndDescription(item)[0])
+                    {
+                        buffObject = presentBuffObject;
+                        break;
+                    }
+                }
+                if (buffObject)
+                {
+                    buffObject.GetComponent<BuffDebuffComponant>().buffTimeLabel.text = item.Temps.ToString();
+                    buffObject.GetComponent<BuffDebuffComponant>().buffTimeHolder.GetComponent<EnflateSystem>().TriggerInflation();
+                }
+                else
+                {
+                    Debug.Log("Buff Not Found");
+                }
+                */
+            }
+
+
         }
 
     }
@@ -149,6 +204,37 @@ public class CombatBehavior : MonoBehaviour
                     buffDebuffName = item.name;
                 }
 
+                GameObject buffObject = null;
+                foreach (GameObject presentBuffObject in ListBuffDebuffGO)
+                {
+                    if (presentBuffObject.GetComponent<BuffDebuffComponant>().buffName == GetBuffNameAndDescription(item)[0])
+                    {
+                        buffObject = presentBuffObject;
+                        break;
+                    }
+                }
+                if (buffObject)
+                {
+                    BuffDebuffComponant buffComponant = buffObject.GetComponent<BuffDebuffComponant>();
+                    //VERRY DIRTY
+                    int buffCnt = int.Parse(buffComponant.buffCntLabel.text);
+                    buffCnt--;
+                    if(buffCnt > 0)
+                    {
+                        buffComponant.buffCntLabel.text = buffCnt.ToString();
+                        buffComponant.buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
+                    }
+                    else
+                    {
+                        ListBuffDebuffGO.Remove(buffObject);
+                        Destroy(buffObject);
+                    }
+                }
+                else
+                {
+                    Debug.Log("ERROR: Buff Not Found");
+                }
+                /*
                 var t = ListBuffDebuffGO.FirstOrDefault(c =>
                     c.GetComponentInChildren<TextMeshProUGUI>().text == buffDebuffName);
                 if (t != null)
@@ -165,6 +251,7 @@ public class CombatBehavior : MonoBehaviour
                     else
                         t.GetComponentsInChildren<TextMeshProUGUI>().First(c => c.gameObject.name == "TextNb").text = s;
                 }
+                */
             }
         }
 
