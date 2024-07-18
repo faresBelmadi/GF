@@ -21,14 +21,18 @@ public class TextDisplayer : MonoBehaviour
     private TextAnimationType _type;
     [SerializeField]
     private float _delay = 0.05f;
-    
+    [SerializeField]
+    private float _skipDelay = 0.01f;
+
     private TMP_Text _tmpText;
+    private bool _isAnimated = false;
+    private float _baseDelay;
 
     public event Action OnDisplayAnimFinish;
     private void OnEnable()
     {
         _tmpText = GetComponent<TMP_Text>();
-        
+        _baseDelay = _delay;
         switch (_type)
         {
             case TextAnimationType.WordByWord:
@@ -43,15 +47,41 @@ public class TextDisplayer : MonoBehaviour
         }
         StartCoroutine(AnimText(_type));
     }
-   
+    private void OnDisable()
+    {
+        _tmpText.enableAutoSizing = false;
+        _delay = _baseDelay;
+    }
+
+    private void Update()
+    {
+        if (_isAnimated)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                _delay = _skipDelay;
+            }
+        }
+    }
     private IEnumerator AnimText(TextAnimationType type)
     {
+        _isAnimated = true;
         _tmpText.ForceMeshUpdate();
+        if (_tmpText.isTextOverflowing)
+        {
+            _tmpText.enableAutoSizing = true;
+        }
         while (!DisplayNextElement(type))
         {
             yield return new WaitForSeconds(_delay);
         }
+        // Pour eviter que l'element de text se retrouve malencontreusement tronqué plus tard
+        _tmpText.maxVisibleWords = 99999;
+        _tmpText.maxVisibleLines = 99999;
+        _tmpText.maxVisibleCharacters = 99999;
+        _isAnimated = false;
         OnDisplayAnimFinish?.Invoke();
+        
     }
     /// <summary>
     /// Affiche l'element suivant de l'animation, renvoie True lorsque c'est finit
@@ -73,6 +103,22 @@ public class TextDisplayer : MonoBehaviour
                 return _tmpText.textInfo.characterCount <= _tmpText.maxVisibleCharacters;
             default:
                 return true;
+        }
+    }
+
+    private void Skip()
+    {
+        switch (_type)
+        {
+            case TextAnimationType.WordByWord:
+                _tmpText.maxVisibleWords = 99999;
+                break;
+            case TextAnimationType.LineByLine:
+                _tmpText.maxVisibleLines = 99999;
+                break;
+            case TextAnimationType.LetterByLetter:
+                _tmpText.maxVisibleCharacters = 99999;
+                break;
         }
     }
 }
