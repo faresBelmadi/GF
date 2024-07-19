@@ -129,12 +129,12 @@ public class CombatBehavior : MonoBehaviour
     
     public void DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte Timer, CharacterStat toChange)
     {
-        Debug.Log($"Decompte Buffs: {Timer.ToString()}");
+        //Debug.Log($"Decompte Buffs: {Timer.ToString()}");
         foreach (var item in BuffDebuff)
         {
             if (item.Decompte == Timer) 
             {
-                Debug.Log($"Decompte {item.Nom} from {gameObject.name}");
+                //Debug.Log($"Decompte {item.Nom} from {gameObject.name}");
 
                 item.Temps--;
                 /*

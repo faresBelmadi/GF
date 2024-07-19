@@ -33,10 +33,10 @@ public class ProgressBarManager : MonoBehaviour
         bloomSystem.OnToggleLoop();
         bloomSystem.TriggerBloom();
     }
-    public void ToggleBloomPulses(bool state)
+    public void ToggleBloomPulses(bool doLoop)
     {
-        bloomSystem.loop = state;
-        if(state)bloomSystem.TriggerBloom();
+        bloomSystem.loop = doLoop;
+        bloomSystem.TriggerBloom();
     }
     IEnumerator SmoothUpdateBarCoroutine(int value, int max)
     {

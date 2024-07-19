@@ -111,6 +111,7 @@ public class JoueurBehavior : CombatBehavior
         if(Stat.Radiance != currentHp) 
         {
             hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
+            hPBarManager.ToggleBloomPulses(false);
         }currentHp = Stat.Radiance;
 
         if (Stat.Tension != currentTens)
@@ -125,6 +126,7 @@ public class JoueurBehavior : CombatBehavior
         if (Stat.Conscience != currentCons)
         {
             conscienceBarManager.UpdatePBar(Stat.Conscience, Stat.ConscienceMax);
+            conscienceBarManager.ToggleBloomPulses(false);
         }
         currentCons = Stat.Conscience;
 
