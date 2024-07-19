@@ -34,6 +34,11 @@ public class PulseBloom_System : MonoBehaviour
     }
     public void TriggerBloom(bool doOverride = true)
     {
+        if(!isActiveAndEnabled)
+        {
+            startActive = true;
+            return;
+        }
         Debug.Log($"PulseBloomTriggered on {gameObject.name}");
         if (bloomRoutine != null)
         {
