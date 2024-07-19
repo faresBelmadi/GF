@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -204,7 +205,26 @@ public class DialogueManager : MonoBehaviour
         resetRéponse();
         GoNext();
     }
-
+    public void ShowConsequenceForAnswer(int selectedAnswer)
+    {
+        StringBuilder stb = new StringBuilder();
+        stb.Append("List of consequence for this dialogue : ");
+        foreach (var consequence in _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[selectedAnswer].conséquences)
+        {
+            stb.Append("Buff(");
+            foreach (var buffDebuff in consequence.Buffs)
+            {
+                stb.Append(" " + buffDebuff.name + " ");
+            }
+            stb.Append(") - Effect(");
+            foreach (var effect in consequence.Effects)
+            {
+                stb.Append(" " + effect.name + " ");
+            }
+            stb.Append(").");
+        }
+        Debug.Log(stb.ToString());
+    }
     void ApplyConsequence(List<ConséquenceSO> consequence)
     {
         foreach (var Consequence in consequence)
