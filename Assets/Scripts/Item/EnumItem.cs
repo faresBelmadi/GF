@@ -6,14 +6,14 @@
     Legendaire
 }
 
-public enum Emotion
+public enum EmotionTypeEnum
 {
     Joie,
     Fierte,
     Serenite,
     Espoir,
     Rancune,
-    frustration,
+    Frustration,
     Honte,
     Nostalgie
 }

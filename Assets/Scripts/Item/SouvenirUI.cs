@@ -19,30 +19,30 @@ public class SouvenirUI : MonoBehaviour
     private string DescriptionEmotion()
     {
         string DescTemp = "";
-        switch (LeSouvenir.Emotion)
+        switch (LeSouvenir.Emotion.EmotionTypeEnum)
         {
-            case Emotion.Joie:
+            case EmotionTypeEnum.Joie:
                 DescTemp = "Emotion : Joie";
                 break;
-            case Emotion.Fierte:
+            case EmotionTypeEnum.Fierte:    
                 DescTemp = "Emotion : Fierte";
                 break;
-            case Emotion.Serenite:
+            case EmotionTypeEnum.Serenite:
                 DescTemp = "Emotion : Serenite";
                 break;
-            case Emotion.Espoir:
+            case EmotionTypeEnum.Espoir:
                 DescTemp = "Emotion : Espoir";
                 break;
-            case Emotion.Rancune:
+            case EmotionTypeEnum.Rancune:
                 DescTemp = "Emotion : Rancune";
                 break;
-            case Emotion.frustration:
+            case EmotionTypeEnum.Frustration:
                 DescTemp = "Emotion : frustration";
                 break;
-            case Emotion.Honte:
+            case EmotionTypeEnum.Honte:
                 DescTemp = "Emotion : Honte";
                 break;
-            case Emotion.Nostalgie:
+            case EmotionTypeEnum.Nostalgie:
                 DescTemp = "Emotion : Nostalgie";
                 break;
         }
