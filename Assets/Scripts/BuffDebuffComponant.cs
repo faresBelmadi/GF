@@ -11,18 +11,18 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] public GameObject buffCntHolder;
     [SerializeField] public TextMeshProUGUI buffCntLabel;
     //[SerializeField] public TextMeshProUGUI buffTimeLabel;
-    [SerializeField] public GameObject popUpPanle;
+    [SerializeField] public GameObject popUpPanel;
     [SerializeField] public TextMeshProUGUI buffNameLabel;
     [SerializeField] public TextMeshProUGUI buffDescriptionLabel;
     public string buffName;
     public void OnPointerEnter(PointerEventData eventData)
     {
         Debug.Log("enter");
-        popUpPanle.SetActive(true);
-        if (!IsFullyVisibleFrom(popUpPanle.GetComponent<RectTransform>()))
+        popUpPanel.SetActive(true);
+        if (!IsFullyVisibleFrom(popUpPanel.GetComponent<RectTransform>()))
         {
-            while (!IsFullyVisibleFrom(popUpPanle.GetComponent<RectTransform>()))
-                popUpPanle.transform.Translate(-1, 0, 0);
+            while (!IsFullyVisibleFrom(popUpPanel.GetComponent<RectTransform>()))
+                popUpPanel.transform.Translate(-1, 0, 0);
         }
     }
     private bool IsFullyVisibleFrom(RectTransform rectTransform)
@@ -50,7 +50,7 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     public void OnPointerExit(PointerEventData eventData)
     {
         Debug.Log("exit");
-        popUpPanle.SetActive(false);
+        popUpPanel.SetActive(false);
     }
 
 }
