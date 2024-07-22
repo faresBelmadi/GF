@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -23,7 +24,8 @@ public class DialogueManager : MonoBehaviour
 
     public AleaManager ManagerAlea;
     //public Button skipButton; 
-
+    [SerializeField]
+    private ClairvoyanceIconData _clairvoyanceIconData;
     #endregion UI Reference
 
     #region SO
@@ -150,6 +152,11 @@ public class DialogueManager : MonoBehaviour
                 Réponse[i].text = response;
                 RéponseGO[i].SetActive(true);
                 //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
+
+                if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
+                {
+                    ShowConsequenceForAnswer(i);
+                }
             }
         }
     }
@@ -203,6 +210,83 @@ public class DialogueManager : MonoBehaviour
         NextDialogueIndex = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].IDNextQuestion;
         resetRéponse();
         GoNext();
+    }
+
+    private string BuildSpriteIcon(Effet effet)
+    {
+        StringBuilder strb = new StringBuilder();
+        strb.Append("<sprite name=\"");
+        Color color = Color.white;
+        switch (effet.TypeEffet)
+        {
+            case TypeEffet.AttaqueFADebuff:
+                color = (effet.Cible == Cible.joueur) ? Color.red : Color.green;
+                strb.Append((_clairvoyanceIconData.StatForceDame!=null)? _clairvoyanceIconData.StatForceDame.name:"FA");
+                break;
+            case TypeEffet.AugmentationBrutFA:
+            case TypeEffet.AugmentationPourcentageFA:
+                color = (effet.Cible == Cible.joueur) ? Color.green : Color.red;
+                strb.Append((_clairvoyanceIconData.StatForceDame != null) ? _clairvoyanceIconData.StatForceDame.name : "FA");
+                break;
+            case TypeEffet.RadianceMax:
+                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
+                strb.Append((_clairvoyanceIconData.StatRadiance != null) ? _clairvoyanceIconData.StatRadiance.name : "Rad");
+                break;
+            case TypeEffet.Resilience:
+                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
+                strb.Append((_clairvoyanceIconData.StatResilience != null) ? _clairvoyanceIconData.StatResilience.name : "Res");
+                break;
+            case TypeEffet.Clairvoyance:
+                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
+                strb.Append((_clairvoyanceIconData.StatClairvoyance != null) ? _clairvoyanceIconData.StatClairvoyance.name : "Cla");
+                break;
+            case TypeEffet.Vitesse:
+                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
+                strb.Append((_clairvoyanceIconData.StatVitesse != null) ? _clairvoyanceIconData.StatVitesse.name : "Vit");
+                break;
+            case TypeEffet.Conviction:
+                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
+                strb.Append((_clairvoyanceIconData.StatConviction != null) ? _clairvoyanceIconData.StatConviction.name : "Con");
+                break;
+            case TypeEffet.Conscience:
+                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
+                strb.Append((_clairvoyanceIconData.StatConscience != null) ? _clairvoyanceIconData.StatConscience.name : "Consc");
+                break;
+            case TypeEffet.DegatPVMax:
+            case TypeEffet.DegatsBrut:
+            case TypeEffet.DegatsBrutConsequence:
+                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
+                strb.Append((_clairvoyanceIconData.IntentionAtk != null) ? _clairvoyanceIconData.IntentionAtk.name : "Deg");
+                break;
+            case TypeEffet.Volonte:
+            case TypeEffet.VolonteMax:
+                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
+                strb.Append((_clairvoyanceIconData.Volonte != null) ? _clairvoyanceIconData.Volonte.name : "Vol");
+                break;
+
+        }
+        strb.Append("\" color=#");
+        strb.Append(ColorUtility.ToHtmlStringRGBA(color));
+        strb.Append(">");
+        return strb.ToString();
+    }
+    private void ShowConsequenceForAnswer(int selectedAnswer)
+    {
+        Debug.Log("-----buff" + selectedAnswer);
+        foreach (var consequence in _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[selectedAnswer].conséquences)
+        {
+            foreach (var buffDebuff in consequence.Buffs)
+            {
+                foreach (Effet effet in buffDebuff.Effet)
+                {
+                    Debug.Log(effet.TypeEffet);
+                    Réponse[selectedAnswer].text += BuildSpriteIcon(effet);
+                }
+            }
+            
+        }
+        Debug.Log("-----finbuff" + selectedAnswer);
+
     }
 
     void ApplyConsequence(List<ConséquenceSO> consequence)
