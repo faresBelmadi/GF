@@ -278,13 +278,14 @@ public class DialogueManager : MonoBehaviour
             {
                 foreach (Effet effet in buffDebuff.Effet)
                 {
-                    Debug.Log(effet.TypeEffet);
                     Réponse[selectedAnswer].text += BuildSpriteIcon(effet);
                 }
             }
-            
+            foreach (var effet in consequence.Effects)
+            {
+                Réponse[selectedAnswer].text += BuildSpriteIcon(effet);
+            }
         }
-
     }
 
     void ApplyConsequence(List<ConséquenceSO> consequence)
