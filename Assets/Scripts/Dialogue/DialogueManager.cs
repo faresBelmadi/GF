@@ -272,7 +272,6 @@ public class DialogueManager : MonoBehaviour
     }
     private void ShowConsequenceForAnswer(int selectedAnswer)
     {
-        Debug.Log("-----buff" + selectedAnswer);
         foreach (var consequence in _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[selectedAnswer].conséquences)
         {
             foreach (var buffDebuff in consequence.Buffs)
@@ -285,7 +284,6 @@ public class DialogueManager : MonoBehaviour
             }
             
         }
-        Debug.Log("-----finbuff" + selectedAnswer);
 
     }
 
