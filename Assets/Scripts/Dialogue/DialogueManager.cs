@@ -217,12 +217,14 @@ public class DialogueManager : MonoBehaviour
         StringBuilder strb = new StringBuilder();
         strb.Append("<sprite name=\"");
         Color color = Color.white;
+        Debug.Log($"Effet : {effet.TypeEffet}, cible : {effet.Cible}");
         switch (effet.TypeEffet)
         {
             case TypeEffet.AttaqueFADebuff:
                 color = (effet.Cible == Cible.joueur) ? Color.red : Color.green;
                 strb.Append((_clairvoyanceIconData.StatForceDame!=null)? _clairvoyanceIconData.StatForceDame.name:"FA");
                 break;
+            case TypeEffet.AugmentationPourcentageFACible:
             case TypeEffet.AugmentationBrutFA:
             case TypeEffet.AugmentationPourcentageFA:
                 color = (effet.Cible == Cible.joueur) ? Color.green : Color.red;
@@ -262,6 +264,80 @@ public class DialogueManager : MonoBehaviour
             case TypeEffet.VolonteMax:
                 color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
                 strb.Append((_clairvoyanceIconData.Volonte != null) ? _clairvoyanceIconData.Volonte.name : "Vol");
+                break;
+            case TypeEffet.DegatsForceAme:
+            case TypeEffet.Colere:
+            case TypeEffet.AugmentFADernierDegatsSubi:
+            case TypeEffet.MultiplDegat:
+            case TypeEffet.MultiplSoin:
+            case TypeEffet.MultiplDef:
+            case TypeEffet.TensionStep:
+            case TypeEffet.TensionValue:
+            case TypeEffet.TensionGainAttaqueValue:
+            case TypeEffet.TensionGainDebuffValue:
+            case TypeEffet.TensionGainSoinValue:
+            case TypeEffet.TensionGainDotValue:
+            case TypeEffet.ConscienceMax:
+            case TypeEffet.Soin:
+            case TypeEffet.SoinFA:
+            case TypeEffet.SoinFANbEnnemi:
+            case TypeEffet.SoinRadianceMax:
+            case TypeEffet.SoinRadianceActuelle:
+            case TypeEffet.RandomAttaque:
+            case TypeEffet.AugmentationFaRadianceActuelle:
+            case TypeEffet.ConsommeTensionAugmentationFA:
+            case TypeEffet.RemoveDebuff:
+            case TypeEffet.AttaqueStackAmant:
+            case TypeEffet.GainResilienceIncrementale:
+            case TypeEffet.DamageLastPhase:
+            case TypeEffet.NoEssence:
+            case TypeEffet.DoubleBuffDebuff:
+            case TypeEffet.AugmentationRadianceMaxPourcentage:
+            case TypeEffet.BuffFaCoupRecu:
+            case TypeEffet.BuffResilienceCoupRecu:
+            case TypeEffet.ConsommeTensionDmgAllExceptCaster:
+            case TypeEffet.Provocation:
+            case TypeEffet.VolEssence:
+            case TypeEffet.RandomChanceCastSpellSelf:
+            case TypeEffet.SwapMostLeastBuffDebuff:
+            case TypeEffet.RadianceRepartition:
+            case TypeEffet.RandomAttaqueDebuff:
+            case TypeEffet.DegatsRetourSurAttaque:
+            case TypeEffet.RedirectionDegatsOnCasteur:
+            case TypeEffet.CancelPourcentageDamage:
+            case TypeEffet.RedirectionCancel:
+            case TypeEffet.DispellBuffJoueurDamage:
+            case TypeEffet.DispellDebuffCasterDamage:
+            case TypeEffet.DamageAllEvenly:
+            case TypeEffet.DamageUpTargetLowRadiance:
+            case TypeEffet.OnKillStunAll:
+            case TypeEffet.UntilDeath:
+            case TypeEffet.AugmentationFARadianceManquante:
+            case TypeEffet.DamageFaBuff:
+            case TypeEffet.DamageFaBuffCible:
+            case TypeEffet.DamageDebuffCible:
+            case TypeEffet.RemoveAllTensionProcDamage:
+            case TypeEffet.RemoveAllTensionProcBuffDebuff:
+            case TypeEffet.RemoveAllDebuffProcBuffDebuf:
+            case TypeEffet.RemoveAllDebuffSelfProcBuffDebuf:
+            case TypeEffet.RemoveAllBuffProcBuffDebuf:
+            case TypeEffet.RemoveAllDebuffProcDamage:
+            case TypeEffet.RemoveAllDebuffSelfProcDamage:
+            case TypeEffet.RemoveAllBuffProcDamage:
+            case TypeEffet.NoCapaPossible:
+            case TypeEffet.ConsommeTensionReduitFa:
+            case TypeEffet.AugmentationDegatsHitJoueur:
+            case TypeEffet.GainFaBuffCible:
+            case TypeEffet.GainFaDebuffCible:
+            case TypeEffet.Ponction:
+            case TypeEffet.PonctionForceAme:
+            case TypeEffet.DegatsFaRadianceManquanteCible:
+            case TypeEffet.DegatsFaRadianceManquanteCaster:
+            case TypeEffet.PremiereAttaqueJeanne:
+            case TypeEffet.DeuxiemeAttaqueJeanne:
+            case TypeEffet.SupportJeanne:
+            case TypeEffet.UltimeJeanne:
+                Debug.Log($"Effet non géré pour la clairvoyance : {effet.TypeEffet})");
                 break;
 
         }
