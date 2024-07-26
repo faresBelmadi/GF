@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -40,6 +41,7 @@ public class DialogueManager : MonoBehaviour
 
     internal int DialogueIndex = 0;
     private int NextDialogueIndex = 0;
+    private Dictionary<ClairvoyanceIconStatEnum, bool> _displayedClairvoyanceStats;
 
     #endregion Dialogue Property
     private void Start()
@@ -91,6 +93,8 @@ public class DialogueManager : MonoBehaviour
 
     private void GetAnswerList()
     {
+        _displayedClairvoyanceStats = new Dictionary<ClairvoyanceIconStatEnum, bool>();
+        bool[] displayed = new bool[Enum.GetValues(typeof(ClairvoyanceIconStatEnum)).Length];
         TextDisplayer textDisplayer = MainText.GetComponent<TextDisplayer>();
         if (textDisplayer != null)
         {
@@ -155,7 +159,7 @@ public class DialogueManager : MonoBehaviour
 
                 if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
                 {
-                    ShowConsequenceForAnswer(i);
+                    ShowConsequenceForAnswer(i, ref displayed);
                 }
             }
         }
@@ -212,58 +216,210 @@ public class DialogueManager : MonoBehaviour
         GoNext();
     }
 
-    private string BuildSpriteIcon(Effet effet)
+    private string BuildSpriteIcon(Effet effet, ref bool[] displayed)
     {
         StringBuilder strb = new StringBuilder();
         strb.Append("<sprite name=\"");
         Color color = Color.white;
         Debug.Log($"Effet : {effet.TypeEffet}, cible : {effet.Cible}");
+      
         switch (effet.TypeEffet)
         {
             case TypeEffet.AttaqueFADebuff:
+                
                 color = (effet.Cible == Cible.joueur) ? Color.red : Color.green;
-                strb.Append((_clairvoyanceIconData.StatForceDame!=null)? _clairvoyanceIconData.StatForceDame.name:"FA");
+                if (effet.Cible == Cible.joueur)
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ForceDameDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ForceDameDown] = true;
+                        strb.Append((_clairvoyanceIconData.StatForceDameDown != null) ? _clairvoyanceIconData.StatForceDameDown.name : "FA");
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ForceDameUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ForceDameUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatForceDameUp != null) ? _clairvoyanceIconData.StatForceDameUp.name : "FA");
+                    }
+                    else return "";
+                }
                 break;
             case TypeEffet.AugmentationPourcentageFACible:
             case TypeEffet.AugmentationBrutFA:
             case TypeEffet.AugmentationPourcentageFA:
                 color = (effet.Cible == Cible.joueur) ? Color.green : Color.red;
-                strb.Append((_clairvoyanceIconData.StatForceDame != null) ? _clairvoyanceIconData.StatForceDame.name : "FA");
+                if (effet.Cible != Cible.joueur)
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ForceDameDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ForceDameDown] = true;
+                        strb.Append((_clairvoyanceIconData.StatForceDameDown != null) ? _clairvoyanceIconData.StatForceDameDown.name : "FA");
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ForceDameUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ForceDameUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatForceDameUp != null) ? _clairvoyanceIconData.StatForceDameUp.name : "FA");
+                    }
+                    else return "";
+                }
                 break;
             case TypeEffet.RadianceMax:
                 color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                strb.Append((_clairvoyanceIconData.StatRadiance != null) ? _clairvoyanceIconData.StatRadiance.name : "Rad");
+                if (effet.ValeurBrut < 0)
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.RadianceDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.RadianceDown] = true;
+                        strb.Append((_clairvoyanceIconData.StatRadianceDown != null) ? _clairvoyanceIconData.StatRadianceDown.name : "Rad");
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.RadianceUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.RadianceUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatRadianceUp != null) ? _clairvoyanceIconData.StatRadianceUp.name : "Rad");
+                    }
+                    else return "";
+                }
                 break;
             case TypeEffet.Resilience:
                 color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                strb.Append((_clairvoyanceIconData.StatResilience != null) ? _clairvoyanceIconData.StatResilience.name : "Res");
+                if (effet.ValeurBrut < 0)
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ResilienceDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ResilienceDown] = true;
+                        strb.Append((_clairvoyanceIconData.StatResilienceDown != null) ? _clairvoyanceIconData.StatResilienceDown.name : "Res");
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ResilienceUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ResilienceUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatResilienceUp != null) ? _clairvoyanceIconData.StatResilienceUp.name : "Res");
+                    }
+                    else return "";
+                }
                 break;
             case TypeEffet.Clairvoyance:
                 color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                strb.Append((_clairvoyanceIconData.StatClairvoyance != null) ? _clairvoyanceIconData.StatClairvoyance.name : "Cla");
+                if (effet.ValeurBrut < 0)
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ClairvoyaneDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ClairvoyaneDown] = true;
+                        strb.Append((_clairvoyanceIconData.StatClairvoyanceDown != null) ? _clairvoyanceIconData.StatClairvoyanceDown.name : "Cla");
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ClairvoyaneUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ClairvoyaneUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatClairvoyanceUp != null) ? _clairvoyanceIconData.StatClairvoyanceUp.name : "Cla");
+                    }
+                    else return "";
+                }
                 break;
             case TypeEffet.Vitesse:
                 color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                strb.Append((_clairvoyanceIconData.StatVitesse != null) ? _clairvoyanceIconData.StatVitesse.name : "Vit");
+                if (effet.ValeurBrut < 0)
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.VitesseDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.VitesseDown] = true;
+                        strb.Append((_clairvoyanceIconData.StatVitesseDown != null) ? _clairvoyanceIconData.StatVitesseDown.name : "Vit");
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.VitesseUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.VitesseUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatVitesseUp != null) ? _clairvoyanceIconData.StatVitesseUp.name : "Vit");
+                    }
+                    else return "";
+                }
                 break;
             case TypeEffet.Conviction:
                 color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                strb.Append((_clairvoyanceIconData.StatConviction != null) ? _clairvoyanceIconData.StatConviction.name : "Con");
+                if (effet.ValeurBrut < 0)
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ConvictionDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ConvictionDown] = true;
+                        strb.Append((_clairvoyanceIconData.StatConvictionDown != null) ? _clairvoyanceIconData.StatConvictionDown.name : "Con");
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ConvictionUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ConvictionUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatConvictionUp != null) ? _clairvoyanceIconData.StatConvictionUp.name : "Con");
+                    }
+                    else return "";
+                }
                 break;
             case TypeEffet.Conscience:
                 color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                strb.Append((_clairvoyanceIconData.StatConscience != null) ? _clairvoyanceIconData.StatConscience.name : "Consc");
+                if (effet.ValeurBrut < 0)
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ConscienceDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ConscienceDown] = true;
+                        strb.Append((_clairvoyanceIconData.StatConscienceDown != null) ? _clairvoyanceIconData.StatConscienceDown.name : "con");
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ConscienceUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ConscienceUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatConscienceUp != null) ? _clairvoyanceIconData.StatConscienceUp.name : "con");
+                    }
+                    else return "";
+                }
                 break;
             case TypeEffet.DegatPVMax:
             case TypeEffet.DegatsBrut:
             case TypeEffet.DegatsBrutConsequence:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                strb.Append((_clairvoyanceIconData.IntentionAtk != null) ? _clairvoyanceIconData.IntentionAtk.name : "Deg");
-                break;
             case TypeEffet.Volonte:
             case TypeEffet.VolonteMax:
                 color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                strb.Append((_clairvoyanceIconData.Volonte != null) ? _clairvoyanceIconData.Volonte.name : "Vol");
+                if (effet.ValeurBrut < 0)
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.VolonteDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.VolonteDown] = true;
+                        strb.Append((_clairvoyanceIconData.StatVolonteDown != null) ? _clairvoyanceIconData.StatVolonteDown.name : "Vol");
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.VolonteUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.VolonteUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatVolonteUp != null) ? _clairvoyanceIconData.StatVolonteUp.name : "Vol");
+                    }
+                    else return "";
+                }
                 break;
             case TypeEffet.DegatsForceAme:
             case TypeEffet.Colere:
@@ -346,7 +502,7 @@ public class DialogueManager : MonoBehaviour
         strb.Append(">");
         return strb.ToString();
     }
-    private void ShowConsequenceForAnswer(int selectedAnswer)
+    private void ShowConsequenceForAnswer(int selectedAnswer, ref bool[] displayed)
     {
         foreach (var consequence in _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[selectedAnswer].conséquences)
         {
@@ -354,12 +510,12 @@ public class DialogueManager : MonoBehaviour
             {
                 foreach (Effet effet in buffDebuff.Effet)
                 {
-                    Réponse[selectedAnswer].text += BuildSpriteIcon(effet);
+                    Réponse[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
                 }
             }
             foreach (var effet in consequence.Effects)
             {
-                Réponse[selectedAnswer].text += BuildSpriteIcon(effet);
+                Réponse[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
             }
         }
     }
