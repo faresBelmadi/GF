@@ -45,6 +45,8 @@ public class BattleManager : MonoBehaviour
     public bool ConsumedEssence;
     public int EssenceGained;
 
+    [SerializeField] private Material ennemiUIMaterial;
+
     #region Loot
 
     public void Loot()
@@ -144,7 +146,13 @@ public class BattleManager : MonoBehaviour
         {
             var t = EnemyScripts.First(c => c.combatID == key);
             if (t.CanHaveAnotherTurn())
+            {
+                t.GetComponent<UIEnnemi>().imageCadreFG.material.SetInt("_isEnraged", 1);
                 return true;
+            }else
+            {
+                t.GetComponent<UIEnnemi>().imageCadreFG.material.SetInt("_isEnraged", 0);
+            }
         }
 
         return false;
@@ -239,6 +247,9 @@ public class BattleManager : MonoBehaviour
                 tempCombatScript.ChooseNextAction();
                 idIndexer++;
             }
+
+            //AddingMaterial
+            temp.GetComponent<UIEnnemi>().imageCadreFG.material = new Material(ennemiUIMaterial);
         }
     }
 

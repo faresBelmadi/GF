@@ -10,6 +10,7 @@ public class UIEnnemi : MonoBehaviour
 
     [SerializeField] private ProgressBarManager HPBarManager;
     [SerializeField] private ProgressBarManager TensionBarManager;
+    [SerializeField] public Image imageCadreFG;
 
     public TextMeshProUGUI HpText;
     public TextMeshProUGUI NameText;
