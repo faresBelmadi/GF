@@ -147,11 +147,14 @@ public class BattleManager : MonoBehaviour
             var t = EnemyScripts.First(c => c.combatID == key);
             if (t.CanHaveAnotherTurn())
             {
-                t.GetComponent<UIEnnemi>().imageCadreFG.material.SetInt("_isEnraged", 1);
+                t.GetComponent<UIEnnemi>().imageCadreFGs[0].material.SetInt("_isEnraged", 1);
+                t.GetComponent<UIEnnemi>().imageCadreFGs[1].material.SetInt("_isEnraged", 1);
+                t.GetComponent<UIEnnemi>().inflateUISystem.TriggerInflation();
                 return true;
             }else
             {
-                t.GetComponent<UIEnnemi>().imageCadreFG.material.SetInt("_isEnraged", 0);
+                t.GetComponent<UIEnnemi>().imageCadreFGs[0].material.SetInt("_isEnraged", 0);
+                t.GetComponent<UIEnnemi>().imageCadreFGs[1].material.SetInt("_isEnraged", 0);
             }
         }
 
@@ -249,7 +252,8 @@ public class BattleManager : MonoBehaviour
             }
 
             //AddingMaterial
-            temp.GetComponent<UIEnnemi>().imageCadreFG.material = new Material(ennemiUIMaterial);
+            temp.GetComponent<UIEnnemi>().imageCadreFGs[0].material = new Material(ennemiUIMaterial);
+            temp.GetComponent<UIEnnemi>().imageCadreFGs[1].material = new Material(ennemiUIMaterial);
         }
     }
 
