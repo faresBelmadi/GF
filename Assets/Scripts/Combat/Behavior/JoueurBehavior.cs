@@ -15,7 +15,7 @@ public class JoueurBehavior : CombatBehavior
     [SerializeField] private GameObject SoinPrefab;
     [SerializeField] private GameObject SpellPrefab;
     [SerializeField] private GameObject SpellsSpawn;
-    [SerializeField] private Button EndTurnButton;
+    [SerializeField] public Button EndTurnButton;
     [SerializeField] private List<BuffDebuff> tempAddList = new List<BuffDebuff>();
 
     [SerializeField] private ProgressBarManager hPBarManager;

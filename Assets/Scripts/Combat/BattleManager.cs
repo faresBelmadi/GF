@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 [System.Serializable]
 public class BattleManager : MonoBehaviour
@@ -139,7 +141,13 @@ public class BattleManager : MonoBehaviour
         {
             if (player.CanHaveAnotherTurn())
             {
+                player.EndTurnButton.gameObject.GetComponent<UnityEngine.UI.Image>().material.SetInt("_isEnraged", 1);
                 return true;
+            }
+            else
+            {
+                player.EndTurnButton.GetComponent<UnityEngine.UI.Image>().material.SetInt("_isEnraged", 0);
+                return false;
             }
         }
         else
