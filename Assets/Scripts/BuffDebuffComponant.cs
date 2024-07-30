@@ -17,7 +17,7 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     public string buffName;
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("enter");
+        //Debug.Log("enter");
         popUpPanel.SetActive(true);
         if (!IsFullyVisibleFrom(popUpPanel.GetComponent<RectTransform>()))
         {
@@ -49,7 +49,7 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("exit");
+        //Debug.Log("exit");
         popUpPanel.SetActive(false);
     }
 

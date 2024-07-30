@@ -168,6 +168,25 @@ public class BattleManager : MonoBehaviour
 
         return false;
     }
+    private void UpdateEnrageUI(int turnId)
+    {
+        if (turnId == idPlayer)
+        {
+            if (!player.CanHaveAnotherTurn())
+            {
+                player.EndTurnButton.GetComponent<UnityEngine.UI.Image>().material.SetInt("_isEnraged", 0); 
+            }
+        }
+        else
+        {
+            EnnemyBehavior behaviour = EnemyScripts.First(c => c.combatID == turnId);
+            if (!behaviour.CanHaveAnotherTurn())
+            {
+                behaviour.GetComponent<UIEnnemi>().imageCadreFGs[0].material.SetInt("_isEnraged", 0);
+                behaviour.GetComponent<UIEnnemi>().imageCadreFGs[1].material.SetInt("_isEnraged", 0);
+            }
+        }
+    }
 
     #endregion calcul tension & calme
 
@@ -358,6 +377,7 @@ public class BattleManager : MonoBehaviour
             playing.StartTurn();
             battleUI.textPLayingTurn.text = playing.UICombat.NameText.text;
         }
+        UpdateEnrageUI(key);
     }
 
     void EndTurn()

@@ -39,13 +39,13 @@ public class PulseBloom_System : MonoBehaviour
             startActive = true;
             return;
         }
-        Debug.Log($"PulseBloomTriggered on {gameObject.name}");
+        //Debug.Log($"PulseBloomTriggered on {gameObject.name}");
         if (bloomRoutine != null)
         {
             if (doOverride) StopCoroutine(bloomRoutine);
             else return;
         }
-        Debug.Log($"StartRoutine");
+        //Debug.Log($"StartRoutine");
         bloomRoutine = StartCoroutine(BloomingRoutine());
     }
     private IEnumerator BloomingRoutine()
