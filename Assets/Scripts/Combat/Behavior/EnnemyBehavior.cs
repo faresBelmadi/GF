@@ -306,14 +306,15 @@ public class EnnemyBehavior : CombatBehavior
     {
         //A Mettre une fois les combats terminer
         LaunchAnimBool();
-        DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
-        _refBattleMan.LaunchSpellEnnemi(nextAction);
+        //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
+        //_refBattleMan.LaunchSpellEnnemi(nextAction);
     }
 
     public void EndAttackAnimation()
     {
-        Debug.Log("commencement des degats");
-        GameManager.instance.BattleMan.LaunchSpellEnnemi(nextAction);
+        //Debug.Log("commencement des degats");
+        DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
+        _refBattleMan.LaunchSpellEnnemi(nextAction);
     }
 
     public void CreateSpellList()
@@ -565,6 +566,7 @@ public class EnnemyBehavior : CombatBehavior
             default:
                 break;
         }
+        EndAttackAnimation();
     }
 
     void LaunchAnimBool()
