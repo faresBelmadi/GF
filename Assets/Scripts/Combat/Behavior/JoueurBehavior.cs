@@ -24,6 +24,7 @@ public class JoueurBehavior : CombatBehavior
 
     [SerializeField] private Slider VolonteSlider;
     [SerializeField] private Image VolonteBarBack;
+    [SerializeField] private HighlightVolonte _highlightVolonteComponant;
 
     [SerializeField] private Color green = new Color(0.58f, 0.98f, 0.65f);
     [SerializeField] private Color red = new Color(0.996f, 0.47f, 0.40f);
@@ -49,6 +50,7 @@ public class JoueurBehavior : CombatBehavior
     [SerializeField] private BattleManager _refBattleMan;
     [SerializeField] private bool IsTurn;
 
+    public Spell SelectSpell => SelectedSpell;
     #region Divers start & fin
 
     private int currentHp = -1;
@@ -75,6 +77,16 @@ public class JoueurBehavior : CombatBehavior
             temp.GetComponent<SpellCombat>().Action = SpelleToUse;
             temp.GetComponent<SpellCombat>().Act = DoAction;
             temp.GetComponent<SpellCombat>().StartUp();
+            int volonteCost = 0;
+            foreach(var cost in temp.GetComponent<SpellCombat>().Action.Costs)
+            {
+                if (cost.typeCost == TypeCostSpell.volonte)
+                {
+                    volonteCost = cost.Value;
+                    break;
+                }
+            }
+            temp.GetComponent<SpellCombat>().button.onClick.AddListener(delegate { _highlightVolonteComponant.EnableHighlighting(volonteCost); }) ;
 
             Spells.Add(temp);
         }
@@ -182,6 +194,8 @@ public class JoueurBehavior : CombatBehavior
             StatResilienceBg.color = red;
         else
             StatResilienceBg.color = Color.white;
+
+        _highlightVolonteComponant.DisableHighlighting();
     }
 
     public void StartPhase()
