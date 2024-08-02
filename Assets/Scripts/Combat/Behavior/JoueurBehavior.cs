@@ -24,7 +24,7 @@ public class JoueurBehavior : CombatBehavior
 
     [SerializeField] private Slider VolonteSlider;
     [SerializeField] private Image VolonteBarBack;
-    [SerializeField] private HighlightVolonte _highlightVolonteComponant;
+    [SerializeField] private HighlightVolonte _highlightComponant;
 
     [SerializeField] private Color green = new Color(0.58f, 0.98f, 0.65f);
     [SerializeField] private Color red = new Color(0.996f, 0.47f, 0.40f);
@@ -93,8 +93,8 @@ public class JoueurBehavior : CombatBehavior
                     conscCost = cost.Value;
                 }
             }
-            temp.GetComponent<SpellCombat>().button.onClick.AddListener(delegate { _highlightVolonteComponant.SelectCostForHighlighing(volonteCost, radCost, conscCost); }) ;
-            temp.GetComponent<HighlightTriggerEvent>().SetActionsToTrigger(_highlightVolonteComponant.EnableHighlighting, _highlightVolonteComponant.DisableHighlighting, volonteCost, radCost, conscCost);
+            temp.GetComponent<SpellCombat>().button.onClick.AddListener(delegate { _highlightComponant.SelectCostForHighlighing(volonteCost, radCost, conscCost); }) ;
+            temp.GetComponent<HighlightTriggerEvent>().SetActionsToTrigger(_highlightComponant.EnableHighlighting, _highlightComponant.DisableHighlighting, volonteCost, radCost, conscCost);
            // temp.GetComponent<SpellCombat>().button.OnPointerEnter();
             Spells.Add(temp);
         }
@@ -203,7 +203,7 @@ public class JoueurBehavior : CombatBehavior
         else
             StatResilienceBg.color = Color.white;
 
-        _highlightVolonteComponant.DisableHighlighting();
+        _highlightComponant.DisableHighlighting();
     }
 
     public void StartPhase()
@@ -396,7 +396,7 @@ public class JoueurBehavior : CombatBehavior
         }
 
         EndTurnButton.interactable = false;
-        _highlightVolonteComponant.DisableHighlightingBetweenTarget();
+        _highlightComponant.DisableHighlightingBetweenTarget();
     }
 
     public void ActivateSpells()
