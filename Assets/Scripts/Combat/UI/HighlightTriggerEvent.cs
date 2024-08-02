@@ -22,12 +22,18 @@ public class HighlightTriggerEvent : MonoBehaviour, IPointerEnterHandler, IPoint
 }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _actionToTriggerEnter(_volCost, _radCost, _conscCost);
+        if (_actionToTriggerEnter != null)
+        {
+            _actionToTriggerEnter(_volCost, _radCost, _conscCost);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        _actionToTriggerExit();
+        if (_actionToTriggerExit != null)
+        {
+            _actionToTriggerExit();
+        }
     }
 
    
