@@ -86,8 +86,9 @@ public class JoueurBehavior : CombatBehavior
                     break;
                 }
             }
-            temp.GetComponent<SpellCombat>().button.onClick.AddListener(delegate { _highlightVolonteComponant.EnableHighlighting(volonteCost); }) ;
-
+            //temp.GetComponent<SpellCombat>().button.onClick.AddListener(delegate { _highlightVolonteComponant.EnableHighlighting(volonteCost); }) ;
+            temp.GetComponent<HighlightTriggerEvent>().SetActionsToTrigger(_highlightVolonteComponant.EnableHighlighting, _highlightVolonteComponant.DisableHighlighting, volonteCost);
+           // temp.GetComponent<SpellCombat>().button.OnPointerEnter();
             Spells.Add(temp);
         }
 
