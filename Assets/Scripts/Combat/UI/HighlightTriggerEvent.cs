@@ -6,19 +6,23 @@ using UnityEngine.EventSystems;
 
 public class HighlightTriggerEvent : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    private Action<int> _actionToTriggerEnter;
+    private Action<int, int, int> _actionToTriggerEnter;
     private Action _actionToTriggerExit;
-    private int _cost;
+    private int _volCost;
+    private int _conscCost;
+    private int _radCost;
 
-    public void SetActionsToTrigger(Action<int> actionToTriggerEnter, Action actionToTriggerExit, int cost)
+    public void SetActionsToTrigger(Action<int, int, int> actionToTriggerEnter, Action actionToTriggerExit, int volCost, int radCost, int conscCost)
     {
         _actionToTriggerEnter = actionToTriggerEnter;
         _actionToTriggerExit = actionToTriggerExit;
-        _cost = cost;
-    }
+        _volCost = volCost;
+        _conscCost = conscCost;
+        _radCost = radCost;
+}
     public void OnPointerEnter(PointerEventData eventData)
     {
-        _actionToTriggerEnter(_cost);
+        _actionToTriggerEnter(_volCost, _radCost, _conscCost);
     }
 
     public void OnPointerExit(PointerEventData eventData)

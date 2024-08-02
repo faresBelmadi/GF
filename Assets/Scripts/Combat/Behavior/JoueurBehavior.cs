@@ -77,17 +77,24 @@ public class JoueurBehavior : CombatBehavior
             temp.GetComponent<SpellCombat>().Action = SpelleToUse;
             temp.GetComponent<SpellCombat>().Act = DoAction;
             temp.GetComponent<SpellCombat>().StartUp();
-            int volonteCost = 0;
+            int volonteCost = 0, conscCost = 0, radCost = 0;
             foreach(var cost in temp.GetComponent<SpellCombat>().Action.Costs)
             {
                 if (cost.typeCost == TypeCostSpell.volonte)
                 {
                     volonteCost = cost.Value;
-                    break;
+                }
+                else if (cost.typeCost == TypeCostSpell.radiance)
+                {
+                    radCost = cost.Value;
+                }
+                else if (cost.typeCost == TypeCostSpell.conscience)
+                {
+                    conscCost = cost.Value;
                 }
             }
-            temp.GetComponent<SpellCombat>().button.onClick.AddListener(delegate { _highlightVolonteComponant.SelectCostForHighlighing(volonteCost); }) ;
-            temp.GetComponent<HighlightTriggerEvent>().SetActionsToTrigger(_highlightVolonteComponant.EnableHighlighting, _highlightVolonteComponant.DisableHighlighting, volonteCost);
+            temp.GetComponent<SpellCombat>().button.onClick.AddListener(delegate { _highlightVolonteComponant.SelectCostForHighlighing(volonteCost, radCost, conscCost); }) ;
+            temp.GetComponent<HighlightTriggerEvent>().SetActionsToTrigger(_highlightVolonteComponant.EnableHighlighting, _highlightVolonteComponant.DisableHighlighting, volonteCost, radCost, conscCost);
            // temp.GetComponent<SpellCombat>().button.OnPointerEnter();
             Spells.Add(temp);
         }
@@ -389,6 +396,7 @@ public class JoueurBehavior : CombatBehavior
         }
 
         EndTurnButton.interactable = false;
+        _highlightVolonteComponant.DisableHighlightingBetweenTarget();
     }
 
     public void ActivateSpells()

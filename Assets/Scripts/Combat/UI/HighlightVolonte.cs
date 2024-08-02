@@ -14,31 +14,92 @@ public class HighlightVolonte : MonoBehaviour
     [SerializeField]
     private Slider _highlightSlider;
 
-    private int _selectedCost = 0;
+    [SerializeField]
+    private Image _conscienceImage;
+    [SerializeField]
+    private Image _highlightConscienceImage;
 
-    public void EnableHighlighting(int cost)
+    private int _selectVolonteCost = 0;
+    private int _selectConscCost = 0;
+    private int _selectRadCost = 0;
+
+    public void EnableHighlighting(int volonteCost, int radCost, int conscCost)
     {
-        _highlightGameObject.SetActive(true);
-        _highlightSlider.value = cost;
-        if (_bloomComponent.loop == true) _bloomComponent.OnToggleLoop();
-        _bloomComponent.TriggerBloom(true);
+        
+        _conscienceImage.enabled = true;
+        _highlightConscienceImage.gameObject.SetActive(false);
+
+        if (volonteCost > 0)
+        {
+            _highlightGameObject.SetActive(true);
+            _highlightSlider.value = volonteCost;
+            if (_bloomComponent.loop == true) _bloomComponent.OnToggleLoop();
+            _bloomComponent.TriggerBloom(true);
+        }
+
+        if (radCost > 0)
+        {
+            // to do
+        }
+
+        if (conscCost > 0)
+        {
+        _conscienceImage.enabled = false;
+        _highlightConscienceImage.gameObject.SetActive(true);
+
+        _highlightConscienceImage.fillAmount = _conscienceImage.fillAmount - (conscCost / 10f);
+        }
+
     }
     public void DisableHighlighting()
     {
-        _highlightSlider.value = _selectedCost;
-        if (_selectedCost > 0)
+        _conscienceImage.enabled = true;
+        _highlightConscienceImage.gameObject.SetActive(false);
+
+        _highlightSlider.value = _selectVolonteCost;
+       
+        if (_selectConscCost == 0 && _selectRadCost == 0 && _selectVolonteCost == 0)
+        {
+
+            _highlightGameObject.SetActive(false);
+            return;
+        }
+
+        if (_selectVolonteCost > 0)
         {
             if (_bloomComponent.loop == false) _bloomComponent.OnToggleLoop();
             _bloomComponent.TriggerBloom(true);
         }
-        else
+        
+        if (_selectConscCost > 0)
         {
-            _highlightGameObject.SetActive(false);
+            _conscienceImage.enabled = false;
+            _highlightConscienceImage.gameObject.SetActive(true);
+            _highlightConscienceImage.fillAmount = _conscienceImage.fillAmount - (_selectConscCost / 10f);
         }
     }
-    public void SelectCostForHighlighing(int cost)
+    public void DisableHighlightingBetweenTarget()
     {
-        _selectedCost = cost;
+        _highlightSlider.value = 0;
+        _conscienceImage.enabled = true;
+        _highlightConscienceImage.gameObject.SetActive(false);
+
+        _selectVolonteCost = 0;
+        _selectConscCost = 0;
+        _selectRadCost = 0;
+
+    }
+    public void SelectCostForHighlighing(int volonteCost, int radCost, int conscCost)
+    {
+        _selectVolonteCost = volonteCost;
+
+
+        //if selecCOns > 0
+        _selectConscCost = conscCost;
+        _conscienceImage.enabled = false;
+        _highlightConscienceImage.gameObject.SetActive(true);
+
+        
         if (_bloomComponent.loop == false) _bloomComponent.OnToggleLoop();
         _bloomComponent.TriggerBloom(true);
     }
