@@ -24,6 +24,7 @@ public class JoueurBehavior : CombatBehavior
 
     [SerializeField] private Slider VolonteSlider;
     [SerializeField] private Image VolonteBarBack;
+    [SerializeField] private HighlightCost _highlightComponant;
 
     [SerializeField] private Color green = new Color(0.58f, 0.98f, 0.65f);
     [SerializeField] private Color red = new Color(0.996f, 0.47f, 0.40f);
@@ -51,6 +52,7 @@ public class JoueurBehavior : CombatBehavior
     [SerializeField] private BattleManager _refBattleMan;
     [SerializeField] private bool IsTurn;
 
+    public Spell SelectSpell => SelectedSpell;
     #region Divers start & fin
 
     private int currentHp = -1;
@@ -77,7 +79,26 @@ public class JoueurBehavior : CombatBehavior
             temp.GetComponent<SpellCombat>().Action = SpelleToUse;
             temp.GetComponent<SpellCombat>().Act = DoAction;
             temp.GetComponent<SpellCombat>().StartUp();
-
+            int volonteCost = 0, conscCost = 0, radCost = 0;
+            foreach(var cost in temp.GetComponent<SpellCombat>().Action.Costs)
+            {
+                if (cost.typeCost == TypeCostSpell.volonte)
+                {
+                    volonteCost = cost.Value;
+                }
+                else if (cost.typeCost == TypeCostSpell.radiance)
+                {
+                    radCost = cost.Value;
+                }
+                else if (cost.typeCost == TypeCostSpell.conscience)
+                {
+                    conscCost = cost.Value;
+                }
+            }
+           
+            temp.GetComponent<SpellCombat>().button.onClick.AddListener(delegate { _highlightComponant.SelectCostForHighlighing(volonteCost, radCost, conscCost); });
+            temp.GetComponent<HighlightTriggerEvent>().SetActionsToTrigger(_highlightComponant.EnableHighlighting, _highlightComponant.DisableHighlighting, volonteCost, radCost, conscCost);
+           
             Spells.Add(temp);
         }
 
@@ -187,6 +208,8 @@ public class JoueurBehavior : CombatBehavior
             StatResilienceBg.color = red;
         else
             StatResilienceBg.color = Color.white;
+
+        _highlightComponant.DisableHighlighting();
     }
 
     public void StartPhase()
@@ -379,6 +402,7 @@ public class JoueurBehavior : CombatBehavior
         }
 
         EndTurnButton.interactable = false;
+        _highlightComponant.DisableHighlightingBetweenTarget();
     }
 
     public void ActivateSpells()

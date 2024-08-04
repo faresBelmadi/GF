@@ -15,4 +15,6 @@ public struct RéponseSO
     public string IdStringReponse;
     //possibilité de devoir changer liste Conséquences et Icon en un seul SO, a voir en fonction des GD
     public List<ConséquenceSO> conséquences;
+    //Clairvoyance nécéssaire pour voir la conséquence sur les stats lié a chacune des réponses
+    public int SeuilClairvoyanceStat;
 }
