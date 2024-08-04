@@ -29,6 +29,7 @@ public class JoueurBehavior : CombatBehavior
     [SerializeField] private Color red = new Color(0.996f, 0.47f, 0.40f);
     [SerializeField] private TextMeshProUGUI TensionText;
     [SerializeField] private TextMeshProUGUI HpText;
+    [SerializeField] private TextMeshProUGUI HpTextReduced;
     [SerializeField] private TextMeshProUGUI HpToolTypeText;
     [SerializeField] private TextMeshProUGUI VolontéText;
     [SerializeField] private TextMeshProUGUI ConscienceText;
@@ -135,7 +136,8 @@ public class JoueurBehavior : CombatBehavior
         VolonteSlider.maxValue = Stat.VolonterMax;
 
 
-        HpText.text = Stat.Radiance.ToString();// + "/" + Stat.RadianceMax;
+        HpText.text = $"{Stat.Radiance.ToString()}/{Stat.RadianceMax}";
+        HpTextReduced.text = Stat.Radiance.ToString();
         HpToolTypeText.text = $"Radiance : vos points de vie\nMax: {Stat.RadianceMax.ToString()}"; 
         ConscienceText.text = Stat.Conscience + "/" + Stat.ConscienceMax;
 
