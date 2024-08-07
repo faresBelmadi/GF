@@ -12,6 +12,10 @@ public class CombatBehavior : MonoBehaviour
     public GameObject BuffPrefab;
     public Transform BuffContainer;
     public Transform DebuffContainer;
+    [SerializeField]
+    private Color _debuffTextColor = Color.red;
+    [SerializeField]
+    private Color _buffTextColor = Color.green;
 
     public Action EndTurnBM;
 
@@ -55,6 +59,7 @@ public class CombatBehavior : MonoBehaviour
             buffComp.buffCntLabel.text = "1";
             //buffComp.buffTimeLabel.text = toAdd.Temps.ToString();
             buffComp.buffDescriptionLabel.text = buffDebuffDescription;
+            buffComp.buffDescriptionLabel.color = toAdd.IsDebuff ? _debuffTextColor : _buffTextColor;
             buffComp.buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
             ListBuffDebuffGO.Add(buffObject);
         }
@@ -129,12 +134,12 @@ public class CombatBehavior : MonoBehaviour
     
     public void DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte Timer, CharacterStat toChange)
     {
-        Debug.Log($"Decompte Buffs: {Timer.ToString()}");
+        //Debug.Log($"Decompte Buffs: {Timer.ToString()}");
         foreach (var item in BuffDebuff)
         {
             if (item.Decompte == Timer) 
             {
-                Debug.Log($"Decompte {item.Nom} from {gameObject.name}");
+                //Debug.Log($"Decompte {item.Nom} from {gameObject.name}");
 
                 item.Temps--;
                 /*

@@ -10,6 +10,8 @@ public class UIEnnemi : MonoBehaviour
 
     [SerializeField] private ProgressBarManager HPBarManager;
     [SerializeField] private ProgressBarManager TensionBarManager;
+    [SerializeField] public EnflateSystem inflateUISystem;
+    [SerializeField] public Image[] imageCadreFGs;
 
     public TextMeshProUGUI HpText;
     public TextMeshProUGUI NameText;
@@ -30,7 +32,8 @@ public class UIEnnemi : MonoBehaviour
     {
         if (!HPBarManager) return;
         HPBarManager.UpdatePBar(newHp, newMaxHp);
-        HpText.text = newHp + "/" + newMaxHp;
+        HPBarManager.ToggleBloomPulses(false);
+        HpText.text = newHp.ToString();// + "/" + newMaxHp;
     }
 
     public void UpdateTension(int newTension, int nbPalier)

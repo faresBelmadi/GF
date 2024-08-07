@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 [System.Serializable]
 public class BattleManager : MonoBehaviour
@@ -44,6 +46,8 @@ public class BattleManager : MonoBehaviour
     public bool IsLoot;
     public bool ConsumedEssence;
     public int EssenceGained;
+
+    [SerializeField] private Material ennemiUIMaterial;
 
     #region Loot
 
@@ -137,17 +141,51 @@ public class BattleManager : MonoBehaviour
         {
             if (player.CanHaveAnotherTurn())
             {
+                player.EndTurnButton.gameObject.GetComponent<UnityEngine.UI.Image>().material.SetInt("_isEnraged", 1);
                 return true;
+            }
+            else
+            {
+                player.EndTurnButton.GetComponent<UnityEngine.UI.Image>().material.SetInt("_isEnraged", 0);
+                return false;
             }
         }
         else
         {
             var t = EnemyScripts.First(c => c.combatID == key);
             if (t.CanHaveAnotherTurn())
+            {
+                t.GetComponent<UIEnnemi>().imageCadreFGs[0].material.SetInt("_isEnraged", 1);
+                t.GetComponent<UIEnnemi>().imageCadreFGs[1].material.SetInt("_isEnraged", 1);
+                t.GetComponent<UIEnnemi>().inflateUISystem.TriggerInflation();
                 return true;
+            }else
+            {
+                t.GetComponent<UIEnnemi>().imageCadreFGs[0].material.SetInt("_isEnraged", 0);
+                t.GetComponent<UIEnnemi>().imageCadreFGs[1].material.SetInt("_isEnraged", 0);
+            }
         }
 
         return false;
+    }
+    private void UpdateEnrageUI(int turnId)
+    {
+        if (turnId == idPlayer)
+        {
+            if (!player.CanHaveAnotherTurn())
+            {
+                player.EndTurnButton.GetComponent<UnityEngine.UI.Image>().material.SetInt("_isEnraged", 0); 
+            }
+        }
+        else
+        {
+            EnnemyBehavior behaviour = EnemyScripts.First(c => c.combatID == turnId);
+            if (!behaviour.CanHaveAnotherTurn())
+            {
+                behaviour.GetComponent<UIEnnemi>().imageCadreFGs[0].material.SetInt("_isEnraged", 0);
+                behaviour.GetComponent<UIEnnemi>().imageCadreFGs[1].material.SetInt("_isEnraged", 0);
+            }
+        }
     }
 
     #endregion calcul tension & calme
@@ -239,6 +277,10 @@ public class BattleManager : MonoBehaviour
                 tempCombatScript.ChooseNextAction();
                 idIndexer++;
             }
+
+            //AddingMaterial
+            temp.GetComponent<UIEnnemi>().imageCadreFGs[0].material = new Material(ennemiUIMaterial);
+            temp.GetComponent<UIEnnemi>().imageCadreFGs[1].material = new Material(ennemiUIMaterial);
         }
     }
 
@@ -335,6 +377,7 @@ public class BattleManager : MonoBehaviour
             playing.StartTurn();
             battleUI.textPLayingTurn.text = playing.UICombat.NameText.text;
         }
+        UpdateEnrageUI(key);
     }
 
     void EndTurn()

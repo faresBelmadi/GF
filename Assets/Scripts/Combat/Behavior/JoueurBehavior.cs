@@ -15,7 +15,7 @@ public class JoueurBehavior : CombatBehavior
     [SerializeField] private GameObject SoinPrefab;
     [SerializeField] private GameObject SpellPrefab;
     [SerializeField] private GameObject SpellsSpawn;
-    [SerializeField] private Button EndTurnButton;
+    [SerializeField] public Button EndTurnButton;
     [SerializeField] private List<BuffDebuff> tempAddList = new List<BuffDebuff>();
 
     [SerializeField] private ProgressBarManager hPBarManager;
@@ -24,11 +24,14 @@ public class JoueurBehavior : CombatBehavior
 
     [SerializeField] private Slider VolonteSlider;
     [SerializeField] private Image VolonteBarBack;
+    [SerializeField] private HighlightCost _highlightComponant;
 
     [SerializeField] private Color green = new Color(0.58f, 0.98f, 0.65f);
     [SerializeField] private Color red = new Color(0.996f, 0.47f, 0.40f);
     [SerializeField] private TextMeshProUGUI TensionText;
     [SerializeField] private TextMeshProUGUI HpText;
+    [SerializeField] private TextMeshProUGUI HpTextReduced;
+    [SerializeField] private TextMeshProUGUI HpToolTipText;
     [SerializeField] private TextMeshProUGUI VolontéText;
     [SerializeField] private TextMeshProUGUI ConscienceText;
     [SerializeField] private TextMeshProUGUI StatForceAmeText;
@@ -49,6 +52,7 @@ public class JoueurBehavior : CombatBehavior
     [SerializeField] private BattleManager _refBattleMan;
     [SerializeField] private bool IsTurn;
 
+    public Spell SelectSpell => SelectedSpell;
     #region Divers start & fin
 
     private int currentHp = -1;
@@ -75,7 +79,26 @@ public class JoueurBehavior : CombatBehavior
             temp.GetComponent<SpellCombat>().Action = SpelleToUse;
             temp.GetComponent<SpellCombat>().Act = DoAction;
             temp.GetComponent<SpellCombat>().StartUp();
-
+            int volonteCost = 0, conscCost = 0, radCost = 0;
+            foreach(var cost in temp.GetComponent<SpellCombat>().Action.Costs)
+            {
+                if (cost.typeCost == TypeCostSpell.volonte)
+                {
+                    volonteCost = cost.Value;
+                }
+                else if (cost.typeCost == TypeCostSpell.radiance)
+                {
+                    radCost = cost.Value;
+                }
+                else if (cost.typeCost == TypeCostSpell.conscience)
+                {
+                    conscCost = cost.Value;
+                }
+            }
+           
+            temp.GetComponent<SpellCombat>().button.onClick.AddListener(delegate { _highlightComponant.SelectCostForHighlighing(volonteCost, radCost, conscCost); });
+            temp.GetComponent<HighlightTriggerEvent>().SetActionsToTrigger(_highlightComponant.EnableHighlighting, _highlightComponant.DisableHighlighting, volonteCost, radCost, conscCost);
+           
             Spells.Add(temp);
         }
 
@@ -111,6 +134,7 @@ public class JoueurBehavior : CombatBehavior
         if(Stat.Radiance != currentHp) 
         {
             hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
+            hPBarManager.ToggleBloomPulses(false);
         }currentHp = Stat.Radiance;
 
         if (Stat.Tension != currentTens)
@@ -125,6 +149,7 @@ public class JoueurBehavior : CombatBehavior
         if (Stat.Conscience != currentCons)
         {
             conscienceBarManager.UpdatePBar(Stat.Conscience, Stat.ConscienceMax);
+            conscienceBarManager.ToggleBloomPulses(false);
         }
         currentCons = Stat.Conscience;
 
@@ -132,8 +157,9 @@ public class JoueurBehavior : CombatBehavior
         VolonteSlider.maxValue = Stat.VolonterMax;
 
 
-        HpText.text = Stat.Radiance + "/" + Stat.RadianceMax;
-
+        HpText.text = $"{Stat.Radiance.ToString()}/{Stat.RadianceMax}";
+        HpTextReduced.text = Stat.Radiance.ToString();
+        HpToolTipText.text = $"Radiance : vos points de vie\nMax: {Stat.RadianceMax.ToString()}"; 
         ConscienceText.text = Stat.Conscience + "/" + Stat.ConscienceMax;
 
         StatClairvoyanceText.text = Stat.Clairvoyance + "";
@@ -182,6 +208,8 @@ public class JoueurBehavior : CombatBehavior
             StatResilienceBg.color = red;
         else
             StatResilienceBg.color = Color.white;
+
+        _highlightComponant.DisableHighlighting();
     }
 
     public void StartPhase()
@@ -374,6 +402,7 @@ public class JoueurBehavior : CombatBehavior
         }
 
         EndTurnButton.interactable = false;
+        _highlightComponant.DisableHighlightingBetweenTarget();
     }
 
     public void ActivateSpells()

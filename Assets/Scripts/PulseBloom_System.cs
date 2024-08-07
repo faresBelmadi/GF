@@ -25,20 +25,27 @@ public class PulseBloom_System : MonoBehaviour
 
     [SerializeField]
     private Material bloomMaterial;
-    private Coroutine bloomRoutine;
+    private Coroutine bloomRoutine = null;
     private CultureInfo en_us = CultureInfo.GetCultureInfo("en-US");
     private void Start()
     {
         bloomMaterial.SetFloat("_Intensity", .5f);
         if(startActive) TriggerBloom();
     }
-    public void TriggerBloom(bool doOverride = false)
+    public void TriggerBloom(bool doOverride = true)
     {
+        if(!isActiveAndEnabled)
+        {
+            startActive = true;
+            return;
+        }
+        //Debug.Log($"PulseBloomTriggered on {gameObject.name}");
         if (bloomRoutine != null)
         {
             if (doOverride) StopCoroutine(bloomRoutine);
             else return;
         }
+        //Debug.Log($"StartRoutine");
         bloomRoutine = StartCoroutine(BloomingRoutine());
     }
     private IEnumerator BloomingRoutine()
