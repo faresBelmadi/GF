@@ -222,6 +222,7 @@ public class EnnemyBehavior : CombatBehavior
         string[] t = Stat.Nom.Split('(');
         UICombat.UpdateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
+        
     }
 
     #endregion Update

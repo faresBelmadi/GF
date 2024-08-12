@@ -18,9 +18,12 @@ public class CombatBehavior : MonoBehaviour
     private Color _buffTextColor = Color.green;
 
     public Action EndTurnBM;
+    public static Action OnUpdateUI;
 
     public int LastDamageTaken;
     public bool gainedTension;
+
+
 
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
@@ -61,6 +64,7 @@ public class CombatBehavior : MonoBehaviour
             buffComp.buffDescriptionLabel.text = buffDebuffDescription;
             buffComp.buffDescriptionLabel.color = toAdd.IsDebuff ? _debuffTextColor : _buffTextColor;
             buffComp.buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
+            buffComp.InitBuffDebuff(toAdd);
             ListBuffDebuffGO.Add(buffObject);
         }
         //buffObject.GetComponent<EnflateSystem>().TriggerInflation();
@@ -97,28 +101,31 @@ public class CombatBehavior : MonoBehaviour
         string buffDebuffDescription;
         if (!string.IsNullOrEmpty(buff.idTradName) && !string.IsNullOrEmpty(buff.idTradDescription))
         {
-            if (TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
-                    out List<string> capaNameAllLangueList) &&
-                TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
-                    out List<string> capaDescAllLangueList)
-                && TradManager.instance.IdLanguage != -1000)
-            {
-                buffDebuffName = capaNameAllLangueList[TradManager.instance.IdLanguage];
-                buffDebuffDescription = capaDescAllLangueList[TradManager.instance.IdLanguage];
-            }
-            else
-            {
-                if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
-                        out List<string> osef))
-                    Debug.Log("idTradName not in dictionary");
-                if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
-                        out List<string> osef2))
-                    Debug.Log("idTradDescription not in dictionary");
-                if (TradManager.instance.IdLanguage == -1000)
-                    Debug.Log("IdLanguage not in dictionary");
-                buffDebuffName = buff.name;
-                buffDebuffDescription = buff.Description;
-            }
+            //if (TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
+            //        out List<string> capaNameAllLangueList) &&
+            //    TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
+            //        out List<string> capaDescAllLangueList)
+            //    && TradManager.instance.IdLanguage != -1000)
+            //{
+            //    buffDebuffName = capaNameAllLangueList[TradManager.instance.IdLanguage];
+            //    buffDebuffDescription = capaDescAllLangueList[TradManager.instance.IdLanguage];
+            //}
+            //else
+            //{
+            //    if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
+            //            out List<string> osef))
+            //        Debug.Log("idTradName not in dictionary");
+            //    if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
+            //            out List<string> osef2))
+            //        Debug.Log("idTradDescription not in dictionary");
+            //    if (TradManager.instance.IdLanguage == -1000)
+            //        Debug.Log("IdLanguage not in dictionary");
+            //    buffDebuffName = buff.name;
+            //    buffDebuffDescription = buff.Description;
+            //}
+            buffDebuffName = TradManager.instance.GetTranslation(buff.idTradName);
+            buffDebuffDescription = TradManager.instance.GetTranslation(buff.idTradDescription);
+
         }
         else
         {
@@ -169,6 +176,12 @@ public class CombatBehavior : MonoBehaviour
 
     }
 
+    protected void OnUpdate()
+    {
+        Debug.Log("Update UI");
+        OnUpdateUI?.Invoke();
+    }
+    
     public List<BuffDebuff> UpdateBuffDebuffGameObject(List<BuffDebuff> BuffDebuff, CharacterStat toChange)
     {
         foreach (var item in BuffDebuff)

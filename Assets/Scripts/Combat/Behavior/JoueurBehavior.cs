@@ -209,7 +209,13 @@ public class JoueurBehavior : CombatBehavior
         else
             StatResilienceBg.color = Color.white;
 
+        foreach (GameObject spell in Spells)
+        {
+            spell.GetComponent<SpellCombat>().UpdateDescription();
+        }
+
         _highlightComponant.DisableHighlighting();
+        OnUpdate();
     }
 
     public void StartPhase()

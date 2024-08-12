@@ -15,6 +15,22 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] public TextMeshProUGUI buffNameLabel;
     [SerializeField] public TextMeshProUGUI buffDescriptionLabel;
     public string buffName;
+
+    private BuffDebuff _buffDebuff;
+
+    private void OnEnable()
+    {
+        CombatBehavior.OnUpdateUI += UpdateUI;
+    }
+    private void OnDisable()
+    {
+        CombatBehavior.OnUpdateUI -= UpdateUI;
+    }
+
+    public void InitBuffDebuff (BuffDebuff buffDebuff)
+    {
+        _buffDebuff = buffDebuff;
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
         //Debug.Log("enter");
@@ -51,6 +67,11 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     {
         //Debug.Log("exit");
         popUpPanel.SetActive(false);
+    }
+    public void UpdateUI()
+    {
+        Debug.Log("UpdateBUFFDescription");
+        buffDescriptionLabel.text = TradManager.instance.GetTranslation(_buffDebuff.idTradDescription, "Missing description");
     }
 
 }

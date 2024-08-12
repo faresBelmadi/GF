@@ -34,8 +34,11 @@ public class SpellCombat : MonoBehaviour
                     out List<string> capaDescAllLangueList)
                 && TradManager.instance.IdLanguage != -1000)
             {
-                buffDebuffName = capaNameAllLangueList[TradManager.instance.IdLanguage];
-                buffDebuffDescription = capaDescAllLangueList[TradManager.instance.IdLanguage];
+                //buffDebuffName = capaNameAllLangueList[TradManager.instance.IdLanguage];
+                //buffDebuffDescription = capaDescAllLangueList[TradManager.instance.IdLanguage];
+              
+                buffDebuffName = TradManager.instance.GetTranslatedCapa(Action.idTradName);
+                buffDebuffDescription = TradManager.instance.GetTranslatedCapa(Action.idTradDescription);
             }
             else
             {
@@ -129,5 +132,60 @@ public class SpellCombat : MonoBehaviour
     public void PreventInstaDoubleClick()
     {
         isClicable = true;
+    }
+    public void UpdateDescription()
+    {
+        string buffDebuffName;
+        string buffDebuffDescription;
+        if (!string.IsNullOrEmpty(Action.idTradName) && !string.IsNullOrEmpty(Action.idTradDescription))
+        {
+            if (TradManager.instance.CapaDictionary.TryGetValue(Action.idTradName,
+                    out List<string> capaNameAllLangueList) &&
+                TradManager.instance.CapaDictionary.TryGetValue(Action.idTradDescription,
+                    out List<string> capaDescAllLangueList)
+                && TradManager.instance.IdLanguage != -1000)
+            {
+                //buffDebuffName = capaNameAllLangueList[TradManager.instance.IdLanguage];
+                //buffDebuffDescription = capaDescAllLangueList[TradManager.instance.IdLanguage];
+
+                buffDebuffName = TradManager.instance.GetTranslatedCapa(Action.idTradName);
+                buffDebuffDescription = TradManager.instance.GetTranslatedCapa(Action.idTradDescription);
+            }
+            else
+            {
+                if (!TradManager.instance.CapaDictionary.TryGetValue(Action.idTradName,
+                        out List<string> osef))
+                    Debug.Log("idTradName not in dictionary");
+                if (!TradManager.instance.CapaDictionary.TryGetValue(Action.idTradDescription,
+                        out List<string> osef2))
+                    Debug.Log("idTradDescription not in dictionary");
+                if (TradManager.instance.IdLanguage == -1000)
+                    Debug.Log("IdLanguage not in dictionary");
+                buffDebuffName = Action.name;
+                buffDebuffDescription = Action.Description;
+            }
+        }
+        else
+        {
+            if (string.IsNullOrEmpty(Action.idTradName))
+                Debug.Log("IdTradName est null/empty pour " + Action.name);
+            if (string.IsNullOrEmpty(Action.idTradDescription))
+                Debug.Log("idTradDescription est null/empty pour " + Action.name);
+            buffDebuffName = Action.name;
+            buffDebuffDescription = Action.Description;
+        }
+        TexteDescription.text = "<color=white><size=150%>" + buffDebuffName + "</size></color>\n<u>Cout :</u> ";
+        foreach (var item in Action.Costs)
+        {
+            if (item.typeCost == TypeCostSpell.volonte)
+                TexteDescription.text += item.Value + "<color=yellow><font-weight=900> V </font-weight></color>";
+            if (item.typeCost == TypeCostSpell.radiance)
+                TexteDescription.text += item.Value + "<color=red><font-weight=900> R </font-weight></color>";
+            if (item.typeCost == TypeCostSpell.conscience)
+                TexteDescription.text += item.Value + "<color=green><font-weight=900> C </font-weight></color>";
+        }
+        TexteDescription.text += "\n";
+
+        TexteDescription.text += buffDebuffDescription;
     }
 }
