@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName ="new ClairvoyanceIconData", menuName ="ClairvoyanceIcon/Create New ClairvoyanceIcon")]
 public class ClairvoyanceIconData : ScriptableObject
 {
+    [SerializeField]
+    private Sprite _damage;
     [SerializeField] 
     private Sprite _intentionAtk;
     [SerializeField]
@@ -84,6 +86,7 @@ public class ClairvoyanceIconData : ScriptableObject
     [SerializeField]
     private Sprite _statVolonteDown;
 
+    public Sprite Damage { get => _damage; }
     public Sprite IntentionAtk { get => _intentionAtk; }
     public Sprite IntentionBuff { get => _intendionDebuff; }
     public Sprite IntentionDebuff { get => _intendionDebuff; }

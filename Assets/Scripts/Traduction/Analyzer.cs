@@ -11,12 +11,15 @@ public enum TradTag
 {
     unknown,
     stat,
-    percent
+    percent,
+    damage
 }
 public enum TradAttribute
 {
     value,
-    target
+    target,
+    stat,
+    type
 }
 public enum TradStat
 {
@@ -47,18 +50,22 @@ public class Analyzer : MonoBehaviour
     const string LEFTBRACKET = "{";
     const string RIGHTBRACKET = "}";
 
-    const string percentPattern = "{percent value=(?<value>[0-9]+) target=(?<target>[A-Za-z]+)}";
-    const string statPattern = "{stat value=(?<value>[A-Za-z]+)}";
+    const string PERCENTPATTERN = "{percent value=(?<value>[0-9]+) target=(?<target>[A-Za-z]+)}";
+    const string STATPATTERN = "{stat value=(?<value>[A-Za-z]+)}";
+    const string DAMAGEPATTERN = "{damage type=(?<type>(direct|percent)) value=(?<value>[0-9]+)( stat=(?<stat>[A-Za-z]+))?}";
 
     [SerializeField]
     private ClairvoyanceIconData _clairvoyanceIconData;
 
 
-    private Regex percentRegex = new Regex(percentPattern, RegexOptions.IgnoreCase);
-    private Regex statRegex = new Regex(statPattern, RegexOptions.IgnoreCase);
+    private Regex percentRegex = new Regex(PERCENTPATTERN, RegexOptions.IgnoreCase);
+    private Regex statRegex = new Regex(STATPATTERN, RegexOptions.IgnoreCase);
+    private Regex damageRegex = new Regex(DAMAGEPATTERN, RegexOptions.IgnoreCase);
     //Exemple de balise
     // {stat value=FA}
     // {percent value=60 target=FA}
+    // {damage type=direct value=10}
+    // {damage type=percent value=60 stat=FA}
 
     // Start is called before the first frame update
     void Start()
@@ -99,13 +106,13 @@ public class Analyzer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     #region Regex
-    public string Execute (string stringToRead)
+    public string Execute(string stringToRead)
     {
-       
+
         Match currentMatchPercent = percentRegex.Match(stringToRead);
         while (currentMatchPercent.Success)
         {
@@ -131,6 +138,23 @@ public class Analyzer : MonoBehaviour
             currentMatchStat = currentMatchStat.NextMatch();
         }
 
+        Match currentMatchDamage = damageRegex.Match(stringToRead);
+        while (currentMatchDamage.Success)
+        {
+            Dictionary<TradAttribute, string> attributes = new Dictionary<TradAttribute, string>
+            {
+                { TradAttribute.value, currentMatchDamage.Groups["value"].Captures[0].ToString() },
+                { TradAttribute.type, currentMatchDamage.Groups["type"].Captures[0].ToString() }
+            };
+            if (currentMatchDamage.Groups["stat"].Success)
+            {
+                attributes.Add(TradAttribute.stat, currentMatchDamage.Groups["stat"].Captures[0].ToString());
+            }
+            string replacement = ApplyTag(TradTag.damage, attributes);
+            stringToRead = stringToRead.Replace(currentMatchDamage.Groups[0].ToString(), replacement);
+            currentMatchDamage = currentMatchDamage.NextMatch();
+        }
+
 
         return stringToRead;
     }
@@ -149,11 +173,11 @@ public class Analyzer : MonoBehaviour
             }
             else
             {
-                string tagString = stringToEvaluate.Substring(ind + 1, endIndex - (ind+1));
+                string tagString = stringToEvaluate.Substring(ind + 1, endIndex - (ind + 1));
                 string replacementString = EvaluateTag(tagString);
-                stringToEvaluate = stringToEvaluate.Replace("{"+tagString+"}", replacementString);
+                stringToEvaluate = stringToEvaluate.Replace("{" + tagString + "}", replacementString);
             }
-            ind = stringToEvaluate.IndexOf(LEFTBRACKET, ind+1);
+            ind = stringToEvaluate.IndexOf(LEFTBRACKET, ind + 1);
         }
         return stringToEvaluate;
     }
@@ -163,7 +187,7 @@ public class Analyzer : MonoBehaviour
         if (string.IsNullOrEmpty(strToEvaluate))
             return TradTokenTag.UnkownToken;
 
-        if (strToEvaluate.StartsWith(TradTag.percent.ToString(), System.StringComparison.InvariantCultureIgnoreCase) 
+        if (strToEvaluate.StartsWith(TradTag.percent.ToString(), System.StringComparison.InvariantCultureIgnoreCase)
             || strToEvaluate.StartsWith(TradTag.stat.ToString(), System.StringComparison.InvariantCultureIgnoreCase))
         {
             return TradTokenTag.Tag;
@@ -219,58 +243,11 @@ public class Analyzer : MonoBehaviour
             case TradTag.percent:
                 ;
                 break;
-            
-        }
-        return strb.ToString();
-    }
-    private string ApplyTag(TradTag tag, Dictionary<TradAttribute,string> attributes)
-    {
-        StringBuilder strb = new StringBuilder();
-        switch (tag)
-        {
-            case TradTag.stat:
-                strb.Append("<sprite name=\"");
-
-                if (attributes[TradAttribute.value].Equals("FA", System.StringComparison.InvariantCultureIgnoreCase))
-                    strb.Append((_clairvoyanceIconData.StatForceDame == null)?"FA":_clairvoyanceIconData.StatForceDame.name);
-                else if (attributes[TradAttribute.value].Equals("CL", System.StringComparison.InvariantCultureIgnoreCase))
-                    strb.Append((_clairvoyanceIconData.StatClairvoyance == null) ? "CL" : _clairvoyanceIconData.StatClairvoyance.name);
-                else if (attributes[TradAttribute.value].Equals("CONV", System.StringComparison.InvariantCultureIgnoreCase))
-                    strb.Append((_clairvoyanceIconData.StatConviction == null) ? "CONV" : _clairvoyanceIconData.StatConviction.name);
-                strb.Append("\">");
-
-                break;
-            case TradTag.percent:
-
-                int value = int.Parse(attributes[TradAttribute.value]);
-                float numericValue = 0f;
-                string spriteName = "";
-                if (attributes[TradAttribute.target].Equals("FA", System.StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (GameManager.instance.playerStat != null)
-                    {
-                        numericValue = GameManager.instance.playerStat.ForceAme * (value / 100f);
-                    }
-                    spriteName = _clairvoyanceIconData.StatForceDame.name;
-                }
-                else if (attributes[TradAttribute.target].Equals("RAM", System.StringComparison.InvariantCultureIgnoreCase))
-                {
-                    if (GameManager.instance.playerStat != null)
-                    {
-                        numericValue = GameManager.instance.playerStat.RadianceMax * (value / 100f);
-                    }
-                    spriteName = (_clairvoyanceIconData.StatRadiance == null)?"RAM": _clairvoyanceIconData.StatRadiance.name;
-                }
-
-                strb.Append(numericValue);
-                strb.Append(" <sprite name=\"");
-                strb.Append(spriteName);
-                strb.Append("\">");
-                break;
 
         }
         return strb.ToString();
     }
+  
     private string EvaluateTag(string tag)
     {
         var stringTab = tag.Split(' ');
@@ -324,7 +301,7 @@ public class Analyzer : MonoBehaviour
                 case AnalexState.ErrorState:
                     Debug.LogError($"Syntaxe error in trad files for tag : {tag}");
                     return string.Empty;
-                
+
 
             }
         }
@@ -332,4 +309,82 @@ public class Analyzer : MonoBehaviour
 
     }
     #endregion
+    private string ApplyTag(TradTag tag, Dictionary<TradAttribute, string> attributes)
+    {
+        StringBuilder strb = new StringBuilder();
+        switch (tag)
+        {
+            case TradTag.stat:
+                strb.Append("<sprite name=\"");
+
+                if (attributes[TradAttribute.value].Equals("FA", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatForceDame == null) ? "FA" : _clairvoyanceIconData.StatForceDame.name);
+                else if (attributes[TradAttribute.value].Equals("CL", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatClairvoyance == null) ? "CL" : _clairvoyanceIconData.StatClairvoyance.name);
+                else if (attributes[TradAttribute.value].Equals("CONV", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatConviction == null) ? "CONV" : _clairvoyanceIconData.StatConviction.name);
+                strb.Append("\">");
+
+                break;
+            case TradTag.percent:
+
+                int value = int.Parse(attributes[TradAttribute.value]);
+                float numericValue = 0f;
+                string spriteName = "";
+                if (attributes[TradAttribute.target].Equals("FA", System.StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (GameManager.instance.playerStat != null)
+                    {
+                        numericValue = GameManager.instance.playerStat.ForceAme * (value / 100f);
+                    }
+                    spriteName = _clairvoyanceIconData.StatForceDame.name;
+                }
+                else if (attributes[TradAttribute.target].Equals("RAM", System.StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (GameManager.instance.playerStat != null)
+                    {
+                        numericValue = GameManager.instance.playerStat.RadianceMax * (value / 100f);
+                    }
+                    spriteName = (_clairvoyanceIconData.StatRadiance == null) ? "RAM" : _clairvoyanceIconData.StatRadiance.name;
+                }
+
+                strb.Append(numericValue);
+                strb.Append(" <sprite name=\"");
+                strb.Append(spriteName);
+                strb.Append("\">");
+                break;
+            case TradTag.damage:
+                float damageValue = 0;
+                if (attributes[TradAttribute.type].Equals("direct", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    damageValue = int.Parse(attributes[TradAttribute.value]);
+                }
+                else if (attributes[TradAttribute.type].Equals("percent", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    int percentValue = int.Parse(attributes[TradAttribute.value]);
+                    if (attributes[TradAttribute.stat].Equals("FA", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        if (GameManager.instance.playerStat != null)
+                        {
+                            damageValue = GameManager.instance.playerStat.ForceAme * (percentValue / 100f);
+                        }
+                    }
+                    else if (attributes[TradAttribute.stat].Equals("RAM", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        if (GameManager.instance.playerStat != null)
+                        {
+                            numericValue = GameManager.instance.playerStat.RadianceMax * (percentValue / 100f);
+                        }
+                    }
+                }
+                spriteName = (_clairvoyanceIconData.Damage == null) ? "DMG" : _clairvoyanceIconData.Damage.name;
+                strb.Append(damageValue.ToString());
+                strb.Append(" <sprite name=\"");
+                strb.Append(spriteName);
+                strb.Append("\"");
+                break;
+
+        }
+        return strb.ToString();
+    }
 }
