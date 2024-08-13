@@ -78,6 +78,8 @@ public class GameManager : MonoBehaviour {
             if(!loadedData.CurrentRun.Ended)
             {
                 getClassRun();
+                /*
+                 
                 playerStat = new JoueurStat() {
                     Radiance = loadedData.CurrentRun.player.Radiance,
                     RadianceMax = classSO.PlayerStat.RadianceMax,
@@ -95,6 +97,7 @@ public class GameManager : MonoBehaviour {
                     ClairvoyanceOriginal = loadedData.CurrentRun.player.Clairvoyance,
                     SlotsSouvenir = classSO.PlayerStat.SlotsSouvenir
                 };
+                 */
                 for(int i = 0; i < AllSouvenir.Count; i++)
                 {
                     CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));

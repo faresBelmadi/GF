@@ -29,7 +29,7 @@ public class TurnOrderUIManager : MonoBehaviour
         {
             StopCoroutine(generateNextTurnOrderRoutine);
         }
-        StartCoroutine(GenerateNextTurnOrderCoroutine(idOrder));
+        generateNextTurnOrderRoutine = StartCoroutine(GenerateNextTurnOrderCoroutine(idOrder));
     }
     public void GenerateTurnItems(List<CombatOrder> IdOrder)
     {
@@ -94,10 +94,10 @@ public class TurnOrderUIManager : MonoBehaviour
 
     IEnumerator GenerateNextTurnOrderCoroutine(List<CombatOrder> idOrder)
     {
-        float curtainHeight = curtain.sizeDelta.y;
+        float curtainHeight = curtain.rect.height;
         Vector2 defaultPos = Vector2.up * curtainHeight;
-        Debug.Log($"DropCurtain");
-        curtain.localPosition = defaultPos;
+        Debug.Log($"DropCurtain, height:{curtainHeight}");
+        curtain.localPosition = Vector3.up * 100f;// defaultPos;
         if (curtainMovmentDuration > 0f)
         {
             while (curtain.localPosition.y > 0f )
@@ -115,7 +115,7 @@ public class TurnOrderUIManager : MonoBehaviour
         curtain.localPosition = Vector3.zero;
         if (curtainMovmentDuration > 0f)
         {
-            while (curtain.localPosition.y < defaultPos.y)//- (defaultPos.y + itemLength))
+            while (curtain.localPosition.y < 100f)//defaultPos.y)
             {
                 curtain.localPosition += Vector3.up * (curtainHeight / curtainMovmentDuration) * Time.deltaTime;
                 yield return null;
