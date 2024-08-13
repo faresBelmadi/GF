@@ -381,7 +381,7 @@ public class Analyzer : MonoBehaviour
                 strb.Append(damageValue.ToString());
                 strb.Append(" <sprite name=\"");
                 strb.Append(spriteName);
-                strb.Append("\"");
+                strb.Append("\">");
                 break;
 
         }

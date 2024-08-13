@@ -58,8 +58,8 @@ public class FontManager : MonoBehaviour
         {
             texts[i].font = _defaultFontAsset;
 
-            if (texts[i].spriteAsset == null)
-                texts[i].spriteAsset = _TMPSpriteAsset;
+            //if (texts[i].spriteAsset == null)
+            //    texts[i].spriteAsset = _TMPSpriteAsset;
         }
         if (_verboseMode) Debug.Log($"{texts.Length} TMP changed in scene {SceneManager.GetActiveScene().name}");
 
