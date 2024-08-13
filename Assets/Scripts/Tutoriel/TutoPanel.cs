@@ -45,7 +45,8 @@ public class TutoPanel : MonoBehaviour
         if (IndexExplication == 0)
             UIJoueurTutoExplication.SetActive(true);
 
-        TextExplication.text = TradManager.instance.DialogueDictionary[ExplicationListe[IndexExplication]][TradManager.instance.IdLanguage];
+        //TextExplication.text = TradManager.instance.DialogueDictionary[ExplicationListe[IndexExplication]][TradManager.instance.IdLanguage];
+        TextExplication.text = TradManager.instance.GetTranslation(ExplicationListe[IndexExplication]);
 
         if (ExplicationImageListe[IndexExplication] != null)
         {
@@ -56,7 +57,10 @@ public class TutoPanel : MonoBehaviour
 
         var reponse = ReponseListe[IndexExplication];
         if (reponse is not (null or ""))
-            TextReponse.text = TradManager.instance.DialogueDictionary[reponse][TradManager.instance.IdLanguage];
+        {
+            //TextReponse.text = TradManager.instance.DialogueDictionary[reponse][TradManager.instance.IdLanguage];
+            TextReponse.text = TradManager.instance.GetTranslation(reponse);
+        }
         else
             TextReponse.text = "Continue"; // a Rajouter dans le dossier de Trad
     }

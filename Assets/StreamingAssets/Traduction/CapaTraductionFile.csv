@@ -16,9 +16,9 @@ P1C14N;Mise à Mort;Execution;处决;;;
 P1C15N;Opprimer les Faibles;Oppress the Weak;压迫弱者;;;
 P1C16N;Roi Sans Couronne;Crownless King;无冕之王;;;
 P1C17N;Seul Contre Tous;Alone against the World;独自对抗世界;;;
-P1C1D;Inflige 60% FA et gagne un bonus de 10% de resistance aux dégats pour 1 tour;"Inflict 60 % of your Fortitude to target opponent, gain a bonus of 10 % to damage resistance for 1 turn";对目标对手造成 60 % 的坚韧伤害，获得 10 % 的伤害抗性加成，持续 1 个回合;;;
-P1C2D;"Gagne 10 % Radiance max
-10 % FA 
+P1C1D;Inflige {percent value=60 target=FA} et gagne un bonus de 10% de resistance aux dégats pour 1 tour;"Inflict 60 % of your Fortitude to target opponent, gain a bonus of 10 % to damage resistance for 1 turn";对目标对手造成 60 % 的坚韧伤害，获得 10 % 的伤害抗性加成，持续 1 个回合;;;
+P1C2D;"Gagne {percent value=10 target=RAM} max
+{percent value=10 target=FA} 
 Dure 2 phase";"Gain 10 % Radiance max and 10 % Fortitude, for 2 phases";获得 10 % 的最大光芒值和 10 % 的坚韧值，持续 2 个阶段;;;
 P1C3D;"Applique a tout les adversaires le débuff  Febrile
  Fébrile Si le porteur est frappée par le guerrier, augmente les dégats reçus de 20% et consomme le débuff, quand consommée crée un débuff  crainte 
@@ -141,7 +141,7 @@ D10D;"Vitesse -3, clairvoyance -3";"Speed-3, clairvoyance -3";速度-3，千里�
 D11D;Radiance -5 % Force d'ame -5%;"Radiance 5%, fortitude -5%";光芒 5%，坚毅 -5;;;
 D12D;"Quand il meurt, ne laisse pas d'essence";"When he dies, he will not drop essence.";当他死亡时，不会掉落精华。;;;
 D13D;Conviction -2 pour tout le combat;Conviction -2 for the whole fight;整场战斗信念-2;;;
-D14D;"-10 % Force d'ame, -1 Conviction";"Fortitude -10%, conviction -1.";坚韧 -10%，信念 -1。;;;
+D14D;"-{percent value=10 target=FA}, -1{stat value=CONV}";"Fortitude -10%, conviction -1.";坚韧 -10%，信念 -1。;;;
 D15D; Dégats subit +20 %;Increase damage taken by 20%;受到的伤害提高 20;;;
 D16D;" Resilience -3, Force d'ame -10% , divise par deux les gains de tension du porteur";"Resilience -3, fortitude -10%, wielder tension gain are divided by 2";;;;
 D17D;20% de chance d'effectuer une action offensive durant son tour;20% chances to do an offensive action during it's turn.;在其回合内有 20% 的几率采取攻击行动。;;;

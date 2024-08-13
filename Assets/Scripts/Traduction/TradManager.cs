@@ -15,6 +15,10 @@ public class TradManager : MonoBehaviour
         ZH
     }
 
+    [SerializeField]
+    private bool _debugMode;
+    [SerializeField]
+    private SUPPORTEDLANGUAGES _debugLanguage;
 
     public static TradManager instance;
 
@@ -23,14 +27,14 @@ public class TradManager : MonoBehaviour
     {
         get
         {
-            var value = PlayerPrefs.GetInt("Lang", -1000);
+            var value = (_debugMode)? (int)_debugLanguage:PlayerPrefs.GetInt("Lang", -1000);
             return value;
         }
     }
 
-    public Dictionary<string, List<string>> DialogueDictionary = new Dictionary<string, List<string>>();
-    public Dictionary<string, List<string>> CapaDictionary = new Dictionary<string, List<string>>();
-    public Dictionary<string, List<string>> MiscDictionary = new Dictionary<string, List<string>>();
+    private Dictionary<string, List<string>> _dialogueDictionary = new Dictionary<string, List<string>>();
+    private Dictionary<string, List<string>> _capaDictionary = new Dictionary<string, List<string>>();
+    private Dictionary<string, List<string>> _miscDictionary = new Dictionary<string, List<string>>();
 
     private Analyzer _analyzer;
 
@@ -60,17 +64,18 @@ public class TradManager : MonoBehaviour
         StringBuilder strb = new StringBuilder();
         strb.AppendLine($"Error when trying to get translation for this key [{key}].");
 
-        if ((DialogueDictionary.ContainsKey(key) && DialogueDictionary[key].Count <= IdLanguage)
-            || (CapaDictionary.ContainsKey(key) && CapaDictionary[key].Count <= IdLanguage)
-            || (MiscDictionary.ContainsKey(key) && MiscDictionary[key].Count <= IdLanguage))
+        if ((_dialogueDictionary.ContainsKey(key) && _dialogueDictionary[key].Count <= IdLanguage)
+            || (_capaDictionary.ContainsKey(key) && _capaDictionary[key].Count <= IdLanguage)
+            || (_miscDictionary.ContainsKey(key) && _miscDictionary[key].Count <= IdLanguage))
         {
 
             strb.AppendLine($"Missing language : language {IdLanguage.ToString()} with ID ({IdLanguage}) not present in dictionnary.");
         }
-        else if (!DialogueDictionary.ContainsKey(key) && !CapaDictionary.ContainsKey(key) && !MiscDictionary.ContainsKey(key))
+        else if (!_dialogueDictionary.ContainsKey(key) && !_capaDictionary.ContainsKey(key) && !_miscDictionary.ContainsKey(key))
         {
             strb.AppendLine($"Missing translation with key : {key}.");
         }
+
         Debug.LogError(strb.ToString());
     }
     #endregion
@@ -82,7 +87,6 @@ public class TradManager : MonoBehaviour
         LoadTradCapa();
         //LoadTradMisc();
     }
-
     private void LoadTradDialogue()
     {
 #if UNITY_EDITOR
@@ -100,7 +104,7 @@ public class TradManager : MonoBehaviour
                 List<string> templist = new List<string>();
                 templist.AddRange(row);
                 templist.RemoveAt(0);
-                DialogueDictionary.Add(row[0], templist);
+                _dialogueDictionary.Add(row[0], templist);
             }
         }
 
@@ -127,7 +131,7 @@ public class TradManager : MonoBehaviour
                 List<string> templist = new List<string>();
                 templist.AddRange(row);
                 templist.RemoveAt(0);
-                CapaDictionary.Add(row[0], templist);
+                _capaDictionary.Add(row[0], templist);
             }
 
         }
@@ -155,11 +159,11 @@ public class TradManager : MonoBehaviour
                 List<string> templist = new List<string>();
                 templist.AddRange(row);
                 templist.RemoveAt(0);
-                MiscDictionary.Add(row[0], templist);
+                _miscDictionary.Add(row[0], templist);
             }
         }
 
-        foreach (var item in MiscDictionary)
+        foreach (var item in _miscDictionary)
         {
             Debug.Log(item.Key + " | " + item.Value.Count);
         }
@@ -167,20 +171,25 @@ public class TradManager : MonoBehaviour
     #endregion
 
     #region GETTERS
-
+    /// <summary>
+    /// Get translation of text with the given Key. The text will be in the loaded language.
+    /// </summary>
+    /// <param name="key">The key of the translated Text</param>
+    /// <param name="defaultTranslation">The default translation wanted if the key or language doesn't exist</param>
+    /// <returns>Translated text</returns>
     public string GetTranslation(string key, string defaultTranslation = "missing translation")
     {
-        if (DialogueDictionary.ContainsKey(key) && DialogueDictionary[key].Count > IdLanguage)
+        if (_dialogueDictionary.ContainsKey(key) && _dialogueDictionary[key].Count > IdLanguage)
         {
-            return _analyzer.Execute(DialogueDictionary[key][IdLanguage]);
+            return _analyzer.Execute(_dialogueDictionary[key][IdLanguage]);
         }
-        else if (CapaDictionary.ContainsKey(key) && CapaDictionary[key].Count > IdLanguage)
+        else if (_capaDictionary.ContainsKey(key) && _capaDictionary[key].Count > IdLanguage)
         {
-            return _analyzer.Execute(CapaDictionary[key][IdLanguage]);
+            return _analyzer.Execute(_capaDictionary[key][IdLanguage]);
         }
-        else if (MiscDictionary.ContainsKey(key) && MiscDictionary[key].Count > IdLanguage)
+        else if (_miscDictionary.ContainsKey(key) && _miscDictionary[key].Count > IdLanguage)
         {
-            return _analyzer.Execute(MiscDictionary[key][IdLanguage]);
+            return _analyzer.Execute(_miscDictionary[key][IdLanguage]);
         }
         LogError(key);
         return defaultTranslation;
@@ -188,10 +197,10 @@ public class TradManager : MonoBehaviour
     [Obsolete]
     private string GetTranslatedDialogue(string key)
     {
-        if (DialogueDictionary.ContainsKey(key))
+        if (_dialogueDictionary.ContainsKey(key))
         {
 
-            return _analyzer.Analyze(DialogueDictionary[key][IdLanguage]);
+            return _analyzer.Analyze(_dialogueDictionary[key][IdLanguage]);
         }
         else
         {
@@ -202,9 +211,9 @@ public class TradManager : MonoBehaviour
     [Obsolete]
     public string GetTranslatedCapa(string key)
     {
-        if (CapaDictionary.ContainsKey(key))
+        if (_capaDictionary.ContainsKey(key))
         {
-            return _analyzer.Execute(CapaDictionary[key][IdLanguage]);
+            return _analyzer.Execute(_capaDictionary[key][IdLanguage]);
         }
         else
         {
@@ -215,9 +224,9 @@ public class TradManager : MonoBehaviour
     [Obsolete]
     private string GetTranslatedMisc(string key)
     {
-        if (MiscDictionary.ContainsKey(key))
+        if (_miscDictionary.ContainsKey(key))
         {
-            return _analyzer.Analyze(MiscDictionary[key][IdLanguage]);
+            return _analyzer.Analyze(_miscDictionary[key][IdLanguage]);
         }
         else
         {

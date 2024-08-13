@@ -229,12 +229,14 @@ public class Analyzer : MonoBehaviour
         switch (tag)
         {
             case TradTag.stat:
-                strb.Append("<sprite name =\"");
+                strb.Append("<sprite name=\"");
 
                 if (attributes[TradAttribute.value].Equals("FA", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatForceDame == null)?"FA":_clairvoyanceIconData.StatForceDame.name);
                 else if (attributes[TradAttribute.value].Equals("CL", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatClairvoyance == null) ? "CL" : _clairvoyanceIconData.StatClairvoyance.name);
+                else if (attributes[TradAttribute.value].Equals("CONV", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatConviction == null) ? "CONV" : _clairvoyanceIconData.StatConviction.name);
                 strb.Append("\">");
 
                 break;
@@ -257,7 +259,7 @@ public class Analyzer : MonoBehaviour
                     {
                         numericValue = GameManager.instance.playerStat.RadianceMax * (value / 100f);
                     }
-                    spriteName = (_clairvoyanceIconData.StatRadiance == null)?"Radiance Max": _clairvoyanceIconData.StatRadiance.name;
+                    spriteName = (_clairvoyanceIconData.StatRadiance == null)?"RAM": _clairvoyanceIconData.StatRadiance.name;
                 }
 
                 strb.Append(numericValue);

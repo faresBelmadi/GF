@@ -55,11 +55,19 @@ public class TutoMondeManager : MonoBehaviour
 
     private void CreateDictionary()
     {
-        TutoMondeText = new Dictionary<string, string>();
-        TutoMondeText.Add("1", TradManager.instance.DialogueDictionary["TutoQ9"][TradManager.instance.IdLanguage]);
-        TutoMondeText.Add("2", TradManager.instance.DialogueDictionary["TutoQ20"][TradManager.instance.IdLanguage]);
-        TutoMondeText.Add("3", TradManager.instance.DialogueDictionary["TutoQ25"][TradManager.instance.IdLanguage]);
-        TutoMondeText.Add("4", TradManager.instance.DialogueDictionary["TutoQ45"][TradManager.instance.IdLanguage]);
+        //TutoMondeText = new Dictionary<string, string>();
+        //TutoMondeText.Add("1", TradManager.instance.DialogueDictionary["TutoQ9"][TradManager.instance.IdLanguage]);
+        //TutoMondeText.Add("2", TradManager.instance.DialogueDictionary["TutoQ20"][TradManager.instance.IdLanguage]);
+        //TutoMondeText.Add("3", TradManager.instance.DialogueDictionary["TutoQ25"][TradManager.instance.IdLanguage]);
+        //TutoMondeText.Add("4", TradManager.instance.DialogueDictionary["TutoQ45"][TradManager.instance.IdLanguage]);
+
+        TutoMondeText = new Dictionary<string, string>
+        {
+            { "1", TradManager.instance.GetTranslation("TutoQ9") },
+            { "2", TradManager.instance.GetTranslation("TutoQ20") },
+            { "3", TradManager.instance.GetTranslation("TutoQ25") },
+            { "4", TradManager.instance.GetTranslation("TutoQ45") }
+        };
     }
 
     //void LateUpdate()

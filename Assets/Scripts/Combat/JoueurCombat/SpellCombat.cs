@@ -28,31 +28,9 @@ public class SpellCombat : MonoBehaviour
         string buffDebuffDescription;
         if (!string.IsNullOrEmpty(Action.idTradName) && !string.IsNullOrEmpty(Action.idTradDescription))
         {
-            if (TradManager.instance.CapaDictionary.TryGetValue(Action.idTradName,
-                    out List<string> capaNameAllLangueList) &&
-                TradManager.instance.CapaDictionary.TryGetValue(Action.idTradDescription,
-                    out List<string> capaDescAllLangueList)
-                && TradManager.instance.IdLanguage != -1000)
-            {
-                //buffDebuffName = capaNameAllLangueList[TradManager.instance.IdLanguage];
-                //buffDebuffDescription = capaDescAllLangueList[TradManager.instance.IdLanguage];
-              
-                buffDebuffName = TradManager.instance.GetTranslatedCapa(Action.idTradName);
-                buffDebuffDescription = TradManager.instance.GetTranslatedCapa(Action.idTradDescription);
-            }
-            else
-            {
-                if (!TradManager.instance.CapaDictionary.TryGetValue(Action.idTradName,
-                        out List<string> osef))
-                    Debug.Log("idTradName not in dictionary");
-                if (!TradManager.instance.CapaDictionary.TryGetValue(Action.idTradDescription,
-                        out List<string> osef2))
-                    Debug.Log("idTradDescription not in dictionary");
-                if (TradManager.instance.IdLanguage == -1000)
-                    Debug.Log("IdLanguage not in dictionary");
-                buffDebuffName = Action.name;
-                buffDebuffDescription = Action.Description;
-            }
+           
+            buffDebuffName = TradManager.instance.GetTranslation(Action.idTradName, Action.name);
+            buffDebuffDescription = TradManager.instance.GetTranslation(Action.idTradDescription, Action.Description);
         }
         else
         {
@@ -139,31 +117,8 @@ public class SpellCombat : MonoBehaviour
         string buffDebuffDescription;
         if (!string.IsNullOrEmpty(Action.idTradName) && !string.IsNullOrEmpty(Action.idTradDescription))
         {
-            if (TradManager.instance.CapaDictionary.TryGetValue(Action.idTradName,
-                    out List<string> capaNameAllLangueList) &&
-                TradManager.instance.CapaDictionary.TryGetValue(Action.idTradDescription,
-                    out List<string> capaDescAllLangueList)
-                && TradManager.instance.IdLanguage != -1000)
-            {
-                //buffDebuffName = capaNameAllLangueList[TradManager.instance.IdLanguage];
-                //buffDebuffDescription = capaDescAllLangueList[TradManager.instance.IdLanguage];
-
-                buffDebuffName = TradManager.instance.GetTranslatedCapa(Action.idTradName);
-                buffDebuffDescription = TradManager.instance.GetTranslatedCapa(Action.idTradDescription);
-            }
-            else
-            {
-                if (!TradManager.instance.CapaDictionary.TryGetValue(Action.idTradName,
-                        out List<string> osef))
-                    Debug.Log("idTradName not in dictionary");
-                if (!TradManager.instance.CapaDictionary.TryGetValue(Action.idTradDescription,
-                        out List<string> osef2))
-                    Debug.Log("idTradDescription not in dictionary");
-                if (TradManager.instance.IdLanguage == -1000)
-                    Debug.Log("IdLanguage not in dictionary");
-                buffDebuffName = Action.name;
-                buffDebuffDescription = Action.Description;
-            }
+            buffDebuffName = TradManager.instance.GetTranslation(Action.idTradName, Action.name);
+            buffDebuffDescription = TradManager.instance.GetTranslation(Action.idTradDescription, Action.Description);
         }
         else
         {

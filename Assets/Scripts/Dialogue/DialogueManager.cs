@@ -108,9 +108,10 @@ public class DialogueManager : MonoBehaviour
             string DialogueTrad;
             if (!string.IsNullOrEmpty(currentPossibleResponseList[0].IdStringReponse))
             {
-                DialogueTrad =
-                    TradManager.instance.DialogueDictionary[currentPossibleResponseList[0].IdStringReponse][
-                        TradManager.instance.IdLanguage];
+                //DialogueTrad =
+                //    TradManager.instance.DialogueDictionary[currentPossibleResponseList[0].IdStringReponse][
+                //        TradManager.instance.IdLanguage];
+                DialogueTrad = TradManager.instance.GetTranslation(currentPossibleResponseList[0].IdStringReponse, "ID_DIALOGUE_NOT_IMPLEMENTED");
             }
             else
             {
@@ -145,9 +146,10 @@ public class DialogueManager : MonoBehaviour
                 string response;
                 if (!string.IsNullOrEmpty(currentPossibleResponseList[i].IdStringReponse))
                 {
-                    response =
-                        TradManager.instance.DialogueDictionary[currentPossibleResponseList[i].IdStringReponse][
-                            TradManager.instance.IdLanguage];
+                    //response =
+                    //    TradManager.instance.DialogueDictionary[currentPossibleResponseList[i].IdStringReponse][
+                    //        TradManager.instance.IdLanguage];
+                    response = TradManager.instance.GetTranslation(currentPossibleResponseList[i].IdStringReponse, "ID_DIALOGUE_NOT_IMPLEMENTED");
                 }
                 else
                 {
@@ -170,9 +172,10 @@ public class DialogueManager : MonoBehaviour
         string dialogueTrad;
         if (!string.IsNullOrEmpty(_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion))
         {
-            dialogueTrad =
-                TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion]
-                    [TradManager.instance.IdLanguage];
+            //dialogueTrad =
+            //    TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion]
+            //        [TradManager.instance.IdLanguage];
+            dialogueTrad = TradManager.instance.GetTranslation(_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion, "ID_DIALOGUE_NOT_IMPLEMENTED");
         }
         else
         {

@@ -206,15 +206,7 @@ public class CombatBehavior : MonoBehaviour
                 string buffDebuffName;
                 if (item.idTradName != null)
                 {
-                    if (TradManager.instance.CapaDictionary.TryGetValue(item.idTradName,
-                            out List<string> capaNameAllLanguageList))
-                    {
-                        buffDebuffName = capaNameAllLanguageList[TradManager.instance.IdLanguage];
-                    }
-                    else
-                    {
-                        buffDebuffName = item.name;
-                    }
+                    buffDebuffName = TradManager.instance.GetTranslation(item.idTradName, item.name);
                 }
                 else
                 {
