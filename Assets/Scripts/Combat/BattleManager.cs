@@ -344,7 +344,8 @@ public class BattleManager : MonoBehaviour
         currentIdTurn = 0;
         nbPhase++;
         nbTurn = 0;
-        StartNextTurn();
+        turnOrderUIManager.GenerateNextTurnOrder(IdOrder);
+        //StartNextTurn();
     }
 
     private void DetermTour()
@@ -357,7 +358,7 @@ public class BattleManager : MonoBehaviour
             if (CheckTension(item.Key))
                 IdOrder.Add(new CombatOrder() {id = item.Key, Played = false});
         }
-        turnOrderUIManager.GenerateTurnItems(IdOrder);
+        //turnOrderUIManager.GenerateTurnItems(IdOrder);
     }
 
     #endregion Phase
