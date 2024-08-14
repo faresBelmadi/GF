@@ -323,6 +323,12 @@ public class Analyzer : MonoBehaviour
                     strb.Append((_clairvoyanceIconData.StatClairvoyance == null) ? "CL" : _clairvoyanceIconData.StatClairvoyance.name);
                 else if (attributes[TradAttribute.value].Equals("CONV", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatConviction == null) ? "CONV" : _clairvoyanceIconData.StatConviction.name);
+                else if (attributes[TradAttribute.value].Equals("RAD", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatRadiance == null) ? "RAD" : _clairvoyanceIconData.StatRadiance.name);
+                else if (attributes[TradAttribute.value].Equals("VIT", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatVitesse == null) ? "RAD" : _clairvoyanceIconData.StatVitesse.name);
+                else if (attributes[TradAttribute.value].Equals("RES", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatResilience == null) ? "RAD" : _clairvoyanceIconData.StatResilience.name);
                 strb.Append("\">");
 
                 break;
@@ -344,6 +350,14 @@ public class Analyzer : MonoBehaviour
                     if (GameManager.instance.playerStat != null)
                     {
                         numericValue = GameManager.instance.playerStat.RadianceMax * (value / 100f);
+                    }
+                    spriteName = (_clairvoyanceIconData.StatRadiance == null) ? "RAM" : _clairvoyanceIconData.StatRadiance.name;
+                }
+                else if (attributes[TradAttribute.target].Equals("RAD", System.StringComparison.InvariantCultureIgnoreCase))
+                {
+                    if (GameManager.instance.playerStat != null)
+                    {
+                        numericValue = GameManager.instance.playerStat.Radiance * (value / 100f);
                     }
                     spriteName = (_clairvoyanceIconData.StatRadiance == null) ? "RAM" : _clairvoyanceIconData.StatRadiance.name;
                 }
