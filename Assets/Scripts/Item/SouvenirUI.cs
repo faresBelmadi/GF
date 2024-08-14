@@ -7,17 +7,18 @@ using UnityEngine.UI;
 [System.Serializable]
 public class SouvenirUI : MonoBehaviour
 {
+    [HideInInspector]
     public Souvenir LeSouvenir;
-    public GameObject SouvenirObject;
     public TextMeshProUGUI TexteDescription;
+    [SerializeField]
+    private GameObject SouvenirImageGameObject;
     [Tooltip("Set the rarity border, starting with 0 = most common")]
     [SerializeField]
     private List<GameObject> _rarityBorders;
 
     public void StartUp()
     {
-        SouvenirObject = this.gameObject;
-        SouvenirObject.GetComponent<Image>().sprite = LeSouvenir.Icon;
+        SouvenirImageGameObject.GetComponent<Image>().sprite = LeSouvenir.Icon;
         TexteDescription.text = LeSouvenir.Nom + "\n" + DescriptionEmotion() + "\n" + "Slots : " + LeSouvenir.Slots.ToString() + "\n" + LeSouvenir.Description;
         SetRarityBorder(LeSouvenir.Rarete);
     }
