@@ -14,7 +14,12 @@ public class ProgressBarManager : MonoBehaviour
     [SerializeField] private Color HealColor;
     [SerializeField] private PulseBloom_System bloomSystem;
     private Coroutine SmoothProgressRoutine;
+    private Coroutine SmoothProgressPreviewRoutine;
     private float valueBuffer;
+
+    private bool _isPreviewing = false;
+    private float _previousBarValue;
+    private float _previousBarDeltaValue;
 
     public void InitPBar(int value, int max)
     {
@@ -24,8 +29,32 @@ public class ProgressBarManager : MonoBehaviour
     public void UpdatePBar(int value, int max)
     {
         if (!this.isActiveAndEnabled) return;
+        if (_isPreviewing) StopPreview();
         if (SmoothProgressRoutine != null) StopCoroutine(SmoothProgressRoutine);
         SmoothProgressRoutine = StartCoroutine(SmoothUpdateBarCoroutine(value, max));
+    }
+    public void PreviewBar(int newValue, int maxValue)
+    {
+        if (!_isPreviewing)
+        {
+            _isPreviewing = true;
+            _previousBarValue = bar.fillAmount;
+            _previousBarDeltaValue = barDelta.fillAmount;
+            if (!this.isActiveAndEnabled) return;
+            if (SmoothProgressPreviewRoutine != null) StopCoroutine(SmoothProgressPreviewRoutine);
+            SmoothProgressPreviewRoutine = StartCoroutine(SmoothUpdateBarCoroutine(newValue, maxValue));
+        }
+    }
+    public void StopPreview()
+    {
+        if (_isPreviewing)
+        {
+            if (SmoothProgressPreviewRoutine != null)
+                StopCoroutine(SmoothProgressPreviewRoutine);
+            barDelta.fillAmount = _previousBarDeltaValue;
+            bar.fillAmount = _previousBarValue;
+            _isPreviewing = false;
+        }
     }
 
     public void ToggleBloomPulses()
@@ -62,6 +91,7 @@ public class ProgressBarManager : MonoBehaviour
         }
         delayedBar.fillAmount = instantBar.fillAmount;
         SmoothProgressRoutine = null;
+        SmoothProgressPreviewRoutine = null;
     }
 
 }

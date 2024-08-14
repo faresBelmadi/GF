@@ -222,6 +222,7 @@ public class EnnemyBehavior : CombatBehavior
         string[] t = Stat.Nom.Split('(');
         UICombat.UpdateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
+        UICombat.OnPreviewDamage = PreviewDamage;
         
     }
 
@@ -531,6 +532,22 @@ public class EnnemyBehavior : CombatBehavior
     public void EndTargetingMode()
     {
         UICombat.TargetingMode = false;
+    }
+    public void PreviewDamage()
+    {
+        int damage = 0;
+        foreach (Effet effet in _refBattleMan.player.SelectSpell.ActionEffet)
+        {
+            effet.VisualizeAttack(_refBattleMan.player.Stat, Stat, out int dmg);
+            damage += dmg;
+        }
+
+        if (damage < 0)
+        {
+            var toRemove = Mathf.FloorToInt(damage / Stat.MultiplDef);
+            toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
+            UICombat.PreviewDmg(Stat.Radiance + toRemove, Stat.RadianceMax);
+        }
     }
 
     #endregion

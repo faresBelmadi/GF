@@ -21,6 +21,7 @@ public class UIEnnemi : MonoBehaviour
     public bool TargetingMode = false;
 
     public Action RaiseEvent;
+    public Action OnPreviewDamage;
 
     public Transform degatSoinParent, buffParents, debuffParents;
 
@@ -50,7 +51,10 @@ public class UIEnnemi : MonoBehaviour
     private void OnMouseEnter()
     {
         if (TargetingMode)
+        {
             Ciblage.SetActive(true);
+            OnPreviewDamage?.Invoke();
+        }
         //if (debuffParents.childCount > 0 || buffParents.childCount > 0)
         //    GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("ShowDescription");
     }
@@ -58,7 +62,10 @@ public class UIEnnemi : MonoBehaviour
     private void OnMouseExit()
     {
         if (TargetingMode)
+        {
             Ciblage.SetActive(false);
+            HPBarManager.StopPreview();
+        }
 
         //if (debuffParents.childCount > 0 || buffParents.childCount > 0)
         //    GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("HideDescription");
@@ -81,6 +88,11 @@ public class UIEnnemi : MonoBehaviour
         Intention.sprite = intent;
     }
 
+    public void PreviewDmg(int value, int maxRadiance)
+    {
+        HPBarManager.PreviewBar(value, maxRadiance);
+    }
+
     private void OnMouseDown()
     {
         if (TargetingMode)
@@ -89,5 +101,5 @@ public class UIEnnemi : MonoBehaviour
             Ciblage.SetActive(false);
         }
     }
-    
+
 }

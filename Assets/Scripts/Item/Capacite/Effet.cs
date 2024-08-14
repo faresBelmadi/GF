@@ -82,6 +82,181 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
+    public bool VisualizeAttack(CharacterStat caster, CharacterStat cible, out int damageAmount, int NbEnnemies = 1)
+    {
+        int percent;
+        int nbProcDamage;
+        damageAmount = 0;
+        int valueToChange = ValeurBrut * NbAttaque;
+        switch (this.TypeEffet)
+        {
+            case TypeEffet.DegatsForceAme:
+                damageAmount +=
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * caster.ForceAme) * caster.MultiplDegat);
+                break;
+            case TypeEffet.DegatsBrut:
+                damageAmount += Mathf.FloorToInt(valueToChange * caster .MultiplDegat);
+                break;
+            case TypeEffet.RadianceMax:
+               
+                damageAmount = Mathf.FloorToInt((Pourcentage / 100f) * ((cible.Radiance / cible.RadianceMax) * cible.RadianceMaxOriginal));
+  
+                break;
+           
+            case TypeEffet.DegatPVMax:
+                damageAmount += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * cible.RadianceMax);
+                break;
+            case TypeEffet.Soin:
+                damageAmount += valueToChange;
+                break;
+           
+            case TypeEffet.RandomAttaque:
+                damageAmount +=
+                    Mathf.FloorToInt(((Pourcentage / 100f) * Random.Range(RandomX, RandomY + 1) * caster.ForceAme));
+                break;
+          
+            case TypeEffet.AttaqueStackAmant:
+                damageAmount +=
+                    Mathf.FloorToInt(((Pourcentage / 100f) * cible.ListBuffDebuff.Count(c => c.Nom == "Amant")) *
+                                     caster.ForceAme);
+                break;
+            case TypeEffet.AttaqueFADebuff:
+                var tempListAFAD = cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
+
+                damageAmount +=
+                    Mathf.FloorToInt(((Pourcentage + (ValeurBrut * tempListAFAD.Count()) / 100f) * NbAttaque) *
+                                     caster.ForceAme);
+                break;
+            case TypeEffet.DamageLastPhase:
+                damageAmount += -GameManager.instance.BattleMan.LastPhaseDamage;
+                break;
+            case TypeEffet.DegatsBrutConsequence:
+                damageAmount += valueToChange;
+                break;
+            case TypeEffet.DamageUpTargetLowRadiance:
+                percent = Pourcentage;
+                if (((float)cible.Radiance / (float)cible.RadianceMax) <= 0.25f)
+                    percent *= 3;
+                damageAmount +=
+                    Mathf.FloorToInt((((percent / 100f) * NbAttaque) * caster.ForceAme) * caster.MultiplDegat);
+                break;
+            case TypeEffet.UntilDeath:
+                damageAmount +=
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * caster.ForceAme) * caster.MultiplDegat);
+                //if (damageAmount < Cible.Radiance)
+                //    Caster.Radiance -= Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);
+                break;
+            case TypeEffet.DegatsRetourSurAttaque:
+                damageAmount += Mathf.FloorToInt(Pourcentage / 100f * caster.ForceAme);
+                break;
+
+            case TypeEffet.CancelPourcentageDamage:
+                damageAmount += Mathf.FloorToInt(valueToChange - ((Pourcentage / 100) * valueToChange));
+                break;
+            case TypeEffet.DamageFaBuff:
+                var nbBuffCaster = caster.ListBuffDebuff.Count(x => !x.IsDebuff);
+                damageAmount += Mathf.FloorToInt(((Pourcentage / 100f) * caster.ForceAme) * nbBuffCaster);
+                break;
+
+            case TypeEffet.DamageDebuffCible:
+                var nbDebuffCibleDamage = cible.ListBuffDebuff.Count(x => x.IsDebuff);
+                var percentDamages = Pourcentage + (ValeurParBuffDebuff * nbDebuffCibleDamage);
+                damageAmount += Mathf.FloorToInt(((percentDamages / 100f) * caster.ForceAme));
+                break;
+            //case TypeEffet.RemoveAllTensionProcDamage:
+            //    ModifState.Tension = 0;
+            //    break;
+           
+
+            case TypeEffet.RemoveAllDebuffProcDamage:
+                nbProcDamage = RemoveBuffOrDebuffFromList(cible, true, false);
+                damageAmount += valueToChange * nbProcDamage;
+                break;
+            case TypeEffet.RemoveAllDebuffSelfProcDamage:
+                nbProcDamage = RemoveBuffOrDebuffFromList(cible, true, false);
+                damageAmount += valueToChange * nbProcDamage;
+                break;
+            case TypeEffet.RemoveAllBuffProcDamage:
+                nbProcDamage = RemoveBuffOrDebuffFromList(cible, false, false);
+                damageAmount += valueToChange * nbProcDamage;
+                break;
+            case TypeEffet.Ponction:
+                var amountPonction =
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * cible.Radiance) *
+                                     caster.MultiplDegat); //checker le multipl degat
+
+                damageAmount += -amountPonction;
+                break;
+            case TypeEffet.DamageAllEvenly:
+
+                damageAmount +=
+                    Mathf.FloorToInt((((((float)Pourcentage / NbEnnemies) / 100f) * NbAttaque) * caster.ForceAme) * caster.MultiplDegat);
+                break;
+            case TypeEffet.DegatsFaRadianceManquanteCible:
+                damageAmount +=
+                    Mathf.FloorToInt(((Pourcentage / 100f) * caster.ForceAme) * (cible.Radiance * 100f / cible.RadianceMax));
+                break;
+            case TypeEffet.DegatsFaRadianceManquanteCaster:
+                damageAmount +=
+                    Mathf.FloorToInt(((Pourcentage / 100f) * caster.ForceAme) * (caster.Radiance * 100f / caster.RadianceMax));
+                break;
+            case TypeEffet.DamageFaBuffCible:
+                var nbBuff = cible.ListBuffDebuff.Count(x => !x.IsDebuff);
+                var percentDamage = Pourcentage + (ValeurParBuffDebuff * nbBuff);
+                damageAmount += Mathf.FloorToInt(((percentDamage / 100f) * caster.ForceAme));
+                break;
+            case TypeEffet.PonctionForceAme:
+                var amountPonctionFA =
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * caster.ForceAme) *
+                                     caster.MultiplDegat); //checker le multipl degat
+                damageAmount += -amountPonctionFA;
+                break;
+            case TypeEffet.PremiereAttaqueJeanne:
+                var JeanneStat = (EnnemiStat)caster;
+                int percentageFa = 0;
+                if (JeanneStat.Divin <= 25)
+                {
+                    percentageFa = 0;
+                    nbProcAfterEffect = 1;
+                }
+                else if (JeanneStat.Divin > 25 && JeanneStat.Divin <= 50)
+                {
+                    percentageFa = 20;
+                    nbProcAfterEffect = 2;
+                }
+                else if (JeanneStat.Divin > 50)
+                {
+                    percentageFa = 40;
+                    nbProcAfterEffect = 4;
+                }
+                var totalPercentage = -(percentageFa + (Pourcentage * -1));
+                damageAmount +=
+                    Mathf.FloorToInt(((totalPercentage / 100f) * caster.ForceAme) * caster.MultiplDegat);
+                //Application de Hérétique nb dépende du truc 
+                break;
+            case TypeEffet.DeuxiemeAttaqueJeanne:
+                var JeanneStat2 = (EnnemiStat)caster;
+                var divin = JeanneStat2.Divin > 0 ? JeanneStat2.Divin : JeanneStat2.Divin * -1;
+                var TotalPercentage = -(divin + (Pourcentage * -1));
+                damageAmount += Mathf.FloorToInt(((TotalPercentage / 100f) * caster.ForceAme) * caster.MultiplDegat);
+                break;
+            case TypeEffet.SupportJeanne:
+                var JeanneStat3 = (EnnemiStat)caster;
+                JeanneStat3.Divin -= 20;
+                damageAmount += Mathf.FloorToInt((Pourcentage / 100f) * caster.RadianceMax);
+                break;
+            case TypeEffet.UltimeJeanne:
+                var JeanneStat4 = (EnnemiStat)caster;
+                damageAmount += Mathf.FloorToInt(-JeanneStat4.Divin / 100f * caster.ForceAme);
+                JeanneStat4.Divin = -30;
+                break;
+            default:
+                return false;
+        }
+        return true;
+
+    }
+
     private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
     {
         int valueToChange = ValeurBrut * NbAttaque;
@@ -399,16 +574,19 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    private int RemoveBuffOrDebuffFromList(CharacterStat Cible, bool isDebuff)
+    private int RemoveBuffOrDebuffFromList(CharacterStat Cible, bool isDebuff, bool removeBuff=true)
     {
         int nbBuffDebuffRemoved = 0;
         if (Cible.ListBuffDebuff != null)
         {
             var tempListBuffDebuff = Cible.ListBuffDebuff.Where(x => x.IsDebuff == isDebuff);
             nbBuffDebuffRemoved = tempListBuffDebuff.Count();
-            foreach (var buffDebuff in tempListBuffDebuff)
+            if (removeBuff)
             {
-                buffDebuff.Temps = -1;
+                foreach (var buffDebuff in tempListBuffDebuff)
+                {
+                    buffDebuff.Temps = -1;
+                }
             }
         }
         return nbBuffDebuffRemoved;

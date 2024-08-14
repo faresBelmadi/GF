@@ -70,7 +70,6 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     }
     public void UpdateUI()
     {
-        Debug.Log("UpdateBUFFDescription");
         buffDescriptionLabel.text = TradManager.instance.GetTranslation(_buffDebuff.idTradDescription, "Missing description");
     }
 
