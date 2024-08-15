@@ -361,8 +361,8 @@ public class Analyzer : MonoBehaviour
                     }
                     spriteName = (_clairvoyanceIconData.StatRadiance == null) ? "RAM" : _clairvoyanceIconData.StatRadiance.name;
                 }
-
-                strb.Append(numericValue);
+                
+                strb.Append(Mathf.FloorToInt(numericValue));
                 strb.Append(" <sprite name=\"");
                 strb.Append(spriteName);
                 strb.Append("\">");
@@ -392,7 +392,7 @@ public class Analyzer : MonoBehaviour
                     }
                 }
                 spriteName = (_clairvoyanceIconData.Damage == null) ? "DMG" : _clairvoyanceIconData.Damage.name;
-                strb.Append(damageValue.ToString());
+                strb.Append(Mathf.FloorToInt(damageValue));
                 strb.Append(" <sprite name=\"");
                 strb.Append(spriteName);
                 strb.Append("\">");
