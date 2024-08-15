@@ -223,6 +223,7 @@ public class EnnemyBehavior : CombatBehavior
         UICombat.UpdateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
         UICombat.OnPreviewDamage = PreviewDamage;
+        UICombat.OnStopPreviewDamage = StopPreviewDamage;
         
     }
 
@@ -535,19 +536,38 @@ public class EnnemyBehavior : CombatBehavior
     }
     public void PreviewDamage()
     {
-        int damage = 0;
+        int[] damageList = new int[_refBattleMan.EnemyScripts.Count];
+        //int damage = 0;
         foreach (Effet effet in _refBattleMan.player.SelectSpell.ActionEffet)
         {
-            effet.VisualizeAttack(_refBattleMan.player.Stat, Stat, out int dmg);
-            damage += dmg;
+            effet.VisualizeAttack(_refBattleMan.player.Stat, Stat, out int dmg, _refBattleMan.EnemyScripts.Count);
+            if (effet.Cible == Cible.allEnnemi)
+            {
+
+                damageList = damageList.Select(x => x + dmg).ToArray();
+            }
+            else
+            {
+                damageList[combatID-1] += dmg;
+            }
+        }
+        foreach (EnnemyBehavior ennemy in _refBattleMan.EnemyScripts)
+        {
+            if (damageList[ennemy.combatID-1] < 0)
+            {
+                var toRemove = Mathf.FloorToInt(damageList[combatID-1] / ennemy.Stat.MultiplDef);
+                toRemove -= Mathf.FloorToInt(((ennemy.Stat.Resilience * 3) / 100f) * toRemove);
+                ennemy.UICombat.PreviewDmg(ennemy.Stat.Radiance + toRemove, ennemy.Stat.RadianceMax);
+            }
+        }
+    }
+    public void StopPreviewDamage()
+    {
+        foreach (EnnemyBehavior ennemy in _refBattleMan.EnemyScripts)
+        {
+            ennemy.UICombat.StopPreview();
         }
 
-        if (damage < 0)
-        {
-            var toRemove = Mathf.FloorToInt(damage / Stat.MultiplDef);
-            toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
-            UICombat.PreviewDmg(Stat.Radiance + toRemove, Stat.RadianceMax);
-        }
     }
 
     #endregion

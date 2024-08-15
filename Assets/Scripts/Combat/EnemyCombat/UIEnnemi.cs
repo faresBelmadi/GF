@@ -22,6 +22,7 @@ public class UIEnnemi : MonoBehaviour
 
     public Action RaiseEvent;
     public Action OnPreviewDamage;
+    public Action OnStopPreviewDamage;
 
     public Transform degatSoinParent, buffParents, debuffParents;
 
@@ -64,7 +65,7 @@ public class UIEnnemi : MonoBehaviour
         if (TargetingMode)
         {
             Ciblage.SetActive(false);
-            HPBarManager.StopPreview();
+            OnStopPreviewDamage?.Invoke();
         }
 
         //if (debuffParents.childCount > 0 || buffParents.childCount > 0)
@@ -91,6 +92,10 @@ public class UIEnnemi : MonoBehaviour
     public void PreviewDmg(int value, int maxRadiance)
     {
         HPBarManager.PreviewBar(value, maxRadiance);
+    }
+    public void StopPreview()
+    {
+        HPBarManager.StopPreview();
     }
 
     private void OnMouseDown()
