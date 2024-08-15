@@ -40,9 +40,15 @@ public class ProgressBarManager : MonoBehaviour
             _isPreviewing = true;
             _previousBarValue = bar.fillAmount;
             _previousBarDeltaValue = barDelta.fillAmount;
+
+            //float tempValue = (float)newValue / (float)maxValue;
+            //barDelta.color = HitColor;
+            //bar.fillAmount = tempValue;
+
+
             if (!this.isActiveAndEnabled) return;
             if (SmoothProgressPreviewRoutine != null) StopCoroutine(SmoothProgressPreviewRoutine);
-            SmoothProgressPreviewRoutine = StartCoroutine(SmoothUpdateBarCoroutine(newValue, maxValue));
+            SmoothProgressPreviewRoutine = StartCoroutine(SmoothPreviewBarCoroutine(newValue, maxValue));
         }
     }
     public void StopPreview()
@@ -94,4 +100,29 @@ public class ProgressBarManager : MonoBehaviour
         SmoothProgressPreviewRoutine = null;
     }
 
+    IEnumerator SmoothPreviewBarCoroutine(int value, int max)
+    {
+        float oldValue = valueBuffer;
+        valueBuffer = (float)value / (float)max;
+       
+
+        Color deltaColor = HitColor;
+        Image instantBar =  bar;
+        Image delayedBar =  barDelta;
+
+        delayedBar.fillAmount = instantBar.fillAmount;
+        barDelta.color = deltaColor;
+        //yield return new WaitForSecondsRealtime(hitsustainTime);
+
+        while (instantBar.fillAmount > valueBuffer)
+        {
+            float step = Time.unscaledDeltaTime * hitfallOffSpeed * 2;
+            instantBar.fillAmount -= step;
+            yield return null;
+        }
+
+        instantBar.fillAmount = valueBuffer;
+
+        SmoothProgressPreviewRoutine = null;
+    }
 }

@@ -55,7 +55,7 @@ public class HighlightCost : MonoBehaviour
         {
             _volonteHighlightGO.SetActive(true);
             _highlightSlider.value = volonteCost;
-            if (_bloomVolonteComponent.loop == true) _bloomVolonteComponent.OnToggleLoop();
+           // if (_bloomVolonteComponent.loop == true) _bloomVolonteComponent.OnToggleLoop();
             _bloomVolonteComponent.TriggerBloom(true);
         }
 
@@ -70,7 +70,7 @@ public class HighlightCost : MonoBehaviour
             float percentCost = ((float)radCost) / (float)GameManager.instance.playerStat.RadianceMax;
             _highlightRadianceImage.fillAmount = _radianceImage.fillAmount - percentCost;
 
-            if (_bloomRadianceComponent.loop == true) _bloomRadianceComponent.OnToggleLoop();
+           // if (_bloomRadianceComponent.loop == true) _bloomRadianceComponent.OnToggleLoop();
             _bloomRadianceComponent.TriggerBloom(true);
         }
 
@@ -84,7 +84,7 @@ public class HighlightCost : MonoBehaviour
             
             _highlightConscienceImage.fillAmount = _conscienceImage.fillAmount - (conscCost / 10f);
 
-            if (_bloomConscienceComponent.loop == true) _bloomConscienceComponent.OnToggleLoop();
+           // if (_bloomConscienceComponent.loop == true) _bloomConscienceComponent.OnToggleLoop();
             _bloomConscienceComponent.TriggerBloom(true);
         }
 
@@ -108,7 +108,7 @@ public class HighlightCost : MonoBehaviour
         if (_selectVolonteCost > 0)
         {
             _volonteHighlightGO.SetActive(true);
-            if (_bloomVolonteComponent.loop == false) _bloomVolonteComponent.OnToggleLoop();
+           // if (_bloomVolonteComponent.loop == false) _bloomVolonteComponent.OnToggleLoop();
             _bloomVolonteComponent.TriggerBloom(true);
         }
 
@@ -150,7 +150,7 @@ public class HighlightCost : MonoBehaviour
              _selectConscCost = conscCost;
             _conscienceHighlightGO.SetActive(true);
 
-            if (_bloomConscienceComponent.loop == true) _bloomConscienceComponent.OnToggleLoop();
+            //if (_bloomConscienceComponent.loop == true) _bloomConscienceComponent.OnToggleLoop();
             _bloomConscienceComponent.TriggerBloom(true);
         }
         if (_radianceHighlightGO.activeSelf && radCost > 0)
@@ -158,14 +158,14 @@ public class HighlightCost : MonoBehaviour
             _selectRadCost = radCost;
             _radianceHighlightGO.SetActive(true);
 
-            if (_bloomRadianceComponent.loop == true) _bloomRadianceComponent.OnToggleLoop();
+            //if (_bloomRadianceComponent.loop == true) _bloomRadianceComponent.OnToggleLoop();
             _bloomRadianceComponent.TriggerBloom(true);
         }
 
         if (_volonteHighlightGO.activeSelf)
         {
             _selectVolonteCost = volonteCost;
-            if (_bloomVolonteComponent.loop == false) _bloomVolonteComponent.OnToggleLoop();
+           // if (_bloomVolonteComponent.loop == false) _bloomVolonteComponent.OnToggleLoop();
             _bloomVolonteComponent.TriggerBloom(true);
         }
     }
