@@ -9,6 +9,7 @@ public class TargetableTurnOrderItem : MonoBehaviour
 {
     public GameObject Ciblage;
     public Image Intention;
+    public string entityName;
 
     public Action RaiseEvent;
 

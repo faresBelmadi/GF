@@ -12,11 +12,15 @@ public class TurnOrderUIManager : MonoBehaviour
 {
     [SerializeField] private GameObject turnItemPrefab;
     [SerializeField] private RectTransform turnItemHolder;
+    [SerializeField] private TextMeshProUGUI curentlyPlayingEntity;
     [SerializeField] private float switchTurnDelay;
+    [SerializeField] private float turItemBaseScale;
 
     [SerializeField] private RectTransform curtain;
     [SerializeField] private float curtainMovmentDuration;
     [SerializeField] private float curtainSustainTime;
+    [SerializeField] private AnimationCurve curtainAnimation;
+    [SerializeField] private PulseBloom_System curtainBloomSystem;
 
     [SerializeField] private BattleManager battleManager;
 
@@ -31,6 +35,7 @@ public class TurnOrderUIManager : MonoBehaviour
         }
         generateNextTurnOrderRoutine = StartCoroutine(GenerateNextTurnOrderCoroutine(idOrder));
     }
+
     public void GenerateTurnItems(List<CombatOrder> IdOrder)
     {
         foreach (Tuple<int, GameObject> turnItem in turnTuple)
@@ -55,14 +60,19 @@ public class TurnOrderUIManager : MonoBehaviour
 
             GameObject turnItem = Instantiate(turnItemPrefab,turnItemHolder);
             turnItem.GetComponentInChildren<Image>().sprite = icon;
+            turnItem.transform.localScale = Vector3.one * turItemBaseScale;
             //turnItem.GetComponentInChildren<TextMeshProUGUI>().text = entityName;
             turnItem.GetComponent<TargetableTurnOrderItem>().Ciblage = cible;
+            turnItem.GetComponent<TargetableTurnOrderItem>().entityName = entityName;
             turnTuple.Add(new Tuple<int,GameObject>(IdOrder[i].id, turnItem));
         }
+        turnTuple[0].Item2.transform.localScale = Vector3.one;
+        curentlyPlayingEntity.text = turnTuple[0].Item2.GetComponent<TargetableTurnOrderItem>().entityName;
     }
     public void EvovlveTurnOrder()
     {
-        if(evolveTurnOrderRoutine != null)
+        curentlyPlayingEntity.text = turnTuple[1].Item2.GetComponent<TargetableTurnOrderItem>().entityName;
+        if (evolveTurnOrderRoutine != null)
         {
             StopCoroutine(evolveTurnOrderRoutine);
         }
@@ -73,16 +83,26 @@ public class TurnOrderUIManager : MonoBehaviour
         if(turnTuple.Count > 0)
         {
             float itemLength = turnTuple[0].Item2.GetComponent<RectTransform>().sizeDelta.x;
-            Vector2 defaultPos = GetComponent<RectTransform>().pivot;
+            Vector3 defaultPos = GetComponent<RectTransform>().pivot;
 
             turnItemHolder.localPosition = defaultPos;//new Vector3(-barSemiSize, 0f, 0f);
             if(switchTurnDelay > 0f)
             {
+                float time = 0f;
+                while (time < switchTurnDelay)
+                {
+                    time += Time.deltaTime;
+                    turnItemHolder.localPosition = defaultPos + Vector3.left * itemLength * (time/switchTurnDelay);
+                    turnTuple[1].Item2.transform.localScale = Vector3.one * (turItemBaseScale + (1f - turItemBaseScale)* (time / switchTurnDelay));
+                    yield return null;
+                }
+                /*
                 while (turnItemHolder.localPosition.x > -(defaultPos.x + itemLength))
                 {
                     turnItemHolder.localPosition += Vector3.left * (itemLength / switchTurnDelay) * Time.deltaTime;
                     yield return null;
-                }
+                } 
+                */
             }
             Destroy(turnTuple[0].Item2);
             turnTuple.RemoveAt(0);
@@ -97,27 +117,34 @@ public class TurnOrderUIManager : MonoBehaviour
         float curtainHeight = curtain.rect.height;
         Vector2 defaultPos = Vector2.up * curtainHeight;
         Debug.Log($"DropCurtain, height:{curtainHeight}");
-        curtain.localPosition = Vector3.up * 100f;// defaultPos;
+        curtain.localPosition = defaultPos;
         if (curtainMovmentDuration > 0f)
         {
-            while (curtain.localPosition.y > 0f )
+            
+            float time = 0f;
+            while(time < curtainMovmentDuration)
             {
-                curtain.localPosition += Vector3.down * (curtainHeight/ curtainMovmentDuration) * Time.deltaTime;
+                time += Time.deltaTime;
+                curtain.localPosition = Vector3.up * curtainHeight * curtainAnimation.Evaluate(time / curtainMovmentDuration);
                 yield return null;
             }
         }
         curtain.localPosition = Vector3.zero;
         Debug.Log($"SustainCurtain");
         GenerateTurnItems(idOrder);
+        curtainBloomSystem.TriggerBloom();
         yield return new WaitForSecondsRealtime(curtainSustainTime);
 
         Debug.Log($"RemoveCurtain");
         curtain.localPosition = Vector3.zero;
         if (curtainMovmentDuration > 0f)
         {
-            while (curtain.localPosition.y < 100f)//defaultPos.y)
+            
+            float time = 0f;
+            while (time < curtainMovmentDuration)
             {
-                curtain.localPosition += Vector3.up * (curtainHeight / curtainMovmentDuration) * Time.deltaTime;
+                time += Time.deltaTime;
+                curtain.localPosition = Vector3.up * curtainHeight * curtainAnimation.Evaluate(1f-(time / curtainMovmentDuration));
                 yield return null;
             }
         }
