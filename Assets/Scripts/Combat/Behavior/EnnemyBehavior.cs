@@ -11,7 +11,7 @@ public class EnnemyBehavior : CombatBehavior
     public UIEnnemi UICombat;
     public int TensionUI;
     public Material characterMaterial;
-
+    public float deathDisolveTime = 2f;
     public int combatID;
     public EnnemiSpell nextAction;
     public GameObject EssencePrefab;
@@ -30,10 +30,10 @@ public class EnnemyBehavior : CombatBehavior
     IEnumerator DeathCoroutine()
     {
         float time = 0f;
-        while (time < 1f)
+        while (time < deathDisolveTime)
         {
             time += Time.deltaTime;
-            characterMaterial.SetFloat("_DisolveHeight", time);
+            characterMaterial.SetFloat("_DisolveHeight", time/ deathDisolveTime);
             yield return null;
         }
         Dead();

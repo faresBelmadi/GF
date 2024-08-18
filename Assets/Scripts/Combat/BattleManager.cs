@@ -289,7 +289,7 @@ public class BattleManager : MonoBehaviour
             temp.GetComponent<PulseBloom_System>().bloomMaterial = thisCharMaterial;
 
             
-            foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>())
+            foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>(true))
             {
                 renderer.material = thisCharMaterial;
             }
