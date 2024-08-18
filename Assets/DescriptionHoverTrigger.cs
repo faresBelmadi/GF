@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -6,12 +7,14 @@ public class DescriptionHoverTrigger : MonoBehaviour, IPointerEnterHandler, IPoi
 {
     public GameObject ToShow;
     public TextMeshProUGUI Description;
+    private DescriptionHoverVisibility rectVisibility = new DescriptionHoverVisibility();
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         Debug.Log("enter");
         ToShow.SetActive(true);
-        ToShow.gameObject.transform.localPosition = new Vector3(0, 450);
+
+        rectVisibility.CheckVisibilityAndAdjustPosition(ToShow.GetComponent<RectTransform>(), FindAnyObjectByType<Camera>());
     }
 
     public void OnPointerExit(PointerEventData eventData)

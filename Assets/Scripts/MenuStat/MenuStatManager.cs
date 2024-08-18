@@ -294,12 +294,19 @@ public class MenuStatManager : MonoBehaviour
                         {
                             Temp = item.ParametreModifStat.Valeur;
                         }
+
+                        var tempResiliencePassif = StatTemp.ResiliencePassif;
+                        StatTemp.ResiliencePassif = 0;
                         StatTemp.Resilience += Temp;
+                        StatTemp.ResiliencePassif = tempResiliencePassif;
                         item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
+                        var tempResiliencePassif = StatTemp.ResiliencePassif;
+                        StatTemp.ResiliencePassif = 0;
                         StatTemp.Resilience -= item.ParametreModifStat.ValeurModifier;
+                        StatTemp.ResiliencePassif = tempResiliencePassif;
                     }
                     break;
                 case StatModif.Vitesse:
@@ -335,11 +342,13 @@ public class MenuStatManager : MonoBehaviour
                             Temp = item.ParametreModifStat.Valeur;
                         }
                         StatTemp.VolonterMax += Temp;
+                        StatTemp.Volonter += Temp;
                         item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
                         StatTemp.VolonterMax -= item.ParametreModifStat.ValeurModifier;
+                        StatTemp.Volonter -= item.ParametreModifStat.ValeurModifier;
                     }
                     break;
             }
