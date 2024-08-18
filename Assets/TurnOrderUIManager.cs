@@ -63,6 +63,7 @@ public class TurnOrderUIManager : MonoBehaviour
             GameObject turnItem = Instantiate(turnItemPrefab,turnItemHolder);
             turnItem.GetComponentInChildren<Image>().sprite = icon;
             turnItem.GetComponentInChildren<Image>().material= charMaterial;
+
             turnItem.transform.localScale = Vector3.one * turItemBaseScale;
             //turnItem.GetComponentInChildren<TextMeshProUGUI>().text = entityName;
             turnItem.GetComponent<TargetableTurnOrderItem>().Ciblage = cible;

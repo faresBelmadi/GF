@@ -23,20 +23,11 @@ Shader "Unlit/CharacterShaderCustom"
     }
     SubShader
     {
-        ColorMask[_ColorMask]
-
-        Stencil
-        {
-            Ref [_Stencil]
-            Comp [_StencilComp]
-            Pass [_StencilOp]
-            ReadMask 255
-            WriteMask 255
-        }
+        
         Tags
         {
             "RenderPipeline"="UniversalPipeline"
-            "RenderType"="Opaque"
+            "RenderType"="Transparent"
             "UniversalMaterialType" = "Unlit"
             "Queue"="Transparent"
             // DisableBatching: <None>
@@ -45,12 +36,21 @@ Shader "Unlit/CharacterShaderCustom"
         }
         Pass
         {
+            
             Name "Sprite Unlit"
             Tags
             {
                 "LightMode" = "Universal2D"
             }
-        
+        ColorMask[_ColorMask]
+        Stencil
+        {
+            Ref [_Stencil]
+            Comp [_StencilComp]
+            Pass [_StencilOp]
+            ReadMask 255
+            WriteMask 255
+        }
         // Render State
         Cull Off
         Blend SrcAlpha OneMinusSrcAlpha, One OneMinusSrcAlpha
