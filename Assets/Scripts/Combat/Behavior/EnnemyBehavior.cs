@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +10,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public UIEnnemi UICombat;
     public int TensionUI;
+    public Material characterMaterial;
 
     public int combatID;
     public EnnemiSpell nextAction;
@@ -23,8 +25,20 @@ public class EnnemyBehavior : CombatBehavior
 
     private int currentHp = 0;
     private int currentTension = 0;
+    private Coroutine deathRoutine = null;
     #region Divers start & fin
-
+    IEnumerator DeathCoroutine()
+    {
+        float time = 0f;
+        while (time < 1f)
+        {
+            time += Time.deltaTime;
+            characterMaterial.SetFloat("_DisolveHeight", time);
+            yield return null;
+        }
+        Dead();
+        deathRoutine = null;
+    }
     public void SetUp()
     {
         _refBattleMan = GameManager.instance.BattleMan;
@@ -508,7 +522,8 @@ public class EnnemyBehavior : CombatBehavior
         if (Stat.Radiance <= 0)
         {
             /*EndTurn();*/ // provoque une fin de tour du joueur a la mort d'un ennemi, est ce que c'est une feature voulu ?
-            Dead();
+            deathRoutine = StartCoroutine(DeathCoroutine());
+            //Dead();
         }
     }
 
@@ -540,6 +555,7 @@ public class EnnemyBehavior : CombatBehavior
     {
         DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
         this.GetComponent<Animator>().SetBool("IsAttacked", true);
+        gameObject.GetComponent<PulseBloom_System>().TriggerBloom();
     }
 
     public void EndAnimHurt()
@@ -592,5 +608,6 @@ public class EnnemyBehavior : CombatBehavior
 
     #endregion Animation
 
+    
 }
 

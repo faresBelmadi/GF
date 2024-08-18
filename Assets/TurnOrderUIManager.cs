@@ -51,15 +51,18 @@ public class TurnOrderUIManager : MonoBehaviour
             string entityName = "Player";
             GameObject cible = null;
             Sprite icon = battleManager.player.Stat.Icon;
+            Material charMaterial = null;
             if (IdOrder[i].id != battleManager.idPlayer)
             {
                 entityName = ennemyBehavior.name.TrimEnd("Variant(Clone)".ToCharArray());
                 cible = ennemyBehavior.GetComponent<UIEnnemi>().Ciblage;
                 icon = ennemyBehavior.Stat.Icon;
+                charMaterial = ennemyBehavior.characterMaterial;
             }
 
             GameObject turnItem = Instantiate(turnItemPrefab,turnItemHolder);
             turnItem.GetComponentInChildren<Image>().sprite = icon;
+            turnItem.GetComponentInChildren<Image>().material= charMaterial;
             turnItem.transform.localScale = Vector3.one * turItemBaseScale;
             //turnItem.GetComponentInChildren<TextMeshProUGUI>().text = entityName;
             turnItem.GetComponent<TargetableTurnOrderItem>().Ciblage = cible;

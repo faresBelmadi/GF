@@ -11,7 +11,7 @@ public class PulseBloom_System : MonoBehaviour
     [SerializeField]
     bool startActive = false;
     [SerializeField]
-    float defaultIntensity = 0f;
+    float defaultIntensity = 0.5f;
     [SerializeField]
     float bloomDuration = 1f;
     [SerializeField]
@@ -24,7 +24,7 @@ public class PulseBloom_System : MonoBehaviour
     private Gradient bloomGradient;
 
     [SerializeField]
-    private Material bloomMaterial;
+    public Material bloomMaterial;
     private Coroutine bloomRoutine = null;
     private CultureInfo en_us = CultureInfo.GetCultureInfo("en-US");
     private void Start()
@@ -62,7 +62,7 @@ public class PulseBloom_System : MonoBehaviour
             yield return null;
 
         } while (timePassed < bloomDuration);
-        bloomMaterial.SetFloat("_Intensity", .5f);
+        bloomMaterial.SetFloat("_Intensity", defaultIntensity);
         bloomMaterial.SetColor("_Color", Color.white);
         bloomRoutine = null;
         if (loop) { TriggerBloom(); }

@@ -48,6 +48,7 @@ public class BattleManager : MonoBehaviour
     public bool ConsumedEssence;
     public int EssenceGained;
 
+    [SerializeField] private Material characterMaterial;
     [SerializeField] private Material ennemiUIMaterial;
 
     #region Loot
@@ -282,7 +283,18 @@ public class BattleManager : MonoBehaviour
             //AddingMaterial
             temp.GetComponent<UIEnnemi>().imageCadreFGs[0].material = new Material(ennemiUIMaterial);
             temp.GetComponent<UIEnnemi>().imageCadreFGs[1].material = new Material(ennemiUIMaterial);
+
+            Material thisCharMaterial = new Material(characterMaterial);
+            if (tempCombatScript != null) tempCombatScript.characterMaterial = thisCharMaterial;
+            temp.GetComponent<PulseBloom_System>().bloomMaterial = thisCharMaterial;
+
+            
+            foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>())
+            {
+                renderer.material = thisCharMaterial;
+            }
         }
+
     }
 
     public void StartCombat()
