@@ -7051,6 +7051,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -2949060696578477739, guid: 2f6c8bd3ce493034fb53663a3cc6ae8e, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5654147462372662326}
+    - targetCorrespondingSourceObject: {fileID: -2949060696578477739, guid: 2f6c8bd3ce493034fb53663a3cc6ae8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5839848575912100431}
   m_SourcePrefab: {fileID: -4633975675693982054, guid: 2f6c8bd3ce493034fb53663a3cc6ae8e, type: 3}
 --- !u!4 &2294787297966533148 stripped
 Transform:
@@ -7147,6 +7150,8 @@ MonoBehaviour:
   BuffPrefab: {fileID: 8673195161482103611, guid: b0d011bbc909fee4aa8d4f0cbec06220, type: 3}
   BuffContainer: {fileID: 278700660409446592}
   DebuffContainer: {fileID: 4997891616610507879}
+  _debuffTextColor: {r: 1, g: 0, b: 0, a: 1}
+  _buffTextColor: {r: 0, g: 1, b: 0, a: 1}
   LastDamageTaken: 0
   gainedTension: 0
   Stat: {fileID: 0}
@@ -7186,3 +7191,84 @@ MonoBehaviour:
   soinPrefab: {fileID: 369757569958449724, guid: 27af5be5d6aa1cb4bab7c465b4dfdeae, type: 3}
   degatPrefab: {fileID: 6455525814061643745, guid: 9a2387407ca1b4e439ff7a03898d83b4, type: 3}
   DebuffSpawned: []
+--- !u!114 &5839848575912100431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3862327204176296207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05357cfbf0a6ca14ab1d309c38fadf75, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startActive: 0
+  defaultIntensity: 0
+  bloomDuration: 0.3
+  loop: 0
+  bloomIntensity: 2
+  bloomIntensityShape:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 4.1973753
+      outSlope: 4.1973753
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.238806
+      value: 1.0023584
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.14325842
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.3168238
+      outSlope: -1.3168238
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  bloomGradient:
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 0, b: 0, a: 1}
+    key2: {r: 1, g: 1, b: 1, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 31804
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 2
+  bloomMaterial: {fileID: 0}

@@ -78,6 +78,7 @@ public class GameManager : MonoBehaviour {
             if(!loadedData.CurrentRun.Ended)
             {
                 getClassRun();
+                
                 playerStat = new JoueurStat() {
                     Radiance = loadedData.CurrentRun.player.Radiance,
                     RadianceMax = classSO.PlayerStat.RadianceMax,

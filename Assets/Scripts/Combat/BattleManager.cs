@@ -25,13 +25,14 @@ public class BattleManager : MonoBehaviour
     public int nbPhase = 0;
     public Dictionary<int, int> IdSpeedDictionary;
     public List<GameObject> ListEssence = new List<GameObject>();
+    [SerializeField] private TurnOrderUIManager turnOrderUIManager;
 
     [Header("Stats combats")] public float CalmeMoyen;
     public float CalmeMoyenAdversaire;
     public float CalmeMoyenJoueur;
 
     [SerializeField] int idIndexer = 0;
-    int idPlayer;
+    public int idPlayer;
     public int currentIdTurn;
     public int nbTurn;
     public int idTarget = -1;
@@ -47,6 +48,7 @@ public class BattleManager : MonoBehaviour
     public bool ConsumedEssence;
     public int EssenceGained;
 
+    [SerializeField] private Material characterMaterial;
     [SerializeField] private Material ennemiUIMaterial;
 
     #region Loot
@@ -281,7 +283,18 @@ public class BattleManager : MonoBehaviour
             //AddingMaterial
             temp.GetComponent<UIEnnemi>().imageCadreFGs[0].material = new Material(ennemiUIMaterial);
             temp.GetComponent<UIEnnemi>().imageCadreFGs[1].material = new Material(ennemiUIMaterial);
+
+            Material thisCharMaterial = new Material(characterMaterial);
+            if (tempCombatScript != null) tempCombatScript.characterMaterial = thisCharMaterial;
+            temp.GetComponent<PulseBloom_System>().bloomMaterial = thisCharMaterial;
+
+            
+            foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>(true))
+            {
+                renderer.material = thisCharMaterial;
+            }
         }
+
     }
 
     public void StartCombat()
@@ -343,7 +356,8 @@ public class BattleManager : MonoBehaviour
         currentIdTurn = 0;
         nbPhase++;
         nbTurn = 0;
-        StartNextTurn();
+        turnOrderUIManager.GenerateNextTurnOrder(IdOrder);
+        //StartNextTurn();
     }
 
     private void DetermTour()
@@ -356,13 +370,14 @@ public class BattleManager : MonoBehaviour
             if (CheckTension(item.Key))
                 IdOrder.Add(new CombatOrder() {id = item.Key, Played = false});
         }
+        //turnOrderUIManager.GenerateTurnItems(IdOrder);
     }
 
     #endregion Phase
 
     #region Turn
 
-    private void StartNextTurn()
+    public void StartNextTurn()
     {
         int key = IdOrder.First(c => c.Played == false).id;
         currentIdTurn = key;
@@ -396,7 +411,8 @@ public class BattleManager : MonoBehaviour
 
         }
         else
-            StartNextTurn();
+            turnOrderUIManager.EvovlveTurnOrder();//StartNextTurn();
+
     }
 
     #endregion Turn
@@ -824,6 +840,7 @@ public class BattleManager : MonoBehaviour
             nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true);
             IdOrder.RemoveAll(c => c.id == id);
             IdSpeedDictionary.Remove(id);
+            turnOrderUIManager.RemoveDeadsTurn(id);
             if (killed.isMainEnemy)
             {
                 List<EnnemyBehavior> tempList = new List<EnnemyBehavior>(EnemyScripts);

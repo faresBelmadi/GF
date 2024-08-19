@@ -4,6 +4,7 @@
 [CreateAssetMenu(fileName = "New Stat Ennemi", menuName = "Character/Create New Ennemi", order = 11)]
 public class EnnemiStat : CharacterStat
 {
+    public Sprite Icon;
     public string Nom;
     public int Dissimulation;
     public int DissimulationOriginal;

@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewClass", menuName = "Create New Playable Class", order = 2)]
 public class ClassPlayer : ScriptableObject
 {
-
     public int ID;
     public string nameClass;
 
