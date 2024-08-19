@@ -8,6 +8,11 @@ public class Essence : MonoBehaviour
 
     public int Heal { get => (isEnd) ? amount : Mathf.FloorToInt(amount / 2); }
 
+    private EssenceUI _essenceUI;
+    private void Start()
+    {
+        _essenceUI = GetComponentInChildren<EssenceUI>();
+    }
     public void AddEssence(int _amount)
     {
         amount = _amount;
@@ -15,6 +20,7 @@ public class Essence : MonoBehaviour
 
     public void ConsumeEssence()
     {
+        _essenceUI.StopPreviewOnHP();
         if(isEnd)
             GameManager.instance.BattleMan.ConsumeEndBattle(amount);
         else

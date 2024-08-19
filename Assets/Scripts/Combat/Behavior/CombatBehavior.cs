@@ -178,7 +178,6 @@ public class CombatBehavior : MonoBehaviour
 
     protected void OnUpdate()
     {
-        Debug.Log("Update UI");
         OnUpdateUI?.Invoke();
     }
     

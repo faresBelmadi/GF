@@ -536,7 +536,7 @@ public class EnnemyBehavior : CombatBehavior
     }
     public void PreviewDamage()
     {
-        int[] damageList = new int[_refBattleMan.EnemyScripts.Count];
+        int[] damageList = new int[_refBattleMan.EnemyScripts.Count + _refBattleMan.DeadEnemyScripts.Count];
         //int damage = 0;
         foreach (Effet effet in _refBattleMan.player.SelectSpell.ActionEffet)
         {

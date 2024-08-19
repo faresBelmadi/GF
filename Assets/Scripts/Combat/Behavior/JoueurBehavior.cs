@@ -284,6 +284,22 @@ public class JoueurBehavior : CombatBehavior
         ResetStat();
     }
 
+    public void PreviewHPBarUpdate(int value, int maxRadiance)
+    {
+        hPBarManager.PreviewBar(value, maxRadiance);
+    }
+    public void StopPReviewHPBarUpdate()
+    {
+        hPBarManager.StopPreview();
+    }
+    public void PreviewTensionBarUpddate()
+    {
+        tensionBarManager.PreviewBar(Mathf.FloorToInt(((Stat.Tension + Stat.TensionSoin) * Stat.NbPalier) / Stat.TensionMax), Stat.NbPalier);
+    }
+    public void StopPreviewTensionBar()
+    {
+        tensionBarManager.StopPreview();
+    }
 
     #endregion Divers start & fin
 
@@ -663,7 +679,9 @@ public class JoueurBehavior : CombatBehavior
     public void UseEssence(int Essence, Source source)
     {
         Stat.Radiance += Essence;
+        hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
         ReceiveTension(source);
+        UpdateUI();
     }
 
 

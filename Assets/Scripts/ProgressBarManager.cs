@@ -102,22 +102,22 @@ public class ProgressBarManager : MonoBehaviour
 
     IEnumerator SmoothPreviewBarCoroutine(int value, int max)
     {
-        float oldValue = valueBuffer;
+        float oldValue = _previousBarValue;
         valueBuffer = (float)value / (float)max;
-       
+        bool isHeal = valueBuffer > oldValue ? true : false;
 
-        Color deltaColor = HitColor;
-        Image instantBar =  bar;
-        Image delayedBar =  barDelta;
+        Color deltaColor = isHeal ? HealColor : HitColor;
+        Image instantBar = isHeal ? barDelta : bar;
+        Image delayedBar = isHeal ? bar : barDelta;
 
         delayedBar.fillAmount = instantBar.fillAmount;
         barDelta.color = deltaColor;
         //yield return new WaitForSecondsRealtime(hitsustainTime);
 
-        while (instantBar.fillAmount > valueBuffer)
+        while ((!isHeal && instantBar.fillAmount > valueBuffer)||(isHeal && instantBar.fillAmount < valueBuffer))
         {
             float step = Time.unscaledDeltaTime * hitfallOffSpeed * 2;
-            instantBar.fillAmount -= step;
+            instantBar.fillAmount += (isHeal ? 1f : -1f) * step;
             yield return null;
         }
 
