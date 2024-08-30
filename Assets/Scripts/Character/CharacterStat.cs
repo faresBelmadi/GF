@@ -59,6 +59,17 @@ public class CharacterStat : ScriptableObject
     public List<Passif> ListPassif;
     public Action ActionPassif;
     public bool isStun = false;
+    [Header("SFX")]
+    [Tooltip("Sfx played when this character die.")]
+    [SerializeField]
+    private AudioClip _deathSFX;
+    [Tooltip("Sfx played when this character has his tension full.")]
+    [SerializeField]
+    private AudioClip _tensionSFX;
+    [Tooltip("Sfx played when this character take damage.")]
+    [SerializeField]
+    private AudioClip _damageSFX;
+    
 
     public void ModifStateAll(CharacterStat ModifState)
     {

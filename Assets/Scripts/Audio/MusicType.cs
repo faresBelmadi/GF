@@ -7,9 +7,15 @@ public enum MusicType
 }
 public enum SFXType
 {
-    DamageSFX,
-    HealthDownSFX,
-    HealthUpSFX,
-    BuffSFX,
-    DebuffSFX
+    StartPhaseSFX,
+    StartTurnSFX,
+    StartEnnymaANimalTurnSFX,
+    EssenceConsuptionSFX,
+    BuffDisapearSFX,
+    BuffTriggerSFX
+}
+public enum UISFXType
+{
+    ClicButtonSFX,
+    DialogueButtonSFX,
 }
