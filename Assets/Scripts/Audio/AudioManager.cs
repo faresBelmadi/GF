@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -23,6 +24,9 @@ public class AudioManager : MonoBehaviour
     public float MasterVolume { get; private set; }
     public float SFXVolume { get; private set; }
     public float MusicVolume { get; private set; }
+    public bool IsMasterMute { get; private set; }
+    public bool IsMusicMute { get; private set; }
+    public bool IsSFXMute { get; private set; }
     public SFXPlayer SFX => _sfx;
     private AudioSource _audioSource;
 
@@ -47,10 +51,20 @@ public class AudioManager : MonoBehaviour
         MasterVolume = PlayerPrefs.GetFloat("MasterVolume",0);
         MusicVolume = PlayerPrefs.GetFloat("MusicVolume",0);
         SFXVolume = PlayerPrefs.GetFloat("SFXVolume",0);
+        IsMasterMute = PlayerPrefs.GetInt("IsMasterMute", 0) == 0 ? false : true;
+        IsMusicMute = PlayerPrefs.GetInt("IsMusicMute", 0) == 0 ? false : true;
+        IsSFXMute = PlayerPrefs.GetInt("IsSFXMute", 0) == 0 ? false : true;
 
         SetVolume(MixerGroup.Master, MasterVolume);
         SetVolume(MixerGroup.Music, MusicVolume);
         SetVolume(MixerGroup.SFX, SFXVolume);
+
+        if (IsMasterMute)
+            MuteUnmuteMaster(true);
+        if (IsMusicMute)
+            MuteUnmuteMusic(true);
+        if (IsSFXMute)
+            MuteUnmuteSFX(true);
 
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
@@ -83,6 +97,31 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    public void MuteUnmuteMaster(bool isMute)
+    {
+        MuteUnmute(MixerGroup.Master, isMute);
+    }
+    public void MuteUnmuteMusic(bool isMute)
+    {
+        MuteUnmute(MixerGroup.Music, isMute);
+    }
+    public void MuteUnmuteSFX(bool isMute)
+    {
+        MuteUnmute(MixerGroup.SFX, isMute);
+    }
+    private void MuteUnmute(MixerGroup group, bool isMute)
+    {
+        if (isMute)
+        {
+            SetVolume(group, -80, true);
+        }
+        else
+        {
+            float volume = PlayerPrefs.GetFloat(group.ToString() + "Volume");
+            SetVolume(group, volume, false);
+        }
+
+    }
     public void SetMasterVolume(float volume)
     {
         SetVolume(MixerGroup.Master, volume);
@@ -95,8 +134,8 @@ public class AudioManager : MonoBehaviour
     {
         SetVolume(MixerGroup.SFX, volume);
     }
-
-    public void SetVolume(MixerGroup group, float volume)
+ 
+    public void SetVolume(MixerGroup group, float volume, bool isMuted=false)
     {
         string parameter = "";
         if (group == MixerGroup.Master)
@@ -115,6 +154,9 @@ public class AudioManager : MonoBehaviour
             parameter = "SFXVolume";
         }
         _audioMixer.SetFloat(parameter, volume);
-        PlayerPrefs.SetFloat(parameter, volume);
+        if (!isMuted)
+        {
+            PlayerPrefs.SetFloat(parameter, volume);
+        }
     }
 }
