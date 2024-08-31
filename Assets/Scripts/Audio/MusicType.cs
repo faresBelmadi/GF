@@ -1,10 +1,13 @@
 
+using System;
+
 public enum MusicType
 {
     MainMenuMusic,
     CombatMusic,
     LevelUpMusic
 }
+[Serializable]
 public enum SFXType
 {
     StartPhaseSFX,
@@ -12,7 +15,9 @@ public enum SFXType
     StartEnnymaANimalTurnSFX,
     EssenceConsuptionSFX,
     BuffDisapearSFX,
-    BuffTriggerSFX
+    BuffTriggerSFX,
+    ClicButtonSFX,
+    DialogueButtonSFX,
 }
 public enum UISFXType
 {
