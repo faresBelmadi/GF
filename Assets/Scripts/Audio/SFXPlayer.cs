@@ -7,7 +7,7 @@ public class SFXPlayer : MonoBehaviour
     [SerializeField]
     private SFXData _sfxData;
     [SerializeField]
-    private AudioSource _sfxSoundPrefab;
+    private AudioSource _sfxSource;
 
 
     // Start is called before the first frame update
@@ -45,21 +45,12 @@ public class SFXPlayer : MonoBehaviour
     }
     public void PlaySFXClip(SFXType type, float volume = 1)
     {
-        AudioSource sfxSource = Instantiate(_sfxSoundPrefab);
-        
-        sfxSource.clip = GetClip(type);        
-        sfxSource.volume = volume;
-        sfxSource.Play();
-        Destroy(sfxSource, sfxSource.clip.length);
-        
-    }
-    public void PlaySFXClip()
-    {
-        AudioSource sfxSource = Instantiate(_sfxSoundPrefab);
 
-        //sfxSource.clip = GetClip(type);
-        sfxSource.Play();
-        Destroy(sfxSource, sfxSource.clip.length);
+
+        _sfxSource.clip = GetClip(type);
+        _sfxSource.volume = volume;
+        _sfxSource.Play();
+       
 
     }
 

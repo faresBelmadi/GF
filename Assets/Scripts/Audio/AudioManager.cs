@@ -13,7 +13,8 @@ public class AudioManager : MonoBehaviour
     }
     public static AudioManager instance;
 
-    
+    [SerializeField]
+    private SFXPlayer _sfx;
     [SerializeField]
     private MusicData _musicData;
     [SerializeField]
@@ -22,7 +23,7 @@ public class AudioManager : MonoBehaviour
     public float MasterVolume { get; private set; }
     public float SFXVolume { get; private set; }
     public float MusicVolume { get; private set; }
-
+    public SFXPlayer SFX => _sfx;
     private AudioSource _audioSource;
 
     private void Awake()
@@ -55,6 +56,10 @@ public class AudioManager : MonoBehaviour
         if (_audioSource == null)
         {
             Debug.LogError($"Missing audio source in audio manager : {gameObject.name}");
+        }
+        if (_sfx == null)
+        {
+            Debug.LogError($"Missing sfx player reference in audio manager : {gameObject.name}");
         }
 
         //On commence par jouer la musique du menu principal
