@@ -48,9 +48,9 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MasterVolume = PlayerPrefs.GetFloat("MasterVolume",0);
-        MusicVolume = PlayerPrefs.GetFloat("MusicVolume",0);
-        SFXVolume = PlayerPrefs.GetFloat("SFXVolume",0);
+        MasterVolume = PlayerPrefs.GetFloat("MasterVolume",0.75f);
+        MusicVolume = PlayerPrefs.GetFloat("MusicVolume",0.75f);
+        SFXVolume = PlayerPrefs.GetFloat("SFXVolume",0.75f);
         IsMasterMute = PlayerPrefs.GetInt("IsMasterMute", 0) == 0 ? false : true;
         IsMusicMute = PlayerPrefs.GetInt("IsMusicMute", 0) == 0 ? false : true;
         IsSFXMute = PlayerPrefs.GetInt("IsSFXMute", 0) == 0 ? false : true;
@@ -113,7 +113,7 @@ public class AudioManager : MonoBehaviour
     {
         if (isMute)
         {
-            SetVolume(group, -80, true);
+            SetVolume(group, 0.0001f, true);
         }
         else
         {
@@ -153,7 +153,7 @@ public class AudioManager : MonoBehaviour
             SFXVolume = volume;
             parameter = "SFXVolume";
         }
-        _audioMixer.SetFloat(parameter, volume);
+        _audioMixer.SetFloat(parameter, Mathf.Log10(volume) * 20);
         if (!isMuted)
         {
             PlayerPrefs.SetFloat(parameter, volume);
