@@ -45,13 +45,7 @@ public class SFXPlayer : MonoBehaviour
     }
     public void PlaySFXClip(SFXType type, float volume = 1)
     {
-
-
-        _sfxSource.clip = GetClip(type);
-        _sfxSource.volume = volume;
-        _sfxSource.Play();
-       
-
+        _sfxSource.PlayOneShot(GetClip(type), volume);
     }
 
 }
