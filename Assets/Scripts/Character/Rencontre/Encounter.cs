@@ -11,4 +11,6 @@ public class Encounter : ScriptableObject
     public List<EnnemiStat> ToFight;
     public int PourcentageLootSouvenir;
     public List<LootRarity> LootRarity;
+    [Header("EncouterOptions")]
+    public List<EncounterOption> forcedOrder;
 }
