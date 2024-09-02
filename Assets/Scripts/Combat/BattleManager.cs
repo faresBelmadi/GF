@@ -144,6 +144,8 @@ public class BattleManager : MonoBehaviour
             if (player.CanHaveAnotherTurn())
             {
                 player.EndTurnButton.gameObject.GetComponent<UnityEngine.UI.Image>().material.SetInt("_isEnraged", 1);
+                //SFX to play when full tension
+                AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerFullTensionSFX);
                 return true;
             }
             else
@@ -160,6 +162,8 @@ public class BattleManager : MonoBehaviour
                 t.GetComponent<UIEnnemi>().imageCadreFGs[0].material.SetInt("_isEnraged", 1);
                 t.GetComponent<UIEnnemi>().imageCadreFGs[1].material.SetInt("_isEnraged", 1);
                 t.GetComponent<UIEnnemi>().inflateUISystem.TriggerInflation();
+                //SFX to play when full tension
+                AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyFullTensionSFX);
                 return true;
             }else
             {
@@ -341,6 +345,8 @@ public class BattleManager : MonoBehaviour
 
     private void StartPhase()
     {
+        //Play start phase sound
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.StartPhaseSFX);
         PassifManager.CurrentEvent = TimerPassif.DebutPhase;
         PassifManager.ResolvePassifs();
 

@@ -69,7 +69,10 @@ public class CharacterStat : ScriptableObject
     [Tooltip("Sfx played when this character take damage.")]
     [SerializeField]
     private AudioClip _damageSFX;
-    
+
+    public AudioClip TensionSFX => _tensionSFX;
+    public AudioClip DamageSFX => _damageSFX;
+    public AudioClip DeathSFX => _deathSFX;
 
     public void ModifStateAll(CharacterStat ModifState)
     {

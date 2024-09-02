@@ -124,6 +124,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void Dead()
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDeathSFX, Stat.DeathSFX);
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.Death;
         _refBattleMan.PassifManager.ResolvePassifs();
 
@@ -591,6 +592,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void GetAttacked()
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDamageTakenSFX, Stat.DamageSFX);
         DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
         this.GetComponent<Animator>().SetBool("IsAttacked", true);
         gameObject.GetComponent<PulseBloom_System>().TriggerBloom();

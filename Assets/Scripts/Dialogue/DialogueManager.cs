@@ -72,6 +72,8 @@ public class DialogueManager : MonoBehaviour
     void startDialogue()
     {
         resetRéponse();
+
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.DialogueSFX);
         GoNext();
     }
 

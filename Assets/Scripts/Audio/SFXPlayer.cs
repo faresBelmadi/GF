@@ -31,23 +31,23 @@ public class SFXPlayer : MonoBehaviour
                 return _sfxData.StartTurn;
             case SFXType.StartEnnymaAnimalTurnDefaultSFX:
                 return _sfxData.StartAnimalTurnDefaultSFX;
-            case SFXType.EnnemyFullTensionDefaultSFX:
+            case SFXType.EnnemyFullTensionSFX:
                 return _sfxData.EnnemyTensionFullDefault;
-            case SFXType.PlayerFullTensionDefaultSFX:
+            case SFXType.PlayerFullTensionSFX:
                 return _sfxData.PlayerTensionFullDefault;
-            case SFXType.PlayerDamageTakenDefaultSFX:
+            case SFXType.PlayerDamageTakenSFX:
                 return _sfxData.DamageTakenDefault;
-            case SFXType.EnnemyDamageTakenDefaultSFX:
+            case SFXType.EnnemyDamageTakenSFX:
                 return _sfxData.DamageTakenDefault;
-            case SFXType.PlayerDeathDefaultSFX:
+            case SFXType.PlayerDeathSFX:
                 return _sfxData.DeathDefault;
-            case SFXType.EnnemyDeathDefaultSFX:
+            case SFXType.EnnemyDeathSFX:
                 return _sfxData.DeathDefault;
             case SFXType.EssenceConsuptionSFX:
                 return _sfxData.EssenceConsumption;
-            case SFXType.PlayerSpellDefaultSFX:
+            case SFXType.PlayerSpellSFX:
                 return _sfxData.PlayerSpellDefault;
-            case SFXType.EnnemySpellDefaultSFX:
+            case SFXType.EnnemySpellSFX:
                 return _sfxData.EnnemySpellDefault;
             case SFXType.BuffTriggerSFX:
                 return _sfxData.BuffTrigger;
@@ -82,6 +82,10 @@ public class SFXPlayer : MonoBehaviour
     private void PlayClip(AudioClip clipToPlay, float volume)
     {
         _sfxSource.PlayOneShot(clipToPlay, volume);
+    }
+    public void StopPlaying()
+    {
+        _sfxSource.Stop();
     }
 
 }

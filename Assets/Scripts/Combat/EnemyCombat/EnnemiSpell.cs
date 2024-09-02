@@ -18,4 +18,11 @@ public class EnnemiSpell : ScriptableObject
 
     public List<Effet> Effet;
     public List<BuffDebuff> debuffsBuffs;
+
+    [Space]
+    [Header("SFX")]
+    [SerializeField]
+    private AudioClip _spellSFX;
+
+    public AudioClip SpellSFX;
 }
