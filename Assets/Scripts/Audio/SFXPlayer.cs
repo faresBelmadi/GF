@@ -5,10 +5,11 @@ using UnityEngine;
 public class SFXPlayer : MonoBehaviour
 {
     [SerializeField]
+    private bool _debugMode = false;
+    [SerializeField]
     private SFXData _sfxData;
     [SerializeField]
     private AudioSource _sfxSource;
-
 
     // Start is called before the first frame update
     void Start()
@@ -65,10 +66,15 @@ public class SFXPlayer : MonoBehaviour
     }
     public void PlaySFXClip(SFXType type, float volume = 1)
     {
+        if (_debugMode)
+        {
+            Debug.Log($"Playing SFX (type : {type})");
+        }
         PlayClip(GetClip(type), volume);
     }
     public void PlaySFXClip(SFXType type, AudioClip clipToPlay, float volume = 1)
     {
+       
         //Play the default SFX for this type
         if (clipToPlay == null)
         {
@@ -81,6 +87,10 @@ public class SFXPlayer : MonoBehaviour
     }
     private void PlayClip(AudioClip clipToPlay, float volume)
     {
+        if (_debugMode)
+        {
+            Debug.Log($"Playing SFX Clip (type : {clipToPlay.name})");
+        }
         _sfxSource.PlayOneShot(clipToPlay, volume);
     }
     public void StopPlaying()
