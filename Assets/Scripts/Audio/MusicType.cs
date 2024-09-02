@@ -12,15 +12,19 @@ public enum SFXType
 {
     StartPhaseSFX,
     StartTurnSFX,
-    StartEnnymaANimalTurnSFX,
+    StartEnnymaAnimalTurnDefaultSFX,
+    EnnemyFullTensionDefaultSFX,
+    PlayerFullTensionDefaultSFX,
+    PlayerDamageTakenDefaultSFX,
+    EnnemyDamageTakenDefaultSFX,
+    PlayerDeathDefaultSFX,
+    EnnemyDeathDefaultSFX,
     EssenceConsuptionSFX,
+    PlayerSpellDefaultSFX,
+    EnnemySpellDefaultSFX,
     BuffDisapearSFX,
     BuffTriggerSFX,
     ClicButtonSFX,
     DialogueButtonSFX,
-}
-public enum UISFXType
-{
-    ClicButtonSFX,
-    DialogueButtonSFX,
+    DialogueSFX,
 }

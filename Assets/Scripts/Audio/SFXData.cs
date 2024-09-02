@@ -3,10 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "new SFXData", menuName = "Audio/SFXData")]
 public class SFXData : ScriptableObject
 {
+    [Header("Battle Phase SXF")]
     [SerializeField]
     private AudioClip _startTurn;
     [SerializeField]
     private AudioClip _startPhase;
+    [SerializeField]
+    private AudioClip _startAnimalTurnDefault;
     [SerializeField]
     private AudioClip _ennemyTensionFullDefault;
     [SerializeField]
@@ -21,6 +24,13 @@ public class SFXData : ScriptableObject
     private AudioClip _buffDisappear;
     [SerializeField]
     private AudioClip _buffTrigger;
+    [SerializeField]
+    private AudioClip _playerSpellDefault;
+    [SerializeField]
+    private AudioClip _ennemySpellDefault;
+    
+    [Space]
+    [Header("UI SFX")]
     [SerializeField]
     private AudioClip _buttonClics;
     [SerializeField]
@@ -41,6 +51,9 @@ public class SFXData : ScriptableObject
     public AudioClip ButtonClics => _buttonClics;
     public AudioClip ButtonDialogue => _buttonDialogue;
     public AudioClip DialogueVoice => _dialogueVoice;
+    public AudioClip StartAnimalTurnDefaultSFX => _startAnimalTurnDefault;
+    public AudioClip PlayerSpellDefault => _playerSpellDefault;
+    public AudioClip EnnemySpellDefault => _ennemySpellDefault;
     #endregion
 
 }
