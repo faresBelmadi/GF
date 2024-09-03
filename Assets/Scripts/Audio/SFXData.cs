@@ -28,7 +28,16 @@ public class SFXData : ScriptableObject
     private AudioClip _playerSpellDefault;
     [SerializeField]
     private AudioClip _ennemySpellDefault;
-    
+
+    [Space]
+    [Header("Map")]
+    [SerializeField]
+    private AudioClip _mapBattle;
+    [SerializeField]
+    private AudioClip _mapAlea;
+    [SerializeField]
+    private AudioClip _mapAutel;
+
     [Space]
     [Header("UI SFX")]
     [SerializeField]
@@ -54,6 +63,9 @@ public class SFXData : ScriptableObject
     public AudioClip StartAnimalTurnDefaultSFX => _startAnimalTurnDefault;
     public AudioClip PlayerSpellDefault => _playerSpellDefault;
     public AudioClip EnnemySpellDefault => _ennemySpellDefault;
+    public AudioClip MapBattle => _mapBattle;
+    public AudioClip MapAlea => _mapAlea;
+    public AudioClip MapAutel => _mapAutel;
     #endregion
 
 }

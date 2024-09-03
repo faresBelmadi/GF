@@ -48,6 +48,8 @@ public class BattleManager : MonoBehaviour
     public bool ConsumedEssence;
     public int EssenceGained;
 
+    public bool IsCombatOn { get; private set; }
+
     [SerializeField] private Material characterMaterial;
     [SerializeField] private Material ennemiUIMaterial;
 
@@ -303,6 +305,7 @@ public class BattleManager : MonoBehaviour
 
     public void StartCombat()
     {
+        IsCombatOn = true;
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
@@ -311,6 +314,7 @@ public class BattleManager : MonoBehaviour
 
     private void EndBattle()
     {
+        IsCombatOn = false;
         PassifManager.CurrentEvent = TimerPassif.FinCombat;
         PassifManager.ResolvePassifs();
 

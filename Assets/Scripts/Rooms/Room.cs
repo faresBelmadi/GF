@@ -73,6 +73,18 @@ public class Room : MonoBehaviour
     private void OnMouseDown() {
         if(isNavigable || type == TypeRoom.Visited)
         {
+            if (type == TypeRoom.CombatBoss || type == TypeRoom.CombatElite || type == TypeRoom.CombatNormal)
+            {
+                AudioManager.instance.SFX.PlaySFXClip(SFXType.MapBattleSFX);
+            }
+            else if (type == TypeRoom.Autel)
+            {
+                AudioManager.instance.SFX.PlaySFXClip(SFXType.MapAutelSFX);
+            }
+            else
+            {
+                AudioManager.instance.SFX.PlaySFXClip(SFXType.MapSFX);
+            }
             GameManager.instance.SetRoom(this);
             var scale = oldScale;
             transform.localScale = scale;

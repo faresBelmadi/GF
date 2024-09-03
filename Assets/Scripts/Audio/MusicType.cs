@@ -27,4 +27,7 @@ public enum SFXType
     ClicButtonSFX,
     DialogueButtonSFX,
     DialogueSFX,
+    MapBattleSFX,
+    MapAutelSFX,
+    MapSFX
 }

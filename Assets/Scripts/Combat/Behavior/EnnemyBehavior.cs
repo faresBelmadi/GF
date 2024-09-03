@@ -29,6 +29,7 @@ public class EnnemyBehavior : CombatBehavior
     #region Divers start & fin
     IEnumerator DeathCoroutine()
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDeathSFX, Stat.DeathSFX);
         float time = 0f;
         while (time < deathDisolveTime)
         {
@@ -124,7 +125,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void Dead()
     {
-        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDeathSFX, Stat.DeathSFX);
+       
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.Death;
         _refBattleMan.PassifManager.ResolvePassifs();
 

@@ -60,6 +60,12 @@ public class SFXPlayer : MonoBehaviour
                 return _sfxData.ButtonDialogue;
             case SFXType.DialogueSFX:
                 return _sfxData.DialogueVoice;
+            case SFXType.MapAutelSFX:
+                return _sfxData.MapAutel;
+            case SFXType.MapBattleSFX:
+                return _sfxData.MapBattle;
+            case SFXType.MapSFX:
+                return _sfxData.MapAlea;
             default:
                 return null;
         }

@@ -8,4 +8,8 @@ public class ButtonComponent : MonoBehaviour
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.ClicButtonSFX);
     }
+    public void ClicDialog()
+    {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.DialogueButtonSFX);
+    }
 }
