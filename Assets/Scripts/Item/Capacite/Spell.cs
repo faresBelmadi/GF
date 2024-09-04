@@ -22,4 +22,6 @@ public class Spell : ScriptableObject
     [Header("Audio")]
     [SerializeField]
     private AudioClip _spellSFX;
+
+    public AudioClip SpellSFX => _spellSFX;
 }

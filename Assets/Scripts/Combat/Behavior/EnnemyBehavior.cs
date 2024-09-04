@@ -323,6 +323,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void DoAction()
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemySpellSFX, nextAction.SpellSFX);
         //A Mettre une fois les combats terminer
         LaunchAnimBool();
         //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
