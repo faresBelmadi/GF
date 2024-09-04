@@ -44,6 +44,21 @@ public class DialogueManager : MonoBehaviour
     private Dictionary<ClairvoyanceIconStatEnum, bool> _displayedClairvoyanceStats;
 
     #endregion Dialogue Property
+
+    private void OnEnable()
+    {
+        if (Réponse.Count>= 1 && Réponse[0] != null)
+            Réponse[0].GetComponent<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
+        if (EndText != null)
+            EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
+    }
+    private void OnDisable()
+    {
+        if (Réponse.Count >= 1 && Réponse[0] != null)
+            Réponse[0].GetComponent<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
+        if (EndText != null)
+            EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
+    }
     private void Start()
     {
         TMP_Text[] dialogArray = UIDialogue.GetComponentsInChildren<TMP_Text>(true);
@@ -72,11 +87,14 @@ public class DialogueManager : MonoBehaviour
     void startDialogue()
     {
         resetRéponse();
+
+        
         GoNext();
     }
 
     void GoNext()
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.DialogueSFX);
         DialogueIndex = NextDialogueIndex;
         MainText.text = TextePrincipal();
         MainTextGO.SetActive(true);
@@ -650,9 +668,13 @@ public class DialogueManager : MonoBehaviour
         enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte, scriptableObject.timerApplication);
         enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
     }
-
+    public void StopSFX()
+    {
+        AudioManager.instance.SFX.StopPlaying();
+    }
     public void StartCombat()
     {
+        AudioManager.instance.SFX.StopPlaying();
         if (TutoManager.Instance != null)
         {
            var gO = GameObject.Find("TutoPanel");
@@ -671,6 +693,7 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogueFonction()
     {
+        AudioManager.instance.SFX.StopPlaying();
         GameManager.instance.AleaMan.EndAlea();
     }
 }

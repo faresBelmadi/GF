@@ -19,4 +19,9 @@ public class Spell : ScriptableObject
     public List<Effet> ActionEffet;
     public List<BuffDebuff> ActionBuffDebuff;
     public Sprite Sprite;
+    [Header("Audio")]
+    [SerializeField]
+    private AudioClip _spellSFX;
+
+    public AudioClip SpellSFX => _spellSFX;
 }

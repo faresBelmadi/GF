@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+//using static UnityEditor.Progress;
 
 [System.Serializable]
 public class BattleManager : MonoBehaviour
@@ -47,6 +49,8 @@ public class BattleManager : MonoBehaviour
     public bool IsLoot;
     public bool ConsumedEssence;
     public int EssenceGained;
+
+    public bool IsCombatOn { get; private set; }
 
     [SerializeField] private Material characterMaterial;
     [SerializeField] private Material ennemiUIMaterial;
@@ -144,6 +148,8 @@ public class BattleManager : MonoBehaviour
             if (player.CanHaveAnotherTurn())
             {
                 player.EndTurnButton.gameObject.GetComponent<UnityEngine.UI.Image>().material.SetInt("_isEnraged", 1);
+                //SFX to play when full tension
+                AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerFullTensionSFX);
                 return true;
             }
             else
@@ -160,6 +166,8 @@ public class BattleManager : MonoBehaviour
                 t.GetComponent<UIEnnemi>().imageCadreFGs[0].material.SetInt("_isEnraged", 1);
                 t.GetComponent<UIEnnemi>().imageCadreFGs[1].material.SetInt("_isEnraged", 1);
                 t.GetComponent<UIEnnemi>().inflateUISystem.TriggerInflation();
+                //SFX to play when full tension
+                AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyFullTensionSFX);
                 return true;
             }else
             {
@@ -236,8 +244,108 @@ public class BattleManager : MonoBehaviour
 
         //StartCombat();
     }
-
     void SpawnEnemy()
+    {
+        List<int> remainingPos = new List<int> { 0, 1, 2, 3 };
+        List<int> ennemyPosIds = new List<int> { -1,-1,-1,-1};
+        List<EncounterOption> encounterOptions = _encounter.forcedOrder.ToList();
+
+        int firstMaxPos = (spawnPos.Length - encounterOptions.Count);
+        //Debug.Log($"firstMaxPos = {firstMaxPos}");
+        int firstChoosedPos = UnityEngine.Random.Range(0, firstMaxPos+1);
+        //Debug.Log($"firstChoosedPos = {firstChoosedPos}");
+
+        for (int i = 0; i < encounterOptions.Count; i++)
+        {
+            int ennemiPos = firstChoosedPos+i;//remainingPos[i];//UnityEngine.Random.Range(0, remainingPos.Count)];
+            //Debug.Log($"Choosed Forced Pos = {ennemiPos}");
+
+            int ennemyId = encounterOptions[i].possibleId[UnityEngine.Random.Range(0, encounterOptions[i].Count)];
+            //Debug.Log($"Choosed Ennemy Id = {ennemyId}");
+
+            for (int j=0;j< encounterOptions.Count;j++)
+            {
+                if (encounterOptions[j].possibleId.Contains(ennemyId))
+                {
+                    encounterOptions[j].possibleId.Remove(ennemyId);
+                }
+            }
+            ennemyPosIds[ennemiPos] = ennemyId;
+        }
+
+        //Debug.Log("Forced  Only:");
+        //for (int i = 0; i < ennemyPosIds.Count; i++)
+        //{
+        //Debug.Log($"pos: {i} spawn :{ennemyPosIds[i]}");
+        //}
+        remainingPos = new List<int>();
+        for (int i = 0; i < ennemyPosIds.Count; i++)
+        {
+            if (ennemyPosIds[i] == -1 ) remainingPos.Add(i);
+        }
+        for (int i = 0; i < _encounter.ToFight.Count; i++)
+        {
+            if (!ennemyPosIds.Contains(i))
+            {
+                //Debug.Log($"Ennemy {i} not in list");
+                int choosedPos = remainingPos[UnityEngine.Random.Range(0, remainingPos.Count)];
+                remainingPos.Remove(choosedPos);
+                ennemyPosIds[choosedPos] = i;
+                //Debug.Log($"Adding it to pos {choosedPos}");
+            }
+
+        }
+        //Debug.Log("Instantiate:");
+        for (int i =0; i< ennemyPosIds.Count; i++)
+        {
+            //Debug.Log($"pos: {i} spawn :{ennemyPosIds[i]}");
+            if (ennemyPosIds[i] > -1)
+            {
+                InstanciateEnnemy(ennemyPosIds[i], i);
+            }
+        }
+
+        void InstanciateEnnemy(int ennemyId, int spawnPosId)
+        {
+            EnnemiStat EnnemyStats = _encounter.ToFight[ennemyId];
+            var temp = Instantiate(EnnemyStats.Spawnable, spawnPos[spawnPosId].position, Quaternion.identity, spawnPos[spawnPosId]);
+            if (temp != null)
+            {
+                SpawnedEnemy.Add(temp);
+            }
+
+            var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
+            //instantiate tout les so modifiable
+            if (tempCombatScript != null)
+            {
+                tempCombatScript.Stat = Instantiate(EnnemyStats);
+                tempCombatScript.SetUp();
+                tempCombatScript.EndTurnBM = EndTurn;
+                tempCombatScript.isMainEnemy = ennemyId == _encounter.idMainMob ? true : false;
+                EnemyScripts.Add(tempCombatScript);
+
+                IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
+                tempCombatScript.combatID = idIndexer;
+                tempCombatScript.ChooseNextAction();
+                idIndexer++;
+            }
+
+            //AddingMaterial
+            temp.GetComponent<UIEnnemi>().imageCadreFGs[0].material = new Material(ennemiUIMaterial);
+            temp.GetComponent<UIEnnemi>().imageCadreFGs[1].material = new Material(ennemiUIMaterial);
+
+            Material thisCharMaterial = new Material(characterMaterial);
+            if (tempCombatScript != null) tempCombatScript.characterMaterial = thisCharMaterial;
+            temp.GetComponent<PulseBloom_System>().bloomMaterial = thisCharMaterial;
+
+
+            foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>(true))
+            {
+                renderer.material = thisCharMaterial;
+            }
+        }
+    }
+    void OLDSpawnEnemy()
     {
         List<Transform> used = new List<Transform>();
         for (int i = 0; i < _encounter.ToFight.Count; i++)
@@ -257,6 +365,7 @@ public class BattleManager : MonoBehaviour
             }
 
             used.Add(spawnPos[index]);
+
 
             var temp = Instantiate(item.Spawnable, spawnPos[index].position, Quaternion.identity, spawnPos[index]);
             if (temp != null)
@@ -299,6 +408,7 @@ public class BattleManager : MonoBehaviour
 
     public void StartCombat()
     {
+        IsCombatOn = true;
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
@@ -307,6 +417,7 @@ public class BattleManager : MonoBehaviour
 
     private void EndBattle()
     {
+        IsCombatOn = false;
         PassifManager.CurrentEvent = TimerPassif.FinCombat;
         PassifManager.ResolvePassifs();
 
@@ -341,6 +452,8 @@ public class BattleManager : MonoBehaviour
 
     private void StartPhase()
     {
+        //Play start phase sound
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.StartPhaseSFX);
         PassifManager.CurrentEvent = TimerPassif.DebutPhase;
         PassifManager.ResolvePassifs();
 
@@ -421,6 +534,7 @@ public class BattleManager : MonoBehaviour
 
     public void LaunchSpellJoueur(Spell Spell)
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerSpellSFX, Spell.SpellSFX);
         foreach (var effet in Spell.ActionEffet)
         {
             PassageEffet(effet, idPlayer, idTarget, SourceEffet.Spell);

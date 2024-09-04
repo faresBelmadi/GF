@@ -30,6 +30,7 @@ public class SpellInspector : Editor
         Base.Add(serializedObject.FindProperty("IsAvailable"));
         Base.Add(serializedObject.FindProperty("CostUnlock"));
         Base.Add(serializedObject.FindProperty("Costs"));
+        Base.Add(serializedObject.FindProperty("_spellSFX"));
         Effet = serializedObject.FindProperty("ActionEffet");
         DebuffsBuffs = serializedObject.FindProperty("ActionBuffDebuff");
     }
