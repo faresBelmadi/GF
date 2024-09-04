@@ -679,6 +679,8 @@ public class JoueurBehavior : CombatBehavior
     public void UseEssence(int Essence, Source source)
     {
         Stat.Radiance += Essence;
+        if (Stat.Radiance > Stat.RadianceMax)
+            Stat.Radiance = Stat.RadianceMax;
         hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
         ReceiveTension(source);
         UpdateUI();
