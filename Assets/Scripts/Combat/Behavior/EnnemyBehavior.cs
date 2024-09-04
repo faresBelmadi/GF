@@ -29,6 +29,7 @@ public class EnnemyBehavior : CombatBehavior
     #region Divers start & fin
     IEnumerator DeathCoroutine()
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDeathSFX, Stat.DeathSFX);
         float time = 0f;
         while (time < deathDisolveTime)
         {
@@ -124,6 +125,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void Dead()
     {
+       
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.Death;
         _refBattleMan.PassifManager.ResolvePassifs();
 
@@ -321,6 +323,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void DoAction()
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemySpellSFX, nextAction.SpellSFX);
         //A Mettre une fois les combats terminer
         LaunchAnimBool();
         //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
@@ -591,6 +594,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void GetAttacked()
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDamageTakenSFX, Stat.DamageSFX);
         DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
         this.GetComponent<Animator>().SetBool("IsAttacked", true);
         gameObject.GetComponent<PulseBloom_System>().TriggerBloom();

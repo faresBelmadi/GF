@@ -227,6 +227,8 @@ public class JoueurBehavior : CombatBehavior
 
     public void StartTurn()
     {
+        //Play SFX for starting turn
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.StartTurnSFX);
         IsTurn = true;
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
@@ -275,6 +277,7 @@ public class JoueurBehavior : CombatBehavior
 
     void Dead()
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerDeathSFX, Stat.DeathSFX);
         ResetStat();
         _refBattleMan.DeadPlayer();
     }
@@ -679,6 +682,7 @@ public class JoueurBehavior : CombatBehavior
     public void UseEssence(int Essence, Source source)
     {
         Stat.Radiance += Essence;
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EssenceConsuptionSFX);
         hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
         ReceiveTension(source);
         UpdateUI();
@@ -689,7 +693,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void getAttacked()
     {
-
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerDamageTakenSFX, Stat.DamageSFX);
         DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
         AnimationController.GetAttacked();
     }

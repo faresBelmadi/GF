@@ -27,7 +27,7 @@ public class CombatBehavior : MonoBehaviour
 
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
-        
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);
         string[] buffDebuffInfos = GetBuffNameAndDescription(toAdd);
         string buffDebuffName = buffDebuffInfos[0];
         string buffDebuffDescription = buffDebuffInfos[1];
@@ -181,9 +181,9 @@ public class CombatBehavior : MonoBehaviour
         OnUpdateUI?.Invoke();
     }
     
-    public List<BuffDebuff> UpdateBuffDebuffGameObject(List<BuffDebuff> BuffDebuff, CharacterStat toChange)
+    public List<BuffDebuff> UpdateBuffDebuffGameObject(List<BuffDebuff> ListBuffDebuff, CharacterStat toChange)
     {
-        foreach (var item in BuffDebuff)
+        foreach (var item in ListBuffDebuff)
         {
             if (item.Temps < 0)
             {
@@ -234,6 +234,7 @@ public class CombatBehavior : MonoBehaviour
                     }
                     else
                     {
+                        AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffDisapearSFX);
                         ListBuffDebuffGO.Remove(buffObject);
                         Destroy(buffObject);
                     }
@@ -263,7 +264,7 @@ public class CombatBehavior : MonoBehaviour
             }
         }
 
-        BuffDebuff.RemoveAll(c => c.Temps < 0);
-        return BuffDebuff;
+        ListBuffDebuff.RemoveAll(c => c.Temps < 0);
+        return ListBuffDebuff;
     }
 }

@@ -48,6 +48,8 @@ public class BattleManager : MonoBehaviour
     public bool ConsumedEssence;
     public int EssenceGained;
 
+    public bool IsCombatOn { get; private set; }
+
     [SerializeField] private Material characterMaterial;
     [SerializeField] private Material ennemiUIMaterial;
 
@@ -144,6 +146,8 @@ public class BattleManager : MonoBehaviour
             if (player.CanHaveAnotherTurn())
             {
                 player.EndTurnButton.gameObject.GetComponent<UnityEngine.UI.Image>().material.SetInt("_isEnraged", 1);
+                //SFX to play when full tension
+                AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerFullTensionSFX);
                 return true;
             }
             else
@@ -160,6 +164,8 @@ public class BattleManager : MonoBehaviour
                 t.GetComponent<UIEnnemi>().imageCadreFGs[0].material.SetInt("_isEnraged", 1);
                 t.GetComponent<UIEnnemi>().imageCadreFGs[1].material.SetInt("_isEnraged", 1);
                 t.GetComponent<UIEnnemi>().inflateUISystem.TriggerInflation();
+                //SFX to play when full tension
+                AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyFullTensionSFX);
                 return true;
             }else
             {
@@ -299,6 +305,7 @@ public class BattleManager : MonoBehaviour
 
     public void StartCombat()
     {
+        IsCombatOn = true;
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
@@ -307,6 +314,7 @@ public class BattleManager : MonoBehaviour
 
     private void EndBattle()
     {
+        IsCombatOn = false;
         PassifManager.CurrentEvent = TimerPassif.FinCombat;
         PassifManager.ResolvePassifs();
 
@@ -341,6 +349,8 @@ public class BattleManager : MonoBehaviour
 
     private void StartPhase()
     {
+        //Play start phase sound
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.StartPhaseSFX);
         PassifManager.CurrentEvent = TimerPassif.DebutPhase;
         PassifManager.ResolvePassifs();
 
@@ -421,6 +431,7 @@ public class BattleManager : MonoBehaviour
 
     public void LaunchSpellJoueur(Spell Spell)
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerSpellSFX, Spell.SpellSFX);
         foreach (var effet in Spell.ActionEffet)
         {
             PassageEffet(effet, idPlayer, idTarget, SourceEffet.Spell);

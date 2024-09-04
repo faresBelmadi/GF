@@ -331,12 +331,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2153742079248925870, guid: 9d7294e9c04cb204c97a1109a55d7ccc, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3503036377725115805, guid: 9d7294e9c04cb204c97a1109a55d7ccc, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3503036377725115805, guid: 9d7294e9c04cb204c97a1109a55d7ccc, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6584709291898726409, guid: 9d7294e9c04cb204c97a1109a55d7ccc, type: 3}
+      propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8380162474987244786, guid: 9d7294e9c04cb204c97a1109a55d7ccc, type: 3}
@@ -1290,6 +1298,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 2
   _delay: 0.05
+  _skipDelay: 0.01
 --- !u!1 &527544261
 GameObject:
   m_ObjectHideFlags: 0
@@ -1555,6 +1564,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 2
   _delay: 0.05
+  _skipDelay: 0.01
 --- !u!1 &646054203
 GameObject:
   m_ObjectHideFlags: 0
@@ -2768,6 +2778,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 2
   _delay: 0.05
+  _skipDelay: 0.01
 --- !u!1 &1231486616
 GameObject:
   m_ObjectHideFlags: 0
@@ -2779,6 +2790,7 @@ GameObject:
   - component: {fileID: 1231486617}
   - component: {fileID: 1231486619}
   - component: {fileID: 1231486618}
+  - component: {fileID: 1231486620}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -2902,6 +2914,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1231486616}
   m_CullTransparentMesh: 0
+--- !u!114 &1231486620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231486616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be05c113fcb34744480f37a572df9e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _type: 2
+  _delay: 0.05
+  _skipDelay: 0.01
 --- !u!1 &1239595156
 GameObject:
   m_ObjectHideFlags: 0
@@ -3558,6 +3585,7 @@ MonoBehaviour:
   EndText: {fileID: 0}
   ManagerBattle: {fileID: 0}
   ManagerAlea: {fileID: 1502046454}
+  _clairvoyanceIconData: {fileID: 0}
 --- !u!1 &1514174629
 GameObject:
   m_ObjectHideFlags: 0
@@ -4476,6 +4504,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _type: 2
   _delay: 0.05
+  _skipDelay: 0.01
 --- !u!1 &1613937951
 GameObject:
   m_ObjectHideFlags: 0

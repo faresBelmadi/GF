@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "new MusicData", menuName ="Music/MusicData")]
+[CreateAssetMenu(fileName = "new MusicData", menuName ="Audio/MusicData")]
 public class MusicData : ScriptableObject
 {
     [SerializeField]
