@@ -93,8 +93,6 @@ public class CharacterStat : ScriptableObject
         this.Essence += ModifState.Essence;
         this.Tension += ModifState.Tension;
         this.PalierChangement += ModifState.PalierChangement;
-        //this.Tension += ModifState.PalierChangement * this.ValeurPalier;
-        //Debug.Log($"ModifStateAll: Tension = {ModifState.PalierChangement} * {this.ValeurPalier}");
         if (ModifState.Radiance < 0)
         {
             this.Radiance += Mathf.FloorToInt(ModifState.Radiance * this.MultiplDef);
