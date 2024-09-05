@@ -233,7 +233,8 @@ public class JoueurBehavior : CombatBehavior
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
         _refBattleMan.PassifManager.ResolvePassifs();
-        Stat.Volonter = Stat.VolonterMax;
+        if (_refBattleMan.nbPhase>=2)           //If it's first player turn, we don't resplanish willpower.
+            Stat.Volonter = Stat.VolonterMax;
         ActivateSpells();
         if (!gainedTension)
         {
