@@ -534,6 +534,7 @@ public class BattleManager : MonoBehaviour
 
     public void LaunchSpellJoueur(Spell Spell)
     {
+        player.DesactivateSpells();
         AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerSpellSFX, Spell.SpellSFX);
         foreach (var effet in Spell.ActionEffet)
         {
