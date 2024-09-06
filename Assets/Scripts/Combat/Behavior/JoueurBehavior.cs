@@ -225,7 +225,7 @@ public class JoueurBehavior : CombatBehavior
         UpdateUI();
     }
 
-    public void StartTurn()
+    public void StartTurn(bool isFirstTurn = false)
     {
         //Play SFX for starting turn
         AudioManager.instance.SFX.PlaySFXClip(SFXType.StartTurnSFX);
@@ -235,13 +235,19 @@ public class JoueurBehavior : CombatBehavior
         _refBattleMan.PassifManager.ResolvePassifs();
         Stat.Volonter = Stat.VolonterMax;
         ActivateSpells();
-        if (!gainedTension)
+        
+        if (!isFirstTurn)
         {
-            ApaisementTension();
+            if (!gainedTension)
+            {
+                ApaisementTension();
+            }
         }
-
+        else Debug.Log("isFirst Turn");
         gainedTension = false;
+        
         UpdateUI();
+        
         if (Stat.isStun)
         {
             Debug.Log("is stuned");

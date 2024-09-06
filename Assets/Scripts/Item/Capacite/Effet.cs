@@ -24,6 +24,7 @@ public class Effet : ScriptableObject
 
     public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTake = 0, JoueurStat Cible = null)
     {
+        //Debug.Log($"Trigger Effect: {this.TypeEffet} from {Caster} to {Cible}");
         int valueToChange = ValeurBrut * NbAttaque;
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         switch (this.TypeEffet)
@@ -259,6 +260,7 @@ public class Effet : ScriptableObject
 
     private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
     {
+        //Debug.Log($"Trigger Effect Base: {this.TypeEffet} from {Caster} to {Cible}");
         int valueToChange = ValeurBrut * NbAttaque;
         CharacterStat ModifState = ScriptableObject.CreateInstance("CharacterStat") as CharacterStat;
         int percent;
@@ -313,6 +315,7 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.TensionStep:
                 ModifState.PalierChangement += valueToChange;
+                //ModifState.ValeurPalier += Cible.ValeurPalier;
                 break;
             case TypeEffet.TensionValue:
                 ModifState.Tension += valueToChange;
