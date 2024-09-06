@@ -682,6 +682,8 @@ public class JoueurBehavior : CombatBehavior
     public void UseEssence(int Essence, Source source)
     {
         Stat.Radiance += Essence;
+        if (Stat.Radiance > Stat.RadianceMax)
+            Stat.Radiance = Stat.RadianceMax;
         AudioManager.instance.SFX.PlaySFXClip(SFXType.EssenceConsuptionSFX);
         hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
         ReceiveTension(source);
