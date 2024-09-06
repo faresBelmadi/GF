@@ -482,7 +482,7 @@ public class JoueurBehavior : CombatBehavior
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
         _refBattleMan.PassifManager.ResolvePassifs();
         UpdateUI();
-        ActivateSpells();
+      //  ActivateSpells();
     }
 
     #endregion Spell
@@ -699,6 +699,7 @@ public class JoueurBehavior : CombatBehavior
         DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
         AnimationController.GetAttacked();
     }
+    
 
     public void endHurtAnim()
     {
