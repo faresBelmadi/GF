@@ -26,6 +26,7 @@ public class EnnemyBehavior : CombatBehavior
     private int currentHp = 0;
     private int currentTension = 0;
     private Coroutine deathRoutine = null;
+    public bool IsDead { get; private set; } = false;
     #region Divers start & fin
     IEnumerator DeathCoroutine()
     {
@@ -43,6 +44,7 @@ public class EnnemyBehavior : CombatBehavior
     public void SetUp()
     {
         _refBattleMan = GameManager.instance.BattleMan;
+        IsDead = false;
         UICombat = this.GetComponent<UIEnnemi>();
         UpdateUI();
 
@@ -125,25 +127,26 @@ public class EnnemyBehavior : CombatBehavior
 
     public void Dead()
     {
-       
+        if (IsDead) return;
+        IsDead = true;
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.Death;
         _refBattleMan.PassifManager.ResolvePassifs();
-
+        /*
         foreach (var item in Stat.ListBuffDebuff)
         {
             foreach (var effect in item.Effet)
             {
-
-                /*if (effect.TypeEffet == TypeEffetRemake.DeathTrigger)
+                if (effect.TypeEffet == TypeEffetRemake.DeathTrigger)
                 {
                     //to do : change name to official debuff name for debuff intouchable
                     if (item.Nom == "Débuff intouchable")
                     {
                         Stat.Essence = 0;
                     }
-                }*/
+                }
             }
         }
+        */
         if (Stat.Essence != 0)
         {
             var t = Instantiate(EssencePrefab, this.transform.parent);
