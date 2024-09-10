@@ -85,7 +85,7 @@ public class TradManager : MonoBehaviour
     {
         LoadTradDialogue();
         LoadTradCapa();
-        //LoadTradMisc();
+        LoadTradMisc();
     }
     private void LoadTradDialogue()
     {
@@ -145,9 +145,9 @@ public class TradManager : MonoBehaviour
     private void LoadTradMisc()
     {
 #if UNITY_EDITOR
-        string path = "Assets/StreamingAssets/Traduction/GameTraductionFile.csv";
+        string path = "Assets/StreamingAssets/Traduction/MiscTraductionFile.csv";
 #else
-                        string path = Application.dataPath + "/StreamingAssets/Traduction/GameTraductionFile.csv";
+                        string path = Application.dataPath + "/StreamingAssets/Traduction/MiscTraductionFile.csv";
 #endif
 
         var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
@@ -163,10 +163,10 @@ public class TradManager : MonoBehaviour
             }
         }
 
-        foreach (var item in _miscDictionary)
-        {
-            Debug.Log(item.Key + " | " + item.Value.Count);
-        }
+        //foreach (var item in _miscDictionary)
+        //{
+        //    Debug.Log(item.Key + " | " + item.Value.Count);
+        //}
     }
     #endregion
 
