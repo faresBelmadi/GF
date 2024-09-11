@@ -1775,6 +1775,8 @@ GameObject:
   - component: {fileID: 150848055}
   - component: {fileID: 150848054}
   - component: {fileID: 150848053}
+  - component: {fileID: 150848057}
+  - component: {fileID: 150848056}
   m_Layer: 5
   m_Name: BuyButton
   m_TagString: Untagged
@@ -1870,6 +1872,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 150848057}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &150848054
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1908,6 +1922,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 150848051}
   m_CullTransparentMesh: 0
+--- !u!114 &150848056
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150848051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: Autel1C1
+  _defaultText: Shop
+  _textTMPObject: {fileID: 0}
+  _textObject: {fileID: 520732993}
+--- !u!114 &150848057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150848051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &153727300
 GameObject:
   m_ObjectHideFlags: 0
@@ -1920,6 +1962,7 @@ GameObject:
   - component: {fileID: 153727304}
   - component: {fileID: 153727305}
   - component: {fileID: 153727302}
+  - component: {fileID: 153727306}
   m_Layer: 5
   m_Name: Choix1
   m_TagString: Untagged
@@ -2003,6 +2046,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 153727306}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &153727304
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2041,6 +2096,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &153727306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 153727300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &171177255
 GameObject:
   m_ObjectHideFlags: 0
@@ -2134,6 +2201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 179439852}
+  - component: {fileID: 179439853}
   m_Layer: 5
   m_Name: Stat Clairvoyance
   m_TagString: Untagged
@@ -2163,6 +2231,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &179439853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179439851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: G8N
+  _defaultText: Clairvoyance
+  _textTMPObject: {fileID: 471872346}
+  _textObject: {fileID: 0}
 --- !u!1 &196443712
 GameObject:
   m_ObjectHideFlags: 0
@@ -2439,6 +2523,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 228708795}
+  - component: {fileID: 228708796}
   m_Layer: 5
   m_Name: Stat FA
   m_TagString: Untagged
@@ -2468,6 +2553,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &228708796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 228708794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: G6N
+  _defaultText: Force d'ame
+  _textTMPObject: {fileID: 587574657}
+  _textObject: {fileID: 0}
 --- !u!1 &244139674
 GameObject:
   m_ObjectHideFlags: 0
@@ -3839,6 +3940,8 @@ GameObject:
   - component: {fileID: 413276923}
   - component: {fileID: 413276925}
   - component: {fileID: 413276924}
+  - component: {fileID: 413276926}
+  - component: {fileID: 413276927}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -3936,6 +4039,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 413276926}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!222 &413276925
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3944,6 +4059,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 413276922}
   m_CullTransparentMesh: 1
+--- !u!114 &413276926
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413276922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &413276927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 413276922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: Autel2N
+  _defaultText: Spell
+  _textTMPObject: {fileID: 365063434}
+  _textObject: {fileID: 0}
 --- !u!1 &421152996
 GameObject:
   m_ObjectHideFlags: 0
@@ -4886,6 +5029,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 532392343}
+  - component: {fileID: 532392344}
   m_Layer: 5
   m_Name: "Stat R\xE9silience"
   m_TagString: Untagged
@@ -4915,6 +5059,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &532392344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532392342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: G4N
+  _defaultText: Resilience
+  _textTMPObject: {fileID: 93349809}
+  _textObject: {fileID: 0}
 --- !u!1 &558749280
 GameObject:
   m_ObjectHideFlags: 0
@@ -6144,6 +6304,8 @@ GameObject:
   - component: {fileID: 690889092}
   - component: {fileID: 690889091}
   - component: {fileID: 690889090}
+  - component: {fileID: 690889093}
+  - component: {fileID: 690889094}
   m_Layer: 5
   m_Name: RetourButton (1)
   m_TagString: Untagged
@@ -6239,6 +6401,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 690889093}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &690889091
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6277,6 +6451,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 690889088}
   m_CullTransparentMesh: 0
+--- !u!114 &690889093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690889088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &690889094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 690889088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: M1M5N
+  _defaultText: retour
+  _textTMPObject: {fileID: 0}
+  _textObject: {fileID: 1879874375}
 --- !u!1 &700771932
 GameObject:
   m_ObjectHideFlags: 0
@@ -6693,9 +6895,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Retour
-
-    map'
+  m_text: Back to world
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
@@ -6722,10 +6922,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 31.2
   m_fontSizeBase: 36
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -6738,7 +6938,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -6955,6 +7155,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 792963534}
+  - component: {fileID: 792963535}
   m_Layer: 5
   m_Name: Stat Calme
   m_TagString: Untagged
@@ -6984,6 +7185,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &792963535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 792963533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: G5N
+  _defaultText: Calme
+  _textTMPObject: {fileID: 1310017428}
+  _textObject: {fileID: 0}
 --- !u!1 &817854359
 GameObject:
   m_ObjectHideFlags: 0
@@ -7660,7 +7877,9 @@ MonoBehaviour:
   StatUiPanel: {fileID: 1803230385}
   Etage: 1
   stats: {fileID: 0}
+  _idTradCout: Autel1Shop1
   EssenceText: {fileID: 264684501}
+  _idTradEssence: G11N
   DescriptionSpellText: {fileID: 452979926}
   CostCapaText: {fileID: 1454396559}
   AllSpellsIcon:
@@ -7703,6 +7922,9 @@ MonoBehaviour:
   ModifConscience: {fileID: 1979150754}
   ModifClairvoyance: {fileID: 2135626371}
   checkMark: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+  _idTradNameCalmPoint: Autel1Shop2
+  _idTradNameRadPoint: Autel1Shop3
+  _idTradNameInsightPoint: Autel1Shop4
   Loot: 0
   ButtonChoix1: {fileID: 153727300}
   ButtonChoix2: {fileID: 1157320046}
@@ -8216,6 +8438,7 @@ GameObject:
   - component: {fileID: 914173716}
   - component: {fileID: 914173715}
   - component: {fileID: 914173714}
+  - component: {fileID: 914173717}
   m_Layer: 5
   m_Name: Choix3
   m_TagString: Untagged
@@ -8299,6 +8522,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 914173717}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &914173715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8337,6 +8572,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 914173712}
   m_CullTransparentMesh: 0
+--- !u!114 &914173717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 914173712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &916340049
 GameObject:
   m_ObjectHideFlags: 0
@@ -10391,6 +10638,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1112782892}
   - component: {fileID: 1112782894}
+  - component: {fileID: 1112782896}
+  - component: {fileID: 1112782895}
   m_Layer: 5
   m_Name: PanelChoix2
   m_TagString: Untagged
@@ -10430,6 +10679,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112782891}
   m_CullTransparentMesh: 0
+--- !u!114 &1112782895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112782891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: Autel1Shop6
+  _defaultText: Choix 2
+  _textTMPObject: {fileID: 1668170258}
+  _textObject: {fileID: 0}
+--- !u!114 &1112782896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112782891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: Autel1Shop9
+  _defaultText: Missing description
+  _textTMPObject: {fileID: 1010106169}
+  _textObject: {fileID: 0}
 --- !u!1 &1118255092
 GameObject:
   m_ObjectHideFlags: 0
@@ -10800,6 +11081,7 @@ GameObject:
   - component: {fileID: 1157320050}
   - component: {fileID: 1157320049}
   - component: {fileID: 1157320048}
+  - component: {fileID: 1157320051}
   m_Layer: 5
   m_Name: Choix2
   m_TagString: Untagged
@@ -10883,6 +11165,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1157320051}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1157320049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10921,6 +11215,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1157320046}
   m_CullTransparentMesh: 0
+--- !u!114 &1157320051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157320046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1159933572
 GameObject:
   m_ObjectHideFlags: 0
@@ -11725,6 +12031,8 @@ GameObject:
   - component: {fileID: 1260202367}
   - component: {fileID: 1260202369}
   - component: {fileID: 1260202368}
+  - component: {fileID: 1260202370}
+  - component: {fileID: 1260202371}
   m_Layer: 0
   m_Name: Button (1)
   m_TagString: Untagged
@@ -11810,6 +12118,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1260202370}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &1260202369
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11818,6 +12138,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1260202366}
   m_CullTransparentMesh: 1
+--- !u!114 &1260202370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260202366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1260202371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260202366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: Autel1N
+  _defaultText: Shop
+  _textTMPObject: {fileID: 1611793868}
+  _textObject: {fileID: 0}
 --- !u!1 &1260442387
 GameObject:
   m_ObjectHideFlags: 0
@@ -11827,6 +12175,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1260442388}
+  - component: {fileID: 1260442389}
   m_Layer: 5
   m_Name: Stat Conviction
   m_TagString: Untagged
@@ -11856,6 +12205,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1260442389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1260442387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: G3N
+  _defaultText: Conviction
+  _textTMPObject: {fileID: 640940885}
+  _textObject: {fileID: 0}
 --- !u!1 &1270052180
 GameObject:
   m_ObjectHideFlags: 0
@@ -12359,6 +12724,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1351326840}
+  - component: {fileID: 1351326841}
   m_Layer: 5
   m_Name: Stat Vitesse
   m_TagString: Untagged
@@ -12388,6 +12754,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1351326841
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351326839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: G2N
+  _defaultText: Vitesse
+  _textTMPObject: {fileID: 1192749211}
+  _textObject: {fileID: 0}
 --- !u!1 &1356354468
 GameObject:
   m_ObjectHideFlags: 0
@@ -12754,6 +13136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1404366220}
+  - component: {fileID: 1404366221}
   m_Layer: 5
   m_Name: Stat Conscience
   m_TagString: Untagged
@@ -12783,6 +13166,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1404366221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1404366219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: G7N
+  _defaultText: Conscince
+  _textTMPObject: {fileID: 829986189}
+  _textObject: {fileID: 0}
 --- !u!1 &1405156031
 GameObject:
   m_ObjectHideFlags: 0
@@ -13411,6 +13810,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1455692226}
+  - component: {fileID: 1455692227}
   m_Layer: 5
   m_Name: Stat Radiance
   m_TagString: Untagged
@@ -13440,6 +13840,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1455692227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455692225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: G1N
+  _defaultText: Radiance
+  _textTMPObject: {fileID: 744229897}
+  _textObject: {fileID: 0}
 --- !u!1 &1477178510
 GameObject:
   m_ObjectHideFlags: 0
@@ -13452,6 +13868,8 @@ GameObject:
   - component: {fileID: 1477178514}
   - component: {fileID: 1477178513}
   - component: {fileID: 1477178512}
+  - component: {fileID: 1477178516}
+  - component: {fileID: 1477178515}
   m_Layer: 5
   m_Name: RetourButton
   m_TagString: Untagged
@@ -13547,6 +13965,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1477178516}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1477178513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13585,6 +14015,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477178510}
   m_CullTransparentMesh: 0
+--- !u!114 &1477178515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477178510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: M1M5N
+  _defaultText: Retour
+  _textTMPObject: {fileID: 0}
+  _textObject: {fileID: 627093238}
+--- !u!114 &1477178516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477178510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1501903377
 GameObject:
   m_ObjectHideFlags: 0
@@ -16248,6 +16706,8 @@ GameObject:
   - component: {fileID: 1874756209}
   - component: {fileID: 1874756208}
   - component: {fileID: 1874756207}
+  - component: {fileID: 1874756210}
+  - component: {fileID: 1874756211}
   m_Layer: 5
   m_Name: RetourMapButton
   m_TagString: Untagged
@@ -16331,6 +16791,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1874756210}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1874756208
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16369,6 +16841,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1874756205}
   m_CullTransparentMesh: 0
+--- !u!114 &1874756210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874756205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1874756211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874756205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: W1B3N
+  _defaultText: Retour map
+  _textTMPObject: {fileID: 770106157}
+  _textObject: {fileID: 0}
 --- !u!1 &1879012953
 GameObject:
   m_ObjectHideFlags: 0
@@ -17120,6 +17620,8 @@ GameObject:
   - component: {fileID: 2030847941}
   - component: {fileID: 2030847940}
   - component: {fileID: 2030847942}
+  - component: {fileID: 2030847944}
+  - component: {fileID: 2030847943}
   m_Layer: 5
   m_Name: PanelChoix1
   m_TagString: Untagged
@@ -17201,6 +17703,38 @@ SortingGroup:
   m_SortingLayer: -2
   m_SortingOrder: -5
   m_SortAtRoot: 0
+--- !u!114 &2030847943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030847938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: Autel1Shop5
+  _defaultText: Choix 1
+  _textTMPObject: {fileID: 1449445703}
+  _textObject: {fileID: 0}
+--- !u!114 &2030847944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2030847938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: Autel1Shop8
+  _defaultText: Missing description
+  _textTMPObject: {fileID: 1214938399}
+  _textObject: {fileID: 0}
 --- !u!1 &2101035308
 GameObject:
   m_ObjectHideFlags: 0
@@ -17211,6 +17745,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2101035309}
   - component: {fileID: 2101035311}
+  - component: {fileID: 2101035312}
   m_Layer: 5
   m_Name: PanelChoix3
   m_TagString: Untagged
@@ -17250,6 +17785,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2101035308}
   m_CullTransparentMesh: 0
+--- !u!114 &2101035312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2101035308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: Autel1Shop7
+  _defaultText: Choix3
+  _textTMPObject: {fileID: 1950075630}
+  _textObject: {fileID: 0}
 --- !u!1 &2113269854
 GameObject:
   m_ObjectHideFlags: 0
@@ -17393,6 +17944,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2128039173}
+  - component: {fileID: 2128039174}
   m_Layer: 5
   m_Name: "Stat Volont\xE9"
   m_TagString: Untagged
@@ -17422,6 +17974,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2128039174
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128039172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: G9N
+  _defaultText: "Volont\xE9"
+  _textTMPObject: {fileID: 852489480}
+  _textObject: {fileID: 0}
 --- !u!1 &2135626370
 GameObject:
   m_ObjectHideFlags: 0

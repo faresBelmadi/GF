@@ -13,9 +13,13 @@ public class AutelManager : MonoBehaviour
     public GameObject StatUiPanel;
     public int Etage = 1;
     public JoueurStat stats;
+    [SerializeField]
+    private string _idTradCout;
 
     [Header("Arbre")]
     public TextMeshProUGUI EssenceText;
+    [SerializeField]
+    private string _idTradEssence;
     public TextMeshProUGUI DescriptionSpellText;
     public TextMeshProUGUI CostCapaText;
 
@@ -50,6 +54,12 @@ public class AutelManager : MonoBehaviour
 
 
     [Header("Shop")]
+    [SerializeField]
+    private string _idTradNameCalmPoint;
+    [SerializeField]
+    private string _idTradNameRadPoint;
+    [SerializeField]
+    private string _idTradNameInsightPoint;
     public bool Loot = false;
     public GameObject ButtonChoix1, ButtonChoix2, ButtonChoix3, ButtonReturn;
     public TextMeshProUGUI TextCoutChoix1, TextCoutChoix2, TextCoutChoix3;
@@ -68,7 +78,7 @@ public class AutelManager : MonoBehaviour
     }
     void FixedUpdate()
     {
-        EssenceText.text = "Essence : " + stats.Essence;
+        EssenceText.text = $"{TradManager.instance.GetTranslation(_idTradEssence, "Essence") } : {stats.Essence}";
         SetUpStatsDescription();
         if (ShopUiPanel.activeInHierarchy == true)
         {
@@ -520,21 +530,33 @@ public class AutelManager : MonoBehaviour
         switch (Etage)
         {
             case 1:
-                TextCoutChoix1.text = "Cout : " + CoutChoix1[0].ToString() + " essence";
-                TextCoutChoix2.text = "Cout : " + CoutChoix2[0].ToString() + " essence";
-                TextCoutChoix3.text = "Cout : " + CoutChoix3[0].ToString() + " essence\n" + CoutStatChoix3[0].ToString() + " point de Calme";
+                //TextCoutChoix1.text = "Cout : " + CoutChoix1[0].ToString() + " essence";
+                //TextCoutChoix2.text = "Cout : " + CoutChoix2[0].ToString() + " essence";
+                //TextCoutChoix3.text = "Cout : " + CoutChoix3[0].ToString() + " essence\n" + CoutStatChoix3[0].ToString() + " point de Calme";
+                TextCoutChoix3.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix1[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}\n" +
+                    $"{CoutStatChoix3[0]} {TradManager.instance.GetTranslation(_idTradNameCalmPoint, "point de calm")}";
                 break;
             case 2:
-                TextCoutChoix1.text = "Cout : " + CoutChoix1[1].ToString() + " essence";
-                TextCoutChoix2.text = "Cout : " + CoutChoix2[1].ToString() + " essence";
-                TextCoutChoix3.text = "Cout : " + CoutChoix3[1].ToString() + " essence\n" + CoutStatChoix3[1].ToString() + " point de Radiance";
+                //TextCoutChoix1.text = "Cout : " + CoutChoix1[1].ToString() + " essence";
+                //TextCoutChoix2.text = "Cout : " + CoutChoix2[1].ToString() + " essence";
+                //TextCoutChoix3.text = "Cout : " + CoutChoix3[1].ToString() + " essence\n" + CoutStatChoix3[1].ToString() + " point de Radiance";
+                TextCoutChoix3.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix3[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}\n" +
+                    $"{CoutStatChoix3[1]} {TradManager.instance.GetTranslation(_idTradNameRadPoint, "point de radiance")}";
                 break;
             case 3:
-                TextCoutChoix1.text = "Cout : " + CoutChoix1[2].ToString() + " essence";
-                TextCoutChoix2.text = "Cout : " + CoutChoix2[2].ToString() + " essence";
-                TextCoutChoix3.text = "Cout : " + CoutChoix3[2].ToString() + " essence\n" + CoutStatChoix3[2].ToString() + " point de Clairvoyance";
+                //TextCoutChoix1.text = "Cout : " + CoutChoix1[2].ToString() + " essence";
+                //TextCoutChoix2.text = "Cout : " + CoutChoix2[2].ToString() + " essence";
+                //TextCoutChoix3.text = "Cout : " + CoutChoix3[2].ToString() + " essence\n" + CoutStatChoix3[2].ToString() + " point de Clairvoyance";
+                TextCoutChoix3.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix3[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}\n" +
+                    $"{CoutStatChoix3[2]} {TradManager.instance.GetTranslation(_idTradNameInsightPoint, "point de clairvoyance")}";
                 break;
         }
+        if (Etage <= 0 || Etage > CoutChoix1.Count || Etage > CoutChoix2.Count || Etage > CoutChoix3.Count)
+        {
+            Debug.LogError("Nombre d'étage trop faible ou trop important");
+        }
+        TextCoutChoix1.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix1[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}";
+        TextCoutChoix2.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix2[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}";
     }
 
     public void Choix1()
