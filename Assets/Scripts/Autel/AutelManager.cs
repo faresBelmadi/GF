@@ -63,6 +63,8 @@ public class AutelManager : MonoBehaviour
     public bool Loot = false;
     public GameObject ButtonChoix1, ButtonChoix2, ButtonChoix3, ButtonReturn;
     public TextMeshProUGUI TextCoutChoix1, TextCoutChoix2, TextCoutChoix3;
+    [SerializeField]
+    private string _idTradChoix3;
     public TextMeshProUGUI TextDescriptionChoix3;
     public List<int> CoutChoix1, CoutChoix2, CoutChoix3, CoutStatChoix3;
     public List<LootRarity> LootRarityForChoix1;
@@ -522,7 +524,7 @@ public class AutelManager : MonoBehaviour
                 SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
                 break;
         }
-        TextDescriptionChoix3.text += SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir.Description;
+        TextDescriptionChoix3.text =$"{TradManager.instance.GetTranslation(_idTradChoix3)} : {SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir.SouvenirDesc}";
     }
 
     public void UpdateCoutChoix()
@@ -582,8 +584,8 @@ public class AutelManager : MonoBehaviour
         {
             if (random <= LootRarityForChoix1[i].Pourcentage && listAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter) != null)
             {
-                string NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter).Nom;
-                stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                string NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter).SouvenirName;
+                stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
                 //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 Loot = true;
                 RetourMap();
@@ -607,42 +609,42 @@ public class AutelManager : MonoBehaviour
             case 1:
                 if (listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare) == null)
                 {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).Nom;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).SouvenirName;
+                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
                     //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 }
                 else
                 {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare).Nom;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare).SouvenirName;
+                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
                     //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 }
                 break;
             case 2:
                 if (listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare) == null)
                 {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).Nom;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).SouvenirName;
+                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
                     //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 }
                 else
                 {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare).Nom;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare).SouvenirName;
+                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
                     //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 }
                 break;
             case 3:
                 if (listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique) == null)
                 {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Legendaire).Nom;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Legendaire).SouvenirName;
+                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
                     //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 }
                 else
                 {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).Nom;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot)));
+                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).SouvenirName;
+                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
                     //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 }
                 break;

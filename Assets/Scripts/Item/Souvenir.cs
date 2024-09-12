@@ -12,12 +12,26 @@ public class Souvenir : ScriptableObject
     public List<ModificationStatSouvenir> ModificationStat;
     public bool IsClass;
     public int ClassId = 0;
-
-    public string Nom;
+    [SerializeField]
+    private string _idTradName;
+    [Tooltip("Default value for name if no traduction provided")]
+    [System.Obsolete("Use SouvenirName instead")]
+    [SerializeField]
+    private string Nom;
+    [SerializeField]
+    private string _idTradDescription;
+    [Tooltip("Default value for description if no traduction provided")]
     [TextArea(5, 10)]
-    public string Description;
+    [System.Obsolete("Use SouvenirDesc instead")]
+    [SerializeField]
+    private string Description;
     public Sprite Icon;
     public Spell SouvenirSpell;
+    
+
+
+    public string SouvenirName { get { return TradManager.instance.GetTranslation(_idTradName, Nom); } }
+    public string SouvenirDesc { get { return TradManager.instance.GetTranslation(_idTradDescription, Description); } }
 
     private void Awake()
     {

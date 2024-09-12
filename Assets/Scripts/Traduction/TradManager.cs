@@ -36,6 +36,9 @@ public class TradManager : MonoBehaviour
     private Dictionary<string, List<string>> _capaDictionary = new Dictionary<string, List<string>>();
     private Dictionary<string, List<string>> _miscDictionary = new Dictionary<string, List<string>>();
 
+    // Pour la vérification de l'unicité des ID de traductions
+    private HashSet<string> _idList = new HashSet<string>();
+
     private Analyzer _analyzer;
 
     private void Awake()
@@ -105,6 +108,11 @@ public class TradManager : MonoBehaviour
                 templist.AddRange(row);
                 templist.RemoveAt(0);
                 _dialogueDictionary.Add(row[0], templist);
+
+                if (!row[0].ToLower().Equals("id") && !_idList.Add(row[0]))
+                {
+                    Debug.LogError("Duplicate Key : " + (row[0]));
+                }
             }
         }
 
@@ -132,6 +140,11 @@ public class TradManager : MonoBehaviour
                 templist.AddRange(row);
                 templist.RemoveAt(0);
                 _capaDictionary.Add(row[0], templist);
+
+                if (!row[0].ToLower().Equals("id") && !_idList.Add(row[0]))
+                {
+                    Debug.LogError("Duplicate Key : " + (row[0]));
+                }
             }
 
         }
@@ -160,6 +173,11 @@ public class TradManager : MonoBehaviour
                 templist.AddRange(row);
                 templist.RemoveAt(0);
                 _miscDictionary.Add(row[0], templist);
+
+                if (!row[0].ToLower().Equals("id") && !_idList.Add(row[0]))
+                {
+                    Debug.LogError("Duplicate Key : " + (row[0]));
+                }
             }
         }
 
