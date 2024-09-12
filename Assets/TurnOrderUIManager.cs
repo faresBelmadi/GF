@@ -46,7 +46,7 @@ public class TurnOrderUIManager : MonoBehaviour
         for (int i = 0; i < IdOrder.Count; i++)
         {
             EnnemyBehavior ennemyBehavior = battleManager.EnemyScripts.FirstOrDefault(c => c.combatID == IdOrder[i].id);
-            string entityName = GameManager.instance.classSO.nameClass;
+            string entityName = GameManager.instance.classSO.NameClass;
             GameObject cible = null;
             Sprite icon = battleManager.player.Stat.Icon;
             Material charMaterial = null;
