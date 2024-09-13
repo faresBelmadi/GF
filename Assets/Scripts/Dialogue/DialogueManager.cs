@@ -208,8 +208,9 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            return "<allcaps><u><b><color=#" + colorCode + ">" + _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom +
-                   ": </color></b></u></allcaps>" + dialogueTrad;
+            string encounteurName = TradManager.instance.GetTranslation(_CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].IdTradName,
+                _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom);
+            return "<allcaps><u><b><color=#" + colorCode + ">" + encounteurName + ": </color></b></u></allcaps>" + dialogueTrad;
         }
     }
      
