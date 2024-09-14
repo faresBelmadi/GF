@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TutoMondeManager : MonoBehaviour
 {
 
     public Text TutoTextDisplay;
-    public Dictionary<string, string> TutoMondeText;
+    public Dictionary<string, string> TutoMondeText = new Dictionary<string, string>();
     public int indexTextTuto = 0;
     public List<GameObject> AllGameObjectsToDisplay;
     private bool alreadyClicked;
@@ -15,8 +16,8 @@ public class TutoMondeManager : MonoBehaviour
     {
         alreadyClicked = false;
         indexTextTuto = TutoManager.Instance.StepTuto;
-        CreateDictionary();
-        DisplayInfoTutoMonde();
+        //CreateDictionary();
+        //DisplayInfoTutoMonde();
     }
 
     private void DisplayInfoTutoMonde()
@@ -61,13 +62,18 @@ public class TutoMondeManager : MonoBehaviour
         //TutoMondeText.Add("3", TradManager.instance.DialogueDictionary["TutoQ25"][TradManager.instance.IdLanguage]);
         //TutoMondeText.Add("4", TradManager.instance.DialogueDictionary["TutoQ45"][TradManager.instance.IdLanguage]);
 
-        TutoMondeText = new Dictionary<string, string>
-        {
-            { "1", TradManager.instance.GetTranslation("TutoQ9") },
-            { "2", TradManager.instance.GetTranslation("TutoQ20") },
-            { "3", TradManager.instance.GetTranslation("TutoQ25") },
-            { "4", TradManager.instance.GetTranslation("TutoQ45") }
-        };
+        //TutoMondeText = new Dictionary<string, string>
+        //{
+        //    { "1", TradManager.instance.GetTranslation("TutoQ9") },
+        //    { "2", TradManager.instance.GetTranslation("TutoQ20") },
+        //    { "3", TradManager.instance.GetTranslation("TutoQ25") },
+        //    { "4", TradManager.instance.GetTranslation("TutoQ45") }
+        //};
+    }
+
+    public void LoadNextScene(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 
     //void LateUpdate()
