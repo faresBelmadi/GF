@@ -216,7 +216,8 @@ public class BattleManager : MonoBehaviour
     void DialogueEnableSetup()
     {
         player.InitRefBattleMan(this);
-        PassifManager = new PassifManager(new List<JoueurBehavior> {player}, EnemyScripts);
+        if (GameManager.instance != null)
+            PassifManager = new PassifManager(new List<JoueurBehavior> {player}, EnemyScripts);
         DialogueManager.SetupDialogue(_encounter);
     }
 
@@ -224,7 +225,10 @@ public class BattleManager : MonoBehaviour
     {
         idIndexer = 0;
         battleUI = GetComponent<BattleUI>();
-        player.Stat = GameManager.instance.playerStat;
+        if (GameManager.instance == null)
+            player.Stat = TutoManager.Instance.JoueurStat;
+        else 
+            player.Stat = GameManager.instance.playerStat;
         player.EndTurnBM = EndTurn;
         player.StartUp();
         SpawnedEnemy = new List<GameObject>();
@@ -335,14 +339,21 @@ public class BattleManager : MonoBehaviour
                 tempCombatScript.ChooseNextAction();
                 idIndexer++;
             }
-
+                
             //AddingMaterial
-            temp.GetComponent<UIEnnemi>().imageCadreFGs[0].material = new Material(ennemiUIMaterial);
-            temp.GetComponent<UIEnnemi>().imageCadreFGs[1].material = new Material(ennemiUIMaterial);
+            var uiEnnemi = temp.GetComponent<UIEnnemi>();
+            if (uiEnnemi != null)
+            {
+                uiEnnemi.imageCadreFGs[0].material = new Material(ennemiUIMaterial);
+                uiEnnemi.imageCadreFGs[1].material = new Material(ennemiUIMaterial);
+            }
 
             Material thisCharMaterial = new Material(characterMaterial);
             if (tempCombatScript != null) tempCombatScript.characterMaterial = thisCharMaterial;
-            temp.GetComponent<PulseBloom_System>().bloomMaterial = thisCharMaterial;
+
+            var pulseBloomSystem = temp.GetComponent<PulseBloom_System>();
+            if (pulseBloomSystem != null)
+                pulseBloomSystem.bloomMaterial = thisCharMaterial;
 
 
             foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>(true))

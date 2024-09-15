@@ -5,6 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class TutoManager : MonoBehaviour
 {
+    [Header("Panels Tuto")]
+    public GameObject PanelMap;
+    public GameObject PanelBattle;
+    public GameObject PanelAutel;
+
+    [Header("Battle")]
+    public BattleManager BattleManager;
+    public JoueurStat JoueurStat;
+
     public Encounter[] _encounter;
 
     [SerializeField] private DialogueManager DialogueManager;
@@ -42,35 +51,27 @@ public class TutoManager : MonoBehaviour
     public void NextStep()
     {
         StepTuto++;
-        LoadNextStep();
+        ShowNextStep();
     }
 
-    private void LoadNextStep()
+    private void HideAllPanels()
     {
-        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 5 || StepTuto == 7)
+        PanelMap.SetActive(false);
+        PanelBattle.SetActive(false);
+    }
+
+    private void ShowPanel(GameObject panel)
+    {
+        panel.SetActive(true);
+    }
+
+    private void ShowNextStep()
+    {
+        if (StepTuto == 1)
         {
-            StepMapTuto++;
-            AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
-            SceneManager.LoadScene("TutoMonde");
-        }
-        else if (StepTuto == 2 || StepTuto == 8)
-        {
-            StepBatlleTuto++;
-            AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
-            SceneManager.LoadScene("Tuto");
-        }
-        else if (StepTuto == 6)
-        {
-            StepBatlleTuto++;
-            AudioManager.instance.PlayMusic(MusicType.CombatMusic);
-            StartCoroutine("LoadSceneAsync", "TutoBattle");
-            //LoadSceneAsync("TutoBattle");
-        }
-        else if (StepTuto == 4)
-        {
-            AudioManager.instance.PlayMusic(MusicType.LevelUpMusic);
-            SceneManager.LoadScene("TutoAutel");
-            //SceneManager.LoadScene("TutoAutel OLD");
+            HideAllPanels();
+            ShowPanel(PanelBattle);
+            StartBattle();
         }
     }
 
@@ -99,13 +100,8 @@ public class TutoManager : MonoBehaviour
 
     void StartBattle()
     {
-        CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
-        var BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
-        //TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto]
-        BattleMan.LoadEnemy(Instantiate(TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto]));
-        CurrentRoomCamera.SetActive(true);
-        SceneManager.UnloadSceneAsync("TutoMonde");
-        //MenuCamera.SetActive(false);
+        Debug.Log("coucou");
+        BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.StepBatlleTuto]));
     }
 
     public void Loot()

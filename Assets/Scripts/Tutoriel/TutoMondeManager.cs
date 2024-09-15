@@ -73,7 +73,8 @@ public class TutoMondeManager : MonoBehaviour
 
     public void LoadNextScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        TutoManager.Instance.NextStep();
+        //SceneManager.LoadScene(sceneName);
     }
 
     //void LateUpdate()
