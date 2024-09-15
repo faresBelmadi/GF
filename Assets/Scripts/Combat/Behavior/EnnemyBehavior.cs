@@ -43,7 +43,10 @@ public class EnnemyBehavior : CombatBehavior
     }
     public void SetUp()
     {
-        _refBattleMan = GameManager.instance.BattleMan;
+        if (GameManager.instance == null)
+            _refBattleMan = TutoManager.Instance.BattleManager;
+        else 
+            _refBattleMan = GameManager.instance.BattleMan;
         IsDead = false;
         UICombat = this.GetComponent<UIEnnemi>();
         UpdateUI();

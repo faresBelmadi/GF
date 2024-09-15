@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -48,7 +49,7 @@ public class TutoDialogueManager : DialogueManager
             {
                 ConscienceFill.fillAmount = 0.1f;
                 //GoeargeTapeLeMob
-                var toDelete = TutoBattleManager.spawnPos[2].GetChild(0);
+                var toDelete = TutoBattleManager.spawnPos.FirstOrDefault(x => x.GetChild(0).gameObject.name == "Choristes_neuf Variant(Clone)");
                 Destroy(toDelete.gameObject);
                 Instantiate(CrystauxEssence, TutoBattleManager.spawnPos[2].position, Quaternion.identity,
                     TutoBattleManager.spawnPos[2]);

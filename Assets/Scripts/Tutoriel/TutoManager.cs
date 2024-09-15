@@ -43,6 +43,12 @@ public class TutoManager : MonoBehaviour
         }
     }
 
+    public void Start()
+    {
+        HideAllPanels();
+        ShowPanel(PanelMap);
+    }
+
     public static TutoManager Instance
     {
         get { return instance; }
@@ -58,6 +64,7 @@ public class TutoManager : MonoBehaviour
     {
         PanelMap.SetActive(false);
         PanelBattle.SetActive(false);
+        PanelAutel.SetActive(false);
     }
 
     private void ShowPanel(GameObject panel)
@@ -67,40 +74,54 @@ public class TutoManager : MonoBehaviour
 
     private void ShowNextStep()
     {
-        if (StepTuto == 1)
+        ClearPos();
+        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 5)
         {
             HideAllPanels();
             ShowPanel(PanelBattle);
             StartBattle();
         }
+        else if (StepTuto == 2 || StepTuto == 4 || StepTuto == 6)
+        {
+            HideAllPanels();
+            ShowPanel(PanelMap);
+        }
     }
 
-    //public GameObject MenuCamera;
-    public GameObject CurrentRoomCamera;
-    GameObject[] rootScene;
-    Scene s;
-
-    IEnumerator LoadSceneAsync(string name)
+    private void ClearPos()
     {
-        yield return SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
-        s = SceneManager.GetSceneByName(name);
-
-        rootScene = s.GetRootGameObjects();
-        StartBattle();
+        foreach (var spawnPos in BattleManager.spawnPos)
+        {
+            if (spawnPos.childCount > 0)
+                Destroy(spawnPos.GetChild(0).gameObject);
+        }
     }
 
-    //public void LoadSceneAsync(string name)
+    ////public GameObject MenuCamera;
+    //public GameObject CurrentRoomCamera;
+    //GameObject[] rootScene;
+    //Scene s;
+
+    //IEnumerator LoadSceneAsync(string name)
     //{
-    //    SceneManager.LoadScene(name);
+    //    yield return SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
     //    s = SceneManager.GetSceneByName(name);
 
-    //    rootScene = s.GetRootGameObjects(); 
+    //    rootScene = s.GetRootGameObjects();
     //    StartBattle();
     //}
 
+    ////public void LoadSceneAsync(string name)
+    ////{
+    ////    SceneManager.LoadScene(name);
+    ////    s = SceneManager.GetSceneByName(name);
+
+    ////    rootScene = s.GetRootGameObjects(); 
+    ////    StartBattle();
+    ////}
+
     void StartBattle()
     {
-        Debug.Log("coucou");
         BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.StepBatlleTuto]));
     }
 
@@ -115,5 +136,12 @@ public class TutoManager : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(1);
         Destroy(this.gameObject);
+    }
+
+    public void EndDialogueTuto()
+    {
+        if (StepBatlleTuto == 0 || StepBatlleTuto == 1)
+            NextStep();
+        StepBatlleTuto++;
     }
 }
