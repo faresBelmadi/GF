@@ -6,12 +6,17 @@ using UnityEngine;
 public class ClassPlayer : ScriptableObject
 {
     public int ID;
-    public string nameClass;
-
+    [Tooltip("Default value for missing translation")]
+    [SerializeField]
+    private string nameClass;
+    [SerializeField]
+    private string _idTradName;
     public JoueurStat PlayerStat;
 
     public List<Spell> spellClass;
     public int NbMaxSpell;
 
     public List<Competence> Competences;
+
+    public string NameClass { get { return TradManager.instance.GetTranslation(_idTradName, nameClass); } }
 }

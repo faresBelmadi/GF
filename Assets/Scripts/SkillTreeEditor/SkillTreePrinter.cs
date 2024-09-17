@@ -30,7 +30,7 @@ public class SkillTreePrinter : MonoBehaviour
     private void Awake() {
         SpawnedLines = new List<GameObject>();
         SpawnedNodes = new List<GameObject>();
-        ClassTitle.text = GameManager.instance.classSO.nameClass;
+        ClassTitle.text = GameManager.instance.classSO.NameClass;
         EssenceHeader.text = "Essence : " + GameManager.instance.playerStat.Essence;
         LoadNodes();
     }

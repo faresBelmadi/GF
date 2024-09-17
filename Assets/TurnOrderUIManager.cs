@@ -46,13 +46,13 @@ public class TurnOrderUIManager : MonoBehaviour
         for (int i = 0; i < IdOrder.Count; i++)
         {
             EnnemyBehavior ennemyBehavior = battleManager.EnemyScripts.FirstOrDefault(c => c.combatID == IdOrder[i].id);
-            string entityName = "Player";
+            string entityName = GameManager.instance.classSO.NameClass;
             GameObject cible = null;
             Sprite icon = battleManager.player.Stat.Icon;
             Material charMaterial = null;
             if (IdOrder[i].id != battleManager.idPlayer)
             {
-                entityName = ennemyBehavior.name.TrimEnd("Variant(Clone)".ToCharArray());
+                entityName = ennemyBehavior.Name;
                 cible = ennemyBehavior.GetComponent<UIEnnemi>().Ciblage;
                 icon = ennemyBehavior.Stat.Icon;
                 charMaterial = ennemyBehavior.characterMaterial;

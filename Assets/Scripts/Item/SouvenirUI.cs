@@ -19,7 +19,7 @@ public class SouvenirUI : MonoBehaviour
     public void StartUp()
     {
         SouvenirImageGameObject.GetComponent<Image>().sprite = LeSouvenir.Icon;
-        TexteDescription.text = LeSouvenir.Nom + "\n" + DescriptionEmotion() + "\n" + "Slots : " + LeSouvenir.Slots.ToString() + "\n" + LeSouvenir.Description;
+        TexteDescription.text = LeSouvenir.SouvenirName + "\n" + DescriptionEmotion() + "\n" + "Slots : " + LeSouvenir.Slots.ToString() + "\n" + LeSouvenir.SouvenirDesc;
         SetRarityBorder(LeSouvenir.Rarete);
     }
 
