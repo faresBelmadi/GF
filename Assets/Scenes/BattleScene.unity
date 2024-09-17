@@ -5558,6 +5558,7 @@ GameObject:
   m_Component:
   - component: {fileID: 569353009}
   - component: {fileID: 569353010}
+  - component: {fileID: 569353011}
   m_Layer: 5
   m_Name: StatInfo (2)
   m_TagString: Untagged
@@ -5632,6 +5633,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &569353011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 569353008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT7D
+  _defaultText: Resilience
+  _textTMPObject: {fileID: 1427851311}
+  _textObject: {fileID: 0}
 --- !u!1 &580477853
 GameObject:
   m_ObjectHideFlags: 0
@@ -6876,7 +6893,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
+  m_fontSize: 30
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8135,6 +8152,7 @@ GameObject:
   m_Component:
   - component: {fileID: 785316151}
   - component: {fileID: 785316152}
+  - component: {fileID: 785316153}
   m_Layer: 5
   m_Name: StatInfo (3)
   m_TagString: Untagged
@@ -8209,6 +8227,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &785316153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 785316150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT8D
+  _defaultText: Conviction
+  _textTMPObject: {fileID: 606350176}
+  _textObject: {fileID: 0}
 --- !u!1 &818843679
 GameObject:
   m_ObjectHideFlags: 0
@@ -9332,6 +9366,7 @@ GameObject:
   m_Component:
   - component: {fileID: 976424467}
   - component: {fileID: 976424468}
+  - component: {fileID: 976424469}
   m_Layer: 5
   m_Name: StatInfo
   m_TagString: Untagged
@@ -9406,6 +9441,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &976424469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976424466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT5D
+  _defaultText: Force d'ame
+  _textTMPObject: {fileID: 714604633}
+  _textObject: {fileID: 0}
 --- !u!1 &988748983
 GameObject:
   m_ObjectHideFlags: 0
@@ -12530,6 +12581,7 @@ GameObject:
   - component: {fileID: 1265784473}
   - component: {fileID: 1265784472}
   - component: {fileID: 1265784471}
+  - component: {fileID: 1265784474}
   m_Layer: 5
   m_Name: UIVolonteToolTip
   m_TagString: Untagged
@@ -12639,6 +12691,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1265784474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1265784469}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT1D
+  _defaultText: "Volont\xE9"
+  _textTMPObject: {fileID: 1348570693}
+  _textObject: {fileID: 0}
 --- !u!1 &1267390051
 GameObject:
   m_ObjectHideFlags: 0
@@ -12765,8 +12833,10 @@ GameObject:
   - component: {fileID: 1289437635}
   - component: {fileID: 1289437634}
   - component: {fileID: 1289437633}
+  - component: {fileID: 1289437636}
+  - component: {fileID: 1289437637}
   m_Layer: 5
-  m_Name: EndCombatButton
+  m_Name: EndCombatEssenceButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12848,6 +12918,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1289437636}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1289437634
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12886,6 +12968,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1289437631}
   m_CullTransparentMesh: 0
+--- !u!114 &1289437636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289437631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1289437637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1289437631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: Battle1N
+  _defaultText: Garder l'essence
+  _textTMPObject: {fileID: 1771883982}
+  _textObject: {fileID: 0}
 --- !u!1 &1289801598
 GameObject:
   m_ObjectHideFlags: 0
@@ -13597,6 +13707,7 @@ GameObject:
   - component: {fileID: 1394995680}
   - component: {fileID: 1394995679}
   - component: {fileID: 1394995678}
+  - component: {fileID: 1394995682}
   m_Layer: 5
   m_Name: UIRadianceToolTip
   m_TagString: Untagged
@@ -13726,6 +13837,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1394995682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1394995676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT3D
+  _defaultText: Vos PV.
+  _textTMPObject: {fileID: 1687265634}
+  _textObject: {fileID: 0}
 --- !u!1 &1405156031
 GameObject:
   m_ObjectHideFlags: 0
@@ -14404,6 +14531,7 @@ GameObject:
   - component: {fileID: 1465772625}
   - component: {fileID: 1465772624}
   - component: {fileID: 1465772623}
+  - component: {fileID: 1465772626}
   m_Layer: 5
   m_Name: UITensionToolTip
   m_TagString: Untagged
@@ -14513,6 +14641,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1465772626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465772621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT2D
+  _defaultText: Tension
+  _textTMPObject: {fileID: 692429901}
+  _textObject: {fileID: 0}
 --- !u!1 &1472280036
 GameObject:
   m_ObjectHideFlags: 0
@@ -14894,6 +15038,7 @@ MonoBehaviour:
   UIDialogue: {fileID: 1367920561}
   _fontSize: 36
   UIJoueur: {fileID: 1365689808}
+  _speakerColor: {r: 0.034487356, g: 0.2924528, b: 0.06442978, a: 0}
   MainText: {fileID: 1172403766}
   MainTextGO: {fileID: 1172403764}
   "R\xE9ponse":
@@ -17535,6 +17680,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1706570113}
   - component: {fileID: 1706570114}
+  - component: {fileID: 1706570115}
   m_Layer: 5
   m_Name: StatInfo (4)
   m_TagString: Untagged
@@ -17609,6 +17755,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1706570115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1706570112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT9D
+  _defaultText: Clairvoyance
+  _textTMPObject: {fileID: 1446400471}
+  _textObject: {fileID: 0}
 --- !u!1 &1728194445
 GameObject:
   m_ObjectHideFlags: 0
@@ -17788,6 +17950,7 @@ GameObject:
   - component: {fileID: 1744707158}
   - component: {fileID: 1744707161}
   - component: {fileID: 1744707162}
+  - component: {fileID: 1744707163}
   m_Layer: 5
   m_Name: EndTurnButton
   m_TagString: Untagged
@@ -18026,6 +18189,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1744707163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1744707156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: Battle2N
+  _defaultText: End Turn
+  _textTMPObject: {fileID: 1899975012}
+  _textObject: {fileID: 0}
 --- !u!1 &1752908616
 GameObject:
   m_ObjectHideFlags: 0
@@ -23801,6 +23980,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1848580256}
   - component: {fileID: 1848580257}
+  - component: {fileID: 1848580258}
   m_Layer: 5
   m_Name: StatInfo (1)
   m_TagString: Untagged
@@ -23875,6 +24055,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1848580258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848580255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT6D
+  _defaultText: Vitesse
+  _textTMPObject: {fileID: 71087889}
+  _textObject: {fileID: 0}
 --- !u!1 &1879012953
 GameObject:
   m_ObjectHideFlags: 0
@@ -25075,6 +25271,7 @@ GameObject:
   - component: {fileID: 2113728006}
   - component: {fileID: 2113728005}
   - component: {fileID: 2113728004}
+  - component: {fileID: 2113728007}
   m_Layer: 5
   m_Name: UIConscienceToolTip
   m_TagString: Untagged
@@ -25184,6 +25381,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &2113728007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113728002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT4D
+  _defaultText: Conscience
+  _textTMPObject: {fileID: 653675926}
+  _textObject: {fileID: 0}
 --- !u!1 &2115732596
 GameObject:
   m_ObjectHideFlags: 0
@@ -25415,6 +25628,8 @@ GameObject:
   - component: {fileID: 2376267413484135301}
   - component: {fileID: 3035570199462003357}
   - component: {fileID: 613146216}
+  - component: {fileID: 5919855879274136995}
+  - component: {fileID: 5919855879274136994}
   m_Layer: 5
   m_Name: RetourMenuPrincipaleBattle
   m_TagString: Untagged
@@ -25545,6 +25760,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5919855879274136995}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3505401995910000422
 GameObject:
   m_ObjectHideFlags: 0
@@ -25620,6 +25847,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1633834876203176428}
   m_CullTransparentMesh: 0
+--- !u!114 &5919855879274136994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633834876203176428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: W1B1N
+  _defaultText: Menu principal
+  _textTMPObject: {fileID: 7058392507263661566}
+  _textObject: {fileID: 0}
+--- !u!114 &5919855879274136995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1633834876203176428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &6428004344909380323
 CanvasRenderer:
   m_ObjectHideFlags: 0

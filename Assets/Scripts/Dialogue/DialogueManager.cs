@@ -15,6 +15,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField]
     private float _fontSize = 34f;
     public GameObject UIJoueur;
+    [SerializeField]
+    private Color _speakerColor;
     public TextMeshProUGUI MainText;
     public GameObject MainTextGO;
     public List<TextMeshProUGUI> Réponse;
@@ -188,6 +190,7 @@ public class DialogueManager : MonoBehaviour
     private string TextePrincipal()
     {
         string dialogueTrad;
+        string colorCode = ColorUtility.ToHtmlStringRGB(_speakerColor);
         if (!string.IsNullOrEmpty(_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion))
         {
             //dialogueTrad =
@@ -201,12 +204,13 @@ public class DialogueManager : MonoBehaviour
         }
         if (ManagerBattle == null && _CurrentEncounterAlea != null)
         {
-            return "<allcaps><u><b>" + _CurrentEncounterAlea.NamePnj + ": </b></u></allcaps> " + dialogueTrad;
+            return "<allcaps><u><b><color=#"+ colorCode + ">" + _CurrentEncounterAlea.NamePnj + ": </color></b></u></allcaps> " + dialogueTrad;
         }
         else
         {
-            return "<allcaps><u><b>" + _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom +
-                   ": </b></u></allcaps>" + dialogueTrad;
+            string encounteurName = TradManager.instance.GetTranslation(_CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].IdTradName,
+                _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom);
+            return "<allcaps><u><b><color=#" + colorCode + ">" + encounteurName + ": </color></b></u></allcaps>" + dialogueTrad;
         }
     }
      

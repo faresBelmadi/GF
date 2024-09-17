@@ -67,42 +67,6 @@ public class Analyzer : MonoBehaviour
     // {damage type=direct value=10}
     // {damage type=percent value=60 stat=FA}
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        //string str = "P1C1D; Inflige 60 % {stat value=FA} et gagne un bonus de 10 % de resistance aux dégats pour 1 tour; \"Inflict 60 % of your Fortitude to target opponent, gain a bonus of 10 % to damage resistance for 1 turn\"; ;";
-        //string str2 = "P1C1D; Inflige 60 % {stat value=FA} et gagne un bonus de 10 % de resistance aux dégats pour 1 tour; \"Inflict 60 % of your Fortitude to target opponent, gain a bonus of 10 % to damage resistance for 1 turn\"; ;";
-
-        //System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-        //sw.Start();
-        //Debug.Log(Analyze(str));
-        //sw.Stop();
-
-        //TimeSpan ts = sw.Elapsed;
-
-        //// Format and display the TimeSpan value.
-        //string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-        //    ts.Hours, ts.Minutes, ts.Seconds,
-        //    ts.Milliseconds / 10);
-        //Debug.Log("RunTimeAnal " + elapsedTime);
-
-        //sw.Reset();
-
-        //sw.Start();
-        //Debug.Log(Execute(str2));
-        //sw.Stop();
-        //TimeSpan ts2 = sw.Elapsed;
-
-        //// Format and display the TimeSpan value.
-        //string elapsedTime2 = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-        //    ts2.Hours, ts2.Minutes, ts2.Seconds,
-        //    ts2.Milliseconds / 10);
-        //Debug.Log("RunTimeRegex " + elapsedTime2);
-        //string str = "Inflige {percent value=60 target=FA}";
-        //read(ref str);
-        //Debug.Log("regex : " + str);
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -326,9 +290,9 @@ public class Analyzer : MonoBehaviour
                 else if (attributes[TradAttribute.value].Equals("RAD", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatRadiance == null) ? "RAD" : _clairvoyanceIconData.StatRadiance.name);
                 else if (attributes[TradAttribute.value].Equals("VIT", System.StringComparison.InvariantCultureIgnoreCase))
-                    strb.Append((_clairvoyanceIconData.StatVitesse == null) ? "RAD" : _clairvoyanceIconData.StatVitesse.name);
+                    strb.Append((_clairvoyanceIconData.StatVitesse == null) ? "VIT" : _clairvoyanceIconData.StatVitesse.name);
                 else if (attributes[TradAttribute.value].Equals("RES", System.StringComparison.InvariantCultureIgnoreCase))
-                    strb.Append((_clairvoyanceIconData.StatResilience == null) ? "RAD" : _clairvoyanceIconData.StatResilience.name);
+                    strb.Append((_clairvoyanceIconData.StatResilience == null) ? "RES" : _clairvoyanceIconData.StatResilience.name);
                 strb.Append("\">");
 
                 break;

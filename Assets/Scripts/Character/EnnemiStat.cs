@@ -6,6 +6,7 @@ public class EnnemiStat : CharacterStat
 {
     [Space]
     public Sprite Icon;
+    public string IdTradName;
     public string Nom;
     public int Dissimulation;
     public int DissimulationOriginal;

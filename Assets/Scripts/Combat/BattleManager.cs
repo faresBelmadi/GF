@@ -84,8 +84,8 @@ public class BattleManager : MonoBehaviour
                     .Where(x => x.Rarete == _encounter.LootRarity[i].rareter).ToList();
                 int randomSouvenir = UnityEngine.Random.Range(0, allSouvenirRareter.Count());
 
-                string NameLoot = allSouvenirRareter[randomSouvenir].Nom;
-                var newSouvenir = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot);
+                string NameLoot = allSouvenirRareter[randomSouvenir].SouvenirName;
+                var newSouvenir = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot);
                 player.Stat.ListSouvenir.Add(Instantiate(newSouvenir));
                 GameManager.instance.CopyAllSouvenir.Remove(newSouvenir);
                 IsLoot = true;

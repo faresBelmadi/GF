@@ -26,6 +26,14 @@ public class EnnemyBehavior : CombatBehavior
     private int currentHp = 0;
     private int currentTension = 0;
     private Coroutine deathRoutine = null;
+   
+    public string Name
+    { 
+        get 
+        {
+            return TradManager.instance.GetTranslation(Stat.IdTradName, Stat.Nom);
+        }
+    }
     public bool IsDead { get; private set; } = false;
     #region Divers start & fin
     IEnumerator DeathCoroutine()
