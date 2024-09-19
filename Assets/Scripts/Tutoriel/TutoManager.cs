@@ -16,7 +16,7 @@ public class TutoManager : MonoBehaviour
 
     public Encounter[] _encounter;
 
-    [SerializeField] private DialogueManager DialogueManager;
+    [SerializeField] private TutoDialogueManager DialogueManager;
 
     public int StepTuto;
     public int StepMapTuto;
@@ -64,7 +64,8 @@ public class TutoManager : MonoBehaviour
     {
         PanelMap.SetActive(false);
         PanelBattle.SetActive(false);
-        PanelAutel.SetActive(false);
+        /* TO DO
+        PanelAutel.SetActive(false);*/
     }
 
     private void ShowPanel(GameObject panel)
@@ -122,6 +123,7 @@ public class TutoManager : MonoBehaviour
 
     void StartBattle()
     {
+        DialogueManager.InitDialogueStep();
         BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.StepBatlleTuto]));
     }
 
@@ -143,5 +145,6 @@ public class TutoManager : MonoBehaviour
         if (StepBatlleTuto == 0 || StepBatlleTuto == 1)
             NextStep();
         StepBatlleTuto++;
+        
     }
 }

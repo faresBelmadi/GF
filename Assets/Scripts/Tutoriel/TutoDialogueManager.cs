@@ -21,7 +21,10 @@ public class TutoDialogueManager : DialogueManager
         TutoManager.Instance.NextStep();
         //SceneManager.LoadScene("TutoMonde");
     }
-
+    public void InitDialogueStep()
+    {
+        NextDialogueIndex = 0;
+    }
     public void GetRéponse(int i)
     {
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.TutoDialogueAndAction)

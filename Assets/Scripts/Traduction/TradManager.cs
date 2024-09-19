@@ -107,8 +107,10 @@ public class TradManager : MonoBehaviour
                 List<string> templist = new List<string>();
                 templist.AddRange(row);
                 templist.RemoveAt(0);
-                _dialogueDictionary.Add(row[0], templist);
-
+                if (!_dialogueDictionary.TryAdd(row[0], templist))
+                {
+                    Debug.LogError("Error when adding key " + row[0] + " to dialogue dictionnary, key already added");
+                }
                 if (!row[0].ToLower().Equals("id") && !_idList.Add(row[0]))
                 {
                     Debug.LogError("Duplicate Key : " + (row[0]));

@@ -42,7 +42,7 @@ public class DialogueManager : MonoBehaviour
     #region Dialogue Property
 
     internal int DialogueIndex = 0;
-    private int NextDialogueIndex = 0;
+    protected int NextDialogueIndex = 0;
     private Dictionary<ClairvoyanceIconStatEnum, bool> _displayedClairvoyanceStats;
 
     #endregion Dialogue Property
