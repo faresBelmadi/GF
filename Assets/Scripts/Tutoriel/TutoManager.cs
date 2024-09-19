@@ -77,13 +77,13 @@ public class TutoManager : MonoBehaviour
     private void ShowNextStep()
     {
         ClearPos();
-        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 5)
+        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 4)
         {
             HideAllPanels();
             ShowPanel(PanelBattle);
             StartBattle();
         }
-        else if (StepTuto == 2 || StepTuto == 4 || StepTuto == 6)
+        else if (StepTuto == 2)
         {
             HideAllPanels();
             ShowPanel(PanelMap);
