@@ -85,7 +85,7 @@ public class Room : MonoBehaviour
             {
                 AudioManager.instance.SFX.PlaySFXClip(SFXType.MapSFX);
             }
-            GameManager.instance.SetRoom(this);
+            GameManager.Instance.SetRoom(this);
             var scale = oldScale;
             transform.localScale = scale;
         }

@@ -91,7 +91,7 @@ public class PlayerMapManager : MonoBehaviour
                 break;
             case TypeRoom.End:
                 SceneManager.LoadScene("MainMenu");
-                Destroy(GameManager.instance.gameObject);
+                Destroy(GameManager.Instance.gameObject);
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
                 break;
             case TypeRoom.LevelUp:
@@ -159,19 +159,19 @@ public class PlayerMapManager : MonoBehaviour
     void StartBattle(string enemieType)
     {
         CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
-        GameManager.instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
+        GameManager.Instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
         //if (enemieType.Equals("normal"))
-        //    GameManager.instance.LoadCombatNormal();
+        //    GameManager.Instance.LoadCombatNormal();
         //else if (enemieType.Equals("elite"))
         //{
-        //    GameManager.instance.LoadCombatElite();
+        //    GameManager.Instance.LoadCombatElite();
         //}
         //else if (enemieType.Equals("boss"))
         //{
-        //    GameManager.instance.LoadCombatBoss();
+        //    GameManager.Instance.LoadCombatBoss();
         //}
-        //AudioManager.instance.PlayMusic(MusicType.CombatMusic);
-        GameManager.instance.LoadCombat();
+        //AudioManager.Instance.PlayMusic(MusicType.CombatMusic);
+        GameManager.Instance.LoadCombat();
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
     }
@@ -179,7 +179,7 @@ public class PlayerMapManager : MonoBehaviour
     public IEnumerator EndBattle(bool IsLoot)
     {
         CurrentRoomCamera.SetActive(false);
-        GameManager.instance.BattleMan = null;
+        GameManager.Instance.BattleMan = null;
         MenuCamera.SetActive(true);
         if (IsLoot)
         {
@@ -195,8 +195,8 @@ public class PlayerMapManager : MonoBehaviour
     void StartAlea()
     {
         CurrentRoomCamera = rootScene.First(c => c.name == "AleaCamera");
-        GameManager.instance.AleaMan = rootScene.First(c => c.name == "AleaManager").GetComponent<AleaManager>();
-        GameManager.instance.LoadEvent();
+        GameManager.Instance.AleaMan = rootScene.First(c => c.name == "AleaManager").GetComponent<AleaManager>();
+        GameManager.Instance.LoadEvent();
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
     }
@@ -204,7 +204,7 @@ public class PlayerMapManager : MonoBehaviour
     public IEnumerator EndAlea()
     {
         CurrentRoomCamera.SetActive(false);
-        GameManager.instance.AleaMan = null;
+        GameManager.Instance.AleaMan = null;
         MenuCamera.SetActive(true);
         yield return SceneManager.UnloadSceneAsync(s);
     }
@@ -219,8 +219,8 @@ public class PlayerMapManager : MonoBehaviour
     void StartAutel()
     {
         CurrentRoomCamera = rootScene.First(c => c.name == "AutelCamera");
-        //GameManager.instance.OldAutelMan = rootScene.First(c => c.name == "OldAutelManager").GetComponent<OldAutelManager>();
-        //GameManager.instance.LoadAutel();
+        //GameManager.Instance.OldAutelMan = rootScene.First(c => c.name == "OldAutelManager").GetComponent<OldAutelManager>();
+        //GameManager.Instance.LoadAutel();
         CurrentRoomCamera.SetActive(true);
         MenuCamera.SetActive(false);
 
@@ -230,7 +230,7 @@ public class PlayerMapManager : MonoBehaviour
     public IEnumerator EndAutel(bool Loot)
     {
         CurrentRoomCamera.SetActive(false);
-        //GameManager.instance.OldAutelMan = null;
+        //GameManager.Instance.OldAutelMan = null;
         MenuCamera.SetActive(true);
         if (Loot == true)
         {
@@ -251,8 +251,8 @@ public class PlayerMapManager : MonoBehaviour
     void StartMenuStat()
     {
         //CurrentRoomCamera = rootScene.First(c => c.name == "MenuStatCamera");
-        //GameManager.instance.StatMan = rootScene.First(c => c.name == "MenuStatManager").GetComponent<MenuStatManager>();
-        //GameManager.instance.ShowMenuStat();
+        //GameManager.Instance.StatMan = rootScene.First(c => c.name == "MenuStatManager").GetComponent<MenuStatManager>();
+        //GameManager.Instance.ShowMenuStat();
         //CurrentRoomCamera.SetActive(true);
         //MenuCamera.SetActive(false);
     }
@@ -260,7 +260,7 @@ public class PlayerMapManager : MonoBehaviour
     public void EndMenuStat()
     {
         //CurrentRoomCamera.SetActive(false);
-        GameManager.instance.StatMan = null;
+        GameManager.Instance.StatMan = null;
         //MenuCamera.SetActive(true);
         //yield return SceneManager.UnloadSceneAsync(s);
 

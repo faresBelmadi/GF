@@ -13,6 +13,7 @@ public class TutoManager : MonoBehaviour
     [Header("Battle")]
     public BattleManager BattleManager;
     public JoueurStat JoueurStat;
+    public ClassPlayer TutoClassSo;
 
     public Encounter[] _encounter;
 
@@ -144,6 +145,8 @@ public class TutoManager : MonoBehaviour
     {
         if (StepBatlleTuto == 0 || StepBatlleTuto == 1)
             NextStep();
+        if (StepBatlleTuto == 2)
+            DialogueManager.StartCombat();
         StepBatlleTuto++;
         
     }

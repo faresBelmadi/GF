@@ -78,16 +78,16 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < _encounter.LootRarity.Count; i++)
         {
             if (random <= _encounter.LootRarity[i].Pourcentage &&
-                GameManager.instance.CopyAllSouvenir.Any(x => x.Rarete == _encounter.LootRarity[i].rareter))
+                GameManager.Instance.CopyAllSouvenir.Any(x => x.Rarete == _encounter.LootRarity[i].rareter))
             {
-                var allSouvenirRareter = GameManager.instance.CopyAllSouvenir
+                var allSouvenirRareter = GameManager.Instance.CopyAllSouvenir
                     .Where(x => x.Rarete == _encounter.LootRarity[i].rareter).ToList();
                 int randomSouvenir = UnityEngine.Random.Range(0, allSouvenirRareter.Count());
 
                 string NameLoot = allSouvenirRareter[randomSouvenir].SouvenirName;
-                var newSouvenir = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot);
+                var newSouvenir = GameManager.Instance.CopyAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot);
                 player.Stat.ListSouvenir.Add(Instantiate(newSouvenir));
-                GameManager.instance.CopyAllSouvenir.Remove(newSouvenir);
+                GameManager.Instance.CopyAllSouvenir.Remove(newSouvenir);
                 IsLoot = true;
                 return;
             }
@@ -216,7 +216,7 @@ public class BattleManager : MonoBehaviour
     void DialogueEnableSetup()
     {
         player.InitRefBattleMan(this);
-        if (GameManager.instance != null)
+        if (GameManager.Instance != null)
             PassifManager = new PassifManager(new List<JoueurBehavior> {player}, EnemyScripts);
         DialogueManager.SetupDialogue(_encounter);
     }
@@ -225,10 +225,10 @@ public class BattleManager : MonoBehaviour
     {
         idIndexer = 0;
         battleUI = GetComponent<BattleUI>();
-        if (GameManager.instance == null)
+        if (GameManager.Instance == null)
             player.Stat = TutoManager.Instance.JoueurStat;
         else 
-            player.Stat = GameManager.instance.playerStat;
+            player.Stat = GameManager.Instance.playerStat;
         player.EndTurnBM = EndTurn;
         player.StartUp();
         SpawnedEnemy = new List<GameObject>();
@@ -443,7 +443,7 @@ public class BattleManager : MonoBehaviour
         player.Stat.ListBuffDebuff.Clear();
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Stat.Tension = 0;
-        GameManager.instance.playerStat = player.Stat;
+        GameManager.Instance.playerStat = player.Stat;
         Debug.Log(IsLoot);
         if (TutoManager.Instance != null)
         {
@@ -460,7 +460,7 @@ public class BattleManager : MonoBehaviour
             buttonEndCombat.SetActive(false);
         }
         else
-            StartCoroutine(GameManager.instance.pmm.EndBattle(IsLoot));
+            StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
     }
 
     #endregion Mise en place combat & fin
@@ -471,8 +471,11 @@ public class BattleManager : MonoBehaviour
     {
         //Play start phase sound
         AudioManager.instance.SFX.PlaySFXClip(SFXType.StartPhaseSFX);
-        PassifManager.CurrentEvent = TimerPassif.DebutPhase;
-        PassifManager.ResolvePassifs();
+        if (PassifManager != null)
+        {
+            PassifManager.CurrentEvent = TimerPassif.DebutPhase;
+            PassifManager.ResolvePassifs();
+        }
 
         LastPhaseDamage = CurrentPhaseDamage;
         CurrentPhaseDamage = 0;
@@ -1025,7 +1028,7 @@ public class BattleManager : MonoBehaviour
 
     public void DeadPlayer()
     {
-        GameManager.instance.DeadPlayer();
+        GameManager.Instance.DeadPlayer();
     }
 
     #endregion Death
@@ -1095,7 +1098,7 @@ public class BattleManager : MonoBehaviour
     public void EndHurtAnimPlayer()
     {
 
-        player.endHurtAnim();
+        player.EndHurtAnim();
     }
 
     #endregion Animation

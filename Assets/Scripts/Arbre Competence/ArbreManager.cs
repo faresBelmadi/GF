@@ -24,8 +24,8 @@ public class ArbreManager : MonoBehaviour
     public void StartArbre(JoueurStat _Stat)
     {
         Stat = _Stat;
-        Class = GameManager.instance.classSO.Competences;
-        NbMaxSpell = GameManager.instance.classSO.NbMaxSpell;
+        Class = GameManager.Instance.classSO.Competences;
+        NbMaxSpell = GameManager.Instance.classSO.NbMaxSpell;
         InstantiateSpell();
         InstantiateArbre();
         TextStat();
@@ -34,14 +34,14 @@ public class ArbreManager : MonoBehaviour
 
     private void OnEnable()
     {
-        StartArbreMenuStat(GameManager.instance.playerStat);
+        StartArbreMenuStat(GameManager.Instance.playerStat);
     }
 
     public void StartArbreMenuStat(JoueurStat _Stat)
     {
         Stat = _Stat;
-        Class = GameManager.instance.classSO.Competences;
-        NbMaxSpell = GameManager.instance.classSO.NbMaxSpell;
+        Class = GameManager.Instance.classSO.Competences;
+        NbMaxSpell = GameManager.Instance.classSO.NbMaxSpell;
         InstantiateSpell();
         InstantiateArbre();
         TextStat();
@@ -210,9 +210,9 @@ public class ArbreManager : MonoBehaviour
         Competence.ButtonEquip.gameObject.SetActive(false);
         Competence.ButtonUnEquip.gameObject.SetActive(true);
 
-        GameManager.instance.playerStat.ListSpell.Add(Competence.LaCompetence.Spell);
+        GameManager.Instance.playerStat.ListSpell.Add(Competence.LaCompetence.Spell);
 
-        UiMondeManager ui = GameManager.instance.rm.gameObject.GetComponent<UiMondeManager>();
+        UiMondeManager ui = GameManager.Instance.rm.gameObject.GetComponent<UiMondeManager>();
         ui.EnableMonde();
     }
 

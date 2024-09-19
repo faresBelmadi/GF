@@ -78,7 +78,7 @@ public class RoomManager : MonoBehaviour
         Rooms[9].ToSet = SalleEnd;
         Rooms[9].gameObject.transform.localScale = new Vector3(10, 10);
         Rooms[9].Type = TypeRoom.End; 
-        GameManager.instance.SetRoom(start);
+        GameManager.Instance.SetRoom(start);
     }
     
     public int FindMaxConnection()

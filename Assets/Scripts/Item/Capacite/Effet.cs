@@ -129,7 +129,7 @@ public class Effet : ScriptableObject
                                      caster.ForceAme);
                 break;
             case TypeEffet.DamageLastPhase:
-                damageAmount += -GameManager.instance.BattleMan.LastPhaseDamage;
+                damageAmount += -GameManager.Instance.BattleMan.LastPhaseDamage;
                 break;
             case TypeEffet.DegatsBrutConsequence:
                 damageAmount += valueToChange;
@@ -353,7 +353,7 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.SoinFANbEnnemi:
                 ModifState.Radiance += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) *
-                                        GameManager.instance.BattleMan.EnemyScripts.Count);
+                                        GameManager.Instance.BattleMan.EnemyScripts.Count);
                 break;
             case TypeEffet.SoinRadianceMax:
                 ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.RadianceMax);
@@ -372,7 +372,7 @@ public class Effet : ScriptableObject
                 ModifState.Tension += -Cible.Tension;
                 var toAdd = AfterEffectToApply;
                 toAdd.Effet.First().ValeurBrut = (int)Cible.Tension * ValeurBrut;
-                GameManager.instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
+                GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
                 toAdd.Effet.First().ValeurBrut = 0;
                 break;
             case TypeEffet.RemoveDebuff:
@@ -397,7 +397,7 @@ public class Effet : ScriptableObject
                 TimeAlive++;
                 break;
             case TypeEffet.DamageLastPhase:
-                ModifState.Radiance += -GameManager.instance.BattleMan.LastPhaseDamage;
+                ModifState.Radiance += -GameManager.Instance.BattleMan.LastPhaseDamage;
                 break;
             case TypeEffet.NoEssence:
                 ModifState.Essence += -Cible.Essence;

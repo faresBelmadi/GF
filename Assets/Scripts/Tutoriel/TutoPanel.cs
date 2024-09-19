@@ -16,6 +16,7 @@ public class TutoPanel : MonoBehaviour
     public GameObject UIDialogue;
     public GameObject UIJoueur;
     public GameObject UIJoueurTutoExplication;
+    public List<GameObject> UiToShowForFigth;
     public GameObject SpawnPos0;
     public GameObject EndBattleButton;
 
@@ -25,9 +26,17 @@ public class TutoPanel : MonoBehaviour
         {
             ExplicationImageListe[IndexExplication].gameObject.SetActive(false);
         }
+
         IndexExplication++;
+        Debug.Log(IndexExplication);
         if (IndexExplication == 8)
+        {
             StartCombat();
+            foreach (var ui in UiToShowForFigth)
+            {
+                ui.SetActive(true);
+            }
+        }
         else if (IndexExplication == 13)
             GatherEssence();
         else if (IndexExplication == 14)
@@ -36,7 +45,7 @@ public class TutoPanel : MonoBehaviour
         {
             TutoManager.Instance.NextStep();
         }
-        else 
+        else
             ShowExplication();
     }
 
@@ -45,7 +54,7 @@ public class TutoPanel : MonoBehaviour
         if (IndexExplication == 0)
             UIJoueurTutoExplication.SetActive(true);
 
-        //TextExplication.text = TradManager.instance.DialogueDictionary[ExplicationListe[IndexExplication]][TradManager.instance.IdLanguage];
+        //TextExplication.text = TradManager.Instance.DialogueDictionary[ExplicationListe[IndexExplication]][TradManager.Instance.IdLanguage];
         TextExplication.text = TradManager.instance.GetTranslation(ExplicationListe[IndexExplication]);
 
         if (ExplicationImageListe[IndexExplication] != null)
@@ -58,7 +67,7 @@ public class TutoPanel : MonoBehaviour
         var reponse = ReponseListe[IndexExplication];
         if (reponse is not (null or ""))
         {
-            //TextReponse.text = TradManager.instance.DialogueDictionary[reponse][TradManager.instance.IdLanguage];
+            //TextReponse.text = TradManager.Instance.DialogueDictionary[reponse][TradManager.Instance.IdLanguage];
             TextReponse.text = TradManager.instance.GetTranslation(reponse);
         }
         else
@@ -70,7 +79,7 @@ public class TutoPanel : MonoBehaviour
         UIJoueur.SetActive(false);
         //UIDialogue.SetActive(false);
         TutoManager.Instance.ShowSoulConsumation = true;
-        GameManager.instance.BattleMan.StartCoroutine("GatherEssence");
+        TutoManager.Instance.BattleManager.StartCoroutine("GatherEssence");
         this.transform.GetChild(0).gameObject.SetActive(false);
         //SpawnPos0.transform.GetChild(0).gameObject.SetActive(false);
         EndBattleButton.SetActive(false);
@@ -81,7 +90,7 @@ public class TutoPanel : MonoBehaviour
         UIJoueurTutoExplication.SetActive(false);
         UIJoueur.SetActive(true);
         UIDialogue.SetActive(false);
-        GameManager.instance.BattleMan.StartCombat();
+        TutoManager.Instance.BattleManager.StartCombat();
         this.transform.GetChild(0).gameObject.SetActive(false);
     }
 }

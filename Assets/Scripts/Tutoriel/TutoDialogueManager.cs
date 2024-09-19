@@ -70,7 +70,7 @@ public class TutoDialogueManager : DialogueManager
 
             if (DialogueIndex == 10 && TutoManager.Instance.StepBatlleTuto == 3)
             {
-                Destroy(GameManager.instance.gameObject);
+                Destroy(GameManager.Instance.gameObject);
                 SceneManager.LoadSceneAsync(1);
                 Destroy(TutoManager.Instance.gameObject);
             }
