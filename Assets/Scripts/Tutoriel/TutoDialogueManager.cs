@@ -68,9 +68,10 @@ public class TutoDialogueManager : DialogueManager
                 JoueurHolder.SetActive(false);
             }
 
-            if (DialogueIndex == 10 && TutoManager.Instance.StepBatlleTuto == 3)
+            if (DialogueIndex == 10 && TutoManager.Instance.StepBatlleTuto == 4)
             {
-                Destroy(GameManager.Instance.gameObject);
+                if (GameManager.Instance != null)
+                    Destroy(GameManager.Instance.gameObject);
                 SceneManager.LoadSceneAsync(1);
                 Destroy(TutoManager.Instance.gameObject);
             }

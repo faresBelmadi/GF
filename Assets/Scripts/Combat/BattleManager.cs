@@ -11,6 +11,8 @@ using UnityEngine.UIElements;
 [System.Serializable]
 public class BattleManager : MonoBehaviour
 {
+    [SerializeField]
+    private bool _isTuto = false;
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
@@ -54,6 +56,8 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField] private Material characterMaterial;
     [SerializeField] private Material ennemiUIMaterial;
+
+    public bool IsTuto { get => _isTuto; }
 
     #region Loot
 
@@ -435,9 +439,11 @@ public class BattleManager : MonoBehaviour
     private void EndBattle()
     {
         IsCombatOn = false;
-        PassifManager.CurrentEvent = TimerPassif.FinCombat;
-        PassifManager.ResolvePassifs();
-
+        if (!IsTuto)
+        {
+            PassifManager.CurrentEvent = TimerPassif.FinCombat;
+            PassifManager.ResolvePassifs();
+        }
         Loot();
         player.ResetStat();
         player.Stat.ListBuffDebuff.Clear();
@@ -537,10 +543,11 @@ public class BattleManager : MonoBehaviour
         nbTurn++;
         if (nbTurn >= IdOrder.Count)
         {
-
-            PassifManager.CurrentEvent = TimerPassif.FinPhase;
-            PassifManager.ResolvePassifs();
-
+            if (!IsTuto)
+            {
+                PassifManager.CurrentEvent = TimerPassif.FinPhase;
+                PassifManager.ResolvePassifs();
+            }
             StartPhase();
 
         }

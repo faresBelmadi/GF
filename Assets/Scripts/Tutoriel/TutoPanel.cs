@@ -93,4 +93,10 @@ public class TutoPanel : MonoBehaviour
         TutoManager.Instance.BattleManager.StartCombat();
         this.transform.GetChild(0).gameObject.SetActive(false);
     }
+
+    public void EndCombat()
+    {
+        EndBattleButton.SetActive(false);
+        TutoManager.Instance.EndDialogueTuto();
+    }
 }

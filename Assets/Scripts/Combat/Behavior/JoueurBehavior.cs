@@ -567,6 +567,7 @@ public class JoueurBehavior : CombatBehavior
 
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
+      
         DecompteDebuff(Stat.ListBuffDebuff, Decompte, this.Stat);
         var tempListBuffDebuff = Stat.ListBuffDebuff;
         foreach (var item in tempListBuffDebuff)
@@ -589,7 +590,7 @@ public class JoueurBehavior : CombatBehavior
         //ResetStat();
         //foreach (var item in Stat.ListBuffDebuff)
         //{
-
+        
         if ((toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant ||
              toApply.DirectApplication))
         {
@@ -637,6 +638,7 @@ public class JoueurBehavior : CombatBehavior
     public void ApplicationEffet(Effet effet, EnnemiStat Caster = null, SourceEffet source = SourceEffet.Spell,
         int idCaster = 0)
     {
+        
         JoueurStat ModifStat;
         if (Caster == null)
         {

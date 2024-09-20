@@ -37,6 +37,7 @@ public class TutoManager : MonoBehaviour
             StepMapTuto = 0;
             StepBatlleTuto = 0;
             ShowSoulConsumation = false;
+            JoueurStat.ResetStat();
         }
         else
         {
@@ -58,6 +59,7 @@ public class TutoManager : MonoBehaviour
     public void NextStep()
     {
         StepTuto++;
+        Debug.LogWarning("New Step Tuto : " + StepTuto);
         ShowNextStep();
     }
 
@@ -77,7 +79,7 @@ public class TutoManager : MonoBehaviour
     private void ShowNextStep()
     {
         ClearPos();
-        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 4)
+        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 4 || StepTuto == 5)
         {
             HideAllPanels();
             ShowPanel(PanelBattle);
@@ -125,6 +127,7 @@ public class TutoManager : MonoBehaviour
     void StartBattle()
     {
         DialogueManager.InitDialogueStep();
+        Debug.LogWarning("encounter : " + Instance.StepBatlleTuto);
         BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.StepBatlleTuto]));
     }
 
@@ -143,11 +146,16 @@ public class TutoManager : MonoBehaviour
 
     public void EndDialogueTuto()
     {
-        if (StepBatlleTuto == 0 || StepBatlleTuto == 1)
+        if (StepBatlleTuto == 4)
+        {
+            Debug.Log("FIINNNN");
+        }
+        if (StepBatlleTuto == 0 || StepBatlleTuto == 1 || StepBatlleTuto == 3)
             NextStep();
         if (StepBatlleTuto == 2)
             DialogueManager.StartCombat();
         StepBatlleTuto++;
+        Debug.Log("New Step Battle Tuto : " + StepBatlleTuto);
         
     }
 }
