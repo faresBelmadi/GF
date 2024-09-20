@@ -75,7 +75,7 @@ public class EssenceUI : MonoBehaviour
     }
     public void StopPreviewOnHP()
     {
-        if (GameManager.Instance.BattleMan != null)
+        if (GameManager.Instance != null && GameManager.Instance.BattleMan != null)
         {
             GameManager.Instance.BattleMan.player.StopPReviewHPBarUpdate();
             GameManager.Instance.BattleMan.player.StopPreviewTensionBar();
