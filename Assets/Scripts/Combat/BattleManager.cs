@@ -524,7 +524,7 @@ public class BattleManager : MonoBehaviour
         if (key == idPlayer)
         {
             player.StartTurn(nbPhase<2);
-            battleUI.textPLayingTurn.text = "Guerrier";
+            battleUI.textPLayingTurn.text = (GameManager.Instance!=null)?GameManager.Instance.classSO.NameClass:TutoManager.Instance.TutoClassSo.NameClass;
         }
         else
         {

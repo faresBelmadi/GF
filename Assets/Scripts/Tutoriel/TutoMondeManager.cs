@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -25,6 +26,7 @@ public class TutoMondeManager : MonoBehaviour
         foreach (var gO in AllGameObjectsToDisplay)
         {
             gO.GetComponent<Image>().color = Color.black;
+            gO.GetComponentInChildren<TMP_Text>().enabled = false;
         }
 
         for (int i = 0; i < TutoManager.Instance.StepMapTuto; i++)
@@ -33,6 +35,7 @@ public class TutoMondeManager : MonoBehaviour
         }
 
         AllGameObjectsToDisplay[TutoManager.Instance.StepMapTuto].GetComponent<Image>().color = Color.white;
+        AllGameObjectsToDisplay[TutoManager.Instance.StepMapTuto].GetComponentInChildren<TMP_Text>().enabled = true;
 
     }
     

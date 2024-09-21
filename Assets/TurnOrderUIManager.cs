@@ -53,7 +53,7 @@ public class TurnOrderUIManager : MonoBehaviour
             if (GameManager.Instance != null)
                 entityName = GameManager.Instance.classSO.NameClass;
             else
-                entityName = "Guerrier";
+                entityName = TutoManager.Instance.TutoClassSo.NameClass;
             GameObject cible = null;
             Sprite icon = battleManager.player.Stat.Icon;
             Material charMaterial = null;
