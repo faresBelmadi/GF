@@ -26,6 +26,7 @@ public class TutoManager : MonoBehaviour
     private static TutoManager instance;
 
     public bool ShowSoulConsumation;
+    private int _indEncounter = 0;
 
     private void Awake()
     {
@@ -79,6 +80,7 @@ public class TutoManager : MonoBehaviour
     private void ShowNextStep()
     {
         ClearPos();
+        Debug.Log("StepTuto = " + StepTuto + " / stepbattle = " + StepBatlleTuto);
         if (StepTuto == 1 || StepTuto == 3 || StepTuto == 4 || StepTuto == 5)
         {
             HideAllPanels();
@@ -101,34 +103,14 @@ public class TutoManager : MonoBehaviour
         }
     }
 
-    ////public GameObject MenuCamera;
-    //public GameObject CurrentRoomCamera;
-    //GameObject[] rootScene;
-    //Scene s;
-
-    //IEnumerator LoadSceneAsync(string name)
-    //{
-    //    yield return SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
-    //    s = SceneManager.GetSceneByName(name);
-
-    //    rootScene = s.GetRootGameObjects();
-    //    StartBattle();
-    //}
-
-    ////public void LoadSceneAsync(string name)
-    ////{
-    ////    SceneManager.LoadScene(name);
-    ////    s = SceneManager.GetSceneByName(name);
-
-    ////    rootScene = s.GetRootGameObjects(); 
-    ////    StartBattle();
-    ////}
+  
 
     void StartBattle()
     {
         DialogueManager.InitDialogueStep();
         Debug.LogWarning("encounter : " + Instance.StepBatlleTuto);
         BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.StepBatlleTuto]));
+        
     }
 
     public void Loot()
@@ -146,12 +128,9 @@ public class TutoManager : MonoBehaviour
 
     public void EndDialogueTuto()
     {
-        if (StepBatlleTuto == 4)
-        {
-            Debug.Log("FIINNNN");
-        }
+
         if (StepBatlleTuto == 0 || StepBatlleTuto == 1 || StepBatlleTuto == 3)
-            NextStep();
+            NextStep();        
         if (StepBatlleTuto == 2)
             DialogueManager.StartCombat();
         StepBatlleTuto++;
