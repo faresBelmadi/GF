@@ -33,7 +33,11 @@ public class MenuStatManager : MonoBehaviour
         {
             Destroy(item);
         }
-        Stat = GameManager.Instance.playerStat;
+
+        if (GameManager.Instance != null)
+            Stat = GameManager.Instance.playerStat;
+        else
+            Stat = TutoManager.Instance.JoueurStat;
         StatTemp = Instantiate(Stat);
         foreach (var item in StatTemp.ListSouvenir)
         {

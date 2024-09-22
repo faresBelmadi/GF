@@ -22,6 +22,7 @@ public class TutoPanel : MonoBehaviour
 
     public void ShowNextExplication()
     {
+        Debug.Log(IndexExplication);
         if (ExplicationImageListe[IndexExplication] != null)
         {
             ExplicationImageListe[IndexExplication].gameObject.SetActive(false);
@@ -40,9 +41,13 @@ public class TutoPanel : MonoBehaviour
         else if (IndexExplication == 13)
             GatherEssence();
         else if (IndexExplication == 14)
+        {
             TutoManager.Instance.ShowSoulConsumation = false;
+            this.transform.GetChild(0).gameObject.SetActive(true);
+        }
         else if (IndexExplication == 16)
         {
+            //ICI ne plus affiche le stat et tuto panel ainsi que la soul (la virer ? je crosi ce c'est un mise par le battle manager)
             TutoManager.Instance.NextStep();
         }
         else
@@ -97,6 +102,7 @@ public class TutoPanel : MonoBehaviour
     public void EndCombat()
     {
         EndBattleButton.SetActive(false);
-        TutoManager.Instance.EndDialogueTuto();
+        TutoManager.Instance.Loot();
+        ShowNextExplication();
     }
 }

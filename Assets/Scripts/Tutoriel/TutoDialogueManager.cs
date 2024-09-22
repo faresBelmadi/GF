@@ -29,18 +29,18 @@ public class TutoDialogueManager : DialogueManager
     {
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.TutoDialogueAndAction)
         {
-            if (DialogueIndex == 1 && TutoManager.Instance.StepBatlleTuto == 0)
+            if (DialogueIndex == 1 && TutoManager.Instance.IndexEncounter == 0)
             {
                 UiHolder.SetActive(true);
                 Hpfill.fillAmount = 0.1f;
             }
 
-            if (DialogueIndex == 4 && TutoManager.Instance.StepBatlleTuto == 0)
+            if (DialogueIndex == 4 && TutoManager.Instance.IndexEncounter == 0)
             {
                 Hpfill.fillAmount = 1f;
             }
 
-            if ((DialogueIndex == 2 || DialogueIndex == 5) && TutoManager.Instance.StepBatlleTuto == 1)
+            if ((DialogueIndex == 2 || DialogueIndex == 5) && TutoManager.Instance.IndexEncounter == 1)
             {
                 UiHolder.SetActive(true);
                 Hpfill.fillAmount = 1f;
@@ -48,7 +48,7 @@ public class TutoDialogueManager : DialogueManager
                 ConscienceFill.fillAmount = 0.2f;
             }
 
-            if ((DialogueIndex == 3 || DialogueIndex == 6) && TutoManager.Instance.StepBatlleTuto == 1)
+            if ((DialogueIndex == 3 || DialogueIndex == 6) && TutoManager.Instance.IndexEncounter == 1)
             {
                 ConscienceFill.fillAmount = 0.1f;
                 //GoeargeTapeLeMob
@@ -58,17 +58,17 @@ public class TutoDialogueManager : DialogueManager
                     TutoBattleManager.spawnPos[2]);
             }
 
-            if (DialogueIndex == 0 && TutoManager.Instance.StepBatlleTuto == 3)
+            if (DialogueIndex == 0 && TutoManager.Instance.IndexEncounter == 3)
             {
                 TutoBattleManager.used[0].gameObject.SetActive(true);
             }
 
-            if (DialogueIndex == 8 && TutoManager.Instance.StepBatlleTuto == 3)
+            if (DialogueIndex == 8 && TutoManager.Instance.IndexEncounter == 3)
             {
                 JoueurHolder.SetActive(false);
             }
 
-            if (DialogueIndex == 8 && TutoManager.Instance.StepBatlleTuto == 4)
+            if (DialogueIndex == 8 && TutoManager.Instance.IndexEncounter == 4)
             {
                 if (GameManager.Instance != null)
                     Destroy(GameManager.Instance.gameObject);

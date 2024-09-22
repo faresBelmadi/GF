@@ -21,7 +21,7 @@ public class TutoManager : MonoBehaviour
 
     public int StepTuto;
     public int StepMapTuto;
-    public int StepBatlleTuto;
+    public int IndexEncounter;
 
     private static TutoManager instance;
 
@@ -36,7 +36,7 @@ public class TutoManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
             StepTuto = 0;
             StepMapTuto = 0;
-            StepBatlleTuto = 0;
+            IndexEncounter = 0;
             ShowSoulConsumation = false;
             JoueurStat.ResetStat();
         }
@@ -80,7 +80,7 @@ public class TutoManager : MonoBehaviour
     private void ShowNextStep()
     {
         ClearPos();
-        Debug.Log("StepTuto = " + StepTuto + " / stepbattle = " + StepBatlleTuto);
+        //Debug.Log("StepTuto = " + StepTuto + " / stepbattle = " + IndexEncounter);
         if (StepTuto == 1 || StepTuto == 3 || StepTuto == 4 || StepTuto == 5)
         {
             HideAllPanels();
@@ -108,8 +108,8 @@ public class TutoManager : MonoBehaviour
     void StartBattle()
     {
         DialogueManager.InitDialogueStep();
-        Debug.LogWarning("encounter : " + Instance.StepBatlleTuto);
-        BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.StepBatlleTuto]));
+        Debug.LogWarning("encounter : " + Instance.IndexEncounter);
+        BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.IndexEncounter]));
         
     }
 
@@ -128,13 +128,13 @@ public class TutoManager : MonoBehaviour
 
     public void EndDialogueTuto()
     {
-
-        if (StepBatlleTuto == 0 || StepBatlleTuto == 1 || StepBatlleTuto == 3)
-            NextStep();        
-        if (StepBatlleTuto == 2)
+        if (IndexEncounter == 1)
             DialogueManager.StartCombat();
-        StepBatlleTuto++;
-        Debug.Log("New Step Battle Tuto : " + StepBatlleTuto);
-        
+        else
+        {
+            IndexEncounter++;
+            NextStep();
+        }
+        Debug.Log("IndexEncounter : " + IndexEncounter);
     }
 }
