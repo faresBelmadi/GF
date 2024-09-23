@@ -22,12 +22,33 @@ public class TutoPanel : MonoBehaviour
 
     public void ShowNextExplication()
     {
-        Debug.Log(IndexExplication);
+        Debug.Log("Index explication : " + IndexExplication);
         if (ExplicationImageListe[IndexExplication] != null)
         {
             ExplicationImageListe[IndexExplication].gameObject.SetActive(false);
         }
+        switch (IndexExplication)
+        {
+            case 0:     // Explication fin de tour
 
+                break;
+            case 1:     //Explication Vitesse
+                UiToShowForFigth[2].SetActive(true);
+                break;
+            case 2:     //Explication Volonté
+                UiToShowForFigth[0].SetActive(true);
+                break;
+            case 3:     //Explication Compétence
+                UiToShowForFigth[1].SetActive(true);
+                break;
+            case 4:     //Explication Tension
+                UiToShowForFigth[3].SetActive(true);
+                break;
+            case 5:     //Explication Buff
+                break;
+            case 6:     //Explication tension
+                break;
+        }
         IndexExplication++;
         Debug.Log(IndexExplication);
         if (IndexExplication == 8)
@@ -57,7 +78,10 @@ public class TutoPanel : MonoBehaviour
     public void ShowExplication()
     {
         if (IndexExplication == 0)
-            UIJoueurTutoExplication.SetActive(true);
+        {
+            //UIJoueurTutoExplication.SetActive(true);
+        }
+            
 
         //TextExplication.text = TradManager.Instance.DialogueDictionary[ExplicationListe[IndexExplication]][TradManager.Instance.IdLanguage];
         TextExplication.text = TradManager.instance.GetTranslation(ExplicationListe[IndexExplication]);
@@ -92,7 +116,7 @@ public class TutoPanel : MonoBehaviour
 
     public void StartCombat()
     {
-        UIJoueurTutoExplication.SetActive(false);
+        //UIJoueurTutoExplication.SetActive(false);
         UIJoueur.SetActive(true);
         UIDialogue.SetActive(false);
         TutoManager.Instance.BattleManager.StartCombat();
