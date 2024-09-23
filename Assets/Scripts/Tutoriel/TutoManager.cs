@@ -9,6 +9,7 @@ public class TutoManager : MonoBehaviour
     public GameObject PanelMap;
     public GameObject PanelBattle;
     public GameObject PanelAutel;
+    public GameObject StatPanel;
 
     [Header("Battle")]
     public BattleManager BattleManager;
@@ -80,17 +81,23 @@ public class TutoManager : MonoBehaviour
     private void ShowNextStep()
     {
         ClearPos();
-        //Debug.Log("StepTuto = " + StepTuto + " / stepbattle = " + IndexEncounter);
-        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 4 || StepTuto == 5)
+        Debug.Log("StepTuto = " + StepTuto + " / stepbattle = " + IndexEncounter);
+        if (StepTuto == 4)
+            IndexEncounter++;
+        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 4)
         {
             HideAllPanels();
-            ShowPanel(PanelBattle);
+            ShowPanel(PanelBattle); 
             StartBattle();
         }
         else if (StepTuto == 2)
         {
             HideAllPanels();
             ShowPanel(PanelMap);
+        }
+        else if (StepTuto == 5)
+        {
+            SceneManager.LoadScene("Monde");
         }
     }
 
@@ -109,15 +116,15 @@ public class TutoManager : MonoBehaviour
     {
         DialogueManager.InitDialogueStep();
         Debug.LogWarning("encounter : " + Instance.IndexEncounter);
+        BattleManager.player.Stat.Volonter = 5;
         BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.IndexEncounter]));
         
     }
 
     public void Loot()
     {
-        var gO = GameObject.Find("StatPrefab");
-        gO.transform.GetChild(0).gameObject.SetActive(true);
-        gO.transform.GetChild(1).gameObject.SetActive(true);
+        StatPanel.transform.GetChild(0).gameObject.SetActive(true);
+        StatPanel.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     public void SkipTutoDuringTuto()

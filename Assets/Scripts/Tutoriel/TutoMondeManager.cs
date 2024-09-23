@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class TutoMondeManager : MonoBehaviour
 {
 
-    public Text TutoTextDisplay;
-    public Dictionary<string, string> TutoMondeText = new Dictionary<string, string>();
+    public GameObject PanelTutoTextDisplay;
+    //public Dictionary<string, string> TutoMondeText = new Dictionary<string, string>();
     public List<GameObject> AllGameObjectsToDisplay;
 
     public void Start()
@@ -36,6 +36,11 @@ public class TutoMondeManager : MonoBehaviour
 
         AllGameObjectsToDisplay[TutoManager.Instance.StepMapTuto].GetComponent<Image>().color = Color.white;
         AllGameObjectsToDisplay[TutoManager.Instance.StepMapTuto].GetComponentInChildren<TMP_Text>().enabled = true;
+
+        if (TutoManager.Instance.StepMapTuto == 1)
+        {
+            PanelTutoTextDisplay.SetActive(true);
+        }
 
     }
     

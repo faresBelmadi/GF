@@ -53,6 +53,8 @@ public class GameManager : MonoBehaviour {
         ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
         CreateSave();
         GetClassRun();
+        if (TutoManager.Instance != null)
+            Destroy(TutoManager);
     }
 
     private void LoadSave()

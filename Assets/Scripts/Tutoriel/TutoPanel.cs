@@ -69,6 +69,9 @@ public class TutoPanel : MonoBehaviour
         else if (IndexExplication == 16)
         {
             //ICI ne plus affiche le stat et tuto panel ainsi que la soul (la virer ? je crosi ce c'est un mise par le battle manager)
+            TutoManager.Instance.ShowSoulConsumation = false;
+            TutoManager.Instance.StatPanel.SetActive(false);
+            this.gameObject.SetActive(false);
             TutoManager.Instance.NextStep();
         }
         else
