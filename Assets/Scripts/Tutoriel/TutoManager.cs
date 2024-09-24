@@ -39,7 +39,7 @@ public class TutoManager : MonoBehaviour
             StepMapTuto = 0;
             IndexEncounter = 0;
             ShowSoulConsumation = false;
-            JoueurStat.ResetStat();
+            JoueurStat.ListBuffDebuff.Clear();          //On clear les buff sinon pour le cas ou le tuto n'es pas complété et qui resterait des objet buff dans le SO
         }
         else
         {
@@ -68,7 +68,7 @@ public class TutoManager : MonoBehaviour
     private void HideAllPanels()
     {
         PanelMap.SetActive(false);
-        PanelBattle.SetActive(false);
+        //PanelBattle.SetActive(false);
         /* TO DO
         PanelAutel.SetActive(false);*/
     }
