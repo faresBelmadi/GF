@@ -13,7 +13,11 @@ public class DescriptionHoverTrigger : MonoBehaviour, IPointerEnterHandler, IPoi
     {
         Debug.Log("enter");
         ToShow.SetActive(true);
-
+        GameObject pos = GameObject.FindGameObjectWithTag("TooltipPosition");
+        if (pos != null)
+        {
+            ToShow.transform.position = pos.transform.position;
+        }
         rectVisibility.CheckVisibilityAndAdjustPosition(ToShow.GetComponent<RectTransform>(), FindAnyObjectByType<Camera>());
     }
 

@@ -272,6 +272,8 @@ GameObject:
   - component: {fileID: 14923311}
   - component: {fileID: 14923310}
   - component: {fileID: 14923309}
+  - component: {fileID: 14923312}
+  - component: {fileID: 14923313}
   m_Layer: 5
   m_Name: UIConscienceToolTip
   m_TagString: Untagged
@@ -353,10 +355,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 821427186}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: 
-          m_Mode: 6
+        - m_Target: {fileID: 14923313}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorEnter
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -369,10 +371,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 821427186}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: 
-          m_Mode: 6
+        - m_Target: {fileID: 14923313}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorExit
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -381,6 +383,40 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &14923312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14923307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT4D
+  _defaultText: Conscience
+  _textTMPObject: {fileID: 551247902}
+  _textObject: {fileID: 0}
+--- !u!114 &14923313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14923307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a381f5b50ee47d489d599ed77a52e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantOffObjects: []
+  instantActivationObjects: []
+  delayedOffObjects: []
+  delayedActivationObjects:
+  - {fileID: 821427186}
+  delay: 0
 --- !u!1 &17539618
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,8 +602,10 @@ GameObject:
   m_Component:
   - component: {fileID: 36152204}
   - component: {fileID: 36152205}
+  - component: {fileID: 36152206}
+  - component: {fileID: 36152207}
   m_Layer: 5
-  m_Name: StatInfo (3)
+  m_Name: StatInfoConviction
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -612,10 +650,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 500202801}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 36152207}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorEnter
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -628,10 +666,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 500202801}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 36152207}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorExit
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -640,6 +678,40 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &36152206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36152203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT8D
+  _defaultText: Conviction
+  _textTMPObject: {fileID: 1344454953}
+  _textObject: {fileID: 0}
+--- !u!114 &36152207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 36152203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a381f5b50ee47d489d599ed77a52e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantOffObjects: []
+  instantActivationObjects: []
+  delayedOffObjects: []
+  delayedActivationObjects:
+  - {fileID: 500202801}
+  delay: 0
 --- !u!1 &36485519
 GameObject:
   m_ObjectHideFlags: 0
@@ -4998,8 +5070,10 @@ GameObject:
   m_Component:
   - component: {fileID: 310662179}
   - component: {fileID: 310662180}
+  - component: {fileID: 310662181}
+  - component: {fileID: 310662182}
   m_Layer: 5
-  m_Name: StatInfo (2)
+  m_Name: StatInfoResilience
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5044,10 +5118,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 93911681}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 310662182}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorEnter
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5060,10 +5134,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 93911681}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 310662182}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorExit
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5072,6 +5146,40 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &310662181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310662178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT7D
+  _defaultText: Resilience
+  _textTMPObject: {fileID: 1174832884}
+  _textObject: {fileID: 0}
+--- !u!114 &310662182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 310662178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a381f5b50ee47d489d599ed77a52e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantOffObjects: []
+  instantActivationObjects: []
+  delayedOffObjects: []
+  delayedActivationObjects:
+  - {fileID: 93911681}
+  delay: 0
 --- !u!1 &322007962
 GameObject:
   m_ObjectHideFlags: 0
@@ -5183,6 +5291,7 @@ RectTransform:
   - {fileID: 820044968}
   - {fileID: 848861647}
   - {fileID: 1471005762}
+  - {fileID: 848882609}
   m_Father: {fileID: 190056839}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -6956,8 +7065,10 @@ GameObject:
   m_Component:
   - component: {fileID: 452425943}
   - component: {fileID: 452425944}
+  - component: {fileID: 452425945}
+  - component: {fileID: 452425946}
   m_Layer: 5
-  m_Name: StatInfo
+  m_Name: StatInfoFA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7002,10 +7113,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 612574756}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 452425946}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorEnter
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7018,10 +7129,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 612574756}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 452425946}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorExit
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7030,6 +7141,40 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &452425945
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452425942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT5D
+  _defaultText: Force d'ame
+  _textTMPObject: {fileID: 590847610}
+  _textObject: {fileID: 0}
+--- !u!114 &452425946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452425942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a381f5b50ee47d489d599ed77a52e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantOffObjects: []
+  instantActivationObjects: []
+  delayedOffObjects: []
+  delayedActivationObjects:
+  - {fileID: 612574756}
+  delay: 0
 --- !u!1 &458455874
 GameObject:
   m_ObjectHideFlags: 0
@@ -15068,6 +15213,41 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 16259.212, y: 540}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &848882608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 848882609}
+  m_Layer: 5
+  m_Name: TooltipPosition
+  m_TagString: TooltipPosition
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &848882609
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 848882608}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 324762829}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -454, y: -368}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &858520185
@@ -34498,8 +34678,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1627193541}
   - component: {fileID: 1627193542}
+  - component: {fileID: 1627193543}
+  - component: {fileID: 1627193544}
   m_Layer: 5
-  m_Name: StatInfo (1)
+  m_Name: StatInfoVitesse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34544,10 +34726,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 599247680}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 1627193544}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorEnter
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -34560,10 +34742,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 599247680}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 1627193544}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorExit
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -34572,6 +34754,40 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1627193543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627193540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT6D
+  _defaultText: Vitesse
+  _textTMPObject: {fileID: 2039009478}
+  _textObject: {fileID: 0}
+--- !u!114 &1627193544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627193540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a381f5b50ee47d489d599ed77a52e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantOffObjects: []
+  instantActivationObjects: []
+  delayedOffObjects: []
+  delayedActivationObjects:
+  - {fileID: 599247680}
+  delay: 0
 --- !u!1 &1634484430
 GameObject:
   m_ObjectHideFlags: 0
@@ -39910,6 +40126,8 @@ GameObject:
   - component: {fileID: 1956007533}
   - component: {fileID: 1956007532}
   - component: {fileID: 1956007531}
+  - component: {fileID: 1956007534}
+  - component: {fileID: 1956007535}
   m_Layer: 5
   m_Name: UIVolonteToolTip
   m_TagString: Untagged
@@ -39991,10 +40209,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1964500986}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 1956007535}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorEnter
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -40007,10 +40225,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1964500986}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 1956007535}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorExit
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -40019,6 +40237,40 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1956007534
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956007529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT1D
+  _defaultText: "Volont\xE9"
+  _textTMPObject: {fileID: 1415418918}
+  _textObject: {fileID: 0}
+--- !u!114 &1956007535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1956007529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a381f5b50ee47d489d599ed77a52e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantOffObjects: []
+  instantActivationObjects: []
+  delayedOffObjects: []
+  delayedActivationObjects:
+  - {fileID: 1964500986}
+  delay: 0
 --- !u!1 &1960891914
 GameObject:
   m_ObjectHideFlags: 0
@@ -40627,6 +40879,7 @@ GameObject:
   - component: {fileID: 1992493332}
   - component: {fileID: 1992493331}
   - component: {fileID: 1992493330}
+  - component: {fileID: 1992493334}
   m_Layer: 5
   m_Name: UIRadianceToolTip
   m_TagString: Untagged
@@ -40756,6 +41009,22 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1992493334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1992493328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT3D
+  _defaultText: Vos PV.
+  _textTMPObject: {fileID: 1428347097}
+  _textObject: {fileID: 0}
 --- !u!1 &1993311550
 GameObject:
   m_ObjectHideFlags: 0
@@ -42102,8 +42371,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2043142654}
   - component: {fileID: 2043142655}
+  - component: {fileID: 2043142656}
+  - component: {fileID: 2043142657}
   m_Layer: 5
-  m_Name: StatInfo (4)
+  m_Name: StatInfoClairvoyance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42148,10 +42419,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1836665941}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 2043142657}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorEnter
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -42164,10 +42435,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1836665941}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 2043142657}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorExit
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -42176,6 +42447,40 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &2043142656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043142653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT9D
+  _defaultText: Clairvoyance
+  _textTMPObject: {fileID: 1526201094}
+  _textObject: {fileID: 0}
+--- !u!114 &2043142657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2043142653}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a381f5b50ee47d489d599ed77a52e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantOffObjects: []
+  instantActivationObjects: []
+  delayedOffObjects: []
+  delayedActivationObjects:
+  - {fileID: 1836665941}
+  delay: 0
 --- !u!1 &2044281562
 GameObject:
   m_ObjectHideFlags: 0
@@ -43321,6 +43626,8 @@ GameObject:
   - component: {fileID: 2121978804}
   - component: {fileID: 2121978803}
   - component: {fileID: 2121978802}
+  - component: {fileID: 2121978805}
+  - component: {fileID: 2121978806}
   m_Layer: 5
   m_Name: UITensionToolTip
   m_TagString: Untagged
@@ -43402,10 +43709,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 844948186}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 2121978806}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorEnter
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -43418,10 +43725,10 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 844948186}
-          m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_MethodName: SetActive
-          m_Mode: 6
+        - m_Target: {fileID: 2121978806}
+          m_TargetAssemblyTypeName: ToolTipSystem, Assembly-CSharp
+          m_MethodName: CursorExit
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -43430,6 +43737,40 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &2121978805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121978800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1559bb13840d564baa7b2693a5937fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _idLabel: BattleTT2D
+  _defaultText: Tension
+  _textTMPObject: {fileID: 738676062}
+  _textObject: {fileID: 0}
+--- !u!114 &2121978806
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2121978800}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a381f5b50ee47d489d599ed77a52e51, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instantOffObjects: []
+  instantActivationObjects: []
+  delayedOffObjects: []
+  delayedActivationObjects:
+  - {fileID: 844948186}
+  delay: 0
 --- !u!1 &2126515812
 GameObject:
   m_ObjectHideFlags: 0
