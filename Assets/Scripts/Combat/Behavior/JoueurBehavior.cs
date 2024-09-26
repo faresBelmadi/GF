@@ -388,6 +388,25 @@ public class JoueurBehavior : CombatBehavior
             }
         }
 
+        bool needCible = false;
+        List<Cible> needCiblage = new List<Cible>{ Cible.ennemi, Cible.Ally, Cible.Martyr};
+
+        foreach (Effet effet in SelectedSpell.ActionEffet)
+        {
+            if (needCiblage.Contains(effet.Cible))
+            {
+                needCible = true;
+            }
+        }
+
+        foreach (BuffDebuff buff in SelectedSpell.ActionBuffDebuff)
+        {
+            if (needCiblage.Contains(buff.CibleApplication))
+            {
+                needCible = true;
+            }
+        }
+        /*
         bool isSelf = true;
         foreach (var effet in SelectedSpell.ActionEffet)
         {
@@ -406,7 +425,9 @@ public class JoueurBehavior : CombatBehavior
         }
 
         if (!isSelf)
-            TakeTarget(SelectedSpell.IDSpell);
+        */
+        if (needCible)
+        TakeTarget(SelectedSpell.IDSpell);
         else
         {
             _refBattleMan.idTarget = 0;
