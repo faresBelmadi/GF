@@ -293,6 +293,12 @@ public class Analyzer : MonoBehaviour
                     strb.Append((_clairvoyanceIconData.StatVitesse == null) ? "VIT" : _clairvoyanceIconData.StatVitesse.name);
                 else if (attributes[TradAttribute.value].Equals("RES", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatResilience == null) ? "RES" : _clairvoyanceIconData.StatResilience.name);
+                else if (attributes[TradAttribute.value].Equals("CAL", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatCalme == null) ? "CAL" : _clairvoyanceIconData.StatCalme.name);
+                else if (attributes[TradAttribute.value].Equals("CONS", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatConscience == null) ? "CONS" : _clairvoyanceIconData.StatConscience.name);
+                else if (attributes[TradAttribute.value].Equals("TEN", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatTension == null) ? "TEN" : _clairvoyanceIconData.StatTension.name);
                 strb.Append("\">");
 
                 break;
