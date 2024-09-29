@@ -22,44 +22,58 @@ public class TutoPanel : MonoBehaviour
 
     public void ShowNextExplication()
     {
+
         Debug.Log("Index explication : " + IndexExplication);
         if (ExplicationImageListe[IndexExplication] != null)
         {
             ExplicationImageListe[IndexExplication].gameObject.SetActive(false);
         }
+        IndexExplication++;
         switch (IndexExplication)
         {
-            case 0:     // Explication fin de tour
-
-                break;
-            case 1:     //Explication Vitesse
-                UiToShowForFigth[2].SetActive(true);
-                break;
-            case 2:     //Explication Volonté
+            case 0:     // montrer les sors
                 UiToShowForFigth[0].SetActive(true);
                 break;
-            case 3:     //Explication Compétence
+            case 1:     //Explication Volonté et conscience
                 UiToShowForFigth[1].SetActive(true);
                 break;
-            case 4:     //Explication Tension
-                UiToShowForFigth[3].SetActive(true);
+            case 2:     //Explication Fin de Tour
+                UiToShowForFigth[2].SetActive(true);
                 break;
-            case 5:     //Explication Buff
+            case 3:     //Explication Tour par Tour
+                UiToShowForFigth[3].SetActive(true);
+                UiToShowForFigth[4].SetActive(true);//les Stats (FA Vitesse etc etc)
+                //Montrer la fléche de Vitesse
+                break;
+            case 4:     //Explication blabla
+                break;
+            case 5:     //StartCombat mais pour un seul coup, puis explication suivante??
                 break;
             case 6:     //Explication tension
                 break;
+            case 7:     //Explication tension2
+                break;
+            case 8:     //Déroulement narmol du combat
+                StartCombat();
+                foreach (var ui in UiToShowForFigth)
+                {
+                    ui.SetActive(true);
+                }
+                break;
+         
+
         }
-        IndexExplication++;
         Debug.Log(IndexExplication);
-        if (IndexExplication == 8)
-        {
-            StartCombat();
-            foreach (var ui in UiToShowForFigth)
-            {
-                ui.SetActive(true);
-            }
-        }
-        else if (IndexExplication == 13)
+        //if (IndexExplication == 8)
+        //{
+        //    StartCombat();
+        //    foreach (var ui in UiToShowForFigth)
+        //    {
+        //        ui.SetActive(true);
+        //    }
+        //}
+        //else 
+        if (IndexExplication == 13)
             GatherEssence();
         else if (IndexExplication == 14)
         {
@@ -71,6 +85,7 @@ public class TutoPanel : MonoBehaviour
             //ICI ne plus affiche le stat et tuto panel ainsi que la soul (la virer ? je crosi ce c'est un mise par le battle manager)
             TutoManager.Instance.ShowSoulConsumation = false;
             TutoManager.Instance.StatPanel.SetActive(false);
+            GameObject.Find("Soul(Clone)").SetActive(false);
             this.gameObject.SetActive(false);
             TutoManager.Instance.NextStep();
         }
@@ -82,6 +97,7 @@ public class TutoPanel : MonoBehaviour
     {
         if (IndexExplication == 0)
         {
+            UiToShowForFigth[0].SetActive(true);
             //UIJoueurTutoExplication.SetActive(true);
         }
             

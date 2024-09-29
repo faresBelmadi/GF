@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TutoDialogueManager : DialogueManager
 {
-    public TutoBattleManager TutoBattleManager;
+    public BattleManager BattleManager;
     public GameObject CrystauxEssence;
     public GameObject UiHolder;
     public Image Hpfill;
@@ -29,7 +29,8 @@ public class TutoDialogueManager : DialogueManager
     {
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.TutoDialogueAndAction)
         {
-            if (DialogueIndex == 1 && TutoManager.Instance.IndexEncounter == 0)
+            Debug.Log("DialogueIndex = " + DialogueIndex + " / IndexEncounter : " + TutoManager.Instance.IndexEncounter);
+            if (DialogueIndex == 0 && TutoManager.Instance.IndexEncounter == 0)
             {
                 UiHolder.SetActive(true);
                 Hpfill.fillAmount = 0.1f;
@@ -40,7 +41,7 @@ public class TutoDialogueManager : DialogueManager
                 Hpfill.fillAmount = 1f;
             }
 
-            if ((DialogueIndex == 2 || DialogueIndex == 5) && TutoManager.Instance.IndexEncounter == 1)
+            if ((DialogueIndex == 1 || DialogueIndex == 4) && TutoManager.Instance.IndexEncounter == 1)
             {
                 UiHolder.SetActive(true);
                 Hpfill.fillAmount = 1f;
@@ -48,19 +49,19 @@ public class TutoDialogueManager : DialogueManager
                 ConscienceFill.fillAmount = 0.2f;
             }
 
-            if ((DialogueIndex == 3 || DialogueIndex == 6) && TutoManager.Instance.IndexEncounter == 1)
+            if ((/*DialogueIndex == 2 || */DialogueIndex == 5) && TutoManager.Instance.IndexEncounter == 1)
             {
                 ConscienceFill.fillAmount = 0.1f;
                 //GoeargeTapeLeMob
-                var toDelete = TutoBattleManager.spawnPos.FirstOrDefault(x => x.GetChild(0).gameObject.name == "Choristes_neuf Variant(Clone)");
+                var toDelete = BattleManager.spawnPos.FirstOrDefault(x => x.GetChild(0).gameObject.name == "Choristes_neuf Variant(Clone)");
                 Destroy(toDelete.gameObject);
-                Instantiate(CrystauxEssence, TutoBattleManager.spawnPos[2].position, Quaternion.identity,
-                    TutoBattleManager.spawnPos[2]);
+                Instantiate(CrystauxEssence, BattleManager.spawnPos[2].position, Quaternion.identity,
+                    BattleManager.spawnPos[2]);
             }
 
             if (DialogueIndex == 0 && TutoManager.Instance.IndexEncounter == 3)
             {
-                TutoBattleManager.used[0].gameObject.SetActive(true);
+                //BattleManager.used[0].gameObject.SetActive(true);
             }
 
             if (DialogueIndex == 8 && TutoManager.Instance.IndexEncounter == 3)
