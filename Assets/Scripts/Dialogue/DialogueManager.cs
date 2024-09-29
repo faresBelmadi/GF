@@ -224,7 +224,7 @@ public class DialogueManager : MonoBehaviour
         StringBuilder strb = new StringBuilder();
         strb.Append("<sprite name=\"");
         Color color = Color.white;
-        Debug.Log($"Effet : {effet.TypeEffet}, cible : {effet.Cible}");
+        Debug.Log($"EffectSprite : {effet.TypeEffet}, cible : {effet.Cible}");
       
         switch (effet.TypeEffet)
         {

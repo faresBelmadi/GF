@@ -105,6 +105,9 @@ public class BattleManager : MonoBehaviour
     {
         player.Stat.TensionMax = (CalmeMoyenAdversaire / CalmeMoyen) * player.Stat.Calme;
         player.Stat.ValeurPalier = player.Stat.TensionMax / player.Stat.NbPalier;
+        if(player.Stat.PalierChangement > 0) { player.Stat.Tension = player.Stat.ValeurPalier * player.Stat.PalierChangement; }
+        Debug.Log($"Caculate tension joueur");
+        Debug.Log($"TMax = {player.Stat.TensionMax};\nVPal = {player.Stat.ValeurPalier};\nCurrent Tens = {player.Stat.Tension}];\nPalChange = {player.Stat.PalierChangement}]") ;
     }
 
     private void CalcTensionEnemy()
@@ -115,6 +118,9 @@ public class BattleManager : MonoBehaviour
             {
                 item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.Calme;
                 item.Stat.ValeurPalier = (item.Stat.TensionMax) / item.Stat.NbPalier;
+                if (item.Stat.PalierChangement > 0) { item.Stat.Tension = item.Stat.ValeurPalier * item.Stat.PalierChangement; }
+                Debug.Log($"Caculate tension Ennemie");
+                Debug.Log($"TMax = {item.Stat.TensionMax};\nVPal = {item.Stat.ValeurPalier};\nCurrent Tens = {item.Stat.Tension}];\nPalChange = {item.Stat.PalierChangement}]");
             }
         }
     }
@@ -482,19 +488,21 @@ public class BattleManager : MonoBehaviour
 
     public void StartNextTurn()
     {
+        Debug.Log($"Start Nex Turn, PhaseNb: {nbPhase}");
         int key = IdOrder.First(c => c.Played == false).id;
         currentIdTurn = key;
         if (key == idPlayer)
         {
-            player.StartTurn();
+            player.StartTurn(nbPhase<2);
             battleUI.textPLayingTurn.text = "Guerrier";
         }
         else
         {
             var playing = EnemyScripts.First(c => c.combatID == key);
-            playing.StartTurn();
+            playing.StartTurn(nbPhase<2);
             battleUI.textPLayingTurn.text = playing.UICombat.NameText.text;
         }
+        player.UpdateUI();
         UpdateEnrageUI(key);
     }
 
@@ -511,7 +519,6 @@ public class BattleManager : MonoBehaviour
             PassifManager.ResolvePassifs();
 
             StartPhase();
-
         }
         else
             turnOrderUIManager.EvovlveTurnOrder();//StartNextTurn();
