@@ -412,26 +412,7 @@ public class JoueurBehavior : CombatBehavior
                 needCible = true;
             }
         }
-        /*
-        bool isSelf = true;
-        foreach (var effet in SelectedSpell.ActionEffet)
-        {
-            if (effet.Cible != Cible.Self && effet.Cible != Cible.joueur)
-            {
-                isSelf = false;
-            }
-        }
-
-        foreach (var buff in SelectedSpell.ActionBuffDebuff)
-        {
-            if (buff.CibleApplication != Cible.Self && buff.CibleApplication != Cible.joueur)
-            {
-                isSelf = false;
-            }
-        }
-
-        if (!isSelf)
-        */
+        
         if (needCible)
         TakeTarget(SelectedSpell.IDSpell);
         else
