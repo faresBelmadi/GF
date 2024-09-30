@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -5,8 +6,17 @@ using UnityEngine.UI;
 
 public class TutoPanel : MonoBehaviour
 {
-    public List<string> ExplicationListe;
-    public List<string> ReponseListe;
+
+    [Serializable]
+    public class PanelElement
+    {
+        public string Question;
+        public string Answer;
+    }
+
+    [SerializeField]
+    private List<PanelElement> ExplicationsListe;
+   
     public List<Image> ExplicationImageListe;
     public int IndexExplication;
     public TextMeshProUGUI TextExplication;
@@ -73,14 +83,14 @@ public class TutoPanel : MonoBehaviour
         //    }
         //}
         //else 
-        if (IndexExplication == 13)
+        if (IndexExplication == 11) //13
             GatherEssence();
-        else if (IndexExplication == 14)
+        else if (IndexExplication == 12) //14
         {
             TutoManager.Instance.ShowSoulConsumation = false;
             this.transform.GetChild(0).gameObject.SetActive(true);
         }
-        else if (IndexExplication == 16)
+        else if (IndexExplication == 14)//16
         {
             //ICI ne plus affiche le stat et tuto panel ainsi que la soul (la virer ? je crosi ce c'est un mise par le battle manager)
             TutoManager.Instance.ShowSoulConsumation = false;
@@ -102,8 +112,8 @@ public class TutoPanel : MonoBehaviour
         }
             
 
-        //TextExplication.text = TradManager.Instance.DialogueDictionary[ExplicationListe[IndexExplication]][TradManager.Instance.IdLanguage];
-        TextExplication.text = TradManager.instance.GetTranslation(ExplicationListe[IndexExplication]);
+
+        TextExplication.text = TradManager.instance.GetTranslation(ExplicationsListe[IndexExplication].Question);
 
         if (ExplicationImageListe[IndexExplication] != null)
         {
@@ -112,14 +122,13 @@ public class TutoPanel : MonoBehaviour
         //else
         //    ImageExplication.enabled = false;
 
-        var reponse = ReponseListe[IndexExplication];
+        var reponse = ExplicationsListe[IndexExplication].Answer;
         if (reponse is not (null or ""))
         {
-            //TextReponse.text = TradManager.Instance.DialogueDictionary[reponse][TradManager.Instance.IdLanguage];
             TextReponse.text = TradManager.instance.GetTranslation(reponse);
         }
         else
-            TextReponse.text = "Continue"; // a Rajouter dans le dossier de Trad
+            TextReponse.text = TradManager.instance.GetTranslation("TutoContinue");
     }
 
     public void GatherEssence()
