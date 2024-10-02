@@ -61,7 +61,6 @@ public class TutoManager : MonoBehaviour
     public void NextStep()
     {
         StepTuto++;
-        Debug.LogWarning("New Step Tuto : " + StepTuto);
         ShowNextStep();
     }
 
@@ -115,7 +114,7 @@ public class TutoManager : MonoBehaviour
     void StartBattle()
     {
         DialogueManager.InitDialogueStep();
-        Debug.LogWarning("encounter : " + Instance.IndexEncounter);
+        Debug.Log("encounter : " + Instance.IndexEncounter);
         BattleManager.player.Stat.Volonter = 5;
         BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.IndexEncounter]));
         
@@ -142,6 +141,5 @@ public class TutoManager : MonoBehaviour
             IndexEncounter++;
             NextStep();
         }
-        Debug.Log("IndexEncounter : " + IndexEncounter);
     }
 }

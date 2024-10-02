@@ -13,11 +13,12 @@ public class TutoDialogueManager : DialogueManager
     public Image ConscienceFill;
     public GameObject JoueurHolder;
 
+    [SerializeField]
+    private ProgressBarManager _hpBarManager;
     //public RectTransform positionDialogueOriginal;
     //public RectTransform positionDialogueUp;
     public void EndDialogueTuto()
     {
-        Debug.Log("Dialogue Tuto Fini!");
         TutoManager.Instance.NextStep();
         //SceneManager.LoadScene("TutoMonde");
     }
@@ -33,12 +34,21 @@ public class TutoDialogueManager : DialogueManager
             if (DialogueIndex == 0 && TutoManager.Instance.IndexEncounter == 0)
             {
                 UiHolder.SetActive(true);
-                Hpfill.fillAmount = 0.1f;
+                //Hpfill.fillAmount = 0.1f;
+                var joueurBehav = JoueurHolder.GetComponentInChildren<JoueurBehavior>();
+                joueurBehav.Stat.Radiance = joueurBehav.Stat.RadianceMax / 10;
+                _hpBarManager.InitPBar(joueurBehav.Stat.Radiance, joueurBehav.Stat.RadianceMax);
+                joueurBehav.UpdateUI();
             }
 
             if (DialogueIndex == 4 && TutoManager.Instance.IndexEncounter == 0)
             {
-                Hpfill.fillAmount = 1f;
+                //Hpfill.fillAmount = 1f;
+
+                var joueurBehav = JoueurHolder.GetComponentInChildren<JoueurBehavior>();
+                joueurBehav.Stat.Radiance = joueurBehav.Stat.RadianceMax;
+                //_hpBarManager.UpdatePBar(joueurBehav.Stat.Radiance, joueurBehav.Stat.RadianceMax);
+                joueurBehav.UpdateUI();
             }
 
             if ((DialogueIndex == 1 || DialogueIndex == 4) && TutoManager.Instance.IndexEncounter == 1)
@@ -80,4 +90,5 @@ public class TutoDialogueManager : DialogueManager
         
         base.GetRéponse(i);
     }
+
 }
