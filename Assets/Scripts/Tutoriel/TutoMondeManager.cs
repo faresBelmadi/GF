@@ -18,10 +18,10 @@ public class TutoMondeManager : MonoBehaviour
 
     public void OnEnable()
     {
-        DisplayInfoTutoMonde();
+    //     DisplayInfoTutoMonde();
     }
 
-    private void DisplayInfoTutoMonde()
+    public void DisplayInfoTutoMonde()
     {
         foreach (var gO in AllGameObjectsToDisplay)
         {
