@@ -19,8 +19,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private Color _speakerColor;
     public TextMeshProUGUI MainText;
     public GameObject MainTextGO;
-    public List<TextMeshProUGUI> Réponse;
-    public List<GameObject> RéponseGO;
+    public List<TextMeshProUGUI> Reponse;
+    public List<GameObject> ReponseGO;
     public GameObject EndDialogue;
     public TextMeshProUGUI EndText;
     public BattleManager ManagerBattle;
@@ -50,16 +50,16 @@ public class DialogueManager : MonoBehaviour
 
     private void OnEnable()
     {
-        if (Réponse.Count >= 1 && Réponse[0] != null)
-            Réponse[0].GetComponent<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
+        if (Reponse.Count >= 1 && Reponse[0] != null)
+            Reponse[0].GetComponent<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
         if (EndText != null)
             EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
     }
 
     private void OnDisable()
     {
-        if (Réponse.Count >= 1 && Réponse[0] != null)
-            Réponse[0].GetComponent<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
+        if (Reponse.Count >= 1 && Reponse[0] != null)
+            Reponse[0].GetComponent<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
         if (EndText != null)
             EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
     }
@@ -185,8 +185,8 @@ public class DialogueManager : MonoBehaviour
                     response = "ID_DIALOGUE_NOT_IMPLEMENTED";
                 }
 
-                Réponse[i].text = response;
-                RéponseGO[i].SetActive(true);
+                Reponse[i].text = response;
+                ReponseGO[i].SetActive(true);
                 //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
 
                 if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
@@ -232,7 +232,7 @@ public class DialogueManager : MonoBehaviour
 
     void resetRéponse()
     {
-        foreach (var item in RéponseGO)
+        foreach (var item in ReponseGO)
         {
             item.SetActive(false);
         }
@@ -240,7 +240,7 @@ public class DialogueManager : MonoBehaviour
         EndDialogue.SetActive(false);
 
         MainTextGO.SetActive(false);
-        foreach (var item in Réponse)
+        foreach (var item in Reponse)
         {
             item.text = "";
         }
@@ -600,13 +600,13 @@ public class DialogueManager : MonoBehaviour
             {
                 foreach (Effet effet in buffDebuff.Effet)
                 {
-                    Réponse[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
+                    Reponse[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
                 }
             }
 
             foreach (var effet in consequence.Effects)
             {
-                Réponse[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
+                Reponse[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
             }
         }
     }
@@ -755,13 +755,16 @@ public class DialogueManager : MonoBehaviour
     public void StartCombat()
     {
         AudioManager.instance.SFX.StopPlaying();
-        if (TutoManager.Instance != null)
+        if (TutoManager.Instance != null )
         {
-            var gO = GameObject.Find("TutoPanel");
-            var child = gO.transform.GetChild(0);
-            child.gameObject.SetActive(true);
-            UIDialogue.SetActive(false);
-            gO.GetComponent<TutoPanel>().ShowExplication();
+            if (TutoManager.Instance.StepTuto == 3)
+            {
+                var gO = TutoManager.Instance.TutoPanel;
+                var child = gO.transform.GetChild(0);
+                child.gameObject.SetActive(true);
+                UIDialogue.SetActive(false);
+                gO.GetComponent<TutoPanel>().ShowExplication();
+            }
         }
         else
         {

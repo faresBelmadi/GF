@@ -91,4 +91,21 @@ public class TutoDialogueManager : DialogueManager
         base.GetRéponse(i);
     }
 
+
+    public void EnableButtonAnswer()
+    {
+        ToggleAnswerButton(true);
+    }
+    public void DisableButtonAnswer()
+    {
+        ToggleAnswerButton(false);
+    }
+    private void ToggleAnswerButton(bool value)
+    {
+        foreach (GameObject repGO in ReponseGO)
+        {
+            repGO.GetComponent<Button>().interactable = value;
+        }
+    }
+
 }

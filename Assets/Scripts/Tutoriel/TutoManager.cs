@@ -12,6 +12,8 @@ public class TutoManager : MonoBehaviour
     public GameObject PanelBattle;
     public GameObject PanelAutel;
     public GameObject StatPanel;
+    public GameObject TutoPanel;
+    
 
     [Header("Battle")]
     public BattleManager BattleManager;
@@ -21,7 +23,7 @@ public class TutoManager : MonoBehaviour
     public Encounter[] _encounter;
 
     [SerializeField]
-    private TutoDialogueManager DialogueManager;
+    private TutoDialogueManager _dialogueManager;
 
     public int StepTuto;
     public int StepMapTuto;
@@ -88,23 +90,24 @@ public class TutoManager : MonoBehaviour
         Debug.Log("StepTuto = " + StepTuto + " / stepbattle = " + IndexEncounter);
         if (StepTuto == 4)
             IndexEncounter++;
-        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 4)
+        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 4)    //Battle moment
         {
             // HideAllPanels();
-            //ShowPanel(PanelBattle); 
+            //ShowPanel(PanelBattle);
             _panelMap.Hide();
-
+            _dialogueManager.EnableButtonAnswer();
 
             StartBattle();
         }
-        else if (StepTuto == 2)
+        else if (StepTuto == 2)                                 //Map Moment
         {
             //HideAllPanels();
             //ShowPanel(PanelMap);
+            _dialogueManager.DisableButtonAnswer(); //to prevent double clicking
             _panelMap.Show();
             _tutoMondeManager.DisplayInfoTutoMonde();
         }
-        else if (StepTuto == 5)
+        else if (StepTuto == 5)                                 //End
         {
             SceneManager.LoadScene("Monde");
         }
@@ -123,7 +126,7 @@ public class TutoManager : MonoBehaviour
 
     void StartBattle()
     {
-        DialogueManager.InitDialogueStep();
+        _dialogueManager.InitDialogueStep();
         Debug.Log("encounter : " + Instance.IndexEncounter);
         BattleManager.player.Stat.Volonter = 5;
         BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.IndexEncounter]));
@@ -145,7 +148,7 @@ public class TutoManager : MonoBehaviour
     public void EndDialogueTuto()
     {
         if (IndexEncounter == 1)
-            DialogueManager.StartCombat();
+            _dialogueManager.StartCombat();
         else
         {
             IndexEncounter++;
