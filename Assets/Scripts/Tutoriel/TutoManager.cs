@@ -7,6 +7,8 @@ public class TutoManager : MonoBehaviour
 {
     [Header("Panels Tuto")]
     public GameObject PanelMap;
+    [SerializeField]
+    private MapPanel _panelMap;
     public GameObject PanelBattle;
     public GameObject PanelAutel;
     public GameObject StatPanel;
@@ -18,7 +20,8 @@ public class TutoManager : MonoBehaviour
 
     public Encounter[] _encounter;
 
-    [SerializeField] private TutoDialogueManager DialogueManager;
+    [SerializeField]
+    private TutoDialogueManager DialogueManager;
 
     public int StepTuto;
     public int StepMapTuto;
@@ -28,6 +31,7 @@ public class TutoManager : MonoBehaviour
 
     public bool ShowSoulConsumation;
     private int _indEncounter = 0;
+    private TutoMondeManager _tutoMondeManager;
 
     private void Awake()
     {
@@ -49,8 +53,9 @@ public class TutoManager : MonoBehaviour
 
     public void Start()
     {
-        HideAllPanels();
-        ShowPanel(PanelMap);
+        //HideAllPanels();
+        //ShowPanel(PanelMap);
+        _tutoMondeManager = PanelMap.GetComponentInChildren<TutoMondeManager>();
     }
 
     public static TutoManager Instance
@@ -85,14 +90,19 @@ public class TutoManager : MonoBehaviour
             IndexEncounter++;
         if (StepTuto == 1 || StepTuto == 3 || StepTuto == 4)
         {
-            HideAllPanels();
-            ShowPanel(PanelBattle); 
+            // HideAllPanels();
+            //ShowPanel(PanelBattle); 
+            _panelMap.Hide();
+
+
             StartBattle();
         }
         else if (StepTuto == 2)
         {
-            HideAllPanels();
-            ShowPanel(PanelMap);
+            //HideAllPanels();
+            //ShowPanel(PanelMap);
+            _panelMap.Show();
+            _tutoMondeManager.DisplayInfoTutoMonde();
         }
         else if (StepTuto == 5)
         {
