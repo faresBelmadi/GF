@@ -29,8 +29,18 @@ public class EssenceUI : MonoBehaviour
     {
         if (TutoManager.Instance != null && !TutoManager.Instance.ShowSoulConsumation)
             return;
+
+        if (TutoManager.Instance != null)
+        {
+            _consumeButton.interactable = false;
+            _soulAmountText.gameObject.transform.parent.gameObject.SetActive(false); // we hide amount text for the tutorial
+        }
+        else
+        {
        //buttonConsumation.SetActive(true); //Legacy code
         _consumeButton.interactable = true;
+
+        }
     }
 
     public void deactivate()
