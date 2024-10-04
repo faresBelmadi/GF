@@ -90,7 +90,7 @@ public class TutoPanel : MonoBehaviour
             TutoManager.Instance.ShowSoulConsumation = false;
             this.transform.GetChild(0).gameObject.SetActive(true);
         }
-        else if (IndexExplication == 14)//16
+        else if (IndexExplication == 15)//16
         {
             //ICI ne plus affiche le stat et tuto panel ainsi que la soul (la virer ? je crosi ce c'est un mise par le battle manager)
             TutoManager.Instance.ShowSoulConsumation = false;
@@ -98,8 +98,9 @@ public class TutoPanel : MonoBehaviour
             GameObject.Find("Soul(Clone)").SetActive(false);
             this.gameObject.SetActive(false);
             TutoManager.Instance.NextStep();
+            return;
         }
-        else
+        //else
             ShowExplication();
     }
 
@@ -117,12 +118,14 @@ public class TutoPanel : MonoBehaviour
 
         if (ExplicationImageListe[IndexExplication] != null)
         {
+            
             ExplicationImageListe[IndexExplication].gameObject.SetActive(true);
         }
         //else
         //    ImageExplication.enabled = false;
 
         var reponse = ExplicationsListe[IndexExplication].Answer;
+        Debug.Log("Panel // Question : " + ExplicationsListe[IndexExplication].Question + " Réponse : " + ExplicationsListe[IndexExplication].Answer);
         if (reponse is not (null or ""))
         {
             TextReponse.text = TradManager.instance.GetTranslation(reponse);
