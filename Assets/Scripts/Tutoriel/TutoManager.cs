@@ -92,7 +92,8 @@ public class TutoManager : MonoBehaviour
         {
             // HideAllPanels();
             //ShowPanel(PanelBattle);
-            _panelMap.Hide();
+            if (StepTuto != 4)
+                _panelMap.Hide();
             _dialogueManager.EnableButtonAnswer();
 
             StartBattle();

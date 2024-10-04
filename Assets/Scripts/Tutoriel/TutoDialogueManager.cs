@@ -68,13 +68,7 @@ public class TutoDialogueManager : DialogueManager
                 Instantiate(CrystauxEssence, BattleManager.spawnPos[2].position, Quaternion.identity,
                     BattleManager.spawnPos[2]);
             }
-
-            if (DialogueIndex == 0 && TutoManager.Instance.IndexEncounter == 3)
-            {
-                //BattleManager.used[0].gameObject.SetActive(true);
-            }
-
-            if (DialogueIndex == 8 && TutoManager.Instance.IndexEncounter == 3)
+            if (DialogueIndex == 7 && TutoManager.Instance.IndexEncounter == 2)
             {
                 JoueurHolder.SetActive(false);
             }
