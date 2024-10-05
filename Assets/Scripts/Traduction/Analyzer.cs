@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -289,10 +288,14 @@ public class Analyzer : MonoBehaviour
                     strb.Append((_clairvoyanceIconData.StatConviction == null) ? "CONV" : _clairvoyanceIconData.StatConviction.name);
                 else if (attributes[TradAttribute.value].Equals("RAD", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatRadiance == null) ? "RAD" : _clairvoyanceIconData.StatRadiance.name);
+                else if (attributes[TradAttribute.value].Equals("RAM", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatRadiance == null) ? "RAD" : _clairvoyanceIconData.StatRadiance.name);
                 else if (attributes[TradAttribute.value].Equals("VIT", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatVitesse == null) ? "VIT" : _clairvoyanceIconData.StatVitesse.name);
                 else if (attributes[TradAttribute.value].Equals("RES", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatResilience == null) ? "RES" : _clairvoyanceIconData.StatResilience.name);
+                else
+                    strb.Append(attributes[TradAttribute.value]);
                 strb.Append("\">");
 
                 break;
