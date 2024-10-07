@@ -85,18 +85,20 @@ public class EnnemyBehavior : CombatBehavior
         DecompteDebuffEnnemi(Decompte.phase, TimerApplication.DebutPhase);
     }
 
-    public void StartTurn() 
+    public void StartTurn(bool isFirstTurn = false) 
     {
         IsTurn = true;
         _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
         _refBattleMan.PassifManager.ResolvePassifs();
         DecompteDebuffEnnemi(Decompte.tour, TimerApplication.DebutTour);
-
-        if (!gainedTension)
+        if (!isFirstTurn)
         {
-            ApaisementTension();
+            if (!gainedTension)
+            {
+                ApaisementTension();
+            }
+            gainedTension = false;
         }
-        gainedTension = false;
         if (Stat.isStun)
         {
             Debug.Log("is stuned");
@@ -330,7 +332,7 @@ public class EnnemyBehavior : CombatBehavior
     public void EndAttackAnimation()
     {
         //Debug.Log("commencement des degats");
-        DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
+        //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
         _refBattleMan.LaunchSpellEnnemi(nextAction);
     }
 
