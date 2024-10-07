@@ -346,7 +346,7 @@ public class EnnemyBehavior : CombatBehavior
     public void EndAttackAnimation()
     {
         //Debug.Log("commencement des degats");
-        DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
+        //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
         _refBattleMan.LaunchSpellEnnemi(nextAction);
     }
 
