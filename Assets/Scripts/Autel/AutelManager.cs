@@ -201,6 +201,7 @@ public class AutelManager : MonoBehaviour
 
     public void SelectSpell(int Id)
     {
+        Debug.Log("start select spell");
         BuyButton.onClick.RemoveAllListeners();
         var listOfCompetences = GameManager.instance.classSO.Competences;
 
