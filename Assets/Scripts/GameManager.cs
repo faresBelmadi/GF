@@ -156,6 +156,7 @@ public class GameManager : MonoBehaviour {
             Vitesse = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Vitesse,
             Volonter = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Volonter,
             Clairvoyance = AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Clairvoyance,
+            Essence = AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Essence,
             BoughtSpellID = boughtspells
         };
         string json = JsonUtility.ToJson(data);
