@@ -135,10 +135,7 @@ public class JoueurBehavior : CombatBehavior
         {
             hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
             hPBarManager.ToggleBloomPulses(false);
-            Debug.Log($"Radiance Updated: from {currentHp} to {Stat.Radiance}");
-            Debug.Log($"Delta: {Stat.Radiance-currentHp}");
-        }
-        currentHp = Stat.Radiance;
+        }currentHp = Stat.Radiance;
 
         if (Stat.Tension != currentTens)
         {
@@ -228,7 +225,7 @@ public class JoueurBehavior : CombatBehavior
         UpdateUI();
     }
 
-    public void StartTurn(bool isFirstTurn = false)
+    public void StartTurn()
     {
         IsTurn = true;
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
@@ -236,19 +233,13 @@ public class JoueurBehavior : CombatBehavior
         _refBattleMan.PassifManager.ResolvePassifs();
         Stat.Volonter = Stat.VolonterMax;
         ActivateSpells();
-        
-        if (!isFirstTurn)
+        if (!gainedTension)
         {
-            if (!gainedTension)
-            {
-                ApaisementTension();
-            }
+            ApaisementTension();
         }
-        else Debug.Log("isFirst Turn");
+
         gainedTension = false;
-        
         UpdateUI();
-        
         if (Stat.isStun)
         {
             Debug.Log("is stuned");
@@ -394,27 +385,25 @@ public class JoueurBehavior : CombatBehavior
             }
         }
 
-        bool needCible = false;
-        List<Cible> needCiblage = new List<Cible>{ Cible.ennemi, Cible.Ally, Cible.Martyr};
-
-        foreach (Effet effet in SelectedSpell.ActionEffet)
+        bool isSelf = true;
+        foreach (var effet in SelectedSpell.ActionEffet)
         {
-            if (needCiblage.Contains(effet.Cible))
+            if (effet.Cible != Cible.Self && effet.Cible != Cible.joueur)
             {
-                needCible = true;
+                isSelf = false;
             }
         }
 
-        foreach (BuffDebuff buff in SelectedSpell.ActionBuffDebuff)
+        foreach (var buff in SelectedSpell.ActionBuffDebuff)
         {
-            if (needCiblage.Contains(buff.CibleApplication))
+            if (buff.CibleApplication != Cible.Self && buff.CibleApplication != Cible.joueur)
             {
-                needCible = true;
+                isSelf = false;
             }
         }
-        
-        if (needCible)
-        TakeTarget(SelectedSpell.IDSpell);
+
+        if (!isSelf)
+            TakeTarget(SelectedSpell.IDSpell);
         else
         {
             _refBattleMan.idTarget = 0;
