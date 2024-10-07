@@ -512,6 +512,7 @@ public class BattleManager : MonoBehaviour
             playing.StartTurn(nbPhase<2);
             battleUI.textPLayingTurn.text = playing.UICombat.NameText.text;
         }
+        player.UpdateUI();
         UpdateEnrageUI(key);
     }
 
@@ -528,7 +529,6 @@ public class BattleManager : MonoBehaviour
             PassifManager.ResolvePassifs();
 
             StartPhase();
-
         }
         else
             turnOrderUIManager.EvovlveTurnOrder();//StartNextTurn();
