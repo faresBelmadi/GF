@@ -154,8 +154,9 @@ public class JoueurBehavior : CombatBehavior
         {
             hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
             hPBarManager.ToggleBloomPulses(false);
+            Debug.Log($"Delta: {Stat.Radiance-currentHp}");
         }
-
+            Debug.Log($"Radiance Updated: from {currentHp} to {Stat.Radiance}");
         currentHp = Stat.Radiance;
 
         if (Stat.Tension != currentTens)
@@ -432,25 +433,27 @@ public class JoueurBehavior : CombatBehavior
             }
         }
 
-        bool isSelf = true;
-        foreach (var effet in SelectedSpell.ActionEffet)
+        bool needCible = false;
+        List<Cible> needCiblage = new List<Cible>{ Cible.ennemi, Cible.Ally, Cible.Martyr};
+
+        foreach (Effet effet in SelectedSpell.ActionEffet)
         {
-            if (effet.Cible != Cible.Self && effet.Cible != Cible.joueur)
+            if (needCiblage.Contains(effet.Cible))
             {
-                isSelf = false;
+                needCible = true;
             }
         }
 
-        foreach (var buff in SelectedSpell.ActionBuffDebuff)
+        foreach (BuffDebuff buff in SelectedSpell.ActionBuffDebuff)
         {
-            if (buff.CibleApplication != Cible.Self && buff.CibleApplication != Cible.joueur)
+            if (needCiblage.Contains(buff.CibleApplication))
             {
-                isSelf = false;
+                needCible = true;
             }
         }
-
-        if (!isSelf)
-            TakeTarget(SelectedSpell.IDSpell);
+        
+        if (needCible)
+        TakeTarget(SelectedSpell.IDSpell);
         else
         {
             _refBattleMan.idTarget = 0;

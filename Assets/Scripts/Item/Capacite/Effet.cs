@@ -99,9 +99,18 @@ public class Effet : ScriptableObject
                 damageAmount += Mathf.FloorToInt(valueToChange * caster .MultiplDegat);
                 break;
             case TypeEffet.RadianceMax:
-               
-                damageAmount = Mathf.FloorToInt((Pourcentage / 100f) * ((cible.Radiance / cible.RadianceMax) * cible.RadianceMaxOriginal));
-  
+
+                //damageAmount = Mathf.FloorToInt((Pourcentage / 100f) * caster.RadianceMaxOriginal); ;//Mathf.FloorToInt((Pourcentage / 100f) * ((cible.Radiance / cible.RadianceMax) * cible.RadianceMaxOriginal));
+                if (Cible == null)
+                {
+                    int addAmount = (int)(caster.RadianceMax * Pourcentage * .01f);
+                    damageAmount = caster.RadianceMax + addAmount;
+                }
+                else
+                {
+                    int addAmount = (int)(cible.RadianceMax * Pourcentage * .01f);
+                    damageAmount = cible.RadianceMax + addAmount;
+                }
                 break;
            
             case TypeEffet.DegatPVMax:
@@ -289,19 +298,24 @@ public class Effet : ScriptableObject
             case TypeEffet.RadianceMax:
                 if (Cible == null)
                 {
-                    
-                    var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMaxOriginal);
-                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Caster.Radiance / Caster.RadianceMax) * Caster.RadianceMaxOriginal));
-                    ModifState.RadianceMax += radianceModifier;
-                    ModifState.Radiance += radianceActModifier;
-                    
+
+                    //var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMaxOriginal);
+                    //var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Caster.Radiance / Caster.RadianceMax) * Caster.RadianceMaxOriginal));
+                    //ModifState.RadianceMax += radianceModifier;
+                    //ModifState.Radiance += radianceActModifier;
+                    int addAmount = Mathf.FloorToInt(Caster.RadianceMax * Pourcentage * .01f);
+                    ModifState.RadianceMax += addAmount;
+                    ModifState.Radiance += addAmount;
                 }
                 else
                 {
-                    var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.RadianceMaxOriginal);
-                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Cible.Radiance / Cible.RadianceMax) * Cible.RadianceMaxOriginal));
-                    ModifState.RadianceMax += radianceModifier;
-                    ModifState.Radiance += radianceActModifier;
+                    //var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.RadianceMaxOriginal);
+                    //var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Cible.Radiance / Cible.RadianceMax) * Cible.RadianceMaxOriginal));
+                    //ModifState.RadianceMax += radianceModifier;
+                    //ModifState.Radiance += radianceModifier;//radianceActModifier;
+                    int addAmount = Mathf.FloorToInt(Cible.RadianceMax * Pourcentage * .01f);
+                    ModifState.RadianceMax += addAmount;
+                    ModifState.Radiance += addAmount;
                 }
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:
@@ -423,9 +437,11 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.UntilDeath:
                 ModifState.Radiance +=
-                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
-                if (ModifState.Radiance < Cible.Radiance)
+                    -Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+                if (ModifState.Radiance + Cible.Radiance > 0)
+                {
                     Caster.Radiance -= Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);
+                }
                 break;
             case TypeEffet.DegatsRetourSurAttaque:
                 ModifState.Radiance += Mathf.FloorToInt(Pourcentage / 100f * Caster.ForceAme);
@@ -438,8 +454,9 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += Mathf.FloorToInt(valueToChange - ((Pourcentage / 100) * valueToChange));
                 break;
             case TypeEffet.AugmentationFARadianceManquante:
-                ModifState.ForceAme +=
-                    Mathf.FloorToInt(((Pourcentage / 100f) * (Caster.RadianceMax - Caster.Radiance)) * NbAttaque);
+                int faBonnus = Mathf.FloorToInt(ValeurBrut * ((1f - (Caster.Radiance*1f) / Caster.RadianceMax) * 100f) * NbAttaque);
+                ModifState.ForceAme += faBonnus;
+                Debug.Log($"Adding Mathf.FloorToInt({ValeurBrut} * ((1f - {Caster.Radiance} / {Caster.RadianceMax}) * 100f) * {NbAttaque}) = {faBonnus} FA");
                 break;
 
             case TypeEffet.DamageFaBuff:
