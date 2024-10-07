@@ -6,79 +6,87 @@ using UnityEngine;
 public class ClairvoyanceIconData : ScriptableObject
 {
     [SerializeField]
-    private Sprite _damage;
-    [SerializeField] 
-    private Sprite _intentionAtk;
-    [SerializeField]
-    private Sprite _intentionBuff;
-    [SerializeField]
-    private Sprite _intendionDebuff;
-    [SerializeField]
     private Sprite _statCalme;
-    [SerializeField]
-    private Sprite _statCalmeUp;
     [SerializeField]
     private Sprite _statCalmeDown;
     [SerializeField]
-    private Sprite _statClairvoyance;
+    private Sprite _statCalmeUp;
+
     [SerializeField]
-    private Sprite _statClairvoyanceUp;
+    private Sprite _statClairvoyance;
     [SerializeField]
     private Sprite _statClairvoyanceDown;
     [SerializeField]
-    private Sprite _statConscience;
-    [SerializeField]
-    private Sprite _statConscienceUp;
-    [SerializeField]
-    private Sprite _statConscienceDown;
-    [SerializeField]
-    private Sprite _statConscienceDroite;
-    [SerializeField]
-    private Sprite _statConscienceDroiteUp;
-    [SerializeField]
-    private Sprite _statConscienceDroiteDown;
-    [SerializeField]
-    private Sprite _statConscienceGauche;
-    [SerializeField]
-    private Sprite _statConscienceGaucheUp;
-    [SerializeField]
-    private Sprite _statConscienceGaucheDown;
-    [SerializeField]
-    private Sprite _statConviction;
-    [SerializeField]
-    private Sprite _statConvictionUp;
-    [SerializeField]
-    private Sprite _statConvictionDown;
+    private Sprite _statClairvoyanceUp;
+
     [SerializeField]
     private Sprite _statForceDame;
     [SerializeField]
-    private Sprite _statForceDameUp;
-    [SerializeField]
     private Sprite _statForceDameDown;
+    [SerializeField]
+    private Sprite _statForceDameUp;
+
     [SerializeField]
     private Sprite _statRadiance;
     [SerializeField]
-    private Sprite _statRadianceUp;
-    [SerializeField]
     private Sprite _statRadianceDown;
     [SerializeField]
-    private Sprite _statResilience;
-    [SerializeField]
-    private Sprite _statResilienceUp;
-    [SerializeField]
-    private Sprite _statResilienceDown;
+    private Sprite _statRadianceUp;
+
     [SerializeField]
     private Sprite _statTension;
     [SerializeField]
     private Sprite _statTensionUp;
     [SerializeField]
     private Sprite _statTensionDown;
+
+    [SerializeField]
+    private Sprite _statConscience;
+    [SerializeField]
+    private Sprite _statConscienceDown;
+    [SerializeField]
+    private Sprite _statConscienceUp;
+    [SerializeField]
+    private Sprite _statConscienceDroite;
+    [SerializeField]
+    private Sprite _statConscienceDroiteDown;
+    [SerializeField]
+    private Sprite _statConscienceDroiteUp;
+    [SerializeField]
+    private Sprite _statConscienceGauche;
+    [SerializeField]
+    private Sprite _statConscienceGaucheDown;
+    [SerializeField]
+    private Sprite _statConscienceGaucheUp;
+
+    [SerializeField]
+    private Sprite _statResilience;
+    [SerializeField]
+    private Sprite _statResilienceDown;
+    [SerializeField]
+    private Sprite _statResilienceUp;
+
     [SerializeField]
     private Sprite _statVitesse;
     [SerializeField]
-    private Sprite _statVitesseUp;
-    [SerializeField]
     private Sprite _statVitesseDown;
+    [SerializeField]
+    private Sprite _statVitesseUp;
+
+    [SerializeField]
+    private Sprite _statConviction;
+    [SerializeField]
+    private Sprite _statConvictionUp;
+    [SerializeField]
+    private Sprite _statConvictionDown;
+
+    [SerializeField]
+    private Sprite _intendionDebuff;
+    [SerializeField]
+    private Sprite _intentionBuff;
+    [SerializeField]
+    private Sprite _damage;
+
     [SerializeField]
     private Sprite _statVolonte;
     [SerializeField]
@@ -86,8 +94,18 @@ public class ClairvoyanceIconData : ScriptableObject
     [SerializeField]
     private Sprite _statVolonteDown;
 
+    [SerializeField] 
+    private Sprite _intentionAtk;
+    [SerializeField]
+    private Sprite _intentionHeavyAtk;
+    [SerializeField]
+    private Sprite _hiddenIntention;
+
+
     public Sprite Damage { get => _damage; }
     public Sprite IntentionAtk { get => _intentionAtk; }
+    public Sprite IntentionHeavyAtk { get => _intentionHeavyAtk; }
+    public Sprite HiddenIntention { get => _hiddenIntention; }
     public Sprite IntentionBuff { get => _intendionDebuff; }
     public Sprite IntentionDebuff { get => _intendionDebuff; }
     public Sprite StatCalme { get => _statCalme; }

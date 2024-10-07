@@ -584,9 +584,8 @@ public class DialogueManager : MonoBehaviour
                 break;
 
         }
-
-        strb.Append("\" color=#");
-        strb.Append(ColorUtility.ToHtmlStringRGBA(color));
+        //strb.Append("\" color=#");
+        //strb.Append(ColorUtility.ToHtmlStringRGBA(color));
         strb.Append(">");
         return strb.ToString();
     }

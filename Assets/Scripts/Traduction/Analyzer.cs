@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -182,7 +181,7 @@ public class Analyzer : MonoBehaviour
         else return TradTag.unknown;
     }
     /// <summary>
-    /// Read value from string pattern of : «value=value», all other type of pattern will result on an empty string.
+    /// Read value from string pattern of : ï¿½value=valueï¿½, all other type of pattern will result on an empty string.
     /// </summary>
     /// <param name="strToRead">the string to read</param>
     /// <returns>return the field of the value attribute, or empty if the string is incorrect</returns>
@@ -289,6 +288,8 @@ public class Analyzer : MonoBehaviour
                     strb.Append((_clairvoyanceIconData.StatConviction == null) ? "CONV" : _clairvoyanceIconData.StatConviction.name);
                 else if (attributes[TradAttribute.value].Equals("RAD", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatRadiance == null) ? "RAD" : _clairvoyanceIconData.StatRadiance.name);
+                else if (attributes[TradAttribute.value].Equals("RAM", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatRadiance == null) ? "RAD" : _clairvoyanceIconData.StatRadiance.name);
                 else if (attributes[TradAttribute.value].Equals("VIT", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatVitesse == null) ? "VIT" : _clairvoyanceIconData.StatVitesse.name);
                 else if (attributes[TradAttribute.value].Equals("RES", System.StringComparison.InvariantCultureIgnoreCase))
@@ -299,6 +300,8 @@ public class Analyzer : MonoBehaviour
                     strb.Append((_clairvoyanceIconData.StatConscience == null) ? "CONS" : _clairvoyanceIconData.StatConscience.name);
                 else if (attributes[TradAttribute.value].Equals("TEN", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatTension == null) ? "TEN" : _clairvoyanceIconData.StatTension.name);
+                else
+                    strb.Append(attributes[TradAttribute.value]);
                 strb.Append("\">");
 
                 break;
