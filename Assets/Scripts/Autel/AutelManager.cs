@@ -74,7 +74,7 @@ public class AutelManager : MonoBehaviour
 
     private void Start()
     {
-        stats = GameManager.instance.playerStat;
+        stats = GameManager.Instance.playerStat;
 
         SetUpStatsDescription();
     }
@@ -148,7 +148,7 @@ public class AutelManager : MonoBehaviour
 
     private void SetUpAllSpells()
     {
-        var listOfCompetences = GameManager.instance.classSO.Competences;
+        var listOfCompetences = GameManager.Instance.classSO.Competences;
 
         foreach (var capa in listOfCompetences)
         {
@@ -184,7 +184,7 @@ public class AutelManager : MonoBehaviour
 
     public void SetUpStatsDescription()
     {
-        stats = GameManager.instance.playerStat;
+        stats = GameManager.Instance.playerStat;
         ValeurRadiance.text = stats.RadianceMax.ToString();
         ValeurFA.text = stats.ForceAme.ToString();
         ValeurVitesse.text = stats.Vitesse.ToString();
@@ -202,7 +202,7 @@ public class AutelManager : MonoBehaviour
     public void SelectSpell(int Id)
     {
         BuyButton.onClick.RemoveAllListeners();
-        var listOfCompetences = GameManager.instance.classSO.Competences;
+        var listOfCompetences = GameManager.Instance.classSO.Competences;
 
         foreach (var capa in listOfCompetences)
         {
@@ -213,7 +213,7 @@ public class AutelManager : MonoBehaviour
                 DescriptionSpellText.text = $"<allcaps><b> {name} </b></allcaps> \n{ description}";
                 CostCapaText.text = "cout : " + capa.EssenceCost;
                 ModifStatCapa(capa);
-                if (capa.EssenceCost <= GameManager.instance.playerStat.Essence && !capa.Bought && capa.isBuyable)
+                if (capa.EssenceCost <= GameManager.Instance.playerStat.Essence && !capa.Bought && capa.isBuyable)
                 {
                     BuyButton.onClick.AddListener(delegate { BuyCapa(capa); });
                     BuyButton.GetComponent<Image>().color = Color.white;
@@ -307,13 +307,13 @@ public class AutelManager : MonoBehaviour
     {
         Debug.Log("capa acheté");
 
-        GameManager.instance.playerStat.Essence -= capa.EssenceCost;
-        var capaClassSO = GameManager.instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == capa.IDLvl);
+        GameManager.Instance.playerStat.Essence -= capa.EssenceCost;
+        var capaClassSO = GameManager.Instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == capa.IDLvl);
         capaClassSO.Bought = true;
         capaClassSO.Equiped = true;
         capa.Bought = true;
         capa.Equiped = true;
-        GameManager.instance.playerStat.ListSpell.Add(capa.Spell);
+        GameManager.Instance.playerStat.ListSpell.Add(capa.Spell);
         SetStatBougthCapa(capa);
         CheckLinkCapa(capa);
 
@@ -322,7 +322,7 @@ public class AutelManager : MonoBehaviour
 
         RetourButton.onClick.RemoveAllListeners();
         //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
-        RetourButton.onClick.AddListener(delegate { StartCoroutine(GameManager.instance.pmm.EndAutel(false)); });
+        RetourButton.onClick.AddListener(delegate { StartCoroutine(GameManager.Instance.pmm.EndAutel(false)); });
 
         BuyButton.onClick.RemoveAllListeners();
         BuyButton.GetComponent<Image>().color = Color.gray;
@@ -367,7 +367,7 @@ public class AutelManager : MonoBehaviour
             }
         }
 
-        GameManager.instance.playerStat.ModifStateAll(modifJoueurStat);
+        GameManager.Instance.playerStat.ModifStateAll(modifJoueurStat);
     }
 
     public void CheckLinkCapa(Competence capa)
@@ -381,7 +381,7 @@ public class AutelManager : MonoBehaviour
         //}
         foreach (var id in capa.IDLier)
         {
-            var capaLier = GameManager.instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == id);
+            var capaLier = GameManager.Instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == id);
             if (capaLier != null && !ShouldIgnoreCapaLier(capaLier.IDLvl))
             {
                 if (capa.lvlCapa == 1)
@@ -414,8 +414,8 @@ public class AutelManager : MonoBehaviour
 
     public void RetourMap()
     {
-        GameManager.instance.playerStat.ListSouvenir = stats.ListSouvenir;
-        StartCoroutine(GameManager.instance.pmm.EndAutel(Loot));
+        GameManager.Instance.playerStat.ListSouvenir = stats.ListSouvenir;
+        StartCoroutine(GameManager.Instance.pmm.EndAutel(Loot));
     }
 
 
@@ -429,7 +429,7 @@ public class AutelManager : MonoBehaviour
 
     public void GetSouvenirs()
     {
-        listAllSouvenir = GameManager.instance.CopyAllSouvenir.OrderBy(a => UnityEngine.Random.value).ToList();
+        listAllSouvenir = GameManager.Instance.CopyAllSouvenir.OrderBy(a => UnityEngine.Random.value).ToList();
     }
 
     public void CoutChoix(int Choix)

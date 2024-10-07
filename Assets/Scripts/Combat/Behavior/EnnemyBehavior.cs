@@ -26,16 +26,16 @@ public class EnnemyBehavior : CombatBehavior
     private int currentHp = 0;
     private int currentTension = 0;
     private Coroutine deathRoutine = null;
-   
+
     public string Name
-    { 
-        get 
-        {
-            return TradManager.instance.GetTranslation(Stat.IdTradName, Stat.Nom);
-        }
+    {
+        get { return TradManager.instance.GetTranslation(Stat.IdTradName, Stat.Nom); }
     }
+
     public bool IsDead { get; private set; } = false;
+
     #region Divers start & fin
+
     IEnumerator DeathCoroutine()
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDeathSFX, Stat.DeathSFX);
@@ -43,15 +43,20 @@ public class EnnemyBehavior : CombatBehavior
         while (time < deathDisolveTime)
         {
             time += Time.deltaTime;
-            characterMaterial.SetFloat("_DisolveHeight", time/ deathDisolveTime);
+            characterMaterial.SetFloat("_DisolveHeight", time / deathDisolveTime);
             yield return null;
         }
+
         Dead();
         deathRoutine = null;
     }
+
     public void SetUp()
     {
-        _refBattleMan = GameManager.instance.BattleMan;
+        if (GameManager.Instance == null)
+            _refBattleMan = TutoManager.Instance.BattleManager;
+        else
+            _refBattleMan = GameManager.Instance.BattleMan;
         IsDead = false;
         UICombat = this.GetComponent<UIEnnemi>();
         UpdateUI();
@@ -96,11 +101,15 @@ public class EnnemyBehavior : CombatBehavior
         DecompteDebuffEnnemi(Decompte.phase, TimerApplication.DebutPhase);
     }
 
-    public void StartTurn(bool isFirstTurn = false) 
+    public void StartTurn(bool isFirstTurn = false)
     {
         IsTurn = true;
-        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
-        _refBattleMan.PassifManager.ResolvePassifs();
+        if (_refBattleMan.PassifManager != null)
+        {
+            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
+            _refBattleMan.PassifManager.ResolvePassifs();
+        }
+
         DecompteDebuffEnnemi(Decompte.tour, TimerApplication.DebutTour);
         if (!isFirstTurn)
         {
@@ -108,14 +117,17 @@ public class EnnemyBehavior : CombatBehavior
             {
                 ApaisementTension();
             }
+
             gainedTension = false;
         }
+
         if (Stat.isStun)
         {
             Debug.Log("is stuned");
             //Stat.isStun = false;
             EndTurn();
         }
+
         if (!skip && !Stat.isStun)
         {
             DoAction();
@@ -124,9 +136,12 @@ public class EnnemyBehavior : CombatBehavior
 
     public void EndTurn()
     {
+        if (_refBattleMan.PassifManager != null)
+        {
+            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
+            _refBattleMan.PassifManager.ResolvePassifs();
+        }
 
-        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
-        _refBattleMan.PassifManager.ResolvePassifs();
         IsTurn = false;
         if (!skip)
             EndAnimBool();
@@ -139,8 +154,12 @@ public class EnnemyBehavior : CombatBehavior
     {
         if (IsDead) return;
         IsDead = true;
-        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.Death;
-        _refBattleMan.PassifManager.ResolvePassifs();
+        if (_refBattleMan.PassifManager != null)
+        {
+            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.Death;
+            _refBattleMan.PassifManager.ResolvePassifs();
+        }
+
         /*
         foreach (var item in Stat.ListBuffDebuff)
         {
@@ -163,6 +182,7 @@ public class EnnemyBehavior : CombatBehavior
             t.GetComponent<Essence>().AddEssence(Stat.Essence);
             _refBattleMan.ListEssence.Add(t);
         }
+
         _refBattleMan.DeadEnemy(combatID);
     }
 
@@ -172,7 +192,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public void EnervementTension()
     {
-        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        var t = (int) ((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
         if (t >= Stat.NbPalier)
             t = Stat.NbPalier;
         else
@@ -184,7 +204,7 @@ public class EnnemyBehavior : CombatBehavior
     public void ApaisementTension()
     {
 
-        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        var t = (int) ((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
         if (t <= 0)
             t = 0;
         else
@@ -199,6 +219,7 @@ public class EnnemyBehavior : CombatBehavior
         {
             return true;
         }
+
         return false;
     }
 
@@ -224,6 +245,7 @@ public class EnnemyBehavior : CombatBehavior
                 gainedTension = true;
                 break;
         }
+
         if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
             Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
         if (Stat.Tension < 0)
@@ -241,11 +263,11 @@ public class EnnemyBehavior : CombatBehavior
 
     private void UpdateUI()
     {
-        if(currentHp!=Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
+        if (currentHp != Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
         currentHp = Stat.Radiance;
-        
+
         TensionUI = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
-        if(currentTension != TensionUI) UICombat.UpdateTension(TensionUI, Stat.NbPalier);
+        if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, Stat.NbPalier);
         currentTension = TensionUI;
 
         string[] t = Stat.Nom.Split('(');
@@ -253,7 +275,7 @@ public class EnnemyBehavior : CombatBehavior
         UICombat.RaiseEvent = TargetAcquired;
         UICombat.OnPreviewDamage = PreviewDamage;
         UICombat.OnStopPreviewDamage = StopPreviewDamage;
-        
+
     }
 
     #endregion Update
@@ -269,13 +291,14 @@ public class EnnemyBehavior : CombatBehavior
             {
                 if (effect.TypeEffet == TypeEffet.Colere)
                 {
-                    UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+                    UnityEngine.Random.InitState((int) DateTime.Now.Ticks);
                     var temp = UnityEngine.Random.Range(0, 100);
                     if (temp <= effect.Pourcentage)
                         colere = true;
                 }
             }
         }
+
         if (Spells == null)
             CreateSpellList();
 
@@ -305,6 +328,7 @@ public class EnnemyBehavior : CombatBehavior
             if (item != nextAction)
                 item.Weight--;
         }
+
         NextActionType();
         UpdateIntention();
     }
@@ -363,7 +387,7 @@ public class EnnemyBehavior : CombatBehavior
         if (Stat.Debuff != null)
             Spells.Add(Stat.Debuff);
 
-        UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+        UnityEngine.Random.InitState((int) DateTime.Now.Ticks);
         foreach (var item in Spells)
         {
             item.Weight += UnityEngine.Random.Range(0, 4);
@@ -382,6 +406,7 @@ public class EnnemyBehavior : CombatBehavior
             {
                 ReceiveTension(Source.Buff);
             }
+
             var buff = Instantiate(toAdd);
             buff.Effet = new List<Effet>();
             foreach (var item in toAdd.Effet)
@@ -400,16 +425,18 @@ public class EnnemyBehavior : CombatBehavior
 
     private void DecompteDebuffEnnemi(Decompte Decompte, TimerApplication Timer)
     {
-        DecompteDebuff(Stat.ListBuffDebuff, Decompte,this.Stat);
-        foreach(var item in Stat.ListBuffDebuff)
+        DecompteDebuff(Stat.ListBuffDebuff, Decompte, this.Stat);
+        foreach (var item in Stat.ListBuffDebuff)
         {
-            if(item.timerApplication == Timer)
-                ApplicationBuffDebuff(Timer,item);
+            if (item.timerApplication == Timer)
+                ApplicationBuffDebuff(Timer, item);
         }
+
         foreach (var item in tempAddList)
         {
             AddDebuff(item, Decompte.none, TimerApplication.Persistant);
         }
+
         Stat.ListBuffDebuff = base.UpdateBuffDebuffGameObject(Stat.ListBuffDebuff, this.Stat);
         tempAddList.Clear();
         UpdateUI();
@@ -421,7 +448,8 @@ public class EnnemyBehavior : CombatBehavior
         //ResetStat();
         //foreach (var item in Stat.ListBuffDebuff)
         //{
-        if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant || toApply.DirectApplication)
+        if (toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant ||
+            toApply.DirectApplication)
         {
             foreach (var effet in toApply.Effet)
             {
@@ -433,9 +461,10 @@ public class EnnemyBehavior : CombatBehavior
                 else
                 {
                     //A Mettre une fois les combats terminer
-                    GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
+                    GameManagerRemake.Instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine, combatID);
                 }*/
             }
+
             if (toApply.IsConsomable == true && toApply.TimingConsomationMinimum < 1 && toApply.Temps > 0)
             {
                 toApply.Temps = -1;
@@ -446,9 +475,11 @@ public class EnnemyBehavior : CombatBehavior
             }
             else
                 toApply.TimingConsomationMinimum--;
+
             if (toApply.DirectApplication)
                 toApply.DirectApplication = false;
         }
+
         if (skip)
             EndTurn();
     }
@@ -457,7 +488,8 @@ public class EnnemyBehavior : CombatBehavior
 
     #region Effet
 
-    public void ApplicationEffet(Effet effet, JoueurStat Caster = null, SourceEffet source = SourceEffet.Spell, int idCaster = 0, int NbEnnemies = 1)
+    public void ApplicationEffet(Effet effet, JoueurStat Caster = null, SourceEffet source = SourceEffet.Spell,
+        int idCaster = 0, int NbEnnemies = 1)
     {
         JoueurStat ModifStat;
         if (Caster == null)
@@ -471,9 +503,9 @@ public class EnnemyBehavior : CombatBehavior
             {
                 var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
                 if (caster != null)
-                    ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken,this.Stat);
+                    ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, this.Stat);
                 else
-                    ModifStat = effet.ResultEffet(Stat, LastDamageTaken,null,1);
+                    ModifStat = effet.ResultEffet(Stat, LastDamageTaken, null, 1);
 
             }
 
@@ -488,11 +520,11 @@ public class EnnemyBehavior : CombatBehavior
             var toRemove = Mathf.FloorToInt(ModifStat.Radiance / Stat.MultiplDef);
             toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
-            if(source != SourceEffet.BuffDebuff)
+            if (source != SourceEffet.BuffDebuff)
                 GetAttacked();
         }
 
-        if(effet.IsFirstApplication && effet.TypeEffet == TypeEffet.RadianceMax)
+        if (effet.IsFirstApplication && effet.TypeEffet == TypeEffet.RadianceMax)
         {
             effet.IsFirstApplication = false;
             ModifStat.Radiance += ModifStat.RadianceMax;
@@ -528,19 +560,23 @@ public class EnnemyBehavior : CombatBehavior
         }
         else if (ModifStat.Radiance > 0)
         {
-            if(!Stat.NoTension)
+            if (!Stat.NoTension)
                 ReceiveTension(Source.Soin);
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
 
-        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
-        _refBattleMan.PassifManager.ResolvePassifs();
+        if (_refBattleMan.PassifManager != null)
+        {
+            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
+            _refBattleMan.PassifManager.ResolvePassifs();
+        }
 
         UpdateUI();
 
         if (Stat.Radiance <= 0)
         {
-            /*EndTurn();*/ // provoque une fin de tour du joueur a la mort d'un ennemi, est ce que c'est une feature voulu ?
+            /*EndTurn();*/
+            // provoque une fin de tour du joueur a la mort d'un ennemi, est ce que c'est une feature voulu ?
             deathRoutine = StartCoroutine(DeathCoroutine());
             //Dead();
         }
@@ -565,6 +601,7 @@ public class EnnemyBehavior : CombatBehavior
     {
         UICombat.TargetingMode = false;
     }
+
     public void PreviewDamage()
     {
         int[] damageList = new int[_refBattleMan.EnemyScripts.Count + _refBattleMan.DeadEnemyScripts.Count];
@@ -579,19 +616,21 @@ public class EnnemyBehavior : CombatBehavior
             }
             else
             {
-                damageList[combatID-1] += dmg;
+                damageList[combatID - 1] += dmg;
             }
         }
+
         foreach (EnnemyBehavior ennemy in _refBattleMan.EnemyScripts)
         {
-            if (damageList[ennemy.combatID-1] < 0)
+            if (damageList[ennemy.combatID - 1] < 0)
             {
-                var toRemove = Mathf.FloorToInt(damageList[combatID-1] / ennemy.Stat.MultiplDef);
+                var toRemove = Mathf.FloorToInt(damageList[combatID - 1] / ennemy.Stat.MultiplDef);
                 toRemove -= Mathf.FloorToInt(((ennemy.Stat.Resilience * 3) / 100f) * toRemove);
                 ennemy.UICombat.PreviewDmg(ennemy.Stat.Radiance + toRemove, ennemy.Stat.RadianceMax);
             }
         }
     }
+
     public void StopPreviewDamage()
     {
         foreach (EnnemyBehavior ennemy in _refBattleMan.EnemyScripts)
@@ -637,6 +676,7 @@ public class EnnemyBehavior : CombatBehavior
             default:
                 break;
         }
+
         EndAttackAnimation();
     }
 
@@ -663,6 +703,4 @@ public class EnnemyBehavior : CombatBehavior
 
     #endregion Animation
 
-    
 }
-

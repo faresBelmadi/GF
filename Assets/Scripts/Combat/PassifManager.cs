@@ -7,8 +7,8 @@ using Random = UnityEngine.Random;
 
 public class PassifManager
 {
-    private readonly PassifRules _rules = GameManager.instance.passifRules;
-    private readonly BattleManager _refBattleManager = GameManager.instance.BattleMan;
+    private readonly PassifRules _rules = GameManager.Instance.passifRules;
+    private readonly BattleManager _refBattleManager = GameManager.Instance.BattleMan;
 
     private List<EnnemyBehavior> _currentBattleEnemy;
     private List<JoueurBehavior> _currentBattleJoueur;

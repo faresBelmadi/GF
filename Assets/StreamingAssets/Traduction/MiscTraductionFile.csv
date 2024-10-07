@@ -1,15 +1,15 @@
 id;FR;EN;ZH
-G1N;Radiance;Radiance;
-G2N;Vitesse;Speed;
-G3N;Conviction;Conviction;
-G4N;Résilience;Resilience;
-G5N;Calme;Calm;
-G6N;Force d'âme;Fortitude;
-G7N;Conscience;Conscience;
-G8N;Clairvoyance;Insight;
-G9N;Volonté;Willpower;
-G10N;Tension;Tension;
-G11N;Essence;Essence;
+G1N;Radiance {stat value=RAD};Radiance {stat value=RAD};
+G2N;Vitesse {stat value=VIT};Speed {stat value=VIT};
+G3N;Conviction {stat value=CONV};Conviction {stat value=CONV};
+G4N;Résilience {stat value=RES};Resilience {stat value=RES};
+G5N;Calme {stat value=CAL};Calm {stat value=CAL};
+G6N;Force d'âme {stat value=FA};Fortitude {stat value=FA};
+G7N;Conscience {stat value=CONS};Conscience {stat value=CONS};
+G8N;Clairvoyance {stat value=CL};Insight {stat value=CL};
+G9N;Volonté {stat value=VOL};Willpower {stat value=VOL};
+G10N;Tension {stat value=TEN};Tension {stat value=TEN};
+G11N;Essence ;Essence;
 M1P1N;Guerrier;Warrior;
 M1M1N;Jouer;Play;
 M1M2N;Charger;Load Game;
@@ -25,6 +25,7 @@ M1O4N;Musique;Music;
 M1O5N;SFX;SFX;
 M1O6N;Muet;Mute;
 M2M1N;Faire le tutoriel;Do tutorial;
+T1B1;Passer le tutoriel;Skip tutorial;
 W1B1N;Menu principal;Main menu;
 W1B2N;Menu stat;Stat menu;
 W1B3N;Retour au monde;Back to world;
@@ -34,15 +35,15 @@ W1M3N;Combat Élite;Elite fight;
 W2M4N;Combat boss;Boss fight;
 W2M5N;Autel;Altar;
 W2M6N;Fin;End;
-BattleTT1D;Volonté : ressource pour vos capacité, se recharge à chaque tour.;Wllpower : your ressources for your abilities, it resplanishes every turn.;
-BattleTT2D;Tension : votre colère, vous obtenez un deuxieme tour lorsque votre jauge est remplie;Tension: your anger, you get a second turn when your gauge is full.;
-BattleTT3D;Radiance : vos points de vie.;Radiance : your health points.;
-BattleTT4D;Conscience : Jauge d'humanité de votre personnage, resources rare servant à lancer des capacités puissante;Conscence: your character's humanity gauge, a rare resource used to activate powerful abilities.;
-BattleTT5D;Force d'ame : 1pt de FA correspond a 1pt de degats.;Fortitude: 1 point equals 1 point of damage.;
-BattleTT6D;Vitesse : plus la vitesse est haute, plus on joue rapidement.;Speed: the higher the speed, the faster you play.;
-BattleTT7D;Résilience : 1pt de Résilience reduit les degats subis de 3% (max 30%).;Resilience: 1 point of Resilience reduces damage taken by 3% (max 30%).;
-BattleTT8D;Conviction : 1pt de Conviction augmente l'effet des buffs/debuffs de 5%.;Conviction: 1 point of Conviction increases the effect of buffs/debuffs by 5%.;
-BattleTT9D;Clairvoyance : Permet de voir la prochaine action des ennemis;Insight: Allows you to see the enemies' next action.;
+BattleTT1D;Volonté {stat value=VOL} : ressource pour vos capacité, se recharge à chaque tour.;Wllpower {stat value=VOL}: your ressources for your abilities, it resplanishes every turn.;
+BattleTT2D;Tension {stat value=TEN} : votre colère, vous obtenez un deuxieme tour lorsque votre jauge est remplie;Tension {stat value=TEN}: your anger, you get a second turn when your gauge is full.;
+BattleTT3D;Radiance {stat value=RAD} : vos points de vie.;Radiance {stat value=RAD}: your health points.;
+BattleTT4D;Conscience {stat value=CONS} : Jauge d'humanité de votre personnage, resources rare servant à lancer des capacités puissante;Conscence {stat value=CONS}: your character's humanity gauge, a rare resource used to activate powerful abilities.;
+BattleTT5D;Force d'ame {stat value=FA} : 1pt de FA correspond a 1pt de degats.;Fortitude {stat value=FA}: 1 point equals 1 point of damage.;
+BattleTT6D;Vitesse {stat value=VIT} : plus la vitesse est haute, plus on joue rapidement.;Speed {stat value=VIT}: the higher the speed, the faster you play.;
+BattleTT7D;Résilience {stat value=RES} : 1pt de Résilience {stat value=RES} reduit les degats subis de 3% (max 30%).;Resilience {stat value=RES}: 1 point of Resilience {stat value=RES} reduces damage taken by 3% (max 30%).;
+BattleTT8D;Conviction {stat value=CONV} : 1pt de Conviction {stat value=CONV} augmente l'effet des buffs/debuffs de 5%.;Conviction {stat value=CONV}: 1 point of Conviction {stat value=CONV} increases the effect of buffs/debuffs by 5%.;
+BattleTT9D;Clairvoyance {stat value=CL} : Permet de voir la prochaine action des ennemis;Insight {stat value=CL}: Allows you to see the enemies' next action.;
 Battle1N;Garder l'essence;Keep essence;
 Battle2N;Fin de tour;End Turn;
 Autel1N;Magasin;Shop;
@@ -54,13 +55,13 @@ Autel1Shop4;point de Clairvoyance;Insight point;
 Autel1Shop5;Choix 1;Choice #1;
 Autel1Shop6;Choix 2;Choice #2;
 Autel1Shop7;Choix 3;Choice #3;
-Autel1Shop8;"Conscience +2
-51% de chance de loot un souvenir aleatoire";"Insight +2
+Autel1Shop8;"Conscience {stat value=CONS} +2
+51% de chance de loot un souvenir aleatoire";"Conscience {stat value=CONS} +2
 51% chance to loot a random memory.";
-Autel1Shop9;"Conscience +3
-Obtenez un souvenir de classe aleatoire (la rareter change en fonction de l'etage)";"Insight +3
+Autel1Shop9;"Conscience {stat value=CONS} +3
+Obtenez un souvenir de classe aleatoire (la rareter change en fonction de l'etage)";"Conscience {stat value=CONS} +3
 Obtain a random class memory (rarity varies depending on the floor).""";
-Autel1Shop10;"Conscience +3
-Obtenez ce souvenir de classe";"Insight +3
+Autel1Shop10;"Conscience {stat value=CONS}  +3
+Obtenez ce souvenir de classe";"Conscience {stat value=CONS} +3
 Obtain this class memory";
 Autel1C1;Acheter;Buy;

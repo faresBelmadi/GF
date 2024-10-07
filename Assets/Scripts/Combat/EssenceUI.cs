@@ -29,8 +29,18 @@ public class EssenceUI : MonoBehaviour
     {
         if (TutoManager.Instance != null && !TutoManager.Instance.ShowSoulConsumation)
             return;
+
+        if (TutoManager.Instance != null)
+        {
+            _consumeButton.interactable = false;
+            _soulAmountText.gameObject.transform.parent.gameObject.SetActive(false); // we hide amount text for the tutorial
+        }
+        else
+        {
        //buttonConsumation.SetActive(true); //Legacy code
         _consumeButton.interactable = true;
+
+        }
     }
 
     public void deactivate()
@@ -56,18 +66,29 @@ public class EssenceUI : MonoBehaviour
     }
     public void ShowPreviewOnHP()
     {
-        GameManager.instance.BattleMan.player.PreviewHPBarUpdate(
-            GameManager.instance.BattleMan.player.Stat.Radiance + _essenceRootObject.Heal,
-            GameManager.instance.BattleMan.player.Stat.RadianceMax);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.BattleMan.player.PreviewHPBarUpdate(
+                GameManager.Instance.BattleMan.player.Stat.Radiance + _essenceRootObject.Heal,
+                GameManager.Instance.BattleMan.player.Stat.RadianceMax);
 
-        GameManager.instance.BattleMan.player.PreviewTensionBarUpddate();
+            GameManager.Instance.BattleMan.player.PreviewTensionBarUpddate();
+        }
+        else
+        {
+            TutoManager.Instance.BattleManager.player.PreviewHPBarUpdate(
+                TutoManager.Instance.BattleManager.player.Stat.Radiance + _essenceRootObject.Heal,
+                TutoManager.Instance.BattleManager.player.Stat.RadianceMax);
+
+            TutoManager.Instance.BattleManager.player.PreviewTensionBarUpddate();
+        }
     }
     public void StopPreviewOnHP()
     {
-        if (GameManager.instance.BattleMan != null)
+        if (GameManager.Instance != null && GameManager.Instance.BattleMan != null)
         {
-            GameManager.instance.BattleMan.player.StopPReviewHPBarUpdate();
-            GameManager.instance.BattleMan.player.StopPreviewTensionBar();
+            GameManager.Instance.BattleMan.player.StopPReviewHPBarUpdate();
+            GameManager.Instance.BattleMan.player.StopPreviewTensionBar();
         }
     }
 

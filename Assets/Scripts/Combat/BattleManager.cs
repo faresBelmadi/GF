@@ -11,6 +11,8 @@ using UnityEngine.UIElements;
 [System.Serializable]
 public class BattleManager : MonoBehaviour
 {
+    [SerializeField]
+    private bool _isTuto = false;
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
@@ -55,6 +57,8 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Material characterMaterial;
     [SerializeField] private Material ennemiUIMaterial;
 
+    public bool IsTuto { get => _isTuto; }
+
     #region Loot
 
     public void Loot()
@@ -78,16 +82,16 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < _encounter.LootRarity.Count; i++)
         {
             if (random <= _encounter.LootRarity[i].Pourcentage &&
-                GameManager.instance.CopyAllSouvenir.Any(x => x.Rarete == _encounter.LootRarity[i].rareter))
+                GameManager.Instance.CopyAllSouvenir.Any(x => x.Rarete == _encounter.LootRarity[i].rareter))
             {
-                var allSouvenirRareter = GameManager.instance.CopyAllSouvenir
+                var allSouvenirRareter = GameManager.Instance.CopyAllSouvenir
                     .Where(x => x.Rarete == _encounter.LootRarity[i].rareter).ToList();
                 int randomSouvenir = UnityEngine.Random.Range(0, allSouvenirRareter.Count());
 
                 string NameLoot = allSouvenirRareter[randomSouvenir].SouvenirName;
-                var newSouvenir = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot);
+                var newSouvenir = GameManager.Instance.CopyAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot);
                 player.Stat.ListSouvenir.Add(Instantiate(newSouvenir));
-                GameManager.instance.CopyAllSouvenir.Remove(newSouvenir);
+                GameManager.Instance.CopyAllSouvenir.Remove(newSouvenir);
                 IsLoot = true;
                 return;
             }
@@ -216,7 +220,8 @@ public class BattleManager : MonoBehaviour
     void DialogueEnableSetup()
     {
         player.InitRefBattleMan(this);
-        PassifManager = new PassifManager(new List<JoueurBehavior> {player}, EnemyScripts);
+        if (GameManager.Instance != null)
+            PassifManager = new PassifManager(new List<JoueurBehavior> {player}, EnemyScripts);
         DialogueManager.SetupDialogue(_encounter);
     }
 
@@ -224,7 +229,10 @@ public class BattleManager : MonoBehaviour
     {
         idIndexer = 0;
         battleUI = GetComponent<BattleUI>();
-        player.Stat = GameManager.instance.playerStat;
+        if (GameManager.Instance == null)
+            player.Stat = TutoManager.Instance.JoueurStat;
+        else 
+            player.Stat = GameManager.Instance.playerStat;
         player.EndTurnBM = EndTurn;
         player.StartUp();
         SpawnedEnemy = new List<GameObject>();
@@ -335,14 +343,21 @@ public class BattleManager : MonoBehaviour
                 tempCombatScript.ChooseNextAction();
                 idIndexer++;
             }
-
+                
             //AddingMaterial
-            temp.GetComponent<UIEnnemi>().imageCadreFGs[0].material = new Material(ennemiUIMaterial);
-            temp.GetComponent<UIEnnemi>().imageCadreFGs[1].material = new Material(ennemiUIMaterial);
+            var uiEnnemi = temp.GetComponent<UIEnnemi>();
+            if (uiEnnemi != null)
+            {
+                uiEnnemi.imageCadreFGs[0].material = new Material(ennemiUIMaterial);
+                uiEnnemi.imageCadreFGs[1].material = new Material(ennemiUIMaterial);
+            }
 
             Material thisCharMaterial = new Material(characterMaterial);
             if (tempCombatScript != null) tempCombatScript.characterMaterial = thisCharMaterial;
-            temp.GetComponent<PulseBloom_System>().bloomMaterial = thisCharMaterial;
+
+            var pulseBloomSystem = temp.GetComponent<PulseBloom_System>();
+            if (pulseBloomSystem != null)
+                pulseBloomSystem.bloomMaterial = thisCharMaterial;
 
 
             foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>(true))
@@ -424,15 +439,17 @@ public class BattleManager : MonoBehaviour
     private void EndBattle()
     {
         IsCombatOn = false;
-        PassifManager.CurrentEvent = TimerPassif.FinCombat;
-        PassifManager.ResolvePassifs();
-
+        if (!IsTuto)
+        {
+            PassifManager.CurrentEvent = TimerPassif.FinCombat;
+            PassifManager.ResolvePassifs();
+        }
         Loot();
         player.ResetStat();
         player.Stat.ListBuffDebuff.Clear();
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Stat.Tension = 0;
-        GameManager.instance.playerStat = player.Stat;
+        GameManager.Instance.playerStat = player.Stat;
         Debug.Log(IsLoot);
         if (TutoManager.Instance != null)
         {
@@ -449,7 +466,7 @@ public class BattleManager : MonoBehaviour
             buttonEndCombat.SetActive(false);
         }
         else
-            StartCoroutine(GameManager.instance.pmm.EndBattle(IsLoot));
+            StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
     }
 
     #endregion Mise en place combat & fin
@@ -460,8 +477,11 @@ public class BattleManager : MonoBehaviour
     {
         //Play start phase sound
         AudioManager.instance.SFX.PlaySFXClip(SFXType.StartPhaseSFX);
-        PassifManager.CurrentEvent = TimerPassif.DebutPhase;
-        PassifManager.ResolvePassifs();
+        if (PassifManager != null)
+        {
+            PassifManager.CurrentEvent = TimerPassif.DebutPhase;
+            PassifManager.ResolvePassifs();
+        }
 
         LastPhaseDamage = CurrentPhaseDamage;
         CurrentPhaseDamage = 0;
@@ -504,7 +524,7 @@ public class BattleManager : MonoBehaviour
         if (key == idPlayer)
         {
             player.StartTurn(nbPhase<2);
-            battleUI.textPLayingTurn.text = "Guerrier";
+            battleUI.textPLayingTurn.text = (GameManager.Instance!=null)?GameManager.Instance.classSO.NameClass:TutoManager.Instance.TutoClassSo.NameClass;
         }
         else
         {
@@ -524,10 +544,11 @@ public class BattleManager : MonoBehaviour
         nbTurn++;
         if (nbTurn >= IdOrder.Count)
         {
-
-            PassifManager.CurrentEvent = TimerPassif.FinPhase;
-            PassifManager.ResolvePassifs();
-
+            if (!IsTuto)
+            {
+                PassifManager.CurrentEvent = TimerPassif.FinPhase;
+                PassifManager.ResolvePassifs();
+            }
             StartPhase();
         }
         else
@@ -1014,7 +1035,7 @@ public class BattleManager : MonoBehaviour
 
     public void DeadPlayer()
     {
-        GameManager.instance.DeadPlayer();
+        GameManager.Instance.DeadPlayer();
     }
 
     #endregion Death
@@ -1084,7 +1105,7 @@ public class BattleManager : MonoBehaviour
     public void EndHurtAnimPlayer()
     {
 
-        player.endHurtAnim();
+        player.EndHurtAnim();
     }
 
     #endregion Animation

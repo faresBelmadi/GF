@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SpellCombat : MonoBehaviour
-{ 
+{
     public bool isTurn;
     private bool isClicable = true;
     public bool isUsable = true;
@@ -28,7 +28,7 @@ public class SpellCombat : MonoBehaviour
         string buffDebuffDescription;
         if (!string.IsNullOrEmpty(Action.idTradName) && !string.IsNullOrEmpty(Action.idTradDescription))
         {
-           
+
             buffDebuffName = TradManager.instance.GetTranslation(Action.idTradName, Action.name);
             buffDebuffDescription = TradManager.instance.GetTranslation(Action.idTradDescription, Action.Description);
         }
@@ -41,6 +41,7 @@ public class SpellCombat : MonoBehaviour
             buffDebuffName = Action.name;
             buffDebuffDescription = Action.Description;
         }
+
         TexteDescription.text = "<color=white><size=150%>" + buffDebuffName + "</size></color>\n<u>Cout :</u> ";
         foreach (var item in Action.Costs)
         {
@@ -51,6 +52,7 @@ public class SpellCombat : MonoBehaviour
             if (item.typeCost == TypeCostSpell.conscience)
                 TexteDescription.text += item.Value + "<color=green><font-weight=900> C </font-weight></color>";
         }
+
         TexteDescription.text += "\n";
 
         TexteDescription.text += buffDebuffDescription;
@@ -66,9 +68,13 @@ public class SpellCombat : MonoBehaviour
 
     public bool CheckPrice()
     {
-        if(GameManager.instance.BattleMan != null)
+        JoueurStat stat;
+        if (GameManager.Instance != null)
+            stat = GameManager.Instance.BattleMan?.player.Stat;
+        else
+            stat = TutoManager.Instance.BattleManager?.player.Stat;
+        if (stat != null)
         {
-            var stat = GameManager.instance.BattleMan.player.Stat;
             foreach (var price in Action.Costs)
             {
                 switch (price.typeCost)
@@ -87,21 +93,22 @@ public class SpellCombat : MonoBehaviour
                         break;
                 }
             }
+
             return true;
         }
         else
         {
             return false;
-        } 
+        }
     }
 
     public void ClickAction()
     {
-        if(isClicable)
+        if (isClicable)
         {
             Act(Action);
             isClicable = false;
-            Invoke("PreventInstaDoubleClick",0.01f);
+            Invoke("PreventInstaDoubleClick", 0.01f);
         }
 
     }
@@ -111,6 +118,7 @@ public class SpellCombat : MonoBehaviour
     {
         isClicable = true;
     }
+
     public void UpdateDescription()
     {
         string buffDebuffName;
@@ -129,6 +137,7 @@ public class SpellCombat : MonoBehaviour
             buffDebuffName = Action.name;
             buffDebuffDescription = Action.Description;
         }
+
         TexteDescription.text = "<color=white><size=150%>" + buffDebuffName + "</size></color>\n<u>Cout :</u> ";
         foreach (var item in Action.Costs)
         {
@@ -139,6 +148,7 @@ public class SpellCombat : MonoBehaviour
             if (item.typeCost == TypeCostSpell.conscience)
                 TexteDescription.text += item.Value + "<color=green><font-weight=900> C </font-weight></color>";
         }
+
         TexteDescription.text += "\n";
 
         TexteDescription.text += buffDebuffDescription;

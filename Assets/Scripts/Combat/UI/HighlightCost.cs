@@ -47,11 +47,16 @@ public class HighlightCost : MonoBehaviour
 
         _conscienceHighlightGO.SetActive(false);
         _radianceHighlightGO.SetActive(false);
+        JoueurStat Stat = new JoueurStat();
+        if (GameManager.Instance != null)
+            Stat = GameManager.Instance.BattleMan.player.Stat;
+        else
+            Stat = TutoManager.Instance.BattleManager.player.Stat;
 
         if (volonteCost > 0 
-            && GameManager.instance.BattleMan.player.Stat.Volonter >= volonteCost
-            && GameManager.instance.BattleMan.player.Stat.Radiance >= radCost
-            && GameManager.instance.BattleMan.player.Stat.Conscience >= conscCost)
+            && Stat.Volonter >= volonteCost
+            && Stat.Radiance >= radCost
+            && Stat.Conscience >= conscCost)
         {
             _volonteHighlightGO.SetActive(true);
             _highlightSlider.value = volonteCost;
@@ -60,14 +65,14 @@ public class HighlightCost : MonoBehaviour
         }
 
         if (radCost > 0 
-            && GameManager.instance.BattleMan.player.Stat.Volonter >= volonteCost
-            && GameManager.instance.BattleMan.player.Stat.Radiance >= radCost
-            && GameManager.instance.BattleMan.player.Stat.Conscience >= conscCost)
+            && Stat.Volonter >= volonteCost
+            && Stat.Radiance >= radCost
+            && Stat.Conscience >= conscCost)
         {
             _radianceHighlightGO.SetActive(true);
             _radianceCalqueImage.fillAmount = _radianceImage.fillAmount;
 
-            float percentCost = ((float)radCost) / (float)GameManager.instance.playerStat.RadianceMax;
+            float percentCost = ((float)radCost) / (float)Stat.RadianceMax;
             _highlightRadianceImage.fillAmount = _radianceImage.fillAmount - percentCost;
 
            // if (_bloomRadianceComponent.loop == true) _bloomRadianceComponent.OnToggleLoop();
@@ -75,9 +80,9 @@ public class HighlightCost : MonoBehaviour
         }
 
         if (conscCost > 0 
-            && GameManager.instance.BattleMan.player.Stat.Volonter >= volonteCost
-            && GameManager.instance.BattleMan.player.Stat.Radiance >= radCost
-            && GameManager.instance.BattleMan.player.Stat.Conscience >= conscCost)
+            && Stat.Volonter >= volonteCost
+            && Stat.Radiance >= radCost
+            && Stat.Conscience >= conscCost)
         {
             _conscienceHighlightGO.SetActive(true);
             _conscienceCalqueImage.fillAmount = _conscienceImage.fillAmount;
@@ -126,7 +131,7 @@ public class HighlightCost : MonoBehaviour
             _radianceHighlightGO.SetActive(true);
             _radianceCalqueImage.fillAmount = _radianceImage.fillAmount;
 
-            float percentCost = ((float)_selectRadCost) / (float)GameManager.instance.playerStat.RadianceMax;
+            float percentCost = ((float)_selectRadCost) / (float)GameManager.Instance.playerStat.RadianceMax;
             _highlightRadianceImage.fillAmount = _radianceImage.fillAmount - percentCost;
 
             _bloomRadianceComponent.TriggerBloom(true);

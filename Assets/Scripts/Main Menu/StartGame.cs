@@ -15,7 +15,7 @@ public class StartGame : MonoBehaviour
         if (TutoManager.Instance != null)
             Destroy(TutoManager.Instance.gameObject);
         if (DoTutoCheck.isOn)
-            SceneManager.LoadScene("Tuto");
+            SceneManager.LoadScene("TutoMonde");
         else
             SceneManager.LoadSceneAsync(1);
     }

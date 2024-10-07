@@ -17,7 +17,10 @@ public class GetAttackedBehaviour : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        GameManager.instance.BattleMan.EndHurtAnim();
+        if (GameManager.Instance != null)
+            GameManager.Instance.BattleMan.EndHurtAnim();
+        else
+            TutoManager.Instance.BattleManager.EndHurtAnim();
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

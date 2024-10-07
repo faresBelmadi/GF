@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class JoueurBehavior : CombatBehavior
 {
     [SerializeField] public JoueurStat Stat;
-    
+
     [SerializeField] private List<GameObject> Spells;
     [SerializeField] private Transform DamageSpawn;
     [SerializeField] private GameObject DamagePrefab;
@@ -53,11 +53,13 @@ public class JoueurBehavior : CombatBehavior
     [SerializeField] private bool IsTurn;
 
     public Spell SelectSpell => SelectedSpell;
+
     #region Divers start & fin
 
     private int currentHp = -1;
     private float currentTens = -1;
     private int currentCons = -1;
+
     public void InitRefBattleMan(BattleManager battleManager)
     {
         _refBattleMan = battleManager;
@@ -72,6 +74,8 @@ public class JoueurBehavior : CombatBehavior
         Stat.ResilienceOriginal = Stat.Resilience - (int) Stat.ResiliencePassif;
         Stat.ConvictionOriginal = Stat.Conviction;
         Stat.ForceAmeOriginal = Stat.ForceAme;
+        if (Spells != null && Spells.Count > 0)
+            ClearSpells();
         foreach (var item in Stat.ListSpell)
         {
             var temp = Instantiate(SpellPrefab, SpellsSpawn.transform);
@@ -80,7 +84,7 @@ public class JoueurBehavior : CombatBehavior
             temp.GetComponent<SpellCombat>().Act = DoAction;
             temp.GetComponent<SpellCombat>().StartUp();
             int volonteCost = 0, conscCost = 0, radCost = 0;
-            foreach(var cost in temp.GetComponent<SpellCombat>().Action.Costs)
+            foreach (var cost in temp.GetComponent<SpellCombat>().Action.Costs)
             {
                 if (cost.typeCost == TypeCostSpell.volonte)
                 {
@@ -95,14 +99,27 @@ public class JoueurBehavior : CombatBehavior
                     conscCost = cost.Value;
                 }
             }
-           
-            temp.GetComponent<SpellCombat>().button.onClick.AddListener(delegate { _highlightComponant.SelectCostForHighlighing(volonteCost, radCost, conscCost); });
-            temp.GetComponent<HighlightTriggerEvent>().SetActionsToTrigger(_highlightComponant.EnableHighlighting, _highlightComponant.DisableHighlighting, volonteCost, radCost, conscCost);
-           
+
+            temp.GetComponent<SpellCombat>().button.onClick.AddListener(delegate
+            {
+                _highlightComponant.SelectCostForHighlighing(volonteCost, radCost, conscCost);
+            });
+            temp.GetComponent<HighlightTriggerEvent>().SetActionsToTrigger(_highlightComponant.EnableHighlighting,
+                _highlightComponant.DisableHighlighting, volonteCost, radCost, conscCost);
+
             Spells.Add(temp);
         }
 
         InitUI();
+    }
+
+    private void ClearSpells()
+    {
+        foreach (var spell in Spells)
+        {
+            Destroy(spell);
+        }
+        Spells.Clear();
     }
 
     private Spell CheckSouvenirSpell(Spell item)
@@ -122,38 +139,43 @@ public class JoueurBehavior : CombatBehavior
 
         return item;
     }
+
     private void InitUI()
     {
         hPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
         tensionBarManager.InitPBar(0, Stat.NbPalier);
         conscienceBarManager.InitPBar(Stat.Conscience, Stat.ConscienceMax);
     }
+
     public void UpdateUI()
     {
         //ProgressBar Updates
-        if(Stat.Radiance != currentHp) 
+        if (Stat.Radiance != currentHp)
         {
             hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
             hPBarManager.ToggleBloomPulses(false);
-            Debug.Log($"Radiance Updated: from {currentHp} to {Stat.Radiance}");
             Debug.Log($"Delta: {Stat.Radiance-currentHp}");
         }
+            Debug.Log($"Radiance Updated: from {currentHp} to {Stat.Radiance}");
         currentHp = Stat.Radiance;
 
         if (Stat.Tension != currentTens)
         {
-            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax), Stat.NbPalier);
-            
+            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax),
+                Stat.NbPalier);
+
             tensionBarManager.ToggleBloomPulses(((Stat.Tension * Stat.NbPalier) / Stat.TensionMax) >= Stat.NbPalier);
-            
+
         }
+
         currentTens = Stat.Tension;
-        
+
         if (Stat.Conscience != currentCons)
         {
             conscienceBarManager.UpdatePBar(Stat.Conscience, Stat.ConscienceMax);
             conscienceBarManager.ToggleBloomPulses(false);
         }
+
         currentCons = Stat.Conscience;
 
         VolonteSlider.value = Stat.Volonter;
@@ -162,7 +184,7 @@ public class JoueurBehavior : CombatBehavior
 
         HpText.text = $"{Stat.Radiance.ToString()}/{Stat.RadianceMax}";
         HpTextReduced.text = Stat.Radiance.ToString();
-        HpToolTipText.text = $"Radiance : vos points de vie\nMax: {Stat.RadianceMax.ToString()}"; 
+        HpToolTipText.text = $"Radiance : vos points de vie\nMax: {Stat.RadianceMax.ToString()}";
         ConscienceText.text = Stat.Conscience + "/" + Stat.ConscienceMax;
 
         StatClairvoyanceText.text = Stat.Clairvoyance + "";
@@ -234,12 +256,16 @@ public class JoueurBehavior : CombatBehavior
         AudioManager.instance.SFX.PlaySFXClip(SFXType.StartTurnSFX);
         IsTurn = true;
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
-        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
-        _refBattleMan.PassifManager.ResolvePassifs();
-        if (_refBattleMan.nbPhase>=2)           //If it's first player turn, we don't resplanish willpower.
+        if (_refBattleMan.PassifManager != null)
+        {
+            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
+            _refBattleMan.PassifManager.ResolvePassifs();
+        }
+
+        if (_refBattleMan.nbPhase >= 2) //If it's first player turn, we don't resplanish willpower.
             Stat.Volonter = Stat.VolonterMax;
         ActivateSpells();
-        
+
         if (!isFirstTurn)
         {
             if (!gainedTension)
@@ -248,10 +274,11 @@ public class JoueurBehavior : CombatBehavior
             }
         }
         else Debug.Log("isFirst Turn");
+
         gainedTension = false;
-        
+
         UpdateUI();
-        
+
         if (Stat.isStun)
         {
             Debug.Log("is stuned");
@@ -262,8 +289,12 @@ public class JoueurBehavior : CombatBehavior
 
     public void EndTurn()
     {
-        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
-        _refBattleMan.PassifManager.ResolvePassifs();
+        if (_refBattleMan.PassifManager != null)
+        {
+            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
+            _refBattleMan.PassifManager.ResolvePassifs();
+        }
+
         IsTurn = false;
         DesactivateSpells();
         EndTurnBM();
@@ -275,7 +306,7 @@ public class JoueurBehavior : CombatBehavior
         Stat.MultiplDef = 1;
         Stat.MultiplSoin = 1;
         Stat.MultipleBuffDebuff = 1;
-        Stat.Radiance = Mathf.RoundToInt((Stat.Radiance / (Stat.RadianceMax*1f)) * Stat.RadianceMaxOriginal);
+        Stat.Radiance = Mathf.RoundToInt((Stat.Radiance / (Stat.RadianceMax * 1f)) * Stat.RadianceMaxOriginal);
         Stat.RadianceMax = Stat.RadianceMaxOriginal;
         Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
@@ -301,14 +332,18 @@ public class JoueurBehavior : CombatBehavior
     {
         hPBarManager.PreviewBar(value, maxRadiance);
     }
+
     public void StopPReviewHPBarUpdate()
     {
         hPBarManager.StopPreview();
     }
+
     public void PreviewTensionBarUpddate()
     {
-        tensionBarManager.PreviewBar(Mathf.FloorToInt(((Stat.Tension + Stat.TensionSoin) * Stat.NbPalier) / Stat.TensionMax), Stat.NbPalier);
+        tensionBarManager.PreviewBar(
+            Mathf.FloorToInt(((Stat.Tension + Stat.TensionSoin) * Stat.NbPalier) / Stat.TensionMax), Stat.NbPalier);
     }
+
     public void StopPreviewTensionBar()
     {
         tensionBarManager.StopPreview();
@@ -491,10 +526,14 @@ public class JoueurBehavior : CombatBehavior
     {
         //A Mettre une fois les combats terminer
         _refBattleMan.LaunchSpellJoueur(SelectedSpell);
-        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
-        _refBattleMan.PassifManager.ResolvePassifs();
+        if (_refBattleMan.PassifManager != null)
+        {
+            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
+            _refBattleMan.PassifManager.ResolvePassifs();
+        }
+
         UpdateUI();
-      //  ActivateSpells();
+        //  ActivateSpells();
     }
 
     #endregion Spell
@@ -519,7 +558,7 @@ public class JoueurBehavior : CombatBehavior
 
             Stat.ListBuffDebuff.Add(buff);
             base.AddBuffDebuff(toAdd, Stat);
-            if(toAdd.timerApplication != TimerApplication.Attaque)
+            if (toAdd.timerApplication != TimerApplication.Attaque)
                 ApplicationBuffDebuff(Timer, buff);
         }
 
@@ -531,6 +570,7 @@ public class JoueurBehavior : CombatBehavior
 
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
+      
         DecompteDebuff(Stat.ListBuffDebuff, Decompte, this.Stat);
         var tempListBuffDebuff = Stat.ListBuffDebuff;
         foreach (var item in tempListBuffDebuff)
@@ -555,14 +595,15 @@ public class JoueurBehavior : CombatBehavior
         //{
         
         if ((toApply.timerApplication == Timer || toApply.timerApplication == TimerApplication.Persistant ||
-            toApply.DirectApplication))
+             toApply.DirectApplication))
         {
-            
+
             foreach (var effet in toApply.Effet)
-            { 
-                if((toApply.timerApplication != TimerApplication.Attaque) || (toApply.timerApplication == TimerApplication.Attaque && !IsTurn))
+            {
+                if ((toApply.timerApplication != TimerApplication.Attaque) ||
+                    (toApply.timerApplication == TimerApplication.Attaque && !IsTurn))
                     _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
-    
+
                 /*if(item.CibleApplication == effet.Cible)
                 {
                     ApplicationEffet(effet);
@@ -570,7 +611,7 @@ public class JoueurBehavior : CombatBehavior
                 else
                 {
                     //A Mettre une fois les combats terminer
-                    GameManagerRemake.instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine);
+                    GameManagerRemake.Instance.BattleMan.PassageEffet(effet, item.IDCombatOrigine);
                 }*/
             }
 
@@ -600,6 +641,7 @@ public class JoueurBehavior : CombatBehavior
     public void ApplicationEffet(Effet effet, EnnemiStat Caster = null, SourceEffet source = SourceEffet.Spell,
         int idCaster = 0)
     {
+        
         JoueurStat ModifStat;
         if (Caster == null)
         {
@@ -620,7 +662,7 @@ public class JoueurBehavior : CombatBehavior
             toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
             if (effet.IsAttaqueEffet)
-                getAttacked();
+                GetAttacked();
         }
 
         //if(effet.IsFirstApplication && effet.TypeEffet == TypeEffet.RadianceMax)
@@ -672,10 +714,11 @@ public class JoueurBehavior : CombatBehavior
             }
         }
 
-
-        _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
-        _refBattleMan.PassifManager.ResolvePassifs();
-
+        if (_refBattleMan.PassifManager != null)
+        {
+            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
+            _refBattleMan.PassifManager.ResolvePassifs();
+        }
 
         UpdateUI();
 
@@ -705,16 +748,17 @@ public class JoueurBehavior : CombatBehavior
 
     #endregion Essence
 
-    public void getAttacked()
+    public void GetAttacked()
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerDamageTakenSFX, Stat.DamageSFX);
         DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
         AnimationController.GetAttacked();
     }
-    
 
-    public void endHurtAnim()
+
+    public void EndHurtAnim()
     {
         AnimationController.EndAnimAttack();
     }
+
 }

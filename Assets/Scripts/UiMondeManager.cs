@@ -29,6 +29,6 @@ public class UiMondeManager : MonoBehaviour
     public void RetourMenuPrincipale()
     {
         SceneManager.LoadScene("MainMenu");
-        Destroy(GameManager.instance.gameObject);
+        Destroy(GameManager.Instance.gameObject);
     }
 }

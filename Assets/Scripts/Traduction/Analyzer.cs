@@ -181,7 +181,7 @@ public class Analyzer : MonoBehaviour
         else return TradTag.unknown;
     }
     /// <summary>
-    /// Read value from string pattern of : «value=value», all other type of pattern will result on an empty string.
+    /// Read value from string pattern of : ï¿½value=valueï¿½, all other type of pattern will result on an empty string.
     /// </summary>
     /// <param name="strToRead">the string to read</param>
     /// <returns>return the field of the value attribute, or empty if the string is incorrect</returns>
@@ -294,6 +294,12 @@ public class Analyzer : MonoBehaviour
                     strb.Append((_clairvoyanceIconData.StatVitesse == null) ? "VIT" : _clairvoyanceIconData.StatVitesse.name);
                 else if (attributes[TradAttribute.value].Equals("RES", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatResilience == null) ? "RES" : _clairvoyanceIconData.StatResilience.name);
+                else if (attributes[TradAttribute.value].Equals("CAL", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatCalme == null) ? "CAL" : _clairvoyanceIconData.StatCalme.name);
+                else if (attributes[TradAttribute.value].Equals("CONS", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatConscience == null) ? "CONS" : _clairvoyanceIconData.StatConscience.name);
+                else if (attributes[TradAttribute.value].Equals("TEN", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatTension == null) ? "TEN" : _clairvoyanceIconData.StatTension.name);
                 else
                     strb.Append(attributes[TradAttribute.value]);
                 strb.Append("\">");
@@ -306,25 +312,37 @@ public class Analyzer : MonoBehaviour
                 string spriteName = "";
                 if (attributes[TradAttribute.target].Equals("FA", System.StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (GameManager.instance.playerStat != null)
+                    if (GameManager.Instance == null && TutoManager.Instance != null)
                     {
-                        numericValue = GameManager.instance.playerStat.ForceAme * (value / 100f);
+                        numericValue = TutoManager.Instance.JoueurStat.ForceAme * (value / 100f);
+                    }
+                    else if (GameManager.Instance.playerStat != null)
+                    {
+                        numericValue = GameManager.Instance.playerStat.ForceAme * (value / 100f);
                     }
                     spriteName = _clairvoyanceIconData.StatForceDame.name;
                 }
                 else if (attributes[TradAttribute.target].Equals("RAM", System.StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (GameManager.instance.playerStat != null)
+                    if (GameManager.Instance == null && TutoManager.Instance != null)
                     {
-                        numericValue = GameManager.instance.playerStat.RadianceMax * (value / 100f);
+                        numericValue = TutoManager.Instance.JoueurStat.RadianceMax * (value / 100f);
+                    }
+                    else if (GameManager.Instance.playerStat != null)
+                    {
+                        numericValue = GameManager.Instance.playerStat.RadianceMax * (value / 100f);
                     }
                     spriteName = (_clairvoyanceIconData.StatRadiance == null) ? "RAM" : _clairvoyanceIconData.StatRadiance.name;
                 }
                 else if (attributes[TradAttribute.target].Equals("RAD", System.StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (GameManager.instance.playerStat != null)
+                    if (GameManager.Instance == null && TutoManager.Instance != null)
                     {
-                        numericValue = GameManager.instance.playerStat.Radiance * (value / 100f);
+                        numericValue = TutoManager.Instance.JoueurStat.Radiance * (value / 100f);
+                    }
+                    else if (GameManager.Instance.playerStat != null)
+                    {
+                        numericValue = GameManager.Instance.playerStat.Radiance * (value / 100f);
                     }
                     spriteName = (_clairvoyanceIconData.StatRadiance == null) ? "RAM" : _clairvoyanceIconData.StatRadiance.name;
                 }
@@ -345,16 +363,24 @@ public class Analyzer : MonoBehaviour
                     int percentValue = int.Parse(attributes[TradAttribute.value]);
                     if (attributes[TradAttribute.stat].Equals("FA", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (GameManager.instance.playerStat != null)
+                        if (GameManager.Instance == null && TutoManager.Instance != null)
                         {
-                            damageValue = GameManager.instance.playerStat.ForceAme * (percentValue / 100f);
+                            damageValue = TutoManager.Instance.JoueurStat.ForceAme * (percentValue / 100f);
+                        }
+                        else if (GameManager.Instance.playerStat != null)
+                        {
+                            damageValue = GameManager.Instance.playerStat.ForceAme * (percentValue / 100f);
                         }
                     }
                     else if (attributes[TradAttribute.stat].Equals("RAM", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        if (GameManager.instance.playerStat != null)
+                        if (GameManager.Instance == null && TutoManager.Instance != null)
                         {
-                            numericValue = GameManager.instance.playerStat.RadianceMax * (percentValue / 100f);
+                            damageValue = TutoManager.Instance.JoueurStat.RadianceMax * (percentValue / 100f);
+                        }
+                        else if (GameManager.Instance.playerStat != null)
+                        {
+                            numericValue = GameManager.Instance.playerStat.RadianceMax * (percentValue / 100f);
                         }
                     }
                 }
