@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     
-    public static GameManager instance;
+    public static GameManager Instance;
 
     [Header("Managers")]
     public RoomManager rm;
@@ -40,11 +40,11 @@ public class GameManager : MonoBehaviour {
     public SkillTreePrinter SkillTreeUI;
 
     private void Awake() {
-        if (instance != null)
+        if (Instance != null)
             Destroy(this.gameObject);
         else
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(this);
         }
 
@@ -52,7 +52,9 @@ public class GameManager : MonoBehaviour {
         //LoadSave();
         ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
         CreateSave();
-        getClassRun();
+        GetClassRun();
+        if (TutoManager.Instance != null)
+            Destroy(TutoManager);
     }
 
     private void LoadSave()
@@ -77,7 +79,7 @@ public class GameManager : MonoBehaviour {
             loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
             if(!loadedData.CurrentRun.Ended)
             {
-                getClassRun();
+                GetClassRun();
                 
                 playerStat = new JoueurStat() {
                     Radiance = loadedData.CurrentRun.player.Radiance,
@@ -130,7 +132,7 @@ public class GameManager : MonoBehaviour {
         else
         {
             CreateSave();
-            getClassRun();
+            GetClassRun();
         }
     }
 
@@ -271,7 +273,7 @@ public class GameManager : MonoBehaviour {
     //    StatMan.StartMenuStat();
     //}
     
-    void getClassRun()
+    void GetClassRun()
     {
         if (classSO != null && TutoManager.Instance != null)
         {
@@ -295,10 +297,10 @@ public class GameManager : MonoBehaviour {
         //StartCoroutine(Reload());
 
         //ResetJoueurStat ?0
-        GameManager.instance.playerStat.ResetStat();
+        GameManager.Instance.playerStat.ResetStat();
 
         SceneManager.LoadScene("MainMenu");
-        Destroy(GameManager.instance.gameObject);
+        Destroy(GameManager.Instance.gameObject);
     }
 
     public IEnumerator Reload()

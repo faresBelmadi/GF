@@ -101,24 +101,24 @@ public class CombatBehavior : MonoBehaviour
         string buffDebuffDescription;
         if (!string.IsNullOrEmpty(buff.idTradName) && !string.IsNullOrEmpty(buff.idTradDescription))
         {
-            //if (TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
+            //if (TradManager.Instance.CapaDictionary.TryGetValue(buff.idTradName,
             //        out List<string> capaNameAllLangueList) &&
-            //    TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
+            //    TradManager.Instance.CapaDictionary.TryGetValue(buff.idTradDescription,
             //        out List<string> capaDescAllLangueList)
-            //    && TradManager.instance.IdLanguage != -1000)
+            //    && TradManager.Instance.IdLanguage != -1000)
             //{
-            //    buffDebuffName = capaNameAllLangueList[TradManager.instance.IdLanguage];
-            //    buffDebuffDescription = capaDescAllLangueList[TradManager.instance.IdLanguage];
+            //    buffDebuffName = capaNameAllLangueList[TradManager.Instance.IdLanguage];
+            //    buffDebuffDescription = capaDescAllLangueList[TradManager.Instance.IdLanguage];
             //}
             //else
             //{
-            //    if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
+            //    if (!TradManager.Instance.CapaDictionary.TryGetValue(buff.idTradName,
             //            out List<string> osef))
             //        Debug.Log("idTradName not in dictionary");
-            //    if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
+            //    if (!TradManager.Instance.CapaDictionary.TryGetValue(buff.idTradDescription,
             //            out List<string> osef2))
             //        Debug.Log("idTradDescription not in dictionary");
-            //    if (TradManager.instance.IdLanguage == -1000)
+            //    if (TradManager.Instance.IdLanguage == -1000)
             //        Debug.Log("IdLanguage not in dictionary");
             //    buffDebuffName = buff.name;
             //    buffDebuffDescription = buff.Description;

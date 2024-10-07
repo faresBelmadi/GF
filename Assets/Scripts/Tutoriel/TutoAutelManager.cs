@@ -31,8 +31,8 @@ public class TutoAutelManager : MonoBehaviour
         }
         else
         {
-            //description.text = TradManager.instance.DialogueDictionary[Explications[currentStep]][TradManager.instance.IdLanguage];
-            //ButtonResponse.text = TradManager.instance.DialogueDictionary[Reponses[currentStep]][TradManager.instance.IdLanguage];
+            //description.text = TradManager.Instance.DialogueDictionary[Explications[currentStep]][TradManager.Instance.IdLanguage];
+            //ButtonResponse.text = TradManager.Instance.DialogueDictionary[Reponses[currentStep]][TradManager.Instance.IdLanguage];
             description.text = TradManager.instance.GetTranslation(Explications[currentStep]);
             ButtonResponse.text = TradManager.instance.GetTranslation(Reponses[currentStep]);
 

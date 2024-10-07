@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Linq;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TutoDialogueManager : DialogueManager
 {
-    public TutoBattleManager TutoBattleManager;
+    public BattleManager BattleManager;
     public GameObject CrystauxEssence;
     public GameObject UiHolder;
     public Image Hpfill;
@@ -12,31 +13,45 @@ public class TutoDialogueManager : DialogueManager
     public Image ConscienceFill;
     public GameObject JoueurHolder;
 
+    [SerializeField]
+    private ProgressBarManager _hpBarManager;
     //public RectTransform positionDialogueOriginal;
     //public RectTransform positionDialogueUp;
     public void EndDialogueTuto()
     {
-        Debug.Log("Dialogue Tuto Fini!");
         TutoManager.Instance.NextStep();
         //SceneManager.LoadScene("TutoMonde");
     }
-
+    public void InitDialogueStep()
+    {
+        NextDialogueIndex = 0;
+    }
     public void GetRéponse(int i)
     {
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.TutoDialogueAndAction)
         {
-            if (DialogueIndex == 1 && TutoManager.Instance.StepBatlleTuto == 0)
+            Debug.Log("DialogueIndex = " + DialogueIndex + " / IndexEncounter : " + TutoManager.Instance.IndexEncounter);
+            if (DialogueIndex == 0 && TutoManager.Instance.IndexEncounter == 0)
             {
                 UiHolder.SetActive(true);
-                Hpfill.fillAmount = 0.1f;
+                //Hpfill.fillAmount = 0.1f;
+                var joueurBehav = JoueurHolder.GetComponentInChildren<JoueurBehavior>();
+                joueurBehav.Stat.Radiance = joueurBehav.Stat.RadianceMax / 10;
+                _hpBarManager.InitPBar(joueurBehav.Stat.Radiance, joueurBehav.Stat.RadianceMax);
+                joueurBehav.UpdateUI();
             }
 
-            if (DialogueIndex == 4 && TutoManager.Instance.StepBatlleTuto == 0)
+            if (DialogueIndex == 4 && TutoManager.Instance.IndexEncounter == 0)
             {
-                Hpfill.fillAmount = 1f;
+                //Hpfill.fillAmount = 1f;
+
+                var joueurBehav = JoueurHolder.GetComponentInChildren<JoueurBehavior>();
+                joueurBehav.Stat.Radiance = joueurBehav.Stat.RadianceMax;
+                //_hpBarManager.UpdatePBar(joueurBehav.Stat.Radiance, joueurBehav.Stat.RadianceMax);
+                joueurBehav.UpdateUI();
             }
 
-            if ((DialogueIndex == 2 || DialogueIndex == 5) && TutoManager.Instance.StepBatlleTuto == 1)
+            if ((DialogueIndex == 1 || DialogueIndex == 4) && TutoManager.Instance.IndexEncounter == 1)
             {
                 UiHolder.SetActive(true);
                 Hpfill.fillAmount = 1f;
@@ -44,29 +59,24 @@ public class TutoDialogueManager : DialogueManager
                 ConscienceFill.fillAmount = 0.2f;
             }
 
-            if ((DialogueIndex == 3 || DialogueIndex == 6) && TutoManager.Instance.StepBatlleTuto == 1)
+            if ((/*DialogueIndex == 2 || */DialogueIndex == 5) && TutoManager.Instance.IndexEncounter == 1)
             {
                 ConscienceFill.fillAmount = 0.1f;
                 //GoeargeTapeLeMob
-                var toDelete = TutoBattleManager.spawnPos[2].GetChild(0);
+                var toDelete = BattleManager.spawnPos.FirstOrDefault(x => x.GetChild(0).gameObject.name == "Choristes_neuf Variant(Clone)");
                 Destroy(toDelete.gameObject);
-                Instantiate(CrystauxEssence, TutoBattleManager.spawnPos[2].position, Quaternion.identity,
-                    TutoBattleManager.spawnPos[2]);
+                Instantiate(CrystauxEssence, BattleManager.spawnPos[2].position, Quaternion.identity,
+                    BattleManager.spawnPos[2]);
             }
-
-            if (DialogueIndex == 0 && TutoManager.Instance.StepBatlleTuto == 3)
-            {
-                TutoBattleManager.used[0].gameObject.SetActive(true);
-            }
-
-            if (DialogueIndex == 8 && TutoManager.Instance.StepBatlleTuto == 3)
+            if (DialogueIndex == 7 && TutoManager.Instance.IndexEncounter == 2)
             {
                 JoueurHolder.SetActive(false);
             }
 
-            if (DialogueIndex == 10 && TutoManager.Instance.StepBatlleTuto == 3)
+            if (DialogueIndex == 8 && TutoManager.Instance.IndexEncounter == 4)
             {
-                Destroy(GameManager.instance.gameObject);
+                if (GameManager.Instance != null)
+                    Destroy(GameManager.Instance.gameObject);
                 SceneManager.LoadSceneAsync(1);
                 Destroy(TutoManager.Instance.gameObject);
             }
@@ -74,4 +84,22 @@ public class TutoDialogueManager : DialogueManager
         
         base.GetRéponse(i);
     }
+
+
+    public void EnableButtonAnswer()
+    {
+        ToggleAnswerButton(true);
+    }
+    public void DisableButtonAnswer()
+    {
+        ToggleAnswerButton(false);
+    }
+    private void ToggleAnswerButton(bool value)
+    {
+        foreach (GameObject repGO in ReponseGO)
+        {
+            repGO.GetComponent<Button>().interactable = value;
+        }
+    }
+
 }

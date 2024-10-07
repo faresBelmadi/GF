@@ -25,12 +25,14 @@ public class TurnOrderUIManager : MonoBehaviour
     private List<Tuple<int, GameObject>> turnTuple = new List<Tuple<int, GameObject>>();
     private Coroutine evolveTurnOrderRoutine = null;
     private Coroutine generateNextTurnOrderRoutine = null;
+
     public void GenerateNextTurnOrder(List<CombatOrder> idOrder)
     {
         if (generateNextTurnOrderRoutine != null)
         {
             StopCoroutine(generateNextTurnOrderRoutine);
         }
+
         generateNextTurnOrderRoutine = StartCoroutine(GenerateNextTurnOrderCoroutine(idOrder));
     }
 
@@ -41,12 +43,17 @@ public class TurnOrderUIManager : MonoBehaviour
             if (turnItem == null) return;
             Destroy(turnItem.Item2);
         }
+
         turnTuple = new List<Tuple<int, GameObject>>();
 
         for (int i = 0; i < IdOrder.Count; i++)
         {
             EnnemyBehavior ennemyBehavior = battleManager.EnemyScripts.FirstOrDefault(c => c.combatID == IdOrder[i].id);
-            string entityName = GameManager.instance.classSO.NameClass;
+            string entityName;
+            if (GameManager.Instance != null)
+                entityName = GameManager.Instance.classSO.NameClass;
+            else
+                entityName = TutoManager.Instance.TutoClassSo.NameClass;
             GameObject cible = null;
             Sprite icon = battleManager.player.Stat.Icon;
             Material charMaterial = null;
@@ -58,19 +65,21 @@ public class TurnOrderUIManager : MonoBehaviour
                 charMaterial = ennemyBehavior.characterMaterial;
             }
 
-            GameObject turnItem = Instantiate(turnItemPrefab,turnItemHolder);
+            GameObject turnItem = Instantiate(turnItemPrefab, turnItemHolder);
             turnItem.GetComponentInChildren<Image>().sprite = icon;
-            turnItem.GetComponentInChildren<Image>().material= charMaterial;
+            turnItem.GetComponentInChildren<Image>().material = charMaterial;
 
             turnItem.transform.localScale = Vector3.one * turItemBaseScale;
             //turnItem.GetComponentInChildren<TextMeshProUGUI>().text = entityName;
             turnItem.GetComponent<TargetableTurnOrderItem>().Ciblage = cible;
             turnItem.GetComponent<TargetableTurnOrderItem>().entityName = entityName;
-            turnTuple.Add(new Tuple<int,GameObject>(IdOrder[i].id, turnItem));
+            turnTuple.Add(new Tuple<int, GameObject>(IdOrder[i].id, turnItem));
         }
+
         turnTuple[0].Item2.transform.localScale = Vector3.one;
         curentlyPlayingEntity.text = turnTuple[0].Item2.GetComponent<TargetableTurnOrderItem>().entityName;
     }
+
     public void EvovlveTurnOrder()
     {
         curentlyPlayingEntity.text = turnTuple[1].Item2.GetComponent<TargetableTurnOrderItem>().entityName;
@@ -78,24 +87,28 @@ public class TurnOrderUIManager : MonoBehaviour
         {
             StopCoroutine(evolveTurnOrderRoutine);
         }
+
         StartCoroutine(EvovlveTurnOrderCoroutine());
     }
+
     IEnumerator EvovlveTurnOrderCoroutine()
     {
-        if(turnTuple.Count > 0)
+        if (turnTuple.Count > 0)
         {
             float itemLength = turnTuple[0].Item2.GetComponent<RectTransform>().sizeDelta.x;
             Vector3 defaultPos = GetComponent<RectTransform>().pivot;
 
-            turnItemHolder.localPosition = defaultPos;//new Vector3(-barSemiSize, 0f, 0f);
-            if(switchTurnDelay > 0f)
+            turnItemHolder.localPosition = defaultPos; //new Vector3(-barSemiSize, 0f, 0f);
+            if (switchTurnDelay > 0f)
             {
                 float time = 0f;
                 while (time < switchTurnDelay)
                 {
                     time += Time.deltaTime;
-                    turnItemHolder.localPosition = defaultPos + Vector3.left * itemLength * (time/switchTurnDelay);
-                    turnTuple[1].Item2.transform.localScale = Vector3.one * (turItemBaseScale + (1f - turItemBaseScale)* (time / switchTurnDelay));
+                    turnItemHolder.localPosition = defaultPos + Vector3.left * itemLength * (time / switchTurnDelay);
+                    turnTuple[1].Item2.transform.localScale = Vector3.one *
+                                                              (turItemBaseScale + (1f - turItemBaseScale) *
+                                                                  (time / switchTurnDelay));
                     yield return null;
                 }
                 /*
@@ -103,13 +116,15 @@ public class TurnOrderUIManager : MonoBehaviour
                 {
                     turnItemHolder.localPosition += Vector3.left * (itemLength / switchTurnDelay) * Time.deltaTime;
                     yield return null;
-                } 
+                }
                 */
             }
+
             Destroy(turnTuple[0].Item2);
             turnTuple.RemoveAt(0);
-            turnItemHolder.localPosition = defaultPos;//new Vector3(-(defaultPos.x + itemLength), 0f, 0f);
+            turnItemHolder.localPosition = defaultPos; //new Vector3(-(defaultPos.x + itemLength), 0f, 0f);
         }
+
         evolveTurnOrderRoutine = null;
         battleManager.StartNextTurn();
     }
@@ -122,15 +137,17 @@ public class TurnOrderUIManager : MonoBehaviour
         curtain.localPosition = defaultPos;
         if (curtainMovmentDuration > 0f)
         {
-            
+
             float time = 0f;
-            while(time < curtainMovmentDuration)
+            while (time < curtainMovmentDuration)
             {
                 time += Time.deltaTime;
-                curtain.localPosition = Vector3.up * curtainHeight * curtainAnimation.Evaluate(time / curtainMovmentDuration);
+                curtain.localPosition =
+                    Vector3.up * curtainHeight * curtainAnimation.Evaluate(time / curtainMovmentDuration);
                 yield return null;
             }
         }
+
         curtain.localPosition = Vector3.zero;
         Debug.Log($"SustainCurtain");
         GenerateTurnItems(idOrder);
@@ -141,15 +158,17 @@ public class TurnOrderUIManager : MonoBehaviour
         curtain.localPosition = Vector3.zero;
         if (curtainMovmentDuration > 0f)
         {
-            
+
             float time = 0f;
             while (time < curtainMovmentDuration)
             {
                 time += Time.deltaTime;
-                curtain.localPosition = Vector3.up * curtainHeight * curtainAnimation.Evaluate(1f-(time / curtainMovmentDuration));
+                curtain.localPosition = Vector3.up * curtainHeight *
+                                        curtainAnimation.Evaluate(1f - (time / curtainMovmentDuration));
                 yield return null;
             }
         }
+
         curtain.localPosition = defaultPos;
         Debug.Log($"Start Next Turn");
         generateNextTurnOrderRoutine = null;
@@ -160,18 +179,19 @@ public class TurnOrderUIManager : MonoBehaviour
     {
         Debug.Log($"Removing {ennemyId} from turnOrderUI");
         List<int> indexToRemove = new List<int>();
-        for (int i = turnTuple.Count-1; i >= 0 ; i--)
+        for (int i = turnTuple.Count - 1; i >= 0; i--)
         {
             if (turnTuple[i].Item1 == ennemyId)
             {
                 indexToRemove.Add(i);
             }
         }
+
         foreach (int index in indexToRemove)
         {
             Destroy(turnTuple[index].Item2);
             turnTuple.RemoveAt(index);
         }
     }
-    
+
 }

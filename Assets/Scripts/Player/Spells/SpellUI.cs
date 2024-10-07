@@ -29,10 +29,10 @@ public class SpellUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 
     public void ButtonPressed()
     {
-        if(GameManager.instance.playerStat.Essence >= LinkedSpell.CostUnlock)
+        if(GameManager.Instance.playerStat.Essence >= LinkedSpell.CostUnlock)
         {
             LinkedSpell.SpellStatue = SpellStatus.bought;
-            GameManager.instance.SkillTreeUI.UpdateSkillTree(this);
+            GameManager.Instance.SkillTreeUI.UpdateSkillTree(this);
             UpdateVisual();
         }
     }
@@ -68,11 +68,11 @@ public class SpellUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        GameManager.instance.SkillTreeUI.ShowInspectorOver(LinkedSpell);
+        GameManager.Instance.SkillTreeUI.ShowInspectorOver(LinkedSpell);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        GameManager.instance.SkillTreeUI.HideInspector();
+        GameManager.Instance.SkillTreeUI.HideInspector();
     }
 }

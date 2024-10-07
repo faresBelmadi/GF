@@ -1,73 +1,54 @@
 ﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TutoMondeManager : MonoBehaviour
 {
 
-    public Text TutoTextDisplay;
-    public Dictionary<string, string> TutoMondeText;
-    public int indexTextTuto = 0;
+    public GameObject PanelTutoTextDisplay;
+    //public Dictionary<string, string> TutoMondeText = new Dictionary<string, string>();
     public List<GameObject> AllGameObjectsToDisplay;
-    private bool alreadyClicked;
 
     public void Start()
     {
-        alreadyClicked = false;
-        indexTextTuto = TutoManager.Instance.StepTuto;
-        CreateDictionary();
         DisplayInfoTutoMonde();
     }
 
-    private void DisplayInfoTutoMonde()
+    public void OnEnable()
     {
-        TutoTextDisplay.text = TutoMondeText[TutoManager.Instance.StepMapTuto.ToString()];
+    //     DisplayInfoTutoMonde();
+    }
+
+    public void DisplayInfoTutoMonde()
+    {
+        foreach (var gO in AllGameObjectsToDisplay)
+        {
+            gO.GetComponent<Image>().color = Color.black;
+            gO.GetComponentInChildren<TMP_Text>().enabled = false;
+        }
+
+        for (int i = 0; i < TutoManager.Instance.StepMapTuto; i++)
+        {
+            AllGameObjectsToDisplay[i].GetComponent<Image>().color = Color.gray;
+        }
+
+        AllGameObjectsToDisplay[TutoManager.Instance.StepMapTuto].GetComponent<Image>().color = Color.white;
+        AllGameObjectsToDisplay[TutoManager.Instance.StepMapTuto].GetComponentInChildren<TMP_Text>().enabled = true;
+
         if (TutoManager.Instance.StepMapTuto == 1)
         {
-            AllGameObjectsToDisplay[0].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            AllGameObjectsToDisplay[2].gameObject.SetActive(false);
-            AllGameObjectsToDisplay[3].gameObject.SetActive(false);
-            AllGameObjectsToDisplay[4].gameObject.SetActive(false);
-        }
-        else if (TutoManager.Instance.StepMapTuto == 2)
-        {
-            AllGameObjectsToDisplay[0].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            AllGameObjectsToDisplay[1].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            AllGameObjectsToDisplay[3].gameObject.SetActive(false);
-            AllGameObjectsToDisplay[4].gameObject.SetActive(false);
-        }
-        else if (TutoManager.Instance.StepMapTuto == 3)
-        {
-            AllGameObjectsToDisplay[0].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            AllGameObjectsToDisplay[1].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            AllGameObjectsToDisplay[2].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            AllGameObjectsToDisplay[4].gameObject.SetActive(false);
-        }
-        else if (TutoManager.Instance.StepMapTuto == 4)
-        {
-            AllGameObjectsToDisplay[0].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            AllGameObjectsToDisplay[1].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            AllGameObjectsToDisplay[2].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            AllGameObjectsToDisplay[3].gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
+            PanelTutoTextDisplay.SetActive(true);
         }
 
     }
-
-    private void CreateDictionary()
+    
+    public void LoadNextScene()
     {
-        //TutoMondeText = new Dictionary<string, string>();
-        //TutoMondeText.Add("1", TradManager.instance.DialogueDictionary["TutoQ9"][TradManager.instance.IdLanguage]);
-        //TutoMondeText.Add("2", TradManager.instance.DialogueDictionary["TutoQ20"][TradManager.instance.IdLanguage]);
-        //TutoMondeText.Add("3", TradManager.instance.DialogueDictionary["TutoQ25"][TradManager.instance.IdLanguage]);
-        //TutoMondeText.Add("4", TradManager.instance.DialogueDictionary["TutoQ45"][TradManager.instance.IdLanguage]);
-
-        TutoMondeText = new Dictionary<string, string>
-        {
-            { "1", TradManager.instance.GetTranslation("TutoQ9") },
-            { "2", TradManager.instance.GetTranslation("TutoQ20") },
-            { "3", TradManager.instance.GetTranslation("TutoQ25") },
-            { "4", TradManager.instance.GetTranslation("TutoQ45") }
-        };
+        TutoManager.Instance.StepMapTuto++;
+        TutoManager.Instance.NextStep();
+        //SceneManager.LoadScene(sceneName);
     }
 
     //void LateUpdate()

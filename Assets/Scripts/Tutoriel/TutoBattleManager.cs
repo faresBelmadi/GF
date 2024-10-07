@@ -20,15 +20,15 @@ public class TutoBattleManager : MonoBehaviour
 
     void DialogueEnableSetup()
     {
-        DialogueManager.SetupDialogue(TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto]);
+        DialogueManager.SetupDialogue(TutoManager.Instance._encounter[TutoManager.Instance.IndexEncounter]);
     }
 
     void SpawnEnemy()
     {
         int posIndex = 0;
-        for (int i = 0; i < TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight.Count; i++)
+        for (int i = 0; i < TutoManager.Instance._encounter[TutoManager.Instance.IndexEncounter].ToFight.Count; i++)
         {
-            var ennemi = TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight[i];
+            var ennemi = TutoManager.Instance._encounter[TutoManager.Instance.IndexEncounter].ToFight[i];
             var temp = Instantiate(ennemi.Spawnable, spawnPos[posIndex].position, Quaternion.identity, spawnPos[posIndex]);
             used.Add(spawnPos[posIndex]);
             var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
@@ -36,11 +36,11 @@ public class TutoBattleManager : MonoBehaviour
             posIndex += 2;
         }
 
-        if (TutoManager.Instance.StepBatlleTuto == 3)
+        if (TutoManager.Instance.IndexEncounter == 3)
         {
             used[0].gameObject.SetActive(false);
         }
-        //foreach (var item in TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto].ToFight)
+        //foreach (var item in TutoManager.Instance._encounter[TutoManager.Instance.IndexEncounter].ToFight)
         //{
         //    //changer pour que le 0 apparaissent tjrs en pos1 et l'autre en pos 3
         //    var index = UnityEngine.Random.Range(0, spawnPos.Length);
