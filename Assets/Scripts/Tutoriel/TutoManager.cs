@@ -33,6 +33,11 @@ public class TutoManager : MonoBehaviour
     private int _indEncounter = 0;
     private TutoMondeManager _tutoMondeManager;
 
+    [SerializeField]
+    private ClairvoyanceIconData _clairvoyanceIconData;
+
+    public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
+
     private void Awake()
     {
         if (instance == null)

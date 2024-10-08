@@ -300,6 +300,10 @@ public class Analyzer : MonoBehaviour
                     strb.Append((_clairvoyanceIconData.StatConscience == null) ? "CONS" : _clairvoyanceIconData.StatConscience.name);
                 else if (attributes[TradAttribute.value].Equals("TEN", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.StatTension == null) ? "TEN" : _clairvoyanceIconData.StatTension.name);
+                else if (attributes[TradAttribute.value].Equals("VOL", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.StatVolonte == null) ? "VOL" : _clairvoyanceIconData.StatVolonte.name);
+                else if (attributes[TradAttribute.value].Equals("DMG", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.Damage == null) ? "DMG" : _clairvoyanceIconData.Damage.name);
                 else
                     strb.Append(attributes[TradAttribute.value]);
                 strb.Append("\">");

@@ -38,6 +38,10 @@ public class GameManager : MonoBehaviour {
     [Header("Data")]
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
+    [SerializeField]
+    private ClairvoyanceIconData _clairvoyanceIconData;
+
+    public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
 
     private void Awake() {
         if (Instance != null)
