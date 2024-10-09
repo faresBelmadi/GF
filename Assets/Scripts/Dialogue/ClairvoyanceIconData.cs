@@ -76,9 +76,9 @@ public class ClairvoyanceIconData : ScriptableObject
     [SerializeField]
     private Sprite _statConviction;
     [SerializeField]
-    private Sprite _statConvictionUp;
-    [SerializeField]
     private Sprite _statConvictionDown;
+    [SerializeField]
+    private Sprite _statConvictionUp;
 
     [SerializeField]
     private Sprite _intendionDebuff;

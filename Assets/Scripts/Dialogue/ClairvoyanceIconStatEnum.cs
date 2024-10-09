@@ -21,5 +21,7 @@ public enum ClairvoyanceIconStatEnum
     VolonteUp,
     VolonteDown,
     Degats,
-    Soins
+    Soins,
+    TensionUp,
+    TensionDown
 }

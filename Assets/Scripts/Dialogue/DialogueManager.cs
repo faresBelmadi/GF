@@ -118,7 +118,7 @@ public class DialogueManager : MonoBehaviour
     private void GetAnswerList()
     {
         _displayedClairvoyanceStats = new Dictionary<ClairvoyanceIconStatEnum, bool>();
-        bool[] displayed = new bool[Enum.GetValues(typeof(ClairvoyanceIconStatEnum)).Length];
+        
         TextDisplayer textDisplayer = MainText.GetComponent<TextDisplayer>();
         if (textDisplayer != null)
         {
@@ -188,9 +188,9 @@ public class DialogueManager : MonoBehaviour
                 Reponse[i].text = response;
                 ReponseGO[i].SetActive(true);
                 //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
-
                 if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
                 {
+                    bool[] displayed = new bool[Enum.GetValues(typeof(ClairvoyanceIconStatEnum)).Length];
                     ShowConsequenceForAnswer(i, ref displayed);
                 }
             }
@@ -267,10 +267,10 @@ public class DialogueManager : MonoBehaviour
 
         switch (effet.TypeEffet)
         {
+            case TypeEffet.AugmentationBrutFA:
             case TypeEffet.AttaqueFADebuff:
-
-                color = (effet.Cible == Cible.joueur) ? Color.red : Color.green;
-                if (effet.Cible == Cible.joueur)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int) ClairvoyanceIconStatEnum.ForceDameDown])
                     {
@@ -295,10 +295,9 @@ public class DialogueManager : MonoBehaviour
 
                 break;
             case TypeEffet.AugmentationPourcentageFACible:
-            case TypeEffet.AugmentationBrutFA:
             case TypeEffet.AugmentationPourcentageFA:
-                color = (effet.Cible == Cible.joueur) ? Color.green : Color.red;
-                if (effet.Cible != Cible.joueur)
+                if ((effet.Cible == Cible.joueur && effet.Pourcentage < 0)
+                    || (effet.Cible != Cible.joueur && effet.Pourcentage > 0))
                 {
                     if (!displayed[(int) ClairvoyanceIconStatEnum.ForceDameDown])
                     {
@@ -323,8 +322,8 @@ public class DialogueManager : MonoBehaviour
 
                 break;
             case TypeEffet.RadianceMax:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int) ClairvoyanceIconStatEnum.RadianceDown])
                     {
@@ -349,8 +348,8 @@ public class DialogueManager : MonoBehaviour
 
                 break;
             case TypeEffet.Resilience:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int) ClairvoyanceIconStatEnum.ResilienceDown])
                     {
@@ -375,8 +374,8 @@ public class DialogueManager : MonoBehaviour
 
                 break;
             case TypeEffet.Clairvoyance:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int) ClairvoyanceIconStatEnum.ClairvoyaneDown])
                     {
@@ -401,8 +400,8 @@ public class DialogueManager : MonoBehaviour
 
                 break;
             case TypeEffet.Vitesse:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int) ClairvoyanceIconStatEnum.VitesseDown])
                     {
@@ -427,8 +426,8 @@ public class DialogueManager : MonoBehaviour
 
                 break;
             case TypeEffet.Conviction:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int) ClairvoyanceIconStatEnum.ConvictionDown])
                     {
@@ -453,8 +452,8 @@ public class DialogueManager : MonoBehaviour
 
                 break;
             case TypeEffet.Conscience:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int) ClairvoyanceIconStatEnum.ConscienceDown])
                     {
@@ -478,13 +477,36 @@ public class DialogueManager : MonoBehaviour
                 }
 
                 break;
-            case TypeEffet.DegatPVMax:
-            case TypeEffet.DegatsBrut:
             case TypeEffet.DegatsBrutConsequence:
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.Degats])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.Degats] = true;
+                        strb.Append((_clairvoyanceIconData.Damage != null)
+                            ? _clairvoyanceIconData.Damage.name
+                            : "DMG");
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ConvictionUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ConvictionUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatConvictionUp != null)
+                            ? _clairvoyanceIconData.StatConvictionUp.name
+                            : "Con");
+                    }
+                    else return "";
+                }
+
+                break;
             case TypeEffet.Volonte:
             case TypeEffet.VolonteMax:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int) ClairvoyanceIconStatEnum.VolonteDown])
                     {
@@ -508,18 +530,45 @@ public class DialogueManager : MonoBehaviour
                 }
 
                 break;
-            case TypeEffet.DegatsForceAme:
-            case TypeEffet.Colere:
-            case TypeEffet.AugmentFADernierDegatsSubi:
-            case TypeEffet.MultiplDegat:
-            case TypeEffet.MultiplSoin:
-            case TypeEffet.MultiplDef:
             case TypeEffet.TensionStep:
             case TypeEffet.TensionValue:
             case TypeEffet.TensionGainAttaqueValue:
             case TypeEffet.TensionGainDebuffValue:
             case TypeEffet.TensionGainSoinValue:
             case TypeEffet.TensionGainDotValue:
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                   || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.TensionDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.TensionDown] = true;
+                        strb.Append((_clairvoyanceIconData.StatTensionDown != null)
+                            ? _clairvoyanceIconData.StatTensionDown.name
+                            : "FA");
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.TensionUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.TensionUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatTensionUp != null)
+                            ? _clairvoyanceIconData.StatTensionUp.name
+                            : "TENS");
+                    }
+                    else return "TENS";
+                }
+
+                break;
+            case TypeEffet.DegatPVMax:
+            case TypeEffet.DegatsBrut:
+            case TypeEffet.DegatsForceAme:
+            case TypeEffet.Colere:
+            case TypeEffet.AugmentFADernierDegatsSubi:
+            case TypeEffet.MultiplDegat:
+            case TypeEffet.MultiplSoin:
+            case TypeEffet.MultiplDef:
             case TypeEffet.ConscienceMax:
             case TypeEffet.Soin:
             case TypeEffet.SoinFA:

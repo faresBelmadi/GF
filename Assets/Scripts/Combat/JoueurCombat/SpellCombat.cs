@@ -46,11 +46,14 @@ public class SpellCombat : MonoBehaviour
         foreach (var item in Action.Costs)
         {
             if (item.typeCost == TypeCostSpell.volonte)
-                TexteDescription.text += item.Value + "<color=yellow><font-weight=900> V </font-weight></color>";
+                TexteDescription.text += item.Value + "<sprite name=\"" +
+                    ((GameManager.Instance!=null)?GameManager.Instance.StatIcons.StatVolonte.name : TutoManager.Instance.StatIcons.StatVolonte.name) + "\">";
             if (item.typeCost == TypeCostSpell.radiance)
-                TexteDescription.text += item.Value + "<color=red><font-weight=900> R </font-weight></color>";
+                TexteDescription.text += item.Value + "<sprite name=\"" +
+                    ((GameManager.Instance != null) ? GameManager.Instance.StatIcons.StatRadiance.name : TutoManager.Instance.StatIcons.StatRadiance.name) + "\">";
             if (item.typeCost == TypeCostSpell.conscience)
-                TexteDescription.text += item.Value + "<color=green><font-weight=900> C </font-weight></color>";
+                TexteDescription.text += item.Value + "<sprite name=\"" +
+                    ((GameManager.Instance != null) ? GameManager.Instance.StatIcons.StatConscience.name : TutoManager.Instance.StatIcons.StatConscience.name) + "\">";
         }
 
         TexteDescription.text += "\n";
@@ -142,11 +145,14 @@ public class SpellCombat : MonoBehaviour
         foreach (var item in Action.Costs)
         {
             if (item.typeCost == TypeCostSpell.volonte)
-                TexteDescription.text += item.Value + "<color=yellow><font-weight=900> V </font-weight></color>";
+                TexteDescription.text += item.Value + "<sprite name=\"" +
+                    ((GameManager.Instance != null) ? GameManager.Instance.StatIcons.StatVolonte.name : TutoManager.Instance.StatIcons.StatVolonte.name) + "\">";
             if (item.typeCost == TypeCostSpell.radiance)
-                TexteDescription.text += item.Value + "<color=red><font-weight=900> R </font-weight></color>";
+                TexteDescription.text += item.Value + "<sprite name=\"" +
+                    ((GameManager.Instance != null) ? GameManager.Instance.StatIcons.StatRadiance.name : TutoManager.Instance.StatIcons.StatRadiance.name) + "\">";
             if (item.typeCost == TypeCostSpell.conscience)
-                TexteDescription.text += item.Value + "<color=green><font-weight=900> C </font-weight></color>";
+                TexteDescription.text += item.Value + "<sprite name=\"" +
+                    ((GameManager.Instance != null) ? GameManager.Instance.StatIcons.StatConscience.name : TutoManager.Instance.StatIcons.StatConscience.name) + "\">";
         }
 
         TexteDescription.text += "\n";
