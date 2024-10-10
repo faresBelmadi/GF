@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class DialogueManager : MonoBehaviour
@@ -16,7 +17,23 @@ public class DialogueManager : MonoBehaviour
     private float _fontSize = 34f;
 
     public GameObject UIJoueur;
-    [SerializeField] private Color _speakerColor;
+    [SerializeField] 
+    private Color _speakerColor;
+    [Space]
+    [Header("Dialogue frame options")]
+    [SerializeField]
+    private GameObject _dialogFrameGO;
+    [SerializeField]
+    private GameObject _dialogBackgroundGO;
+    [SerializeField]
+    private Sprite _twoAnswerDialogFrame;
+    [SerializeField]
+    private Sprite _twoAnswerDialogBG;
+    [SerializeField]
+    private Sprite _threeAnswerDialogFrame;
+    [SerializeField]
+    private Sprite _threeAnswerDialogBG;
+    [Header("Dialog references")]
     public TextMeshProUGUI MainText;
     public GameObject MainTextGO;
     public List<TextMeshProUGUI> Reponse;
@@ -104,7 +121,19 @@ public class DialogueManager : MonoBehaviour
         DialogueIndex = NextDialogueIndex;
         MainText.text = TextePrincipal();
         MainTextGO.SetActive(true);
-        TextDisplayer textDisplayer = MainText.GetComponent<TextDisplayer>();
+        TextDisplayer textDisplayer = MainText.GetComponent<TextDisplayer>();  
+
+
+        if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count == 2)
+        {
+            _dialogBackgroundGO.GetComponent<Image>().sprite = _twoAnswerDialogBG;
+            _dialogFrameGO.GetComponent<Image>().sprite = _twoAnswerDialogFrame;
+        }
+        else if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count == 3)
+        {
+            _dialogBackgroundGO.GetComponent<Image>().sprite = _threeAnswerDialogBG;
+            _dialogFrameGO.GetComponent<Image>().sprite = _threeAnswerDialogFrame;
+        }
         if (textDisplayer != null)
         {
             MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += GetAnswerList;
@@ -127,6 +156,9 @@ public class DialogueManager : MonoBehaviour
 
         var currentQuestionType = _CurrentDialogue.Questions[DialogueIndex].Question.type;
         var currentPossibleResponseList = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible;
+
+       
+
         if (currentQuestionType == TypeQuestion.startCombat ||
             currentQuestionType == TypeQuestion.EndTutoDialogue)
         {
