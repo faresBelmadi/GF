@@ -30,11 +30,17 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     public void InitBuffDebuff (BuffDebuff buffDebuff)
     {
         _buffDebuff = buffDebuff;
+
+        buffName = TradManager.instance.GetTranslation(buffDebuff.idTradName, buffDebuff.Nom);
+        buffDescriptionLabel.text = TradManager.instance.GetTranslation(buffDebuff.idTradDescription, buffDebuff.Description);
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
         //Debug.Log("enter");
         popUpPanel.SetActive(true);
+
+        //Erreur Critique, boucle infinie, a corriger
+        
         if (!IsFullyVisibleFrom(popUpPanel.GetComponent<RectTransform>()))
         {
             while (!IsFullyVisibleFrom(popUpPanel.GetComponent<RectTransform>()))

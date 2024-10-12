@@ -28,7 +28,12 @@ public class TutoDialogueManager : DialogueManager
     }
     public void GetRéponse(int i)
     {
-        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.TutoDialogueAndAction)
+        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
+        {
+            TutoManager.Instance.EndDialogueTuto();
+            return;
+        }
+        else if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.TutoDialogueAndAction)
         {
             Debug.Log("DialogueIndex = " + DialogueIndex + " / IndexEncounter : " + TutoManager.Instance.IndexEncounter);
             if (DialogueIndex == 0 && TutoManager.Instance.IndexEncounter == 0)
@@ -96,7 +101,7 @@ public class TutoDialogueManager : DialogueManager
     }
     private void ToggleAnswerButton(bool value)
     {
-        foreach (GameObject repGO in ReponseGO)
+        foreach (GameObject repGO in _dialogPanelComponent.Reponse)
         {
             repGO.GetComponent<Button>().interactable = value;
         }

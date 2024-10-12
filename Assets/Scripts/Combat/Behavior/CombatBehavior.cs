@@ -77,7 +77,7 @@ public class CombatBehavior : MonoBehaviour
         float buffHeight = ListBuffDebuffGO[0].GetComponent<RectTransform>().rect.height;
         int buffCnt = BuffContainer.childCount - 1;
         int deBuffCnt = DebuffContainer.childCount - 1;
-        Debug.Log($"Limit:{limit}\nBuffHeight:{buffHeight}\nBuffCnt: {buffCnt}");
+       // Debug.Log($"Limit:{limit}\nBuffHeight:{buffHeight}\nBuffCnt: {buffCnt}");
         if ((buffCnt * buffHeight) > limit)
         {
             BuffContainer.GetComponent<VerticalLayoutGroup>().spacing = -limit*(1-limit/(buffCnt*buffHeight))/buffCnt;
