@@ -154,9 +154,9 @@ public class JoueurBehavior : CombatBehavior
         {
             hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
             hPBarManager.ToggleBloomPulses(false);
-            Debug.Log($"Delta: {Stat.Radiance-currentHp}");
+            //Debug.Log($"Delta: {Stat.Radiance-currentHp}");
         }
-            Debug.Log($"Radiance Updated: from {currentHp} to {Stat.Radiance}");
+        //Debug.Log($"Radiance Updated: from {currentHp} to {Stat.Radiance}");
         currentHp = Stat.Radiance;
 
         if (Stat.Tension != currentTens)

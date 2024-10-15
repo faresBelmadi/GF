@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class DialogueManager : MonoBehaviour
@@ -16,16 +17,41 @@ public class DialogueManager : MonoBehaviour
     private float _fontSize = 34f;
 
     public GameObject UIJoueur;
-    [SerializeField] private Color _speakerColor;
-    public TextMeshProUGUI MainText;
-    public GameObject MainTextGO;
-    public List<TextMeshProUGUI> Reponse;
-    public List<GameObject> ReponseGO;
-    public GameObject EndDialogue;
-    public TextMeshProUGUI EndText;
+    [SerializeField] 
+    private Color _speakerColor;
+    [Space]
+    [SerializeField]
+    protected DialogPanelComponent _dialogPanelComponent;
+    //[Header("Dialogue frame options")]
+    //[SerializeField]
+    //private GameObject _dialogFrameGO;
+    //[SerializeField]
+    //private GameObject _dialogBackgroundGO;
+    //[SerializeField]
+    //private Sprite _twoAnswerDialogFrame;
+    //[SerializeField]
+    //private Sprite _twoAnswerDialogBG;
+    //[SerializeField]
+    //private Sprite _threeAnswerDialogFrame;
+    //[SerializeField]
+    //private Sprite _threeAnswerDialogBG;
+    [Header("Dialog references")]
+    //public TextMeshProUGUI MainText;
+    //public GameObject MainTextGO;
+    //public List<TextMeshProUGUI> Reponse;
+    //public List<GameObject> ReponseGO;
+    //public GameObject EndDialogue;
+    //public TextMeshProUGUI EndText;
     public BattleManager ManagerBattle;
-
+    [Header("BuffVisualization")]
+    [SerializeField]
+    private GameObject _buffBrefab;
+    [SerializeField]
+    private GameObject _buffContainer;
+    [Space]
     public AleaManager ManagerAlea;
+
+    private List<GameObject> _listBuffEffectFromDialog = new List<GameObject> ();
 
     //public Button skipButton; 
     [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
@@ -50,18 +76,18 @@ public class DialogueManager : MonoBehaviour
 
     private void OnEnable()
     {
-        if (Reponse.Count >= 1 && Reponse[0] != null)
-            Reponse[0].GetComponent<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
-        if (EndText != null)
-            EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
+        if (_dialogPanelComponent.Reponse.Count >= 1 && _dialogPanelComponent.Reponse[0] != null)
+            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
+        if (_dialogPanelComponent.EndText != null)
+            _dialogPanelComponent.EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
     }
 
     private void OnDisable()
     {
-        if (Reponse.Count >= 1 && Reponse[0] != null)
-            Reponse[0].GetComponent<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
-        if (EndText != null)
-            EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
+        if (_dialogPanelComponent.Reponse.Count >= 1 && _dialogPanelComponent.Reponse[0] != null)
+            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
+        if (_dialogPanelComponent.EndText != null)
+            _dialogPanelComponent.EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
     }
 
     private void Start()
@@ -102,12 +128,16 @@ public class DialogueManager : MonoBehaviour
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.DialogueSFX);
         DialogueIndex = NextDialogueIndex;
-        MainText.text = TextePrincipal();
-        MainTextGO.SetActive(true);
-        TextDisplayer textDisplayer = MainText.GetComponent<TextDisplayer>();
+        _dialogPanelComponent.MainText.text = TextePrincipal();
+        _dialogPanelComponent.MainTextGO.SetActive(true);
+        TextDisplayer textDisplayer = _dialogPanelComponent.MainText.GetComponent<TextDisplayer>();
+
+        // On affiche le panel de dialogue avec le nombre requis de réponse
+        _dialogPanelComponent.SwitchNumberOfAnswer(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count);
+
         if (textDisplayer != null)
         {
-            MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += GetAnswerList;
+            _dialogPanelComponent.MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += GetAnswerList;
         }
         else
         {
@@ -119,14 +149,17 @@ public class DialogueManager : MonoBehaviour
     {
         _displayedClairvoyanceStats = new Dictionary<ClairvoyanceIconStatEnum, bool>();
         
-        TextDisplayer textDisplayer = MainText.GetComponent<TextDisplayer>();
+        TextDisplayer textDisplayer = _dialogPanelComponent.MainText.GetComponent<TextDisplayer>();
         if (textDisplayer != null)
         {
-            MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= GetAnswerList;
+            _dialogPanelComponent.MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= GetAnswerList;
         }
 
         var currentQuestionType = _CurrentDialogue.Questions[DialogueIndex].Question.type;
         var currentPossibleResponseList = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible;
+
+       
+
         if (currentQuestionType == TypeQuestion.startCombat ||
             currentQuestionType == TypeQuestion.EndTutoDialogue)
         {
@@ -144,28 +177,28 @@ public class DialogueManager : MonoBehaviour
                 DialogueTrad = "ID_DIALOGUE_NOT_IMPLEMENTED";
             }
 
-            if (EndText != null)
+            if (_dialogPanelComponent.EndText != null)
             {
                 //if(EndText.text == null || EndText.text == "")
                 if (currentPossibleResponseList != null &&
                     currentPossibleResponseList.Count > 0 &&
                     !string.IsNullOrEmpty(DialogueTrad))
-                    EndText.text = DialogueTrad;
+                    _dialogPanelComponent.EndText.text = DialogueTrad;
                 else
                 {
-                    EndText.text = "Continuer";
+                    _dialogPanelComponent.EndText.text = "Continuer";
                 }
             }
             else
             {
-                var Text = EndDialogue.GetComponentInChildren<TextMeshProUGUI>();
+                var Text = _dialogPanelComponent.EndDialog.GetComponentInChildren<TextMeshProUGUI>();
                 if (Text != null)
                 {
                     Text.text = DialogueTrad;
                 }
             }
 
-            EndDialogue.SetActive(true);
+            _dialogPanelComponent.EndDialog.SetActive(true);
         }
         else
         {
@@ -185,8 +218,8 @@ public class DialogueManager : MonoBehaviour
                     response = "ID_DIALOGUE_NOT_IMPLEMENTED";
                 }
 
-                Reponse[i].text = response;
-                ReponseGO[i].SetActive(true);
+                _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>().text = response;
+                _dialogPanelComponent.Reponse[i].SetActive(true);
                 //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
                 if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
                 {
@@ -232,15 +265,15 @@ public class DialogueManager : MonoBehaviour
 
     void resetRéponse()
     {
-        foreach (var item in ReponseGO)
+        foreach (var item in _dialogPanelComponent.Reponse)
         {
             item.SetActive(false);
         }
 
-        EndDialogue.SetActive(false);
+        _dialogPanelComponent.EndDialog.SetActive(false);
 
-        MainTextGO.SetActive(false);
-        foreach (var item in Reponse)
+        _dialogPanelComponent.MainTextGO.SetActive(false);
+        foreach (var item in _dialogPanelComponent.ReponseText)
         {
             item.text = "";
         }
@@ -248,14 +281,21 @@ public class DialogueManager : MonoBehaviour
 
     public void GetRéponse(int i)
     {
-        if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences.Count != 0)
+        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat)
         {
-            ApplyConsequence(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences);
+            StartCombat();
         }
+        else
+        {
+            if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences.Count != 0)
+            {
+                ApplyConsequence(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences);
+            }
 
-        NextDialogueIndex = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].IDNextQuestion;
-        resetRéponse();
-        GoNext();
+            NextDialogueIndex = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].IDNextQuestion;
+            resetRéponse();
+            GoNext();
+        }
     }
 
     private string BuildSpriteIcon(Effet effet, ref bool[] displayed)
@@ -263,7 +303,7 @@ public class DialogueManager : MonoBehaviour
         StringBuilder strb = new StringBuilder();
         strb.Append("<sprite name=\"");
         Color color = Color.white;
-        Debug.Log($"EffectSprite : {effet.TypeEffet}, cible : {effet.Cible}");
+        //Debug.Log($"EffectSprite : {effet.TypeEffet}, cible : {effet.Cible}");
 
         switch (effet.TypeEffet)
         {
@@ -648,13 +688,13 @@ public class DialogueManager : MonoBehaviour
             {
                 foreach (Effet effet in buffDebuff.Effet)
                 {
-                    Reponse[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
+                    _dialogPanelComponent.ReponseText[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
                 }
             }
 
             foreach (var effet in consequence.Effects)
             {
-                Reponse[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
+                _dialogPanelComponent.ReponseText[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
             }
         }
     }
@@ -663,31 +703,45 @@ public class DialogueManager : MonoBehaviour
     {
         foreach (var Consequence in consequence)
         {
-            if (ManagerBattle == null)
+            // Tout les buff qu'applique le dialogue
+            foreach (var buffDebuff in Consequence.Buffs)
             {
-                foreach (var BuffDebuff in Consequence.Buffs)
-                {
-                    ManagerAlea.Stat.ListBuffDebuff.Add(BuffDebuff);
-                }
+                //Affichage du buff dans le dialogue
+                Debug.Log("###Conséquence### - Ajout d'un nouveau Buff : " + buffDebuff.Nom);
+                /* Modif en attente
+                GameObject buff = Instantiate(_buffBrefab, _buffContainer.transform);
+                buff.GetComponent<BuffDebuffComponant>().InitBuffDebuff(buffDebuff);
+                _listBuffEffectFromDialog.Add(buff);
+                */
 
-                foreach (var effet in Consequence.Effects)
+                //Application du buff
+                if (ManagerBattle == null)
+                {
+                    ManagerAlea.Stat.ListBuffDebuff.Add(buffDebuff);
+                }
+                else
+                {
+                    ChoosePathOfExecution(Consequence, buffDebuff);
+                }
+            }
+
+            //Tous les effets qu'applique le dialogue
+            foreach (var effet in Consequence.Effects)
+            {
+                //Affichage de l'effet dans le dialogue
+                Debug.Log("###Conséquence### - Ajout d'un nouvel Effet de type : " + effet.TypeEffet.ToString());
+
+                //Application de l'effet
+                if (ManagerBattle == null)
                 {
                     ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat));
                 }
-            }
-            else
-            {
-                foreach (var BuffDebuff in Consequence.Buffs)
-                {
-                    ChoosePathOfExecution(Consequence, BuffDebuff);
-                }
-
-                foreach (var effet in Consequence.Effects)
+                else
                 {
                     ChoosePathOfExecution(Consequence, effet);
-
                 }
             }
+           
         }
     }
 
