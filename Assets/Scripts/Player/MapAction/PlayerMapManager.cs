@@ -77,7 +77,8 @@ public class PlayerMapManager : MonoBehaviour
         switch (_currentRoom.Type)
         {
             case TypeRoom.CombatNormal:
-                StartCoroutine("LoadSceneAsync", "BattleScene Normal");
+                //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
+                StartCoroutine("LoadSceneAsync", "GameScene Normal");
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
             case TypeRoom.CombatElite:
@@ -101,14 +102,14 @@ public class PlayerMapManager : MonoBehaviour
                 StartCoroutine("LoadSceneAsync", "Autel");
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
-                //StartAutel();
+            //StartAutel();
             //case TypeRoom.Heal:
             //    StartCoroutine("LoadSceneAsync", "Autel");
             //    break;
-            //case TypeRoom.Event:
-            //    StartCoroutine("LoadSceneAsync", "AleaScene");
-            //    _currentRoom.Type = TypeRoom.Visited;
-            //    break;
+            case TypeRoom.Event:
+                StartCoroutine("LoadSceneAsync", "GameScene AleaScene");
+                _currentRoom.Type = TypeRoom.Visited;
+                break;
             //case TypeRoom.Visited:
             //    break;
             //case TypeRoom.Spawn:
@@ -133,6 +134,9 @@ public class PlayerMapManager : MonoBehaviour
             case "BattleScene Normal":
                 StartBattle("normal");
                 break;
+            case "GameScene Normal":
+                StartBattle("normal");
+                break;
             case "BattleScene Elite":
                 StartBattle("elite");
                 break;
@@ -142,9 +146,9 @@ public class PlayerMapManager : MonoBehaviour
             case "LevelUp":
 
                 break;
-            //case "AleaScene":
-            //    StartAlea();
-            //    break;
+            case "GameScene AleaScene":
+                StartAlea();
+                break;
             case "Autel":
                 StartAutel();
                 break;
@@ -158,7 +162,7 @@ public class PlayerMapManager : MonoBehaviour
     
     void StartBattle(string enemieType)
     {
-        CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
+        CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
         GameManager.Instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
         //if (enemieType.Equals("normal"))
         //    GameManager.Instance.LoadCombatNormal();
@@ -194,7 +198,7 @@ public class PlayerMapManager : MonoBehaviour
 
     void StartAlea()
     {
-        CurrentRoomCamera = rootScene.First(c => c.name == "AleaCamera");
+        CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
         GameManager.Instance.AleaMan = rootScene.First(c => c.name == "AleaManager").GetComponent<AleaManager>();
         GameManager.Instance.LoadEvent();
         CurrentRoomCamera.SetActive(true);

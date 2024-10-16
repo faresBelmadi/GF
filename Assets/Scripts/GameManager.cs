@@ -43,6 +43,13 @@ public class GameManager : MonoBehaviour {
 
     public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
 
+    #region Events
+    public static event Action OnStartCombat;
+    public static event Action OnStartEvent;
+    public static event Action OnStartDialog;
+
+    #endregion
+
     private void Awake() {
         if (Instance != null)
             Destroy(this.gameObject);
@@ -237,8 +244,16 @@ public class GameManager : MonoBehaviour {
         pmm.CurrentRoom = set;
     }
 
+    public void StartCombat()
+    {
+        Debug.Log("Raise event : OnStartCombat");
+        OnStartCombat?.Invoke();
+        BattleMan.StartCombat();
+    }
     public void LoadCombat()
     {
+        Debug.Log("Raise event : OnStartDialog");
+        OnStartDialog?.Invoke();
         BattleMan.LoadEnemy(Instantiate(AllEncounter[EncounterIndex]));
         EncounterIndex++;
     }
@@ -260,6 +275,7 @@ public class GameManager : MonoBehaviour {
 
     public void LoadEvent()
     {
+        OnStartDialog?.Invoke();
         AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
     }
 

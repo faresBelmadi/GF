@@ -247,7 +247,7 @@ public class DialogueManager : MonoBehaviour
             dialogueTrad = "ID_DIALOGUE_NOT_IMPLEMENTED";
         }
 
-        if (ManagerBattle == null && _CurrentEncounterAlea != null)
+        if (/*ManagerBattle == null && _CurrentEncounterAlea != null*/ ManagerAlea.IsAlea)
         {
             return "<allcaps><u><b><color=#" + colorCode + ">" + _CurrentEncounterAlea.NamePnj +
                    ": </color></b></u></allcaps> " + dialogueTrad;
@@ -284,6 +284,11 @@ public class DialogueManager : MonoBehaviour
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat)
         {
             StartCombat();
+        }
+        else if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
+        {
+            Debug.Log("End Dialog Alea");
+            EndDialogueFonction();
         }
         else
         {
@@ -715,7 +720,7 @@ public class DialogueManager : MonoBehaviour
                 */
 
                 //Application du buff
-                if (ManagerBattle == null)
+                if (/*ManagerBattle == null*/ManagerAlea.IsAlea)
                 {
                     ManagerAlea.Stat.ListBuffDebuff.Add(buffDebuff);
                 }
@@ -732,7 +737,7 @@ public class DialogueManager : MonoBehaviour
                 Debug.Log("###Conséquence### - Ajout d'un nouvel Effet de type : " + effet.TypeEffet.ToString());
 
                 //Application de l'effet
-                if (ManagerBattle == null)
+                if (/*ManagerBattle == null*/ ManagerAlea.IsAlea)
                 {
                     ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat));
                 }
@@ -872,7 +877,7 @@ public class DialogueManager : MonoBehaviour
         {
             UIJoueur.SetActive(true);
             UIDialogue.SetActive(false);
-            GameManager.Instance.BattleMan.StartCombat();
+            GameManager.Instance.StartCombat();
         }
     }
 

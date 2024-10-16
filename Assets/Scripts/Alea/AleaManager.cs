@@ -3,25 +3,33 @@
 [System.Serializable]
 public class AleaManager : MonoBehaviour
 {
-    public DialogueManager Dialogue;
+    [SerializeField] private DialogueManager Dialogue;
+    [SerializeField] private Transform spawnPos;
 
-    public EncounterAlea Rencontre;
-    public Transform spawnPos;
-    public GameObject Pnj;
+    private EncounterAlea Rencontre;
+    private GameObject _pnj;
+    private JoueurStat _stat;
+    private bool _isAlea = false;
+    public bool IsAlea { get => _isAlea; }
 
-    public JoueurStat Stat;
+    public JoueurStat Stat => _stat;
+
+    
 
     public void StartAlea(EncounterAlea rencontre)
     {
+        Debug.Log("StartAlea");
+        _isAlea = true;
         Rencontre = rencontre;
-        Stat = GameManager.Instance.playerStat;
-        Pnj = Instantiate(Rencontre.Pnj, spawnPos.position, Quaternion.identity, spawnPos);
+        _stat = GameManager.Instance.playerStat;
+        _pnj = Instantiate(Rencontre.Pnj, spawnPos.position, Quaternion.identity, spawnPos);
         Dialogue.SetupDialogue(Rencontre);
     }
 
     public void EndAlea()
     {
-        GameManager.Instance.playerStat = Stat;
+        _isAlea = false;
+        GameManager.Instance.playerStat = _stat;
         StartCoroutine(GameManager.Instance.pmm.EndAlea());
     }
 }
