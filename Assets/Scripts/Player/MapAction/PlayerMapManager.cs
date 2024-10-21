@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMapManager : MonoBehaviour
 {
+    [SerializeField]
+    private float _rollingMapTime = 1f;
+
     public Room CurrentRoom
     {
         get
@@ -21,10 +25,10 @@ public class PlayerMapManager : MonoBehaviour
     }
     private Room _currentRoom;
 
-    public GameObject MenuCamera;
+    //public GameObject MenuCamera;
     public GameObject CurrentRoomCamera;
-    GameObject[] rootScene;
-    Scene s;
+    //GameObject[] rootScene;
+    private Scene _scene;
 
     private void VisualUpdateNew()
     {
@@ -119,15 +123,17 @@ public class PlayerMapManager : MonoBehaviour
             default:
                 break;
         }
+        
     }
 
     IEnumerator LoadSceneAsync(string name)
     {
         var toLoad = name.Split(' ');
-        yield return SceneManager.LoadSceneAsync(toLoad[0], LoadSceneMode.Additive);
-        s = SceneManager.GetSceneByName(toLoad[0]);
+        //yield return SceneManager.LoadSceneAsync(toLoad[0], LoadSceneMode.Additive);
+        yield return null;
+        //s = SceneManager.GetSceneByName(toLoad[0]);
 
-        rootScene = s.GetRootGameObjects();
+       // rootScene = _scene.GetRootGameObjects();
 
         switch (name)
         {
@@ -162,8 +168,9 @@ public class PlayerMapManager : MonoBehaviour
     
     void StartBattle(string enemieType)
     {
-        CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
-        GameManager.Instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
+        //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
+        //GameManager.Instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
+
         //if (enemieType.Equals("normal"))
         //    GameManager.Instance.LoadCombatNormal();
         //else if (enemieType.Equals("elite"))
@@ -175,16 +182,18 @@ public class PlayerMapManager : MonoBehaviour
         //    GameManager.Instance.LoadCombatBoss();
         //}
         //AudioManager.Instance.PlayMusic(MusicType.CombatMusic);
-        GameManager.Instance.LoadCombat();
-        CurrentRoomCamera.SetActive(true);
-        MenuCamera.SetActive(false);
+
+        ToggleMap(false); //We hide the map
+        StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombat));
+        //CurrentRoomCamera.SetActive(true);
+        //MenuCamera.SetActive(false);
     }
 
     public IEnumerator EndBattle(bool IsLoot)
     {
-        CurrentRoomCamera.SetActive(false);
-        GameManager.Instance.BattleMan = null;
-        MenuCamera.SetActive(true);
+        //CurrentRoomCamera.SetActive(false);
+        //GameManager.Instance.BattleMan = null;
+        //MenuCamera.SetActive(true);
         if (IsLoot)
         {
             //Afficher le menutStat
@@ -192,25 +201,30 @@ public class PlayerMapManager : MonoBehaviour
             ShowMenuStat();
         }
         AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
-        yield return SceneManager.UnloadSceneAsync(s);
+        GameManager.Instance.UnloadCombat();
+        //yield return SceneManager.UnloadSceneAsync(_scene);
+        yield return null;
+
 
     }
 
     void StartAlea()
     {
-        CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
-        GameManager.Instance.AleaMan = rootScene.First(c => c.name == "AleaManager").GetComponent<AleaManager>();
+        //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
+        //GameManager.Instance.AleaMan = rootScene.First(c => c.name == "AleaManager").GetComponent<AleaManager>();
         GameManager.Instance.LoadEvent();
-        CurrentRoomCamera.SetActive(true);
-        MenuCamera.SetActive(false);
+        //CurrentRoomCamera.SetActive(true);
+        //MenuCamera.SetActive(false);
     }
 
     public IEnumerator EndAlea()
     {
-        CurrentRoomCamera.SetActive(false);
+        //CurrentRoomCamera.SetActive(false);
         GameManager.Instance.AleaMan = null;
-        MenuCamera.SetActive(true);
-        yield return SceneManager.UnloadSceneAsync(s);
+        //MenuCamera.SetActive(true);
+        GameManager.Instance.UnloadEvent();
+        yield return null;
+        //yield return SceneManager.UnloadSceneAsync(_scene);
     }
 
     void StartLevelUp()
@@ -222,27 +236,27 @@ public class PlayerMapManager : MonoBehaviour
 
     void StartAutel()
     {
-        CurrentRoomCamera = rootScene.First(c => c.name == "AutelCamera");
-        //GameManager.Instance.OldAutelMan = rootScene.First(c => c.name == "OldAutelManager").GetComponent<OldAutelManager>();
-        //GameManager.Instance.LoadAutel();
-        CurrentRoomCamera.SetActive(true);
-        MenuCamera.SetActive(false);
+        //CurrentRoomCamera = rootScene.First(c => c.name == "AutelCamera");
+        ////GameManager.Instance.OldAutelMan = rootScene.First(c => c.name == "OldAutelManager").GetComponent<OldAutelManager>();
+        ////GameManager.Instance.LoadAutel();
+        //CurrentRoomCamera.SetActive(true);
+        //MenuCamera.SetActive(false);
 
         AudioManager.instance.PlayMusic(MusicType.LevelUpMusic);
     }
 
     public IEnumerator EndAutel(bool Loot)
     {
-        CurrentRoomCamera.SetActive(false);
+        //CurrentRoomCamera.SetActive(false);
         //GameManager.Instance.OldAutelMan = null;
-        MenuCamera.SetActive(true);
+        //MenuCamera.SetActive(true);
         if (Loot == true)
         {
             ShowMenuStat();
         }
         
         AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
-        yield return SceneManager.UnloadSceneAsync(s);
+        yield return SceneManager.UnloadSceneAsync(_scene);
     }
 
     public void ShowMenuStat()
@@ -270,5 +284,22 @@ public class PlayerMapManager : MonoBehaviour
 
         UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
         uiMondeManager.EnableMonde();
+    }
+
+    public void ToggleMap(bool isShowing)
+    {
+        if (isShowing)
+        {
+            GameManager.Instance.ShowMap();
+        }
+        else
+        {
+            GameManager.Instance.HideMap();
+        }
+    }
+    public IEnumerator WaitBeforeAction(Action actionToDo)
+    {
+        yield return new WaitForSeconds(_rollingMapTime);
+        actionToDo();
     }
 }

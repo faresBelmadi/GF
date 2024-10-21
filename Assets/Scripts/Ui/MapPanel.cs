@@ -7,11 +7,19 @@ public class MapPanel : MonoBehaviour
     [SerializeField]
     private Animator _animator;
 
-    // Start is called before the first frame update
-    void Start()
+
+
+    private void OnEnable()
     {
-        
+        GameManager.OnHideMap += Hide;
+        GameManager.OnShowMap += Show;
     }
+    private void OnDisable()
+    {
+        GameManager.OnHideMap -= Hide;
+        GameManager.OnShowMap -= Show;
+    }
+
 
     // Update is called once per frame
     void Update()

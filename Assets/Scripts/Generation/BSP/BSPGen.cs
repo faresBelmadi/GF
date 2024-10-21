@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class BSPGen : MonoBehaviour
 {
+    [SerializeField]
+    private List<RectTransform> _pos;
     public List<Container> Generate() 
     {
         return GetContainer();
     }
 
-    List<Container> GetContainer()
+    List<Container> GetContainertemp()
     {
         List<Container> temp = new List<Container>()
         {
@@ -30,5 +32,17 @@ public class BSPGen : MonoBehaviour
             //new Container(60, 20, 10, 10)
         };
         return temp;
+    }
+    public List<Container> GetContainer()
+    {
+        List<Container> temp = new List<Container>();
+        foreach (var item in _pos)
+        {
+            Container cont = new Container(item.position.x, item.position.y, 1,1);
+            temp.Add(cont);
+        }
+        return temp;
+
+
     }
 }

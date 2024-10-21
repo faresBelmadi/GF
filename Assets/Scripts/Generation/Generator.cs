@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.PlayerSettings;
+using UnityEngine.UIElements;
 
 public class Generator : MonoBehaviour
 {
     [Header("BSP")]
     public BSPGen config;
-    public List<Container> ResultBsp;
 
     [Header("Spawned Object")]
     public Dictionary<Vector2,GameObject> Spawned;
     Dictionary<GameObject,List<GameObject>> Corridors;
-    public List<GameObject> Lines;
 
     [Header("Spawnable")]
     public GameObject Spawn;
@@ -26,6 +26,10 @@ public class Generator : MonoBehaviour
     private EdgeCollider2D CrossCheck;
     [SerializeField]
     private RoomManager roomManager;
+    
+    
+    private List<GameObject> Lines;
+    private List<Container> ResultBsp;
 
     void Start()
     {
@@ -55,6 +59,9 @@ public class Generator : MonoBehaviour
 
     void SpawnRoom()
     {
+        //var t2 = Instantiate(Spawn, new Vector3(0,0,0), Quaternion.identity);
+        //t2.name = "roomTest";
+        
         foreach (var item in ResultBsp)
         {
             //int i = 0;
@@ -308,7 +315,8 @@ public class Generator : MonoBehaviour
 
     void ClearUseless()
     {
-        var t = SceneManager.GetSceneByName("Monde").GetRootGameObjects();
+        //var t = SceneManager.GetSceneByName("Monde").GetRootGameObjects();
+        var t = SceneManager.GetSceneByName("GameScene").GetRootGameObjects();
         List<GameObject> todestroy = new List<GameObject>();
         for (int i = 0; i < t.Count(); i++)
         {

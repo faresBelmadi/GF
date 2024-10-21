@@ -8,6 +8,8 @@ public class GamePanelManager : MonoBehaviour
     private GameObject _canvaBattle;
     [SerializeField]
     private GameObject _canvaDialog;
+    [SerializeField]
+    private GameObject _canvaEnnemy;
     private void OnEnable()
     {
         GameManager.OnStartCombat += StartCombat;
@@ -35,11 +37,13 @@ public class GamePanelManager : MonoBehaviour
     {
         _canvaDialog.SetActive(false);
         _canvaBattle.SetActive(true);
+        _canvaEnnemy.SetActive(true);
     }
     public void StartDialog()
     {
         _canvaDialog.SetActive(true);
         _canvaBattle.SetActive(false);
+        _canvaEnnemy.SetActive(true);
     }
 
 }

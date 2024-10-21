@@ -47,6 +47,8 @@ public class GameManager : MonoBehaviour {
     public static event Action OnStartCombat;
     public static event Action OnStartEvent;
     public static event Action OnStartDialog;
+    public static event Action OnHideMap;
+    public static event Action OnShowMap;
 
     #endregion
 
@@ -254,8 +256,13 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("Raise event : OnStartDialog");
         OnStartDialog?.Invoke();
-        BattleMan.LoadEnemy(Instantiate(AllEncounter[EncounterIndex]));
+        Encounter enc = Instantiate(AllEncounter[EncounterIndex]);
+        BattleMan.LoadEnemy(enc);
         EncounterIndex++;
+    }
+    public void UnloadCombat()
+    {
+        Debug.Log("Unload Combat");
     }
 
     public void LoadCombatNormal()
@@ -278,10 +285,18 @@ public class GameManager : MonoBehaviour {
         OnStartDialog?.Invoke();
         AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
     }
+    public void UnloadEvent()
+    {
+        Debug.Log("UnloadEvent;");
+    }
 
     public void LoadAutel()
     {
         OldAutelMan.StartAutel();
+    }
+    public void UnloadAutel()
+    {
+        Debug.Log("Unload Autel");
     }
         
     public void StartStatJoueur()
@@ -322,6 +337,14 @@ public class GameManager : MonoBehaviour {
 
         SceneManager.LoadScene("MainMenu");
         Destroy(GameManager.Instance.gameObject);
+    }
+    public void HideMap()
+    {
+        OnHideMap?.Invoke();
+    }
+    public void ShowMap()
+    {
+        OnShowMap?.Invoke();
     }
 
     public IEnumerator Reload()
