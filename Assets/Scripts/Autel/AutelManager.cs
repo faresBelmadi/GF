@@ -72,14 +72,20 @@ public class AutelManager : MonoBehaviour
     public GameObject SouvenirPrefab;
     public List<Souvenir> listAllSouvenir;
 
-    private void Start()
+    public bool isOn = false;
+    private void OnEnable()
     {
-        stats = GameManager.Instance.playerStat;
-
-        SetUpStatsDescription();
+        GameManager.OnStartAutel += InitAutel;
     }
+    private void OnDisable()
+    {
+        GameManager.OnStartAutel -= InitAutel;
+    }
+
     void FixedUpdate()
     {
+        if (!isOn)
+            return;
         EssenceText.text = $"{TradManager.instance.GetTranslation(_idTradEssence, "Essence") } : {stats.Essence}";
         SetUpStatsDescription();
         if (ShopUiPanel.activeInHierarchy == true)
@@ -122,6 +128,13 @@ public class AutelManager : MonoBehaviour
         }
     }
 
+    public void InitAutel()
+    {
+        stats = GameManager.Instance.playerStat;
+
+        SetUpStatsDescription();
+        isOn = true;
+    }
     public void ShowMenuUiPanel()
     {
         DescriptionSpellText.text = string.Empty;

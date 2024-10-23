@@ -10,15 +10,22 @@ public class GamePanelManager : MonoBehaviour
     private GameObject _canvaDialog;
     [SerializeField]
     private GameObject _canvaEnnemy;
+    [SerializeField]
+    private GameObject _canvaAutel;
+    //TEMP
+    [SerializeField]
+    private GameObject _canvaMap;
     private void OnEnable()
     {
         GameManager.OnStartCombat += StartCombat;
         GameManager.OnStartDialog += StartDialog;
+        GameManager.OnStartAutel += StartAutel;
     }
     private void OnDisable()
     {
         GameManager.OnStartCombat -= StartCombat;
         GameManager.OnStartDialog -= StartDialog;
+        GameManager.OnStartAutel -= StartAutel;
     }
 
     // Start is called before the first frame update
@@ -35,15 +42,26 @@ public class GamePanelManager : MonoBehaviour
 
     public void StartCombat()
     {
+        _canvaAutel.SetActive(false);
         _canvaDialog.SetActive(false);
         _canvaBattle.SetActive(true);
         _canvaEnnemy.SetActive(true);
     }
     public void StartDialog()
     {
+        _canvaAutel.SetActive(false);
         _canvaDialog.SetActive(true);
         _canvaBattle.SetActive(false);
         _canvaEnnemy.SetActive(true);
     }
+    public void StartAutel()
+    {
+        //TEMP
+        _canvaMap.SetActive(false);
 
+        _canvaAutel.SetActive(true);
+        _canvaDialog.SetActive(false);
+        _canvaBattle.SetActive(false);
+        _canvaEnnemy.SetActive(false);
+    }
 }

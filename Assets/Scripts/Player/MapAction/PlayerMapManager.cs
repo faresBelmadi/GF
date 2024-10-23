@@ -130,7 +130,6 @@ public class PlayerMapManager : MonoBehaviour
     {
         var toLoad = name.Split(' ');
         //yield return SceneManager.LoadSceneAsync(toLoad[0], LoadSceneMode.Additive);
-        yield return null;
         //s = SceneManager.GetSceneByName(toLoad[0]);
 
        // rootScene = _scene.GetRootGameObjects();
@@ -164,6 +163,7 @@ public class PlayerMapManager : MonoBehaviour
             default:
                 break;
         }
+        yield return null;
     }
     
     void StartBattle(string enemieType)
@@ -242,6 +242,7 @@ public class PlayerMapManager : MonoBehaviour
         //CurrentRoomCamera.SetActive(true);
         //MenuCamera.SetActive(false);
 
+        GameManager.Instance.LoadAutel();
         AudioManager.instance.PlayMusic(MusicType.LevelUpMusic);
     }
 

@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour {
     public static event Action OnStartDialog;
     public static event Action OnHideMap;
     public static event Action OnShowMap;
+    public static event Action OnStartAutel;
 
     #endregion
 
@@ -292,7 +293,9 @@ public class GameManager : MonoBehaviour {
 
     public void LoadAutel()
     {
-        OldAutelMan.StartAutel();
+
+        Debug.Log("Load Autel");
+        OnStartAutel?.Invoke();
     }
     public void UnloadAutel()
     {
