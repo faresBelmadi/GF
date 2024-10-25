@@ -198,6 +198,7 @@ public class PlayerMapManager : MonoBehaviour
         {
             //Afficher le menutStat
             // + PopUp new Souvenir
+            GameManager.Instance.Loot();
             ShowMenuStat();
         }
         AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
@@ -243,6 +244,9 @@ public class PlayerMapManager : MonoBehaviour
         //MenuCamera.SetActive(false);
 
         GameManager.Instance.LoadAutel();
+        ToggleMap(false); //We hide the map
+
+
         AudioManager.instance.PlayMusic(MusicType.LevelUpMusic);
     }
 
@@ -253,11 +257,14 @@ public class PlayerMapManager : MonoBehaviour
         //MenuCamera.SetActive(true);
         if (Loot == true)
         {
+           
             ShowMenuStat();
         }
         
         AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
-        yield return SceneManager.UnloadSceneAsync(_scene);
+        GameManager.Instance.ShowMap();
+        yield return null;
+        //yield return SceneManager.UnloadSceneAsync(_scene);
     }
 
     public void ShowMenuStat()
@@ -285,6 +292,7 @@ public class PlayerMapManager : MonoBehaviour
 
         UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
         uiMondeManager.EnableMonde();
+        GameManager.Instance.ShowMap();
     }
 
     public void ToggleMap(bool isShowing)

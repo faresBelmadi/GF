@@ -45,6 +45,7 @@ public class GameManager : MonoBehaviour {
 
     #region Events
     public static event Action OnStartCombat;
+    public static event Action OnLootAfterCombat;
     public static event Action OnStartEvent;
     public static event Action OnStartDialog;
     public static event Action OnHideMap;
@@ -261,6 +262,11 @@ public class GameManager : MonoBehaviour {
         BattleMan.LoadEnemy(enc);
         EncounterIndex++;
     }
+    public void Loot()
+    {
+        Debug.Log("Loot", gameObject);
+        OnLootAfterCombat.Invoke();
+    }
     public void UnloadCombat()
     {
         Debug.Log("Unload Combat");
@@ -347,6 +353,7 @@ public class GameManager : MonoBehaviour {
     }
     public void ShowMap()
     {
+        Debug.Log("ShowMap");
         OnShowMap?.Invoke();
     }
 

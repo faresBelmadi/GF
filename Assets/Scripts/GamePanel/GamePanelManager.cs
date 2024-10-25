@@ -12,6 +12,8 @@ public class GamePanelManager : MonoBehaviour
     private GameObject _canvaEnnemy;
     [SerializeField]
     private GameObject _canvaAutel;
+    [SerializeField]
+    private GameObject _characterGameObject;
     //TEMP
     [SerializeField]
     private GameObject _canvaMap;
@@ -20,28 +22,33 @@ public class GamePanelManager : MonoBehaviour
         GameManager.OnStartCombat += StartCombat;
         GameManager.OnStartDialog += StartDialog;
         GameManager.OnStartAutel += StartAutel;
+        GameManager.OnLootAfterCombat += StartLoot;
+        GameManager.OnShowMap += ShowMap;
     }
     private void OnDisable()
     {
         GameManager.OnStartCombat -= StartCombat;
         GameManager.OnStartDialog -= StartDialog;
         GameManager.OnStartAutel -= StartAutel;
+        GameManager.OnLootAfterCombat -= StartLoot;
+        GameManager.OnShowMap -= ShowMap;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void StartCombat()
     {
+        _characterGameObject.SetActive(true);
         _canvaAutel.SetActive(false);
         _canvaDialog.SetActive(false);
         _canvaBattle.SetActive(true);
@@ -49,17 +56,38 @@ public class GamePanelManager : MonoBehaviour
     }
     public void StartDialog()
     {
+        _characterGameObject.SetActive(true);
         _canvaAutel.SetActive(false);
         _canvaDialog.SetActive(true);
         _canvaBattle.SetActive(false);
         _canvaEnnemy.SetActive(true);
     }
+    public void StartLoot()
+    {
+        _characterGameObject.SetActive(false);
+        _canvaAutel.SetActive(false);
+        _canvaDialog.SetActive(false);
+        _canvaBattle.SetActive(false);
+        _canvaEnnemy.SetActive(false);
+    }
     public void StartAutel()
     {
         //TEMP
-        _canvaMap.SetActive(false);
+        _characterGameObject.SetActive(false);
+       // _canvaMap.SetActive(false);
 
         _canvaAutel.SetActive(true);
+        _canvaDialog.SetActive(false);
+        _canvaBattle.SetActive(false);
+        _canvaEnnemy.SetActive(false);
+    }
+    public void ShowMap()
+    {
+        //TEMP
+        _characterGameObject.SetActive(true);
+        _canvaMap.SetActive(true);
+
+        _canvaAutel.SetActive(false);
         _canvaDialog.SetActive(false);
         _canvaBattle.SetActive(false);
         _canvaEnnemy.SetActive(false);

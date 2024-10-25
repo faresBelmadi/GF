@@ -471,7 +471,11 @@ public class BattleManager : MonoBehaviour
             buttonEndCombat.SetActive(false);
         }
         else
+        {
+            GameObject.Find("Soul(Clone)").SetActive(false);
+            buttonEndCombat.SetActive(false);
             StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
+        }
     }
 
     #endregion Mise en place combat & fin
