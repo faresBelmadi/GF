@@ -26,7 +26,7 @@ public class TutoDialogueManager : DialogueManager
     {
         NextDialogueIndex = 0;
     }
-    public void GetRéponse(int i)
+    public override void GetRéponse(int i)
     {
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
         {
@@ -80,10 +80,12 @@ public class TutoDialogueManager : DialogueManager
 
             if (DialogueIndex == 8 && TutoManager.Instance.IndexEncounter == 4)
             {
-                if (GameManager.Instance != null)
-                    Destroy(GameManager.Instance.gameObject);
-                SceneManager.LoadSceneAsync(1);
-                Destroy(TutoManager.Instance.gameObject);
+                //if (GameManager.Instance != null)
+                //    Destroy(GameManager.Instance.gameObject);
+                //SceneManager.LoadSceneAsync(1);
+                //Destroy(TutoManager.Instance.gameObject);
+
+                TutoManager.Instance.EndTuto();
             }
         }
         

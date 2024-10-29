@@ -64,7 +64,41 @@ public class JoueurBehavior : CombatBehavior
     {
         _refBattleMan = battleManager;
     }
-
+    private void OnEnable()
+    {
+        int i = 0;
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.activeSelf)
+                i++;
+            else
+                Debug.Log("trouvé !", gameObject);
+        }
+        Debug.Log("Active Children : " + i);
+    }
+    private void OnDisable()
+    {
+        int i = 0;
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.activeSelf)
+                i++;
+        }
+        Debug.Log("Active Children : " + i);
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log("down");
+            GetComponent<Animator>().SetBool("0", true);
+        }
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            Debug.Log("up");
+            GetComponent<Animator>().SetBool("0", false);
+        }
+    }
     public void StartUp()
     {
 

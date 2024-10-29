@@ -34,7 +34,7 @@ public class MenuStatManager : MonoBehaviour
             Destroy(item);
         }
 
-        if (GameManager.Instance != null)
+        if (!GameManager.Instance.IsTuto)
             Stat = GameManager.Instance.playerStat;
         else
             Stat = TutoManager.Instance.JoueurStat;

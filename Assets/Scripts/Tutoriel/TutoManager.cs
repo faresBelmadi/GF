@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TutoManager : MonoBehaviour
@@ -37,6 +38,15 @@ public class TutoManager : MonoBehaviour
     private ClairvoyanceIconData _clairvoyanceIconData;
 
     public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
+
+    public Encounter CurrentEncounter { get => _encounter[IndexEncounter]; }
+    public DialogueManager TutoDialogMngr { get => _dialogueManager; }
+
+    public static event Action OnEndDialog;
+    public static event Action OnStartCombat;
+    public static event Action OnEndCombat;
+
+    public static event Action OnEndTuto;
 
     private void Awake()
     {
@@ -113,7 +123,8 @@ public class TutoManager : MonoBehaviour
         }
         else if (StepTuto == 5)                                 //End
         {
-            SceneManager.LoadScene("Monde");
+            EndTuto();
+           // SceneManager.LoadScene("Monde");
         }
     }
 
@@ -132,25 +143,38 @@ public class TutoManager : MonoBehaviour
     {
         _dialogueManager.InitDialogueStep();
         Debug.Log("encounter : " + Instance.IndexEncounter);
+        GameManager.Instance.LoadCombat();
         BattleManager.player.Stat.Volonter = 5;
-        BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.IndexEncounter]));
-        
+        //BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.IndexEncounter]));
     }
 
     public void Loot()
     {
-        StatPanel.transform.GetChild(0).gameObject.SetActive(true);
-        StatPanel.transform.GetChild(1).gameObject.SetActive(true);
+        StatPanel.SetActive(true);
+        //StatPanel.transform.GetChild(0).gameObject.SetActive(true);
+        //StatPanel.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     public void SkipTutoDuringTuto()
     {
-        SceneManager.LoadSceneAsync(1);
-        Destroy(this.gameObject);
+        //SceneManager.LoadSceneAsync(1);
+        //Destroy(this.gameObject);
+        EndTuto();
+    }
+
+    // Raise the event to trigger UI panel
+    public void StartCombat()
+    {
+        OnStartCombat?.Invoke();
+    }
+    public void EndCombat()
+    {
+        OnEndCombat?.Invoke();
     }
 
     public void EndDialogueTuto()
     {
+        OnEndDialog?.Invoke();
         if (IndexEncounter == 1)
             _dialogueManager.StartCombat();
         else
@@ -158,5 +182,12 @@ public class TutoManager : MonoBehaviour
             IndexEncounter++;
             NextStep();
         }
+    }
+    public void EndTuto()
+    {
+        OnEndTuto?.Invoke();
+        GameManager.Instance.EndTuto();
+
+        Destroy(gameObject);
     }
 }

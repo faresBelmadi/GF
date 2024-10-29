@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour {
     
     public static GameManager Instance;
 
+    [Header("Debug")]
+    [SerializeField]
+    private bool _doTuto = true;
+
     [Header("Managers")]
     public RoomManager rm;
     public PlayerMapManager pmm;
@@ -18,6 +22,10 @@ public class GameManager : MonoBehaviour {
     public AleaManager AleaMan;
     public OldAutelManager OldAutelMan;
     public MenuStatManager StatMan;
+    [SerializeField]
+    private DialogueManager _dialogueManager;
+    [SerializeField]
+    private GamePanelManager _gamePanelManager;
 
     [Header("Classes & Encounter")]
     public List<ClassPlayer> AllClasses;
@@ -43,6 +51,20 @@ public class GameManager : MonoBehaviour {
 
     public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
 
+    public bool IsTuto { get; private set; }
+    public DialogueManager DialManager
+    {
+        get
+        {
+            if (!IsTuto)
+                return _dialogueManager;
+            else
+            {
+                return TutoManager.Instance.TutoDialogMngr;
+            }
+        }
+    }
+
     #region Events
     public static event Action OnStartCombat;
     public static event Action OnLootAfterCombat;
@@ -54,6 +76,8 @@ public class GameManager : MonoBehaviour {
 
     #endregion
 
+
+ 
     private void Awake() {
         if (Instance != null)
             Destroy(this.gameObject);
@@ -66,12 +90,26 @@ public class GameManager : MonoBehaviour {
         UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         //LoadSave();
         ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
+#if UNITY_EDITOR
+        IsTuto = _doTuto;
+#else
+        IsTuto = PlayerPrefs.GetInt("DoTutorial", 0) == 0 ? false : true;
+#endif
         CreateSave();
         GetClassRun();
+
+        Debug.Log("Tuto mode : " + IsTuto);
+        _gamePanelManager.InitPanel(IsTuto);
+        /*
         if (TutoManager.Instance != null)
             Destroy(TutoManager);
+        */
     }
 
+    public void EndTuto()
+    {
+        IsTuto = false;
+    }
     private void LoadSave()
     {
         if (playerStat != null && TutoManager.Instance != null)
@@ -81,9 +119,9 @@ public class GameManager : MonoBehaviour {
         }
 #if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
-        #endif
+#endif
         string dataAsJson;
         if (File.Exists(path))
         {
@@ -176,19 +214,19 @@ public class GameManager : MonoBehaviour {
         };
         string json = JsonUtility.ToJson(data);
         
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
         System.IO.Directory.CreateDirectory(Application.persistentDataPath+"/SavedData");
         System.IO.Directory.CreateDirectory(Application.persistentDataPath+"/SavedData/GameData");
-        #endif
+#endif
 
         System.IO.File.WriteAllText(path,json);
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
-        #endif
+#endif
         LoadSave();
     }
 
@@ -211,17 +249,17 @@ public class GameManager : MonoBehaviour {
             loadedData.CurrentRun.Ended = false;
         }
         string json = JsonUtility.ToJson(loadedData);
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
-        #endif
+#endif
 
         System.IO.File.WriteAllText(path,json);
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
-        #endif
+#endif
     }
 
     private void SavePlayer()
@@ -258,9 +296,15 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("Raise event : OnStartDialog");
         OnStartDialog?.Invoke();
-        Encounter enc = Instantiate(AllEncounter[EncounterIndex]);
-        BattleMan.LoadEnemy(enc);
-        EncounterIndex++;
+        if (IsTuto)
+        {
+            BattleMan.LoadEnemy(Instantiate(TutoManager.Instance.CurrentEncounter));
+        }
+        else
+        {
+            BattleMan.LoadEnemy(Instantiate(AllEncounter[EncounterIndex]));
+            EncounterIndex++;
+        }
     }
     public void Loot()
     {

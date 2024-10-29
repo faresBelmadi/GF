@@ -36,6 +36,8 @@ public class DialogueManager : MonoBehaviour
     //[SerializeField]
     //private Sprite _threeAnswerDialogBG;
     [Header("Dialog references")]
+    [SerializeField]
+    private List<Button> _answerButtons;
     //public TextMeshProUGUI MainText;
     //public GameObject MainTextGO;
     //public List<TextMeshProUGUI> Reponse;
@@ -97,6 +99,16 @@ public class DialogueManager : MonoBehaviour
         {
             dialogArray[i].enableAutoSizing = false;
             dialogArray[i].fontSize = _fontSize;
+        }
+    }
+
+    public virtual void InitDialogOptionButton()
+    {
+        for (int i=0; i<_answerButtons.Count;i++)
+        {
+            _answerButtons[i].onClick.RemoveAllListeners();
+            int answerNum = i;
+            _answerButtons[i].onClick.AddListener(() => GetRéponse(answerNum));
         }
     }
 
@@ -279,7 +291,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void GetRéponse(int i)
+    public virtual void GetRéponse(int i)
     {
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat)
         {
@@ -862,7 +874,7 @@ public class DialogueManager : MonoBehaviour
     public void StartCombat()
     {
         AudioManager.instance.SFX.StopPlaying();
-        if (TutoManager.Instance != null )
+        if (GameManager.Instance.IsTuto/*TutoManager.Instance != null */)
         {
             if (TutoManager.Instance.StepTuto == 3)
             {
@@ -871,6 +883,7 @@ public class DialogueManager : MonoBehaviour
                 child.gameObject.SetActive(true);
                 UIDialogue.SetActive(false);
                 gO.GetComponent<TutoPanel>().ShowExplication();
+                TutoManager.Instance.StartCombat();
             }
         }
         else
