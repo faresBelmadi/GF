@@ -460,7 +460,6 @@ public class BattleManager : MonoBehaviour
         player.Stat.ListBuffDebuff.Clear();
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Stat.Tension = 0;
-        GameManager.Instance.playerStat = player.Stat;
         Debug.Log(IsLoot);
         if (GameManager.Instance.IsTuto/*TutoManager.Instance != null*/)
         {
@@ -479,6 +478,7 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
+            GameManager.Instance.playerStat = player.Stat;
             GameObject.Find("Soul(Clone)").SetActive(false);
             buttonEndCombat.SetActive(false);
             StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
@@ -1026,7 +1026,7 @@ public class BattleManager : MonoBehaviour
 
             if (EnemyScripts.Count <= 0)
             {
-                if (TutoManager.Instance != null)
+                if (GameManager.Instance.IsTuto/*TutoManager.Instance != null*/)
                 {
                     //TutoManager.Instance.NextStep();
                     var gO = GameObject.Find("TutoPanel");

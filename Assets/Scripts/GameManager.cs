@@ -95,6 +95,7 @@ public class GameManager : MonoBehaviour {
 #else
         IsTuto = PlayerPrefs.GetInt("DoTutorial", 0) == 0 ? false : true;
 #endif
+
         CreateSave();
         GetClassRun();
 
@@ -109,10 +110,13 @@ public class GameManager : MonoBehaviour {
     public void EndTuto()
     {
         IsTuto = false;
+
+        CreateSave();
+        GetClassRun();
     }
     private void LoadSave()
     {
-        if (playerStat != null && TutoManager.Instance != null)
+        if (playerStat != null && IsTuto/*TutoManager.Instance != null*/)
         {
             Debug.Log("Coucouuuuuuu");
             return;
@@ -364,7 +368,7 @@ public class GameManager : MonoBehaviour {
     
     void GetClassRun()
     {
-        if (classSO != null && TutoManager.Instance != null)
+        if (classSO != null && IsTuto /*TutoManager.Instance != null*/)
         {
             Debug.Log("Coucouuuuuuu");
             return;

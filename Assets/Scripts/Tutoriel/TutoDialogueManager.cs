@@ -84,7 +84,7 @@ public class TutoDialogueManager : DialogueManager
                 //    Destroy(GameManager.Instance.gameObject);
                 //SceneManager.LoadSceneAsync(1);
                 //Destroy(TutoManager.Instance.gameObject);
-
+                JoueurHolder.SetActive(true);
                 TutoManager.Instance.EndTuto();
             }
         }

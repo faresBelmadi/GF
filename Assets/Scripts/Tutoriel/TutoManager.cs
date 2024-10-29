@@ -1,6 +1,5 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TutoManager : MonoBehaviour
 {
@@ -18,6 +17,8 @@ public class TutoManager : MonoBehaviour
     public BattleManager BattleManager;
     public JoueurStat JoueurStat;
     public ClassPlayer TutoClassSo;
+    [SerializeField]
+    private GameObject _playerHolder;
 
     public Encounter[] _encounter;
 
@@ -71,6 +72,10 @@ public class TutoManager : MonoBehaviour
         //HideAllPanels();
         //ShowPanel(PanelMap);
         _tutoMondeManager = PanelMap.GetComponentInChildren<TutoMondeManager>();
+        if (!GameManager.Instance.IsTuto)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public static TutoManager Instance
@@ -123,6 +128,7 @@ public class TutoManager : MonoBehaviour
         }
         else if (StepTuto == 5)                                 //End
         {
+            _playerHolder.SetActive(true);
             EndTuto();
            // SceneManager.LoadScene("Monde");
         }
@@ -185,6 +191,7 @@ public class TutoManager : MonoBehaviour
     }
     public void EndTuto()
     {
+        ClearPos();
         OnEndTuto?.Invoke();
         GameManager.Instance.EndTuto();
 
