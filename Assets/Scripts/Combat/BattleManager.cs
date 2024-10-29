@@ -980,6 +980,12 @@ public class BattleManager : MonoBehaviour
         {
             buttonEndCombat.SetActive(false);
             TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>().EndCombat();
+            for (int i = 0; i < ListEssence.Count; i++)
+            {
+                Destroy(ListEssence[i]);
+            }
+            ListEssence.Clear();
+
         }
         else
         {
