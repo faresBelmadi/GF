@@ -21,6 +21,8 @@ public class BattleManager : MonoBehaviour
     public Encounter _encounter;
     public GameObject prefabEssence;
     public GameObject buttonEndCombat;
+    [SerializeField]
+    private string _idLabelForEssenceButton;
     const string Target = "Targeting";
     public PassifRules passifRules;
 
@@ -970,7 +972,7 @@ public class BattleManager : MonoBehaviour
         temp.GetComponent<Essence>().isEnd = true;
         ListEssence.Add(temp);
         buttonEndCombat.SetActive(true);
-        buttonEndCombat.GetComponentInChildren<TMP_Text>().text += $" ({amount})";
+        buttonEndCombat.GetComponentInChildren<TMP_Text>().text = $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount})";
         endBattle = true;
     }
 
