@@ -11,7 +11,6 @@ public class TutoDialogueManager : DialogueManager
     public Image Hpfill;
     public GameObject Conscience;
     public Image ConscienceFill;
-    public GameObject JoueurHolder;
 
     [SerializeField]
     private ProgressBarManager _hpBarManager;
@@ -26,7 +25,7 @@ public class TutoDialogueManager : DialogueManager
     {
         NextDialogueIndex = 0;
     }
-    public void GetRéponse(int i)
+    public override void GetRéponse(int i)
     {
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
         {
@@ -40,7 +39,7 @@ public class TutoDialogueManager : DialogueManager
             {
                 UiHolder.SetActive(true);
                 //Hpfill.fillAmount = 0.1f;
-                var joueurBehav = JoueurHolder.GetComponentInChildren<JoueurBehavior>();
+                var joueurBehav = TutoManager.Instance.Player;
                 joueurBehav.Stat.Radiance = joueurBehav.Stat.RadianceMax / 10;
                 _hpBarManager.InitPBar(joueurBehav.Stat.Radiance, joueurBehav.Stat.RadianceMax);
                 joueurBehav.UpdateUI();
@@ -50,7 +49,7 @@ public class TutoDialogueManager : DialogueManager
             {
                 //Hpfill.fillAmount = 1f;
 
-                var joueurBehav = JoueurHolder.GetComponentInChildren<JoueurBehavior>();
+                var joueurBehav = TutoManager.Instance.Player;
                 joueurBehav.Stat.Radiance = joueurBehav.Stat.RadianceMax;
                 //_hpBarManager.UpdatePBar(joueurBehav.Stat.Radiance, joueurBehav.Stat.RadianceMax);
                 joueurBehav.UpdateUI();
@@ -75,15 +74,17 @@ public class TutoDialogueManager : DialogueManager
             }
             if (DialogueIndex == 7 && TutoManager.Instance.IndexEncounter == 2)
             {
-                JoueurHolder.SetActive(false);
+                TutoManager.Instance.Player.ToggleVisibility(false);
             }
 
             if (DialogueIndex == 8 && TutoManager.Instance.IndexEncounter == 4)
             {
-                if (GameManager.Instance != null)
-                    Destroy(GameManager.Instance.gameObject);
-                SceneManager.LoadSceneAsync(1);
-                Destroy(TutoManager.Instance.gameObject);
+                //if (GameManager.Instance != null)
+                //    Destroy(GameManager.Instance.gameObject);
+                //SceneManager.LoadSceneAsync(1);
+                //Destroy(TutoManager.Instance.gameObject);
+                TutoManager.Instance.Player.ToggleVisibility(true);
+                TutoManager.Instance.EndTuto();
             }
         }
         

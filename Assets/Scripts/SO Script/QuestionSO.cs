@@ -27,5 +27,6 @@ public enum TypeQuestion
     endCombat,
     Tutodialogue,
     TutoDialogueAndAction,
-    EndTutoDialogue
+    EndTutoDialogue,
+    EndAleaDialogue
 }

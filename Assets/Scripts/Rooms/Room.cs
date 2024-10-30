@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public enum TypeRoom
@@ -52,6 +53,7 @@ public class Room : MonoBehaviour
     private void SetColor()
     {
         this.GetComponent<SpriteRenderer>().sprite = ToSet;
+        //this.GetComponent<Image>().sprite = ToSet;
     }
 
     private void OnMouseEnter() {

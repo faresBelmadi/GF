@@ -36,6 +36,8 @@ public class DialogueManager : MonoBehaviour
     //[SerializeField]
     //private Sprite _threeAnswerDialogBG;
     [Header("Dialog references")]
+    [SerializeField]
+    private List<Button> _answerButtons;
     //public TextMeshProUGUI MainText;
     //public GameObject MainTextGO;
     //public List<TextMeshProUGUI> Reponse;
@@ -97,6 +99,16 @@ public class DialogueManager : MonoBehaviour
         {
             dialogArray[i].enableAutoSizing = false;
             dialogArray[i].fontSize = _fontSize;
+        }
+    }
+
+    public virtual void InitDialogOptionButton()
+    {
+        for (int i=0; i<_answerButtons.Count;i++)
+        {
+            _answerButtons[i].onClick.RemoveAllListeners();
+            int answerNum = i;
+            _answerButtons[i].onClick.AddListener(() => GetRéponse(answerNum));
         }
     }
 
@@ -247,7 +259,7 @@ public class DialogueManager : MonoBehaviour
             dialogueTrad = "ID_DIALOGUE_NOT_IMPLEMENTED";
         }
 
-        if (ManagerBattle == null && _CurrentEncounterAlea != null)
+        if (/*ManagerBattle == null && _CurrentEncounterAlea != null*/ ManagerAlea.IsAlea)
         {
             return "<allcaps><u><b><color=#" + colorCode + ">" + _CurrentEncounterAlea.NamePnj +
                    ": </color></b></u></allcaps> " + dialogueTrad;
@@ -279,11 +291,16 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void GetRéponse(int i)
+    public virtual void GetRéponse(int i)
     {
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat)
         {
             StartCombat();
+        }
+        else if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
+        {
+            Debug.Log("End Dialog Alea");
+            EndDialogueFonction();
         }
         else
         {
@@ -715,7 +732,7 @@ public class DialogueManager : MonoBehaviour
                 */
 
                 //Application du buff
-                if (ManagerBattle == null)
+                if (/*ManagerBattle == null*/ManagerAlea.IsAlea)
                 {
                     ManagerAlea.Stat.ListBuffDebuff.Add(buffDebuff);
                 }
@@ -732,7 +749,7 @@ public class DialogueManager : MonoBehaviour
                 Debug.Log("###Conséquence### - Ajout d'un nouvel Effet de type : " + effet.TypeEffet.ToString());
 
                 //Application de l'effet
-                if (ManagerBattle == null)
+                if (/*ManagerBattle == null*/ ManagerAlea.IsAlea)
                 {
                     ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat));
                 }
@@ -853,11 +870,16 @@ public class DialogueManager : MonoBehaviour
     {
         AudioManager.instance.SFX.StopPlaying();
     }
-
+    private void ResetIndex()
+    {
+        DialogueIndex = 0;
+        NextDialogueIndex = 0;
+    }
     public void StartCombat()
     {
+        ResetIndex();
         AudioManager.instance.SFX.StopPlaying();
-        if (TutoManager.Instance != null )
+        if (GameManager.Instance.IsTuto/*TutoManager.Instance != null */)
         {
             if (TutoManager.Instance.StepTuto == 3)
             {
@@ -866,18 +888,20 @@ public class DialogueManager : MonoBehaviour
                 child.gameObject.SetActive(true);
                 UIDialogue.SetActive(false);
                 gO.GetComponent<TutoPanel>().ShowExplication();
+                TutoManager.Instance.StartCombat();
             }
         }
         else
         {
             UIJoueur.SetActive(true);
             UIDialogue.SetActive(false);
-            GameManager.Instance.BattleMan.StartCombat();
+            GameManager.Instance.StartCombat();
         }
     }
 
     public void EndDialogueFonction()
     {
+        ResetIndex();
         AudioManager.instance.SFX.StopPlaying();
         GameManager.Instance.AleaMan.EndAlea();
     }

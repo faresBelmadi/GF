@@ -14,10 +14,12 @@ public class StartGame : MonoBehaviour
         PlayerPrefs.SetInt("ClassSelected", classe);
         if (TutoManager.Instance != null)
             Destroy(TutoManager.Instance.gameObject);
-        if (DoTutoCheck.isOn)
+        PlayerPrefs.SetInt("DoTutorial", DoTutoCheck.isOn ? 0:1);
+        
+        /*if (DoTutoCheck.isOn)
             SceneManager.LoadScene("TutoMonde");
-        else
-            SceneManager.LoadSceneAsync(1);
+        else*/
+            SceneManager.LoadSceneAsync("GameScene");
     }
 
     public void Button_Quit()

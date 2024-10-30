@@ -29,8 +29,10 @@ public class PulseBloom_System : MonoBehaviour
     private CultureInfo en_us = CultureInfo.GetCultureInfo("en-US");
     private void Start()
     {
-        bloomMaterial.SetFloat("_Intensity", .5f);
-        if(startActive) TriggerBloom();
+        if (bloomMaterial != null)
+            bloomMaterial.SetFloat("_Intensity", .5f);
+        if(startActive) 
+            TriggerBloom();
     }
     public void TriggerBloom(bool doOverride = true)
     {
@@ -55,15 +57,21 @@ public class PulseBloom_System : MonoBehaviour
         do
         {
             float applyedIntensity = bloomIntensityShape.Evaluate(timePassed / bloomDuration) * bloomIntensity;
-            bloomMaterial.SetFloat("_Intensity", applyedIntensity);
-            bloomMaterial.SetColor("_Color", bloomGradient.Evaluate(timePassed / bloomDuration));
+            if (bloomMaterial != null)
+            {
+                bloomMaterial.SetFloat("_Intensity", applyedIntensity);
+                bloomMaterial.SetColor("_Color", bloomGradient.Evaluate(timePassed / bloomDuration));
+            }
 
             timePassed += Time.deltaTime;
             yield return null;
 
         } while (timePassed < bloomDuration);
-        bloomMaterial.SetFloat("_Intensity", defaultIntensity);
-        bloomMaterial.SetColor("_Color", Color.white);
+        if (bloomMaterial != null)
+        {
+            bloomMaterial.SetFloat("_Intensity", defaultIntensity);
+            bloomMaterial.SetColor("_Color", Color.white); 
+        }
         bloomRoutine = null;
         if (loop) { TriggerBloom(); }
     }
