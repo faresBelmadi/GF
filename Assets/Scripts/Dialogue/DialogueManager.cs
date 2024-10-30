@@ -870,9 +870,14 @@ public class DialogueManager : MonoBehaviour
     {
         AudioManager.instance.SFX.StopPlaying();
     }
-
+    private void ResetIndex()
+    {
+        DialogueIndex = 0;
+        NextDialogueIndex = 0;
+    }
     public void StartCombat()
     {
+        ResetIndex();
         AudioManager.instance.SFX.StopPlaying();
         if (GameManager.Instance.IsTuto/*TutoManager.Instance != null */)
         {
@@ -896,6 +901,7 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogueFonction()
     {
+        ResetIndex();
         AudioManager.instance.SFX.StopPlaying();
         GameManager.Instance.AleaMan.EndAlea();
     }
