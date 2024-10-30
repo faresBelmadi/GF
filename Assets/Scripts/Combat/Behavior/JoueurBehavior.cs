@@ -66,6 +66,7 @@ public class JoueurBehavior : CombatBehavior
     }
     private void OnEnable()
     {
+
         int i = 0;
         foreach (Transform child in transform)
         {
@@ -75,7 +76,9 @@ public class JoueurBehavior : CombatBehavior
                 Debug.Log("trouvé !", gameObject);
         }
         Debug.Log("Active Children : " + i);
+        GetComponent<Animator>().Rebind();
     }
+    
     private void OnDisable()
     {
         int i = 0;
@@ -85,6 +88,7 @@ public class JoueurBehavior : CombatBehavior
                 i++;
         }
         Debug.Log("Active Children : " + i);
+
     }
     void Update()
     {
@@ -97,6 +101,14 @@ public class JoueurBehavior : CombatBehavior
         {
             Debug.Log("up");
             GetComponent<Animator>().SetBool("0", false);
+        }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            ToggleVisibility(true);
+        }
+        if (Input.GetKeyUp(KeyCode.U))
+        {
+            ToggleVisibility(false);
         }
     }
     public void StartUp()

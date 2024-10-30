@@ -18,7 +18,7 @@ public class TutoManager : MonoBehaviour
     public JoueurStat JoueurStat;
     public ClassPlayer TutoClassSo;
     [SerializeField]
-    private GameObject _playerHolder;
+    private JoueurBehavior _playerHolder;
 
     public Encounter[] _encounter;
 
@@ -34,14 +34,17 @@ public class TutoManager : MonoBehaviour
     public bool ShowSoulConsumation;
     private int _indEncounter = 0;
     private TutoMondeManager _tutoMondeManager;
-
+    [Header("Datas")]
     [SerializeField]
     private ClairvoyanceIconData _clairvoyanceIconData;
+    [SerializeField]
+    private Souvenir _souvenirToLoot;
 
     public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
 
     public Encounter CurrentEncounter { get => _encounter[IndexEncounter]; }
     public DialogueManager TutoDialogMngr { get => _dialogueManager; }
+    public JoueurBehavior Player { get => _playerHolder; }
 
     public static event Action OnEndDialog;
     public static event Action OnStartCombat;
@@ -51,7 +54,7 @@ public class TutoManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (instance == null && GameManager.Instance.IsTuto)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -59,7 +62,10 @@ public class TutoManager : MonoBehaviour
             StepMapTuto = 0;
             IndexEncounter = 0;
             ShowSoulConsumation = false;
-            JoueurStat.ListBuffDebuff.Clear();          //On clear les buff sinon pour le cas ou le tuto n'es pas complété et qui resterait des objet buff dans le SO
+            //JoueurStat.ListBuffDebuff.Clear();          //On clear les buff sinon pour le cas ou le tuto n'es pas complété et qui resterait des objet buff dans le SO
+            JoueurStat = GameManager.Instance.playerStat;
+            JoueurStat.ListSouvenir.Add(_souvenirToLoot);
+           
         }
         else
         {
@@ -128,7 +134,7 @@ public class TutoManager : MonoBehaviour
         }
         else if (StepTuto == 5)                                 //End
         {
-            _playerHolder.SetActive(true);
+            Player.ToggleVisibility(true);
             EndTuto();
            // SceneManager.LoadScene("Monde");
         }

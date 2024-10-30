@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour {
     public List<Souvenir> CopyAllSouvenir;
 
     public ClassPlayer classSO;
+    [HideInInspector]
     public JoueurStat playerStat;
 
     public int ClassIDSelected;
@@ -116,11 +117,7 @@ public class GameManager : MonoBehaviour {
     }
     private void LoadSave()
     {
-        if (playerStat != null && IsTuto/*TutoManager.Instance != null*/)
-        {
-            Debug.Log("Coucouuuuuuu");
-            return;
-        }
+        
 #if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
 #else

@@ -963,7 +963,7 @@ public class BattleManager : MonoBehaviour
         }
 
         ListEssence.Clear();
-        var temp = Instantiate(prefabEssence, spawnPos[0]);
+        var temp = Instantiate(prefabEssence, spawnPos[3]); //we put it in the closest position of the player
         temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
         temp.GetComponent<Essence>().AddEssence(amount);
         temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);

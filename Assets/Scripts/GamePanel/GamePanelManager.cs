@@ -16,7 +16,7 @@ public class GamePanelManager : MonoBehaviour
     [SerializeField]
     private GameObject _canvaTuto;
     [SerializeField]
-    private GameObject _characterGameObject;
+    private JoueurBehavior _characterBehavior;
     //TEMP
     [SerializeField]
     private GameObject _canvaMap;
@@ -72,7 +72,8 @@ public class GamePanelManager : MonoBehaviour
     }
     public void StartCombat()
     {
-        _characterGameObject.SetActive(true);
+        _characterBehavior.ToggleVisibility(true);
+        
         _canvaAutel.SetActive(false);
         _canvaDialog.SetActive(false);
         _canvaBattle.SetActive(true);
@@ -80,7 +81,7 @@ public class GamePanelManager : MonoBehaviour
     }
     public void StartDialog()
     {
-        _characterGameObject.SetActive(true);
+        _characterBehavior.ToggleVisibility(true);
         _canvaAutel.SetActive(false);
         _canvaDialog.SetActive(true);
         _canvaBattle.SetActive(false);
@@ -88,7 +89,7 @@ public class GamePanelManager : MonoBehaviour
     }
     public void StartLoot()
     {
-        _characterGameObject.SetActive(false);
+        _characterBehavior.ToggleVisibility(false);
         _canvaAutel.SetActive(false);
         _canvaDialog.SetActive(false);
         _canvaBattle.SetActive(false);
@@ -97,8 +98,8 @@ public class GamePanelManager : MonoBehaviour
     public void StartAutel()
     {
         //TEMP
-        _characterGameObject.SetActive(false);
-       // _canvaMap.SetActive(false);
+        _characterBehavior.ToggleVisibility(false);
+        // _canvaMap.SetActive(false);
 
         _canvaAutel.SetActive(true);
         _canvaDialog.SetActive(false);
@@ -108,7 +109,7 @@ public class GamePanelManager : MonoBehaviour
     public void ShowMap()
     {
         //TEMP
-        _characterGameObject.SetActive(true);
+        _characterBehavior.ToggleVisibility(true);
         _canvaMap.SetActive(true);
 
         _canvaAutel.SetActive(false);
