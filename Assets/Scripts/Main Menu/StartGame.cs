@@ -14,7 +14,7 @@ public class StartGame : MonoBehaviour
         PlayerPrefs.SetInt("ClassSelected", classe);
         if (TutoManager.Instance != null)
             Destroy(TutoManager.Instance.gameObject);
-        PlayerPrefs.SetInt("DoTutorial", DoTutoCheck.isOn ? 0:1);
+        PlayerPrefs.SetInt("DoTutorial", DoTutoCheck.isOn ? 1:0);
         
         /*if (DoTutoCheck.isOn)
             SceneManager.LoadScene("TutoMonde");

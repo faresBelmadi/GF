@@ -10,9 +10,9 @@ public class GameManager : MonoBehaviour {
     
     public static GameManager Instance;
 
-    [Header("Debug")]
-    [SerializeField]
-    private bool _doTuto = true;
+    //[Header("Debug")]
+    //[SerializeField]
+    //private bool _doTuto = true;
 
     [Header("Managers")]
     public RoomManager rm;
@@ -91,11 +91,9 @@ public class GameManager : MonoBehaviour {
         UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         //LoadSave();
         ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
-#if UNITY_EDITOR
-        IsTuto = _doTuto;
-#else
+
         IsTuto = PlayerPrefs.GetInt("DoTutorial", 0) == 0 ? false : true;
-#endif
+        PlayerPrefs.SetInt("DoTutorial", 0);  //we set tuto mode to false
 
         CreateSave();
         GetClassRun();
