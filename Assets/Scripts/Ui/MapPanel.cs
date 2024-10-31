@@ -21,21 +21,6 @@ public class MapPanel : MonoBehaviour
     }
 
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.S))
-        {
-            Show();
-        }
-
-        if (Input.GetKeyUp(KeyCode.H))
-        {
-            Hide();
-        }
-
-    }
-
 
     public void Hide()
     {

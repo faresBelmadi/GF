@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class BSPGen : MonoBehaviour
@@ -38,6 +39,7 @@ public class BSPGen : MonoBehaviour
         List<Container> temp = new List<Container>();
         foreach (var item in _pos)
         {
+            item.gameObject.GetComponent<TMP_Text>().enabled = false;               //disable text component
             Container cont = new Container(item.position.x, item.position.y, 1,1);
             temp.Add(cont);
         }
