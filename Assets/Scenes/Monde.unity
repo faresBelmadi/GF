@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51e1ec2513e82a64cb87dfb8f6c20126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MenuCamera: {fileID: 6605643}
+  _rollingMapTime: 1
   CurrentRoomCamera: {fileID: 0}
 --- !u!1 &190056835
 GameObject:
@@ -584,7 +584,7 @@ GameObject:
   - component: {fileID: 190056840}
   m_Layer: 5
   m_Name: MainCanvas
-  m_TagString: Untagged
+  m_TagString: CanvasLayer
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -649,7 +649,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 1220910585
+  m_SortingLayerID: -1663898221
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &190056839
@@ -2010,6 +2010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef022e3fbc1fcb041ab91cc113478e32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _pos: []
 --- !u!114 &499757219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2023,58 +2024,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   config: {fileID: 499757218}
-  ResultBsp:
-  - Center: {x: 0, y: 0}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 0, y: 10}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 10, y: 0}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 10, y: 10}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 2, y: 3}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: -5, y: 10}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 5, y: 3}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 7, y: 6}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 6, y: 10}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  - Center: {x: 3, y: 9}
-    x: 0
-    y: 0
-    h: 0
-    w: 0
-  Lines: []
   Spawn: {fileID: 3953995495360769024, guid: 0292d751d2d47d54498418b50e7f59b0, type: 3}
   Parent: {fileID: 499757217}
   Line: {fileID: 5144414776291373012, guid: 004d0a0c8479d7548a5ab6fefc086945, type: 3}
@@ -3386,6 +3335,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1057772159}
   - component: {fileID: 1057772158}
+  - component: {fileID: 1057772160}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3405,6 +3355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f54bdcc530a9324a97e918fc8cbf214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _doTuto: 1
   rm: {fileID: 141422495}
   pmm: {fileID: 141422496}
   BattleMan: {fileID: 0}
@@ -3412,6 +3363,8 @@ MonoBehaviour:
   AleaMan: {fileID: 0}
   OldAutelMan: {fileID: 0}
   StatMan: {fileID: 0}
+  _dialogueManager: {fileID: 0}
+  _gamePanelManager: {fileID: 0}
   AllClasses:
   - {fileID: 11400000, guid: dc0d2acc44597d840b432963180f4340, type: 2}
   AllEncounter:
@@ -3492,6 +3445,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1057772160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057772157}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3ea834ee3d2f124abad9bdc4b250ddc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pupUpWindowPrefab: {fileID: 0}
 --- !u!1 &1124405954
 GameObject:
   m_ObjectHideFlags: 0
