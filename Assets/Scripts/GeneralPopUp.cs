@@ -49,10 +49,11 @@ public class GeneralPopUp : MonoBehaviour
             Instance = instance;
         }
         DontDestroyOnLoad(this.gameObject);
-        InvokePopUp();
+        InvokePopUp("Pop Up","Pop Up system is awake and ready",5);
     }
     private GameObject GetcurrentPertinantCanvas()
     {
+        GameObject nonUICanvasObject = null;
         foreach (GameObject canv in GameObject.FindGameObjectsWithTag("CanvasLayer"))
         {
             if(canv.GetComponent<Canvas>() != null 
@@ -62,22 +63,31 @@ public class GeneralPopUp : MonoBehaviour
                 Debug.Log("Pertinant canvas found");
                 return canv;
             }
+            nonUICanvasObject = canv;
         }
         Debug.Log("RETURN NULL: No Pertiannt canvas found");
-        return null;
+        return nonUICanvasObject;
     }
     public void ResetPopUpQueue()
     {
         popUpQueue.Clear();
     }
-    public void InvokePopUp(string title = "", string core = "", float activeTime = 3f)
+    public void InvokePopUp(string title = "", string core = "", float activeTime = 3f, bool putFirstInQueue = false)
     {
 
         PopUpInfo popUp = new PopUpInfo(title, core, activeTime);
         if (PopUpMovmentsCoroutine != null)
         {
-            popUpQueue.Add(popUp);
-            return;
+            if(putFirstInQueue) 
+            {
+                popUpQueue.Insert(0, popUp);
+                return;
+            }
+            else
+            {
+                popUpQueue.Add(popUp);
+                return;
+            }
         }
         isActivePopUpPresent = true;
         PopUpMovmentsCoroutine = StartCoroutine(InvokePopUpCoroutine(popUp));
