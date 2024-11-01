@@ -151,10 +151,10 @@ public class Effet : ScriptableObject
                     Mathf.FloorToInt((((percent / 100f) * NbAttaque) * caster.ForceAme) * caster.MultiplDegat);
                 break;
             case TypeEffet.UntilDeath:
-                damageAmount +=
-                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * caster.ForceAme) * caster.MultiplDegat);
+                damageAmount += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * caster.ForceAme) * caster.MultiplDegat);
                 //if (damageAmount < Cible.Radiance)
                 //    Caster.Radiance -= Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);
+                
                 break;
             case TypeEffet.DegatsRetourSurAttaque:
                 damageAmount += Mathf.FloorToInt(Pourcentage / 100f * caster.ForceAme);
@@ -436,11 +436,10 @@ public class Effet : ScriptableObject
                     Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
             case TypeEffet.UntilDeath:
-                ModifState.Radiance +=
-                    -Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+                ModifState.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
                 if (ModifState.Radiance + Cible.Radiance > 0)
                 {
-                    Caster.Radiance -= Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);
+                    Caster.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);
                 }
                 break;
             case TypeEffet.DegatsRetourSurAttaque:
