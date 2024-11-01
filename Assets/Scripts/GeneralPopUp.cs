@@ -121,6 +121,11 @@ public class GeneralPopUp : MonoBehaviour
             float timeLeft = 0;
             while (timeLeft < popAnimDuration)
             {
+                if (!popUpRect)
+                {
+                    PopUpMovmentsCoroutine = null;
+                    yield break;
+                }
                 timeLeft += Time.deltaTime;
                 popUpRect.anchoredPosition = startPos + (movmentCurve.Evaluate(timeLeft/popAnimDuration) * (endpos - startPos)); //Vector3.Lerp(startPos, endpos, movmentCurve.Evaluate(timeLeft));
                 yield return null;
@@ -132,6 +137,11 @@ public class GeneralPopUp : MonoBehaviour
             //Pop OUT
             while (timeLeft > 0)
             {
+                if (!popUpRect)
+                {
+                    PopUpMovmentsCoroutine = null;
+                    yield break;
+                }
                 timeLeft -= Time.deltaTime;
                 popUpRect.anchoredPosition = startPos + (movmentCurve.Evaluate(timeLeft/ popAnimDuration) * (endpos - startPos)); //Vector3.Lerp(startPos, endpos, movmentCurve.Evaluate(timeLeft));
                 yield return null;
