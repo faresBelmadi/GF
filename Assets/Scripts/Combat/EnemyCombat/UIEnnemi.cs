@@ -74,13 +74,15 @@ public class UIEnnemi : MonoBehaviour
 
     public void SpawnDegatSoin(int value)
     {
-        GameObject t;
+        //GameObject t;
         if (value < 0)
-            t = Instantiate(degatPrefab, degatSoinParent);
+            GeneralPopUp.Instance.InvokeQuickPopUp(value.ToString(),Color.red,degatSoinParent);
+            //t = Instantiate(degatPrefab, degatSoinParent);
         else
-            t = Instantiate(soinPrefab, degatSoinParent);
+            GeneralPopUp.Instance.InvokeQuickPopUp(value.ToString(),Color.green,degatSoinParent);
+            //t = Instantiate(soinPrefab, degatSoinParent);
 
-        t.GetComponent<TextAnimDegats>().Value = value;
+        //t.GetComponent<TextAnimDegats>().Value = value;
 
     }
 

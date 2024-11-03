@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing.Text;
+using System.Threading;
 using Unity.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 
@@ -17,8 +19,21 @@ public class GeneralPopUp : MonoBehaviour
     //[SerializeField] private Vector2 endPos;
     [SerializeField] private float popAnimDuration;
 
-    private bool isActivePopUpPresent = false;
+    [Header("Quick PopUp")]
+    [SerializeField] private GameObject quickPupUpPrefab;
+    [SerializeField] private AnimationCurve quickPopUpMovmentCurve;
+    [SerializeField] private AnimationCurve quickPopUpAlphaCurve;
+    [SerializeField] private float quickPopUpFinalHeight;
+    [SerializeField] private float quickPopUpAnimDuration;
+    [SerializeField] private float BaseQueueDelay;
+
+
     private List<PopUpInfo> popUpQueue = new List<PopUpInfo>();
+    private Coroutine PopUpMovmentsCoroutine = null;
+    
+    private Dictionary<Transform, List<QuickPopUpInfo>> quickPopUpQueues = new Dictionary<Transform, List<QuickPopUpInfo>>();
+    private Dictionary<Transform, Coroutine> quickPopUpRoutines = new Dictionary<Transform, Coroutine>();
+    //private Coroutine QuickPopUpMovmentsCoroutine = null;
 
     class PopUpInfo
     {
@@ -33,7 +48,32 @@ public class GeneralPopUp : MonoBehaviour
         }
     }
 
-    private Coroutine PopUpMovmentsCoroutine = null;
+    class QuickPopUpInfo
+    {
+        public string text;
+        public Color textColor;
+        public Transform spawnTransform;
+        public Sprite backgroundSprite;
+        public Sprite effectSprite;
+        public QuickPopUpInfo(string _text, Color textColor, Transform _spawnTransform, Sprite _effectSprite, Sprite backgroundSprite)
+        {
+            this.text = _text;
+            this.textColor = textColor;
+            this.spawnTransform = _spawnTransform;
+            this.effectSprite = _effectSprite;
+            this.backgroundSprite = backgroundSprite;
+        }
+    }
+    /*
+     
+    class QuickPopUpQueue
+    {
+        public Transform transformKey;
+        public List<QuickPopUpInfo> quickQueue;
+        public float lastFireTime = Time.time;
+    }
+     */
+
 
     private void Awake()
     {
@@ -89,8 +129,31 @@ public class GeneralPopUp : MonoBehaviour
                 return;
             }
         }
-        isActivePopUpPresent = true;
+
         PopUpMovmentsCoroutine = StartCoroutine(InvokePopUpCoroutine(popUp));
+    }
+
+    public void InvokeQuickPopUp(string text , Color textColor, Transform spawnTransform, Sprite effectSprite = null, Sprite backgroundSprite = null)
+    {
+        Debug.Log("QuickPopUp Invoked");
+        QuickPopUpInfo QpopUp = new QuickPopUpInfo(text, textColor, spawnTransform, effectSprite, backgroundSprite);
+        
+        if (!quickPopUpQueues.ContainsKey(spawnTransform))
+        {
+            quickPopUpQueues[spawnTransform] = new List<QuickPopUpInfo>();
+            quickPopUpRoutines[spawnTransform] = null;
+        }
+        quickPopUpQueues[spawnTransform].Add(QpopUp);
+
+
+        if (quickPopUpRoutines[spawnTransform] != null)
+        {
+            //quickPopUpQueue.Add(QpopUp);
+            Debug.Log("Quick Return");
+            return;
+        }
+
+        quickPopUpRoutines[spawnTransform] = StartCoroutine(InvokeQuickPopUpCoroutine(spawnTransform));
     }
 
     IEnumerator InvokePopUpCoroutine(PopUpInfo popUp = null)
@@ -152,6 +215,52 @@ public class GeneralPopUp : MonoBehaviour
             popUp = null;
         }
         PopUpMovmentsCoroutine = null;
+        yield break;
+    }
+
+    IEnumerator InvokeQuickPopUpCoroutine(Transform spawnTransform)
+    {
+        QuickPopUpInfo popUp = quickPopUpQueues[spawnTransform][0];
+        quickPopUpQueues[spawnTransform].RemoveAt(0);
+
+        Debug.Log("Spawning PopUp Prefab");
+        GameObject popUpObject = Instantiate(quickPupUpPrefab, spawnTransform);
+        Debug.Log("Init PopUp");
+        QuickPopUpAccesor popUpAccessor = popUpObject.GetComponent<QuickPopUpAccesor>();
+        popUpAccessor.SetText(popUp.text);
+        popUpAccessor.SetEffectSprite(popUp.effectSprite);
+        popUpAccessor.SetBackbroundSprite(popUp.backgroundSprite);
+        popUpAccessor.SetTextColor(popUp.textColor);
+        RectTransform popUpRect = popUpObject.GetComponent<RectTransform>();
+
+        Vector3 startPos = popUpRect.anchoredPosition;
+        Vector3 endpos = startPos + Vector3.up * quickPopUpFinalHeight;
+        Debug.Log("MoovePrefab");
+        bool nextTriggered = false;
+        float elapsedTime = 0;
+        while (elapsedTime<Mathf.Max(quickPopUpAnimDuration,BaseQueueDelay))
+        {
+            if(!popUpRect)yield break;
+            elapsedTime += Time.deltaTime;
+
+            popUpRect.anchoredPosition = startPos + (quickPopUpMovmentCurve.Evaluate(elapsedTime / quickPopUpAnimDuration) * (endpos - startPos));
+            popUpAccessor.SetPopUpAlpha(quickPopUpAlphaCurve.Evaluate(elapsedTime / quickPopUpAnimDuration));
+
+            if (!nextTriggered && elapsedTime >= BaseQueueDelay) 
+            {
+                nextTriggered = true;
+                if(quickPopUpQueues[spawnTransform].Count > 0)
+                {
+                    StartCoroutine(InvokeQuickPopUpCoroutine(spawnTransform));
+                }else quickPopUpQueues.Remove(spawnTransform);
+            }
+
+            yield return null;
+        }
+        Debug.Log("Destroy Prefab");
+        Destroy(popUpObject);
+
+        quickPopUpRoutines[spawnTransform] = null;
         yield break;
     }
 }
