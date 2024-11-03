@@ -83,11 +83,12 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    public bool VisualizeAttack(CharacterStat caster, CharacterStat cible, out int damageAmount, int NbEnnemies = 1)
+    public bool VisualizeAttack(CharacterStat caster, CharacterStat cible, out int damageAmount, out int returnedDamages, int NbEnnemies = 1)
     {
         int percent;
         int nbProcDamage;
         damageAmount = 0;
+        returnedDamages = 0;
         int valueToChange = ValeurBrut * NbAttaque;
         switch (this.TypeEffet)
         {
@@ -152,9 +153,13 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.UntilDeath:
                 damageAmount += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * caster.ForceAme) * caster.MultiplDegat);
+                if (damageAmount + cible.Radiance > 0)
+                {
+                    returnedDamages += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * cible.ForceAme) * cible.MultiplDegat * caster.MultiplDef);
+                }
                 //if (damageAmount < Cible.Radiance)
                 //    Caster.Radiance -= Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);
-                
+                //returnedDamages
                 break;
             case TypeEffet.DegatsRetourSurAttaque:
                 damageAmount += Mathf.FloorToInt(Pourcentage / 100f * caster.ForceAme);
