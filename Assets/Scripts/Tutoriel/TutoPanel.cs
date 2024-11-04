@@ -95,7 +95,9 @@ public class TutoPanel : MonoBehaviour
             //ICI ne plus affiche le stat et tuto panel ainsi que la soul (la virer ? je crosi ce c'est un mise par le battle manager)
             TutoManager.Instance.ShowSoulConsumation = false;
             TutoManager.Instance.StatPanel.SetActive(false);
-            GameObject.Find("Soul(Clone)").SetActive(false);
+            GameObject soul = GameObject.Find("Soul(Clone)");
+            if (soul!=null)
+                soul.SetActive(false);
             this.gameObject.SetActive(false);
             TutoManager.Instance.NextStep();
             return;
@@ -156,6 +158,7 @@ public class TutoPanel : MonoBehaviour
 
     public void EndCombat()
     {
+        TutoManager.Instance.EndCombat();
         EndBattleButton.SetActive(false);
         TutoManager.Instance.Loot();
         ShowNextExplication();

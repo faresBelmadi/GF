@@ -9,15 +9,18 @@ public class StartGame : MonoBehaviour
     public GameObject MainMenuGO;
     public GameObject OptionMenuGO;
 
+    [SerializeField] private GameObject[] menuCursors;
     public void Button_StartGame(int classe)
     {
         PlayerPrefs.SetInt("ClassSelected", classe);
         if (TutoManager.Instance != null)
             Destroy(TutoManager.Instance.gameObject);
-        if (DoTutoCheck.isOn)
+        PlayerPrefs.SetInt("DoTutorial", DoTutoCheck.isOn ? 1:0);
+        
+        /*if (DoTutoCheck.isOn)
             SceneManager.LoadScene("TutoMonde");
-        else
-            SceneManager.LoadSceneAsync(1);
+        else*/
+            SceneManager.LoadSceneAsync("GameScene");
     }
 
     public void Button_Quit()
@@ -44,5 +47,10 @@ public class StartGame : MonoBehaviour
         MainMenuGO.SetActive(true);
         //activation du OptionMenuGO
         OptionMenuGO.SetActive(false);
+        //Reseting all cursors
+        foreach (GameObject gO in menuCursors)
+        {
+            gO.SetActive(false);
+        }
     }
 }

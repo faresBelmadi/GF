@@ -15,6 +15,8 @@ public class TextComponent : MonoBehaviour
     [SerializeField]
     private Text _textObject;
 
+    public string IDLabel { get => _idLabel; }
+
     void Start()
     {
         if (_textTMPObject != null)

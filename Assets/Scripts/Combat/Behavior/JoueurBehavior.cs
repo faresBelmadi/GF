@@ -64,7 +64,53 @@ public class JoueurBehavior : CombatBehavior
     {
         _refBattleMan = battleManager;
     }
+    private void OnEnable()
+    {
 
+        int i = 0;
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.activeSelf)
+                i++;
+            else
+                Debug.Log("trouvé !", gameObject);
+        }
+        Debug.Log("Active Children : " + i);
+        GetComponent<Animator>().Rebind();
+    }
+    
+    private void OnDisable()
+    {
+        int i = 0;
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.activeSelf)
+                i++;
+        }
+        Debug.Log("Active Children : " + i);
+
+    }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Debug.Log("down");
+            GetComponent<Animator>().SetBool("0", true);
+        }
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            Debug.Log("up");
+            GetComponent<Animator>().SetBool("0", false);
+        }
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            ToggleVisibility(true);
+        }
+        if (Input.GetKeyUp(KeyCode.U))
+        {
+            ToggleVisibility(false);
+        }
+    }
     public void StartUp()
     {
 
@@ -154,9 +200,9 @@ public class JoueurBehavior : CombatBehavior
         {
             hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
             hPBarManager.ToggleBloomPulses(false);
-            Debug.Log($"Delta: {Stat.Radiance-currentHp}");
+            //Debug.Log($"Delta: {Stat.Radiance-currentHp}");
         }
-            Debug.Log($"Radiance Updated: from {currentHp} to {Stat.Radiance}");
+        //Debug.Log($"Radiance Updated: from {currentHp} to {Stat.Radiance}");
         currentHp = Stat.Radiance;
 
         if (Stat.Tension != currentTens)
