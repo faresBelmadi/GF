@@ -76,7 +76,7 @@ public class GeneralPopUp : MonoBehaviour
             Instance = instance;
         }
         DontDestroyOnLoad(this.gameObject);
-        InvokePopUp("Pop Up","Pop Up system is awake and ready",5);
+        //InvokePopUp("Pop Up","Pop Up system is awake and ready",5);
     }
     private GameObject GetcurrentPertinantCanvas()
     {
