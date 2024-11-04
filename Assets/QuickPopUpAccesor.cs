@@ -35,12 +35,6 @@ public class QuickPopUpAccesor : MonoBehaviour
         {
             backGroundObject.GetComponent<Image>().sprite = sprite;
         }
-        /*
-        else
-        {
-            backGroundObject.GetComponent<Image>().color = new Color(1f,1f,1f,0f);
-        }
-         */
     }
     public void SetPopUpAlpha(float alpha)
     {

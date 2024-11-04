@@ -542,14 +542,8 @@ public class BattleManager : MonoBehaviour
         if (key == idPlayer)
         {
             //TEST FOR GENERAL POPUP
-            GeneralPopUp.Instance.InvokePopUp("Start Player Turn","this is th message describing the pop Up");
-            GeneralPopUp.Instance.InvokePopUp("Test PopUp Queue 1","With a short Delay",1f);
-            GeneralPopUp.Instance.InvokePopUp("Test PopUp Queue 2", "Lorem ipsum odor amet, consectetuer adipiscing elit. Feugiat lacinia sagittis id mi commodo gravida. Pretium tortor in facilisis ullamcorper sem.", 5f);
-            GeneralPopUp.Instance.InvokePopUp("Test PopUp Queue 3","With a short Delay",1f);
-            GeneralPopUp.Instance.InvokePopUp("IMPORTANT","Test Priority PopUp",5f,true);
-            Debug.Log("Start Player Turn (PopUp Test)");
-            //END TEST
-
+            GeneralPopUp.Instance.InvokePopUp("Start Player Turn","this is a test message describing the pop Up",.5f);
+            
             player.StartTurn(nbPhase<2);
             battleUI.textPLayingTurn.text = (GameManager.Instance!=null)?GameManager.Instance.classSO.NameClass:TutoManager.Instance.TutoClassSo.NameClass;
         }

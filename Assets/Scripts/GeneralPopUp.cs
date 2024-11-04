@@ -15,8 +15,6 @@ public class GeneralPopUp : MonoBehaviour
     [Header("PopUp Window")]
     [SerializeField] private GameObject pupUpWindowPrefab;
     [SerializeField] private AnimationCurve movmentCurve;
-    //[SerializeField] private Vector2 startPos;
-    //[SerializeField] private Vector2 endPos;
     [SerializeField] private float popAnimDuration;
 
     [Header("Quick PopUp")]
@@ -33,8 +31,7 @@ public class GeneralPopUp : MonoBehaviour
     
     private Dictionary<Transform, List<QuickPopUpInfo>> quickPopUpQueues = new Dictionary<Transform, List<QuickPopUpInfo>>();
     private Dictionary<Transform, Coroutine> quickPopUpRoutines = new Dictionary<Transform, Coroutine>();
-    //private Coroutine QuickPopUpMovmentsCoroutine = null;
-
+    
     class PopUpInfo
     {
         public string title;
@@ -64,16 +61,6 @@ public class GeneralPopUp : MonoBehaviour
             this.backgroundSprite = backgroundSprite;
         }
     }
-    /*
-     
-    class QuickPopUpQueue
-    {
-        public Transform transformKey;
-        public List<QuickPopUpInfo> quickQueue;
-        public float lastFireTime = Time.time;
-    }
-     */
-
 
     private void Awake()
     {
@@ -148,7 +135,6 @@ public class GeneralPopUp : MonoBehaviour
 
         if (quickPopUpRoutines[spawnTransform] != null)
         {
-            //quickPopUpQueue.Add(QpopUp);
             Debug.Log("Quick Return");
             return;
         }
