@@ -18,6 +18,14 @@ public class OptionsMenu : MonoBehaviour
     [SerializeField]
     private Toggle _SFXToggle;
 
+    private void Awake()
+    {
+        Debug.Log("Add Listeners");
+        _masterVolumeSlider.onValueChanged.AddListener(delegate { AudioManager.instance.SetMasterVolume(_masterVolumeSlider.value); });
+        _musicVolumeSlider.onValueChanged.AddListener(delegate { AudioManager.instance.SetMusicVolume(_musicVolumeSlider.value); });
+        _SFXVolumeSlider.onValueChanged.AddListener(delegate { AudioManager.instance.SetSFXVolume(_SFXVolumeSlider.value); });
+    }
+
     private void OnEnable()
     {
         _masterVolumeSlider.value = AudioManager.instance.MasterVolume;
@@ -27,6 +35,7 @@ public class OptionsMenu : MonoBehaviour
         _masterToggle.isOn = AudioManager.instance.IsMasterMute;
         _musicToggle.isOn = AudioManager.instance.IsMusicMute;
         _SFXToggle.isOn = AudioManager.instance.IsSFXMute;
+
     }
 
 
