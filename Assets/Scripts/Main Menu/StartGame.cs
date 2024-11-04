@@ -31,6 +31,7 @@ public class StartGame : MonoBehaviour
     public void SetLanguagePref(int idLanguage)
     {
         PlayerPrefs.SetInt("Lang", idLanguage);
+        TradManager.instance.RefreshTranslation();
         OptionButtonEventClose();
     }
 
