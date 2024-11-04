@@ -1,4 +1,5 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -605,10 +606,11 @@ public class EnnemyBehavior : CombatBehavior
     public void PreviewDamage()
     {
         int[] damageList = new int[_refBattleMan.EnemyScripts.Count + _refBattleMan.DeadEnemyScripts.Count];
+        int returnedDmg = 0;
         //int damage = 0;
         foreach (Effet effet in _refBattleMan.player.SelectSpell.ActionEffet)
         {
-            effet.VisualizeAttack(_refBattleMan.player.Stat, Stat, out int dmg, _refBattleMan.EnemyScripts.Count);
+            effet.VisualizeAttack(_refBattleMan.player.Stat, Stat, out int dmg, out int rDmg,_refBattleMan.EnemyScripts.Count);
             if (effet.Cible == Cible.allEnnemi)
             {
 
@@ -617,6 +619,7 @@ public class EnnemyBehavior : CombatBehavior
             else
             {
                 damageList[combatID - 1] += dmg;
+                returnedDmg += rDmg;
             }
         }
 
@@ -629,6 +632,10 @@ public class EnnemyBehavior : CombatBehavior
                 ennemy.UICombat.PreviewDmg(ennemy.Stat.Radiance + toRemove, ennemy.Stat.RadianceMax);
             }
         }
+        if(returnedDmg != 0)
+        {
+            _refBattleMan.player.PreviewHPBarUpdate(_refBattleMan.player.Stat.Radiance + returnedDmg, _refBattleMan.player.Stat.RadianceMax);
+        }
     }
 
     public void StopPreviewDamage()
@@ -636,6 +643,7 @@ public class EnnemyBehavior : CombatBehavior
         foreach (EnnemyBehavior ennemy in _refBattleMan.EnemyScripts)
         {
             ennemy.UICombat.StopPreview();
+            _refBattleMan.player.StopPReviewHPBarUpdate();
         }
 
     }
