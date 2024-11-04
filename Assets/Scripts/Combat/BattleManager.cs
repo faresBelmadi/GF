@@ -541,6 +541,9 @@ public class BattleManager : MonoBehaviour
         currentIdTurn = key;
         if (key == idPlayer)
         {
+            //TEST FOR GENERAL POPUP
+            GeneralPopUp.Instance.InvokePopUp("Start Player Turn","this is a test message describing the pop Up",.5f);
+            
             player.StartTurn(nbPhase<2);
             battleUI.textPLayingTurn.text = (GameManager.Instance!=null)?GameManager.Instance.classSO.NameClass:TutoManager.Instance.TutoClassSo.NameClass;
         }
