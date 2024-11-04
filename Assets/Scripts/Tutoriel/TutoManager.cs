@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using UnityEngine.SceneManagement;
+﻿using System;
+using UnityEngine;
 
 public class TutoManager : MonoBehaviour
 {
@@ -17,6 +17,8 @@ public class TutoManager : MonoBehaviour
     public BattleManager BattleManager;
     public JoueurStat JoueurStat;
     public ClassPlayer TutoClassSo;
+    [SerializeField]
+    private JoueurBehavior _playerHolder;
 
     public Encounter[] _encounter;
 
@@ -32,15 +34,27 @@ public class TutoManager : MonoBehaviour
     public bool ShowSoulConsumation;
     private int _indEncounter = 0;
     private TutoMondeManager _tutoMondeManager;
-
+    [Header("Datas")]
     [SerializeField]
     private ClairvoyanceIconData _clairvoyanceIconData;
+    [SerializeField]
+    private Souvenir _souvenirToLoot;
 
     public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
 
+    public Encounter CurrentEncounter { get => _encounter[IndexEncounter]; }
+    public DialogueManager TutoDialogMngr { get => _dialogueManager; }
+    public JoueurBehavior Player { get => _playerHolder; }
+
+    public static event Action OnEndDialog;
+    public static event Action OnStartCombat;
+    public static event Action OnEndCombat;
+
+    public static event Action OnEndTuto;
+
     private void Awake()
     {
-        if (instance == null)
+        if (instance == null && GameManager.Instance.IsTuto)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
@@ -48,7 +62,10 @@ public class TutoManager : MonoBehaviour
             StepMapTuto = 0;
             IndexEncounter = 0;
             ShowSoulConsumation = false;
-            JoueurStat.ListBuffDebuff.Clear();          //On clear les buff sinon pour le cas ou le tuto n'es pas complété et qui resterait des objet buff dans le SO
+            //JoueurStat.ListBuffDebuff.Clear();          //On clear les buff sinon pour le cas ou le tuto n'es pas complété et qui resterait des objet buff dans le SO
+            JoueurStat = GameManager.Instance.playerStat;
+            JoueurStat.ListSouvenir.Add(_souvenirToLoot);
+           
         }
         else
         {
@@ -61,6 +78,10 @@ public class TutoManager : MonoBehaviour
         //HideAllPanels();
         //ShowPanel(PanelMap);
         _tutoMondeManager = PanelMap.GetComponentInChildren<TutoMondeManager>();
+        if (!GameManager.Instance.IsTuto)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public static TutoManager Instance
@@ -113,7 +134,9 @@ public class TutoManager : MonoBehaviour
         }
         else if (StepTuto == 5)                                 //End
         {
-            SceneManager.LoadScene("Monde");
+            Player.ToggleVisibility(true);
+            EndTuto();
+           // SceneManager.LoadScene("Monde");
         }
     }
 
@@ -132,25 +155,38 @@ public class TutoManager : MonoBehaviour
     {
         _dialogueManager.InitDialogueStep();
         Debug.Log("encounter : " + Instance.IndexEncounter);
+        GameManager.Instance.LoadCombat();
         BattleManager.player.Stat.Volonter = 5;
-        BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.IndexEncounter]));
-        
+        //BattleManager.LoadEnemy(Instantiate(Instance._encounter[Instance.IndexEncounter]));
     }
 
     public void Loot()
     {
-        StatPanel.transform.GetChild(0).gameObject.SetActive(true);
-        StatPanel.transform.GetChild(1).gameObject.SetActive(true);
+        StatPanel.SetActive(true);
+        //StatPanel.transform.GetChild(0).gameObject.SetActive(true);
+        //StatPanel.transform.GetChild(1).gameObject.SetActive(true);
     }
 
     public void SkipTutoDuringTuto()
     {
-        SceneManager.LoadSceneAsync(1);
-        Destroy(this.gameObject);
+        //SceneManager.LoadSceneAsync(1);
+        //Destroy(this.gameObject);
+        EndTuto();
+    }
+
+    // Raise the event to trigger UI panel
+    public void StartCombat()
+    {
+        OnStartCombat?.Invoke();
+    }
+    public void EndCombat()
+    {
+        OnEndCombat?.Invoke();
     }
 
     public void EndDialogueTuto()
     {
+        OnEndDialog?.Invoke();
         if (IndexEncounter == 1)
             _dialogueManager.StartCombat();
         else
@@ -158,5 +194,13 @@ public class TutoManager : MonoBehaviour
             IndexEncounter++;
             NextStep();
         }
+    }
+    public void EndTuto()
+    {
+        ClearPos();
+        OnEndTuto?.Invoke();
+        GameManager.Instance.EndTuto();
+
+        Destroy(gameObject);
     }
 }

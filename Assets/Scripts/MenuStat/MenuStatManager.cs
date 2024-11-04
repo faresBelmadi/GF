@@ -5,6 +5,7 @@ using UnityEngine.UI.Extensions;
 using static UnityEngine.UI.Extensions.ReorderableList;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.Rendering;
 
 public class MenuStatManager : MonoBehaviour
 {
@@ -29,12 +30,13 @@ public class MenuStatManager : MonoBehaviour
 
     public void OnEnable/*MenuStat*/()
     {
+        TutoManager.OnEndTuto += ResetStat;
         foreach (var item in Souvenir)
         {
             Destroy(item);
         }
 
-        if (GameManager.Instance != null)
+        if (!GameManager.Instance.IsTuto)
             Stat = GameManager.Instance.playerStat;
         else
             Stat = TutoManager.Instance.JoueurStat;
@@ -61,6 +63,10 @@ public class MenuStatManager : MonoBehaviour
             Souvenir.Add(temp);
         }
         UpdateStatUI();
+    }
+    private void OnDisable()
+    {
+        TutoManager.OnEndTuto -= ResetStat;
     }
 
     public void ResetStatEnter(Souvenir LeSouvenir)
@@ -108,7 +114,10 @@ public class MenuStatManager : MonoBehaviour
     {
         UpdateStatUI();
     }
-
+    public void ResetStat()
+    {
+        Stat = GameManager.Instance.playerStat;
+    }
     public void UpdateStatUI()
     {
         ValeurRadiance.text = StatTemp.Radiance.ToString() + "/" + StatTemp.RadianceMax;

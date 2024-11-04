@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour {
     
     public static GameManager Instance;
 
+    //[Header("Debug")]
+    //[SerializeField]
+    //private bool _doTuto = true;
+
     [Header("Managers")]
     public RoomManager rm;
     public PlayerMapManager pmm;
@@ -18,6 +22,10 @@ public class GameManager : MonoBehaviour {
     public AleaManager AleaMan;
     public OldAutelManager OldAutelMan;
     public MenuStatManager StatMan;
+    [SerializeField]
+    private DialogueManager _dialogueManager;
+    [SerializeField]
+    private GamePanelManager _gamePanelManager;
 
     [Header("Classes & Encounter")]
     public List<ClassPlayer> AllClasses;
@@ -30,6 +38,7 @@ public class GameManager : MonoBehaviour {
     public List<Souvenir> CopyAllSouvenir;
 
     public ClassPlayer classSO;
+    [HideInInspector]
     public JoueurStat playerStat;
 
     public int ClassIDSelected;
@@ -43,6 +52,33 @@ public class GameManager : MonoBehaviour {
 
     public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
 
+    public bool IsTuto { get; private set; }
+    public DialogueManager DialManager
+    {
+        get
+        {
+            if (!IsTuto)
+                return _dialogueManager;
+            else
+            {
+                return TutoManager.Instance.TutoDialogMngr;
+            }
+        }
+    }
+
+    #region Events
+    public static event Action OnStartCombat;
+    public static event Action OnLootAfterCombat;
+    public static event Action OnStartEvent;
+    public static event Action OnStartDialog;
+    public static event Action OnHideMap;
+    public static event Action OnShowMap;
+    public static event Action OnStartAutel;
+
+    #endregion
+
+
+ 
     private void Awake() {
         if (Instance != null)
             Destroy(this.gameObject);
@@ -55,24 +91,36 @@ public class GameManager : MonoBehaviour {
         UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         //LoadSave();
         ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
+
+        IsTuto = PlayerPrefs.GetInt("DoTutorial", 0) == 0 ? false : true;
+        PlayerPrefs.SetInt("DoTutorial", 0);  //we set tuto mode to false
+
         CreateSave();
         GetClassRun();
+
+        Debug.Log("Tuto mode : " + IsTuto);
+        _gamePanelManager.InitPanel(IsTuto);
+        /*
         if (TutoManager.Instance != null)
             Destroy(TutoManager);
+        */
     }
 
+    public void EndTuto()
+    {
+        IsTuto = false;
+
+        CreateSave();
+        GetClassRun();
+    }
     private void LoadSave()
     {
-        if (playerStat != null && TutoManager.Instance != null)
-        {
-            Debug.Log("Coucouuuuuuu");
-            return;
-        }
+        
 #if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
-        #endif
+#endif
         string dataAsJson;
         if (File.Exists(path))
         {
@@ -165,19 +213,19 @@ public class GameManager : MonoBehaviour {
         };
         string json = JsonUtility.ToJson(data);
         
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
         System.IO.Directory.CreateDirectory(Application.persistentDataPath+"/SavedData");
         System.IO.Directory.CreateDirectory(Application.persistentDataPath+"/SavedData/GameData");
-        #endif
+#endif
 
         System.IO.File.WriteAllText(path,json);
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
-        #endif
+#endif
         LoadSave();
     }
 
@@ -200,17 +248,17 @@ public class GameManager : MonoBehaviour {
             loadedData.CurrentRun.Ended = false;
         }
         string json = JsonUtility.ToJson(loadedData);
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
-        #endif
+#endif
 
         System.IO.File.WriteAllText(path,json);
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
-        #endif
+#endif
     }
 
     private void SavePlayer()
@@ -237,10 +285,34 @@ public class GameManager : MonoBehaviour {
         pmm.CurrentRoom = set;
     }
 
+    public void StartCombat()
+    {
+        Debug.Log("Raise event : OnStartCombat");
+        OnStartCombat?.Invoke();
+        BattleMan.StartCombat();
+    }
     public void LoadCombat()
     {
-        BattleMan.LoadEnemy(Instantiate(AllEncounter[EncounterIndex]));
-        EncounterIndex++;
+        Debug.Log("Raise event : OnStartDialog");
+        OnStartDialog?.Invoke();
+        if (IsTuto)
+        {
+            BattleMan.LoadEnemy(Instantiate(TutoManager.Instance.CurrentEncounter));
+        }
+        else
+        {
+            BattleMan.LoadEnemy(Instantiate(AllEncounter[EncounterIndex]));
+            EncounterIndex++;
+        }
+    }
+    public void Loot()
+    {
+        Debug.Log("Loot", gameObject);
+        OnLootAfterCombat.Invoke();
+    }
+    public void UnloadCombat()
+    {
+        Debug.Log("Unload Combat");
     }
 
     public void LoadCombatNormal()
@@ -260,12 +332,23 @@ public class GameManager : MonoBehaviour {
 
     public void LoadEvent()
     {
+        OnStartDialog?.Invoke();
         AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
+    }
+    public void UnloadEvent()
+    {
+        Debug.Log("UnloadEvent;");
     }
 
     public void LoadAutel()
     {
-        OldAutelMan.StartAutel();
+
+        Debug.Log("Load Autel");
+        OnStartAutel?.Invoke();
+    }
+    public void UnloadAutel()
+    {
+        Debug.Log("Unload Autel");
     }
         
     public void StartStatJoueur()
@@ -280,7 +363,7 @@ public class GameManager : MonoBehaviour {
     
     void GetClassRun()
     {
-        if (classSO != null && TutoManager.Instance != null)
+        if (classSO != null && IsTuto /*TutoManager.Instance != null*/)
         {
             Debug.Log("Coucouuuuuuu");
             return;
@@ -306,6 +389,15 @@ public class GameManager : MonoBehaviour {
 
         SceneManager.LoadScene("MainMenu");
         Destroy(GameManager.Instance.gameObject);
+    }
+    public void HideMap()
+    {
+        OnHideMap?.Invoke();
+    }
+    public void ShowMap()
+    {
+        Debug.Log("ShowMap");
+        OnShowMap?.Invoke();
     }
 
     public IEnumerator Reload()

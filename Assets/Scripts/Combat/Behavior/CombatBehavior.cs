@@ -23,8 +23,12 @@ public class CombatBehavior : MonoBehaviour
     public int LastDamageTaken;
     public bool gainedTension;
 
+    private Vector3 _startingPos;
 
-
+    private void Start()
+    {
+        _startingPos = transform.parent.position;
+    }
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);
@@ -267,4 +271,9 @@ public class CombatBehavior : MonoBehaviour
         ListBuffDebuff.RemoveAll(c => c.Temps < 0);
         return ListBuffDebuff;
     }
+    public void ToggleVisibility(bool isVisible)
+    {
+        transform.parent.position = isVisible ? _startingPos : new Vector3(_startingPos.x, -10000f, _startingPos.z);
+    }
+
 }

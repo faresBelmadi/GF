@@ -21,6 +21,8 @@ public class BattleManager : MonoBehaviour
     public Encounter _encounter;
     public GameObject prefabEssence;
     public GameObject buttonEndCombat;
+    [SerializeField]
+    private string _idLabelForEssenceButton;
     const string Target = "Targeting";
     public PassifRules passifRules;
 
@@ -45,7 +47,7 @@ public class BattleManager : MonoBehaviour
     public int MostDamage, MostDamageID;
     public int LastPhaseDamage;
     public int CurrentPhaseDamage;
-    [SerializeField] private DialogueManager DialogueManager;
+   // [SerializeField] private DialogueManager DialogueManager;
     public PassifManager PassifManager;
 
     public bool IsLoot;
@@ -58,6 +60,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Material ennemiUIMaterial;
 
     public bool IsTuto { get => _isTuto; }
+
 
     #region Loot
 
@@ -214,7 +217,12 @@ public class BattleManager : MonoBehaviour
 
     private void OnEnable()
     {
-        CombatEnableSetup();
+        //CombatEnableSetup();
+        GameManager.OnStartDialog += CombatEnableSetup; // We need to instantiate character for the dialog
+    }
+    private void OnDisable()
+    {
+        GameManager.OnStartDialog -= CombatEnableSetup;
     }
 
     void DialogueEnableSetup()
@@ -222,16 +230,20 @@ public class BattleManager : MonoBehaviour
         player.InitRefBattleMan(this);
         if (GameManager.Instance != null)
             PassifManager = new PassifManager(new List<JoueurBehavior> {player}, EnemyScripts);
-        DialogueManager.SetupDialogue(_encounter);
+        GameManager.Instance.DialManager.SetupDialogue(_encounter);
     }
 
     void CombatEnableSetup()
     {
         idIndexer = 0;
         battleUI = GetComponent<BattleUI>();
-        if (GameManager.Instance == null)
+        //if (GameManager.Instance == null)
+        //    player.Stat = TutoManager.Instance.JoueurStat;
+        //else 
+        //    player.Stat = GameManager.Instance.playerStat;
+        if (GameManager.Instance.IsTuto)
             player.Stat = TutoManager.Instance.JoueurStat;
-        else 
+        else
             player.Stat = GameManager.Instance.playerStat;
         player.EndTurnBM = EndTurn;
         player.StartUp();
@@ -253,6 +265,7 @@ public class BattleManager : MonoBehaviour
         SpawnEnemy();
         player.UpdateUI();
         player.DesactivateSpells();
+        GameManager.Instance.DialManager.InitDialogOptionButton();
         DialogueEnableSetup();
 
 
@@ -449,10 +462,10 @@ public class BattleManager : MonoBehaviour
         player.Stat.ListBuffDebuff.Clear();
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Stat.Tension = 0;
-        GameManager.Instance.playerStat = player.Stat;
         Debug.Log(IsLoot);
-        if (TutoManager.Instance != null)
+        if (GameManager.Instance.IsTuto/*TutoManager.Instance != null*/)
         {
+            TutoManager.Instance.EndCombat();
             TutoManager.Instance.Loot();
             var gO = GameObject.Find("TutoPanel");
             var child = gO.transform.GetChild(0);
@@ -466,7 +479,12 @@ public class BattleManager : MonoBehaviour
             buttonEndCombat.SetActive(false);
         }
         else
+        {
+            GameManager.Instance.playerStat = player.Stat;
+            GameObject.Find("Soul(Clone)").SetActive(false);
+            buttonEndCombat.SetActive(false);
             StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
+        }
     }
 
     #endregion Mise en place combat & fin
@@ -947,28 +965,42 @@ public class BattleManager : MonoBehaviour
         }
 
         ListEssence.Clear();
-        var temp = Instantiate(prefabEssence, spawnPos[0]);
+        var temp = Instantiate(prefabEssence, spawnPos[3]); //we put it in the closest position of the player
         temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
         temp.GetComponent<Essence>().AddEssence(amount);
         temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
         temp.GetComponent<Essence>().isEnd = true;
         ListEssence.Add(temp);
         buttonEndCombat.SetActive(true);
-        buttonEndCombat.GetComponentInChildren<TMP_Text>().text += $" ({amount})";
+        buttonEndCombat.GetComponentInChildren<TMP_Text>().text = $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount})";
         endBattle = true;
     }
 
     public void KeepEssence()
     {
-
-        int amount = 0;
-        foreach (var item in ListEssence)
+        if (GameManager.Instance.IsTuto)
         {
-            amount += item.GetComponent<Essence>().getEssence();
-        }
+            buttonEndCombat.SetActive(false);
+            TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>().EndCombat();
+            for (int i = 0; i < ListEssence.Count; i++)
+            {
+                Destroy(ListEssence[i]);
+            }
+            ListEssence.Clear();
 
-        player.Stat.Essence += amount;
-        EndBattle();
+        }
+        else
+        {
+
+            int amount = 0;
+            foreach (var item in ListEssence)
+            {
+                amount += item.GetComponent<Essence>().getEssence();
+            }
+
+            player.Stat.Essence += amount;
+            EndBattle();
+        }
     }
 
     #endregion Essence
@@ -1002,7 +1034,7 @@ public class BattleManager : MonoBehaviour
 
             if (EnemyScripts.Count <= 0)
             {
-                if (TutoManager.Instance != null)
+                if (GameManager.Instance.IsTuto/*TutoManager.Instance != null*/)
                 {
                     //TutoManager.Instance.NextStep();
                     var gO = GameObject.Find("TutoPanel");
