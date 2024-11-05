@@ -67,7 +67,7 @@ public class GeneralPopUp : MonoBehaviour
         if (instance != null && instance != this)
         {
             Debug.Log("Already Instancied");
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
         else

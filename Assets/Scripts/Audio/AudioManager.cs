@@ -35,6 +35,8 @@ public class AudioManager : MonoBehaviour
         if (instance != null)
         {
             Destroy(this.gameObject);
+            Destroy(_sfx.gameObject);
+            Destroy(gameObject.transform.parent.gameObject);
         }
         else
         {
