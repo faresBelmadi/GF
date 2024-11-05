@@ -85,15 +85,15 @@ public class PlayerMapManager : MonoBehaviour
         {
             case TypeRoom.CombatNormal:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
-                StartCoroutine("LoadSceneAsync", "GameScene Normal");
+                StartBattle("normal");
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
             case TypeRoom.CombatElite:
-                StartCoroutine("LoadSceneAsync", "BattleScene Elite");
+                StartBattle("elite");
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
             case TypeRoom.CombatBoss:
-                StartCoroutine("LoadSceneAsync", "BattleScene Boss");
+                StartBattle("boss");
                 _currentRoom.Type = TypeRoom.Visited;
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
                 break;
@@ -106,7 +106,7 @@ public class PlayerMapManager : MonoBehaviour
                 StartLevelUp();
                 break;
             case TypeRoom.Autel:
-                StartCoroutine("LoadSceneAsync", "Autel");
+                StartAutel();
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
             //StartAutel();
@@ -114,7 +114,7 @@ public class PlayerMapManager : MonoBehaviour
             //    StartCoroutine("LoadSceneAsync", "Autel");
             //    break;
             case TypeRoom.Event:
-                StartCoroutine("LoadSceneAsync", "GameScene AleaScene");
+                StartAlea();
                 _currentRoom.Type = TypeRoom.Visited;
                 break;
             //case TypeRoom.Visited:
