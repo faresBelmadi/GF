@@ -18,8 +18,8 @@ public class TextComponent : MonoBehaviour
     private void OnEnable()
     {
         TradManager.OnRefreshTranslation += RefreshText;
-        
-        RefreshText();
+        if (TradManager.instance != null )
+            RefreshText();
     }
     private void OnDisable()
     {

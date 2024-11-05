@@ -43,6 +43,11 @@ public class RoomManager : MonoBehaviour
         //Rooms[1].gameObject.transform.localScale = new Vector3(10, 10);
         //Rooms[1].Type = TypeRoom.Event;
 
+        //Rooms[1].ToSet = _roomData.SalleCombatBoss;
+        //Rooms[1].gameObject.transform.localScale = new Vector3(10, 10);
+        //Rooms[1].Type = TypeRoom.CombatBoss;
+        //Rooms[1].SetLabel(TradManager.instance.GetTranslation(_roomData.SalleCombatBossLabel));
+
         Rooms[1].ToSet = _roomData.SalleCombatNormal;
         Rooms[1].gameObject.transform.localScale = new Vector3(10, 10);
         Rooms[1].Type = TypeRoom.CombatNormal;
@@ -87,14 +92,15 @@ public class RoomManager : MonoBehaviour
         Rooms[8].Type = TypeRoom.Autel;
         Rooms[8].SetLabel(TradManager.instance.GetTranslation(_roomData.SalleLevelUpLabel));
 
-        //Rooms[9].ToSet = SalleCombatBoss;
-        //Rooms[9].gameObject.transform.localScale = new Vector3(10, 10);
-        //Rooms[9].Type = TypeRoom.CombatBoss;
-
-        Rooms[9].ToSet = _roomData.SalleEnd;
+        Rooms[9].ToSet = _roomData.SalleCombatBoss;
         Rooms[9].gameObject.transform.localScale = new Vector3(10, 10);
-        Rooms[9].Type = TypeRoom.End;
-        Rooms[9].SetLabel(TradManager.instance.GetTranslation(_roomData.SalleEndLabel));
+        Rooms[9].Type = TypeRoom.CombatBoss;
+        Rooms[9].SetLabel(TradManager.instance.GetTranslation(_roomData.SalleCombatBossLabel));
+
+        Rooms[10].ToSet = _roomData.SalleEnd;
+        Rooms[10].gameObject.transform.localScale = new Vector3(10, 10);
+        Rooms[10].Type = TypeRoom.End;
+        Rooms[10].SetLabel(TradManager.instance.GetTranslation(_roomData.SalleEndLabel));
 
         //Rooms[10].ToSet = SalleEnd;
         //Rooms[10].gameObject.transform.localScale = new Vector3(10, 10);
