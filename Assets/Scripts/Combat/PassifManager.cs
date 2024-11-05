@@ -151,14 +151,14 @@ public class PassifManager
 
     public void UpdateDivinInfoDisplay(EnnemyBehavior behavior)
     {
-        if (!behavior.Stat.ListBuffDebuff.Any(x => x.Nom == "CurrentDivin"))
+        if (!behavior.Stat.ListBuffDebuff.Any(x => x.Nom == TradManager.instance.GetTranslation(_rules.CurrentDivin.idTradName)))
         {
-            _rules.CurrentDivin.Description = behavior.Stat.Divin.ToString();
+           // _rules.CurrentDivin.Description = behavior.Stat.Divin.ToString();
             behavior.AddBuffDebuff(_rules.CurrentDivin, behavior.Stat);
         }
 
-        var currentDivin = behavior.ListBuffDebuffGO.FirstOrDefault(x => x.GetComponent<BuffDebuffComponant>().buffName == "CurrentDivin");
-        currentDivin.GetComponent<BuffDebuffComponant>().popUpPanel.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
-            "Divin : " + behavior.Stat.Divin;
+        var currentDivin = behavior.ListBuffDebuffGO.FirstOrDefault(x => x.GetComponent<BuffDebuffComponant>().buffName == TradManager.instance.GetTranslation(_rules.CurrentDivin.idTradName));
+        currentDivin.GetComponent<BuffDebuffComponant>().popUpPanel.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text +=
+            "(Divin : " + behavior.Stat.Divin + ")";
     }
 } 

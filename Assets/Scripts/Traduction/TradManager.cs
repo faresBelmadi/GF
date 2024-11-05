@@ -39,6 +39,8 @@ public class TradManager : MonoBehaviour
 
     private Analyzer _analyzer;
 
+    public static event Action OnRefreshTranslation;
+
     private void Awake()
     {
         if (instance != null)
@@ -57,6 +59,11 @@ public class TradManager : MonoBehaviour
 
         LoadTrad();
         _analyzer = GetComponent<Analyzer>();
+    }
+
+    public void RefreshTranslation()
+    {
+        OnRefreshTranslation?.Invoke();
     }
 
     #region LOGGER

@@ -11,6 +11,7 @@ public enum TradTag
     unknown,
     stat,
     percent,
+    passif,
     damage
 }
 public enum TradAttribute
@@ -52,6 +53,7 @@ public class Analyzer : MonoBehaviour
     const string PERCENTPATTERN = "{percent value=(?<value>[0-9]+) target=(?<target>[A-Za-z]+)}";
     const string STATPATTERN = "{stat value=(?<value>[A-Za-z]+)}";
     const string DAMAGEPATTERN = "{damage type=(?<type>(direct|percent)) value=(?<value>[0-9]+)( stat=(?<stat>[A-Za-z]+))?}";
+    const string PASSIVESPATTERN = "{passif type=(?<type>[A-Za-z]+)}";
 
     [SerializeField]
     private ClairvoyanceIconData _clairvoyanceIconData;
@@ -60,6 +62,7 @@ public class Analyzer : MonoBehaviour
     private Regex percentRegex = new Regex(PERCENTPATTERN, RegexOptions.IgnoreCase);
     private Regex statRegex = new Regex(STATPATTERN, RegexOptions.IgnoreCase);
     private Regex damageRegex = new Regex(DAMAGEPATTERN, RegexOptions.IgnoreCase);
+    private Regex passifRegex = new Regex(PASSIVESPATTERN, RegexOptions.IgnoreCase);
     //Exemple de balise
     // {stat value=FA}
     // {percent value=60 target=FA}
@@ -116,6 +119,18 @@ public class Analyzer : MonoBehaviour
             string replacement = ApplyTag(TradTag.damage, attributes);
             stringToRead = stringToRead.Replace(currentMatchDamage.Groups[0].ToString(), replacement);
             currentMatchDamage = currentMatchDamage.NextMatch();
+        }
+
+        Match currentMatchPassif = passifRegex.Match(stringToRead);
+        while (currentMatchPassif.Success)
+        {
+            Dictionary<TradAttribute, string> attributes = new Dictionary<TradAttribute, string>
+            {
+                { TradAttribute.type, currentMatchPassif.Groups["type"].Captures[0].ToString() }
+            };
+            string replacement = ApplyTag(TradTag.passif, attributes);
+            stringToRead = stringToRead.Replace(currentMatchPassif.Groups[0].ToString(), replacement);
+            currentMatchPassif = currentMatchPassif.NextMatch();
         }
 
 
@@ -277,6 +292,13 @@ public class Analyzer : MonoBehaviour
         StringBuilder strb = new StringBuilder();
         switch (tag)
         {
+            case TradTag.passif:
+                if (attributes[TradAttribute.type].Equals("DIV", System.StringComparison.InvariantCultureIgnoreCase))
+                {
+                    int divPoint = GameManager.Instance.BattleMan.EnemyScripts[0].Stat.Divin;
+                    strb.Append(divPoint);
+                }
+                break;
             case TradTag.stat:
                 strb.Append("<sprite name=\"");
 
