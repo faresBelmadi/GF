@@ -104,11 +104,11 @@ public class DialogueManager : MonoBehaviour
 
     public virtual void InitDialogOptionButton()
     {
-        for (int i=0; i<_answerButtons.Count;i++)
+        for (int i=0; i<_dialogPanelComponent.Reponse.Count;i++)
         {
-            _answerButtons[i].onClick.RemoveAllListeners();
+            _dialogPanelComponent.Reponse[i].GetComponent<Button>().onClick.RemoveAllListeners();
             int answerNum = i;
-            _answerButtons[i].onClick.AddListener(() => GetRéponse(answerNum));
+            _dialogPanelComponent.Reponse[i].GetComponent<Button>().onClick.AddListener(() => GetRéponse(answerNum));
         }
     }
 
@@ -140,12 +140,15 @@ public class DialogueManager : MonoBehaviour
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.DialogueSFX);
         DialogueIndex = NextDialogueIndex;
-        _dialogPanelComponent.MainText.text = TextePrincipal();
-        _dialogPanelComponent.MainTextGO.SetActive(true);
-        TextDisplayer textDisplayer = _dialogPanelComponent.MainText.GetComponent<TextDisplayer>();
 
         // On affiche le panel de dialogue avec le nombre requis de réponse
         _dialogPanelComponent.SwitchNumberOfAnswer(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count);
+        _dialogPanelComponent.MainText.text = TextePrincipal();
+        _dialogPanelComponent.MainTextGO.SetActive(true);
+        InitDialogOptionButton();
+
+        TextDisplayer textDisplayer = _dialogPanelComponent.MainText.GetComponent<TextDisplayer>();
+
 
         if (textDisplayer != null)
         {
