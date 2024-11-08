@@ -621,9 +621,19 @@ public class DialogueManager : MonoBehaviour
                 }
 
                 break;
+            case TypeEffet.DegatsForceAme:
+                
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.Degats])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.Degats] = true;
+                        strb.Append((_clairvoyanceIconData.Damage != null)
+                            ? _clairvoyanceIconData.Damage.name
+                            : "DMG");
+                    }
+                   
+                break;
             case TypeEffet.DegatPVMax:
             case TypeEffet.DegatsBrut:
-            case TypeEffet.DegatsForceAme:
             case TypeEffet.Colere:
             case TypeEffet.AugmentFADernierDegatsSubi:
             case TypeEffet.MultiplDegat:
