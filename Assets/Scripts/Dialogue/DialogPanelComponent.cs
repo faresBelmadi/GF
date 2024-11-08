@@ -72,10 +72,10 @@ public class DialogPanelComponent : MonoBehaviour
             _reponseTextList.Clear();
             for (int i = 0; i < _reponseGO.Count; i++)
             {
-                _reponseTextList.Add(_reponseGO[i].GetComponentInChildren<TMP_Text>());
+                _reponseTextList.Add(_reponseGO[i].GetComponentInChildren<TMP_Text>(true));
             }
             _mainText = MainTextGO.GetComponent<TMP_Text>();
-            _endText = EndDialog.GetComponent<TMP_Text>();
+            _endText = EndDialog.GetComponentInChildren<TMP_Text>(true);
         }
         else // number of answer = 1
         {

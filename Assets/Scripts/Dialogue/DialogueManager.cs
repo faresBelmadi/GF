@@ -106,9 +106,9 @@ public class DialogueManager : MonoBehaviour
     {
         for (int i=0; i<_dialogPanelComponent.Reponse.Count;i++)
         {
-            _dialogPanelComponent.Reponse[i].GetComponent<Button>().onClick.RemoveAllListeners();
+            _dialogPanelComponent.Reponse[i].GetComponentInChildren<Button>(true).onClick.RemoveAllListeners();
             int answerNum = i;
-            _dialogPanelComponent.Reponse[i].GetComponent<Button>().onClick.AddListener(() => GetRéponse(answerNum));
+            _dialogPanelComponent.Reponse[i].GetComponentInChildren<Button>(true).onClick.AddListener(() => GetRéponse(answerNum));
         }
     }
 
@@ -233,7 +233,7 @@ public class DialogueManager : MonoBehaviour
                     response = "ID_DIALOGUE_NOT_IMPLEMENTED";
                 }
 
-                _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>().text = response;
+                _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>(true).text = response;
                 _dialogPanelComponent.Reponse[i].SetActive(true);
                 //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
                 if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
