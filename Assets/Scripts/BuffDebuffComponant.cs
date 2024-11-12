@@ -32,20 +32,27 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
         _buffDebuff = buffDebuff;
 
         buffName = TradManager.instance.GetTranslation(buffDebuff.idTradName, buffDebuff.Nom);
+        buffNameLabel.text = TradManager.instance.GetTranslation(buffDebuff.idTradName, buffDebuff.Nom);
         buffDescriptionLabel.text = TradManager.instance.GetTranslation(buffDebuff.idTradDescription, buffDebuff.Description);
+       
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
         //Debug.Log("enter");
         popUpPanel.SetActive(true);
-
+        //TODO temporary fix, on place la tooltip a une position définit, plutot que la scroll indefinitivement sur la droite, ce qui amene a une boucle infini si on place les buff autre part
+        GameObject posGO = GameObject.FindGameObjectsWithTag("TooltipPosition")[0];
+        if (posGO != null)
+        {
+            popUpPanel.transform.position = posGO.transform.position;
+        }
         //Erreur Critique, boucle infinie, a corriger
-        
+        /*
         if (!IsFullyVisibleFrom(popUpPanel.GetComponent<RectTransform>()))
         {
             while (!IsFullyVisibleFrom(popUpPanel.GetComponent<RectTransform>()))
                 popUpPanel.transform.Translate(-1, 0, 0);
-        }
+        }*/
     }
     private bool IsFullyVisibleFrom(RectTransform rectTransform)
     {

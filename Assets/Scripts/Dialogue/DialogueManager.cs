@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using TMPro;
@@ -47,7 +48,9 @@ public class DialogueManager : MonoBehaviour
     public BattleManager ManagerBattle;
     [Header("BuffVisualization")]
     [SerializeField]
-    private GameObject _buffBrefab;
+    private GameObject _buffPrefab;
+    [SerializeField]
+    private GameObject _effectPrefab;
     [SerializeField]
     private GameObject _buffContainer;
     [Space]
@@ -219,29 +222,33 @@ public class DialogueManager : MonoBehaviour
         {
             for (int i = 0; i < currentPossibleResponseList.Count; i++)
             {
-                string response;
-                if (!string.IsNullOrEmpty(currentPossibleResponseList[i].IdStringReponse))
+                Debug.Log("Conscience requise = " + currentPossibleResponseList[i].SeuilConscience + "\n Conscience joueur : " + GameManager.Instance.playerStat.Conscience);
+                string response = "";
+                if (GameManager.Instance.playerStat.Conscience >= currentPossibleResponseList[i].SeuilConscience)
                 {
-                    //response =
-                    //    TradManager.Instance.DialogueDictionary[currentPossibleResponseList[i].IdStringReponse][
-                    //        TradManager.Instance.IdLanguage];
-                    response = TradManager.instance.GetTranslation(currentPossibleResponseList[i].IdStringReponse,
-                        "ID_DIALOGUE_NOT_IMPLEMENTED");
-                }
-                else
-                {
-                    response = "ID_DIALOGUE_NOT_IMPLEMENTED";
-                }
+                    if (!string.IsNullOrEmpty(currentPossibleResponseList[i].IdStringReponse))
+                    {
+                        //response =
+                        //    TradManager.Instance.DialogueDictionary[currentPossibleResponseList[i].IdStringReponse][
+                        //        TradManager.Instance.IdLanguage];
+                        response = TradManager.instance.GetTranslation(currentPossibleResponseList[i].IdStringReponse,
+                            "ID_DIALOGUE_NOT_IMPLEMENTED");
+                    }
+                    else
+                    {
+                        response = "ID_DIALOGUE_NOT_IMPLEMENTED";
+                    }
+                    if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
+                    {
+                        bool[] displayed = new bool[Enum.GetValues(typeof(ClairvoyanceIconStatEnum)).Length];
+                        ShowConsequenceForAnswer(i, ref displayed);
+                    }
 
-                _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>(true).text = response;
-                _dialogPanelComponent.Reponse[i].SetActive(true);
-                //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
-                if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
-                {
-                    bool[] displayed = new bool[Enum.GetValues(typeof(ClairvoyanceIconStatEnum)).Length];
-                    ShowConsequenceForAnswer(i, ref displayed);
                 }
-            }
+                    _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>(true).text = response;
+                    _dialogPanelComponent.Reponse[i].SetActive(true);
+                    //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
+                }
         }
     }
 
@@ -736,14 +743,14 @@ public class DialogueManager : MonoBehaviour
             // Tout les buff qu'applique le dialogue
             foreach (var buffDebuff in Consequence.Buffs)
             {
-                //Affichage du buff dans le dialogue
-                Debug.Log("###Conséquence### - Ajout d'un nouveau Buff : " + buffDebuff.Nom);
-                /* Modif en attente
-                GameObject buff = Instantiate(_buffBrefab, _buffContainer.transform);
-                buff.GetComponent<BuffDebuffComponant>().InitBuffDebuff(buffDebuff);
-                _listBuffEffectFromDialog.Add(buff);
-                */
+               
 
+                GameObject buff = Instantiate(_buffPrefab, _buffContainer.transform);
+                buff.GetComponent<BuffDebuffComponant>().InitBuffDebuff(buffDebuff);
+                buff.GetComponent<BuffDebuffComponant>().buffCntLabel.text = "1";
+                buff.GetComponent<EnflateSystem>().TriggerInflation();
+                _listBuffEffectFromDialog.Add(buff);
+                
                 //Application du buff
                 if (/*ManagerBattle == null*/ManagerAlea.IsAlea)
                 {
@@ -760,7 +767,10 @@ public class DialogueManager : MonoBehaviour
             {
                 //Affichage de l'effet dans le dialogue
                 Debug.Log("###Conséquence### - Ajout d'un nouvel Effet de type : " + effet.TypeEffet.ToString());
-
+                GameObject effectGO = Instantiate(_effectPrefab, _buffContainer.transform);
+                effectGO.GetComponent<EffectComponent>().SetSprite(effet.GetSpriteOfEffect());
+                effectGO.GetComponent<EnflateSystem>().TriggerInflation();
+                _listBuffEffectFromDialog.Add(effectGO);
                 //Application de l'effet
                 if (/*ManagerBattle == null*/ ManagerAlea.IsAlea)
                 {
@@ -883,14 +893,20 @@ public class DialogueManager : MonoBehaviour
     {
         AudioManager.instance.SFX.StopPlaying();
     }
-    private void ResetIndex()
+    private void ResetDialog()
     {
         DialogueIndex = 0;
         NextDialogueIndex = 0;
+
+        for (int i = _listBuffEffectFromDialog.Count-1;i>=0;i--)
+        {
+            Destroy(_listBuffEffectFromDialog[i]);
+        }
+        _listBuffEffectFromDialog.Clear();
     }
     public void StartCombat()
     {
-        ResetIndex();
+        ResetDialog();
         AudioManager.instance.SFX.StopPlaying();
         if (GameManager.Instance.IsTuto/*TutoManager.Instance != null */)
         {
@@ -914,7 +930,7 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogueFonction()
     {
-        ResetIndex();
+        ResetDialog();
         AudioManager.instance.SFX.StopPlaying();
         GameManager.Instance.AleaMan.EndAlea();
     }
