@@ -729,13 +729,37 @@ public class Effet : ScriptableObject
                 }
             case TypeEffet.DegatsForceAme:
                 return GameManager.Instance.StatIcons.Damage;
+            case TypeEffet.MultiplDegat:
+                if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
+                {
+                    return GameManager.Instance.StatIcons.DecreaseAtk;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.IncreaseAtk;
+                }
+            case TypeEffet.MultiplSoin:
+                if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
+                {
+                    return GameManager.Instance.StatIcons.DecreaseHeal;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.IncreaseHeal;
+                }
+            case TypeEffet.MultiplDef:
+                if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
+                {
+                    return GameManager.Instance.StatIcons.DecreaseDef;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.IncreaseDef;
+                }
             case TypeEffet.DegatPVMax:
             case TypeEffet.DegatsBrut:
             case TypeEffet.Colere:
             case TypeEffet.AugmentFADernierDegatsSubi:
-            case TypeEffet.MultiplDegat:
-            case TypeEffet.MultiplSoin:
-            case TypeEffet.MultiplDef:
             case TypeEffet.ConscienceMax:
             case TypeEffet.Soin:
             case TypeEffet.SoinFA:

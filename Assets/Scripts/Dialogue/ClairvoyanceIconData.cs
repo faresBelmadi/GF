@@ -100,7 +100,21 @@ public class ClairvoyanceIconData : ScriptableObject
     private Sprite _intentionHeavyAtk;
     [SerializeField]
     private Sprite _hiddenIntention;
+    
+    [SerializeField]
+    private Sprite _increaseAtk;
+    [SerializeField]
+    private Sprite _decreaseAtk;
 
+    [SerializeField]
+    private Sprite _increaseDef;
+    [SerializeField]
+    private Sprite _decreaseDef;
+    
+    [SerializeField]
+    private Sprite _increaseHeal;
+    [SerializeField]
+    private Sprite _decreaseHeal;
 
     public Sprite Damage { get => _damage; }
     public Sprite IntentionAtk { get => _intentionAtk; }
@@ -144,4 +158,11 @@ public class ClairvoyanceIconData : ScriptableObject
     public Sprite StatVolonte { get => _statVolonte; }
     public Sprite StatVolonteUp { get => _statVolonteUp; }
     public Sprite StatVolonteDown { get => _statVolonteDown; }
+    public Sprite IncreaseAtk { get => _increaseAtk; }
+    public Sprite DecreaseAtk { get => _decreaseAtk; }
+    public Sprite IncreaseDef { get => _increaseDef; }
+    public Sprite DecreaseDef { get => _decreaseDef; }
+    public Sprite IncreaseHeal { get => _increaseHeal; }
+    public Sprite DecreaseHeal { get => _decreaseHeal; }
+
 }
