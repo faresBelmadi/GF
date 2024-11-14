@@ -250,7 +250,11 @@ public class DialogueManager : MonoBehaviour
                     }
 
                 }
-
+                else
+                {
+                    _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>(true).text = response;
+                    _dialogPanelComponent.Reponse[i].SetActive(true);
+                }
             }
         }
     }
@@ -308,6 +312,8 @@ public class DialogueManager : MonoBehaviour
     public virtual void GetRéponse(int i)
     {
         if (GameManager.Instance.IsPaused)
+            return;
+        if (GameManager.Instance.playerStat.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].SeuilConscience)
             return;
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat)
         {
