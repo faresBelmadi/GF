@@ -35,6 +35,8 @@ public class DialogPanelComponent : MonoBehaviour
     private List<GameObject> _reponseGO;
     [SerializeField]
     private GameObject _endDialogue;
+    [SerializeField]
+    private List<GameObject> _clairvContentListGO;
     [Header("Dialog references for unique option")]
     [SerializeField]
     private GameObject _mainTextOneGO;
@@ -55,6 +57,7 @@ public class DialogPanelComponent : MonoBehaviour
     public GameObject EndDialog { get => (_numberAnswer != 1) ? _endDialogue : _endOneDialogue; }
     public TMP_Text MainText { get => _mainText; }
     public TMP_Text EndText { get => _endText; }
+    public List<GameObject> ClairvContentListGO { get => _clairvContentListGO; }
 
     private int _numberAnswer = 0;
 
