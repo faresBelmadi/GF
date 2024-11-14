@@ -1,204 +1,427 @@
-﻿using System.Collections.Generic;
+﻿//using JetBrains.Annotations;
+//using System;
+//using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Linq;
+
+
+//using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
 public class Generator : MonoBehaviour
 {
-    [Header("BSP")]
-    public BSPGen config;
-
+    //[SerializeField] private RoomData roomData;
+    
     [Header("Spawned Object")]
-    public Dictionary<Vector2,GameObject> Spawned;
+    public Dictionary<Vector2,GameObject> spawnedRoomsObj;
     Dictionary<GameObject,List<GameObject>> Corridors;
 
     [Header("Spawnable")]
-    public GameObject Spawn;
-    public Transform Parent;
-    public GameObject Line;
+    [SerializeField] private GameObject roomPrefab;
+    [SerializeField] private GameObject pathPrefab;
 
 
-    [Header("Components")]
-    [SerializeField]
-    private EdgeCollider2D CrossCheck;
-    [SerializeField]
-    private RoomManager roomManager;
-    
-    
+    [Header("Rooms Display Settings")]
+    [SerializeField] private Vector2 mapAreaSize;
+    [SerializeField] private Vector2 mapAreaOffset;
+    //[SerializeField] private float spriteSize = 10f;
+
+    [Header("Map Settings"),Tooltip("Don't Add Start, Boss or Loot rooms, they are Added automaticaly.")]
+    [SerializeField] private List<TypeRoom> roomPool = new List<TypeRoom>();
+    [SerializeField] private int defaultRowSize;
+    [SerializeField] private int defaultColSize;
+    [SerializeField, Tooltip("negatif for random")] private int seed;
+
+    [Header("Forbiden connections")]
+    [SerializeField] private List<TypeRoom> illegalConnection_START= new List<TypeRoom>();
+    [SerializeField] private List<TypeRoom> illegalConnection_BOSS = new List<TypeRoom>();
+    [SerializeField] private List<TypeRoom> illegalConnection_AUTEL = new List<TypeRoom>();
+    [SerializeField] private List<TypeRoom> illegalConnection_DEFAULTS = new List<TypeRoom>();
+    [SerializeField] private List<TypeRoom> illegalConnection_ELITES = new List<TypeRoom>();
+
     private List<GameObject> Lines;
     private List<Container> ResultBsp;
 
+    private List<TypeRoom> aviableRoomPool = new List<TypeRoom>();
+    private List<MapNode> mapNodes = new List<MapNode>();
+
+    private class MapNode
+    {
+        public GameObject objectInstance;
+        public TypeRoom roomType = TypeRoom.NONE;
+        public List<int> connections = new List<int>();
+    }
     void Start()
     {
-        Spawned = new Dictionary<Vector2, GameObject>();
+        aviableRoomPool = new List<TypeRoom>(roomPool);
+        spawnedRoomsObj = new Dictionary<Vector2, GameObject>();
         Corridors = new Dictionary<GameObject, List<GameObject>>();
         Lines = new List<GameObject>();
         ResultBsp = new List<Container>();
         ButtonClick();
+
     }
     
     public void ButtonClick()
     {
         ClearGen();
-        Generate();
-        SpawnRoom();
-        //CreateCorridor(); //Keep it for the real thing
-        CreateCorridorDEMO(); //Only for demo
-        SpawnCorridor();
-        InitManager();
-        ClearUseless();
-    }
 
-    void Generate()
-    {
-        ResultBsp = config.Generate();
-    }
+        int usedSeed = seed < 0 ? Random.Range(int.MinValue, int.MaxValue) : seed;
+        Random.InitState(usedSeed);
+        Debug.Log($"Used Seed: {usedSeed}");
 
-    void SpawnRoom()
+        int elitCnt = aviableRoomPool.Where(rType => rType == TypeRoom.ELITE || rType == TypeRoom.CLASS_ELITE).Count();
+        int defaultRoomCnt = 2/*Start & Boss*/ + aviableRoomPool.Count();//Loots rooms not counted
+
+        int colSize = Mathf.Max( defaultColSize,Mathf.FloorToInt((defaultRoomCnt - 6) / defaultRowSize) +1);
+        int gridSize = defaultRowSize * colSize;
+
+        int roomCnt = gridSize + 6;
+        //int roomCnt = defaultRoomCnt;
+
+        GenerateMap(roomCnt);
+        //SpawnRoom(TypeRoom.ENCOUNTER, Vector2.zero);
+        SpawnRoom(0, roomCnt, RoomState.VISITED);
+        SpawnRoom(1, roomCnt, RoomState.ACCESSIBLE);
+        SpawnRoom(2, roomCnt, RoomState.ACCESSIBLE);
+        for (int i = 3; i < mapNodes.Count(); i++)
+        {
+            if (mapNodes[i].roomType != TypeRoom.NONE) SpawnRoom(i, roomCnt);
+        }
+        SpawnAllPaths(roomCnt);
+        ClearUseless(); // :'(
+    }
+    private void GenerateMap(int roomCnt)
     {
-        //var t2 = Instantiate(Spawn, new Vector3(0,0,0), Quaternion.identity);
-        //t2.name = "roomTest";
+        mapNodes.Clear();
+
+
+        for (int i = 0; i < roomCnt; i++)
+        {
+            mapNodes.Add(new MapNode());
+        }
+
+        //Setup Start & Boss Rooms
+        mapNodes[0].roomType = TypeRoom.START;
+        mapNodes[0].connections.Add(1);
+        mapNodes[0].connections.Add(2);
         
-        foreach (var item in ResultBsp)
+        mapNodes[roomCnt - 1].roomType = TypeRoom.BOSS;
+        mapNodes[roomCnt - 1].connections.Add(roomCnt - 2);
+        mapNodes[roomCnt - 1].connections.Add(roomCnt - 3);
+        
+        //TESTs
+        //Setup dirrect exit connected rooms (1,2, -3,-2)
+        List<TypeRoom> validFirstRooms = new List<TypeRoom>() 
         {
-            //int i = 0;
-            //bool CanSpawn = true;
-            Vector2 pos = item.Center;
-            Vector3 position = new Vector3(pos.x, pos.y, 75);
-            var t = Instantiate(Spawn, position, Quaternion.identity, Parent);
-            t.name = "room";
-            Spawned.Add(pos, t);
-        }
-    }
+            TypeRoom.ENCOUNTER, 
+            TypeRoom.CLASS_ENCOUNTER, 
+            TypeRoom.RANDOM, 
+            TypeRoom.CLASS_RANDOM 
+        };
 
-    void CreateCorridorDEMO()
-    {
-        for (var i = 0; i < ResultBsp.Count; i++)
+        List<TypeRoom> firstOptions = aviableRoomPool.Where(rType => validFirstRooms.Contains(rType)).ToList();
+        //int choosedIndex = Random.
+        mapNodes[1].roomType = firstOptions[Random.Range(0, firstOptions.Count() - 1)];
+        firstOptions.RemoveAll(rType => rType == mapNodes[1].roomType);
+        mapNodes[1].connections.Add(0);
+
+        mapNodes[2].roomType = firstOptions[Random.Range(0, firstOptions.Count() - 1)];
+        mapNodes[2].connections.Add(0);
+
+        aviableRoomPool.Remove(mapNodes[1].roomType);
+        aviableRoomPool.Remove(mapNodes[2].roomType);
+
+        mapNodes[roomCnt - 2].roomType = aviableRoomPool[Random.Range(0, aviableRoomPool.Count() - 1)];
+        mapNodes[roomCnt - 2].connections.Add(roomCnt - 1);
+        mapNodes[roomCnt - 3].roomType = aviableRoomPool[Random.Range(0, aviableRoomPool.Count() - 1)];
+        mapNodes[roomCnt - 3].connections.Add(roomCnt - 1);
+
+        aviableRoomPool.Remove(mapNodes[roomCnt - 2].roomType);
+        aviableRoomPool.Remove(mapNodes[roomCnt - 3].roomType);
+
+        //Fill Grid with Null rooms
+        for (int i = 3; i < roomCnt-3; i++)
         {
-            Spawned.TryGetValue(ResultBsp[i].Center, out GameObject obj);
-            List<GameObject> lienList = new List<GameObject>();
-            if (i + 1 < ResultBsp.Count)
+            //TEMP
+            mapNodes[i].roomType = TypeRoom.NONE;
+
+            //add Every Possible connections
+            foreach (int connectionId in GetPossibleConnections(i, roomCnt))
             {
-                Spawned.TryGetValue(ResultBsp[i + 1].Center, out GameObject nextObj);
-                lienList.Add(nextObj);
+                //Debug.Log($"{connectionId}");
+                mapNodes[i].connections.Add(connectionId);
             }
-            Corridors.Add(obj, lienList);
+
         }
-    }
 
+        //Choose Types And Connections
 
-    void CreateCorridor()
-    {
-        foreach (var item in Spawned)
+        //FILL UP AVIABLES WITH NONE
+        if (aviableRoomPool.Count < roomCnt - 6)
         {
-            var t = GetNumberCorridor();
-            List<Vector2> temp = new List<Vector2>();
-            List<Vector2> Rejected = new List<Vector2>();
-
-            for (int i = 0; temp.Count < t && i < Spawned.Count ; i++)
+            for (int i = 0; i < (roomCnt - 6) - aviableRoomPool.Count(); i++)
             {
-                Vector2 tempObject = Vector2.zero;
-                float tempDistance = 100000f;
-                foreach (var item2 in Spawned)
+                aviableRoomPool.Add(TypeRoom.NONE);
+            }
+        }
+
+        int startIndex = Random.Range(0, roomCnt - 6);
+        for (int ri = 0; ri < roomCnt - 6; ri++)
+        {
+            int i = ((ri + startIndex) % (roomCnt - 6)) + 3;
+            Debug.Log($"step {ri}, choosing for id:{i}");
+            List<TypeRoom> connectedRooms = new List<TypeRoom>();
+            foreach (int connectionId in mapNodes[i].connections)
+            {
+                if (mapNodes[connectionId].roomType != TypeRoom.NONE)
                 {
-                    if(!temp.Contains(item2.Key) && item.Value != item2.Value && !Corridors.ContainsKey(item2.Value))
-                    {
-
-                        bool angle = CheckAngle(item2.Key,item.Key,temp);
-                        bool GoThroughRoom = CheckRooms(item2.Key,item.Key);
-                        bool cross = CheckList(Corridors,item2.Key,item.Key);
-                        float dist = Vector2.Distance(item.Key,item2.Key);
-                        if(dist < tempDistance && angle && GoThroughRoom && !cross)
-                        {
-                            tempDistance = dist;
-                            tempObject = item2.Key;
-                        }
-
-                    }
+                    connectedRooms.Add(mapNodes[connectionId].roomType);
                 }
-                if(tempObject != Vector2.zero)
-                    temp.Add(tempObject);
             }
-            List<GameObject> teList = new List<GameObject>();
-            foreach (var vector in temp)
+            
+            List<TypeRoom> validRooms = GetPossibleRoomTypes(connectedRooms,aviableRoomPool);
+            
+            if (validRooms.Count() <= 0)
             {
-                GameObject te = new GameObject();
-                Spawned.TryGetValue(vector, out te);
-                teList.Add(te);
+                Debug.Log("no aviable room choice");
+                continue;
             }
-            Corridors.Add(item.Value,teList);
+            int choosedRoomId = Random.Range(0, validRooms.Count() - 1);
+            mapNodes[i].roomType = validRooms[choosedRoomId];
+            aviableRoomPool.Remove(validRooms[choosedRoomId]);
+
         }
+
+        //Delete Unchoosed Nodes
+        int antInf = 0;
+        bool morePassesNeeded = true;
+        while (morePassesNeeded && antInf <100)
+        {
+            antInf++;
+            morePassesNeeded = false;
+            for (int i = 0; i < roomCnt; i++)
+            {
+                if (mapNodes[i].roomType == TypeRoom.NONE)
+                {
+                    foreach (int startConnectionId in mapNodes[i].connections)
+                    {
+                        if (mapNodes[startConnectionId].roomType == TypeRoom.NONE) break;
+                        if (mapNodes[startConnectionId].roomType == TypeRoom.NONE) morePassesNeeded = true;
+                        foreach (int endConnectionId in mapNodes[i].connections)
+                        {
+                            if (startConnectionId == endConnectionId) continue;
+                            //if (mapNodes[endConnectionId].roomType == TypeRoom.NONE) continue;
+                            if (mapNodes[endConnectionId].roomType == TypeRoom.NONE) morePassesNeeded = true;
+                            if (!mapNodes[startConnectionId].connections.Contains(endConnectionId))
+                            {
+                                if(GetPossibleRoomTypes(
+                                    new List<TypeRoom>() { mapNodes[startConnectionId].roomType }, 
+                                    new List<TypeRoom>() { mapNodes[endConnectionId].roomType }
+                                    ).Count() > 0)
+                                {
+                                    mapNodes[startConnectionId].connections.Add(endConnectionId);
+                                }
+                                else
+                                {
+                                    Debug.Log($"Trying invalid connection: {startConnectionId}:{endConnectionId}");
+                                }
+                            }
+                        }
+                    }
+                    mapNodes[i].connections.Clear();
+                }
+            }
+        }Debug.Log(antInf);
+
+        //remove unused connections
+        for (int i = 0; i < roomCnt; i++)
+        {
+            List<int> connectionToRemove = new List<int>();
+            foreach (int connection in mapNodes[i].connections)
+            {
+                if (mapNodes[connection].roomType == TypeRoom.NONE) connectionToRemove.Add(connection);
+            }
+            foreach (int connection in connectionToRemove)
+            {
+                mapNodes[i].connections.Remove(connection);
+            }
+        }
+        ////Remove More Connections
+        //for (int i = 0; i < roomCnt; i++)
+        //{
+        //    int maxConnection = Random.Range(2, 3);
+        //    int cntToRemove = mapNodes[i].connections.Count() - maxConnection;
+        //    for (int j = 0; j < cntToRemove; j++)
+        //    {
+        //        int startingOffset = Random.Range(0, mapNodes[i].connections.Count());
+        //        for (int k = 0; k < mapNodes[i].connections.Count(); k++)
+        //        {
+        //            int idToCheck = (k + startingOffset) % mapNodes[i].connections.Count();
+        //            int connectedRoomId = mapNodes[i].connections[idToCheck];
+        //            if (mapNodes[connectedRoomId].connections.Count() > 1 && connectedRoomId != 0 && connectedRoomId != roomCnt - 1)
+        //            {
+        //                mapNodes[i].connections.RemoveAt(idToCheck);
+        //                mapNodes[connectedRoomId].connections.Remove(i);
+        //                break;
+        //            }
+        //        }
+        //    }
+        //}
+    }
+    private List<TypeRoom> GetPossibleRoomTypes(List<TypeRoom> connectedRooms, List<TypeRoom> RemainingPool)
+    {
+        List<TypeRoom> validRooms = new List<TypeRoom>(RemainingPool);
+        foreach (TypeRoom connectedRoom in connectedRooms)
+        {
+            if (connectedRoom == TypeRoom.AUTEL)
+                validRooms.RemoveAll(rType => illegalConnection_AUTEL.Contains(rType));
+            if (connectedRoom == TypeRoom.ENCOUNTER
+                || connectedRoom == TypeRoom.CLASS_ENCOUNTER
+                || connectedRoom == TypeRoom.RANDOM
+                || connectedRoom == TypeRoom.CLASS_RANDOM
+                )
+                validRooms.RemoveAll(rType => illegalConnection_DEFAULTS.Contains(rType));
+            if (connectedRoom == TypeRoom.ELITE
+                || connectedRoom == TypeRoom.CLASS_ELITE
+                )
+                validRooms.RemoveAll(rType => illegalConnection_ELITES.Contains(rType));
+        }
+        return validRooms;
     }
 
-    private bool CheckAngle(Vector2 ToCheck, Vector2 Base, List<Vector2> OtherPoints)
+    private List<int> GetPossibleConnections(int nodeIndex, int roomCnt)
     {
-        bool Checked = true;
-        foreach (var item in OtherPoints)
+        List<int> possibleConnections = new List<int>();
+        //int roomCnt = 2/*Start & Boss*/ /*+ elitCnt*/ /*Loots*/+ roomPool.Count();
+        if (nodeIndex < 3 || nodeIndex > roomCnt - 4)
         {
-            var vectorToCheck = new Vector2(ToCheck.x - Base.x,ToCheck.y - Base.y);
-            var vectorAgainst = new Vector2(item.x - Base.x, item.y - Base.y);
-            var Angle = Vector2.Angle(vectorToCheck,vectorAgainst);
-            if(Angle < 35 || Angle > 325)
-                Checked = false;
+
         }
+        else
+        {
+            //LeftNode
+            if (((nodeIndex-3) % defaultRowSize) - 1 >= 0)
+            {
+                possibleConnections.Add(nodeIndex - 1);
+            }
+
+            //RightNode
+            if (nodeIndex < roomCnt-4 && ((nodeIndex - 3) % defaultRowSize) + 1 < defaultRowSize)
+            {
+                possibleConnections.Add(nodeIndex + 1);
+            }
+
+            //TopNode
+            if(nodeIndex + defaultRowSize < roomCnt - 3)
+            {
+                possibleConnections.Add(nodeIndex + defaultRowSize);
+            }else
+            {
+                if ((nodeIndex - 3) % defaultRowSize < defaultRowSize / 2f)
+                    possibleConnections.Add(roomCnt - 3);
+                if ((nodeIndex - 3) % defaultRowSize >= defaultRowSize / 2)
+                    possibleConnections.Add(roomCnt - 2);
+            }
+
+            //BottomNode
+            if ((nodeIndex - 3) - defaultRowSize >= 0)
+            {
+                possibleConnections.Add(nodeIndex - defaultRowSize);
+            }
+            else
+            {
+                if((nodeIndex - 3) % defaultRowSize >= defaultRowSize/2)
+                    mapNodes[1].connections.Add(nodeIndex);
+                if ((nodeIndex - 3) % defaultRowSize < defaultRowSize / 2f)
+                    mapNodes[2].connections.Add(nodeIndex);
+            }
+        }
+
+        return possibleConnections;
+    }
+    private Vector2 GetPositionByIndex(int index, int roomCnt)
+    {
+        //int elitCnt = roomPool.Where(rType => rType == TypeRoom.ELITE || rType == TypeRoom.CLASS_ELITE).Count();
+        //int roomCnt = 2/*Start & Boss*/ /*+ elitCnt*/ /*Loots*/+ roomPool.Count();
+        int defaultRoomCnt = 2/*Start & Boss*/ + aviableRoomPool.Count();
+        int rowCnt = Mathf.Max(defaultColSize, Mathf.FloorToInt((defaultRoomCnt - 6) / defaultRowSize) + 1);//Mathf.FloorToInt((float)roomPool.Count() / (float)defaultRowSize);//last row will overflow
+
+
+        float verticalSpacing = mapAreaSize.y/((rowCnt+2)+1);
+        float horisontalSpacing = mapAreaSize.x/(defaultRowSize+1);
+
+        Vector2 mapCenter = new Vector2(mapAreaSize.x/2f+mapAreaOffset.x, mapAreaSize.y / 2f + mapAreaOffset.y);
+
+        if(index <3 ||  index > roomCnt - 4)
+        {
+            if(index == 0)
+            {
+                return new Vector2(mapCenter.x, mapAreaOffset.y);
+            }
+            else if(index == 1)
+            {
+                return new Vector2(mapCenter.x + horisontalSpacing, mapAreaOffset.y + verticalSpacing);
+            }
+            else if (index == 2)
+            {
+                return new Vector2(mapCenter.x - horisontalSpacing, mapAreaOffset.y + verticalSpacing);
+            }
+            else if (index == roomCnt - 1)
+            {
+                return new Vector2(mapCenter.x, mapAreaSize.y + mapAreaOffset.y);
+            }
+            else if (index == roomCnt - 2)
+            {
+                return new Vector2(mapCenter.x + horisontalSpacing, mapAreaSize.y + mapAreaOffset.y - verticalSpacing);
+            }
+            else if (index == roomCnt - 3)
+            {
+                return new Vector2(mapCenter.x - horisontalSpacing, mapAreaSize.y + mapAreaOffset.y - verticalSpacing);
+            }
+            else { return Vector2.zero; }
+        }
+        else
+        {
+            float posX = ((index-3) % defaultRowSize) * horisontalSpacing;
+            float posY = (Mathf.FloorToInt((index-3) / defaultRowSize)+2)*verticalSpacing;
+            float centeringOffset = (mapAreaSize.x / 2f) - (((defaultRowSize - 1) / 2f) * horisontalSpacing);
+
+            return new Vector2(posX + mapAreaOffset.x + centeringOffset, posY + mapAreaOffset.y);
+        }
+
+    }
+
+    void SpawnRoom(int mapIndex, int roomCnt, RoomState defaultState = RoomState.UNKNOWN)
+    {
+        TypeRoom type = mapNodes[mapIndex].roomType;
+        Vector2 pos = GetPositionByIndex(mapIndex, roomCnt);
+
+        Vector3 position = new Vector3(pos.x, pos.y, 75);
+        GameObject roomObject = Instantiate(roomPrefab, position, Quaternion.identity, transform);
+        roomObject.name = type.ToString();
+        mapNodes[mapIndex].objectInstance = roomObject;
         
-        return Checked;
+        Room room = roomObject.GetComponent<Room>();
+        room.SetRoom(type,defaultState);
+    }
+    void SpawnAllPaths(int roomCnt)
+    {
+        for (int i = 0; i < mapNodes.Count(); i++)
+        {
+            foreach (int connection in mapNodes[i].connections)
+            {
+                if(connection <= i) continue;
+                GameObject thisPath = Instantiate(pathPrefab, mapNodes[i].objectInstance.transform);
+                Vector3 startPos = GetPositionByIndex(i, roomCnt);
+                Vector3 endPos = GetPositionByIndex(connection, roomCnt);
+                Vector3[] pathPos = new Vector3[] { startPos, endPos };
+                thisPath.GetComponent<LineRenderer>().SetPositions(pathPos);
+            }
+        }
     }
     
-    private bool CheckRooms(Vector2 ToCheck, Vector2 Base)
-    {
-        bool CanSpawn = true;
-
-        Spawned.Where(c => c.Key == ToCheck).FirstOrDefault().Value.GetComponent<BoxCollider2D>().enabled = false;
-
-        RaycastHit2D hit = Physics2D.Linecast(ToCheck,Base);
-
-        foreach (var item in Spawned)
-        {
-            if(item.Key != Base && item.Key != ToCheck)
-            {
-                if(item.Key == (Vector2)hit.collider.transform.position)
-                    CanSpawn = false;
-            }
-        }
-
-        Spawned.Where(c => c.Key == ToCheck).FirstOrDefault().Value.GetComponent<BoxCollider2D>().enabled = true;
-
-        return CanSpawn;
-    }
-
-    private bool CheckList(Dictionary<GameObject,List<GameObject>> OtherPoints, Vector2 ToCheck, Vector2 BasePoint )
-    {
-        Spawned.Where(c => c.Key == ToCheck).FirstOrDefault().Value.GetComponent<BoxCollider2D>().enabled = false;
-        Spawned.Where(c => c.Key == BasePoint).FirstOrDefault().Value.GetComponent<BoxCollider2D>().enabled = false;
-
-        foreach (var item in OtherPoints)
-        {
-            foreach (var item2 in item.Value)
-            {
-                var P0 = BasePoint;
-                var P1 = ToCheck;
-                var P2 = item.Key.transform.position;
-                var P3 = item2.transform.position;
-
-                CrossCheck.SetPoints(new List<Vector2>{P2,P3});
-
-                RaycastHit2D hit = Physics2D.Linecast(P0,P1);
-
-                if(hit.transform != null && hit.transform.name == "Edge" && hit.point != P1 && hit.point != P0)
-                {
-                    Spawned.Where(c => c.Key == ToCheck).FirstOrDefault().Value.GetComponent<BoxCollider2D>().enabled = true;
-                    Spawned.Where(c => c.Key == BasePoint).FirstOrDefault().Value.GetComponent<BoxCollider2D>().enabled = true;
-                    return true;
-                }
-            }
-        }
-        
-        Spawned.Where(c => c.Key == ToCheck).FirstOrDefault().Value.GetComponent<BoxCollider2D>().enabled = true;
-        Spawned.Where(c => c.Key == BasePoint).FirstOrDefault().Value.GetComponent<BoxCollider2D>().enabled = true;
-
-        return false;
-    }
-
     private int GetNumberCorridor()
     {
         int randResult = UnityEngine.Random.Range(0,100);
@@ -209,45 +432,6 @@ public class Generator : MonoBehaviour
             return 2;
         else
             return 3;
-    }
-    
-    private void SpawnCorridor()
-    {
-        foreach (var item in Corridors)
-        {
-            foreach (var item2 in item.Value)
-            {
-                if(item2 != null)
-                {
-                    var temp = item.Key.transform.position;
-                    Vector3 Start = new Vector3(temp.x, temp.y, 75);
-                    var l = Instantiate(Line, Start, Quaternion.identity,item.Key.transform);
-                    l.name = "corridor";
-                    var temp2 = item2.transform.position;
-                    Vector3 End = new Vector3(temp2.x, temp2.y, 75);
-                    var lineRenderer = l.GetComponent<LineRenderer>();
-                    //lineRenderer.useWorldSpace = false;
-                    lineRenderer.SetPosition(0,Start);
-                    lineRenderer.SetPosition(1,End);
-                    //lineRenderer.positionCount = 10;
-                    var dottedLine = l.GetComponent<DottedLineRenderer>();
-                    if (dottedLine != null) 
-                        dottedLine.ScaleMaterial();
-                    if ((Vector2)item2.transform.position != Vector2.zero)
-                    {
-                        Lines.Add(l);
-                        item.Key.GetComponent<Room>().OwnedCorridors.Add(l);
-                        item2.GetComponent<Room>().OwnedCorridors.Add(l);
-                        if(!item.Key.GetComponent<Room>().ConnectedRooms.Contains(item2.GetComponent<Room>()))
-                            item.Key.GetComponent<Room>().ConnectedRooms.Add(item2.GetComponent<Room>());
-                        if(!item2.GetComponent<Room>().ConnectedRooms.Contains(item.Key.GetComponent<Room>()))
-                            item2.GetComponent<Room>().ConnectedRooms.Add(item.Key.GetComponent<Room>());
-                    }
-                    else
-                        Destroy(l);
-                }
-            }
-        }
     }
 
     //public void AddLineConnection(MapNode from, MapNode to)
@@ -282,23 +466,23 @@ public class Generator : MonoBehaviour
     {
         List<Room> ToInit = new List<Room>();
 
-        foreach (var item in Spawned)
+        foreach (var item in spawnedRoomsObj)
         {
             var room = item.Value.GetComponent<Room>();
             ToInit.Add(room);
         }
 
         ToInit[0].isStart = true;
-        roomManager.Init(ToInit);
+        //roomManager.Init(ToInit);
     }
 
     void ClearGen()
     {
-        foreach (var item in Spawned)
+        foreach (var item in spawnedRoomsObj)
         {
             Destroy(item.Value);
         }
-        Spawned.Clear();
+        spawnedRoomsObj.Clear();
         
         foreach (var item in Lines)
         {

@@ -4,46 +4,68 @@ using UnityEngine;
 public class RoomData : ScriptableObject
 {
 
-    [SerializeField] private Sprite _salleCombatBoss;
-    [SerializeField] private string _salleCombatBossLabel;
+    [SerializeField] private Sprite _spriteUNKNOWN;
+    [SerializeField] private string _labelUNKNOWN;
     [Space]
-    [SerializeField] private Sprite _salleCombatElite;
-    [SerializeField] private string _salleCombatEliteLabel;
+    [SerializeField] private Sprite _spriteSTART;
+    [SerializeField] private string _labelSTART;
     [Space]
-    [SerializeField] private Sprite _salleCombatNormal;
-    [SerializeField] private string _salleCombatNormalLabel;
+    [SerializeField] private Sprite _spriteLOOT;
+    [SerializeField] private string _labelLOOT;
     [Space]
-    [SerializeField] private Sprite _salleLevelUp;
-    [SerializeField] private string _salleLevelUpLabel;
+    [SerializeField] private Sprite _spriteAUTEL;
+    [SerializeField] private string _labelAUTEL;
     [Space]
-    [SerializeField] private Sprite _salleHeal;
-    [SerializeField] private string _salleHealLabel;
+    [SerializeField] private Sprite _spriteRANDOM;
+    [SerializeField] private string _labelRANDOM;
     [Space]
-    [SerializeField] private Sprite _salleAlea;
-    [SerializeField] private string _salleAleaLabel;
+    [SerializeField] private Sprite _spriteCLASSRANDOM;
+    [SerializeField] private string _labelCLASSRANDOM;
     [Space]
-    [SerializeField] private Sprite _salleStart;
-    [SerializeField] private string _salleStartLabel;
+    [SerializeField] private Sprite _spriteENCOUNTER;
+    [SerializeField] private string _labelENCOUNTER;
     [Space]
-    [SerializeField] private Sprite _salleEnd;
-    [SerializeField] private string _salleEndLabel;
+    [SerializeField] private Sprite _spriteCLASSENCOUNTER;
+    [SerializeField] private string _labelCLASSENCOUNTER;
+    [Space]
+    [SerializeField] private Sprite _spriteELITE;
+    [SerializeField] private string _labelELITE;
+    [Space]
+    [SerializeField] private Sprite _spriteCLASSELITE;
+    [SerializeField] private string _labelCLASSELITE;
+    [Space]
+    [SerializeField] private Sprite _spriteBOSS;
+    [SerializeField] private string _labelBOSS;
+    [Space]
+    [SerializeField] private Sprite _spriteEXIT;
+    [SerializeField] private string _labelEXIT;
 
 
-    public Sprite SalleCombatBoss { get => _salleCombatBoss; }
-    public Sprite SalleCombatElite { get => _salleCombatElite; }
-    public Sprite SalleCombatNormal { get => _salleCombatNormal; }
-    public Sprite SalleLevelUp { get => _salleLevelUp; }
-    public Sprite SalleHeal { get => _salleHeal; }
-    public Sprite SalleAlea { get => _salleAlea; }
-    public Sprite SalleStart { get => _salleStart; }
-    public Sprite SalleEnd { get => _salleEnd; }
+    public Sprite spriteUnkown { get => _spriteUNKNOWN; }
+    public Sprite spriteStart { get => _spriteSTART; }
+    public Sprite spriteLoot { get => _spriteLOOT; }
+    public Sprite spriteAutel { get => _spriteAUTEL; }
+    public Sprite spriteRandom { get => _spriteRANDOM; }
+    public Sprite spriteClassRandom { get => _spriteCLASSRANDOM; }
+    public Sprite spriteEncounter { get => _spriteENCOUNTER; }
+    public Sprite spriteClassEncounter { get => _spriteCLASSENCOUNTER; }
+    public Sprite spriteElite { get => _spriteELITE; }
+    public Sprite spriteClassElite { get => _spriteCLASSELITE; }
+    public Sprite spriteBoss { get => _spriteBOSS; }
+    public Sprite spriteExit { get => _spriteEXIT; }
 
-    public string SalleCombatBossLabel { get => _salleCombatBossLabel; }
-    public string SalleCombatEliteLabel { get => _salleCombatEliteLabel; }
-    public string SalleCombatNormalLabel { get => _salleCombatNormalLabel; }
-    public string SalleLevelUpLabel { get => _salleLevelUpLabel; }
-    public string SalleHealLabel { get => _salleHealLabel; }
-    public string SalleAleaLabel { get => _salleAleaLabel; }
-    public string SalleStartLabel { get => _salleStartLabel; }
-    public string SalleEndLabel { get => _salleEndLabel; }
+
+    public string labelUnkown { get => _labelUNKNOWN; }
+    public string labelStart { get => _labelSTART; }
+    public string labelLoot { get => _labelLOOT; }
+    public string labelAutel { get => _labelAUTEL; }
+    public string labelRandom { get => _labelRANDOM; }
+    public string labelClassRandom { get => _labelCLASSRANDOM; }
+    public string labelEncounter { get => _labelENCOUNTER; }
+    public string labelClassEncounter { get => _labelCLASSENCOUNTER; }
+    public string labelElite { get => _labelELITE; }
+    public string labelClassElite { get => _labelCLASSELITE; }
+    public string labelBoss { get => _labelBOSS; }
+    public string labelExit { get => _labelEXIT; }
+
 }   

@@ -33,13 +33,14 @@ public class PlayerMapManager : MonoBehaviour
     private void VisualUpdateNew()
     {
         //_currentRoom.GetComponent<SpriteRenderer>().color = Color.white;
-        _currentRoom.ChangeColor(Color.white);
-        foreach (var item in _currentRoom.ConnectedRooms)
-        {
-            item.isNavigable = true;
-            //item.GetComponent<SpriteRenderer>().color = Color.white;
-            item.ChangeColor(Color.white);
-        }
+        //_currentRoom.ChangeColor(Color.white);
+        _currentRoom.SetColorByState(_currentRoom.roomState);
+        //foreach (var item in _currentRoom.ConnectedRooms)
+        //{
+        //    item.isNavigable = true;
+        //    //item.GetComponent<SpriteRenderer>().color = Color.white;
+        //    item.ChangeColor(Color.white);
+        //}
         foreach (var item in _currentRoom.OwnedCorridors)
         {
             SetLineColor(item, Color.white);
@@ -51,13 +52,14 @@ public class PlayerMapManager : MonoBehaviour
     {
         if (_currentRoom != null)
         {
-            _currentRoom.Type = TypeRoom.Visited;
+            _currentRoom.roomState = RoomState.VISITED;
+            _currentRoom.SetColorByState(_currentRoom.roomState);
             //_currentRoom.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            _currentRoom.ChangeColor(Color.gray);
-            foreach (var item in _currentRoom.ConnectedRooms)
-            {
-                item.isNavigable = false;
-            }
+            //_currentRoom.ChangeColor(Color.gray);
+            //foreach (var item in _currentRoom.ConnectedRooms)
+            //{
+            //    item.isNavigable = false;
+            //}
             foreach (var item in _currentRoom.OwnedCorridors)
             {
                 SetLineColor(item, Color.gray);
@@ -81,41 +83,41 @@ public class PlayerMapManager : MonoBehaviour
 
     private void MapAction()
     {
-        switch (_currentRoom.Type)
+        switch (_currentRoom.roomType)
         {
-            case TypeRoom.CombatNormal:
+            case TypeRoom.ENCOUNTER:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
                 StartBattle("normal");
-                _currentRoom.Type = TypeRoom.Visited;
+                _currentRoom.roomState = RoomState.VISITED;
                 break;
-            case TypeRoom.CombatElite:
+            case TypeRoom.ELITE:
                 StartBattle("elite");
-                _currentRoom.Type = TypeRoom.Visited;
+                _currentRoom.roomState = RoomState.VISITED;
                 break;
-            case TypeRoom.CombatBoss:
+            case TypeRoom.BOSS:
                 StartBattle("boss");
-                _currentRoom.Type = TypeRoom.Visited;
+                _currentRoom.roomState = RoomState.VISITED;
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
                 break;
-            case TypeRoom.End:
+            case TypeRoom.EXIT:
                 SceneManager.LoadScene("MainMenu");
                 Destroy(GameManager.Instance.gameObject);
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
                 break;
-            case TypeRoom.LevelUp:
-                StartLevelUp();
-                break;
-            case TypeRoom.Autel:
+            //case TypeRoom.LevelUp:
+            //    StartLevelUp();
+            //    break;
+            case TypeRoom.AUTEL:
                 StartAutel();
-                _currentRoom.Type = TypeRoom.Visited;
+                _currentRoom.roomState = RoomState.VISITED;
                 break;
             //StartAutel();
             //case TypeRoom.Heal:
             //    StartCoroutine("LoadSceneAsync", "Autel");
             //    break;
-            case TypeRoom.Event:
+            case TypeRoom.RANDOM:
                 StartAlea();
-                _currentRoom.Type = TypeRoom.Visited;
+                _currentRoom.roomState = RoomState.VISITED;
                 break;
             //case TypeRoom.Visited:
             //    break;
