@@ -42,6 +42,7 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         HideGlossary();
+        GameManager.Instance.IsPaused = true;
         _pageShowed = 0;
         _pauseMenuAnimator.SetTrigger("Show");
          Time.timeScale = 0f;
@@ -50,6 +51,7 @@ public class PauseMenu : MonoBehaviour
     public void Unpause()
     {
         HideGlossary();
+        GameManager.Instance.IsPaused = false;
         _pauseMenuAnimator.SetTrigger("Hide");
         Time.timeScale = 1f;
         _isPaused = false;

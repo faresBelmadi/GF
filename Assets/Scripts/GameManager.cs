@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour {
     public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
 
     public bool IsTuto { get; private set; }
+    public bool IsPaused { get; set; } = false;
     public DialogueManager DialManager
     {
         get

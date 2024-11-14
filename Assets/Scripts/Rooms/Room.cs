@@ -69,7 +69,7 @@ public class Room : MonoBehaviour
         _roomObject.GetComponent<SpriteRenderer>().color = color;
     }
     private void OnMouseEnter() {
-        if(isNavigable || type == TypeRoom.Visited)
+        if (!GameManager.Instance.IsPaused && (isNavigable || type == TypeRoom.Visited))
         {
             var scale = new Vector3(oldScale.x * 2,oldScale.y * 2,oldScale.z);
             _roomObject.transform.localScale = scale;
@@ -78,7 +78,7 @@ public class Room : MonoBehaviour
     }
 
     private void OnMouseExit() {
-        if(isNavigable || type == TypeRoom.Visited)
+        if (!GameManager.Instance.IsPaused && (isNavigable || type == TypeRoom.Visited))
         {
             var scale = oldScale;
             
@@ -87,7 +87,7 @@ public class Room : MonoBehaviour
     }
 
     private void OnMouseDown() {
-        if(isNavigable || type == TypeRoom.Visited)
+        if(!GameManager.Instance.IsPaused && ( isNavigable || type == TypeRoom.Visited))
         {
             if (type == TypeRoom.CombatBoss || type == TypeRoom.CombatElite || type == TypeRoom.CombatNormal)
             {
