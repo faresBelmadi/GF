@@ -9,7 +9,7 @@ public class PauseMenuGraphicsOption : MonoBehaviour
     [SerializeField]
     private TMP_Dropdown _resolutionDropdown;
     [SerializeField]
-    private Toggle _windowedToggle;
+    private Toggle _fullscreenToggle;
    
     public void ApplyResolution()
     {
@@ -29,7 +29,7 @@ public class PauseMenuGraphicsOption : MonoBehaviour
                 height = 1080;
                 break;
         }
-        Debug.Log("Set resolution to" + width + " x " + height + " in " + (_windowedToggle.isOn ? "windowed" : "fullscreen"));
-        Screen.SetResolution(width, height, _windowedToggle.isOn);
+        Debug.Log("Set resolution to" + width + " x " + height + " in " + (_fullscreenToggle.isOn ? "fullscreen" : "windowed"));
+        Screen.SetResolution(width, height, _fullscreenToggle.isOn);
     }
 }
