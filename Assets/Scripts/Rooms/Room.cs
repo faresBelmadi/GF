@@ -48,8 +48,17 @@ public class Room : MonoBehaviour
     private GameObject _roomObject;
     [SerializeField]
     private TMP_Text _roomText;
-    
+
+    private string _labelID;
     private Vector3 oldScale;
+    private void OnEnable()
+    {
+        TradManager.OnRefreshTranslation += RefreshLabel;
+    }
+    private void OnDisable()
+    {
+        TradManager.OnRefreshTranslation -= RefreshLabel;
+    }
     private void Start() 
     {
         oldScale = _roomObject.transform.localScale;
@@ -60,9 +69,14 @@ public class Room : MonoBehaviour
         _roomObject.GetComponent<SpriteRenderer>().sprite = ToSet;
         //this.GetComponent<Image>().sprite = ToSet;
     }
-    public void SetLabel(string text)
+    public void SetLabelID(string labelID)
     {
-        _roomText.text = text;
+        _labelID = labelID;
+        RefreshLabel();
+    }
+    private void RefreshLabel()
+    {
+        _roomText.text = TradManager.instance.GetTranslation(_labelID);
     }
     public void ChangeColor(Color color)
     {

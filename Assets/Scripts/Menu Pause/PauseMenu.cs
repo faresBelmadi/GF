@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,6 +19,8 @@ public class PauseMenu : MonoBehaviour
     private Button _nextButton;
     [SerializeField]
     private Button _prevButton;
+    [SerializeField]
+    private GameObject _optionPanel;
 
     private bool _isPaused = false;
 
@@ -51,13 +54,24 @@ public class PauseMenu : MonoBehaviour
     public void Unpause()
     {
         HideGlossary();
+        HideOptions();
         GameManager.Instance.IsPaused = false;
         _pauseMenuAnimator.SetTrigger("Hide");
         Time.timeScale = 1f;
         _isPaused = false;
     }
+    public void ShowOptions()
+    {
+        _glossaryHolder.SetActive(false);
+        _optionPanel.SetActive(true);
+    }
+    public void HideOptions()
+    {
+        _optionPanel.SetActive(false);
+    }
     public void ShowGlossary()
     {
+        HideOptions();
         _glossaryHolder.SetActive(true);
         ShowSelectedGlossaryPage(_pageShowed);
     }
@@ -89,5 +103,13 @@ public class PauseMenu : MonoBehaviour
     public void PreviousPage()
     {
         ShowSelectedGlossaryPage(_pageShowed - 1);
+    }
+    public void QuitGame()
+    {
+#if UNITY_EDITOR
+        EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
     }
 }

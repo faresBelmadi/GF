@@ -61,6 +61,12 @@ public class TradManager : MonoBehaviour
         _analyzer = GetComponent<Analyzer>();
     }
 
+    public void SetLanguage(SUPPORTEDLANGUAGES idLanguage)
+    {
+        PlayerPrefs.SetInt("Lang", (int)idLanguage);
+        RefreshTranslation();
+    }
+
     public void RefreshTranslation()
     {
         OnRefreshTranslation?.Invoke();
