@@ -103,7 +103,7 @@ public class GamePanelManager : MonoBehaviour
     {
         //TEMP
         _characterBehavior.ToggleVisibility(false);
-        _cloudCharacter.SetActive(false);
+       _cloudCharacter.SetActive(false);
         // _canvaMap.SetActive(false);
 
         _canvaAutel.SetActive(true);
