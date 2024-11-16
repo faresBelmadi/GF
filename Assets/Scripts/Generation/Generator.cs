@@ -1,8 +1,13 @@
 ﻿//using JetBrains.Annotations;
 //using System;
 //using System.CodeDom.Compiler;
+using JetBrains.Annotations;
+using Synapse.Runtime.Debug;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Security.Cryptography;
+
 
 
 //using UnityEditor;
@@ -31,7 +36,7 @@ public class Generator : MonoBehaviour
     [SerializeField] private List<TypeRoom> roomPool = new List<TypeRoom>();
     [SerializeField] private int defaultRowSize;
     [SerializeField] private int defaultColSize;
-    [SerializeField, Tooltip("negatif for random")] private int seed;
+    [SerializeField, Tooltip("0 for random")] private int seed;
 
     [Header("Forbiden connections")]
     [SerializeField] private List<TypeRoom> illegalConnection_START= new List<TypeRoom>();
@@ -67,7 +72,7 @@ public class Generator : MonoBehaviour
     {
         ClearGen();
 
-        int usedSeed = seed < 0 ? Random.Range(int.MinValue, int.MaxValue) : seed;
+        int usedSeed = seed == 0 ? Random.Range(int.MinValue, int.MaxValue) : seed;
         Random.InitState(usedSeed);
         Debug.Log($"Used Seed: {usedSeed}");
 
@@ -122,20 +127,25 @@ public class Generator : MonoBehaviour
         };
 
         List<TypeRoom> firstOptions = aviableRoomPool.Where(rType => validFirstRooms.Contains(rType)).ToList();
-        //int choosedIndex = Random.
+
         mapNodes[1].roomType = firstOptions[Random.Range(0, firstOptions.Count() - 1)];
-        firstOptions.RemoveAll(rType => rType == mapNodes[1].roomType);
+        HandleLootRooms(mapNodes[1].roomType,1);
         mapNodes[1].connections.Add(0);
 
+        firstOptions.RemoveAll(rType => rType == mapNodes[1].roomType);
+
         mapNodes[2].roomType = firstOptions[Random.Range(0, firstOptions.Count() - 1)];
+        HandleLootRooms(mapNodes[2].roomType, 2);
         mapNodes[2].connections.Add(0);
 
         aviableRoomPool.Remove(mapNodes[1].roomType);
         aviableRoomPool.Remove(mapNodes[2].roomType);
 
         mapNodes[roomCnt - 2].roomType = aviableRoomPool[Random.Range(0, aviableRoomPool.Count() - 1)];
+        HandleLootRooms(mapNodes[roomCnt - 2].roomType, roomCnt - 2);
         mapNodes[roomCnt - 2].connections.Add(roomCnt - 1);
         mapNodes[roomCnt - 3].roomType = aviableRoomPool[Random.Range(0, aviableRoomPool.Count() - 1)];
+        HandleLootRooms(mapNodes[roomCnt - 3].roomType, roomCnt - 3);
         mapNodes[roomCnt - 3].connections.Add(roomCnt - 1);
 
         aviableRoomPool.Remove(mapNodes[roomCnt - 2].roomType);
@@ -147,93 +157,198 @@ public class Generator : MonoBehaviour
             //TEMP
             mapNodes[i].roomType = TypeRoom.NONE;
 
+        }
+
+        for (int i = 0; i < roomCnt; i++)
+        {
             //add Every Possible connections
             foreach (int connectionId in GetPossibleConnections(i, roomCnt))
             {
                 //Debug.Log($"{connectionId}");
                 mapNodes[i].connections.Add(connectionId);
             }
-
         }
 
         //Choose Types And Connections
+        Debug.Log($"RoomCnt: {roomCnt}");
+        Debug.Log($"aviable Rooms Cnt0: {aviableRoomPool.Count()}");
 
         //FILL UP AVIABLES WITH NONE
-        if (aviableRoomPool.Count < roomCnt - 6)
+        if (aviableRoomPool.Count() < roomCnt - 6)
         {
-            for (int i = 0; i < (roomCnt - 6) - aviableRoomPool.Count(); i++)
+            for (int i = aviableRoomPool.Count(); i < (roomCnt - 6) ; i++)
             {
                 aviableRoomPool.Add(TypeRoom.NONE);
             }
         }
+        
+        Debug.Log($"aviable Rooms Cnt1: {aviableRoomPool.Count()}");
 
         int startIndex = Random.Range(0, roomCnt - 6);
         for (int ri = 0; ri < roomCnt - 6; ri++)
         {
             int i = ((ri + startIndex) % (roomCnt - 6)) + 3;
+
+            if (mapNodes[i].roomType != TypeRoom.NONE)
+            {
+                Debug.Log("RoomAlreadySet");
+                continue;
+            }
+
             Debug.Log($"step {ri}, choosing for id:{i}");
-            List<TypeRoom> connectedRooms = new List<TypeRoom>();
+            List<TypeRoom> nonEmptyconnectedRooms = new List<TypeRoom>();
             foreach (int connectionId in mapNodes[i].connections)
             {
                 if (mapNodes[connectionId].roomType != TypeRoom.NONE)
                 {
-                    connectedRooms.Add(mapNodes[connectionId].roomType);
+                    nonEmptyconnectedRooms.Add(mapNodes[connectionId].roomType);
                 }
             }
             
-            List<TypeRoom> validRooms = GetPossibleRoomTypes(connectedRooms,aviableRoomPool);
+            List<TypeRoom> validRooms = GetPossibleRoomTypes(nonEmptyconnectedRooms, aviableRoomPool);
             
             if (validRooms.Count() <= 0)
             {
-                Debug.Log("no aviable room choice");
+                Debug.Log($"no aviable room choice for room at pos {i}");
+                Debug.Log("choice Remaining:");
+                foreach (TypeRoom room in aviableRoomPool)
+                {
+                    Debug.Log(room);
+                }
+                Debug.Log("Connections:");
+                foreach (TypeRoom room in nonEmptyconnectedRooms)
+                {
+                    Debug.Log(room);
+                }
                 continue;
             }
+
             int choosedRoomId = Random.Range(0, validRooms.Count() - 1);
+            HandleLootRooms(validRooms[choosedRoomId],i);
+            Debug.Log($"room choosed:{validRooms[choosedRoomId].ToString()}");
             mapNodes[i].roomType = validRooms[choosedRoomId];
             aviableRoomPool.Remove(validRooms[choosedRoomId]);
 
         }
 
-        //Delete Unchoosed Nodes
-        int antInf = 0;
-        bool morePassesNeeded = true;
-        while (morePassesNeeded && antInf <100)
+        //Interconnect between Unchoosed Nodes
+        for (int i = 0; i < roomCnt; i++)
         {
-            antInf++;
-            morePassesNeeded = false;
-            for (int i = 0; i < roomCnt; i++)
+            List<int> interco = new List<int>();
+            if (mapNodes[i].roomType == TypeRoom.NONE)
             {
-                if (mapNodes[i].roomType == TypeRoom.NONE)
+                Debug.Log($"Interconnection for {i}:");
+                interco = GetAllInterconnections(i,new List<int>());
+
+            }
+            foreach (int con in interco)
+            {
+                Debug.Log(con);
+            }
+
+            foreach (int source in interco)
+            {
+                foreach (int dest in interco)
                 {
-                    foreach (int startConnectionId in mapNodes[i].connections)
+                    if (source == dest) continue;
+                    if (GetPossibleRoomTypes(
+                            new List<TypeRoom>() { mapNodes[source].roomType },
+                            new List<TypeRoom>() { mapNodes[dest].roomType }
+                            ).Count() > 0)
                     {
-                        if (mapNodes[startConnectionId].roomType == TypeRoom.NONE) break;
-                        if (mapNodes[startConnectionId].roomType == TypeRoom.NONE) morePassesNeeded = true;
-                        foreach (int endConnectionId in mapNodes[i].connections)
+                        if (!mapNodes[source].connections.Contains(dest))
                         {
-                            if (startConnectionId == endConnectionId) continue;
-                            //if (mapNodes[endConnectionId].roomType == TypeRoom.NONE) continue;
-                            if (mapNodes[endConnectionId].roomType == TypeRoom.NONE) morePassesNeeded = true;
-                            if (!mapNodes[startConnectionId].connections.Contains(endConnectionId))
-                            {
-                                if(GetPossibleRoomTypes(
-                                    new List<TypeRoom>() { mapNodes[startConnectionId].roomType }, 
-                                    new List<TypeRoom>() { mapNodes[endConnectionId].roomType }
-                                    ).Count() > 0)
-                                {
-                                    mapNodes[startConnectionId].connections.Add(endConnectionId);
-                                }
-                                else
-                                {
-                                    Debug.Log($"Trying invalid connection: {startConnectionId}:{endConnectionId}");
-                                }
-                            }
+                            mapNodes[source].connections.Add(dest);
+                        }
+                        if (!mapNodes[dest].connections.Contains(source))
+                        {
+                            mapNodes[dest].connections.Add(source);
                         }
                     }
-                    mapNodes[i].connections.Clear();
+                    else
+                    {
+                        Debug.Log($"Trying invalid connection: {source}:{dest}");
+                    }
                 }
             }
-        }Debug.Log(antInf);
+        }
+
+        //Clear all Unchoused Connections
+        for (int i = 0; i < roomCnt; i++)
+        {
+            List<int> interco = new List<int>();
+            if (mapNodes[i].roomType == TypeRoom.NONE)
+            {
+                //foreach (int connectedRoomId in mapNodes[i].connections)
+                //{
+                //    mapNodes[connectedRoomId].connections.Remove(i);
+                //}
+
+                mapNodes[i].connections.Clear();
+            }
+        }
+
+        //int antInf = 0;
+        //bool morePassesNeeded = true;
+        //while (morePassesNeeded && antInf <100)
+        //{
+        //    antInf++;
+        //    morePassesNeeded = false;
+        //    for (int i = 0; i < roomCnt; i++)
+        //    {
+        //        if (mapNodes[i].roomType == TypeRoom.NONE)
+        //        {
+        //            //NEXT: TRY ADDING ALL NONESTART CONNECTION TO SELF AND EMPTY NONSTART
+        //            //Fuse connected None Room
+        //            List<int> connectionsToAdd = new List<int>();
+        //            foreach (int startConnectionId in mapNodes[i].connections)
+        //            {
+        //                if (mapNodes[startConnectionId].roomType == TypeRoom.NONE)
+        //                {
+        //                    foreach (int endConnectionId in mapNodes[startConnectionId].connections)
+        //                    {
+        //                        connectionsToAdd.Add(endConnectionId);
+        //                    }
+        //                }
+        //            }
+        //            foreach (int idToAdd in connectionsToAdd)
+        //            {
+        //                mapNodes[i].connections.Add(idToAdd);
+        //            }
+
+        //            foreach (int startConnectionId in mapNodes[i].connections)
+        //            {
+        //                if (mapNodes[startConnectionId].roomType == TypeRoom.NONE) break;
+        //                //if (mapNodes[startConnectionId].roomType == TypeRoom.NONE) morePassesNeeded = true;
+        //                foreach (int endConnectionId in mapNodes[i].connections)
+        //                {
+        //                    if (startConnectionId == endConnectionId) continue;
+        //                    //if (mapNodes[endConnectionId].roomType == TypeRoom.NONE) continue;
+        //                    //if (mapNodes[endConnectionId].roomType == TypeRoom.NONE) morePassesNeeded = true;
+        //                    if (GetPossibleRoomTypes(
+        //                            new List<TypeRoom>() { mapNodes[startConnectionId].roomType },
+        //                            new List<TypeRoom>() { mapNodes[endConnectionId].roomType }
+        //                            ).Count() > 0)
+        //                    {
+        //                        if (!mapNodes[startConnectionId].connections.Contains(endConnectionId))
+        //                        {
+        //                            mapNodes[startConnectionId].connections.Add(endConnectionId);
+        //                        }
+        //                        if (!mapNodes[endConnectionId].connections.Contains(startConnectionId))
+        //                        {
+        //                            mapNodes[endConnectionId].connections.Add(startConnectionId);
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        Debug.Log($"Trying invalid connection: {startConnectionId}:{endConnectionId}");
+        //                    }
+        //                }
+        //            }
+        //            mapNodes[i].connections.Clear();
+        //        }
+        //    }
+        //}Debug.Log(antInf);
 
         //remove unused connections
         for (int i = 0; i < roomCnt; i++)
@@ -242,12 +357,17 @@ public class Generator : MonoBehaviour
             foreach (int connection in mapNodes[i].connections)
             {
                 if (mapNodes[connection].roomType == TypeRoom.NONE) connectionToRemove.Add(connection);
+                if (mapNodes[connection].roomType == TypeRoom.LOOT)
+                {
+                    if (mapNodes[connection].connections[0] != i) connectionToRemove.Add(connection);
+                }
             }
             foreach (int connection in connectionToRemove)
             {
                 mapNodes[i].connections.Remove(connection);
             }
         }
+
         ////Remove More Connections
         //for (int i = 0; i < roomCnt; i++)
         //{
@@ -270,6 +390,50 @@ public class Generator : MonoBehaviour
         //    }
         //}
     }
+    private void HandleLootRooms(TypeRoom roomType, int elitIndex)
+    {
+        if (roomType == TypeRoom.ELITE || roomType == TypeRoom.CLASS_ELITE)
+        {
+            int idOffset = Random.Range(0, mapNodes[elitIndex].connections.Count() - 1);
+            for (int j = 0; j < mapNodes[elitIndex].connections.Count() - 1; j++)
+            {
+                int usedId = mapNodes[elitIndex].connections[(j + idOffset) % mapNodes[elitIndex].connections.Count()];
+                if (mapNodes[usedId].roomType == TypeRoom.NONE)
+                {
+                    mapNodes[usedId].roomType = TypeRoom.LOOT;
+                    mapNodes[usedId].connections = new List<int>() { elitIndex };
+                    break;
+                }
+                else
+                {
+                    Debug.Log("No Room for loot");
+                }
+            }
+
+        }
+    }
+
+    private List<int> GetAllInterconnections(int rootId, List<int> idToIgnore)
+    {
+        idToIgnore.Add(rootId);
+        List<int> interconnection = new List<int>();
+        for(int i = 0; i < mapNodes[rootId].connections.Count(); i++)
+        {
+            int idToCheck = mapNodes[rootId].connections[i];
+            if (idToIgnore.Contains(idToCheck)) continue;
+            if (mapNodes[idToCheck].roomType != TypeRoom.NONE)
+            {
+                interconnection.Add(idToCheck);
+                idToIgnore.Add(idToCheck);
+            }
+            else
+            {
+                interconnection.AddRange(GetAllInterconnections(idToCheck, idToIgnore));
+            }
+        }
+        return interconnection;
+    }
+
     private List<TypeRoom> GetPossibleRoomTypes(List<TypeRoom> connectedRooms, List<TypeRoom> RemainingPool)
     {
         List<TypeRoom> validRooms = new List<TypeRoom>(RemainingPool);
@@ -297,7 +461,36 @@ public class Generator : MonoBehaviour
         //int roomCnt = 2/*Start & Boss*/ /*+ elitCnt*/ /*Loots*/+ roomPool.Count();
         if (nodeIndex < 3 || nodeIndex > roomCnt - 4)
         {
+            if (nodeIndex == 1)
+            {
+                for (int i = 0; i < Mathf.CeilToInt(defaultRowSize / 2f); i++)
+                {
+                    possibleConnections.Add(i + 3);
+                }
+            }
+            if (nodeIndex == 2)
+            {
+                for (int i = defaultRowSize / 2; i < defaultRowSize; i++)
+                {
+                    possibleConnections.Add(i + 3);
+                }
+            }
 
+            //Not used: Only LargerConnection Is Used --NOT FINISHED--
+            //if (nodeIndex == roomCnt-2)
+            //{
+            //    for (int i = ; i < ; i++)
+            //    {
+            //        
+            //    }
+            //}
+            //if (nodeIndex == roomCnt - 3)
+            //{
+            //    for (int i = (roomCnt-3)-defaultRowSize; i < roomCnt-3; i++)
+            //    {
+            //        possibleConnections.Add(i);
+            //    }
+            //}
         }
         else
         {
@@ -317,7 +510,8 @@ public class Generator : MonoBehaviour
             if(nodeIndex + defaultRowSize < roomCnt - 3)
             {
                 possibleConnections.Add(nodeIndex + defaultRowSize);
-            }else
+            }
+            else
             {
                 if ((nodeIndex - 3) % defaultRowSize < defaultRowSize / 2f)
                     possibleConnections.Add(roomCnt - 3);
@@ -332,10 +526,16 @@ public class Generator : MonoBehaviour
             }
             else
             {
-                if((nodeIndex - 3) % defaultRowSize >= defaultRowSize/2)
-                    mapNodes[1].connections.Add(nodeIndex);
-                if ((nodeIndex - 3) % defaultRowSize < defaultRowSize / 2f)
+                if ((nodeIndex - 3) % defaultRowSize >= defaultRowSize / 2)
+                {
                     mapNodes[2].connections.Add(nodeIndex);
+                    possibleConnections.Add(2);
+                }
+                if ((nodeIndex - 3) % defaultRowSize < defaultRowSize / 2f)
+                {
+                    mapNodes[1].connections.Add(nodeIndex);
+                    possibleConnections.Add(1);
+                }
             }
         }
 
@@ -362,11 +562,11 @@ public class Generator : MonoBehaviour
             }
             else if(index == 1)
             {
-                return new Vector2(mapCenter.x + horisontalSpacing, mapAreaOffset.y + verticalSpacing);
+                return new Vector2(mapCenter.x - horisontalSpacing, mapAreaOffset.y + verticalSpacing);
             }
             else if (index == 2)
             {
-                return new Vector2(mapCenter.x - horisontalSpacing, mapAreaOffset.y + verticalSpacing);
+                return new Vector2(mapCenter.x + horisontalSpacing, mapAreaOffset.y + verticalSpacing);
             }
             else if (index == roomCnt - 1)
             {
