@@ -130,6 +130,8 @@ public class DialogueManager : MonoBehaviour
     {
         _CurrentDialogue = encounterToSet.DialogueRencontre;
         _CurrentEncounterAlea = encounterToSet;
+        UIJoueur.SetActive(false);
+        UIDialogue.SetActive(true);
         startDialogue();
     }
 
