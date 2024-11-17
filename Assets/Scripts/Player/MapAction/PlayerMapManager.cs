@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -17,19 +18,36 @@ public class PlayerMapManager : MonoBehaviour
         }
         set
         {
-            VisualUpdateOld();
+            //VisualUpdateOld();
             _currentRoom = value;
-            VisualUpdateNew();
+
+            GetAccessibleRooms();
+            //VisualUpdateNew();
             MapAction();
         }
     }
     private Room _currentRoom;
+    public List<MapNode> map = new List<MapNode>();
 
+    public class MapNode
+    {
+        public GameObject objectInstance;
+        public TypeRoom roomType = TypeRoom.NONE;
+        public List<int> connections = new List<int>();
+    }
     //public GameObject MenuCamera;
     public GameObject CurrentRoomCamera;
     //GameObject[] rootScene;
     private Scene _scene;
-
+    private void GetAccessibleRooms()
+    {
+        foreach (int connectedRoomId in map[_currentRoom.ID].connections)
+        {
+            Room connectedRoom = map[connectedRoomId].objectInstance.GetComponent<Room>();
+             if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
+            connectedRoom.SetColorByState(connectedRoom.roomState);
+        }
+    }
     private void VisualUpdateNew()
     {
         //_currentRoom.GetComponent<SpriteRenderer>().color = Color.white;
@@ -88,15 +106,24 @@ public class PlayerMapManager : MonoBehaviour
             case TypeRoom.ENCOUNTER:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
                 StartBattle("normal");
-                _currentRoom.roomState = RoomState.VISITED;
+                //_currentRoom.roomState = RoomState.VISITED;
+                break;
+            case TypeRoom.CLASS_ENCOUNTER:
+                //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
+                StartBattle("class");
+                //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.ELITE:
                 StartBattle("elite");
-                _currentRoom.roomState = RoomState.VISITED;
+                //_currentRoom.roomState = RoomState.VISITED;
+                break;
+            case TypeRoom.CLASS_ELITE:
+                StartBattle("class_elite");
+                //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.BOSS:
                 StartBattle("boss");
-                _currentRoom.roomState = RoomState.VISITED;
+                //_currentRoom.roomState = RoomState.VISITED;
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
                 break;
             case TypeRoom.EXIT:
@@ -109,7 +136,7 @@ public class PlayerMapManager : MonoBehaviour
             //    break;
             case TypeRoom.AUTEL:
                 StartAutel();
-                _currentRoom.roomState = RoomState.VISITED;
+                //_currentRoom.roomState = RoomState.VISITED;
                 break;
             //StartAutel();
             //case TypeRoom.Heal:
@@ -117,7 +144,7 @@ public class PlayerMapManager : MonoBehaviour
             //    break;
             case TypeRoom.RANDOM:
                 StartAlea();
-                _currentRoom.roomState = RoomState.VISITED;
+                //_currentRoom.roomState = RoomState.VISITED;
                 break;
             //case TypeRoom.Visited:
             //    break;
@@ -131,65 +158,84 @@ public class PlayerMapManager : MonoBehaviour
         
     }
 
-    IEnumerator LoadSceneAsync(string name)
-    {
-        var toLoad = name.Split(' ');
-        //yield return SceneManager.LoadSceneAsync(toLoad[0], LoadSceneMode.Additive);
-        //s = SceneManager.GetSceneByName(toLoad[0]);
+    //IEnumerator LoadSceneAsync(string name)
+    //{
+    //    var toLoad = name.Split(' ');
+    //    //yield return SceneManager.LoadSceneAsync(toLoad[0], LoadSceneMode.Additive);
+    //    //s = SceneManager.GetSceneByName(toLoad[0]);
 
-       // rootScene = _scene.GetRootGameObjects();
+    //   // rootScene = _scene.GetRootGameObjects();
 
-        switch (name)
-        {
-            case "BattleScene Normal":
-                StartBattle("normal");
-                break;
-            case "GameScene Normal":
-                StartBattle("normal");
-                break;
-            case "BattleScene Elite":
-                StartBattle("elite");
-                break;
-            case "BattleScene Boss":
-                StartBattle("boss");
-                break;
-            case "LevelUp":
+    //    switch (name)
+    //    {
+    //        case "BattleScene Normal":
+    //            StartBattle("normal");
+    //            break;
+    //        case "GameScene Normal":
+    //            StartBattle("normal");
+    //            break;
+    //        case "BattleScene Elite":
+    //            StartBattle("elite");
+    //            break;
+    //        case "BattleScene Boss":
+    //            StartBattle("boss");
+    //            break;
+    //        case "LevelUp":
 
-                break;
-            case "GameScene AleaScene":
-                StartAlea();
-                break;
-            case "Autel":
-                StartAutel();
-                break;
-            //case "MenuStat":
-            //    StartMenuStat();
-            //    break;
-            default:
-                break;
-        }
-        yield return null;
-    }
+    //            break;
+    //        case "GameScene AleaScene":
+    //            StartAlea();
+    //            break;
+    //        case "Autel":
+    //            StartAutel();
+    //            break;
+    //        //case "MenuStat":
+    //        //    StartMenuStat();
+    //        //    break;
+    //        default:
+    //            break;
+    //    }
+    //    yield return null;
+    //}
     
     void StartBattle(string enemieType)
     {
         //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
         //GameManager.Instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
+        ToggleMap(false);
+        
+        //StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombat));
+        //return;
 
-        //if (enemieType.Equals("normal"))
-        //    GameManager.Instance.LoadCombatNormal();
-        //else if (enemieType.Equals("elite"))
-        //{
-        //    GameManager.Instance.LoadCombatElite();
-        //}
-        //else if (enemieType.Equals("boss"))
-        //{
-        //    GameManager.Instance.LoadCombatBoss();
-        //}
+        if (enemieType.Equals("normal"))
+        {
+            StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombatNormal));
+            //GameManager.Instance.LoadCombatNormal();
+        }
+        else if (enemieType.Equals("class"))
+        {
+            StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombatClass));
+            //GameManager.Instance.LoadCombatElite();
+        }
+        else if (enemieType.Equals("elite"))
+        {
+            StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombatElite));
+            //GameManager.Instance.LoadCombatElite();
+        }
+        else if (enemieType.Equals("class_elite"))
+        {
+            StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombatClassElite));
+            //GameManager.Instance.LoadCombatElite();
+        }
+        else if (enemieType.Equals("boss"))
+        {
+            StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombatBoss));
+            //GameManager.Instance.LoadCombatBoss();
+        }
         //AudioManager.Instance.PlayMusic(MusicType.CombatMusic);
 
-        ToggleMap(false); //We hide the map
-        StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombat));
+        //ToggleMap(false); //We hide the map
+        //StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombat));
         //CurrentRoomCamera.SetActive(true);
         //MenuCamera.SetActive(false);
     }

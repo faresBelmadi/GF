@@ -234,6 +234,9 @@ public class Room : MonoBehaviour
                 AudioManager.instance.SFX.PlaySFXClip(SFXType.MapSFX);
             }
             GameManager.Instance.SetRoom(this);
+            roomState = RoomState.VISITED;
+            SetColorByState(roomState);
+
             var scale = oldScale;
             _roomObject.transform.localScale = scale;
             

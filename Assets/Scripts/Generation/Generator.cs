@@ -52,15 +52,15 @@ public class Generator : MonoBehaviour
     private List<Container> ResultBsp;
 
     private List<TypeRoom> aviableRoomPool = new List<TypeRoom>();
-    private List<MapNode> mapNodes = new List<MapNode>();
+    private List<PlayerMapManager.MapNode> mapNodes;// = PlayerMapManager.map;//new List<MapNode>();
 
     private float TEMPtimer;// = 0f;
-    private class MapNode
-    {
-        public GameObject objectInstance;
-        public TypeRoom roomType = TypeRoom.NONE;
-        public List<int> connections = new List<int>();
-    }
+    //private class MapNode
+    //{
+    //    public GameObject objectInstance;
+    //    public TypeRoom roomType = TypeRoom.NONE;
+    //    public List<int> connections = new List<int>();
+    //}
     void Start()
     {
         spawnedRoomsObj = new Dictionary<Vector2, GameObject>();
@@ -68,6 +68,9 @@ public class Generator : MonoBehaviour
         Lines = new List<GameObject>();
         //ResultBsp = new List<Container>();
         aviableRoomPool = new List<TypeRoom>(roomPool);
+
+        mapNodes = GameManager.Instance.pmm.map;
+
         ButtonClick();
 
     }
@@ -133,7 +136,7 @@ public class Generator : MonoBehaviour
 
         for (int i = 0; i < roomCnt; i++)
         {
-            mapNodes.Add(new MapNode());
+            mapNodes.Add(new PlayerMapManager.MapNode());
         }
 
         //Setup Start & Boss Rooms

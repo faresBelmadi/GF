@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour {
     //private bool _doTuto = true;
 
     [Header("Managers")]
-    public RoomManager rm;
+    //public RoomManager rm;
     public PlayerMapManager pmm;
     public BattleManager BattleMan;
     public TutoManager TutoManager;
@@ -33,6 +33,12 @@ public class GameManager : MonoBehaviour {
     public List<Encounter> AllEncounter;
     public int EncounterIndex;
     public List<EncounterAlea> AllEncounterAlea;
+
+    [SerializeField] private List<Encounter> TEMPEncounterNeutral;
+    [SerializeField] private List<Encounter> TEMPEncounterClass;
+    [SerializeField] private List<Encounter> TEMPEncounterElite;
+    [SerializeField] private List<Encounter> TEMPEncounterClassElite;
+    [SerializeField] private List<Encounter> TEMPEncounterBoss;
 
     public List<Souvenir> AllSouvenir;
     public List<Souvenir> CopyAllSouvenir;
@@ -317,17 +323,35 @@ public class GameManager : MonoBehaviour {
 
     public void LoadCombatNormal()
     {
-        BattleMan.LoadEnemy(Instantiate(AllEncounter[0]));
+        //BattleMan.LoadEnemy(Instantiate(AllEncounter[0]));
+        OnStartDialog?.Invoke();
+        BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[UnityEngine.Random.Range(0, TEMPEncounterNeutral.Count())]));
+    }
+    
+    public void LoadCombatClass()
+    {
+        OnStartDialog?.Invoke();
+        BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[UnityEngine.Random.Range(0, TEMPEncounterClass.Count())]));
     }
 
     public void LoadCombatElite()
     {
-        BattleMan.LoadEnemy(Instantiate(AllEncounter[1]));
+        OnStartDialog?.Invoke();
+        //BattleMan.LoadEnemy(Instantiate(AllEncounter[1]));
+        BattleMan.LoadEnemy(Instantiate(TEMPEncounterElite[UnityEngine.Random.Range(0, TEMPEncounterElite.Count())]));
+    }
+    public void LoadCombatClassElite()
+    {
+        OnStartDialog?.Invoke();
+        //BattleMan.LoadEnemy(Instantiate(AllEncounter[1]));
+        BattleMan.LoadEnemy(Instantiate(TEMPEncounterClassElite[UnityEngine.Random.Range(0, TEMPEncounterClassElite.Count())]));
     }
 
     public void LoadCombatBoss()
     {
-        BattleMan.LoadEnemy(Instantiate(AllEncounter[2]));
+        OnStartDialog?.Invoke();
+        //BattleMan.LoadEnemy(Instantiate(AllEncounter[2]));
+        BattleMan.LoadEnemy(Instantiate(TEMPEncounterBoss[UnityEngine.Random.Range(0, TEMPEncounterBoss.Count())]));
     }
 
     public void LoadEvent()
@@ -405,6 +429,6 @@ public class GameManager : MonoBehaviour {
         yield return SceneManager.UnloadSceneAsync(1);
         yield return SceneManager.LoadSceneAsync(0);
         pmm = FindObjectOfType<PlayerMapManager>();
-        rm = FindObjectOfType<RoomManager>();
+        //rm = FindObjectOfType<RoomManager>();
     }
 }
