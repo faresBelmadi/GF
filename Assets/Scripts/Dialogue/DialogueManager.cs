@@ -248,7 +248,6 @@ public class DialogueManager : MonoBehaviour
                         bool[] displayed = new bool[Enum.GetValues(typeof(ClairvoyanceIconStatEnum)).Length];
                         ShowConsequenceForAnswer(i, ref displayed);
                     }
-
                 }
                 else
                 {

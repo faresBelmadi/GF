@@ -216,7 +216,9 @@ public class PlayerMapManager : MonoBehaviour
     {
         //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
         //GameManager.Instance.AleaMan = rootScene.First(c => c.name == "AleaManager").GetComponent<AleaManager>();
-        GameManager.Instance.LoadEvent();
+        //GameManager.Instance.LoadEvent();
+        ToggleMap(false); //We hide the map
+        StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadEvent));
         //CurrentRoomCamera.SetActive(true);
         //MenuCamera.SetActive(false);
     }

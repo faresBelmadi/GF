@@ -264,6 +264,8 @@ public class EnnemyBehavior : CombatBehavior
 
     private void UpdateUI()
     {
+        if (Stat == null)
+            return;
         if (currentHp != Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
         currentHp = Stat.Radiance;
 
