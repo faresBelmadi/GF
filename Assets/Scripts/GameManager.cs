@@ -213,6 +213,7 @@ public class GameManager : MonoBehaviour {
         data.CurrentRun.player = new PlayerData()
         {   
             Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
+            RadianceMax = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.RadianceMax,
             Conscience = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Conscience,
             ForceAme = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ForceAme,
             Vitesse = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Vitesse,
@@ -254,6 +255,7 @@ public class GameManager : MonoBehaviour {
             loadedData.CurrentRun.player = new PlayerData()
             {
                 Radiance = playerStat.Radiance,
+                RadianceMax = playerStat.RadianceMax,
                 Volonter = playerStat.Volonter,
                 Conscience = playerStat.Conscience,
                 Essence = playerStat.Essence,
