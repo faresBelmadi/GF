@@ -17,6 +17,8 @@ public class GamePanelManager : MonoBehaviour
     private GameObject _canvaTuto;
     [SerializeField]
     private JoueurBehavior _characterBehavior;
+    [SerializeField]
+    private GameObject _cloudCharacter;
     //TEMP
     [SerializeField]
     private GameObject _canvaMap;
@@ -73,7 +75,7 @@ public class GamePanelManager : MonoBehaviour
     public void StartCombat()
     {
         _characterBehavior.ToggleVisibility(true);
-        
+        _cloudCharacter.SetActive(true);
         _canvaAutel.SetActive(false);
         _canvaDialog.SetActive(false);
         _canvaBattle.SetActive(true);
@@ -82,6 +84,7 @@ public class GamePanelManager : MonoBehaviour
     public void StartDialog()
     {
         _characterBehavior.ToggleVisibility(true);
+        _cloudCharacter.SetActive(true);
         _canvaAutel.SetActive(false);
         _canvaDialog.SetActive(true);
         _canvaBattle.SetActive(false);
@@ -90,6 +93,7 @@ public class GamePanelManager : MonoBehaviour
     public void StartLoot()
     {
         _characterBehavior.ToggleVisibility(false);
+        _cloudCharacter.SetActive(false);
         _canvaAutel.SetActive(false);
         _canvaDialog.SetActive(false);
         _canvaBattle.SetActive(false);
@@ -99,6 +103,7 @@ public class GamePanelManager : MonoBehaviour
     {
         //TEMP
         _characterBehavior.ToggleVisibility(false);
+       _cloudCharacter.SetActive(false);
         // _canvaMap.SetActive(false);
 
         _canvaAutel.SetActive(true);
@@ -110,6 +115,7 @@ public class GamePanelManager : MonoBehaviour
     {
         //TEMP
         _characterBehavior.ToggleVisibility(true);
+        _cloudCharacter.SetActive(false);
         _canvaMap.SetActive(true);
 
         _canvaAutel.SetActive(false);

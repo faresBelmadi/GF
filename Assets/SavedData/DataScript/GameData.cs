@@ -6,20 +6,31 @@ public class RunData
     public int ClassID;
     public bool Ended;
     public PlayerData player;
+    //public Map currentmap;
 }
 
 [System.Serializable]
 public class PlayerData
 {
     public int Radiance;
+    public int RadianceMax;
     public int Volonter;
     public int Conscience;
     public int Essence;
     public int ForceAme;
     public int Vitesse;
     public int Clairvoyance;
-    
+    public int VolonterMax;
+    public int ConscienceMax;
+    public int Conviction;
+    public int Resilience;
+    public int Calme;
+    public int SlotsSouvenir;
+
     public List<int> BoughtSpellID;
+    public List<int> EquipedSouvenirID;
+    public List<int> AppliedCurrentBuffDebuff;
+
 }
 
 [System.Serializable]

@@ -67,10 +67,10 @@ public class TextDisplayer : MonoBehaviour
     {
         _isAnimated = true;
         _tmpText.ForceMeshUpdate();
-        if (_tmpText.isTextOverflowing)
-        {
-            _tmpText.enableAutoSizing = true;
-        }
+        //if (_tmpText.isTextOverflowing)
+        //{
+        //    _tmpText.enableAutoSizing = true;
+        //}
         while (!DisplayNextElement(type))
         {
             yield return new WaitForSeconds(_delay);

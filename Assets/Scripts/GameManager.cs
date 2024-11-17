@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor.MemoryProfiler;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -59,6 +60,7 @@ public class GameManager : MonoBehaviour {
     public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
 
     public bool IsTuto { get; private set; }
+    public bool IsPaused { get; set; } = false;
     public DialogueManager DialManager
     {
         get
@@ -138,24 +140,25 @@ public class GameManager : MonoBehaviour {
             if(!loadedData.CurrentRun.Ended)
             {
                 GetClassRun();
+
+                playerStat = Instantiate(AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat);
+
+                playerStat.Radiance = loadedData.CurrentRun.player.Radiance;
+                playerStat.RadianceMax = loadedData.CurrentRun.player.RadianceMax;
+                playerStat.Volonter = loadedData.CurrentRun.player.Volonter;
+                playerStat.VolonterMax = loadedData.CurrentRun.player.VolonterMax;
+                playerStat.Conscience = loadedData.CurrentRun.player.Conscience;
+                playerStat.ConscienceMax = loadedData.CurrentRun.player.ConscienceMax;
+                playerStat.Conviction = loadedData.CurrentRun.player.Conviction;
+                playerStat.Resilience = loadedData.CurrentRun.player.Resilience;
+                playerStat.Essence = loadedData.CurrentRun.player.Essence;
+                playerStat.ForceAme = loadedData.CurrentRun.player.ForceAme;
+                playerStat.Vitesse = loadedData.CurrentRun.player.Vitesse;
+                playerStat.Calme = loadedData.CurrentRun.player.Calme;
+                playerStat.Clairvoyance = loadedData.CurrentRun.player.Clairvoyance;
+                playerStat.ClairvoyanceOriginal = loadedData.CurrentRun.player.Clairvoyance;
+                playerStat.SlotsSouvenir = loadedData.CurrentRun.player.SlotsSouvenir;
                 
-                playerStat = new JoueurStat() {
-                    Radiance = loadedData.CurrentRun.player.Radiance,
-                    RadianceMax = classSO.PlayerStat.RadianceMax,
-                    Volonter = loadedData.CurrentRun.player.Volonter,
-                    VolonterMax = classSO.PlayerStat.Volonter,
-                    Conscience = loadedData.CurrentRun.player.Conscience,
-                    ConscienceMax = classSO.PlayerStat.ConscienceMax,
-                    Conviction = classSO.PlayerStat.Conviction,
-                    Resilience = classSO.PlayerStat.Resilience,
-                    Essence = loadedData.CurrentRun.player.Essence,
-                    ForceAme = loadedData.CurrentRun.player.ForceAme,
-                    Vitesse = loadedData.CurrentRun.player.Vitesse,
-                    Calme = classSO.PlayerStat.Calme,
-                    Clairvoyance = loadedData.CurrentRun.player.Clairvoyance,
-                    ClairvoyanceOriginal = loadedData.CurrentRun.player.Clairvoyance,
-                    SlotsSouvenir = classSO.PlayerStat.SlotsSouvenir
-                };
                 for(int i = 0; i < AllSouvenir.Count; i++)
                 {
                     CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
@@ -163,7 +166,8 @@ public class GameManager : MonoBehaviour {
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
                 playerStat.ListPassif = new List<Passif>();
-                //TODO : Angela a mis �a en commentaire pour que val puisse faire des test, a voir si c'est a remetre 
+                //TODO : a decommenter quand le systeme de save sera mis en ligne
+                //       cette boucle load les spells acheté dans les runs d'avant.
                 /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
                 {
                     var temp = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item);
@@ -215,6 +219,12 @@ public class GameManager : MonoBehaviour {
             Volonter = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Volonter,
             Clairvoyance = AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Clairvoyance,
             Essence = AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Essence,
+            VolonterMax = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.VolonterMax,
+            ConscienceMax = AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.ConscienceMax,
+            Conviction= AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Conviction,
+            Resilience= AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Resilience,
+            Calme= AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Calme,
+            SlotsSouvenir= AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.SlotsSouvenir,
             BoughtSpellID = boughtspells
         };
         string json = JsonUtility.ToJson(data);
@@ -243,12 +253,19 @@ public class GameManager : MonoBehaviour {
             loadedData.previousRuns.Add(loadedData.CurrentRun);
             loadedData.CurrentRun.player = new PlayerData()
             {
-                Radiance = classSO.PlayerStat.Radiance,
-                Volonter = classSO.PlayerStat.Volonter,
-                Conscience = classSO.PlayerStat.Conscience,
-                Essence = classSO.PlayerStat.Essence,
-                ForceAme = classSO.PlayerStat.ForceAme,
-                Vitesse = classSO.PlayerStat.Vitesse,
+                Radiance = playerStat.Radiance,
+                Volonter = playerStat.Volonter,
+                Conscience = playerStat.Conscience,
+                Essence = playerStat.Essence,
+                ForceAme = playerStat.ForceAme,
+                Vitesse = playerStat.Vitesse,
+                Clairvoyance = playerStat.Clairvoyance,
+                VolonterMax = playerStat.VolonterMax,
+                ConscienceMax = playerStat.ConscienceMax,
+                Conviction = playerStat.Conviction,
+                Resilience = playerStat.Resilience,
+                Calme = playerStat.Calme,
+                SlotsSouvenir = playerStat.SlotsSouvenir,        
                 BoughtSpellID = new List<int>(){0}
             };
             loadedData.CurrentRun.Ended = false;
@@ -276,7 +293,14 @@ public class GameManager : MonoBehaviour {
             Conscience = playerStat.Conscience,
             Essence = playerStat.Essence,
             ForceAme = playerStat.ForceAme,
-            Vitesse = playerStat.Vitesse
+            Vitesse = playerStat.Vitesse,
+            Clairvoyance = playerStat.Clairvoyance,
+            VolonterMax = playerStat.VolonterMax,
+            ConscienceMax = playerStat.ConscienceMax,
+            Conviction = playerStat.Conviction,
+            Resilience = playerStat.Resilience,
+            Calme = playerStat.Calme,
+            SlotsSouvenir = playerStat.SlotsSouvenir
         };
         loadedData.CurrentRun.player.BoughtSpellID = new List<int>();
         foreach (var item in playerStat.ListSpell)

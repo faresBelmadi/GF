@@ -90,27 +90,7 @@ public class JoueurBehavior : CombatBehavior
         Debug.Log("Active Children : " + i);
 
     }
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log("down");
-            GetComponent<Animator>().SetBool("0", true);
-        }
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            Debug.Log("up");
-            GetComponent<Animator>().SetBool("0", false);
-        }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            ToggleVisibility(true);
-        }
-        if (Input.GetKeyUp(KeyCode.U))
-        {
-            ToggleVisibility(false);
-        }
-    }
+  
     public void StartUp()
     {
 
