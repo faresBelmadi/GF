@@ -41,10 +41,10 @@ public class PlayerMapManager : MonoBehaviour
         //    //item.GetComponent<SpriteRenderer>().color = Color.white;
         //    item.ChangeColor(Color.white);
         //}
-        foreach (var item in _currentRoom.OwnedCorridors)
-        {
-            SetLineColor(item, Color.white);
-        }
+        //foreach (var item in _currentRoom.OwnedCorridors)
+        //{
+        //    SetLineColor(item, Color.white);
+        //}
     }
 
 
@@ -60,10 +60,10 @@ public class PlayerMapManager : MonoBehaviour
             //{
             //    item.isNavigable = false;
             //}
-            foreach (var item in _currentRoom.OwnedCorridors)
-            {
-                SetLineColor(item, Color.gray);
-            }
+            //foreach (var item in _currentRoom.OwnedCorridors)
+            //{
+            //    SetLineColor(item, Color.gray);
+            //}
         }
     }
 

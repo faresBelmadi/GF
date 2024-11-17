@@ -37,12 +37,12 @@ public class Room : MonoBehaviour
     public RoomState roomState;
     
     public Sprite spriteToSet;
-    public List<GameObject> OwnedCorridors = new List<GameObject>();
+    //public List<GameObject> OwnedCorridors = new List<GameObject>();
 
     public int ID;
-    public List<Room> ConnectedRooms = new List<Room>();
-    public bool isStart;
-    public bool isNavigable;
+    //public List<Room> ConnectedRooms = new List<Room>();
+    //public bool isStart;
+    //public bool isNavigable;
     [SerializeField]
     private GameObject _roomObject;
     [SerializeField]
@@ -54,8 +54,9 @@ public class Room : MonoBehaviour
         oldScale = _roomObject.transform.localScale;
     }
 
-    public void SetRoom(TypeRoom type, RoomState state = RoomState.UNKNOWN)
+    public void SetRoom(int roomId, TypeRoom type, RoomState state = RoomState.UNKNOWN)
     {
+        this.ID = roomId;
         this.roomType = type;
         this.roomState = state;
         gameObject.transform.localScale = new Vector3(7, 7);
@@ -199,16 +200,17 @@ public class Room : MonoBehaviour
         _roomObject.GetComponent<SpriteRenderer>().color = color;
     }
     private void OnMouseEnter() {
-        if(isNavigable || roomState == RoomState.ACCESSIBLE)
+        //if(isNavigable || roomState == RoomState.ACCESSIBLE)
+        if (roomState == RoomState.ACCESSIBLE)
         {
             var scale = new Vector3(oldScale.x * 2,oldScale.y * 2,oldScale.z);
             _roomObject.transform.localScale = scale;
-            
         }
     }
 
     private void OnMouseExit() {
-        if(isNavigable || roomState == RoomState.ACCESSIBLE)
+        //if(isNavigable || roomState == RoomState.ACCESSIBLE)
+        if (roomState == RoomState.ACCESSIBLE)
         {
             var scale = oldScale;
             
@@ -217,8 +219,8 @@ public class Room : MonoBehaviour
     }
 
     private void OnMouseDown() {
-        if(isNavigable || roomState == RoomState.ACCESSIBLE)
-        {
+        //if(isNavigable || roomState == RoomState.ACCESSIBLE)
+        if (roomState == RoomState.ACCESSIBLE){
             if (roomType == TypeRoom.BOSS || roomType == TypeRoom.ELITE || roomType == TypeRoom.ENCOUNTER)
             {
                 AudioManager.instance.SFX.PlaySFXClip(SFXType.MapBattleSFX);

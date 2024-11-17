@@ -20,7 +20,7 @@ public class Generator : MonoBehaviour
     
     [Header("Spawned Object")]
     public Dictionary<Vector2,GameObject> spawnedRoomsObj;
-    Dictionary<GameObject,List<GameObject>> Corridors;
+    //Dictionary<GameObject,List<GameObject>> Corridors;
 
     [Header("Spawnable")]
     [SerializeField] private GameObject roomPrefab;
@@ -37,6 +37,9 @@ public class Generator : MonoBehaviour
     [SerializeField] private int defaultRowSize;
     [SerializeField] private int defaultColSize;
     [SerializeField, Tooltip("0 for random")] private int seed;
+    [Header("DEBUG")]
+    [SerializeField] private bool doCycle = false;
+    [SerializeField] private float cycleTime = 1f;
 
     [Header("Forbiden connections")]
     [SerializeField] private List<TypeRoom> illegalConnection_START= new List<TypeRoom>();
@@ -51,6 +54,7 @@ public class Generator : MonoBehaviour
     private List<TypeRoom> aviableRoomPool = new List<TypeRoom>();
     private List<MapNode> mapNodes = new List<MapNode>();
 
+    private float TEMPtimer;// = 0f;
     private class MapNode
     {
         public GameObject objectInstance;
@@ -59,22 +63,39 @@ public class Generator : MonoBehaviour
     }
     void Start()
     {
-        aviableRoomPool = new List<TypeRoom>(roomPool);
         spawnedRoomsObj = new Dictionary<Vector2, GameObject>();
-        Corridors = new Dictionary<GameObject, List<GameObject>>();
+        //Corridors = new Dictionary<GameObject, List<GameObject>>();
         Lines = new List<GameObject>();
-        ResultBsp = new List<Container>();
+        //ResultBsp = new List<Container>();
+        aviableRoomPool = new List<TypeRoom>(roomPool);
         ButtonClick();
 
     }
-    
+
+    private void Update()
+    {
+        if(doCycle)
+        {
+            if(TEMPtimer < cycleTime)
+            {
+                TEMPtimer += Time.deltaTime;
+            }
+            else
+            {
+                TEMPtimer = 0f;
+                aviableRoomPool = new List<TypeRoom>(roomPool);
+                ButtonClick();
+            }
+        }
+    }
+
     public void ButtonClick()
     {
         ClearGen();
 
         int usedSeed = seed == 0 ? Random.Range(int.MinValue, int.MaxValue) : seed;
         Random.InitState(usedSeed);
-        Debug.Log($"Used Seed: {usedSeed}");
+        Debug.Log($"Seed to use: {usedSeed}");
 
         int elitCnt = aviableRoomPool.Where(rType => rType == TypeRoom.ELITE || rType == TypeRoom.CLASS_ELITE).Count();
         int defaultRoomCnt = 2/*Start & Boss*/ + aviableRoomPool.Count();//Loots rooms not counted
@@ -87,6 +108,7 @@ public class Generator : MonoBehaviour
 
         Debug.Log("Generate map");
         GenerateMap(roomCnt);// OR LOAD MAPNODES FROM SAVE FILES
+        Debug.Log($"Used Seed: {usedSeed}");
         //SpawnRoom(TypeRoom.ENCOUNTER, Vector2.zero);
         Debug.Log("spawn first 3 rooms");
         SpawnRoom(0, roomCnt, RoomState.VISITED);
@@ -100,7 +122,9 @@ public class Generator : MonoBehaviour
         }
         Debug.Log("spawn all paths");
         SpawnAllPaths(roomCnt);
-        ClearUseless();
+        // <= LOAD already visited rooms
+
+        //ClearUseless();
     }
     private void GenerateMap(int roomCnt)
     {
@@ -154,6 +178,7 @@ public class Generator : MonoBehaviour
         mapNodes[1].roomType = firstOptions[Random.Range(0, firstOptions.Count() - 1)];
         mapNodes[1].connections.Add(0);
         HandleLootRooms(mapNodes[1].roomType,1);
+        aviableRoomPool.Remove(mapNodes[1].roomType);
 
         firstOptions.RemoveAll(rType => rType == mapNodes[1].roomType);
 
@@ -161,18 +186,17 @@ public class Generator : MonoBehaviour
         mapNodes[2].connections.Add(0);
         HandleLootRooms(mapNodes[2].roomType, 2);
 
-        aviableRoomPool.Remove(mapNodes[1].roomType);
         aviableRoomPool.Remove(mapNodes[2].roomType);
 
         mapNodes[roomCnt - 2].roomType = aviableRoomPool[Random.Range(0, aviableRoomPool.Count() - 1)];
         mapNodes[roomCnt - 2].connections.Add(roomCnt - 1);
         HandleLootRooms(mapNodes[roomCnt - 2].roomType, roomCnt - 2);
+        aviableRoomPool.Remove(mapNodes[roomCnt - 2].roomType);
 
         mapNodes[roomCnt - 3].roomType = aviableRoomPool[Random.Range(0, aviableRoomPool.Count() - 1)];
         mapNodes[roomCnt - 3].connections.Add(roomCnt - 1);
         HandleLootRooms(mapNodes[roomCnt - 3].roomType, roomCnt - 3);
 
-        aviableRoomPool.Remove(mapNodes[roomCnt - 2].roomType);
         aviableRoomPool.Remove(mapNodes[roomCnt - 3].roomType);
 
         ////Fill Grid with Null rooms
@@ -290,7 +314,10 @@ public class Generator : MonoBehaviour
                     if (GetPossibleRoomTypes(
                             new List<TypeRoom>() { mapNodes[source].roomType },
                             new List<TypeRoom>() { mapNodes[dest].roomType }
-                            ).Count() > 0)
+                            ).Count() > 0
+                            && !((source==1 || source == 2) && (dest == 1 || dest == 2))
+                            && !((source==roomCnt-2|| source == roomCnt-3) && (dest == roomCnt - 2 || dest == roomCnt - 3))
+                            )
                     {
                         if (!mapNodes[source].connections.Contains(dest))
                         {
@@ -349,7 +376,7 @@ public class Generator : MonoBehaviour
             mapNodes[i].connections = mapNodes[i].connections.Distinct().ToList();
         }
         LengthBasedDecimatePath(roomCnt);
-        Debug.Log("End Generate Map");
+        Debug.Log($"End Generate Map with seed: {seed}");
     }
     private void LengthBasedDecimatePath(int roomCnt)
     {
@@ -402,7 +429,22 @@ public class Generator : MonoBehaviour
             }
         }
     }
+    private void DetectPathCrossing(int roomCnt)
+    {
+        for (int i = 0; i< roomCnt; i++)
+        {
 
+        }
+    }
+    private bool doPathCross(Vector2 firstPathStart, Vector2 firstPathEnd, Vector2 secondPathStart, Vector2 secondPathEnd)
+    {
+        bool doPathsCross = false;
+
+
+
+
+        return doPathsCross;
+    }
     private void DumbDeciamtePath(int roomCnt)
     {
         for (int i = 0; i < roomCnt; i++)
@@ -646,9 +688,10 @@ public class Generator : MonoBehaviour
         GameObject roomObject = Instantiate(roomPrefab, position, Quaternion.identity, transform);
         roomObject.name = type.ToString();
         mapNodes[mapIndex].objectInstance = roomObject;
-        
         Room room = roomObject.GetComponent<Room>();
-        room.SetRoom(type,defaultState);
+        room.SetRoom(mapIndex,type, defaultState);
+        
+        spawnedRoomsObj.Add(new Vector2(pos.x,pos.y),roomObject);
     }
     void SpawnAllPaths(int roomCnt)
     {
@@ -657,26 +700,28 @@ public class Generator : MonoBehaviour
             foreach (int connection in mapNodes[i].connections)
             {
                 if(connection <= i) continue;
-                GameObject thisPath = Instantiate(pathPrefab, mapNodes[i].objectInstance.transform);
+                GameObject pathObject = Instantiate(pathPrefab, mapNodes[i].objectInstance.transform);
                 Vector3 startPos = GetPositionByIndex(i, roomCnt);
                 Vector3 endPos = GetPositionByIndex(connection, roomCnt);
                 Vector3[] pathPos = new Vector3[] { startPos, endPos };
-                thisPath.GetComponent<LineRenderer>().SetPositions(pathPos);
+                pathObject.GetComponent<LineRenderer>().SetPositions(pathPos);
+
+                Lines.Add(pathObject);
             }
         }
     }
     
-    private int GetNumberCorridor()
-    {
-        int randResult = UnityEngine.Random.Range(0,100);
+    //private int GetNumberCorridor()
+    //{
+    //    int randResult = UnityEngine.Random.Range(0,100);
 
-        if(randResult < 25)
-            return 1;
-        else if(randResult < 75)
-            return 2;
-        else
-            return 3;
-    }
+    //    if(randResult < 25)
+    //        return 1;
+    //    else if(randResult < 75)
+    //        return 2;
+    //    else
+    //        return 3;
+    //}
 
     //public void AddLineConnection(MapNode from, MapNode to)
     //{
@@ -706,19 +751,19 @@ public class Generator : MonoBehaviour
     //    lineConnections.Add(new LineConnection(lineRenderer, from, to));
     //}
 
-    private void InitManager()
-    {
-        List<Room> ToInit = new List<Room>();
+    //private void InitManager()
+    //{
+    //    List<Room> ToInit = new List<Room>();
 
-        foreach (var item in spawnedRoomsObj)
-        {
-            var room = item.Value.GetComponent<Room>();
-            ToInit.Add(room);
-        }
+    //    foreach (var item in spawnedRoomsObj)
+    //    {
+    //        var room = item.Value.GetComponent<Room>();
+    //        ToInit.Add(room);
+    //    }
 
-        ToInit[0].isStart = true;
-        //roomManager.Init(ToInit);
-    }
+    //    ToInit[0].isStart = true;
+    //    //roomManager.Init(ToInit);
+    //}
 
     void ClearGen()
     {
@@ -734,22 +779,23 @@ public class Generator : MonoBehaviour
         }
         Lines.Clear();
 
-        Corridors.Clear();
+        //Corridors.Clear();
     }
 
-    void ClearUseless()
-    {
-        //var t = SceneManager.GetSceneByName("Monde").GetRootGameObjects();
-        var t = SceneManager.GetSceneByName("GameScene").GetRootGameObjects();
-        List<GameObject> todestroy = new List<GameObject>();
-        for (int i = 0; i < t.Count(); i++)
-        {
-            if(t[i].name == "New Game Object")
-               todestroy.Add(t[i]);
-        }
-        foreach (var item in todestroy)
-        {
-            Destroy(item);
-        }
-    }
+    //void ClearUseless()
+    //{
+    //    //var t = SceneManager.GetSceneByName("Monde").GetRootGameObjects();
+    //    var t = SceneManager.GetSceneByName("GameScene").GetRootGameObjects();
+    //    List<GameObject> todestroy = new List<GameObject>();
+    //    for (int i = 0; i < t.Count(); i++)
+    //    {
+    //        if(t[i].name == "New Game Object")
+    //           todestroy.Add(t[i]);
+    //    }
+    //    Debug.Log($"Clear Useless cnt: {todestroy.Count()}");
+    //    foreach (var item in todestroy)
+    //    {
+    //        Destroy(item);
+    //    }
+    //}
 }

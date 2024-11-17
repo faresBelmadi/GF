@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class RoomManager : MonoBehaviour
 {
-    public List<Room> Rooms;
+    //public List<Room> Rooms;
 
-    [SerializeField]
-    private RoomData _roomData;
+    //[SerializeField]
+    //private RoomData _roomData;
     
     //public Sprite SalleCombatBoss;
     //public Sprite SalleCombatElite;
@@ -19,12 +19,12 @@ public class RoomManager : MonoBehaviour
     
 
 
-    public void Init(List<Room> _rooms)
-    {
-        Rooms = _rooms;
+    //public void Init(List<Room> _rooms)
+    //{
+    //    Rooms = _rooms;
 
-        //InitRoom();
-    }
+    //    //InitRoom();
+    //}
 
     //private void InitRoom()
     //{
@@ -108,17 +108,17 @@ public class RoomManager : MonoBehaviour
     //    GameManager.Instance.SetRoom(start);
     //}
     
-    public int FindMaxConnection()
-    {
-        int max = 0;
+    //public int FindMaxConnection()
+    //{
+    //    int max = 0;
 
-        foreach (var item in Rooms)
-        {
-            if(item.ConnectedRooms.Count > max && item.isStart == false)
-                max = item.ConnectedRooms.Count;
-        }
-        return max;
-    }
+    //    foreach (var item in Rooms)
+    //    {
+    //        if(item.ConnectedRooms.Count > max && item.isStart == false)
+    //            max = item.ConnectedRooms.Count;
+    //    }
+    //    return max;
+    //}
 
 
 }
