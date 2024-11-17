@@ -229,6 +229,7 @@ public class PlayerMapManager : MonoBehaviour
         GameManager.Instance.AleaMan = null;
         //MenuCamera.SetActive(true);
         GameManager.Instance.UnloadEvent();
+        GameManager.Instance.ShowMap();
         yield return null;
         //yield return SceneManager.UnloadSceneAsync(_scene);
     }
