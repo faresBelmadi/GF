@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -51,18 +52,27 @@ public class Room : MonoBehaviour
 
     private string _labelID;
     private Vector3 oldScale;
+    private SpriteRenderer _spriteRenderer;
+    [SerializeField]
+    private float _fadeDuration = 1f;
     private void OnEnable()
     {
         TradManager.OnRefreshTranslation += RefreshLabel;
+        RoomManager.OnShowMap += FadeIn;
+        GameManager.OnHideMap += FadeOut;
     }
     private void OnDisable()
     {
         TradManager.OnRefreshTranslation -= RefreshLabel;
+        RoomManager.OnShowMap -= FadeIn;
+        GameManager.OnHideMap -= FadeOut;
     }
     private void Start() 
     {
         oldScale = _roomObject.transform.localScale;
+        _spriteRenderer = _roomObject.GetComponent<SpriteRenderer>();
     }
+  
 
     private void SetColor()
     {
@@ -101,7 +111,7 @@ public class Room : MonoBehaviour
     }
 
     private void OnMouseDown() {
-        if(!GameManager.Instance.IsPaused && ( isNavigable || type == TypeRoom.Visited))
+        if (!GameManager.Instance.IsPaused && ( isNavigable || type == TypeRoom.Visited))
         {
             if (type == TypeRoom.CombatBoss || type == TypeRoom.CombatElite || type == TypeRoom.CombatNormal)
             {
@@ -121,5 +131,40 @@ public class Room : MonoBehaviour
             
         }
     }
+    private void FadeIn()
+    {
+        StartCoroutine(Fade(false));
+    }
+    private void FadeOut()
+    {
+        StartCoroutine(Fade(true));
+    }
+    private IEnumerator Fade(bool isFadeOut)
+    {
+        if (!isFadeOut) yield return new WaitForSeconds(1.25f);
+        Color c = _spriteRenderer.color;
+        Color textColor = _roomText.color;
+        float timer = 0f;
+        float startingAlpha = isFadeOut ? 1f : 0f;
+        float targetAlpha = isFadeOut ? 0f : 1f;
+        while (timer < _fadeDuration)
+        {
+            float alpha = Mathf.Lerp(startingAlpha, targetAlpha, timer);
+            c.a = alpha;
+            textColor.a = alpha;
+
+            _spriteRenderer.color = c;
+            _roomText.color = textColor;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        c.a = targetAlpha;
+        textColor.a = targetAlpha;
+        _spriteRenderer.color = c;
+        _roomText.color = textColor;
+
+        gameObject.SetActive(!isFadeOut);
+    }
+  
 
 }

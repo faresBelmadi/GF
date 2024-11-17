@@ -1,13 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomManager : MonoBehaviour
 {
+   
     public List<Room> Rooms;
 
     [SerializeField]
     private RoomData _roomData;
-    
+    [SerializeField]
+    private GameObject _roomHolder;
+
     //public Sprite SalleCombatBoss;
     //public Sprite SalleCombatElite;
     //public Sprite SalleCombatNormal;
@@ -16,14 +20,31 @@ public class RoomManager : MonoBehaviour
     //public Sprite SalleAlea;
     //public Sprite SalleStart;
     //public Sprite SalleEnd;
-    
 
+    public static event Action OnShowMap;
 
+    private void OnEnable()
+    {
+        GameManager.OnShowMap += FadeInAllRoom;
+    }
+    private void OnDisable()
+    {
+        GameManager.OnShowMap -= FadeInAllRoom;
+    }
     public void Init(List<Room> _rooms)
     {
         Rooms = _rooms;
 
         InitRoom();
+    }
+
+    private void FadeInAllRoom()
+    {
+        foreach(Room room in Rooms)
+        {
+            room.gameObject.SetActive(true);
+        }
+        OnShowMap?.Invoke();
     }
 
     private void InitRoom()
