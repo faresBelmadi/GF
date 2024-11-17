@@ -258,7 +258,11 @@ public class Generator : MonoBehaviour
                     Debug.Log(type.ToString());
                 }
             }
-            else break;
+            else
+            {
+                Debug.Log($"Map Node Choice finished at iterration: {loopId}");
+                break;
+            }
         }
 
 
@@ -339,29 +343,90 @@ public class Generator : MonoBehaviour
                 mapNodes[i].connections.Remove(connection);
             }
         }
-        ////Remove More Connections
-        //for (int i = 0; i < roomCnt; i++)
-        //{
-        //    int maxConnection = Random.Range(2, 3);
-        //    int cntToRemove = mapNodes[i].connections.Count() - maxConnection;
-        //    for (int j = 0; j < cntToRemove; j++)
-        //    {
-        //        int startingOffset = Random.Range(0, mapNodes[i].connections.Count());
-        //        for (int k = 0; k < mapNodes[i].connections.Count(); k++)
-        //        {
-        //            int idToCheck = (k + startingOffset) % mapNodes[i].connections.Count();
-        //            int connectedRoomId = mapNodes[i].connections[idToCheck];
-        //            if (mapNodes[connectedRoomId].connections.Count() > 2 && connectedRoomId != 0 && connectedRoomId != roomCnt - 1)
-        //            {
-        //                mapNodes[i].connections.RemoveAt(idToCheck);
-        //                mapNodes[connectedRoomId].connections.Remove(i);
-        //                break;
-        //            }
-        //        }
-        //    }
-        //}
+        Debug.Log("Removing duplicates in connections");
+        for (int i = 0;i < roomCnt; i++)
+        {
+            mapNodes[i].connections = mapNodes[i].connections.Distinct().ToList();
+        }
+        LengthBasedDecimatePath(roomCnt);
         Debug.Log("End Generate Map");
     }
+    private void LengthBasedDecimatePath(int roomCnt)
+    {
+        for (int i = 0; i < roomCnt; i++)
+        {
+            int maxConnection = Random.Range(3, 4);
+            if (mapNodes[i].connections.Count() <= maxConnection) continue;
+
+
+            int cntToRemove = mapNodes[i].connections.Count() - maxConnection;
+            
+            Dictionary<int,float> connectionLength = new Dictionary<int,float>();
+            Vector2 roomPos = GetPositionByIndex(i,roomCnt);
+            //Debug.Log($"Connected ids length of room {i}:");
+            foreach (int connectionId in mapNodes[i].connections)
+            {
+                if(connectionId == 0
+                    || connectionId == roomCnt-1
+                    ) 
+                {
+                    cntToRemove--;
+                    continue;
+                }
+
+                if (mapNodes[connectionId].roomType == TypeRoom.LOOT
+                    && mapNodes[connectionId].connections.Contains(i))
+                {
+                    //cntToRemove--;
+                    continue;
+                }
+
+                connectionLength.Add(connectionId, (GetPositionByIndex(connectionId, roomCnt) - roomPos).magnitude);
+            }
+            //foreach ( int key in connectionLength.Keys)
+            //{
+            //    Debug.Log($"{key} : {connectionLength[key]}");
+            //}
+            connectionLength = connectionLength.OrderByDescending(kvPair => kvPair.Value).ToDictionary(kvPair => kvPair.Key, kvPair => kvPair.Value);
+            //foreach (int key in connectionLength.Keys)
+            //{
+            //    Debug.Log($"{key} : {connectionLength[key]}");
+            //}
+
+            Debug.Log($"removing {cntToRemove} connections of room {i}:");
+            for (int j = 0; j < cntToRemove; j++)
+            {
+                Debug.Log($"removing connection: {i}-{connectionLength.ElementAt(j).Key}");
+                mapNodes[i].connections.Remove(connectionLength.ElementAt(j).Key);
+                mapNodes[connectionLength.ElementAt(j).Key].connections.Remove(i);
+            }
+        }
+    }
+
+    private void DumbDeciamtePath(int roomCnt)
+    {
+        for (int i = 0; i < roomCnt; i++)
+        {
+            int maxConnection = Random.Range(2, 3);
+            int cntToRemove = mapNodes[i].connections.Count() - maxConnection;
+            for (int j = 0; j < cntToRemove; j++)
+            {
+                int startingOffset = Random.Range(0, mapNodes[i].connections.Count());
+                for (int k = 0; k < mapNodes[i].connections.Count(); k++)
+                {
+                    int idToCheck = (k + startingOffset) % mapNodes[i].connections.Count();
+                    int connectedRoomId = mapNodes[i].connections[idToCheck];
+                    if (mapNodes[connectedRoomId].connections.Count() > 2 && connectedRoomId != 0 && connectedRoomId != roomCnt - 1)
+                    {
+                        mapNodes[i].connections.RemoveAt(idToCheck);
+                        mapNodes[connectedRoomId].connections.Remove(i);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
     private void HandleLootRooms(TypeRoom roomType, int elitIndex)
     {
         if (roomType == TypeRoom.ELITE || roomType == TypeRoom.CLASS_ELITE)
