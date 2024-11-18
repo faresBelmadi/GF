@@ -106,7 +106,7 @@ public class TutoDialogueManager : DialogueManager
     {
         foreach (GameObject repGO in _dialogPanelComponent.Reponse)
         {
-            repGO.GetComponent<Button>().interactable = value;
+            repGO.GetComponentInChildren<Button>(true).interactable = value;
         }
     }
 
