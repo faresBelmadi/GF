@@ -27,6 +27,8 @@ public class TutoDialogueManager : DialogueManager
     }
     public override void GetRéponse(int i)
     {
+        if (GameManager.Instance.IsPaused)
+            return;
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndTutoDialogue)
         {
             TutoManager.Instance.EndDialogueTuto();
@@ -104,7 +106,7 @@ public class TutoDialogueManager : DialogueManager
     {
         foreach (GameObject repGO in _dialogPanelComponent.Reponse)
         {
-            repGO.GetComponent<Button>().interactable = value;
+            repGO.GetComponentInChildren<Button>(true).interactable = value;
         }
     }
 

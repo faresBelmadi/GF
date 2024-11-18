@@ -47,7 +47,7 @@ public class HighlightCost : MonoBehaviour
 
         _conscienceHighlightGO.SetActive(false);
         _radianceHighlightGO.SetActive(false);
-        JoueurStat Stat = new JoueurStat();
+        JoueurStat Stat = new JoueurStat();//TODO: create instance
         if (GameManager.Instance != null)
             Stat = GameManager.Instance.BattleMan.player.Stat;
         else

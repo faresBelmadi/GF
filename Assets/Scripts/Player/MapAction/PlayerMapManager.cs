@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMapManager : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _roomsHolder;
     [SerializeField]
     private float _rollingMapTime = 1f;
 
@@ -17,33 +21,70 @@ public class PlayerMapManager : MonoBehaviour
         }
         set
         {
-            VisualUpdateOld();
+            //VisualUpdateOld();
             _currentRoom = value;
-            VisualUpdateNew();
+
+            GetAccessibleRooms();
+            //VisualUpdateNew();
             MapAction();
         }
     }
     private Room _currentRoom;
+    public List<MapNode> map = new List<MapNode>();
 
+    public class MapNode
+    {
+        public GameObject objectInstance;
+        public TypeRoom roomType = TypeRoom.NONE;
+        public List<int> connections = new List<int>();
+    }
     //public GameObject MenuCamera;
     public GameObject CurrentRoomCamera;
     //GameObject[] rootScene;
     private Scene _scene;
 
+    public static event Action OnShowMap;
+
+    private void OnEnable()
+    {
+        GameManager.OnShowMap += FadeInAllRoom;
+    }
+    private void OnDisable()
+    {
+        GameManager.OnShowMap -= FadeInAllRoom;
+    }
+    private void FadeInAllRoom()
+    {
+        for (int i = 0; i< _roomsHolder.transform.childCount; i++) 
+        {
+                _roomsHolder.transform.GetChild(i).gameObject.SetActive(true);
+        }
+        OnShowMap?.Invoke();
+    }
+    private void GetAccessibleRooms()
+    {
+        foreach (int connectedRoomId in map[_currentRoom.ID].connections)
+        {
+            Room connectedRoom = map[connectedRoomId].objectInstance.GetComponent<Room>();
+             if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
+            connectedRoom.SetColorByState(connectedRoom.roomState);
+        }
+    }
     private void VisualUpdateNew()
     {
         //_currentRoom.GetComponent<SpriteRenderer>().color = Color.white;
-        _currentRoom.ChangeColor(Color.white);
-        foreach (var item in _currentRoom.ConnectedRooms)
-        {
-            item.isNavigable = true;
-            //item.GetComponent<SpriteRenderer>().color = Color.white;
-            item.ChangeColor(Color.white);
-        }
-        foreach (var item in _currentRoom.OwnedCorridors)
-        {
-            SetLineColor(item, Color.white);
-        }
+        //_currentRoom.ChangeColor(Color.white);
+        _currentRoom.SetColorByState(_currentRoom.roomState);
+        //foreach (var item in _currentRoom.ConnectedRooms)
+        //{
+        //    item.isNavigable = true;
+        //    //item.GetComponent<SpriteRenderer>().color = Color.white;
+        //    item.ChangeColor(Color.white);
+        //}
+        //foreach (var item in _currentRoom.OwnedCorridors)
+        //{
+        //    SetLineColor(item, Color.white);
+        //}
     }
 
 
@@ -51,17 +92,18 @@ public class PlayerMapManager : MonoBehaviour
     {
         if (_currentRoom != null)
         {
-            _currentRoom.Type = TypeRoom.Visited;
+            _currentRoom.roomState = RoomState.VISITED;
+            _currentRoom.SetColorByState(_currentRoom.roomState);
             //_currentRoom.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            _currentRoom.ChangeColor(Color.gray);
-            foreach (var item in _currentRoom.ConnectedRooms)
-            {
-                item.isNavigable = false;
-            }
-            foreach (var item in _currentRoom.OwnedCorridors)
-            {
-                SetLineColor(item, Color.gray);
-            }
+            //_currentRoom.ChangeColor(Color.gray);
+            //foreach (var item in _currentRoom.ConnectedRooms)
+            //{
+            //    item.isNavigable = false;
+            //}
+            //foreach (var item in _currentRoom.OwnedCorridors)
+            //{
+            //    SetLineColor(item, Color.gray);
+            //}
         }
     }
 
@@ -81,41 +123,52 @@ public class PlayerMapManager : MonoBehaviour
 
     private void MapAction()
     {
-        switch (_currentRoom.Type)
+       
+
+        switch (_currentRoom.roomType)
         {
-            case TypeRoom.CombatNormal:
+            case TypeRoom.ENCOUNTER:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
                 StartBattle("normal");
-                _currentRoom.Type = TypeRoom.Visited;
+                //_currentRoom.roomState = RoomState.VISITED;
                 break;
-            case TypeRoom.CombatElite:
+            case TypeRoom.CLASS_ENCOUNTER:
+                //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
+                StartBattle("class");
+                //_currentRoom.roomState = RoomState.VISITED;
+                break;
+            case TypeRoom.ELITE:
                 StartBattle("elite");
-                _currentRoom.Type = TypeRoom.Visited;
+                //_currentRoom.roomState = RoomState.VISITED;
                 break;
-            case TypeRoom.CombatBoss:
+            case TypeRoom.CLASS_ELITE:
+                StartBattle("class_elite");
+                //_currentRoom.roomState = RoomState.VISITED;
+                break;
+            case TypeRoom.BOSS:
                 StartBattle("boss");
-                _currentRoom.Type = TypeRoom.Visited;
+                //_currentRoom.roomState = RoomState.VISITED;
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
                 break;
-            case TypeRoom.End:
+            case TypeRoom.EXIT:
                 SceneManager.LoadScene("MainMenu");
                 Destroy(GameManager.Instance.gameObject);
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
                 break;
-            case TypeRoom.LevelUp:
-                StartLevelUp();
-                break;
-            case TypeRoom.Autel:
+            //case TypeRoom.LevelUp:
+            //    StartLevelUp();
+            //    break;
+            case TypeRoom.AUTEL:
                 StartAutel();
-                _currentRoom.Type = TypeRoom.Visited;
+                //_currentRoom.roomState = RoomState.VISITED;
                 break;
             //StartAutel();
             //case TypeRoom.Heal:
             //    StartCoroutine("LoadSceneAsync", "Autel");
             //    break;
-            case TypeRoom.Event:
+            case TypeRoom.RANDOM:
                 StartAlea();
-                _currentRoom.Type = TypeRoom.Visited;
+                //_currentRoom.roomState = RoomState.VISITED;
                 break;
             //case TypeRoom.Visited:
             //    break;
@@ -129,65 +182,84 @@ public class PlayerMapManager : MonoBehaviour
         
     }
 
-    IEnumerator LoadSceneAsync(string name)
-    {
-        var toLoad = name.Split(' ');
-        //yield return SceneManager.LoadSceneAsync(toLoad[0], LoadSceneMode.Additive);
-        //s = SceneManager.GetSceneByName(toLoad[0]);
+    //IEnumerator LoadSceneAsync(string name)
+    //{
+    //    var toLoad = name.Split(' ');
+    //    //yield return SceneManager.LoadSceneAsync(toLoad[0], LoadSceneMode.Additive);
+    //    //s = SceneManager.GetSceneByName(toLoad[0]);
 
-       // rootScene = _scene.GetRootGameObjects();
+    //   // rootScene = _scene.GetRootGameObjects();
 
-        switch (name)
-        {
-            case "BattleScene Normal":
-                StartBattle("normal");
-                break;
-            case "GameScene Normal":
-                StartBattle("normal");
-                break;
-            case "BattleScene Elite":
-                StartBattle("elite");
-                break;
-            case "BattleScene Boss":
-                StartBattle("boss");
-                break;
-            case "LevelUp":
+    //    switch (name)
+    //    {
+    //        case "BattleScene Normal":
+    //            StartBattle("normal");
+    //            break;
+    //        case "GameScene Normal":
+    //            StartBattle("normal");
+    //            break;
+    //        case "BattleScene Elite":
+    //            StartBattle("elite");
+    //            break;
+    //        case "BattleScene Boss":
+    //            StartBattle("boss");
+    //            break;
+    //        case "LevelUp":
 
-                break;
-            case "GameScene AleaScene":
-                StartAlea();
-                break;
-            case "Autel":
-                StartAutel();
-                break;
-            //case "MenuStat":
-            //    StartMenuStat();
-            //    break;
-            default:
-                break;
-        }
-        yield return null;
-    }
+    //            break;
+    //        case "GameScene AleaScene":
+    //            StartAlea();
+    //            break;
+    //        case "Autel":
+    //            StartAutel();
+    //            break;
+    //        //case "MenuStat":
+    //        //    StartMenuStat();
+    //        //    break;
+    //        default:
+    //            break;
+    //    }
+    //    yield return null;
+    //}
     
     void StartBattle(string enemieType)
     {
         //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
         //GameManager.Instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
+        ToggleMap(false);
+        
+        //StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombat));
+        //return;
 
-        //if (enemieType.Equals("normal"))
-        //    GameManager.Instance.LoadCombatNormal();
-        //else if (enemieType.Equals("elite"))
-        //{
-        //    GameManager.Instance.LoadCombatElite();
-        //}
-        //else if (enemieType.Equals("boss"))
-        //{
-        //    GameManager.Instance.LoadCombatBoss();
-        //}
+        if (enemieType.Equals("normal"))
+        {
+            StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombatNormal));
+            //GameManager.Instance.LoadCombatNormal();
+        }
+        else if (enemieType.Equals("class"))
+        {
+            StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombatClass));
+            //GameManager.Instance.LoadCombatElite();
+        }
+        else if (enemieType.Equals("elite"))
+        {
+            StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombatElite));
+            //GameManager.Instance.LoadCombatElite();
+        }
+        else if (enemieType.Equals("class_elite"))
+        {
+            StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombatClassElite));
+            //GameManager.Instance.LoadCombatElite();
+        }
+        else if (enemieType.Equals("boss"))
+        {
+            StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombatBoss));
+            //GameManager.Instance.LoadCombatBoss();
+        }
         //AudioManager.Instance.PlayMusic(MusicType.CombatMusic);
 
-        ToggleMap(false); //We hide the map
-        StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombat));
+        //ToggleMap(false); //We hide the map
+        //StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombat));
         //CurrentRoomCamera.SetActive(true);
         //MenuCamera.SetActive(false);
     }
@@ -216,7 +288,9 @@ public class PlayerMapManager : MonoBehaviour
     {
         //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
         //GameManager.Instance.AleaMan = rootScene.First(c => c.name == "AleaManager").GetComponent<AleaManager>();
-        GameManager.Instance.LoadEvent();
+        //GameManager.Instance.LoadEvent();
+        ToggleMap(false); //We hide the map
+        StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadEvent));
         //CurrentRoomCamera.SetActive(true);
         //MenuCamera.SetActive(false);
     }
@@ -227,6 +301,7 @@ public class PlayerMapManager : MonoBehaviour
         GameManager.Instance.AleaMan = null;
         //MenuCamera.SetActive(true);
         GameManager.Instance.UnloadEvent();
+        GameManager.Instance.ShowMap();
         yield return null;
         //yield return SceneManager.UnloadSceneAsync(_scene);
     }

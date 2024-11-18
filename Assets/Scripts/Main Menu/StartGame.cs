@@ -9,6 +9,9 @@ public class StartGame : MonoBehaviour
     public GameObject MainMenuGO;
     public GameObject OptionMenuGO;
 
+    [SerializeField]
+    private LevelLoader _levelLoader;
+
     [SerializeField] private GameObject[] menuCursors;
     public void Button_StartGame(int classe)
     {
@@ -16,11 +19,12 @@ public class StartGame : MonoBehaviour
         if (TutoManager.Instance != null)
             Destroy(TutoManager.Instance.gameObject);
         PlayerPrefs.SetInt("DoTutorial", DoTutoCheck.isOn ? 1:0);
-        
+
         /*if (DoTutoCheck.isOn)
             SceneManager.LoadScene("TutoMonde");
-        else*/
-            SceneManager.LoadSceneAsync("GameScene");
+        else
+            SceneManager.LoadSceneAsync("GameScene");*/
+        _levelLoader.LoadGameScene();
     }
 
     public void Button_Quit()

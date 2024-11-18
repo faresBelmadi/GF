@@ -59,6 +59,7 @@ public class JoueurBehavior : CombatBehavior
     private int currentHp = -1;
     private float currentTens = -1;
     private int currentCons = -1;
+    private bool _isHurt;
 
     public void InitRefBattleMan(BattleManager battleManager)
     {
@@ -90,27 +91,7 @@ public class JoueurBehavior : CombatBehavior
         Debug.Log("Active Children : " + i);
 
     }
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log("down");
-            GetComponent<Animator>().SetBool("0", true);
-        }
-        if (Input.GetKeyUp(KeyCode.A))
-        {
-            Debug.Log("up");
-            GetComponent<Animator>().SetBool("0", false);
-        }
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            ToggleVisibility(true);
-        }
-        if (Input.GetKeyUp(KeyCode.U))
-        {
-            ToggleVisibility(false);
-        }
-    }
+  
     public void StartUp()
     {
 
@@ -525,6 +506,11 @@ public class JoueurBehavior : CombatBehavior
 
     public void ActivateSpells()
     {
+        if (!IsTurn)        //Si ce n'est pas notre tour, on active pas les spell
+            return;
+        if (_isHurt)        //On prend des dégats, on active pas encore les spells.
+            return;
+        Debug.Log("Activate");
         foreach (var item in Spells)
         {
             item.GetComponent<SpellCombat>().button.interactable = item.GetComponent<SpellCombat>().CheckPrice();
@@ -799,11 +785,14 @@ public class JoueurBehavior : CombatBehavior
         AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerDamageTakenSFX, Stat.DamageSFX);
         DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
         AnimationController.GetAttacked();
+        _isHurt = true;
     }
 
 
     public void EndHurtAnim()
     {
+        _isHurt = false;
+        Debug.Log("Laaaa");
         AnimationController.EndAnimAttack();
     }
 

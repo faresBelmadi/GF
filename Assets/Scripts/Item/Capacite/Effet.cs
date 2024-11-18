@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Effect", menuName = "Capacité/Create New Effet", order = 11)]
@@ -614,5 +615,214 @@ public class Effet : ScriptableObject
             }
         }
         return nbBuffDebuffRemoved;
+    }
+    public Sprite GetSpriteOfEffect()
+    {
+
+        switch (TypeEffet)
+        {
+            case TypeEffet.AugmentationBrutFA:
+            case TypeEffet.AttaqueFADebuff:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatForceDameDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatForceDameUp;
+                }
+                ;
+            case TypeEffet.AugmentationPourcentageFACible:
+            case TypeEffet.AugmentationPourcentageFA:
+                if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatForceDameDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatForceDameUp;
+                }
+            case TypeEffet.RadianceMax:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                     return GameManager.Instance.StatIcons.StatRadianceDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatRadianceUp;
+                }
+            case TypeEffet.Resilience:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatRadianceDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatResilienceUp;
+                }
+            case TypeEffet.Clairvoyance:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatClairvoyanceDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatClairvoyanceUp;
+                }
+            case TypeEffet.Vitesse:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatVitesseDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatVitesseUp;
+                }
+            case TypeEffet.Conviction:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatConvictionDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatConvictionUp;
+                }
+            case TypeEffet.Conscience:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatConscienceDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatConscienceUp;
+                }
+            case TypeEffet.DegatsBrutConsequence:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.Damage;
+                }
+                else
+                    break;
+            case TypeEffet.Volonte:
+            case TypeEffet.VolonteMax:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatVolonteDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatVolonteUp;
+                }
+            case TypeEffet.TensionStep:
+            case TypeEffet.TensionValue:
+            case TypeEffet.TensionGainAttaqueValue:
+            case TypeEffet.TensionGainDebuffValue:
+            case TypeEffet.TensionGainSoinValue:
+            case TypeEffet.TensionGainDotValue:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatTensionDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatTensionUp;
+                }
+            case TypeEffet.DegatsForceAme:
+                return GameManager.Instance.StatIcons.Damage;
+            case TypeEffet.MultiplDegat:
+                if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
+                {
+                    return GameManager.Instance.StatIcons.DecreaseAtk;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.IncreaseAtk;
+                }
+            case TypeEffet.MultiplSoin:
+                if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
+                {
+                    return GameManager.Instance.StatIcons.DecreaseHeal;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.IncreaseHeal;
+                }
+            case TypeEffet.MultiplDef:
+                if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
+                {
+                    return GameManager.Instance.StatIcons.DecreaseDef;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.IncreaseDef;
+                }
+            case TypeEffet.DegatPVMax:
+            case TypeEffet.DegatsBrut:
+            case TypeEffet.Colere:
+            case TypeEffet.AugmentFADernierDegatsSubi:
+            case TypeEffet.ConscienceMax:
+            case TypeEffet.Soin:
+            case TypeEffet.SoinFA:
+            case TypeEffet.SoinFANbEnnemi:
+            case TypeEffet.SoinRadianceMax:
+            case TypeEffet.SoinRadianceActuelle:
+            case TypeEffet.RandomAttaque:
+            case TypeEffet.AugmentationFaRadianceActuelle:
+            case TypeEffet.ConsommeTensionAugmentationFA:
+            case TypeEffet.RemoveDebuff:
+            case TypeEffet.AttaqueStackAmant:
+            case TypeEffet.GainResilienceIncrementale:
+            case TypeEffet.DamageLastPhase:
+            case TypeEffet.NoEssence:
+            case TypeEffet.DoubleBuffDebuff:
+            case TypeEffet.AugmentationRadianceMaxPourcentage:
+            case TypeEffet.BuffFaCoupRecu:
+            case TypeEffet.BuffResilienceCoupRecu:
+            case TypeEffet.ConsommeTensionDmgAllExceptCaster:
+            case TypeEffet.Provocation:
+            case TypeEffet.VolEssence:
+            case TypeEffet.RandomChanceCastSpellSelf:
+            case TypeEffet.SwapMostLeastBuffDebuff:
+            case TypeEffet.RadianceRepartition:
+            case TypeEffet.RandomAttaqueDebuff:
+            case TypeEffet.DegatsRetourSurAttaque:
+            case TypeEffet.RedirectionDegatsOnCasteur:
+            case TypeEffet.CancelPourcentageDamage:
+            case TypeEffet.RedirectionCancel:
+            case TypeEffet.DispellBuffJoueurDamage:
+            case TypeEffet.DispellDebuffCasterDamage:
+            case TypeEffet.DamageAllEvenly:
+            case TypeEffet.DamageUpTargetLowRadiance:
+            case TypeEffet.OnKillStunAll:
+            case TypeEffet.UntilDeath:
+            case TypeEffet.AugmentationFARadianceManquante:
+            case TypeEffet.DamageFaBuff:
+            case TypeEffet.DamageFaBuffCible:
+            case TypeEffet.DamageDebuffCible:
+            case TypeEffet.RemoveAllTensionProcDamage:
+            case TypeEffet.RemoveAllTensionProcBuffDebuff:
+            case TypeEffet.RemoveAllDebuffProcBuffDebuf:
+            case TypeEffet.RemoveAllDebuffSelfProcBuffDebuf:
+            case TypeEffet.RemoveAllBuffProcBuffDebuf:
+            case TypeEffet.RemoveAllDebuffProcDamage:
+            case TypeEffet.RemoveAllDebuffSelfProcDamage:
+            case TypeEffet.RemoveAllBuffProcDamage:
+            case TypeEffet.NoCapaPossible:
+            case TypeEffet.ConsommeTensionReduitFa:
+            case TypeEffet.AugmentationDegatsHitJoueur:
+            case TypeEffet.GainFaBuffCible:
+            case TypeEffet.GainFaDebuffCible:
+            case TypeEffet.Ponction:
+            case TypeEffet.PonctionForceAme:
+            case TypeEffet.DegatsFaRadianceManquanteCible:
+            case TypeEffet.DegatsFaRadianceManquanteCaster:
+            case TypeEffet.PremiereAttaqueJeanne:
+            case TypeEffet.DeuxiemeAttaqueJeanne:
+            case TypeEffet.SupportJeanne:
+            case TypeEffet.UltimeJeanne:
+                Debug.Log($"Effet non géré : {TypeEffet})");
+                return null;
+        }
+        return null;
     }
 }
