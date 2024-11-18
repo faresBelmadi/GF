@@ -57,13 +57,13 @@ public class Room : MonoBehaviour
     private void OnEnable()
     {
         TradManager.OnRefreshTranslation += RefreshLabel;
-        RoomManager.OnShowMap += FadeIn;
+        PlayerMapManager.OnShowMap += FadeIn;
         GameManager.OnHideMap += FadeOut;
     }
     private void OnDisable()
     {
         TradManager.OnRefreshTranslation -= RefreshLabel;
-        RoomManager.OnShowMap -= FadeIn;
+        PlayerMapManager.OnShowMap -= FadeIn;
         GameManager.OnHideMap -= FadeOut;
     }
     private void Start() 
@@ -209,19 +209,10 @@ public class Room : MonoBehaviour
 
         _roomObject.GetComponent<SpriteRenderer>().color = spriteColor;
     }
-    public void SetLabel(string text)
-    {
-        //TradManager.instance.GetTranslation(_roomData.SalleCombatBossLabel)
-        _roomText.text = text;
-    }
-    public void SetLabelID(string labelID)
-    {
-        _labelID = labelID;
-        RefreshLabel();
-    }
+   
     private void RefreshLabel()
     {
-        _roomText.text = TradManager.instance.GetTranslation(_labelID);
+        _roomText.text = GetLabelByRoomType(roomType);
     }
     public void ChangeColor(Color color)
     {

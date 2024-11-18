@@ -2,11 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class PlayerMapManager : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject _roomsHolder;
     [SerializeField]
     private float _rollingMapTime = 1f;
 
@@ -39,6 +42,25 @@ public class PlayerMapManager : MonoBehaviour
     public GameObject CurrentRoomCamera;
     //GameObject[] rootScene;
     private Scene _scene;
+
+    public static event Action OnShowMap;
+
+    private void OnEnable()
+    {
+        GameManager.OnShowMap += FadeInAllRoom;
+    }
+    private void OnDisable()
+    {
+        GameManager.OnShowMap -= FadeInAllRoom;
+    }
+    private void FadeInAllRoom()
+    {
+        for (int i = 0; i< _roomsHolder.transform.childCount; i++) 
+        {
+                _roomsHolder.transform.GetChild(i).gameObject.SetActive(true);
+        }
+        OnShowMap?.Invoke();
+    }
     private void GetAccessibleRooms()
     {
         foreach (int connectedRoomId in map[_currentRoom.ID].connections)
@@ -101,6 +123,8 @@ public class PlayerMapManager : MonoBehaviour
 
     private void MapAction()
     {
+       
+
         switch (_currentRoom.roomType)
         {
             case TypeRoom.ENCOUNTER:

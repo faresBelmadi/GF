@@ -11,12 +11,12 @@ public class Corridor : MonoBehaviour
 
     private void OnEnable()
     {
-        RoomManager.OnShowMap += FadeIn;
+        PlayerMapManager.OnShowMap += FadeIn;
         GameManager.OnHideMap += FadeOut;
     }
     private void OnDisable()
     {
-        RoomManager.OnShowMap -= FadeIn;
+        PlayerMapManager.OnShowMap -= FadeIn;
         GameManager.OnHideMap -= FadeOut;
     }
 
