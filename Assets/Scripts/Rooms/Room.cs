@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -47,12 +48,30 @@ public class Room : MonoBehaviour
     private GameObject _roomObject;
     [SerializeField]
     private TMP_Text _roomText;
-    
+
+    private string _labelID;
     private Vector3 oldScale;
+    private SpriteRenderer _spriteRenderer;
+    [SerializeField]
+    private float _fadeDuration = 1f;
+    private void OnEnable()
+    {
+        TradManager.OnRefreshTranslation += RefreshLabel;
+        RoomManager.OnShowMap += FadeIn;
+        GameManager.OnHideMap += FadeOut;
+    }
+    private void OnDisable()
+    {
+        TradManager.OnRefreshTranslation -= RefreshLabel;
+        RoomManager.OnShowMap -= FadeIn;
+        GameManager.OnHideMap -= FadeOut;
+    }
     private void Start() 
     {
         oldScale = _roomObject.transform.localScale;
+        _spriteRenderer = _roomObject.GetComponent<SpriteRenderer>();
     }
+  
 
     public void SetRoom(int roomId, TypeRoom type, RoomState state = RoomState.UNKNOWN)
     {
@@ -195,13 +214,22 @@ public class Room : MonoBehaviour
         //TradManager.instance.GetTranslation(_roomData.SalleCombatBossLabel)
         _roomText.text = text;
     }
+    public void SetLabelID(string labelID)
+    {
+        _labelID = labelID;
+        RefreshLabel();
+    }
+    private void RefreshLabel()
+    {
+        _roomText.text = TradManager.instance.GetTranslation(_labelID);
+    }
     public void ChangeColor(Color color)
     {
         _roomObject.GetComponent<SpriteRenderer>().color = color;
     }
     private void OnMouseEnter() {
         //if(isNavigable || roomState == RoomState.ACCESSIBLE)
-        if (roomState == RoomState.ACCESSIBLE)
+        if (!GameManager.Instance.IsPaused && (roomState == RoomState.ACCESSIBLE))
         {
             var scale = new Vector3(oldScale.x * 2,oldScale.y * 2,oldScale.z);
             _roomObject.transform.localScale = scale;
@@ -210,7 +238,7 @@ public class Room : MonoBehaviour
 
     private void OnMouseExit() {
         //if(isNavigable || roomState == RoomState.ACCESSIBLE)
-        if (roomState == RoomState.ACCESSIBLE)
+        if (!GameManager.Instance.IsPaused && (roomState == RoomState.ACCESSIBLE))
         {
             var scale = oldScale;
             
@@ -220,7 +248,7 @@ public class Room : MonoBehaviour
 
     private void OnMouseDown() {
         //if(isNavigable || roomState == RoomState.ACCESSIBLE)
-        if (roomState == RoomState.ACCESSIBLE){
+        if (!GameManager.Instance.IsPaused && (roomState == RoomState.ACCESSIBLE)){
             if (roomType == TypeRoom.BOSS || roomType == TypeRoom.ELITE || roomType == TypeRoom.ENCOUNTER)
             {
                 AudioManager.instance.SFX.PlaySFXClip(SFXType.MapBattleSFX);
@@ -242,5 +270,40 @@ public class Room : MonoBehaviour
             
         }
     }
+    private void FadeIn()
+    {
+        StartCoroutine(Fade(false));
+    }
+    private void FadeOut()
+    {
+        StartCoroutine(Fade(true));
+    }
+    private IEnumerator Fade(bool isFadeOut)
+    {
+        if (!isFadeOut) yield return new WaitForSeconds(1.25f);
+        Color c = _spriteRenderer.color;
+        Color textColor = _roomText.color;
+        float timer = 0f;
+        float startingAlpha = isFadeOut ? 1f : 0f;
+        float targetAlpha = isFadeOut ? 0f : 1f;
+        while (timer < _fadeDuration)
+        {
+            float alpha = Mathf.Lerp(startingAlpha, targetAlpha, timer);
+            c.a = alpha;
+            textColor.a = alpha;
+
+            _spriteRenderer.color = c;
+            _roomText.color = textColor;
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        c.a = targetAlpha;
+        textColor.a = targetAlpha;
+        _spriteRenderer.color = c;
+        _roomText.color = textColor;
+
+        gameObject.SetActive(!isFadeOut);
+    }
+  
 
 }

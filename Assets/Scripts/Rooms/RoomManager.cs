@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class RoomManager : MonoBehaviour
@@ -16,8 +17,8 @@ public class RoomManager : MonoBehaviour
     //public Sprite SalleAlea;
     //public Sprite SalleStart;
     //public Sprite SalleEnd;
-    
 
+    public static event Action OnShowMap;
 
     //public void Init(List<Room> _rooms)
     //{
