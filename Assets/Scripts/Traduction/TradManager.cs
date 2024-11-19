@@ -29,6 +29,23 @@ public class TradManager : MonoBehaviour
             return value;
         }
     }
+    public SUPPORTEDLANGUAGES Language
+    {
+        get
+        {
+            switch (IdLanguage)
+            {
+                case 0:
+                    return SUPPORTEDLANGUAGES.FR;
+                case 1:
+                    return SUPPORTEDLANGUAGES.EN;
+                case 2:
+                    return SUPPORTEDLANGUAGES.ZH;
+                default:
+                    return SUPPORTEDLANGUAGES.FR;
+            }
+        }
+    }
 
     private Dictionary<string, List<string>> _dialogueDictionary = new Dictionary<string, List<string>>();
     private Dictionary<string, List<string>> _capaDictionary = new Dictionary<string, List<string>>();

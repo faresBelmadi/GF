@@ -13,6 +13,8 @@ public class PlayerMapManager : MonoBehaviour
     [SerializeField]
     private float _rollingMapTime = 1f;
 
+    public static event Action OnEndGame;
+
     public Room CurrentRoom
     {
         get
@@ -269,6 +271,10 @@ public class PlayerMapManager : MonoBehaviour
         //CurrentRoomCamera.SetActive(false);
         //GameManager.Instance.BattleMan = null;
         //MenuCamera.SetActive(true);
+        if (CurrentRoom.roomType == TypeRoom.BOSS)
+        {
+            OnEndGame?.Invoke();
+        }
         if (IsLoot)
         {
             //Afficher le menutStat
