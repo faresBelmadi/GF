@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GamePanelManager : MonoBehaviour
 {
@@ -22,6 +23,14 @@ public class GamePanelManager : MonoBehaviour
     //TEMP
     [SerializeField]
     private GameObject _canvaMap;
+
+    //Todo : a modifier, image end Game
+    [SerializeField]
+    private GameObject _endGameImage;
+    [SerializeField]
+    private Sprite _endFrGameImage;
+    [SerializeField]
+    private Sprite _endEnGameImage;
     private void OnEnable()
     {
         GameManager.OnStartCombat += StartCombat;
@@ -29,6 +38,7 @@ public class GamePanelManager : MonoBehaviour
         GameManager.OnStartAutel += StartAutel;
         GameManager.OnLootAfterCombat += StartLoot;
         GameManager.OnShowMap += ShowMap;
+        PlayerMapManager.OnEndGame += EndGame;
 
         TutoManager.OnEndDialog += HideDialog;
         TutoManager.OnStartCombat += StartCombat;
@@ -42,6 +52,7 @@ public class GamePanelManager : MonoBehaviour
         GameManager.OnStartAutel -= StartAutel;
         GameManager.OnLootAfterCombat -= StartLoot;
         GameManager.OnShowMap -= ShowMap;
+        PlayerMapManager.OnEndGame -= EndGame;
 
         TutoManager.OnEndDialog -= HideDialog;
         TutoManager.OnStartCombat -= StartCombat;
@@ -66,7 +77,7 @@ public class GamePanelManager : MonoBehaviour
        
             _canvaMap.SetActive(!doTutorial);
             _canvaTuto.SetActive(doTutorial);
-       
+        _canvaDialog.SetActive(false);
     }
     public void EndTuto()
     {
@@ -130,5 +141,10 @@ public class GamePanelManager : MonoBehaviour
     public void HideBattle()
     {
         _canvaBattle.SetActive(false);
+    }
+    private void EndGame()
+    {
+        _endGameImage.GetComponent<Image>().sprite = TradManager.instance.Language == TradManager.SUPPORTEDLANGUAGES.EN ? _endEnGameImage : _endFrGameImage;
+        _endGameImage.gameObject.SetActive(true);
     }
 }
