@@ -59,7 +59,7 @@ public class Generator : MonoBehaviour
     {
         spawnedRoomsObj = new Dictionary<Vector2, GameObject>();
         Lines = new List<GameObject>();
-        aviableRoomPool = new List<TypeRoom>(roomPool);
+        //aviableRoomPool = new List<TypeRoom>(roomPool);
 
         mapNodes = GameManager.Instance.pmm.map;
 
@@ -78,7 +78,7 @@ public class Generator : MonoBehaviour
             else
             {
                 TEMPtimer = 0f;
-                aviableRoomPool = new List<TypeRoom>(roomPool);
+                //aviableRoomPool = new List<TypeRoom>(roomPool);
                 GenerateNewMap();
             }
         }
@@ -86,11 +86,7 @@ public class Generator : MonoBehaviour
 
     public void GenerateNewMap()
     {
-        ClearGen();
-
         int usedSeed = seed == 0 ? Random.Range(int.MinValue, int.MaxValue) : seed;
-        Random.InitState(usedSeed);
-        Debug.Log($"Seed to use: {usedSeed}");
 
         int elitCnt = aviableRoomPool.Where(rType => rType == TypeRoom.ELITE || rType == TypeRoom.CLASS_ELITE).Count();
         int defaultRoomCnt = 2/*Start & Boss*/ + aviableRoomPool.Count();//Loots rooms not counted
@@ -101,9 +97,24 @@ public class Generator : MonoBehaviour
         int roomCnt = gridSize + 6;
         //int roomCnt = defaultRoomCnt;
 
-        Debug.Log("Generate map");
-        GenerateMap(roomCnt);// OR LOAD MAPNODES FROM SAVE FILES
-        Debug.Log($"Used Seed: {usedSeed}");
+        int maxTry = 5;
+        int tryCnt = 0;
+        while (tryCnt < maxTry)
+        {
+            aviableRoomPool = new List<TypeRoom>(roomPool);
+            Random.InitState(usedSeed);
+            Debug.Log($"Seed to use: {usedSeed}");
+            
+            ClearGen();
+
+            Debug.Log("Generate map");
+            GenerateMap(roomCnt);// OR LOAD MAPNODES FROM SAVE FILES
+            Debug.Log($"Used Seed: {usedSeed}");
+
+            if (IsMapValid(roomCnt)) break;
+
+            usedSeed ++;
+        }
 
         Debug.Log("spawn first 3 rooms");
         SpawnRoom(0, roomCnt, RoomState.VISITED);
@@ -356,25 +367,37 @@ public class Generator : MonoBehaviour
 
         Debug.Log($"End Generate Map with seed: {seed}");
     }
-    //private bool IsMapValid()
-    //{
-    //    List<int> foundNodes = new List<int>() { 0 };
-    //    List<int> currentlyConnected = new List<int>() { 0 };
 
-    //    while (currentlyConnected.Count > 0)
-    //    {
-    //        List<int>nextConnections = new List<int>();
-    //        foreach (int connectedId in mapNodes[currentlyConnected[0]].connections)
-    //        {
-    //            if (!foundNodes.Contains(connectedId))
-    //            {
-    //                foundNodes.Add(connectedId);
-    //                nextConnections.Add(connectedId);
-    //            }
-    //        }
-    //        currentlyConnected.RemoveAt(0);
-    //    }
-    //}
+    private bool IsMapValid(int nodeCnt)
+    {
+        int elitCnt = roomPool.Where(rType => rType == TypeRoom.ELITE || rType == TypeRoom.CLASS_ELITE).Count();
+        int finalRoomCnt = 2/*Start & Boss*/ + roomPool.Count() + elitCnt;//Loots 
+
+        List<int> foundNodes = new List<int>() { 0 };
+        List<int> currentlyConnected = new List<int>() { 0 };
+
+        while (currentlyConnected.Count > 0)
+        {
+            //List<int> nextConnections = new List<int>();
+            if (currentlyConnected[0] != nodeCnt-1) //Don't get boss connections
+            {
+                foreach (int connectedId in mapNodes[currentlyConnected[0]].connections)
+                {
+                    if (!foundNodes.Contains(connectedId))
+                    {
+                        foundNodes.Add(connectedId);
+                        //nextConnections.Add(connectedId);
+                        currentlyConnected.Add(connectedId);
+                    }
+                }
+            }
+            
+            currentlyConnected.RemoveAt(0);
+        }
+        Debug.Log($"{foundNodes.Count} room find over {finalRoomCnt} expected");
+
+        return foundNodes.Count == finalRoomCnt;
+    }
 
     private void LengthBasedDecimatePath(int roomCnt)
     {
