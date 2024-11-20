@@ -212,8 +212,8 @@ public class ArbreManager : MonoBehaviour
 
         GameManager.Instance.playerStat.ListSpell.Add(Competence.LaCompetence.Spell);
 
-        UiMondeManager ui = GameManager.Instance.rm.gameObject.GetComponent<UiMondeManager>();
-        ui.EnableMonde();
+        //UiMondeManager ui = GameManager.Instance.rm.gameObject.GetComponent<UiMondeManager>();
+        //ui.EnableMonde();
     }
 
     public void UnEquip(ContainerCompetence Competence)

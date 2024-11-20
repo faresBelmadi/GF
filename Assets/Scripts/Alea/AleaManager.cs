@@ -30,6 +30,7 @@ public class AleaManager : MonoBehaviour
     {
         _isAlea = false;
         GameManager.Instance.playerStat = _stat;
+        Destroy(_pnj);
         StartCoroutine(GameManager.Instance.pmm.EndAlea());
     }
 }
