@@ -69,14 +69,14 @@ public class PlayerMapManager : MonoBehaviour
         {
             Room connectedRoom = map[connectedRoomId].objectInstance.GetComponent<Room>();
              if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
-            connectedRoom.SetColorByState(connectedRoom.roomState);
+            connectedRoom.SetShaderByState(connectedRoom.roomState);
         }
     }
     private void VisualUpdateNew()
     {
         //_currentRoom.GetComponent<SpriteRenderer>().color = Color.white;
         //_currentRoom.ChangeColor(Color.white);
-        _currentRoom.SetColorByState(_currentRoom.roomState);
+        _currentRoom.SetShaderByState(_currentRoom.roomState);
         //foreach (var item in _currentRoom.ConnectedRooms)
         //{
         //    item.isNavigable = true;
@@ -95,7 +95,7 @@ public class PlayerMapManager : MonoBehaviour
         if (_currentRoom != null)
         {
             _currentRoom.roomState = RoomState.VISITED;
-            _currentRoom.SetColorByState(_currentRoom.roomState);
+            _currentRoom.SetShaderByState(_currentRoom.roomState);
             //_currentRoom.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
             //_currentRoom.ChangeColor(Color.gray);
             //foreach (var item in _currentRoom.ConnectedRooms)

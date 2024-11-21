@@ -29,6 +29,7 @@ public class Generator : MonoBehaviour
     [Header("Rooms Display Settings")]
     [SerializeField] private Vector2 mapAreaSize;
     [SerializeField] private Vector2 mapAreaOffset;
+    [SerializeField] private Material baseRoomMaterial;
     //[SerializeField] private float spriteSize = 10f;
 
     [Header("Map Settings"),Tooltip("Don't Add Start, Boss or Loot rooms, they are Added automaticaly.")]
@@ -700,6 +701,9 @@ public class Generator : MonoBehaviour
         GameObject roomObject = Instantiate(roomPrefab, position, Quaternion.identity, transform);
         roomObject.name = type.ToString();
         mapNodes[mapIndex].objectInstance = roomObject;
+
+        //roomObject.GetComponent<SpriteRenderer>().material = new Material(baseRoomMaterial);
+
         Room room = roomObject.GetComponent<Room>();
         room.SetRoom(mapIndex,type, defaultState);
         
