@@ -149,7 +149,16 @@ public class DialogueManager : MonoBehaviour
         DialogueIndex = NextDialogueIndex;
 
         // On affiche le panel de dialogue avec le nombre requis de réponse
-        _dialogPanelComponent.SwitchNumberOfAnswer(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count);
+        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat
+            || _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
+        {
+            // Dialogue final, on affiche le layout avec le bouton
+            _dialogPanelComponent.SwitchNumberOfAnswer(0);
+        }
+        else
+        {
+            _dialogPanelComponent.SwitchNumberOfAnswer(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count);
+        }
         _dialogPanelComponent.MainText.text = TextePrincipal();
         _dialogPanelComponent.MainTextGO.SetActive(true);
         InitDialogOptionButton();
