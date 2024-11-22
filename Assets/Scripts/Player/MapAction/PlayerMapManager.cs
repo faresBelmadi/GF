@@ -70,6 +70,8 @@ public class PlayerMapManager : MonoBehaviour
             Room connectedRoom = map[connectedRoomId].objectInstance.GetComponent<Room>();
              if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
             connectedRoom.SetShaderByState(connectedRoom.roomState);
+
+            //SETTING PATHS SHADERS
         }
     }
     private void VisualUpdateNew()
@@ -131,24 +133,29 @@ public class PlayerMapManager : MonoBehaviour
         {
             case TypeRoom.ENCOUNTER:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
-                StartBattle("normal");
+                //StartBattle("normal");
+                StartChoosenBattel();
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.CLASS_ENCOUNTER:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
-                StartBattle("class");
+                StartChoosenBattel();
+                //StartBattle("class");
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.ELITE:
-                StartBattle("elite");
+                StartChoosenBattel();
+                //StartBattle("elite");
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.CLASS_ELITE:
-                StartBattle("class_elite");
+                StartChoosenBattel();
+                //StartBattle("class_elite");
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.BOSS:
-                StartBattle("boss");
+                StartChoosenBattel();
+                //StartBattle("boss");
                 //_currentRoom.roomState = RoomState.VISITED;
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
                 break;
@@ -223,7 +230,11 @@ public class PlayerMapManager : MonoBehaviour
     //    }
     //    yield return null;
     //}
-    
+    public void StartChoosenBattel()
+    {
+        ToggleMap(false);
+        StartCoroutine(WaitStartBattle());
+    }
     void StartBattle(string enemieType)
     {
         //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
@@ -394,5 +405,11 @@ public class PlayerMapManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_rollingMapTime);
         actionToDo();
+    }
+    public IEnumerator WaitStartBattle()
+    {
+        yield return new WaitForSeconds(_rollingMapTime);
+        Debug.Log($"Start Combat type: {_currentRoom.roomType}, Id: {_currentRoom.selectedEncounterId}");
+        GameManager.Instance.LoadChoosenCombat(_currentRoom.roomType,_currentRoom.selectedEncounterId);
     }
 }

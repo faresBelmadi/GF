@@ -315,7 +315,28 @@ public class GameManager : MonoBehaviour {
     {
         pmm.CurrentRoom = set;
     }
-
+    public int SelectEncounterId(TypeRoom type)
+    {
+        switch (type)
+        {
+            case TypeRoom.ENCOUNTER:
+                return UnityEngine.Random.Range(0, TEMPEncounterNeutral.Count);
+                break;
+            case TypeRoom.CLASS_ENCOUNTER:
+                return UnityEngine.Random.Range(0, TEMPEncounterClass.Count);
+                break;
+            case TypeRoom.ELITE:
+                return UnityEngine.Random.Range(0, TEMPEncounterElite.Count);
+                break;
+            case TypeRoom.CLASS_ELITE:
+                return UnityEngine.Random.Range(0, TEMPEncounterClassElite.Count);
+                break;
+            case TypeRoom.BOSS:
+                return UnityEngine.Random.Range(0, TEMPEncounterBoss.Count);
+                break;
+            default: return 0;
+        }
+    }
     public void StartCombat()
     {
         Debug.Log("Raise event : OnStartCombat");
@@ -345,7 +366,28 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("Unload Combat");
     }
-
+    public void LoadChoosenCombat(TypeRoom roomType, int encounterId)
+    {
+        OnStartDialog?.Invoke();
+        switch (roomType)
+        {
+            case TypeRoom.ENCOUNTER:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[encounterId]));
+                break;
+            case TypeRoom.CLASS_ENCOUNTER:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[encounterId]));
+                break;
+            case TypeRoom.ELITE:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterElite[encounterId]));
+                break;
+            case TypeRoom.CLASS_ELITE:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterClassElite[encounterId]));
+                break;
+            case TypeRoom.BOSS:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterBoss[encounterId]));
+                break;
+        }
+    }
     public void LoadCombatNormal()
     {
         //BattleMan.LoadEnemy(Instantiate(AllEncounter[0]));

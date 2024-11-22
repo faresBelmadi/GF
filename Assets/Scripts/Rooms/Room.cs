@@ -52,6 +52,8 @@ public class Room : MonoBehaviour
 
     [SerializeField] private Material baseRoomMaterial;
 
+    public int selectedEncounterId;
+
     private string _labelID;
     private Vector3 oldScale;
     private SpriteRenderer _spriteRenderer;
@@ -76,12 +78,12 @@ public class Room : MonoBehaviour
     }
   
 
-    public void SetRoom(int roomId, TypeRoom type, RoomState state = RoomState.UNKNOWN)
+    public void SetRoom(int roomId, TypeRoom type, float defaultSpriteSize, RoomState state = RoomState.UNKNOWN)
     {
         this.ID = roomId;
         this.roomType = type;
         this.roomState = state;
-        gameObject.transform.localScale = new Vector3(7, 7);
+        gameObject.transform.localScale = new Vector3(defaultSpriteSize, defaultSpriteSize);
         roomIconObject.GetComponent<SpriteRenderer>().sprite = GetSpriteByRoomType(type);
         roomIconObject.GetComponent<SpriteRenderer>().material = new Material(baseRoomMaterial);
         _roomText.text = GetLabelByRoomType(type);
@@ -89,6 +91,11 @@ public class Room : MonoBehaviour
         //SetColorByState(roomState);
         //this.GetComponent<Image>().sprite = ToSet;
     }
+    //public void SetEncounter(int EncounterId)
+    //{
+    //    selectedEncounterId = EncounterId;
+    //}
+
     private Sprite GetSpriteByRoomType(TypeRoom roomType)
     {
         switch (roomType)

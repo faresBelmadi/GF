@@ -30,7 +30,7 @@ public class Generator : MonoBehaviour
     [SerializeField] private Vector2 mapAreaSize;
     [SerializeField] private Vector2 mapAreaOffset;
     [SerializeField] private Material baseRoomMaterial;
-    //[SerializeField] private float spriteSize = 10f;
+    [SerializeField] private float roomDefaultSpriteSize = 8f;
 
     [Header("Map Settings"),Tooltip("Don't Add Start, Boss or Loot rooms, they are Added automaticaly.")]
     [SerializeField] private List<TypeRoom> roomPool = new List<TypeRoom>();
@@ -705,8 +705,13 @@ public class Generator : MonoBehaviour
         //roomObject.GetComponent<SpriteRenderer>().material = new Material(baseRoomMaterial);
 
         Room room = roomObject.GetComponent<Room>();
-        room.SetRoom(mapIndex,type, defaultState);
+        room.SetRoom(mapIndex,type, roomDefaultSpriteSize, defaultState);
         
+        int encounterId = GameManager.Instance.SelectEncounterId(type);
+        room.selectedEncounterId = encounterId;
+        //room.SetEncounter(encounterId);
+        Debug.Log($"Room {mapIndex}({type.ToString()}): EncounterSelected: {encounterId}");
+        //room.SetEncounter(GameManager.Instance.SelectEncounterId(type));
         spawnedRoomsObj.Add(new Vector2(pos.x,pos.y),roomObject);
     }
     void SpawnAllPaths(int roomCnt)
