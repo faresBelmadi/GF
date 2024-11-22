@@ -133,7 +133,7 @@ public class TurnOrderUIManager : MonoBehaviour
     {
         float curtainHeight = curtain.rect.height;
         Vector2 defaultPos = Vector2.up * curtainHeight;
-        Debug.Log($"DropCurtain, height:{curtainHeight}");
+        // Debug.Log($"DropCurtain, height:{curtainHeight}");
         curtain.localPosition = defaultPos;
         if (curtainMovmentDuration > 0f)
         {

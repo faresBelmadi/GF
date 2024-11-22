@@ -278,7 +278,7 @@ public class Generator : MonoBehaviour
             }
             foreach (int con in interco)
             {
-                Debug.Log(con);
+               // Debug.Log(con);
             }
 
             foreach (int source in interco)
