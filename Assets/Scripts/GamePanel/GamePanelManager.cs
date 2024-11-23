@@ -13,11 +13,11 @@ public class GamePanelManager : MonoBehaviour
     private GameObject _canvaEnnemy;
     [SerializeField]
     private GameObject _canvaAutel;
-
     [SerializeField]
     private GameObject _canvaTuto;
     [SerializeField]
     private JoueurBehavior _characterBehavior;
+
     //[SerializeField]
     //private GameObject _cloudCharacter;
     //TEMP
@@ -31,6 +31,7 @@ public class GamePanelManager : MonoBehaviour
     private Sprite _endFrGameImage;
     [SerializeField]
     private Sprite _endEnGameImage;
+
     private void OnEnable()
     {
         GameManager.OnStartCombat += StartCombat;
@@ -45,6 +46,7 @@ public class GamePanelManager : MonoBehaviour
         TutoManager.OnEndCombat += HideBattle;
         TutoManager.OnEndTuto += EndTuto;
     }
+
     private void OnDisable()
     {
         GameManager.OnStartCombat -= StartCombat;
@@ -74,15 +76,18 @@ public class GamePanelManager : MonoBehaviour
 
     public void InitPanel(bool doTutorial = false)
     {
-       
-            _canvaMap.SetActive(!doTutorial);
-            _canvaTuto.SetActive(doTutorial);
+        _canvaMap.SetActive(true);
+
+        //_canvaMap.SetActive(!doTutorial);
+        //_canvaTuto.SetActive(doTutorial);
         _canvaDialog.SetActive(false);
     }
+
     public void EndTuto()
     {
         InitPanel(false);
     }
+
     public void StartCombat()
     {
         _characterBehavior.ToggleVisibility(true);
@@ -92,6 +97,7 @@ public class GamePanelManager : MonoBehaviour
         _canvaBattle.SetActive(true);
         _canvaEnnemy.SetActive(true);
     }
+
     public void StartDialog()
     {
         _characterBehavior.ToggleVisibility(true);
@@ -101,6 +107,7 @@ public class GamePanelManager : MonoBehaviour
         _canvaBattle.SetActive(false);
         _canvaEnnemy.SetActive(true);
     }
+
     public void StartLoot()
     {
         _characterBehavior.ToggleVisibility(false);
@@ -110,6 +117,7 @@ public class GamePanelManager : MonoBehaviour
         _canvaBattle.SetActive(false);
         _canvaEnnemy.SetActive(false);
     }
+
     public void StartAutel()
     {
         //TEMP
@@ -122,6 +130,7 @@ public class GamePanelManager : MonoBehaviour
         _canvaBattle.SetActive(false);
         _canvaEnnemy.SetActive(false);
     }
+
     public void ShowMap()
     {
         //TEMP
@@ -134,17 +143,22 @@ public class GamePanelManager : MonoBehaviour
         _canvaBattle.SetActive(false);
         _canvaEnnemy.SetActive(false);
     }
+
     public void HideDialog()
     {
         _canvaDialog.SetActive(false);
     }
+
     public void HideBattle()
     {
         _canvaBattle.SetActive(false);
     }
+
     private void EndGame()
     {
-        _endGameImage.GetComponent<Image>().sprite = TradManager.instance.Language == TradManager.SUPPORTEDLANGUAGES.EN ? _endEnGameImage : _endFrGameImage;
+        _endGameImage.GetComponent<Image>().sprite = TradManager.instance.Language == TradManager.SUPPORTEDLANGUAGES.EN
+            ? _endEnGameImage
+            : _endFrGameImage;
         _endGameImage.gameObject.SetActive(true);
     }
 }
