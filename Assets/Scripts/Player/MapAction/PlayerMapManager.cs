@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.PlayerSettings;
 
 public class PlayerMapManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class PlayerMapManager : MonoBehaviour
     private GameObject _roomsHolder;
     [SerializeField]
     private float _rollingMapTime = 1f;
+
+    [SerializeField] private Color basePathColor;
+    [SerializeField] private Color visitedPathColors;
 
     public static event Action OnEndGame;
 
@@ -23,11 +27,10 @@ public class PlayerMapManager : MonoBehaviour
         }
         set
         {
-            //VisualUpdateOld();
             _currentRoom = value;
 
             GetAccessibleRooms();
-            //VisualUpdateNew();
+            UpdateAllPathShaders();
             MapAction();
         }
     }
@@ -71,59 +74,42 @@ public class PlayerMapManager : MonoBehaviour
              if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
             connectedRoom.SetShaderByState(connectedRoom.roomState);
 
-            //SETTING PATHS SHADERS
         }
     }
-    private void VisualUpdateNew()
-    {
-        //_currentRoom.GetComponent<SpriteRenderer>().color = Color.white;
-        //_currentRoom.ChangeColor(Color.white);
-        _currentRoom.SetShaderByState(_currentRoom.roomState);
-        //foreach (var item in _currentRoom.ConnectedRooms)
-        //{
-        //    item.isNavigable = true;
-        //    //item.GetComponent<SpriteRenderer>().color = Color.white;
-        //    item.ChangeColor(Color.white);
-        //}
-        //foreach (var item in _currentRoom.OwnedCorridors)
-        //{
-        //    SetLineColor(item, Color.white);
-        //}
-    }
 
-
-    private void VisualUpdateOld()
+    public void UpdateAllPathShaders()
     {
-        if (_currentRoom != null)
+        for (int i = 0; i < map.Count; i++)
         {
-            _currentRoom.roomState = RoomState.VISITED;
-            _currentRoom.SetShaderByState(_currentRoom.roomState);
-            //_currentRoom.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            //_currentRoom.ChangeColor(Color.gray);
-            //foreach (var item in _currentRoom.ConnectedRooms)
-            //{
-            //    item.isNavigable = false;
-            //}
-            //foreach (var item in _currentRoom.OwnedCorridors)
-            //{
-            //    SetLineColor(item, Color.gray);
-            //}
+            foreach (int connectedId in map[i].connections)
+            {
+                if (i > connectedId) continue;
+            
+                if(map[i].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN
+                || map[connectedId].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN)
+                {
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", -1f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_curtainLength", -.5f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetColor("_Color", basePathColor);
+
+                }
+                else if (map[i].objectInstance.GetComponent<Room>().roomState == RoomState.VISITED
+                && map[connectedId].objectInstance.GetComponent<Room>().roomState == RoomState.VISITED)
+                {
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", 1f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_curtainLength", .5f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetColor("_Color", visitedPathColors);
+                }
+                else
+                {
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", 3f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_curtainLength", 1f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetColor("_Color", basePathColor);
+
+                }
+            }            
         }
     }
-
-    private static void SetLineColor(GameObject item, Color color)
-    {
-        var gradient = item.GetComponent<LineRenderer>().colorGradient;
-        var colorKeys = gradient.colorKeys;
-        for (var j = 0; j < colorKeys.Length; j++)
-        {
-            colorKeys[j].color = color;
-        }
-
-        gradient.colorKeys = colorKeys;
-        item.GetComponent<LineRenderer>().colorGradient = gradient;
-    }
-
 
     private void MapAction()
     {

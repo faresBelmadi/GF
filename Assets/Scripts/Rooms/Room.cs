@@ -303,7 +303,7 @@ public class Room : MonoBehaviour
             GameManager.Instance.SetRoom(this);
             roomState = RoomState.VISITED;
             SetShaderByState(roomState);
-            //SetColorByState(roomState);
+            GameManager.Instance.pmm.UpdateAllPathShaders();
 
             var scale = oldScale;
             roomIconObject.transform.localScale = scale;

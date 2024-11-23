@@ -735,6 +735,7 @@ public class Generator : MonoBehaviour
                 GameManager.Instance.pmm.pathsGameObjects[i,connection] = pathObject;
             }
         }
+        GameManager.Instance.pmm.UpdateAllPathShaders();
     }
 
     void ClearGen()
