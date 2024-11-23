@@ -29,7 +29,8 @@ public class Generator : MonoBehaviour
     [Header("Rooms Display Settings")]
     [SerializeField] private Vector2 mapAreaSize;
     [SerializeField] private Vector2 mapAreaOffset;
-    [SerializeField] private Material baseRoomMaterial;
+    //[SerializeField] private Material baseRoomMaterial;
+    [SerializeField] private Material basePathMaterial;
     [SerializeField] private float roomDefaultSpriteSize = 8f;
 
     [Header("Map Settings"),Tooltip("Don't Add Start, Boss or Loot rooms, they are Added automaticaly.")]
@@ -49,6 +50,7 @@ public class Generator : MonoBehaviour
     [SerializeField] private List<TypeRoom> illegalConnection_ELITES = new List<TypeRoom>();
 
     private List<GameObject> Lines;
+    //private GameObject[,] pathsGameObjects;
     private List<Container> ResultBsp;
 
     private List<TypeRoom> aviableRoomPool = new List<TypeRoom>();
@@ -128,6 +130,7 @@ public class Generator : MonoBehaviour
             if (mapNodes[i].roomType != TypeRoom.NONE) SpawnRoom(i, roomCnt);
         }
         Debug.Log("spawn all paths");
+        GameManager.Instance.pmm.pathsGameObjects = new GameObject[roomCnt,roomCnt];
         SpawnAllPaths(roomCnt);
         // <= LOAD already visited rooms
 
@@ -726,8 +729,10 @@ public class Generator : MonoBehaviour
                 Vector3 endPos = GetPositionByIndex(connection, roomCnt);
                 Vector3[] pathPos = new Vector3[] { startPos, endPos };
                 pathObject.GetComponent<LineRenderer>().SetPositions(pathPos);
+                pathObject.GetComponent<LineRenderer>().material = new Material(basePathMaterial);
 
                 Lines.Add(pathObject);
+                GameManager.Instance.pmm.pathsGameObjects[i,connection] = pathObject;
             }
         }
     }

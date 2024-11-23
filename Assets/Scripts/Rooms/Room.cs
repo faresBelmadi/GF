@@ -257,7 +257,7 @@ public class Room : MonoBehaviour
         //roomIconObject.GetComponent<SpriteRenderer>().material.DisableKeyword("_ROOMSTATUS_UNKNOWN");
         //Debug.Log($"Enabled keyword0 find = {roomIconObject.GetComponent<SpriteRenderer>().material.enabledKeywords[1]}");
     }
-   
+    
     private void RefreshLabel()
     {
         _roomText.text = GetLabelByRoomType(roomType);

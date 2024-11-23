@@ -33,7 +33,7 @@ public class PlayerMapManager : MonoBehaviour
     }
     private Room _currentRoom;
     public List<MapNode> map = new List<MapNode>();
-
+    public GameObject[,] pathsGameObjects;
     public class MapNode
     {
         public GameObject objectInstance;
