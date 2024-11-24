@@ -19,14 +19,21 @@ public class BattleManager : MonoBehaviour
     public List<EnnemyBehavior> DeadEnemyScripts;
     public Transform[] spawnPos;
     public Encounter _encounter;
-    public GameObject prefabEssence;
+
     public GameObject buttonEndCombat;
     [SerializeField]
     private string _idLabelForEssenceButton;
     const string Target = "Targeting";
     public PassifRules passifRules;
-
-
+    [Header("CrystalSoul Manager")]
+    [Tooltip("Put three Essence Prefab, from the smallest, to the greatest")]
+    [SerializeField]
+    public List<GameObject> _prefabEssenceList;
+    [SerializeField]
+    private int _amountForGreaestEssence;
+    [SerializeField]
+    private int _amountForMediumEssence;
+    
     [Header("Round/Turn variables")] public List<CombatOrder> IdOrder;
     public int nbPhase = 0;
     public Dictionary<int, int> IdSpeedDictionary;
@@ -61,6 +68,7 @@ public class BattleManager : MonoBehaviour
 
     public bool IsTuto { get => _isTuto; }
 
+    public static Action<Transform> OnGatherEssence;
 
     #region Loot
 
@@ -938,6 +946,18 @@ public class BattleManager : MonoBehaviour
 
     #region Essence
 
+    public GameObject GetPrefabEssence (int amount)
+    {
+        if (amount >= _amountForGreaestEssence)
+        {
+            return _prefabEssenceList[2];
+        }
+        if (amount >= _amountForMediumEssence)
+        {
+            return _prefabEssenceList[1];
+        }
+        return _prefabEssenceList[0];
+    }
     public void Consume(int essence)
     {
         ConsumedEssence = true;
@@ -954,21 +974,22 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator GatherEssence()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForEndOfFrame();
 
         int amount = 0;
         foreach (var item in ListEssence)
         {
             amount += item.GetComponent<CrystalSoul>().Amount;
         }
-
-        for (int i = 0; i < ListEssence.Count; i++)
-        {
-            Destroy(ListEssence[i]);
-        }
+        OnGatherEssence?.Invoke(spawnPos[3]);
+        yield return new WaitForSeconds(0.5f);
+        //for (int i = 0; i < ListEssence.Count; i++)
+        //{
+        //    Destroy(ListEssence[i]);
+        //}
 
         ListEssence.Clear();
-        var temp = Instantiate(prefabEssence, spawnPos[3]); //we put it in the closest position of the player
+        var temp = Instantiate(GetPrefabEssence(amount), spawnPos[3]); //we put it in the closest position of the player
         //temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
         temp.GetComponent<CrystalSoul>().AddAmountOfEssence(amount, true);
         //temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);

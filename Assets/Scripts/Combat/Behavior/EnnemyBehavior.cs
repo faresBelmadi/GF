@@ -179,7 +179,7 @@ public class EnnemyBehavior : CombatBehavior
         */
         if (Stat.Essence != 0)
         {
-            var t = Instantiate(GameManager.Instance.BattleMan.prefabEssence, this.transform.parent);
+            var t = Instantiate(GameManager.Instance.BattleMan.GetPrefabEssence(Stat.Essence), this.transform.parent);
             t.GetComponent<CrystalSoul>().AddAmountOfEssence(Stat.Essence);
             _refBattleMan.ListEssence.Add(t);
         }

@@ -116,14 +116,7 @@ public class GameManager : MonoBehaviour {
             Destroy(TutoManager);
         */
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            Instantiate(_crystal, _parent);
-        }
-    }
+   
     public void EndTuto()
     {
         IsTuto = false;
