@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour {
     //[SerializeField]
     //private bool _doTuto = true;
 
+    [SerializeField]
+    private GameObject _crystal;
+    [SerializeField]
+    private Transform _parent;
     [Header("Managers")]
     //public RoomManager rm;
     public PlayerMapManager pmm;
@@ -113,6 +117,13 @@ public class GameManager : MonoBehaviour {
         */
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            Instantiate(_crystal, _parent);
+        }
+    }
     public void EndTuto()
     {
         IsTuto = false;

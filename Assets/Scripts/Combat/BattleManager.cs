@@ -959,7 +959,7 @@ public class BattleManager : MonoBehaviour
         int amount = 0;
         foreach (var item in ListEssence)
         {
-            amount += item.GetComponent<Essence>().getEssence();
+            amount += item.GetComponent<CrystalSoul>().Amount;
         }
 
         for (int i = 0; i < ListEssence.Count; i++)
@@ -969,10 +969,10 @@ public class BattleManager : MonoBehaviour
 
         ListEssence.Clear();
         var temp = Instantiate(prefabEssence, spawnPos[3]); //we put it in the closest position of the player
-        temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
-        temp.GetComponent<Essence>().AddEssence(amount);
-        temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
-        temp.GetComponent<Essence>().isEnd = true;
+        //temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
+        temp.GetComponent<CrystalSoul>().AddAmountOfEssence(amount, true);
+        //temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
+
         ListEssence.Add(temp);
         buttonEndCombat.SetActive(true);
         buttonEndCombat.GetComponentInChildren<TMP_Text>().text = $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount})";
@@ -998,7 +998,7 @@ public class BattleManager : MonoBehaviour
             int amount = 0;
             foreach (var item in ListEssence)
             {
-                amount += item.GetComponent<Essence>().getEssence();
+                amount += item.GetComponent<CrystalSoul>().Amount;
             }
 
             player.Stat.Essence += amount;

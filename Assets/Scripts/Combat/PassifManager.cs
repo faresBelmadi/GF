@@ -122,9 +122,9 @@ public class PassifManager
                             //Lorsque vous terminez un affrontement sans avoir consommé d'Essences, vous récupérez 1 point de Conscience et le total d'Essences obtenu est augmenté de 10%.        
                             if (!_refBattleManager.ConsumedEssence)
                             {
-                                var essenceAmount = _refBattleManager.ListEssence.First().GetComponent<Essence>().amount;
+                                var essenceAmount = _refBattleManager.ListEssence.First().GetComponent<CrystalSoul>().Amount;
                                 essenceAmount += (int)Math.Round((double)(_rules.PercentEssenceBonus * 100f) / essenceAmount);
-                                _refBattleManager.ListEssence.First().GetComponent<Essence>().amount = essenceAmount;
+                                _refBattleManager.ListEssence.First().GetComponent<CrystalSoul>().Amount = essenceAmount;
                                 behavior.Stat.Conscience += Mathf.RoundToInt(_rules.nbPtsConscienceEarned);
                             }
                             break;
