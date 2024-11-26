@@ -391,9 +391,11 @@ public class Effet : ScriptableObject
             case TypeEffet.ConsommeTensionAugmentationFA:
                 ModifState.Tension += -Cible.Tension;
                 var toAdd = AfterEffectToApply;
-                toAdd.Effet.First().ValeurBrut = (int)Cible.Tension * ValeurBrut;
+                toAdd.Effet.First().NbAttaque = 1;
+                toAdd.Effet.First().Pourcentage = (int)Cible.Tension * ValeurBrut;
                 GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
-                toAdd.Effet.First().ValeurBrut = 0;
+                toAdd.Effet.First().Pourcentage = 0;
+                toAdd.Effet.First().NbAttaque = 0;
                 break;
             case TypeEffet.RemoveDebuff:
                 var tempListRD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
