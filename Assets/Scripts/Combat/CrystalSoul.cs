@@ -95,13 +95,18 @@ public class CrystalSoul : MonoBehaviour
         float timer = 0;
         yield return new WaitForSeconds(waitingTime);
         Vector3 inititialPos = _crystals[idCrystal].transform.position;
+        SpriteRenderer renderer = _crystals[idCrystal].GetComponent<SpriteRenderer>();
+        Color color = renderer.material.color;
         while (timer < _movingDuration)
         {
             _crystals[idCrystal].transform.position = Vector3.Lerp(inititialPos, destination.position, timer / _movingDuration);
+            float alpha = Mathf.Lerp(1f, 0f, timer / _movingDuration);
+            renderer.material.color = new Color(color.r, color.g, color.b, alpha);
             timer += Time.deltaTime;
             yield return null;
         }
         _crystals[idCrystal].transform.position = destination.position;
+        renderer.material.color = new Color(color.r, color.g, color.b, 0);
         _movedCrystal++;
         if (_movedCrystal >= _crystals.Count)
         {
