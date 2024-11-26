@@ -768,6 +768,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void UseEssence(int Essence, Source source)
     {
+        Debug.Log("Player use essence to heal " + Essence + " radiance.");
         Stat.Radiance += Essence;
         if (Stat.Radiance > Stat.RadianceMax)
             Stat.Radiance = Stat.RadianceMax;

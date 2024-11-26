@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
@@ -10,13 +11,16 @@ public class CrystalSoul : MonoBehaviour
     private List<GameObject> _crystals;
     [SerializeField]
     private float _movingDuration = 1f;
+    [SerializeField]
+    private TMP_Text _textAmount;
+
     private Animator _animator;
     private bool _isEndingEssence = false;
     private int _movedCrystal = 0;
     public int Amount { get; set; }
     public int Heal { get => (_isEndingEssence) ? Amount : Mathf.FloorToInt(Amount / 2); }
 
-    
+
     private void OnEnable()
     {
         BattleManager.OnGatherEssence += GatherCrystal;
@@ -30,7 +34,7 @@ public class CrystalSoul : MonoBehaviour
     void Start()
     {
         _animator = GetComponent<Animator>();
-        
+        _textAmount.gameObject.SetActive(false);
     }
 
     public void AddAmountOfEssence(int amount, bool isEndingCrystal = false)
@@ -38,6 +42,7 @@ public class CrystalSoul : MonoBehaviour
         Amount = amount;
         _isEndingEssence = isEndingCrystal;
         Debug.Log("Create Crystal Soul with value of " + amount + "ending = " + isEndingCrystal);
+        _textAmount.text = Heal.ToString();
     }
 
     public void ConsumeEssence()
@@ -46,18 +51,17 @@ public class CrystalSoul : MonoBehaviour
         if (_isEndingEssence)
             GameManager.Instance.BattleMan.ConsumeEndBattle(Amount);
         else
-            GameManager.Instance.BattleMan.Consume(Mathf.FloorToInt(Amount / 2));
+            GameManager.Instance.BattleMan.Consume(Heal);
 
-        if (GameManager.Instance.BattleMan != null)
-        {
-            GameManager.Instance.BattleMan.ListEssence.Remove(this.gameObject);
-            Destroy(this.gameObject);
-        }
+
+        GameManager.Instance.BattleMan.ListEssence.Remove(this.gameObject);
+        Destroy(this.gameObject);
+
     }
 
     public void ShowPreviewOnHP()
     {
-        if (GameManager.Instance!= null)
+        if (GameManager.Instance != null)
         {
             GameManager.Instance.BattleMan.player.PreviewHPBarUpdate(
                 GameManager.Instance.BattleMan.player.Stat.Radiance + Heal,
@@ -65,7 +69,7 @@ public class CrystalSoul : MonoBehaviour
 
             GameManager.Instance.BattleMan.player.PreviewTensionBarUpddate();
         }
-       
+
     }
     public void StopPreviewOnHP()
     {
@@ -78,31 +82,45 @@ public class CrystalSoul : MonoBehaviour
     private void GatherCrystal(Transform targetPosition)
     {
         _animator.enabled = false;
-        
+
         for (int i = 0; i < _crystals.Count; i++)
         {
             StartCoroutine(MoveCrystal(i, Random.Range(0f, 0.5f), targetPosition));
         }
     }
+
     private IEnumerator MoveCrystal(int idCrystal, float waitingTime, Transform destination)
     {
-       
+
         float timer = 0;
         yield return new WaitForSeconds(waitingTime);
-        //_crystals[idCrystal].transform.SetParent(destination);
         Vector3 inititialPos = _crystals[idCrystal].transform.position;
         while (timer < _movingDuration)
         {
-            _crystals[idCrystal].transform.position = Vector3.Lerp(inititialPos, destination.position, timer/_movingDuration);
+            _crystals[idCrystal].transform.position = Vector3.Lerp(inititialPos, destination.position, timer / _movingDuration);
             timer += Time.deltaTime;
             yield return null;
         }
         _crystals[idCrystal].transform.position = destination.position;
-        //Destroy(_crystals[idCrystal]);
         _movedCrystal++;
         if (_movedCrystal >= _crystals.Count)
         {
             Destroy(this.gameObject);
         }
+    }
+
+    private void OnMouseEnter()
+    {
+        ShowPreviewOnHP();
+        _textAmount.gameObject.SetActive(true);
+    }
+    private void OnMouseExit()
+    {
+        StopPreviewOnHP();
+        _textAmount.gameObject.SetActive(false);
+    }
+    private void OnMouseDown()
+    {
+        ConsumeEssence();
     }
 }

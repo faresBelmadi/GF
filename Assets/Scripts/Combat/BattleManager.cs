@@ -481,18 +481,17 @@ public class BattleManager : MonoBehaviour
             //UIDialogue.SetActive(false);
             var tutoPanelScript = gO.GetComponent<TutoPanel>();
             tutoPanelScript.ShowExplication();
-            //HideSoul
-            //Hidepos4 child
-            GameObject.Find("Soul(Clone)").SetActive(false);
+          
             buttonEndCombat.SetActive(false);
         }
         else
         {
             GameManager.Instance.playerStat = player.Stat;
-            GameObject.Find("Soul(Clone)").SetActive(false);
+           
             buttonEndCombat.SetActive(false);
             StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
         }
+        ClearListEssence();
     }
 
     #endregion Mise en place combat & fin
@@ -983,10 +982,6 @@ public class BattleManager : MonoBehaviour
         }
         OnGatherEssence?.Invoke(spawnPos[3]);
         yield return new WaitForSeconds(0.5f);
-        //for (int i = 0; i < ListEssence.Count; i++)
-        //{
-        //    Destroy(ListEssence[i]);
-        //}
 
         ListEssence.Clear();
         var temp = Instantiate(GetPrefabEssence(amount), spawnPos[3]); //we put it in the closest position of the player
@@ -1025,6 +1020,15 @@ public class BattleManager : MonoBehaviour
             player.Stat.Essence += amount;
             EndBattle();
         }
+    }
+    private void ClearListEssence()
+    {
+        for (int i = ListEssence.Count - 1; i >= 0; i--)
+        {
+            Destroy(ListEssence[i]);
+            ListEssence.RemoveAt(i);
+        }
+        ListEssence.Clear();
     }
 
     #endregion Essence
