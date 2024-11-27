@@ -807,8 +807,15 @@ public class BattleManager : MonoBehaviour
                 }
                 else if (target != -1) // TODO : Fix temporaire, à modifier pour gerer un ciblage plus complet
                 {
-                    EnemyScripts.FirstOrDefault(c => c.combatID == target)
-                        ?.ApplicationEffet(effet, null, source, Caster);
+                    if (target == 0)
+                    {
+                        player.ApplicationEffet(effet, null, source, Caster);
+                    }
+                    else
+                    {
+                        EnemyScripts.FirstOrDefault(c => c.combatID == target)
+                            ?.ApplicationEffet(effet, null, source, Caster);
+                    }
                 }
                 else
                 {
