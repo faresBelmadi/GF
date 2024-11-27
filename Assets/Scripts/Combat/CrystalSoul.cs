@@ -34,7 +34,6 @@ public class CrystalSoul : MonoBehaviour
     void Start()
     {
         _animator = GetComponent<Animator>();
-        _textAmount.gameObject.SetActive(false);
     }
 
     public void AddAmountOfEssence(int amount, bool isEndingCrystal = false)
@@ -117,12 +116,12 @@ public class CrystalSoul : MonoBehaviour
     private void OnMouseEnter()
     {
         ShowPreviewOnHP();
-        _textAmount.gameObject.SetActive(true);
+        _animator.SetTrigger("ShowHeal");
     }
     private void OnMouseExit()
     {
         StopPreviewOnHP();
-        _textAmount.gameObject.SetActive(false);
+        _animator.SetTrigger("HideHeal");
     }
     private void OnMouseDown()
     {

@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 79.195, y: 58.895}
+  m_AnchoredPosition: {x: -9, y: 125}
   m_SizeDelta: {x: 158.39, y: 117.79}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1199084205527596810
@@ -146,13 +146,14 @@ GameObject:
   - component: {fileID: 3128448759340533835}
   - component: {fileID: 4144593919310395258}
   - component: {fileID: 1329467152628889089}
+  - component: {fileID: 4981245904434107158}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1935603197037862139
 RectTransform:
   m_ObjectHideFlags: 0
@@ -187,14 +188,14 @@ Canvas:
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
-  m_OverrideSorting: 0
+  m_OverrideSorting: 1
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 10
   m_TargetDisplay: 0
 --- !u!114 &4144593919310395258
 MonoBehaviour:
@@ -236,6 +237,18 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!225 &4981245904434107158
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6852716722567565380}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1001 &4120746277827939294
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -287,6 +300,10 @@ PrefabInstance:
     - target: {fileID: -7552582706839291426, guid: 2e473d25c5d9a954e82d241ffe65f12b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -392415735997559718, guid: 2e473d25c5d9a954e82d241ffe65f12b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.69
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -345,7 +362,7 @@ Animator:
   m_GameObject: {fileID: 4523895752923818595}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: e369e4fd25e7fbf47b4ab88a72ad761a, type: 2}
+  m_Controller: {fileID: 22100000, guid: 120d1c8dd2c135245933e682729b7406, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
