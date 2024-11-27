@@ -20,7 +20,9 @@ public enum TypeRoom
     ELITE,
     CLASS_ELITE,
     BOSS,
-    EXIT
+    EXIT,
+    TUTOFIRST,
+    TUTOSECOND
 }
 
 public enum RoomState

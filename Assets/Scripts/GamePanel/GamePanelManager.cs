@@ -76,10 +76,9 @@ public class GamePanelManager : MonoBehaviour
 
     public void InitPanel(bool doTutorial = false)
     {
-        _canvaMap.SetActive(true);
 
-        //_canvaMap.SetActive(!doTutorial);
-        //_canvaTuto.SetActive(doTutorial);
+        _canvaMap.SetActive(!doTutorial);
+        _canvaTuto.SetActive(doTutorial);
         _canvaDialog.SetActive(false);
     }
 

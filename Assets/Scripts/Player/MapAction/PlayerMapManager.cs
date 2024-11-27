@@ -131,7 +131,12 @@ public class PlayerMapManager : MonoBehaviour
         {
             case TypeRoom.ENCOUNTER:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
-                StartBattle("normal");
+                if (GameManager.Instance.IsTuto)
+                {
+                    StartBattle("Tuto");
+                }
+                else 
+                    StartBattle("normal");
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.CLASS_ENCOUNTER:
@@ -183,7 +188,7 @@ public class PlayerMapManager : MonoBehaviour
         }
         
     }
-
+    
     //IEnumerator LoadSceneAsync(string name)
     //{
     //    var toLoad = name.Split(' ');
@@ -223,7 +228,7 @@ public class PlayerMapManager : MonoBehaviour
     //    }
     //    yield return null;
     //}
-    
+
     void StartBattle(string enemieType)
     {
         //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
@@ -257,6 +262,10 @@ public class PlayerMapManager : MonoBehaviour
         {
             StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombatBoss));
             //GameManager.Instance.LoadCombatBoss();
+        }
+        else if (enemieType.Equals("Tuto"))
+        {
+            StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadTuto));
         }
         //AudioManager.Instance.PlayMusic(MusicType.CombatMusic);
 

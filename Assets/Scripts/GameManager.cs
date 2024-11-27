@@ -39,6 +39,8 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private List<Encounter> TEMPEncounterElite;
     [SerializeField] private List<Encounter> TEMPEncounterClassElite;
     [SerializeField] private List<Encounter> TEMPEncounterBoss;
+    [SerializeField] private List<Encounter> TutoEncounter;
+    [SerializeField] private int CurrentTutoEncounter = 0;
 
     public List<Souvenir> AllSouvenir;
     public List<Souvenir> CopyAllSouvenir;
@@ -58,7 +60,7 @@ public class GameManager : MonoBehaviour {
 
     public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
 
-    public bool IsTuto { get; private set; }
+    public bool IsTuto { get; set; }
     public bool IsPaused { get; set; } = false;
     public DialogueManager DialManager
     {
@@ -105,8 +107,7 @@ public class GameManager : MonoBehaviour {
         CreateSave();
         GetClassRun();
 
-        Debug.Log("Tuto mode : " + IsTuto);
-        _gamePanelManager.InitPanel(IsTuto);
+        _gamePanelManager.InitPanel();
         /*
         if (TutoManager.Instance != null)
             Destroy(TutoManager);
@@ -344,6 +345,13 @@ public class GameManager : MonoBehaviour {
     public void UnloadCombat()
     {
         Debug.Log("Unload Combat");
+    }
+
+    public void LoadTuto()
+    {
+        OnStartDialog?.Invoke();
+        BattleMan.LoadEnemy(Instantiate(TutoEncounter[CurrentTutoEncounter]));
+        CurrentTutoEncounter++;
     }
 
     public void LoadCombatNormal()

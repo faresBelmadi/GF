@@ -11,8 +11,9 @@ using UnityEngine.UIElements;
 [System.Serializable]
 public class BattleManager : MonoBehaviour
 {
-    [SerializeField]
-    private bool _isTuto = false;
+    [Header("Tuto")]
+    [SerializeField] private bool _isTuto = false;
+
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
@@ -1037,14 +1038,11 @@ public class BattleManager : MonoBehaviour
 
             if (EnemyScripts.Count <= 0)
             {
-                if (GameManager.Instance.IsTuto/*TutoManager.Instance != null*/)
+                if (GameManager.Instance.IsTuto /*TutoManager.Instance != null*/)
                 {
-                    //TutoManager.Instance.NextStep();
-                    var gO = GameObject.Find("TutoPanel");
-                    var child = gO.transform.GetChild(0);
+                    var child = TutoManager.Instance.TutoPanel.transform.GetChild(0);
                     child.gameObject.SetActive(true);
-                    //UIDialogue.SetActive(false);
-                    var tutoPanelScript = gO.GetComponent<TutoPanel>();
+                    var tutoPanelScript = TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>();
                     tutoPanelScript.ShowExplication();
                     tutoPanelScript.UIJoueur.SetActive(false);
                     //Ici le TutoPanel

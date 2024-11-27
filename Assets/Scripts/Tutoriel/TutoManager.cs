@@ -178,6 +178,7 @@ public class TutoManager : MonoBehaviour
     public void StartCombat()
     {
         OnStartCombat?.Invoke();
+        BattleManager.StartCombat();
     }
     public void EndCombat()
     {
@@ -188,7 +189,9 @@ public class TutoManager : MonoBehaviour
     {
         OnEndDialog?.Invoke();
         if (IndexEncounter == 1)
+        {
             _dialogueManager.StartCombat();
+        }
         else
         {
             IndexEncounter++;
