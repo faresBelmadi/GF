@@ -40,7 +40,7 @@ public class CrystalSoul : MonoBehaviour
     {
         Amount = amount;
         _isEndingEssence = isEndingCrystal;
-        Debug.Log("Create Crystal Soul with value of " + amount + "ending = " + isEndingCrystal);
+        Debug.Log("Create Crystal Soul with value of " + amount + "(ending crystal = " + isEndingCrystal + ")");
         _textAmount.text = Heal.ToString();
     }
 
