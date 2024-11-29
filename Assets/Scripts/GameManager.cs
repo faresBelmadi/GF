@@ -120,6 +120,7 @@ public class GameManager : MonoBehaviour {
 
         CreateSave();
         GetClassRun();
+        pmm.ToggleMap(true);
     }
 
     private void LoadSave()

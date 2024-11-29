@@ -8,19 +8,14 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMapManager : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject _roomsHolder;
-    [SerializeField]
-    private float _rollingMapTime = 1f;
+    [SerializeField] private GameObject _roomsHolder;
+    [SerializeField] private float _rollingMapTime = 1f;
 
     public static event Action OnEndGame;
 
     public Room CurrentRoom
     {
-        get
-        {
-            return _currentRoom;
-        }
+        get { return _currentRoom; }
         set
         {
             //VisualUpdateOld();
@@ -31,6 +26,7 @@ public class PlayerMapManager : MonoBehaviour
             MapAction();
         }
     }
+
     private Room _currentRoom;
     public List<MapNode> map = new List<MapNode>();
 
@@ -40,8 +36,10 @@ public class PlayerMapManager : MonoBehaviour
         public TypeRoom roomType = TypeRoom.NONE;
         public List<int> connections = new List<int>();
     }
+
     //public GameObject MenuCamera;
     public GameObject CurrentRoomCamera;
+
     //GameObject[] rootScene;
     private Scene _scene;
 
@@ -51,27 +49,32 @@ public class PlayerMapManager : MonoBehaviour
     {
         GameManager.OnShowMap += FadeInAllRoom;
     }
+
     private void OnDisable()
     {
         GameManager.OnShowMap -= FadeInAllRoom;
     }
+
     private void FadeInAllRoom()
     {
-        for (int i = 0; i< _roomsHolder.transform.childCount; i++) 
+        for (int i = 0; i < _roomsHolder.transform.childCount; i++)
         {
-                _roomsHolder.transform.GetChild(i).gameObject.SetActive(true);
+            _roomsHolder.transform.GetChild(i).gameObject.SetActive(true);
         }
+
         OnShowMap?.Invoke();
     }
+
     private void GetAccessibleRooms()
     {
         foreach (int connectedRoomId in map[_currentRoom.ID].connections)
         {
             Room connectedRoom = map[connectedRoomId].objectInstance.GetComponent<Room>();
-             if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
+            if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
             connectedRoom.SetColorByState(connectedRoom.roomState);
         }
     }
+
     private void VisualUpdateNew()
     {
         //_currentRoom.GetComponent<SpriteRenderer>().color = Color.white;
@@ -125,7 +128,7 @@ public class PlayerMapManager : MonoBehaviour
 
     private void MapAction()
     {
-       
+
 
         switch (_currentRoom.roomType)
         {
@@ -135,21 +138,40 @@ public class PlayerMapManager : MonoBehaviour
                 {
                     StartBattle("Tuto");
                 }
-                else 
+                else
                     StartBattle("normal");
+
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.CLASS_ENCOUNTER:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
-                StartBattle("class");
+                if (GameManager.Instance.IsTuto)
+                {
+                    StartBattle("Tuto");
+                }
+                else
+                    StartBattle("class");
+
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.ELITE:
-                StartBattle("elite");
+                if (GameManager.Instance.IsTuto)
+                {
+                    StartBattle("Tuto");
+                }
+                else
+                    StartBattle("elite");
+
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.CLASS_ELITE:
-                StartBattle("class_elite");
+                if (GameManager.Instance.IsTuto)
+                {
+                    StartBattle("Tuto");
+                }
+                else
+                    StartBattle("class_elite");
+
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.BOSS:
@@ -186,9 +208,9 @@ public class PlayerMapManager : MonoBehaviour
             default:
                 break;
         }
-        
+
     }
-    
+
     //IEnumerator LoadSceneAsync(string name)
     //{
     //    var toLoad = name.Split(' ');
@@ -234,7 +256,7 @@ public class PlayerMapManager : MonoBehaviour
         //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
         //GameManager.Instance.BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
         ToggleMap(false);
-        
+
         //StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadCombat));
         //return;
 
@@ -284,6 +306,7 @@ public class PlayerMapManager : MonoBehaviour
         {
             OnEndGame?.Invoke();
         }
+
         if (IsLoot)
         {
             //Afficher le menutStat
@@ -291,6 +314,7 @@ public class PlayerMapManager : MonoBehaviour
             GameManager.Instance.Loot();
             ShowMenuStat();
         }
+
         AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
         GameManager.Instance.UnloadCombat();
         //yield return SceneManager.UnloadSceneAsync(_scene);
@@ -350,10 +374,10 @@ public class PlayerMapManager : MonoBehaviour
         //MenuCamera.SetActive(true);
         if (Loot == true)
         {
-           
+
             ShowMenuStat();
         }
-        
+
         AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
         GameManager.Instance.ShowMap();
         yield return null;
@@ -384,8 +408,15 @@ public class PlayerMapManager : MonoBehaviour
         //yield return SceneManager.UnloadSceneAsync(s);
 
         UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
-        uiMondeManager.EnableMonde();
-        GameManager.Instance.ShowMap();
+        if (TutoManager.Instance == null)
+        {
+            uiMondeManager.EnableMonde();
+            GameManager.Instance.ShowMap();
+        }
+        else
+        {
+            uiMondeManager.DisableStat();
+        }
     }
 
     public void ToggleMap(bool isShowing)
@@ -399,6 +430,7 @@ public class PlayerMapManager : MonoBehaviour
             GameManager.Instance.HideMap();
         }
     }
+
     public IEnumerator WaitBeforeAction(Action actionToDo)
     {
         yield return new WaitForSeconds(_rollingMapTime);

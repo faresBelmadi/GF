@@ -28,7 +28,6 @@ public class TutoManager : MonoBehaviour
 
     public bool ShowSoulConsumation;
     private int _indEncounter = 0;
-    private TutoMondeManager _tutoMondeManager;
     [Header("Datas")] [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
     [SerializeField] private Souvenir _souvenirToLoot;
 
@@ -83,7 +82,6 @@ public class TutoManager : MonoBehaviour
     {
         //HideAllPanels();
         //ShowPanel(PanelMap);
-        _tutoMondeManager = PanelMap.GetComponentInChildren<TutoMondeManager>();
         if (!GameManager.Instance.IsTuto)
         {
             Destroy(gameObject);

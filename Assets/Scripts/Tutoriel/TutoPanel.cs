@@ -29,6 +29,7 @@ public class TutoPanel : MonoBehaviour
     public List<GameObject> UiToShowForFigth;
     public GameObject SpawnPos0;
     public GameObject EndBattleButton;
+    public Transform StatTransform;
 
     public void ShowNextExplication()
     {
@@ -87,17 +88,24 @@ public class TutoPanel : MonoBehaviour
             GatherEssence();
         else if (IndexExplication == 12) //14
         {
+            this.transform.parent = StatTransform;
+            this.transform.Translate(new Vector3(0,1,0), Space.Self);
             TutoManager.Instance.ShowSoulConsumation = false;
             this.transform.GetChild(0).gameObject.SetActive(true);
         }
+        else if (IndexExplication == 14)
+        {
+            var menuStatManager = StatTransform.GetComponentInChildren<MenuStatManager>();
+            foreach (var souvenirGo in menuStatManager.Souvenir)
+            {
+                Destroy(souvenirGo);
+            }
+            StatTransform.GetComponentInChildren<MenuStatManager>().EquipedSouvenir.Clear();
+        }
         else if (IndexExplication == 15)//16
         {
-            //ICI ne plus affiche le stat et tuto panel ainsi que la soul (la virer ? je crosi ce c'est un mise par le battle manager)
-            TutoManager.Instance.ShowSoulConsumation = false;
-            TutoManager.Instance.StatPanel.SetActive(false);
-            GameObject soul = GameObject.Find("Soul(Clone)");
-            if (soul!=null)
-                soul.SetActive(false);
+  
+            StatTransform.GetComponentInChildren<MenuStatManager>().End();
             this.gameObject.SetActive(false);
             TutoManager.Instance.NextStep();
             return;
