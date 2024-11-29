@@ -90,9 +90,19 @@ public class CharacterStat : ScriptableObject
                 this.MultiplDef += multiplicateurDef;
             }
         }
-
         if (ModifState.MultiplSoin != 1)
-            this.MultiplSoin = ModifState.MultiplSoin;
+        {
+            if (ModifState.MultiplSoin > 1)
+            {
+                var multiplicateurSoin = ModifState.MultiplSoin % 1;
+                this.MultiplSoin += multiplicateurSoin;
+            }
+            else
+            {
+                var multiplicateurSoin = ModifState.MultiplSoin - 1;
+                this.MultiplSoin += multiplicateurSoin;
+            }
+        }
         if (ModifState.MultiplDegat != 1)
         {
             if (ModifState.MultiplDegat > 1)
@@ -191,15 +201,25 @@ public class CharacterStat : ScriptableObject
         }
 
         if (ModifState.MultiplSoin != 1)
-            this.MultiplSoin = ModifState.MultiplSoin;
-        if (ModifState.MultiplDegat != 1)
-            this.MultiplDegat = ModifState.MultiplDegat;
+        {
+            if (ModifState.MultiplSoin > 1)
+            {
+                var multiplicateurSoin = ModifState.MultiplSoin % 1;
+                this.MultiplSoin -= multiplicateurSoin;
+
+            }
+            else
+            {
+                var multiplicateurSoin = ModifState.MultiplSoin - 1;
+                this.MultiplSoin -= multiplicateurSoin;
+            }
+        }
         if (ModifState.MultiplDegat != 1)
         {
             if (ModifState.MultiplDegat > 1)
             {
                 var multiplicateurAtk = ModifState.MultiplDegat % 1;
-                this.MultiplDef -= multiplicateurAtk;
+                this.MultiplDegat -= multiplicateurAtk;
 
             }
             else
