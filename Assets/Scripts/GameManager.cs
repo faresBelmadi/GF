@@ -121,6 +121,7 @@ public class GameManager : MonoBehaviour {
         CreateSave();
         GetClassRun();
     }
+
     private void LoadSave()
     {
         

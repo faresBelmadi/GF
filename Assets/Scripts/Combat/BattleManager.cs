@@ -453,7 +453,7 @@ public class BattleManager : MonoBehaviour
     private void EndBattle()
     {
         IsCombatOn = false;
-        if (!IsTuto)
+        if (!GameManager.Instance.IsTuto)
         {
             PassifManager.CurrentEvent = TimerPassif.FinCombat;
             PassifManager.ResolvePassifs();
@@ -468,16 +468,17 @@ public class BattleManager : MonoBehaviour
         {
             TutoManager.Instance.EndCombat();
             TutoManager.Instance.Loot();
-            var gO = GameObject.Find("TutoPanel");
-            var child = gO.transform.GetChild(0);
+            var child = TutoManager.Instance.TutoPanel.transform.GetChild(0);
             child.gameObject.SetActive(true);
             //UIDialogue.SetActive(false);
-            var tutoPanelScript = gO.GetComponent<TutoPanel>();
+            var tutoPanelScript = TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>();
             tutoPanelScript.ShowExplication();
             //HideSoul
             //Hidepos4 child
             GameObject.Find("Soul(Clone)").SetActive(false);
             buttonEndCombat.SetActive(false);
+            StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
+            //ICI PROBLEME CAR PLUS LE BON CANVAS
         }
         else
         {
@@ -991,7 +992,7 @@ public class BattleManager : MonoBehaviour
                 Destroy(ListEssence[i]);
             }
             ListEssence.Clear();
-
+            EndBattle();
         }
         else
         {

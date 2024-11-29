@@ -3,27 +3,22 @@ using UnityEngine;
 
 public class TutoManager : MonoBehaviour
 {
-    [Header("Panels Tuto")]
-    public GameObject PanelMap;
-    [SerializeField]
-    private MapPanel _panelMap;
+    [Header("Panels Tuto")] public GameObject PanelMap;
+    [SerializeField] private MapPanel _panelMap;
     public GameObject PanelBattle;
     public GameObject PanelAutel;
     public GameObject StatPanel;
     public GameObject TutoPanel;
-    
 
-    [Header("Battle")]
-    public BattleManager BattleManager;
+
+    [Header("Battle")] public BattleManager BattleManager;
     public JoueurStat JoueurStat;
     public ClassPlayer TutoClassSo;
-    [SerializeField]
-    private JoueurBehavior _playerHolder;
+    [SerializeField] private JoueurBehavior _playerHolder;
 
     public Encounter[] _encounter;
 
-    [SerializeField]
-    private TutoDialogueManager _dialogueManager;
+    [SerializeField] private TutoDialogueManager _dialogueManager;
 
     public int StepTuto;
     public int StepMapTuto;
@@ -34,17 +29,28 @@ public class TutoManager : MonoBehaviour
     public bool ShowSoulConsumation;
     private int _indEncounter = 0;
     private TutoMondeManager _tutoMondeManager;
-    [Header("Datas")]
-    [SerializeField]
-    private ClairvoyanceIconData _clairvoyanceIconData;
-    [SerializeField]
-    private Souvenir _souvenirToLoot;
+    [Header("Datas")] [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
+    [SerializeField] private Souvenir _souvenirToLoot;
 
-    public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
+    public ClairvoyanceIconData StatIcons
+    {
+        get => _clairvoyanceIconData;
+    }
 
-    public Encounter CurrentEncounter { get => _encounter[IndexEncounter]; }
-    public DialogueManager TutoDialogMngr { get => _dialogueManager; }
-    public JoueurBehavior Player { get => _playerHolder; }
+    public Encounter CurrentEncounter
+    {
+        get => _encounter[IndexEncounter];
+    }
+
+    public DialogueManager TutoDialogMngr
+    {
+        get => _dialogueManager;
+    }
+
+    public JoueurBehavior Player
+    {
+        get => _playerHolder;
+    }
 
     public static event Action OnEndDialog;
     public static event Action OnStartCombat;
@@ -65,7 +71,7 @@ public class TutoManager : MonoBehaviour
             //JoueurStat.ListBuffDebuff.Clear();          //On clear les buff sinon pour le cas ou le tuto n'es pas complété et qui resterait des objet buff dans le SO
             JoueurStat = GameManager.Instance.playerStat;
             JoueurStat.ListSouvenir.Add(_souvenirToLoot);
-           
+
         }
         else
         {
@@ -112,9 +118,9 @@ public class TutoManager : MonoBehaviour
     {
         ClearPos();
         Debug.Log("StepTuto = " + StepTuto + " / stepbattle = " + IndexEncounter);
-        if (StepTuto == 4)
+        if (StepTuto == 2)
             IndexEncounter++;
-        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 4)    //Battle moment
+        if (StepTuto == 1 || StepTuto == 2) //Battle moment
         {
             // HideAllPanels();
             //ShowPanel(PanelBattle);
@@ -124,19 +130,19 @@ public class TutoManager : MonoBehaviour
 
             StartBattle();
         }
-        else if (StepTuto == 2)                                 //Map Moment
-        {
-            //HideAllPanels();
-            //ShowPanel(PanelMap);
-            _dialogueManager.DisableButtonAnswer(); //to prevent double clicking
-            _panelMap.Show();
-            _tutoMondeManager.DisplayInfoTutoMonde();
-        }
-        else if (StepTuto == 5)                                 //End
+        //else if (StepTuto == 2)                                 //Map Moment
+        //{
+        //    //HideAllPanels();
+        //    //ShowPanel(PanelMap);
+        //    _dialogueManager.DisableButtonAnswer(); //to prevent double clicking
+        //    _panelMap.Show();
+        //    _tutoMondeManager.DisplayInfoTutoMonde();
+        //}
+        else if (StepTuto == 3) //End
         {
             Player.ToggleVisibility(true);
             EndTuto();
-           // SceneManager.LoadScene("Monde");
+            // SceneManager.LoadScene("Monde");
         }
     }
 
@@ -149,7 +155,7 @@ public class TutoManager : MonoBehaviour
         }
     }
 
-  
+
 
     void StartBattle()
     {
@@ -180,6 +186,7 @@ public class TutoManager : MonoBehaviour
         OnStartCombat?.Invoke();
         BattleManager.StartCombat();
     }
+
     public void EndCombat()
     {
         OnEndCombat?.Invoke();
@@ -198,11 +205,12 @@ public class TutoManager : MonoBehaviour
             NextStep();
         }
     }
+
     public void EndTuto()
     {
         ClearPos();
-        OnEndTuto?.Invoke();
         GameManager.Instance.EndTuto();
+        OnEndTuto?.Invoke();
 
         Destroy(gameObject);
     }
