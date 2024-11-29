@@ -118,6 +118,9 @@ public class Generator : MonoBehaviour
 
             usedSeed ++;
         }
+        
+        GameManager.Instance.pmm.mapUsedSeed = usedSeed;
+
 
         Debug.Log("spawn first 3 rooms");
         SpawnRoom(0, roomCnt, RoomState.VISITED);
@@ -711,6 +714,7 @@ public class Generator : MonoBehaviour
         room.SetRoom(mapIndex,type, roomDefaultSpriteSize, defaultState);
         
         int encounterId = GameManager.Instance.SelectEncounterId(type);
+        GameManager.Instance.pmm.roomSelectedEncounters.Add(new System.Tuple<int, int>(mapIndex, encounterId));
         room.selectedEncounterId = encounterId;
         //room.SetEncounter(encounterId);
         Debug.Log($"Room {mapIndex}({type.ToString()}): EncounterSelected: {encounterId}");

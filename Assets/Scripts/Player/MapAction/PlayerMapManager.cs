@@ -35,6 +35,11 @@ public class PlayerMapManager : MonoBehaviour
         }
     }
     private Room _currentRoom;
+
+    public int mapUsedSeed = 0;
+    public List<int> visitedMapIndexs = new List<int>() { 0};
+    public List<Tuple<int, int>> roomSelectedEncounters = new List<Tuple<int, int>>();
+
     public List<MapNode> map = new List<MapNode>();
     public GameObject[,] pathsGameObjects;
     public class MapNode
