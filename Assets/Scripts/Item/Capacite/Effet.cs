@@ -756,9 +756,17 @@ public class Effet : ScriptableObject
                 {
                     return GameManager.Instance.StatIcons.IncreaseDef;
                 }
+            case TypeEffet.Colere:
+                if (Cible == Cible.joueur)
+                {
+                    return GameManager.Instance.StatIcons.WrathDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.WrathUp;
+                }
             case TypeEffet.DegatPVMax:
             case TypeEffet.DegatsBrut:
-            case TypeEffet.Colere:
             case TypeEffet.AugmentFADernierDegatsSubi:
             case TypeEffet.ConscienceMax:
             case TypeEffet.Soin:

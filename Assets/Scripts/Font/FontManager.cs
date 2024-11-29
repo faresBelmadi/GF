@@ -13,8 +13,6 @@ public class FontManager : MonoBehaviour
     [Tooltip("Assign here default legacy font who will be assign to all legacy Text during runtime")]
     [SerializeField]
     private Font _defaultLegacyFont;
-    [SerializeField]
-    private TMP_SpriteAsset _TMPSpriteAsset;
     [Header("Debug")]
     [SerializeField]
     private bool _verboseMode = false;
@@ -57,9 +55,6 @@ public class FontManager : MonoBehaviour
         for  (int i = 0; i < texts.Length; i++)
         {
             texts[i].font = _defaultFontAsset;
-
-            //if (texts[i].spriteAsset == null)
-            //    texts[i].spriteAsset = _TMPSpriteAsset;
         }
         if (_verboseMode) Debug.Log($"{texts.Length} TMP changed in scene {SceneManager.GetActiveScene().name}");
 
