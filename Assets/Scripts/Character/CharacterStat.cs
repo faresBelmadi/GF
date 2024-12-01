@@ -90,11 +90,33 @@ public class CharacterStat : ScriptableObject
                 this.MultiplDef += multiplicateurDef;
             }
         }
-
         if (ModifState.MultiplSoin != 1)
-            this.MultiplSoin = ModifState.MultiplSoin;
+        {
+            if (ModifState.MultiplSoin > 1)
+            {
+                var multiplicateurSoin = ModifState.MultiplSoin % 1;
+                this.MultiplSoin += multiplicateurSoin;
+            }
+            else
+            {
+                var multiplicateurSoin = ModifState.MultiplSoin - 1;
+                this.MultiplSoin += multiplicateurSoin;
+            }
+        }
         if (ModifState.MultiplDegat != 1)
-            this.MultiplDegat = ModifState.MultiplDegat;
+        {
+            if (ModifState.MultiplDegat > 1)
+            {
+                var multiplicateurDegat = ModifState.MultiplDegat % 1;
+                this.MultiplDegat += multiplicateurDegat;
+
+            }
+            else
+            {
+                var multiplicateurDegat = ModifState.MultiplDegat - 1;
+                this.MultiplDegat += multiplicateurDegat;
+            }
+        }
         if (ModifState.MultipleBuffDebuff != 1)
             this.MultipleBuffDebuff = ModifState.MultipleBuffDebuff;
 
@@ -179,9 +201,33 @@ public class CharacterStat : ScriptableObject
         }
 
         if (ModifState.MultiplSoin != 1)
-            this.MultiplSoin = ModifState.MultiplSoin;
+        {
+            if (ModifState.MultiplSoin > 1)
+            {
+                var multiplicateurSoin = ModifState.MultiplSoin % 1;
+                this.MultiplSoin -= multiplicateurSoin;
+
+            }
+            else
+            {
+                var multiplicateurSoin = ModifState.MultiplSoin - 1;
+                this.MultiplSoin -= multiplicateurSoin;
+            }
+        }
         if (ModifState.MultiplDegat != 1)
-            this.MultiplDegat = ModifState.MultiplDegat;
+        {
+            if (ModifState.MultiplDegat > 1)
+            {
+                var multiplicateurAtk = ModifState.MultiplDegat % 1;
+                this.MultiplDegat -= multiplicateurAtk;
+
+            }
+            else
+            {
+                var multiplicateurAtk = ModifState.MultiplDegat - 1;
+                this.MultiplDegat -= multiplicateurAtk;
+            }
+        }
         if (ModifState.MultipleBuffDebuff != 1)
             this.MultipleBuffDebuff = ModifState.MultipleBuffDebuff;
 
