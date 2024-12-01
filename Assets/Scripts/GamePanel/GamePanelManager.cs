@@ -14,8 +14,6 @@ public class GamePanelManager : MonoBehaviour
     [SerializeField]
     private GameObject _canvaAutel;
     [SerializeField]
-    private GameObject _canvaTuto;
-    [SerializeField]
     private JoueurBehavior _characterBehavior;
 
     //[SerializeField]
@@ -76,9 +74,7 @@ public class GamePanelManager : MonoBehaviour
 
     public void InitPanel(bool doTutorial = false)
     {
-
         _canvaMap.SetActive(!doTutorial);
-        _canvaTuto.SetActive(doTutorial);
         _canvaDialog.SetActive(false);
     }
 
