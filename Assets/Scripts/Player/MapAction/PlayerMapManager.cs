@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.PlayerSettings;
 
 public class PlayerMapManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class PlayerMapManager : MonoBehaviour
     private GameObject _roomsHolder;
     [SerializeField]
     private float _rollingMapTime = 1f;
+
+    [SerializeField] private Color basePathColor;
+    [SerializeField] private Color visitedPathColors;
 
     public static event Action OnEndGame;
 
@@ -23,17 +27,21 @@ public class PlayerMapManager : MonoBehaviour
         }
         set
         {
-            //VisualUpdateOld();
             _currentRoom = value;
 
-            GetAccessibleRooms();
-            //VisualUpdateNew();
+            _currentRoom.SetAccessibleRooms();
+            UpdateAllPathShaders();
             MapAction();
         }
     }
     private Room _currentRoom;
-    public List<MapNode> map = new List<MapNode>();
 
+    public int mapUsedSeed = 0;
+    public List<int> visitedMapIndexs = new List<int>() { 0};
+    public List<Tuple<int, int>> roomSelectedEncounters = new List<Tuple<int, int>>();
+
+    public List<MapNode> map = new List<MapNode>();
+    public GameObject[,] pathsGameObjects;
     public class MapNode
     {
         public GameObject objectInstance;
@@ -63,65 +71,50 @@ public class PlayerMapManager : MonoBehaviour
         }
         OnShowMap?.Invoke();
     }
-    private void GetAccessibleRooms()
+    //private void GetAccessibleRooms()
+    //{
+    //    foreach (int connectedRoomId in map[_currentRoom.ID].connections)
+    //    {
+    //        Room connectedRoom = map[connectedRoomId].objectInstance.GetComponent<Room>();
+    //         if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
+    //        connectedRoom.SetShaderByState(connectedRoom.roomState);
+
+    //    }
+    //}
+
+    public void UpdateAllPathShaders()
     {
-        foreach (int connectedRoomId in map[_currentRoom.ID].connections)
+        for (int i = 0; i < map.Count; i++)
         {
-            Room connectedRoom = map[connectedRoomId].objectInstance.GetComponent<Room>();
-             if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
-            connectedRoom.SetColorByState(connectedRoom.roomState);
+            foreach (int connectedId in map[i].connections)
+            {
+                if (i > connectedId) continue;
+            
+                if(map[i].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN
+                || map[connectedId].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN)
+                {
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", -1f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_curtainLength", -.5f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetColor("_Color", basePathColor);
+
+                }
+                else if (map[i].objectInstance.GetComponent<Room>().roomState == RoomState.VISITED
+                && map[connectedId].objectInstance.GetComponent<Room>().roomState == RoomState.VISITED)
+                {
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", 1f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_curtainLength", .5f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetColor("_Color", visitedPathColors);
+                }
+                else
+                {
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", 3f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_curtainLength", 1f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetColor("_Color", basePathColor);
+
+                }
+            }            
         }
     }
-    private void VisualUpdateNew()
-    {
-        //_currentRoom.GetComponent<SpriteRenderer>().color = Color.white;
-        //_currentRoom.ChangeColor(Color.white);
-        _currentRoom.SetColorByState(_currentRoom.roomState);
-        //foreach (var item in _currentRoom.ConnectedRooms)
-        //{
-        //    item.isNavigable = true;
-        //    //item.GetComponent<SpriteRenderer>().color = Color.white;
-        //    item.ChangeColor(Color.white);
-        //}
-        //foreach (var item in _currentRoom.OwnedCorridors)
-        //{
-        //    SetLineColor(item, Color.white);
-        //}
-    }
-
-
-    private void VisualUpdateOld()
-    {
-        if (_currentRoom != null)
-        {
-            _currentRoom.roomState = RoomState.VISITED;
-            _currentRoom.SetColorByState(_currentRoom.roomState);
-            //_currentRoom.gameObject.GetComponent<SpriteRenderer>().color = Color.gray;
-            //_currentRoom.ChangeColor(Color.gray);
-            //foreach (var item in _currentRoom.ConnectedRooms)
-            //{
-            //    item.isNavigable = false;
-            //}
-            //foreach (var item in _currentRoom.OwnedCorridors)
-            //{
-            //    SetLineColor(item, Color.gray);
-            //}
-        }
-    }
-
-    private static void SetLineColor(GameObject item, Color color)
-    {
-        var gradient = item.GetComponent<LineRenderer>().colorGradient;
-        var colorKeys = gradient.colorKeys;
-        for (var j = 0; j < colorKeys.Length; j++)
-        {
-            colorKeys[j].color = color;
-        }
-
-        gradient.colorKeys = colorKeys;
-        item.GetComponent<LineRenderer>().colorGradient = gradient;
-    }
-
 
     private void MapAction()
     {
@@ -131,24 +124,29 @@ public class PlayerMapManager : MonoBehaviour
         {
             case TypeRoom.ENCOUNTER:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
-                StartBattle("normal");
+                //StartBattle("normal");
+                StartChoosenBattel();
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.CLASS_ENCOUNTER:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
-                StartBattle("class");
+                StartChoosenBattel();
+                //StartBattle("class");
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.ELITE:
-                StartBattle("elite");
+                StartChoosenBattel();
+                //StartBattle("elite");
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.CLASS_ELITE:
-                StartBattle("class_elite");
+                StartChoosenBattel();
+                //StartBattle("class_elite");
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.BOSS:
-                StartBattle("boss");
+                StartChoosenBattel();
+                //StartBattle("boss");
                 //_currentRoom.roomState = RoomState.VISITED;
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
                 break;
@@ -223,7 +221,11 @@ public class PlayerMapManager : MonoBehaviour
     //    }
     //    yield return null;
     //}
-    
+    public void StartChoosenBattel()
+    {
+        ToggleMap(false);
+        StartCoroutine(WaitStartBattle());
+    }
     void StartBattle(string enemieType)
     {
         //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
@@ -394,5 +396,11 @@ public class PlayerMapManager : MonoBehaviour
     {
         yield return new WaitForSeconds(_rollingMapTime);
         actionToDo();
+    }
+    public IEnumerator WaitStartBattle()
+    {
+        yield return new WaitForSeconds(_rollingMapTime);
+        Debug.Log($"Start Combat type: {_currentRoom.roomType}, Id: {_currentRoom.selectedEncounterId}");
+        GameManager.Instance.LoadChoosenCombat(_currentRoom.roomType,_currentRoom.selectedEncounterId);
     }
 }

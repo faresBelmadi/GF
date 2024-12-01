@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 
 [System.Serializable]
@@ -6,7 +8,16 @@ public class RunData
     public int ClassID;
     public bool Ended;
     public PlayerData player;
+    public MapData map;
     //public Map currentmap;
+}
+
+[System.Serializable]
+public class MapData
+{
+    public int usedSeed;
+    public List<int> visitedRoomIds;
+    public List<Tuple<int, int>> roomSelectedEncounter;
 }
 
 [System.Serializable]

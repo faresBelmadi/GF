@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -45,9 +46,13 @@ public class Room : MonoBehaviour
     //public bool isStart;
     //public bool isNavigable;
     [SerializeField]
-    private GameObject _roomObject;
+    private GameObject roomIconObject;
     [SerializeField]
     private TMP_Text _roomText;
+
+    [SerializeField] private Material baseRoomMaterial;
+
+    public int selectedEncounterId;
 
     private string _labelID;
     private Vector3 oldScale;
@@ -68,22 +73,42 @@ public class Room : MonoBehaviour
     }
     private void Start() 
     {
-        oldScale = _roomObject.transform.localScale;
-        _spriteRenderer = _roomObject.GetComponent<SpriteRenderer>();
+        oldScale = roomIconObject.transform.localScale;
+        _spriteRenderer = roomIconObject.GetComponent<SpriteRenderer>();
     }
   
 
-    public void SetRoom(int roomId, TypeRoom type, RoomState state = RoomState.UNKNOWN)
+    public void SetRoom(int roomId, TypeRoom type, float defaultSpriteSize, RoomState state = RoomState.UNKNOWN)
     {
         this.ID = roomId;
         this.roomType = type;
         this.roomState = state;
-        gameObject.transform.localScale = new Vector3(7, 7);
-        _roomObject.GetComponent<SpriteRenderer>().sprite = GetSpriteByRoomType(type);
+        gameObject.transform.localScale = new Vector3(defaultSpriteSize, defaultSpriteSize);
+        roomIconObject.GetComponent<SpriteRenderer>().sprite = GetSpriteByRoomType(type);
+        roomIconObject.GetComponent<SpriteRenderer>().material = new Material(baseRoomMaterial);
         _roomText.text = GetLabelByRoomType(type);
-        SetColorByState(roomState);
+        SetShaderByState(roomState);
+        //SetColorByState(roomState);
         //this.GetComponent<Image>().sprite = ToSet;
     }
+    //public void SetEncounter(int EncounterId)
+    //{
+    //    selectedEncounterId = EncounterId;
+    //}
+
+    public void SetAccessibleRooms()
+    {
+        List<PlayerMapManager.MapNode> map = GameManager.Instance.pmm.map;
+        foreach (int connectedRoomId in map[ID].connections)
+        {
+            Room connectedRoom = map[connectedRoomId].objectInstance.GetComponent<Room>();
+            if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
+            connectedRoom.SetShaderByState(connectedRoom.roomState);
+
+        }
+    }
+
+
     private Sprite GetSpriteByRoomType(TypeRoom roomType)
     {
         switch (roomType)
@@ -207,23 +232,59 @@ public class Room : MonoBehaviour
                 break;
         }
 
-        _roomObject.GetComponent<SpriteRenderer>().color = spriteColor;
+        roomIconObject.GetComponent<SpriteRenderer>().color = spriteColor;
     }
-   
+
+    public void SetShaderByState(RoomState roomState)
+    {
+        //Clear all keywords
+        roomIconObject.GetComponent<SpriteRenderer>().material.DisableKeyword("_ROOMSTATUS_UNKNOWN");
+        roomIconObject.GetComponent<SpriteRenderer>().material.DisableKeyword("_ROOMSTATUS_ACCESSIBLE");
+        roomIconObject.GetComponent<SpriteRenderer>().material.DisableKeyword("_ROOMSTATUS_VISITED");
+
+        //string keyWord = "NOT SET";
+        switch (roomState)
+        {
+            case RoomState.UNKNOWN:
+                //keyWord = "_ROOMSTATUS_UNKNOWN";
+                roomIconObject.GetComponent<SpriteRenderer>().material.EnableKeyword("_ROOMSTATUS_UNKNOWN");
+                break;
+
+            case RoomState.ACCESSIBLE:
+                //keyWord = "_ROOMSTATUS_ACCESSIBLE";
+                roomIconObject.GetComponent<SpriteRenderer>().material.EnableKeyword("_ROOMSTATUS_ACCESSIBLE");
+                break;
+
+            case RoomState.VISITED:
+                //keyWord = "_ROOMSTATUS_VISITED";
+                roomIconObject.GetComponent<SpriteRenderer>().material.EnableKeyword("_ROOMSTATUS_VISITED");
+                break;
+
+            default:
+                //keyWord = "_ROOMSTATUS_UNKNOWN";
+                roomIconObject.GetComponent<SpriteRenderer>().material.EnableKeyword("_ROOMSTATUS_UNKNOWN");
+                break;
+        }
+        //Debug.Log($"Set Shader Status to: {keyWord}");
+        //roomIconObject.GetComponent<SpriteRenderer>().material.EnableKeyword(keyWord);
+        //roomIconObject.GetComponent<SpriteRenderer>().material.DisableKeyword("_ROOMSTATUS_UNKNOWN");
+        //Debug.Log($"Enabled keyword0 find = {roomIconObject.GetComponent<SpriteRenderer>().material.enabledKeywords[1]}");
+    }
+    
     private void RefreshLabel()
     {
         _roomText.text = GetLabelByRoomType(roomType);
     }
     public void ChangeColor(Color color)
     {
-        _roomObject.GetComponent<SpriteRenderer>().color = color;
+        roomIconObject.GetComponent<SpriteRenderer>().color = color;
     }
     private void OnMouseEnter() {
         //if(isNavigable || roomState == RoomState.ACCESSIBLE)
         if (!GameManager.Instance.IsPaused && (roomState == RoomState.ACCESSIBLE))
         {
             var scale = new Vector3(oldScale.x * 2,oldScale.y * 2,oldScale.z);
-            _roomObject.transform.localScale = scale;
+            roomIconObject.transform.localScale = scale;
         }
     }
 
@@ -233,7 +294,7 @@ public class Room : MonoBehaviour
         {
             var scale = oldScale;
             
-            _roomObject.transform.localScale = scale;
+            roomIconObject.transform.localScale = scale;
         }
     }
 
@@ -254,10 +315,11 @@ public class Room : MonoBehaviour
             }
             GameManager.Instance.SetRoom(this);
             roomState = RoomState.VISITED;
-            SetColorByState(roomState);
+            SetShaderByState(roomState);
+            GameManager.Instance.pmm.UpdateAllPathShaders();
 
             var scale = oldScale;
-            _roomObject.transform.localScale = scale;
+            roomIconObject.transform.localScale = scale;
             
         }
     }
@@ -283,14 +345,16 @@ public class Room : MonoBehaviour
             c.a = alpha;
             textColor.a = alpha;
 
-            _spriteRenderer.color = c;
+            //_spriteRenderer.color = c;
+            _spriteRenderer.material.SetColor("_Color", c);
             _roomText.color = textColor;
             timer += Time.deltaTime;
             yield return null;
         }
         c.a = targetAlpha;
         textColor.a = targetAlpha;
-        _spriteRenderer.color = c;
+        //_spriteRenderer.color = c;
+        _spriteRenderer.material.SetColor("_Color", c);
         _roomText.color = textColor;
 
         gameObject.SetActive(!isFadeOut);

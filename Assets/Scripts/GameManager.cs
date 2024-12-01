@@ -205,31 +205,37 @@ public class GameManager : MonoBehaviour {
     {
 
         GameData data = new GameData();
-        data.CurrentRun = new RunData(){ClassID = ClassIDSelected};
+        data.CurrentRun = new RunData() { ClassID = ClassIDSelected };
         data.previousRuns = new List<RunData>();
         var spellsToAdd = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ListSpell.Where(c => c.SpellStatue == SpellStatus.bought);
         List<int> boughtspells = new List<int>();
         foreach (var item in spellsToAdd)
         {
-            boughtspells.Add(item.IDSpell);   
+            boughtspells.Add(item.IDSpell);
         }
         data.CurrentRun.player = new PlayerData()
-        {   
+        {
             Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
             RadianceMax = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.RadianceMax,
             Conscience = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Conscience,
             ForceAme = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ForceAme,
             Vitesse = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Vitesse,
             Volonter = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Volonter,
-            Clairvoyance = AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Clairvoyance,
-            Essence = AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Essence,
+            Clairvoyance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Clairvoyance,
+            Essence = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Essence,
             VolonterMax = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.VolonterMax,
-            ConscienceMax = AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.ConscienceMax,
-            Conviction= AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Conviction,
-            Resilience= AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Resilience,
-            Calme= AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Calme,
-            SlotsSouvenir= AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.SlotsSouvenir,
+            ConscienceMax = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ConscienceMax,
+            Conviction = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Conviction,
+            Resilience = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Resilience,
+            Calme = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Calme,
+            SlotsSouvenir = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.SlotsSouvenir,
             BoughtSpellID = boughtspells
+        };
+        data.CurrentRun.map = new MapData()
+        {
+            usedSeed = pmm.mapUsedSeed,
+            visitedRoomIds = pmm.visitedMapIndexs,
+            roomSelectedEncounter = pmm.roomSelectedEncounters
         };
         string json = JsonUtility.ToJson(data);
         
@@ -319,7 +325,28 @@ public class GameManager : MonoBehaviour {
     {
         pmm.CurrentRoom = set;
     }
-
+    public int SelectEncounterId(TypeRoom type)
+    {
+        switch (type)
+        {
+            case TypeRoom.ENCOUNTER:
+                return UnityEngine.Random.Range(0, TEMPEncounterNeutral.Count);
+                break;
+            case TypeRoom.CLASS_ENCOUNTER:
+                return UnityEngine.Random.Range(0, TEMPEncounterClass.Count);
+                break;
+            case TypeRoom.ELITE:
+                return UnityEngine.Random.Range(0, TEMPEncounterElite.Count);
+                break;
+            case TypeRoom.CLASS_ELITE:
+                return UnityEngine.Random.Range(0, TEMPEncounterClassElite.Count);
+                break;
+            case TypeRoom.BOSS:
+                return UnityEngine.Random.Range(0, TEMPEncounterBoss.Count);
+                break;
+            default: return 0;
+        }
+    }
     public void StartCombat()
     {
         Debug.Log("Raise event : OnStartCombat");
@@ -349,7 +376,28 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("Unload Combat");
     }
-
+    public void LoadChoosenCombat(TypeRoom roomType, int encounterId)
+    {
+        OnStartDialog?.Invoke();
+        switch (roomType)
+        {
+            case TypeRoom.ENCOUNTER:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[encounterId]));
+                break;
+            case TypeRoom.CLASS_ENCOUNTER:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[encounterId]));
+                break;
+            case TypeRoom.ELITE:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterElite[encounterId]));
+                break;
+            case TypeRoom.CLASS_ELITE:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterClassElite[encounterId]));
+                break;
+            case TypeRoom.BOSS:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterBoss[encounterId]));
+                break;
+        }
+    }
     public void LoadCombatNormal()
     {
         //BattleMan.LoadEnemy(Instantiate(AllEncounter[0]));
