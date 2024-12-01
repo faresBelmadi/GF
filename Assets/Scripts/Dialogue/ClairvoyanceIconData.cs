@@ -116,6 +116,13 @@ public class ClairvoyanceIconData : ScriptableObject
     [SerializeField]
     private Sprite _decreaseHeal;
 
+    [SerializeField]
+    private Sprite _wrath;
+    [SerializeField]
+    private Sprite _wrathDown;
+    [SerializeField]
+    private Sprite _wrathUp;
+
     public Sprite Damage { get => _damage; }
     public Sprite IntentionAtk { get => _intentionAtk; }
     public Sprite IntentionHeavyAtk { get => _intentionHeavyAtk; }
@@ -164,5 +171,8 @@ public class ClairvoyanceIconData : ScriptableObject
     public Sprite DecreaseDef { get => _decreaseDef; }
     public Sprite IncreaseHeal { get => _increaseHeal; }
     public Sprite DecreaseHeal { get => _decreaseHeal; }
+    public Sprite Wrath { get => _wrath; }
+    public Sprite WrathDown { get => _wrathDown; }
+    public Sprite WrathUp { get => _wrathUp; }
 
 }

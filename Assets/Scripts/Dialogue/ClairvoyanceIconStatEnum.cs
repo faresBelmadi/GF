@@ -29,5 +29,7 @@ public enum ClairvoyanceIconStatEnum
     MultiAtkUp,
     MultiAtkDown,
     MultiHealUp,
-    MultiHealDown
+    MultiHealDown,
+    ColereDown,
+    ColereUp
 }
