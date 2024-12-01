@@ -4308,6 +4308,7 @@ MonoBehaviour:
   _type: 2
   _delay: 0.05
   _skipDelay: 0.01
+  _color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &162764483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4897,6 +4898,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f54bdcc530a9324a97e918fc8cbf214, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _crystal: {fileID: 0}
+  _parent: {fileID: 0}
   pmm: {fileID: 141422496}
   BattleMan: {fileID: 1502046457}
   TutoManager: {fileID: 1686281143}
@@ -10828,6 +10831,7 @@ MonoBehaviour:
   _type: 2
   _delay: 0.05
   _skipDelay: 0.01
+  _color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &385801817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13189,7 +13193,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.24900001}
   m_AnchorMax: {x: 0.1847541, y: 0.71025926}
-  m_AnchoredPosition: {x: -511.99976, y: -1.5}
+  m_AnchoredPosition: {x: -511.9997, y: -1.5}
   m_SizeDelta: {x: -3.3199463, y: 3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &453954705
@@ -41437,10 +41441,15 @@ MonoBehaviour:
   - {fileID: 1437322069}
   - {fileID: 1415359751}
   _encounter: {fileID: 0}
-  prefabEssence: {fileID: 2949636703588565037, guid: bb5710fb14e5fd14ca171e5b37c0264d, type: 3}
   buttonEndCombat: {fileID: 622488341}
   _idLabelForEssenceButton: Battle1N
   passifRules: {fileID: 11400000, guid: 015ed6124c70843498d9f16424db22db, type: 2}
+  _prefabEssenceList:
+  - {fileID: 4523895752923818595, guid: 601708ee286869046b51f8cbdc91ebfe, type: 3}
+  - {fileID: 8790243287491259218, guid: d39067b9c4f02ad4d9e297c20f5a85d6, type: 3}
+  - {fileID: 3941940891194222623, guid: f40ccaf57c263a14eb5ece017ea05ef3, type: 3}
+  _amountForGreaestEssence: 200
+  _amountForMediumEssence: 100
   IdOrder: []
   nbPhase: 0
   ListEssence: []
@@ -63122,6 +63131,7 @@ MonoBehaviour:
   defaultRowSize: 5
   defaultColSize: 3
   seed: 0
+  useLoad: 0
   doCycle: 0
   cycleTime: 1
   illegalConnection_START: 01000000020000000300000008000000090000000a000000
@@ -64939,6 +64949,7 @@ MonoBehaviour:
   _type: 2
   _delay: 0.05
   _skipDelay: 0.01
+  _color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &1236367058616552656
 GameObject:
   m_ObjectHideFlags: 0
@@ -66263,6 +66274,7 @@ MonoBehaviour:
   _type: 2
   _delay: 0.05
   _skipDelay: 0.01
+  _color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &5582699100097381573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66412,6 +66424,7 @@ MonoBehaviour:
   _type: 2
   _delay: 0.05
   _skipDelay: 0.01
+  _color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!222 &5919855879274136993
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -66901,12 +66914,14 @@ MonoBehaviour:
   _dialogTwoOrThreeOptions: {fileID: 7016569814739602660}
   _dialogFrameGO: {fileID: 1236367058616552656}
   _dialogBackgroundGO: {fileID: 7685627858727006450}
-  _oneAnswerDialogFrame: {fileID: 21300000, guid: 3dd55b2c256e66c4cbb567624feacdc7, type: 3}
-  _oneAnswerDialogBG: {fileID: 21300000, guid: 1088b58c43875634986bad90878f1e33, type: 3}
+  _oneAnswerDialogFrame: {fileID: 21300000, guid: 33f519d03b4b9784fa3501ef5b83919c, type: 3}
+  _oneAnswerDialogBG: {fileID: 21300000, guid: 27bb066a659cf3f438dde49b9164422f, type: 3}
   _twoAnswerDialogFrame: {fileID: 21300000, guid: 01481ef9f03be3e438f994d0536144b2, type: 3}
   _twoAnswerDialogBG: {fileID: 21300000, guid: e4598aacb3dc1c54e960b5f6177508da, type: 3}
   _threeAnswerDialogFrame: {fileID: 21300000, guid: 93b4eeae287d8304f9508a133188b1b2, type: 3}
   _threeAnswerDialogBG: {fileID: 21300000, guid: 978cba613bdadc64dba34c17e507fda2, type: 3}
+  _endingDialogFrame: {fileID: 21300000, guid: 3dd55b2c256e66c4cbb567624feacdc7, type: 3}
+  _endingDialogBG: {fileID: 21300000, guid: 1088b58c43875634986bad90878f1e33, type: 3}
   _mainTextGO: {fileID: 6458220505744620588}
   _reponseGO:
   - {fileID: 707828061}
@@ -67241,6 +67256,7 @@ MonoBehaviour:
   _type: 2
   _delay: 0.05
   _skipDelay: 0.01
+  _color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &9025636549804932682
 MonoBehaviour:
   m_ObjectHideFlags: 0
