@@ -15,7 +15,7 @@ public class EnnemyBehavior : CombatBehavior
     public float deathDisolveTime = 2f;
     public int combatID;
     public EnnemiSpell nextAction;
-    public GameObject EssencePrefab;
+    //public GameObject EssencePrefab;
     bool skip;
     public bool IsTurn;
     nextActionEnum nextActionType;
@@ -179,8 +179,8 @@ public class EnnemyBehavior : CombatBehavior
         */
         if (Stat.Essence != 0)
         {
-            var t = Instantiate(EssencePrefab, this.transform.parent);
-            t.GetComponent<Essence>().AddEssence(Stat.Essence);
+            var t = Instantiate(GameManager.Instance.BattleMan.GetPrefabEssence(Stat.Essence), this.transform.parent);
+            t.GetComponent<CrystalSoul>().AddAmountOfEssence(Stat.Essence);
             _refBattleMan.ListEssence.Add(t);
         }
 

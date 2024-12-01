@@ -14,6 +14,10 @@ public class GameManager : MonoBehaviour {
     //[SerializeField]
     //private bool _doTuto = true;
 
+    [SerializeField]
+    private GameObject _crystal;
+    [SerializeField]
+    private Transform _parent;
     [Header("Managers")]
     //public RoomManager rm;
     public PlayerMapManager pmm;
@@ -112,7 +116,7 @@ public class GameManager : MonoBehaviour {
             Destroy(TutoManager);
         */
     }
-
+   
     public void EndTuto()
     {
         IsTuto = false;
