@@ -118,8 +118,8 @@ public class GameManager : MonoBehaviour {
     {
         IsTuto = false;
 
-        CreateSave();
-        GetClassRun();
+        //CreateSave();
+        //GetClassRun();
         pmm.ToggleMap(true);
     }
 
