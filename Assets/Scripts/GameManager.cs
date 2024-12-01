@@ -379,16 +379,34 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("Unload Combat");
     }
+
     public void LoadChoosenCombat(TypeRoom roomType, int encounterId)
     {
         OnStartDialog?.Invoke();
         switch (roomType)
         {
             case TypeRoom.ENCOUNTER:
-                BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[encounterId]));
+                if (IsTuto)
+                {
+                    BattleMan.LoadEnemy(Instantiate(TutoEncounter[CurrentTutoEncounter]));
+                    CurrentTutoEncounter++;
+                }
+                else
+                {
+                    BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[encounterId]));
+                }
                 break;
             case TypeRoom.CLASS_ENCOUNTER:
-                BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[encounterId]));
+                if (IsTuto)
+                {
+                    BattleMan.LoadEnemy(Instantiate(TutoEncounter[CurrentTutoEncounter]));
+                    CurrentTutoEncounter++;
+                }
+                else
+                {
+                    BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[encounterId]));
+                }
+
                 break;
             case TypeRoom.ELITE:
                 BattleMan.LoadEnemy(Instantiate(TEMPEncounterElite[encounterId]));
@@ -405,8 +423,6 @@ public class GameManager : MonoBehaviour {
     public void LoadTuto()
     {
         OnStartDialog?.Invoke();
-        BattleMan.LoadEnemy(Instantiate(TutoEncounter[CurrentTutoEncounter]));
-        CurrentTutoEncounter++;
     }
 
     public void LoadCombatNormal()
