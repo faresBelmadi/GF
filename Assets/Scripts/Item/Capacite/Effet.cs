@@ -275,7 +275,7 @@ public class Effet : ScriptableObject
 
     private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
     {
-        //Debug.Log($"Trigger Effect Base: {this.TypeEffet} from {Caster} to {Cible}");
+        Debug.Log($"Trigger Effect Base: {this.TypeEffet} from {Caster} to {Cible}");
         int valueToChange = ValeurBrut * NbAttaque;
         CharacterStat ModifState = ScriptableObject.CreateInstance("CharacterStat") as CharacterStat;
         int percent;
@@ -391,9 +391,11 @@ public class Effet : ScriptableObject
             case TypeEffet.ConsommeTensionAugmentationFA:
                 ModifState.Tension += -Cible.Tension;
                 var toAdd = AfterEffectToApply;
-                toAdd.Effet.First().ValeurBrut = (int)Cible.Tension * ValeurBrut;
+                toAdd.Effet.First().NbAttaque = 1;
+                toAdd.Effet.First().Pourcentage = (int)Cible.Tension * ValeurBrut;
                 GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
-                toAdd.Effet.First().ValeurBrut = 0;
+                toAdd.Effet.First().Pourcentage = 0;
+                toAdd.Effet.First().NbAttaque = 0;
                 break;
             case TypeEffet.RemoveDebuff:
                 var tempListRD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
@@ -756,9 +758,17 @@ public class Effet : ScriptableObject
                 {
                     return GameManager.Instance.StatIcons.IncreaseDef;
                 }
+            case TypeEffet.Colere:
+                if (Cible == Cible.joueur)
+                {
+                    return GameManager.Instance.StatIcons.WrathDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.WrathUp;
+                }
             case TypeEffet.DegatPVMax:
             case TypeEffet.DegatsBrut:
-            case TypeEffet.Colere:
             case TypeEffet.AugmentFADernierDegatsSubi:
             case TypeEffet.ConscienceMax:
             case TypeEffet.Soin:

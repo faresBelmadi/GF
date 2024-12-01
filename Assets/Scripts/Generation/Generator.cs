@@ -323,10 +323,10 @@ public class Generator : MonoBehaviour
                 interco = GetAllInterconnections(i, new List<int>());
 
             }
-            //foreach (int con in interco)
-            //{
-            //    Debug.Log(con);
-            //}
+            foreach (int con in interco)
+            {
+               // Debug.Log(con);
+            }
 
             foreach (int source in interco)
             {

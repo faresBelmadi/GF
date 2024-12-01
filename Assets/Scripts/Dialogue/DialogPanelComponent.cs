@@ -27,8 +27,13 @@ public class DialogPanelComponent : MonoBehaviour
     private Sprite _threeAnswerDialogFrame;
     [SerializeField]
     private Sprite _threeAnswerDialogBG;
+    [Space]
+    [SerializeField]
+    private Sprite _endingDialogFrame;
+    [SerializeField]
+    private Sprite _endingDialogBG;
 
-    [Header("Dialog references for 2 & 3 options")]
+    [Header("Dialog references for multi options")]
     [SerializeField]
     private GameObject _mainTextGO;
     [SerializeField]
@@ -37,7 +42,7 @@ public class DialogPanelComponent : MonoBehaviour
     private GameObject _endDialogue;
     [SerializeField]
     private List<GameObject> _clairvContentListGO;
-    [Header("Dialog references for unique option")]
+    [Header("Dialog references for ending option")]
     [SerializeField]
     private GameObject _mainTextOneGO;
     [SerializeField]
@@ -51,15 +56,15 @@ public class DialogPanelComponent : MonoBehaviour
     
     public GameObject DialogFrame { get => _dialogFrameGO; }
     public GameObject DialogBG { get => _dialogBackgroundGO; }
-    public GameObject MainTextGO { get => (_numberAnswer != 1) ? _mainTextGO : _mainTextOneGO; }
-    public List<GameObject> Reponse { get => (_numberAnswer != 1) ? _reponseGO : _reponseOneGO; }
+    public GameObject MainTextGO { get => (_numberAnswer != 0) ? _mainTextGO : _mainTextOneGO; }
+    public List<GameObject> Reponse { get => (_numberAnswer != 0) ? _reponseGO : _reponseOneGO; }
     public List<TMP_Text> ReponseText { get => _reponseTextList; }
-    public GameObject EndDialog { get => (_numberAnswer != 1) ? _endDialogue : _endOneDialogue; }
+    public GameObject EndDialog { get => (_numberAnswer != 0) ? _endDialogue : _endOneDialogue; }
     public TMP_Text MainText { get => _mainText; }
     public TMP_Text EndText { get => _endText; }
     public List<GameObject> ClairvContentListGO { get => _clairvContentListGO; }
 
-    private int _numberAnswer = 0;
+    private int _numberAnswer = -1;
 
 
     
@@ -70,7 +75,7 @@ public class DialogPanelComponent : MonoBehaviour
 
     private void SetReference()
     {
-        if (_numberAnswer != 1)
+        if (_numberAnswer != 0)
         {
             _reponseTextList.Clear();
             for (int i = 0; i < _reponseGO.Count; i++)
@@ -80,7 +85,7 @@ public class DialogPanelComponent : MonoBehaviour
             _mainText = MainTextGO.GetComponent<TMP_Text>();
             _endText = EndDialog.GetComponentInChildren<TMP_Text>(true);
         }
-        else // number of answer = 1
+        else // number of answer = 0
         {
             _reponseTextList.Clear();
             _reponseTextList.Add(_reponseOneGO[0].GetComponentInChildren<TMP_Text>());
@@ -96,9 +101,15 @@ public class DialogPanelComponent : MonoBehaviour
         SetReference();
         switch (numberOfAnswer)
         {
-            case 1:
+            case 0:
                 _dialogOneOption.SetActive(true);
                 _dialogTwoOrThreeOptions.SetActive(false);
+                _dialogBackgroundGO.GetComponent<Image>().sprite = _endingDialogBG;
+                _dialogFrameGO.GetComponent<Image>().sprite = _endingDialogFrame;
+                break;
+            case 1:
+                _dialogOneOption.SetActive(false);
+                _dialogTwoOrThreeOptions.SetActive(true);
                 _dialogBackgroundGO.GetComponent<Image>().sprite = _oneAnswerDialogBG;
                 _dialogFrameGO.GetComponent<Image>().sprite = _oneAnswerDialogFrame;
                 break;

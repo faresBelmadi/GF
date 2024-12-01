@@ -510,7 +510,6 @@ public class JoueurBehavior : CombatBehavior
             return;
         if (_isHurt)        //On prend des dégats, on active pas encore les spells.
             return;
-        Debug.Log("Activate");
         foreach (var item in Spells)
         {
             item.GetComponent<SpellCombat>().button.interactable = item.GetComponent<SpellCombat>().CheckPrice();
@@ -768,6 +767,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void UseEssence(int Essence, Source source)
     {
+        Debug.Log("Player use essence to heal " + Essence + " radiance.");
         Stat.Radiance += Essence;
         if (Stat.Radiance > Stat.RadianceMax)
             Stat.Radiance = Stat.RadianceMax;
@@ -792,7 +792,6 @@ public class JoueurBehavior : CombatBehavior
     public void EndHurtAnim()
     {
         _isHurt = false;
-        Debug.Log("Laaaa");
         AnimationController.EndAnimAttack();
     }
 
