@@ -768,9 +768,34 @@ public class DialogueManager : MonoBehaviour
                 }
 
                 break;
+            case TypeEffet.Colere:
+                if (effet.Cible == Cible.joueur)
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ColereDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ColereDown] = true;
+                        strb.Append((_clairvoyanceIconData.WrathDown != null)
+                            ? _clairvoyanceIconData.WrathDown.name
+                            : "WrathDown");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "WrathDown";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ColereUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ColereUp] = true;
+                        strb.Append((_clairvoyanceIconData.WrathUp != null)
+                            ? _clairvoyanceIconData.WrathUp.name
+                            : "WrathUp");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "WrathUp";
+                }
+                break;
             case TypeEffet.DegatPVMax:
             case TypeEffet.DegatsBrut:
-            case TypeEffet.Colere:
             case TypeEffet.AugmentFADernierDegatsSubi:
             case TypeEffet.ConscienceMax:
             case TypeEffet.Soin:
