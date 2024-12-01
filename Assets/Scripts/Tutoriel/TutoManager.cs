@@ -122,8 +122,8 @@ public class TutoManager : MonoBehaviour
         {
             // HideAllPanels();
             //ShowPanel(PanelBattle);
-            if (StepTuto != 4)
-                _panelMap.Hide();
+            //if (StepTuto != 4)
+            //    _panelMap.Hide();
             _dialogueManager.EnableButtonAnswer();
 
             StartBattle();
@@ -208,6 +208,7 @@ public class TutoManager : MonoBehaviour
     {
         ClearPos();
         GameManager.Instance.EndTuto();
+        
         OnEndTuto?.Invoke();
 
         Destroy(gameObject);

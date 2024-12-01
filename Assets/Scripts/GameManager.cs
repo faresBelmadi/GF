@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
     public AleaManager AleaMan;
     public OldAutelManager OldAutelMan;
     public MenuStatManager StatMan;
+    public UiMondeManager UiMondeMan;
     [SerializeField]
     private DialogueManager _dialogueManager;
     [SerializeField]
@@ -125,6 +126,8 @@ public class GameManager : MonoBehaviour {
         //CreateSave();
         //GetClassRun();
         pmm.ToggleMap(true);
+        UiMondeMan.EnableMonde();
+        ShowMap();
     }
 
     private void LoadSave()

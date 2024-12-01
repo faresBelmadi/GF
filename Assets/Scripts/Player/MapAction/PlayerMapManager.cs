@@ -324,8 +324,7 @@ public class PlayerMapManager : MonoBehaviour
     void StartLevelUp()
     {
         //SceneManager.LoadScene("Autel");
-        UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
-        uiMondeManager.EnableSkillTree();
+        GameManager.Instance.UiMondeMan.EnableSkillTree();
     }
 
     void StartAutel()
@@ -362,8 +361,7 @@ public class PlayerMapManager : MonoBehaviour
 
     public void ShowMenuStat()
     {
-        UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
-        uiMondeManager.EnableStat();
+        GameManager.Instance.UiMondeMan.EnableStat();
         //StartCoroutine("LoadSceneAsync", "MenuStat");
     }
 
@@ -383,15 +381,14 @@ public class PlayerMapManager : MonoBehaviour
         //MenuCamera.SetActive(true);
         //yield return SceneManager.UnloadSceneAsync(s);
 
-        UiMondeManager uiMondeManager = GetComponent<UiMondeManager>();
         if (TutoManager.Instance == null)
         {
-            uiMondeManager.EnableMonde();
+            GameManager.Instance.UiMondeMan.EnableMonde();
             GameManager.Instance.ShowMap();
         }
         else
         {
-            uiMondeManager.DisableStat();
+            GameManager.Instance.UiMondeMan.DisableStat();
         }
     }
 
