@@ -96,6 +96,19 @@ public class Room : MonoBehaviour
     //    selectedEncounterId = EncounterId;
     //}
 
+    public void SetAccessibleRooms()
+    {
+        List<PlayerMapManager.MapNode> map = GameManager.Instance.pmm.map;
+        foreach (int connectedRoomId in map[ID].connections)
+        {
+            Room connectedRoom = map[connectedRoomId].objectInstance.GetComponent<Room>();
+            if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
+            connectedRoom.SetShaderByState(connectedRoom.roomState);
+
+        }
+    }
+
+
     private Sprite GetSpriteByRoomType(TypeRoom roomType)
     {
         switch (roomType)

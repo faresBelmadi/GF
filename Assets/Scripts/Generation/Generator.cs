@@ -39,6 +39,7 @@ public class Generator : MonoBehaviour
     [SerializeField] private int defaultColSize;
     [SerializeField, Tooltip("0 for random")] private int seed;
     [Header("DEBUG")]
+    [SerializeField] private bool useLoad = false;
     [SerializeField] private bool doCycle = false;
     [SerializeField] private float cycleTime = 1f;
 
@@ -67,7 +68,6 @@ public class Generator : MonoBehaviour
         mapNodes = GameManager.Instance.pmm.map;
 
         GenerateNewMap();
-
     }
 
     private void Update()
@@ -86,11 +86,24 @@ public class Generator : MonoBehaviour
             }
         }
     }
-
     public void GenerateNewMap()
     {
-        int usedSeed = seed == 0 ? Random.Range(int.MinValue, int.MaxValue) : seed;
+        MapData mapData = GameManager.Instance.loadedData.CurrentRun.map;
 
+        int usedSeed;
+        if(useLoad && mapData != null)
+        {
+            usedSeed = mapData.usedSeed;
+        }
+        else
+        {
+            usedSeed = seed == 0 ? Random.Range(int.MinValue, int.MaxValue) : seed;
+        }
+
+        //int usedSeed = mapData == null ? 
+        //    seed == 0 ? Random.Range(int.MinValue, int.MaxValue) : seed 
+        //    : mapData.usedSeed;
+        
         int elitCnt = aviableRoomPool.Where(rType => rType == TypeRoom.ELITE || rType == TypeRoom.CLASS_ELITE).Count();
         int defaultRoomCnt = 2/*Start & Boss*/ + aviableRoomPool.Count();//Loots rooms not counted
 
@@ -106,7 +119,7 @@ public class Generator : MonoBehaviour
         {
             aviableRoomPool = new List<TypeRoom>(roomPool);
             Random.InitState(usedSeed);
-            Debug.Log($"Seed to use: {usedSeed}");
+            //Debug.Log($"Seed to use: {usedSeed}");
             
             ClearGen();
 
@@ -121,21 +134,36 @@ public class Generator : MonoBehaviour
         
         GameManager.Instance.pmm.mapUsedSeed = usedSeed;
 
-
-        Debug.Log("spawn first 3 rooms");
+        Debug.Log("Spawn Rooms and Paths");
+        //Debug.Log("spawn first 3 rooms");
         SpawnRoom(0, roomCnt, RoomState.VISITED);
         SpawnRoom(1, roomCnt, RoomState.ACCESSIBLE);
         SpawnRoom(2, roomCnt, RoomState.ACCESSIBLE);
 
-        Debug.Log("spawn all other non Empty rooms");
+        //Debug.Log("spawn all other non Empty rooms");
         for (int i = 3; i < mapNodes.Count(); i++)
         {
             if (mapNodes[i].roomType != TypeRoom.NONE) SpawnRoom(i, roomCnt);
         }
-        Debug.Log("spawn all paths");
+        //Debug.Log("spawn all paths");
         GameManager.Instance.pmm.pathsGameObjects = new GameObject[roomCnt,roomCnt];
-        SpawnAllPaths(roomCnt);
+
         // <= LOAD already visited rooms
+        if(useLoad && mapData != null)
+        {
+            foreach (PlayerMapManager.MapNode thisRoom in mapNodes)
+            {
+                if (mapData.visitedRoomIds.Contains(thisRoom.objectInstance.GetComponent<Room>().ID))
+                {
+                    thisRoom.objectInstance.GetComponent<Room>().roomState = RoomState.VISITED;
+                    thisRoom.objectInstance.GetComponent<Room>().SetShaderByState(RoomState.VISITED);
+                    thisRoom.objectInstance.GetComponent<Room>().SetAccessibleRooms();
+                }
+            }
+
+        }
+
+        SpawnAllPaths(roomCnt);
 
     }
     private void GenerateMap(int roomCnt)
@@ -247,17 +275,17 @@ public class Generator : MonoBehaviour
             
                 if (validRooms.Count() <= 0)
                 {
-                    Debug.Log($"/!\\\nno aviable room choice for room at pos {roomIndex}");
-                    Debug.Log("choice Remaining:");
-                    foreach (TypeRoom room in aviableRoomPool)
-                    {
-                        Debug.Log(room);
-                    }
-                    Debug.Log("Connections:");
-                    foreach (TypeRoom room in nonEmptyconnectedRooms)
-                    {
-                        Debug.Log(room);
-                    }
+                    //Debug.Log($"/!\\\nno aviable room choice for room at pos {roomIndex}");
+                    //Debug.Log("choice Remaining:");
+                    //foreach (TypeRoom room in aviableRoomPool)
+                    //{
+                    //    Debug.Log(room);
+                    //}
+                    //Debug.Log("Connections:");
+                    //foreach (TypeRoom room in nonEmptyconnectedRooms)
+                    //{
+                    //    Debug.Log(room);
+                    //}
                     continue;
                 }
 
@@ -275,6 +303,7 @@ public class Generator : MonoBehaviour
                 //{
                 //    Debug.Log(type.ToString());
                 //}
+                continue;
             }
             else
             {
@@ -294,10 +323,10 @@ public class Generator : MonoBehaviour
                 interco = GetAllInterconnections(i, new List<int>());
 
             }
-            foreach (int con in interco)
-            {
-                Debug.Log(con);
-            }
+            //foreach (int con in interco)
+            //{
+            //    Debug.Log(con);
+            //}
 
             foreach (int source in interco)
             {
@@ -372,7 +401,7 @@ public class Generator : MonoBehaviour
         LengthBasedDecimatePath(roomCnt);
 
 
-        Debug.Log($"End Generate Map with seed: {seed}");
+        //Debug.Log($"End Generate Map with base seed: {seed}");
     }
 
     private bool IsMapValid(int nodeCnt)
@@ -401,7 +430,14 @@ public class Generator : MonoBehaviour
             
             currentlyConnected.RemoveAt(0);
         }
-        Debug.Log($"{foundNodes.Count} room find over {finalRoomCnt} expected");
+        if(foundNodes.Count == finalRoomCnt)
+        {
+            Debug.Log($"Map Valid");
+        }
+        else
+        {
+            Debug.Log($"INVALID MAP: {foundNodes.Count} room find over {finalRoomCnt} expected");
+        }
 
         return foundNodes.Count == finalRoomCnt;
     }
@@ -504,12 +540,7 @@ public class Generator : MonoBehaviour
                     mapNodes[usedId].connections = new List<int>() { elitIndex };
                     break;
                 }
-                else
-                {
-                    Debug.Log("No Room for loot");
-                }
             }
-
         }
     }
 
@@ -717,7 +748,7 @@ public class Generator : MonoBehaviour
         GameManager.Instance.pmm.roomSelectedEncounters.Add(new System.Tuple<int, int>(mapIndex, encounterId));
         room.selectedEncounterId = encounterId;
         //room.SetEncounter(encounterId);
-        Debug.Log($"Room {mapIndex}({type.ToString()}): EncounterSelected: {encounterId}");
+        //Debug.Log($"Room {mapIndex}({type.ToString()}): EncounterSelected: {encounterId}");
         //room.SetEncounter(GameManager.Instance.SelectEncounterId(type));
         spawnedRoomsObj.Add(new Vector2(pos.x,pos.y),roomObject);
     }

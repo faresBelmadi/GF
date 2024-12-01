@@ -29,7 +29,7 @@ public class PlayerMapManager : MonoBehaviour
         {
             _currentRoom = value;
 
-            GetAccessibleRooms();
+            _currentRoom.SetAccessibleRooms();
             UpdateAllPathShaders();
             MapAction();
         }
@@ -71,16 +71,16 @@ public class PlayerMapManager : MonoBehaviour
         }
         OnShowMap?.Invoke();
     }
-    private void GetAccessibleRooms()
-    {
-        foreach (int connectedRoomId in map[_currentRoom.ID].connections)
-        {
-            Room connectedRoom = map[connectedRoomId].objectInstance.GetComponent<Room>();
-             if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
-            connectedRoom.SetShaderByState(connectedRoom.roomState);
+    //private void GetAccessibleRooms()
+    //{
+    //    foreach (int connectedRoomId in map[_currentRoom.ID].connections)
+    //    {
+    //        Room connectedRoom = map[connectedRoomId].objectInstance.GetComponent<Room>();
+    //         if (connectedRoom.roomState != RoomState.VISITED) connectedRoom.roomState = RoomState.ACCESSIBLE;
+    //        connectedRoom.SetShaderByState(connectedRoom.roomState);
 
-        }
-    }
+    //    }
+    //}
 
     public void UpdateAllPathShaders()
     {
