@@ -368,6 +368,7 @@ public class EnnemyBehavior : CombatBehavior
         LaunchAnimBool();
         //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
         //_refBattleMan.LaunchSpellEnnemi(nextAction);
+        Debug.Log($"Ennemy {Name} launch Spell {nextAction.Name}");
     }
 
     public void EndAttackAnimation()
