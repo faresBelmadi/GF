@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.PlayerSettings;
 
 public class PlayerMapManager : MonoBehaviour
 {
@@ -15,7 +12,7 @@ public class PlayerMapManager : MonoBehaviour
     [SerializeField] private Color basePathColor;
     [SerializeField] private Color visitedPathColors;
 
-    public static event Action OnEndGame;
+    
 
     public Room CurrentRoom
     {
@@ -280,7 +277,7 @@ public class PlayerMapManager : MonoBehaviour
         //MenuCamera.SetActive(true);
         if (CurrentRoom.roomType == TypeRoom.BOSS)
         {
-            OnEndGame?.Invoke();
+            GameManager.Instance.EndGame();
         }
 
         if (IsLoot)

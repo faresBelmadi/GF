@@ -88,11 +88,12 @@ public class GameManager : MonoBehaviour {
     public static event Action OnHideMap;
     public static event Action OnShowMap;
     public static event Action OnStartAutel;
+    public static event Action OnEndGame;
 
     #endregion
 
 
- 
+
     private void Awake() {
         if (Instance != null)
             Destroy(this.gameObject);
@@ -518,8 +519,9 @@ public class GameManager : MonoBehaviour {
         //ResetJoueurStat ?0
         GameManager.Instance.playerStat.ResetStat();
 
-        SceneManager.LoadScene("MainMenu");
-        Destroy(GameManager.Instance.gameObject);
+        //SceneManager.LoadScene("MainMenu");
+        //Destroy(GameManager.Instance.gameObject);
+        EndGame();
     }
     public void HideMap()
     {
@@ -529,6 +531,10 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("ShowMap");
         OnShowMap?.Invoke();
+    }
+    public void EndGame()
+    {
+        OnEndGame?.Invoke();
     }
 
     public IEnumerator Reload()
