@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour {
     public AleaManager AleaMan;
     public OldAutelManager OldAutelMan;
     public MenuStatManager StatMan;
+    public UiMondeManager UiMondeMan;
     [SerializeField]
     private DialogueManager _dialogueManager;
     [SerializeField]
@@ -43,6 +44,8 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private List<Encounter> TEMPEncounterElite;
     [SerializeField] private List<Encounter> TEMPEncounterClassElite;
     [SerializeField] private List<Encounter> TEMPEncounterBoss;
+    [SerializeField] private List<Encounter> TutoEncounter;
+    [SerializeField] private int CurrentTutoEncounter = 0;
 
     public List<Souvenir> AllSouvenir;
     public List<Souvenir> CopyAllSouvenir;
@@ -62,7 +65,7 @@ public class GameManager : MonoBehaviour {
 
     public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
 
-    public bool IsTuto { get; private set; }
+    public bool IsTuto { get; set; }
     public bool IsPaused { get; set; } = false;
     public DialogueManager DialManager
     {
@@ -109,8 +112,7 @@ public class GameManager : MonoBehaviour {
         CreateSave();
         GetClassRun();
 
-        Debug.Log("Tuto mode : " + IsTuto);
-        _gamePanelManager.InitPanel(IsTuto);
+        _gamePanelManager.InitPanel();
         /*
         if (TutoManager.Instance != null)
             Destroy(TutoManager);
@@ -121,9 +123,13 @@ public class GameManager : MonoBehaviour {
     {
         IsTuto = false;
 
-        CreateSave();
-        GetClassRun();
+        //CreateSave();
+        //GetClassRun();
+        pmm.ToggleMap(true);
+        UiMondeMan.EnableMonde();
+        ShowMap();
     }
+
     private void LoadSave()
     {
         
@@ -376,16 +382,34 @@ public class GameManager : MonoBehaviour {
     {
         Debug.Log("Unload Combat");
     }
+
     public void LoadChoosenCombat(TypeRoom roomType, int encounterId)
     {
         OnStartDialog?.Invoke();
         switch (roomType)
         {
             case TypeRoom.ENCOUNTER:
-                BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[encounterId]));
+                if (IsTuto)
+                {
+                    BattleMan.LoadEnemy(Instantiate(TutoEncounter[CurrentTutoEncounter]));
+                    CurrentTutoEncounter++;
+                }
+                else
+                {
+                    BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[encounterId]));
+                }
                 break;
             case TypeRoom.CLASS_ENCOUNTER:
-                BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[encounterId]));
+                if (IsTuto)
+                {
+                    BattleMan.LoadEnemy(Instantiate(TutoEncounter[CurrentTutoEncounter]));
+                    CurrentTutoEncounter++;
+                }
+                else
+                {
+                    BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[encounterId]));
+                }
+
                 break;
             case TypeRoom.ELITE:
                 BattleMan.LoadEnemy(Instantiate(TEMPEncounterElite[encounterId]));
@@ -398,6 +422,12 @@ public class GameManager : MonoBehaviour {
                 break;
         }
     }
+
+    public void LoadTuto()
+    {
+        OnStartDialog?.Invoke();
+    }
+
     public void LoadCombatNormal()
     {
         //BattleMan.LoadEnemy(Instantiate(AllEncounter[0]));

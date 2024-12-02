@@ -1079,14 +1079,14 @@ public class DialogueManager : MonoBehaviour
         AudioManager.instance.SFX.StopPlaying();
         if (GameManager.Instance.IsTuto/*TutoManager.Instance != null */)
         {
-            if (TutoManager.Instance.StepTuto == 3)
+            if (TutoManager.Instance.StepTuto == 1)
             {
                 var gO = TutoManager.Instance.TutoPanel;
                 var child = gO.transform.GetChild(0);
                 child.gameObject.SetActive(true);
                 UIDialogue.SetActive(false);
                 gO.GetComponent<TutoPanel>().ShowExplication();
-                TutoManager.Instance.StartCombat();
+                GameManager.Instance.StartCombat();
             }
         }
         else

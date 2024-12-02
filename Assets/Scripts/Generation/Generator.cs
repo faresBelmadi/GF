@@ -176,11 +176,23 @@ public class Generator : MonoBehaviour
             mapNodes.Add(new PlayerMapManager.MapNode());
         }
 
-        //Setup Start & Boss Rooms
         mapNodes[0].roomType = TypeRoom.START;
         mapNodes[0].connections.Add(1);
-        mapNodes[0].connections.Add(2);
-        
+
+        if (GameManager.Instance.IsTuto)
+        {
+            mapNodes[1].roomType = TypeRoom.ENCOUNTER;
+            mapNodes[1].connections.Add(2);
+            mapNodes[2].roomType = TypeRoom.ENCOUNTER;
+            mapNodes[2].connections.Add(3);
+        }
+        else
+        {
+            mapNodes[0].connections.Add(2);
+
+        }
+        //Setup Start & Boss Rooms
+
         mapNodes[roomCnt - 1].roomType = TypeRoom.BOSS;
         mapNodes[roomCnt - 1].connections.Add(roomCnt - 2);
         mapNodes[roomCnt - 1].connections.Add(roomCnt - 3);

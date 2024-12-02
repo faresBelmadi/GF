@@ -11,8 +11,9 @@ using UnityEngine.UIElements;
 [System.Serializable]
 public class BattleManager : MonoBehaviour
 {
-    [SerializeField]
-    private bool _isTuto = false;
+    [Header("Tuto")]
+    [SerializeField] private bool _isTuto = false;
+
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
@@ -279,32 +280,34 @@ public class BattleManager : MonoBehaviour
 
         //StartCombat();
     }
+
     void SpawnEnemy()
     {
-        List<int> remainingPos = new List<int> { 0, 1, 2, 3 };
-        List<int> ennemyPosIds = new List<int> { -1,-1,-1,-1};
+        List<int> remainingPos = new List<int> {0, 1, 2, 3};
+        List<int> ennemyPosIds = new List<int> {-1, -1, -1, -1};
         List<EncounterOption> encounterOptions = _encounter.forcedOrder.ToList();
 
         int firstMaxPos = (spawnPos.Length - encounterOptions.Count);
         //Debug.Log($"firstMaxPos = {firstMaxPos}");
-        int firstChoosedPos = UnityEngine.Random.Range(0, firstMaxPos+1);
+        int firstChoosedPos = UnityEngine.Random.Range(0, firstMaxPos + 1);
         //Debug.Log($"firstChoosedPos = {firstChoosedPos}");
 
         for (int i = 0; i < encounterOptions.Count; i++)
         {
-            int ennemiPos = firstChoosedPos+i;//remainingPos[i];//UnityEngine.Random.Range(0, remainingPos.Count)];
+            int ennemiPos = firstChoosedPos + i; //remainingPos[i];//UnityEngine.Random.Range(0, remainingPos.Count)];
             //Debug.Log($"Choosed Forced Pos = {ennemiPos}");
 
             int ennemyId = encounterOptions[i].possibleId[UnityEngine.Random.Range(0, encounterOptions[i].Count)];
             //Debug.Log($"Choosed Ennemy Id = {ennemyId}");
 
-            for (int j=0;j< encounterOptions.Count;j++)
+            for (int j = 0; j < encounterOptions.Count; j++)
             {
                 if (encounterOptions[j].possibleId.Contains(ennemyId))
                 {
                     encounterOptions[j].possibleId.Remove(ennemyId);
                 }
             }
+
             ennemyPosIds[ennemiPos] = ennemyId;
         }
 
@@ -316,8 +319,9 @@ public class BattleManager : MonoBehaviour
         remainingPos = new List<int>();
         for (int i = 0; i < ennemyPosIds.Count; i++)
         {
-            if (ennemyPosIds[i] == -1 ) remainingPos.Add(i);
+            if (ennemyPosIds[i] == -1) remainingPos.Add(i);
         }
+
         for (int i = 0; i < _encounter.ToFight.Count; i++)
         {
             if (!ennemyPosIds.Contains(i))
@@ -330,8 +334,9 @@ public class BattleManager : MonoBehaviour
             }
 
         }
+
         //Debug.Log("Instantiate:");
-        for (int i =0; i< ennemyPosIds.Count; i++)
+        for (int i = 0; i < ennemyPosIds.Count; i++)
         {
             //Debug.Log($"pos: {i} spawn :{ennemyPosIds[i]}");
             if (ennemyPosIds[i] > -1)
@@ -339,115 +344,56 @@ public class BattleManager : MonoBehaviour
                 InstanciateEnnemy(ennemyPosIds[i], i);
             }
         }
-
-        void InstanciateEnnemy(int ennemyId, int spawnPosId)
-        {
-            EnnemiStat EnnemyStats = _encounter.ToFight[ennemyId];
-            var temp = Instantiate(EnnemyStats.Spawnable, spawnPos[spawnPosId].position, Quaternion.identity, spawnPos[spawnPosId]);
-            if (temp != null)
-            {
-                SpawnedEnemy.Add(temp);
-            }
-
-            var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
-            //instantiate tout les so modifiable
-            if (tempCombatScript != null)
-            {
-                tempCombatScript.Stat = Instantiate(EnnemyStats);
-                tempCombatScript.SetUp();
-                tempCombatScript.EndTurnBM = EndTurn;
-                tempCombatScript.isMainEnemy = ennemyId == _encounter.idMainMob ? true : false;
-                EnemyScripts.Add(tempCombatScript);
-
-                IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
-                tempCombatScript.combatID = idIndexer;
-                tempCombatScript.ChooseNextAction();
-                idIndexer++;
-            }
-                
-            //AddingMaterial
-            var uiEnnemi = temp.GetComponent<UIEnnemi>();
-            if (uiEnnemi != null)
-            {
-                uiEnnemi.imageCadreFGs[0].material = new Material(ennemiUIMaterial);
-                uiEnnemi.imageCadreFGs[1].material = new Material(ennemiUIMaterial);
-            }
-
-            Material thisCharMaterial = new Material(characterMaterial);
-            if (tempCombatScript != null) tempCombatScript.characterMaterial = thisCharMaterial;
-
-            var pulseBloomSystem = temp.GetComponent<PulseBloom_System>();
-            if (pulseBloomSystem != null)
-                pulseBloomSystem.bloomMaterial = thisCharMaterial;
-
-
-            foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>(true))
-            {
-                renderer.material = thisCharMaterial;
-            }
-        }
     }
-    void OLDSpawnEnemy()
+
+    void InstanciateEnnemy(int ennemyId, int spawnPosId)
     {
-        List<Transform> used = new List<Transform>();
-        for (int i = 0; i < _encounter.ToFight.Count; i++)
+        EnnemiStat EnnemyStats = _encounter.ToFight[ennemyId];
+        var temp = Instantiate(EnnemyStats.Spawnable, spawnPos[spawnPosId].position, Quaternion.identity,
+            spawnPos[spawnPosId]);
+        if (temp != null)
         {
-
-            var item = _encounter.ToFight[i];
-
-            int index = 0;
-            if (_encounter.ToFight.Count == 1)
-                index = 2;
-            else
-                index = UnityEngine.Random.Range(0, spawnPos.Length);
-
-            while (used.Contains(spawnPos[index]))
-            {
-                index = UnityEngine.Random.Range(0, spawnPos.Length);
-            }
-
-            used.Add(spawnPos[index]);
-
-
-            var temp = Instantiate(item.Spawnable, spawnPos[index].position, Quaternion.identity, spawnPos[index]);
-            if (temp != null)
-            {
-                SpawnedEnemy.Add(temp);
-            }
-
-            var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
-            //instantiate tout les so modifiable
-            if (tempCombatScript != null)
-            {
-                tempCombatScript.Stat = Instantiate(item);
-                tempCombatScript.SetUp();
-                tempCombatScript.EndTurnBM = EndTurn;
-                tempCombatScript.isMainEnemy = i == _encounter.idMainMob ? true : false;
-                EnemyScripts.Add(tempCombatScript);
-
-                IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
-                tempCombatScript.combatID = idIndexer;
-                tempCombatScript.ChooseNextAction();
-                idIndexer++;
-            }
-
-            //AddingMaterial
-            temp.GetComponent<UIEnnemi>().imageCadreFGs[0].material = new Material(ennemiUIMaterial);
-            temp.GetComponent<UIEnnemi>().imageCadreFGs[1].material = new Material(ennemiUIMaterial);
-
-            Material thisCharMaterial = new Material(characterMaterial);
-            if (tempCombatScript != null) tempCombatScript.characterMaterial = thisCharMaterial;
-            temp.GetComponent<PulseBloom_System>().bloomMaterial = thisCharMaterial;
-
-            
-            foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>(true))
-            {
-                renderer.material = thisCharMaterial;
-            }
+            SpawnedEnemy.Add(temp);
         }
 
-    }
+        var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
+        //instantiate tout les so modifiable
+        if (tempCombatScript != null)
+        {
+            tempCombatScript.Stat = Instantiate(EnnemyStats);
+            tempCombatScript.SetUp();
+            tempCombatScript.EndTurnBM = EndTurn;
+            tempCombatScript.isMainEnemy = ennemyId == _encounter.idMainMob ? true : false;
+            EnemyScripts.Add(tempCombatScript);
 
+            IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
+            tempCombatScript.combatID = idIndexer;
+            tempCombatScript.ChooseNextAction();
+            idIndexer++;
+        }
+
+        //AddingMaterial
+        var uiEnnemi = temp.GetComponent<UIEnnemi>();
+        if (uiEnnemi != null)
+        {
+            uiEnnemi.imageCadreFGs[0].material = new Material(ennemiUIMaterial);
+            uiEnnemi.imageCadreFGs[1].material = new Material(ennemiUIMaterial);
+        }
+
+        Material thisCharMaterial = new Material(characterMaterial);
+        if (tempCombatScript != null) tempCombatScript.characterMaterial = thisCharMaterial;
+
+        var pulseBloomSystem = temp.GetComponent<PulseBloom_System>();
+        if (pulseBloomSystem != null)
+            pulseBloomSystem.bloomMaterial = thisCharMaterial;
+
+
+        foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>(true))
+        {
+            renderer.material = thisCharMaterial;
+        }
+    }
+    
     public void StartCombat()
     {
         IsCombatOn = true;
@@ -460,7 +406,7 @@ public class BattleManager : MonoBehaviour
     private void EndBattle()
     {
         IsCombatOn = false;
-        if (!IsTuto)
+        if (!GameManager.Instance.IsTuto)
         {
             PassifManager.CurrentEvent = TimerPassif.FinCombat;
             PassifManager.ResolvePassifs();
@@ -471,18 +417,17 @@ public class BattleManager : MonoBehaviour
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Stat.Tension = 0;
         Debug.Log(IsLoot);
-        if (GameManager.Instance.IsTuto/*TutoManager.Instance != null*/)
+        if (GameManager.Instance.IsTuto)
         {
             TutoManager.Instance.EndCombat();
             TutoManager.Instance.Loot();
-            var gO = GameObject.Find("TutoPanel");
-            var child = gO.transform.GetChild(0);
+            var child = TutoManager.Instance.TutoPanel.transform.GetChild(0);
             child.gameObject.SetActive(true);
-            //UIDialogue.SetActive(false);
-            var tutoPanelScript = gO.GetComponent<TutoPanel>();
+            var tutoPanelScript = TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>();
             tutoPanelScript.ShowExplication();
           
             buttonEndCombat.SetActive(false);
+            StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
         }
         else
         {
@@ -1018,7 +963,7 @@ public class BattleManager : MonoBehaviour
                 Destroy(ListEssence[i]);
             }
             ListEssence.Clear();
-
+            EndBattle();
         }
         else
         {
@@ -1074,16 +1019,13 @@ public class BattleManager : MonoBehaviour
 
             if (EnemyScripts.Count <= 0)
             {
-                if (GameManager.Instance.IsTuto/*TutoManager.Instance != null*/)
+                if (GameManager.Instance.IsTuto /*TutoManager.Instance != null*/)
                 {
-                    //TutoManager.Instance.NextStep();
-                    var gO = GameObject.Find("TutoPanel");
-                    var child = gO.transform.GetChild(0);
+                    var child = TutoManager.Instance.TutoPanel.transform.GetChild(0);
                     child.gameObject.SetActive(true);
-                    //UIDialogue.SetActive(false);
-                    var tutoPanelScript = gO.GetComponent<TutoPanel>();
+                    var tutoPanelScript = TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>();
                     tutoPanelScript.ShowExplication();
-                    tutoPanelScript.UIJoueur.SetActive(false);
+                    //tutoPanelScript.UIJoueur.SetActive(false);
                     //Ici le TutoPanel
                 }
                 else

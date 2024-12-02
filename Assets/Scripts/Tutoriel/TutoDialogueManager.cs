@@ -14,17 +14,17 @@ public class TutoDialogueManager : DialogueManager
 
     [SerializeField]
     private ProgressBarManager _hpBarManager;
-    //public RectTransform positionDialogueOriginal;
-    //public RectTransform positionDialogueUp;
+
     public void EndDialogueTuto()
     {
         TutoManager.Instance.NextStep();
-        //SceneManager.LoadScene("TutoMonde");
     }
+
     public void InitDialogueStep()
     {
         NextDialogueIndex = 0;
     }
+
     public override void GetRéponse(int i)
     {
         if (GameManager.Instance.IsPaused)
@@ -65,7 +65,7 @@ public class TutoDialogueManager : DialogueManager
                 ConscienceFill.fillAmount = 0.2f;
             }
 
-            if ((/*DialogueIndex == 2 || */DialogueIndex == 5) && TutoManager.Instance.IndexEncounter == 1)
+            if ((DialogueIndex == 5) && TutoManager.Instance.IndexEncounter == 1)
             {
                 ConscienceFill.fillAmount = 0.1f;
                 //GoeargeTapeLeMob
@@ -81,10 +81,6 @@ public class TutoDialogueManager : DialogueManager
 
             if (DialogueIndex == 8 && TutoManager.Instance.IndexEncounter == 4)
             {
-                //if (GameManager.Instance != null)
-                //    Destroy(GameManager.Instance.gameObject);
-                //SceneManager.LoadSceneAsync(1);
-                //Destroy(TutoManager.Instance.gameObject);
                 TutoManager.Instance.Player.ToggleVisibility(true);
                 TutoManager.Instance.EndTuto();
             }
