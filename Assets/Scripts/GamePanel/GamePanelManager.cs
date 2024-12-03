@@ -37,7 +37,7 @@ public class GamePanelManager : MonoBehaviour
         GameManager.OnStartAutel += StartAutel;
         GameManager.OnLootAfterCombat += StartLoot;
         GameManager.OnShowMap += ShowMap;
-        PlayerMapManager.OnEndGame += EndGame;
+        GameManager.OnEndGame += EndGame;
 
         TutoManager.OnEndDialog += HideDialog;
         TutoManager.OnStartCombat += StartCombat;
@@ -52,7 +52,7 @@ public class GamePanelManager : MonoBehaviour
         GameManager.OnStartAutel -= StartAutel;
         GameManager.OnLootAfterCombat -= StartLoot;
         GameManager.OnShowMap -= ShowMap;
-        PlayerMapManager.OnEndGame -= EndGame;
+        GameManager.OnEndGame -= EndGame;
 
         TutoManager.OnEndDialog -= HideDialog;
         TutoManager.OnStartCombat -= StartCombat;

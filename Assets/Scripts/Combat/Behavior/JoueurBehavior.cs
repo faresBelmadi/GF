@@ -291,7 +291,7 @@ public class JoueurBehavior : CombatBehavior
 
         if (_refBattleMan.nbPhase >= 2) //If it's first player turn, we don't resplanish willpower.
             Stat.Volonter = Stat.VolonterMax;
-        if (!GameManager.Instance.IsTuto)
+        if (!GameManager.Instance.IsTuto|| !isFirstTurn)
             ActivateSpells();
 
         if (!isFirstTurn)
