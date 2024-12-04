@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -13,7 +14,9 @@ public class BattleManager : MonoBehaviour
 {
     [Header("Tuto")]
     [SerializeField] private bool _isTuto = false;
-
+    [Header("BattleLogger")]
+    [SerializeField]
+    private BattleLog _battleLogger;
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
@@ -26,6 +29,7 @@ public class BattleManager : MonoBehaviour
     private string _idLabelForEssenceButton;
     const string Target = "Targeting";
     public PassifRules passifRules;
+
     [Header("CrystalSoul Manager")]
     [Tooltip("Put three Essence Prefab, from the smallest, to the greatest")]
     [SerializeField]
@@ -533,11 +537,12 @@ public class BattleManager : MonoBehaviour
 
     #region Lien Joueur - Ennemi
 
-    public void LaunchSpellJoueur(Spell Spell)
+    public void LaunchSpellJoueur(Spell spell)
     {
+        LogLaunchedSpell(player, spell);
         player.DesactivateSpells();
-        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerSpellSFX, Spell.SpellSFX);
-        foreach (var effet in Spell.ActionEffet)
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerSpellSFX, spell.SpellSFX);
+        foreach (var effet in spell.ActionEffet)
         {
             PassageEffet(effet, idPlayer, idTarget, SourceEffet.Spell);
             if (effet.AfterEffectToApply != null)
@@ -574,7 +579,7 @@ public class BattleManager : MonoBehaviour
         }
 
         //EnemyScripts.First(c => c.combatID == idTarget).ApplicationBuffDebuff(TimerApplication.Attaque);
-        GiveBuffDebuff(Spell.ActionBuffDebuff, idTarget);
+        GiveBuffDebuff(spell.ActionBuffDebuff, idTarget);
         idTarget = -1;
 
     }
@@ -594,6 +599,10 @@ public class BattleManager : MonoBehaviour
 
         GiveBuffDebuff(Spell.debuffsBuffs);
         //player.ApplicationBuffDebuff(TimerApplication.Attaque);
+    }
+    public void LogLaunchedSpell(CombatBehavior launcher, IBattleLogSpell spell)
+    {
+        _battleLogger.AddBattleLogLine(launcher, spell);
     }
 
     private void ApplyAfterEffect(Effet effet) // ICI DANGER: en cas d'after effect Applique 2 fois les buff debuff!

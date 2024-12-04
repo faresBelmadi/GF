@@ -28,7 +28,7 @@ public class EnnemyBehavior : CombatBehavior
     private int currentTension = 0;
     private Coroutine deathRoutine = null;
 
-    public string Name
+    public override string Name
     {
         get { return TradManager.instance.GetTranslation(Stat.IdTradName, Stat.Nom); }
     }
@@ -376,6 +376,7 @@ public class EnnemyBehavior : CombatBehavior
         //Debug.Log("commencement des degats");
         //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
         _refBattleMan.LaunchSpellEnnemi(nextAction);
+        _refBattleMan.LogLaunchedSpell(this, nextAction);
     }
 
     public void CreateSpellList()

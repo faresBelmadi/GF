@@ -54,6 +54,8 @@ public class JoueurBehavior : CombatBehavior
 
     public Spell SelectSpell => SelectedSpell;
 
+    public override string Name { get => GameManager.Instance.classSO.NameClass; }
+
     #region Divers start & fin
 
     private int currentHp = -1;

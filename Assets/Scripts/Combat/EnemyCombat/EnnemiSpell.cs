@@ -2,9 +2,11 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Enemy Spell", menuName = "Capacité/Create New Enemy Spell", order = 1)]
-public class EnnemiSpell : ScriptableObject
+public class EnnemiSpell : ScriptableObject, IBattleLogSpell
 {
     public string Name;
+    [SerializeField]
+    private string _idTradName;
     public int ID;
     public bool IsAttaque;
     public Sprite ImageIntentionSpell;
@@ -25,4 +27,6 @@ public class EnnemiSpell : ScriptableObject
     private AudioClip _spellSFX;
 
     public AudioClip SpellSFX;
+
+    public string TradName => TradManager.instance.GetTranslation(_idTradName, Name);
 }
