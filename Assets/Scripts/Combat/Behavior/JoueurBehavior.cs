@@ -704,7 +704,7 @@ public class JoueurBehavior : CombatBehavior
         //    effet.IsFirstApplication = false;
         //    ModifStat.Radiance += ModifStat.RadianceMax;
         //}
-
+        GameManager.Instance.BattleMan.LogRadianceChange(this, ModifStat.Radiance);
         Stat.ModifStateAll(ModifStat);
         if (ModifStat.PalierChangement > 0)
             EnervementTension();

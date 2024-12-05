@@ -534,7 +534,7 @@ public class EnnemyBehavior : CombatBehavior
             effet.IsFirstApplication = false;
             ModifStat.Radiance += ModifStat.RadianceMax;
         }
-
+        GameManager.Instance.BattleMan.LogRadianceChange(this, ModifStat.Radiance);
         Stat.ModifStateAll(ModifStat);
         Stat.RectificationStat();
 

@@ -602,7 +602,13 @@ public class BattleManager : MonoBehaviour
     }
     public void LogLaunchedSpell(CombatBehavior launcher, IBattleLogSpell spell)
     {
-        _battleLogger.AddBattleLogLine(launcher, spell);
+        if (_battleLogger.gameObject.activeInHierarchy)
+            _battleLogger.AddBattleLaunchSpellLogLine(launcher, spell);
+    }
+    public void LogRadianceChange(CombatBehavior target, int amount)
+    {
+        if (_battleLogger.gameObject.activeInHierarchy)
+            _battleLogger.AddDamageLogLine(target, amount);
     }
 
     private void ApplyAfterEffect(Effet effet) // ICI DANGER: en cas d'after effect Applique 2 fois les buff debuff!
