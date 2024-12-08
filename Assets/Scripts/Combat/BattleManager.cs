@@ -75,6 +75,26 @@ public class BattleManager : MonoBehaviour
 
     public static Action<Transform> OnGatherEssence;
 
+    #region Reference
+    /// <summary>
+    /// Return Combat behavior linked to the given character stat
+    /// </summary>
+    /// <param name="stat">CharacterStat to find</param>
+    /// <returns>The linked COmbatBehaviour</returns>
+    public CombatBehavior GetBehaviorFromStat(CharacterStat stat)
+    {
+        if (stat == null) return null;
+        
+        if (player.Stat == stat)
+            return player;
+        foreach(var ennemy in EnemyScripts)
+        {
+            if (ennemy.Stat == stat)
+                return ennemy;
+        }
+        return null;
+    }
+    #endregion
     #region Loot
 
     public void Loot()
@@ -586,6 +606,8 @@ public class BattleManager : MonoBehaviour
 
     public void LaunchSpellEnnemi(EnnemiSpell Spell)
     {
+        var playing = EnemyScripts.First(c => c.combatID == currentIdTurn);
+        LogLaunchedSpell(playing, Spell);
         foreach (var effet in Spell.Effet)
         {
             PassageEffet(effet, currentIdTurn, -1, SourceEffet.Spell);
@@ -605,10 +627,10 @@ public class BattleManager : MonoBehaviour
         if (_battleLogger.gameObject.activeInHierarchy)
             _battleLogger.AddBattleLaunchSpellLogLine(launcher, spell);
     }
-    public void LogRadianceChange(CombatBehavior target, int amount)
+    public void LogRadianceChange(CombatBehavior target, CombatBehavior source, int amount)
     {
         if (_battleLogger.gameObject.activeInHierarchy)
-            _battleLogger.AddDamageLogLine(target, amount);
+            _battleLogger.AddDamageLogLine(target, source, amount);
     }
 
     private void ApplyAfterEffect(Effet effet) // ICI DANGER: en cas d'after effect Applique 2 fois les buff debuff!

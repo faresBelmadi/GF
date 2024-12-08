@@ -376,7 +376,6 @@ public class EnnemyBehavior : CombatBehavior
         //Debug.Log("commencement des degats");
         //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
         _refBattleMan.LaunchSpellEnnemi(nextAction);
-        _refBattleMan.LogLaunchedSpell(this, nextAction);
     }
 
     public void CreateSpellList()
@@ -534,7 +533,7 @@ public class EnnemyBehavior : CombatBehavior
             effet.IsFirstApplication = false;
             ModifStat.Radiance += ModifStat.RadianceMax;
         }
-        GameManager.Instance.BattleMan.LogRadianceChange(this, ModifStat.Radiance);
+        GameManager.Instance.BattleMan.LogRadianceChange(this,  GameManager.Instance.BattleMan.GetBehaviorFromStat(Caster), ModifStat.Radiance);
         Stat.ModifStateAll(ModifStat);
         Stat.RectificationStat();
 
