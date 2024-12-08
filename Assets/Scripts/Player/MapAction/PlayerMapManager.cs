@@ -349,11 +349,13 @@ public class PlayerMapManager : MonoBehaviour
 
             ShowMenuStat();
         }
-
-        AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
-        GameManager.Instance.ShowMap();
-        yield return null;
-        //yield return SceneManager.UnloadSceneAsync(_scene);
+        else
+        {
+            AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
+            GameManager.Instance.ShowMap();
+            yield return null;
+            //yield return SceneManager.UnloadSceneAsync(_scene);
+        }
     }
 
     public void ShowMenuStat()

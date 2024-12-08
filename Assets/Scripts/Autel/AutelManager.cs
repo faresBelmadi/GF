@@ -133,6 +133,7 @@ public class AutelManager : MonoBehaviour
         stats = GameManager.Instance.playerStat;
 
         SetUpStatsDescription();
+        ShowMenuUiPanel();
         isOn = true;
     }
     public void ShowMenuUiPanel()
@@ -428,6 +429,7 @@ public class AutelManager : MonoBehaviour
 
     public void RetourMap()
     {
+        if (Loot == true) GameManager.Instance.GamePanelMngr.HideAutel();
         GameManager.Instance.playerStat.ListSouvenir = stats.ListSouvenir;
         StartCoroutine(GameManager.Instance.pmm.EndAutel(Loot));
     }
