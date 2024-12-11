@@ -20,8 +20,12 @@ public class MenuStatManager : MonoBehaviour
     public TextMeshProUGUI ValeurRadiance, ValeurFA, ValeurVitesse, ValeurConviction, ValeurResilience, ValeurCalme, ValeurVolonter, ValeurConscience, ValeurClairvoyance;
     public TextMeshProUGUI ModifRadiance, ModifFA, ModifVitesse, ModifConviction, ModifResilience, ModifCalme, ModifVolonter, ModifConscience, ModifClairvoyance;
 
-    public int NbSlotsEquiped;
+    private int NbSlotsEquiped;
     public TextMeshProUGUI NbSlots;
+    [SerializeField]
+    private Image _slotEquiped;
+    [SerializeField]
+    private Image _overPoweredSlot;
 
     public GameObject ArbreCompetencePrefab;
     public GameObject ArbreCompetence, Canvas, Menu;
@@ -141,6 +145,13 @@ public class MenuStatManager : MonoBehaviour
         ModifTempsReel(Stat.Clairvoyance, StatTemp.Clairvoyance, ModifClairvoyance);
 
         NbSlots.text = NbSlotsEquiped + "/" + StatTemp.SlotsSouvenir;
+        _slotEquiped.fillAmount = (NbSlotsEquiped * StatTemp.SlotsSouvenir) / 100f;
+        if (NbSlotsEquiped > StatTemp.SlotsSouvenir)
+        {
+            _overPoweredSlot.fillAmount = (NbSlotsEquiped % StatTemp.SlotsSouvenir) * 4 / 100f;
+        }
+        else
+            _overPoweredSlot.fillAmount = 0;
     }
 
     public void ModifTempsReel(int original, int nouveau, TextMeshProUGUI Text)
