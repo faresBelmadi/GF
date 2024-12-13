@@ -58,6 +58,8 @@ public class GameManager : MonoBehaviour {
 
     public PassifRules passifRules;
     [Header("Data")]
+    [SerializeField]
+    private SpriteData _spriteData;
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
     [SerializeField]
@@ -80,6 +82,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public SpriteData SpriteData { get { return _spriteData; } }
     #region Events
     public static event Action OnStartCombat;
     public static event Action OnLootAfterCombat;

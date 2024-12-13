@@ -6,6 +6,7 @@ using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.WSA;
 using Random = UnityEngine.Random;
 
 public class DialogueManager : MonoBehaviour
@@ -908,6 +909,8 @@ public class DialogueManager : MonoBehaviour
                 buff.GetComponent<BuffDebuffComponant>().InitBuffDebuff(buffDebuff);
                 buff.GetComponent<BuffDebuffComponant>().buffCntLabel.text = "1";
                 buff.GetComponent<EnflateSystem>().TriggerInflation();
+                
+                buff.GetComponent<BuffDebuffComponant>().buffSprite.sprite = buffDebuff.IsDebuff?GameManager.Instance.SpriteData.Debuff:GameManager.Instance.SpriteData.Buff;
                 _listBuffEffectFromDialog.Add(buff);
 
                 //Application du buff
