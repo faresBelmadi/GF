@@ -23,32 +23,12 @@ public class VolonteManager : MonoBehaviour
         HighlightCost.OnHighlintingVolonte -= StartHighlight;
         HighlightCost.OnStopHighlintingVolonte -= StopHighlight;
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-       
 
-    }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Debug.Log("highlight 2");
-            StartHighlight(2);
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            Debug.Log("highlight 3");
-            StartHighlight(3);
-        }
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            Debug.Log("stop");
-            StopHighlight();
-        }
-
+       
     }
 
     private void StartHighlight(int numberToHighlight)
