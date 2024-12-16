@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,6 +43,9 @@ public class HighlightCost : MonoBehaviour
     private int _selectConscCost = 0;
     private int _selectRadCost = 0;
 
+    public static event Action<int> OnHighlintingVolonte;
+    public static event Action OnStopHighlintingVolonte;
+
     public void EnableHighlighting(int volonteCost, int radCost, int conscCost)
     {
 
@@ -58,10 +62,11 @@ public class HighlightCost : MonoBehaviour
             && Stat.Radiance >= radCost
             && Stat.Conscience >= conscCost)
         {
-            _volonteHighlightGO.SetActive(true);
-            _highlightSlider.value = volonteCost;
-           // if (_bloomVolonteComponent.loop == true) _bloomVolonteComponent.OnToggleLoop();
-            _bloomVolonteComponent.TriggerBloom(true);
+            // _volonteHighlightGO.SetActive(true);
+            // _highlightSlider.value = volonteCost;
+            //// if (_bloomVolonteComponent.loop == true) _bloomVolonteComponent.OnToggleLoop();
+            // _bloomVolonteComponent.TriggerBloom(true);
+            OnHighlintingVolonte?.Invoke(volonteCost);
         }
 
         if (radCost > 0 
@@ -99,6 +104,7 @@ public class HighlightCost : MonoBehaviour
         _conscienceHighlightGO.SetActive(false);
         _volonteHighlightGO.SetActive(false);
         _radianceHighlightGO.SetActive(false);
+        OnStopHighlintingVolonte?.Invoke();
 
         _highlightSlider.value = _selectVolonteCost;
 
@@ -115,6 +121,7 @@ public class HighlightCost : MonoBehaviour
             _volonteHighlightGO.SetActive(true);
            // if (_bloomVolonteComponent.loop == false) _bloomVolonteComponent.OnToggleLoop();
             _bloomVolonteComponent.TriggerBloom(true);
+            OnHighlintingVolonte?.Invoke(_selectVolonteCost);
         }
 
         if (_selectConscCost > 0)
@@ -169,9 +176,10 @@ public class HighlightCost : MonoBehaviour
 
         if (_volonteHighlightGO.activeSelf)
         {
-            _selectVolonteCost = volonteCost;
            // if (_bloomVolonteComponent.loop == false) _bloomVolonteComponent.OnToggleLoop();
             _bloomVolonteComponent.TriggerBloom(true);
         }
+        _selectVolonteCost = volonteCost;
+        OnHighlintingVolonte?.Invoke(_selectVolonteCost);
     }
 }

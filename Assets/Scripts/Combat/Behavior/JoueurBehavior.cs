@@ -22,6 +22,7 @@ public class JoueurBehavior : CombatBehavior
     [SerializeField] private ProgressBarManager tensionBarManager;
     [SerializeField] private ProgressBarManager conscienceBarManager;
 
+    [SerializeField] private VolonteManager _volonteManager;
     [SerializeField] private Slider VolonteSlider;
     [SerializeField] private Image VolonteBarBack;
     [SerializeField] private HighlightCost _highlightComponant;
@@ -207,6 +208,10 @@ public class JoueurBehavior : CombatBehavior
 
         VolonteSlider.value = Stat.Volonter;
         VolonteSlider.maxValue = Stat.VolonterMax;
+
+
+        _volonteManager.UpdateMaxVolonte(Stat.VolonterMax);
+        _volonteManager.UpdateVolonte(Stat.Volonter);
 
 
         HpText.text = $"{Stat.Radiance.ToString()}/{Stat.RadianceMax}";
