@@ -24,16 +24,8 @@ public class VolonteManager : MonoBehaviour
         HighlightCost.OnStopHighlintingVolonte -= StopHighlight;
     }
 
-
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
-
     private void StartHighlight(int numberToHighlight)
     {
-        Debug.Log("Start Highlingting for " + numberToHighlight + " point");
         int n = 0;
         for (int i = CurrentPoint -1; n<numberToHighlight;i--)
         {
@@ -43,7 +35,6 @@ public class VolonteManager : MonoBehaviour
     }
     private void StopHighlight()
     {
-        
         for (int i = 0; i < CurrentMaximumPoint; i++)
         {
             _volontePoints[i].StopHighlight();

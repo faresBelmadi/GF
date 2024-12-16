@@ -8,12 +8,12 @@ public class HighlightCost : MonoBehaviour
 {
 
     [Header("Volonte componant")]
-    [SerializeField]
-    private GameObject _volonteHighlightGO;
-    [SerializeField]
-    private PulseBloom_System _bloomVolonteComponent;
-    [SerializeField]
-    private Slider _highlightSlider;
+    //[SerializeField]
+    //private GameObject _volonteHighlightGO;
+    //[SerializeField]
+    //private PulseBloom_System _bloomVolonteComponent;
+    //[SerializeField]
+    //private Slider _highlightSlider;
 
     [Header("Conscience bar for highlighting")]
     [SerializeField]
@@ -51,7 +51,7 @@ public class HighlightCost : MonoBehaviour
 
         _conscienceHighlightGO.SetActive(false);
         _radianceHighlightGO.SetActive(false);
-        JoueurStat Stat = new JoueurStat();//TODO: create instance
+        JoueurStat Stat = ScriptableObject.CreateInstance<JoueurStat>();//TODO: A verifier
         if (GameManager.Instance != null)
             Stat = GameManager.Instance.BattleMan.player.Stat;
         else
@@ -62,10 +62,6 @@ public class HighlightCost : MonoBehaviour
             && Stat.Radiance >= radCost
             && Stat.Conscience >= conscCost)
         {
-            // _volonteHighlightGO.SetActive(true);
-            // _highlightSlider.value = volonteCost;
-            //// if (_bloomVolonteComponent.loop == true) _bloomVolonteComponent.OnToggleLoop();
-            // _bloomVolonteComponent.TriggerBloom(true);
             OnHighlintingVolonte?.Invoke(volonteCost);
         }
 
@@ -102,25 +98,13 @@ public class HighlightCost : MonoBehaviour
     public void DisableHighlighting()
     {
         _conscienceHighlightGO.SetActive(false);
-        _volonteHighlightGO.SetActive(false);
         _radianceHighlightGO.SetActive(false);
         OnStopHighlintingVolonte?.Invoke();
 
-        _highlightSlider.value = _selectVolonteCost;
-
-        //if (_selectConscCost == 0 && _selectRadCost == 0 && _selectVolonteCost == 0)
-        //{
-        //    _conscienceHighlightGO.SetActive(false);
-        //    _volonteHighlightGO.SetActive(false);
-        //    _radianceHighlightGO.SetActive(false);
-        //    return;
-        //}
+  
 
         if (_selectVolonteCost > 0)
         {
-            _volonteHighlightGO.SetActive(true);
-           // if (_bloomVolonteComponent.loop == false) _bloomVolonteComponent.OnToggleLoop();
-            _bloomVolonteComponent.TriggerBloom(true);
             OnHighlintingVolonte?.Invoke(_selectVolonteCost);
         }
 
@@ -146,7 +130,6 @@ public class HighlightCost : MonoBehaviour
     }
     public void DisableHighlightingBetweenTarget()
     {
-        _highlightSlider.value = 0;
         _conscienceHighlightGO.SetActive(false);
         _radianceHighlightGO.SetActive(false);
 
@@ -174,11 +157,6 @@ public class HighlightCost : MonoBehaviour
             _bloomRadianceComponent.TriggerBloom(true);
         }
 
-        if (_volonteHighlightGO.activeSelf)
-        {
-           // if (_bloomVolonteComponent.loop == false) _bloomVolonteComponent.OnToggleLoop();
-            _bloomVolonteComponent.TriggerBloom(true);
-        }
         _selectVolonteCost = volonteCost;
         OnHighlintingVolonte?.Invoke(_selectVolonteCost);
     }
