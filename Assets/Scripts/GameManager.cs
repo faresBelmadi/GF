@@ -67,6 +67,7 @@ public class GameManager : MonoBehaviour {
 
     public bool IsTuto { get; set; }
     public bool IsPaused { get; set; } = false;
+    public GamePanelManager GamePanelMngr { get => _gamePanelManager; }
     public DialogueManager DialManager
     {
         get
