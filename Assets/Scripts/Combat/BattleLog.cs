@@ -34,7 +34,14 @@ public class BattleLog : MonoBehaviour
         _logList.Clear();
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.BackQuote))
+        {
+            _scrollRect.gameObject.SetActive(!_scrollRect.gameObject.activeSelf);
+        }
 
+    }
     public void AddBattleLaunchSpellLogLine(CombatBehavior launcher, IBattleLogSpell spell)
     {
         GameObject line = Instantiate(_battleLogLinePrefabGO, _contentHolder.transform);
