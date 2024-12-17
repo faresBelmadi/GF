@@ -53,6 +53,8 @@ public class JoueurBehavior : CombatBehavior
 
     public Spell SelectSpell => SelectedSpell;
 
+    public override string Name { get => GameManager.Instance.classSO.NameClass; }
+
     #region Divers start & fin
 
     private int currentHp = -1;
@@ -702,7 +704,7 @@ public class JoueurBehavior : CombatBehavior
         //    effet.IsFirstApplication = false;
         //    ModifStat.Radiance += ModifStat.RadianceMax;
         //}
-
+        GameManager.Instance.BattleMan.LogRadianceChange(this, GameManager.Instance.BattleMan.GetBehaviorFromStat(Caster), ModifStat.Radiance);
         Stat.ModifStateAll(ModifStat);
         if (ModifStat.PalierChangement > 0)
             EnervementTension();

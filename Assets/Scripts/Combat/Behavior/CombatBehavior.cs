@@ -24,6 +24,8 @@ public class CombatBehavior : MonoBehaviour
 
     private Vector3 _startingPos;
 
+    public virtual string Name { get => name; }
+
     private void Start()
     {
         _startingPos = transform.parent.position;

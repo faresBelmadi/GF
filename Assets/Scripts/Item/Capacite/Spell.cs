@@ -3,7 +3,7 @@ using UnityEngine;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "New spell", menuName = "Capacité/Create New Spell", order = 11)]
-public class Spell : ScriptableObject
+public class Spell : ScriptableObject, IBattleLogSpell
 {
     public string Nom;
     public string idTradName;
@@ -24,4 +24,6 @@ public class Spell : ScriptableObject
     private AudioClip _spellSFX;
 
     public AudioClip SpellSFX => _spellSFX;
+
+    public string TradName => TradManager.instance.GetTranslation(idTradName);
 }
