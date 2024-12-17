@@ -91,7 +91,7 @@ public class JoueurBehavior : CombatBehavior
         Debug.Log("Active Children : " + i);
 
     }
-  
+
     public void StartUp()
     {
 
@@ -589,7 +589,7 @@ public class JoueurBehavior : CombatBehavior
             }
 
             Stat.ListBuffDebuff.Add(buff);
-            base.AddBuffDebuff(toAdd, Stat);
+            base.AddBuffDebuff(buff, Stat);
             if (toAdd.timerApplication != TimerApplication.Attaque)
                 ApplicationBuffDebuff(Timer, buff);
         }
