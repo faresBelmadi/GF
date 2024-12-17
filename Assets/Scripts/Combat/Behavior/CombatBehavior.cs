@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class CombatBehavior : MonoBehaviour
 {
-    [SerializeField] Sprite[] buffsSprites;  
     public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
     public GameObject BuffPrefab;
     public Transform BuffContainer;
@@ -31,6 +30,14 @@ public class CombatBehavior : MonoBehaviour
     {
         _startingPos = transform.parent.position;
     }
+    public void ClearBuffBar()
+    {
+        foreach(var buff in ListBuffDebuffGO)
+        {
+            Destroy(buff);
+        }
+        ListBuffDebuffGO.Clear();
+    }
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);
@@ -49,7 +56,8 @@ public class CombatBehavior : MonoBehaviour
         }
         if (buffObject)
         {
-            int buffCnt = characterStat.ListBuffDebuff.Count(x => x.Nom == buffDebuffName);
+            int buffCnt = characterStat.ListBuffDebuff.Count(x => TradManager.instance.GetTranslation(x.idTradName, x.Nom) == buffDebuffName);
+            buffObject.GetComponent<BuffDebuffComponant>().AddStack(toAdd);
             buffObject.GetComponent<BuffDebuffComponant>().buffCntLabel.text = buffCnt.ToString();
             buffObject.GetComponent<BuffDebuffComponant>().buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
             //buffObject.GetComponent<BuffDebuffComponant>().buffTimeLabel.text = toAdd.Temps.ToString();
@@ -60,8 +68,8 @@ public class CombatBehavior : MonoBehaviour
             ControlBuffBarsSize();
             BuffDebuffComponant buffComp = buffObject.GetComponent<BuffDebuffComponant>();
             //buffComp.buffSprite.sprite = CorrespondingSprite
-            //TEMP
-            buffComp.buffSprite.sprite = buffsSprites[toAdd.IsDebuff ? 1 : 0];
+            
+            buffComp.buffSprite.sprite = toAdd.IsDebuff ? GameManager.Instance.SpriteData.Debuff:GameManager.Instance.SpriteData.Buff;
 
             buffComp.buffName = buffDebuffName;
             buffComp.buffNameLabel.text = buffDebuffName;
@@ -233,7 +241,8 @@ public class CombatBehavior : MonoBehaviour
                     //VERY DIRTY
                     int buffCnt = int.Parse(buffComponant.buffCntLabel.text);
                     buffCnt--;
-                    if(buffCnt > 0)
+                    buffComponant.RemoveNullStack();
+                    if (buffCnt > 0)
                     {
                         buffComponant.buffCntLabel.text = buffCnt.ToString();
                         buffComponant.buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();

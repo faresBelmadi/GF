@@ -21,4 +21,16 @@ public class BuffDebuff : ScriptableObject
     public Sprite Icon;
     public GameObject SpawnObject;
     public bool DirectApplication = true;
+
+    public int TimeLeft
+    {
+        get
+        {
+           
+            if (Decompte == Decompte.phase) return Temps;
+            if (Decompte == Decompte.tour) return (Temps % GameManager.Instance.BattleMan.EnemyScripts.Count) + 1;
+            else return -1;
+        }
+
+    }
 }
