@@ -24,10 +24,10 @@ public class BuffDebuff : ScriptableObject
 
     public int TimeLeft
     {
-        get
+        get     //TODO: A améliorer
         {
-           
             if (Decompte == Decompte.phase) return Temps;
+            if (GameManager.Instance.BattleMan.EnemyScripts.Count == 0) return Temps;
             if (Decompte == Decompte.tour) return (Temps % GameManager.Instance.BattleMan.EnemyScripts.Count) + 1;
             else return -1;
         }

@@ -76,7 +76,7 @@ public class VolonteManager : MonoBehaviour
         }
     }
 
-    public void InitVolonté(int numberOfMaximumPoint, int numberOfStartingPoint)
+    public void InitVolonte(int numberOfMaximumPoint, int numberOfStartingPoint)
     {
         CurrentPoint = numberOfStartingPoint;
         UpdateMaxVolonte(numberOfMaximumPoint);
