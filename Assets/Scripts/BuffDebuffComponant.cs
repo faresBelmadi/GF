@@ -103,9 +103,11 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
             if (timeLeft < buff.TimeLeft)
                 timeLeft = buff.TimeLeft;
         }
-
-        buffDescriptionLabel.text = TradManager.instance.GetTranslation(_buffDebuff[0].idTradDescription, "Missing description")
-            + (timeLeft != -1?"\n(Time left : " + timeLeft + ")":"");
+        if (_buffDebuff.Count > 0)
+        {
+            buffDescriptionLabel.text = TradManager.instance.GetTranslation(_buffDebuff[0].idTradDescription, "Missing description")
+            + (timeLeft != -1 ? "\n(Time left : " + timeLeft + ")" : "");
+        }
     }
 
 }
