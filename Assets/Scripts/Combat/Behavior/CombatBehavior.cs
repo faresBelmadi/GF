@@ -38,6 +38,7 @@ public class CombatBehavior : MonoBehaviour
         }
         ListBuffDebuffGO.Clear();
     }
+
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);

@@ -434,8 +434,9 @@ public class BattleManager : MonoBehaviour
         }
         Loot();
         player.ResetStat();
-        player.Stat.ListBuffDebuff.Clear();
-        player.ClearBuffBar();
+        //player.Stat.ListBuffDebuff.Clear();
+        //player.ClearBuffBar();
+        player.ClearBuff();
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Stat.Tension = 0;
         Debug.Log(IsLoot);

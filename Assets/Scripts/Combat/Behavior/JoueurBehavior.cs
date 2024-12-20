@@ -137,7 +137,6 @@ public class JoueurBehavior : CombatBehavior
 
             Spells.Add(temp);
         }
-
         InitUI();
     }
 
@@ -272,6 +271,10 @@ public class JoueurBehavior : CombatBehavior
         OnUpdate();
     }
 
+    public void StartCombat()
+    {
+       
+    }
     public void StartPhase()
     {
         //ResetStat();
@@ -574,6 +577,35 @@ public class JoueurBehavior : CombatBehavior
 
     #region BuffDebuff
 
+    public void ClearBuff()
+    {
+        //for (int i = Stat.ListBuffDebuff.Count-1;i>=0;i--)
+        //{
+        //    if (Stat.ListBuffDebuff[i].Decompte != Decompte.combat)
+        //    {
+        //        Stat.ListBuffDebuff.RemoveAt(i);
+        //    }
+        //}
+        var tempListBuffGO = ListBuffDebuffGO.Where(x => x.GetComponent<BuffDebuffComponant>().BuffDebuffs[0].Decompte != Decompte.combat).ToList();
+        //var listBuffNoCombat = Stat.ListBuffDebuff.Where(x => x.Decompte != Decompte.combat).ToList();
+        foreach (var buffGO in tempListBuffGO)
+        {
+            foreach (var buff in buffGO.GetComponent<BuffDebuffComponant>().BuffDebuffs)
+            {
+                Stat.ListBuffDebuff.Remove(buff);
+            }
+            ListBuffDebuffGO.Remove(buffGO);
+            Destroy(buffGO);
+        }
+        
+        //foreach (var buff in listBuffNoCombat)
+        //{
+        //    Stat.ListBuffDebuff.Remove(buff);
+        //    var tempBuff = ListBuffDebuffGO.First(x => x.GetComponent<BuffDebuffComponant>().buffName == TradManager.instance.GetTranslation(buff.idTradName));
+        //    ListBuffDebuffGO.Remove(tempBuff);
+        //    Destroy(tempBuff);
+        //}
+    }
     public void AddDebuff(BuffDebuff toAdd, Decompte Decompte, TimerApplication Timer)
     {
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
