@@ -8,16 +8,29 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour {
     
-    public static GameManager instance;
+    public static GameManager Instance;
 
+    //[Header("Debug")]
+    //[SerializeField]
+    //private bool _doTuto = true;
+
+    [SerializeField]
+    private GameObject _crystal;
+    [SerializeField]
+    private Transform _parent;
     [Header("Managers")]
-    public RoomManager rm;
+    //public RoomManager rm;
     public PlayerMapManager pmm;
     public BattleManager BattleMan;
     public TutoManager TutoManager;
     public AleaManager AleaMan;
     public OldAutelManager OldAutelMan;
     public MenuStatManager StatMan;
+    public UiMondeManager UiMondeMan;
+    [SerializeField]
+    private DialogueManager _dialogueManager;
+    [SerializeField]
+    private GamePanelManager _gamePanelManager;
 
     [Header("Classes & Encounter")]
     public List<ClassPlayer> AllClasses;
@@ -26,47 +39,110 @@ public class GameManager : MonoBehaviour {
     public int EncounterIndex;
     public List<EncounterAlea> AllEncounterAlea;
 
+    [SerializeField] private List<Encounter> TEMPEncounterNeutral;
+    [SerializeField] private List<Encounter> TEMPEncounterClass;
+    [SerializeField] private List<Encounter> TEMPEncounterElite;
+    [SerializeField] private List<Encounter> TEMPEncounterClassElite;
+    [SerializeField] private List<Encounter> TEMPEncounterBoss;
+    [SerializeField] private List<Encounter> TutoEncounter;
+    [SerializeField] private int CurrentTutoEncounter = 0;
+
     public List<Souvenir> AllSouvenir;
     public List<Souvenir> CopyAllSouvenir;
 
     public ClassPlayer classSO;
+    [HideInInspector]
     public JoueurStat playerStat;
 
     public int ClassIDSelected;
 
     public PassifRules passifRules;
     [Header("Data")]
+    [SerializeField]
+    private SpriteData _spriteData;
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
+    [SerializeField]
+    private ClairvoyanceIconData _clairvoyanceIconData;
+
+    public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
+
+    public bool IsTuto { get; set; }
+    public bool IsPaused { get; set; } = false;
+    public GamePanelManager GamePanelMngr { get => _gamePanelManager; }
+    public DialogueManager DialManager
+    {
+        get
+        {
+            if (!IsTuto)
+                return _dialogueManager;
+            else
+            {
+                return TutoManager.Instance.TutoDialogMngr;
+            }
+        }
+    }
+
+    public SpriteData SpriteData { get { return _spriteData; } }
+    #region Events
+    public static event Action OnStartCombat;
+    public static event Action OnLootAfterCombat;
+    public static event Action OnStartEvent;
+    public static event Action OnStartDialog;
+    public static event Action OnHideMap;
+    public static event Action OnShowMap;
+    public static event Action OnStartAutel;
+    public static event Action OnEndGame;
+
+    #endregion
+
+
 
     private void Awake() {
-        if (instance != null)
+        if (Instance != null)
             Destroy(this.gameObject);
         else
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(this);
         }
 
         UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
         //LoadSave();
         ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
+
+        IsTuto = PlayerPrefs.GetInt("DoTutorial", 0) == 0 ? false : true;
+        PlayerPrefs.SetInt("DoTutorial", 0);  //we set tuto mode to false
+
         CreateSave();
-        getClassRun();
+        GetClassRun();
+
+        _gamePanelManager.InitPanel();
+        /*
+        if (TutoManager.Instance != null)
+            Destroy(TutoManager);
+        */
+    }
+   
+    public void EndTuto()
+    {
+        IsTuto = false;
+
+        //CreateSave();
+        //GetClassRun();
+        pmm.ToggleMap(true);
+        UiMondeMan.EnableMonde();
+        ShowMap();
     }
 
     private void LoadSave()
     {
-        if (playerStat != null && TutoManager.Instance != null)
-        {
-            Debug.Log("Coucouuuuuuu");
-            return;
-        }
+        
 #if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
-        #endif
+#endif
         string dataAsJson;
         if (File.Exists(path))
         {
@@ -77,25 +153,26 @@ public class GameManager : MonoBehaviour {
             loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
             if(!loadedData.CurrentRun.Ended)
             {
-                getClassRun();
+                GetClassRun();
+
+                playerStat = Instantiate(AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat);
+
+                playerStat.Radiance = loadedData.CurrentRun.player.Radiance;
+                playerStat.RadianceMax = loadedData.CurrentRun.player.RadianceMax;
+                playerStat.Volonter = loadedData.CurrentRun.player.Volonter;
+                playerStat.VolonterMax = loadedData.CurrentRun.player.VolonterMax;
+                playerStat.Conscience = loadedData.CurrentRun.player.Conscience;
+                playerStat.ConscienceMax = loadedData.CurrentRun.player.ConscienceMax;
+                playerStat.Conviction = loadedData.CurrentRun.player.Conviction;
+                playerStat.Resilience = loadedData.CurrentRun.player.Resilience;
+                playerStat.Essence = loadedData.CurrentRun.player.Essence;
+                playerStat.ForceAme = loadedData.CurrentRun.player.ForceAme;
+                playerStat.Vitesse = loadedData.CurrentRun.player.Vitesse;
+                playerStat.Calme = loadedData.CurrentRun.player.Calme;
+                playerStat.Clairvoyance = loadedData.CurrentRun.player.Clairvoyance;
+                playerStat.ClairvoyanceOriginal = loadedData.CurrentRun.player.Clairvoyance;
+                playerStat.SlotsSouvenir = loadedData.CurrentRun.player.SlotsSouvenir;
                 
-                playerStat = new JoueurStat() {
-                    Radiance = loadedData.CurrentRun.player.Radiance,
-                    RadianceMax = classSO.PlayerStat.RadianceMax,
-                    Volonter = loadedData.CurrentRun.player.Volonter,
-                    VolonterMax = classSO.PlayerStat.Volonter,
-                    Conscience = loadedData.CurrentRun.player.Conscience,
-                    ConscienceMax = classSO.PlayerStat.ConscienceMax,
-                    Conviction = classSO.PlayerStat.Conviction,
-                    Resilience = classSO.PlayerStat.Resilience,
-                    Essence = loadedData.CurrentRun.player.Essence,
-                    ForceAme = loadedData.CurrentRun.player.ForceAme,
-                    Vitesse = loadedData.CurrentRun.player.Vitesse,
-                    Calme = classSO.PlayerStat.Calme,
-                    Clairvoyance = loadedData.CurrentRun.player.Clairvoyance,
-                    ClairvoyanceOriginal = loadedData.CurrentRun.player.Clairvoyance,
-                    SlotsSouvenir = classSO.PlayerStat.SlotsSouvenir
-                };
                 for(int i = 0; i < AllSouvenir.Count; i++)
                 {
                     CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
@@ -103,7 +180,8 @@ public class GameManager : MonoBehaviour {
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
                 playerStat.ListPassif = new List<Passif>();
-                //TODO : Angela a mis �a en commentaire pour que val puisse faire des test, a voir si c'est a remetre 
+                //TODO : a decommenter quand le systeme de save sera mis en ligne
+                //       cette boucle load les spells acheté dans les runs d'avant.
                 /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
                 {
                     var temp = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item);
@@ -130,7 +208,7 @@ public class GameManager : MonoBehaviour {
         else
         {
             CreateSave();
-            getClassRun();
+            GetClassRun();
         }
     }
 
@@ -138,39 +216,53 @@ public class GameManager : MonoBehaviour {
     {
 
         GameData data = new GameData();
-        data.CurrentRun = new RunData(){ClassID = ClassIDSelected};
+        data.CurrentRun = new RunData() { ClassID = ClassIDSelected };
         data.previousRuns = new List<RunData>();
         var spellsToAdd = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ListSpell.Where(c => c.SpellStatue == SpellStatus.bought);
         List<int> boughtspells = new List<int>();
         foreach (var item in spellsToAdd)
         {
-            boughtspells.Add(item.IDSpell);   
+            boughtspells.Add(item.IDSpell);
         }
         data.CurrentRun.player = new PlayerData()
-        {   
+        {
             Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
+            RadianceMax = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.RadianceMax,
             Conscience = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Conscience,
             ForceAme = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ForceAme,
             Vitesse = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Vitesse,
             Volonter = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Volonter,
-            Clairvoyance = AllClasses.First(c => c.ID ==ClassIDSelected).PlayerStat.Clairvoyance,
+            Clairvoyance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Clairvoyance,
+            Essence = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Essence,
+            VolonterMax = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.VolonterMax,
+            ConscienceMax = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ConscienceMax,
+            Conviction = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Conviction,
+            Resilience = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Resilience,
+            Calme = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Calme,
+            SlotsSouvenir = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.SlotsSouvenir,
             BoughtSpellID = boughtspells
+        };
+        data.CurrentRun.map = new MapData()
+        {
+            usedSeed = pmm.mapUsedSeed,
+            visitedRoomIds = pmm.visitedMapIndexs,
+            roomSelectedEncounter = pmm.roomSelectedEncounters
         };
         string json = JsonUtility.ToJson(data);
         
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
         System.IO.Directory.CreateDirectory(Application.persistentDataPath+"/SavedData");
         System.IO.Directory.CreateDirectory(Application.persistentDataPath+"/SavedData/GameData");
-        #endif
+#endif
 
         System.IO.File.WriteAllText(path,json);
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
-        #endif
+#endif
         LoadSave();
     }
 
@@ -182,28 +274,36 @@ public class GameManager : MonoBehaviour {
             loadedData.previousRuns.Add(loadedData.CurrentRun);
             loadedData.CurrentRun.player = new PlayerData()
             {
-                Radiance = classSO.PlayerStat.Radiance,
-                Volonter = classSO.PlayerStat.Volonter,
-                Conscience = classSO.PlayerStat.Conscience,
-                Essence = classSO.PlayerStat.Essence,
-                ForceAme = classSO.PlayerStat.ForceAme,
-                Vitesse = classSO.PlayerStat.Vitesse,
+                Radiance = playerStat.Radiance,
+                RadianceMax = playerStat.RadianceMax,
+                Volonter = playerStat.Volonter,
+                Conscience = playerStat.Conscience,
+                Essence = playerStat.Essence,
+                ForceAme = playerStat.ForceAme,
+                Vitesse = playerStat.Vitesse,
+                Clairvoyance = playerStat.Clairvoyance,
+                VolonterMax = playerStat.VolonterMax,
+                ConscienceMax = playerStat.ConscienceMax,
+                Conviction = playerStat.Conviction,
+                Resilience = playerStat.Resilience,
+                Calme = playerStat.Calme,
+                SlotsSouvenir = playerStat.SlotsSouvenir,        
                 BoughtSpellID = new List<int>(){0}
             };
             loadedData.CurrentRun.Ended = false;
         }
         string json = JsonUtility.ToJson(loadedData);
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
-        #else
+#else
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
-        #endif
+#endif
 
         System.IO.File.WriteAllText(path,json);
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
-        #endif
+#endif
     }
 
     private void SavePlayer()
@@ -215,7 +315,14 @@ public class GameManager : MonoBehaviour {
             Conscience = playerStat.Conscience,
             Essence = playerStat.Essence,
             ForceAme = playerStat.ForceAme,
-            Vitesse = playerStat.Vitesse
+            Vitesse = playerStat.Vitesse,
+            Clairvoyance = playerStat.Clairvoyance,
+            VolonterMax = playerStat.VolonterMax,
+            ConscienceMax = playerStat.ConscienceMax,
+            Conviction = playerStat.Conviction,
+            Resilience = playerStat.Resilience,
+            Calme = playerStat.Calme,
+            SlotsSouvenir = playerStat.SlotsSouvenir
         };
         loadedData.CurrentRun.player.BoughtSpellID = new List<int>();
         foreach (var item in playerStat.ListSpell)
@@ -229,36 +336,155 @@ public class GameManager : MonoBehaviour {
     {
         pmm.CurrentRoom = set;
     }
-
+    public int SelectEncounterId(TypeRoom type)
+    {
+        switch (type)
+        {
+            case TypeRoom.ENCOUNTER:
+                return UnityEngine.Random.Range(0, TEMPEncounterNeutral.Count);
+                break;
+            case TypeRoom.CLASS_ENCOUNTER:
+                return UnityEngine.Random.Range(0, TEMPEncounterClass.Count);
+                break;
+            case TypeRoom.ELITE:
+                return UnityEngine.Random.Range(0, TEMPEncounterElite.Count);
+                break;
+            case TypeRoom.CLASS_ELITE:
+                return UnityEngine.Random.Range(0, TEMPEncounterClassElite.Count);
+                break;
+            case TypeRoom.BOSS:
+                return UnityEngine.Random.Range(0, TEMPEncounterBoss.Count);
+                break;
+            default: return 0;
+        }
+    }
+    public void StartCombat()
+    {
+        Debug.Log("Raise event : OnStartCombat");
+        OnStartCombat?.Invoke();
+        BattleMan.StartCombat();
+    }
     public void LoadCombat()
     {
-        BattleMan.LoadEnemy(Instantiate(AllEncounter[EncounterIndex]));
-        EncounterIndex++;
+        Debug.Log("Raise event : OnStartDialog");
+        OnStartDialog?.Invoke();
+        if (IsTuto)
+        {
+            BattleMan.LoadEnemy(Instantiate(TutoManager.Instance.CurrentEncounter));
+        }
+        else
+        {
+            BattleMan.LoadEnemy(Instantiate(AllEncounter[EncounterIndex]));
+            EncounterIndex++;
+        }
+    }
+    public void Loot()
+    {
+        Debug.Log("Loot", gameObject);
+        OnLootAfterCombat.Invoke();
+    }
+    public void UnloadCombat()
+    {
+        Debug.Log("Unload Combat");
+    }
+
+    public void LoadChoosenCombat(TypeRoom roomType, int encounterId)
+    {
+        OnStartDialog?.Invoke();
+        switch (roomType)
+        {
+            case TypeRoom.ENCOUNTER:
+                if (IsTuto)
+                {
+                    BattleMan.LoadEnemy(Instantiate(TutoEncounter[CurrentTutoEncounter]));
+                    CurrentTutoEncounter++;
+                }
+                else
+                {
+                    BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[encounterId]));
+                }
+                break;
+            case TypeRoom.CLASS_ENCOUNTER:
+                if (IsTuto)
+                {
+                    BattleMan.LoadEnemy(Instantiate(TutoEncounter[CurrentTutoEncounter]));
+                    CurrentTutoEncounter++;
+                }
+                else
+                {
+                    BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[encounterId]));
+                }
+
+                break;
+            case TypeRoom.ELITE:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterElite[encounterId]));
+                break;
+            case TypeRoom.CLASS_ELITE:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterClassElite[encounterId]));
+                break;
+            case TypeRoom.BOSS:
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterBoss[encounterId]));
+                break;
+        }
+    }
+
+    public void LoadTuto()
+    {
+        OnStartDialog?.Invoke();
     }
 
     public void LoadCombatNormal()
     {
-        BattleMan.LoadEnemy(Instantiate(AllEncounter[0]));
+        //BattleMan.LoadEnemy(Instantiate(AllEncounter[0]));
+        OnStartDialog?.Invoke();
+        BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[UnityEngine.Random.Range(0, TEMPEncounterNeutral.Count())]));
+    }
+    
+    public void LoadCombatClass()
+    {
+        OnStartDialog?.Invoke();
+        BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[UnityEngine.Random.Range(0, TEMPEncounterClass.Count())]));
     }
 
     public void LoadCombatElite()
     {
-        BattleMan.LoadEnemy(Instantiate(AllEncounter[1]));
+        OnStartDialog?.Invoke();
+        //BattleMan.LoadEnemy(Instantiate(AllEncounter[1]));
+        BattleMan.LoadEnemy(Instantiate(TEMPEncounterElite[UnityEngine.Random.Range(0, TEMPEncounterElite.Count())]));
+    }
+    public void LoadCombatClassElite()
+    {
+        OnStartDialog?.Invoke();
+        //BattleMan.LoadEnemy(Instantiate(AllEncounter[1]));
+        BattleMan.LoadEnemy(Instantiate(TEMPEncounterClassElite[UnityEngine.Random.Range(0, TEMPEncounterClassElite.Count())]));
     }
 
     public void LoadCombatBoss()
     {
-        BattleMan.LoadEnemy(Instantiate(AllEncounter[2]));
+        OnStartDialog?.Invoke();
+        //BattleMan.LoadEnemy(Instantiate(AllEncounter[2]));
+        BattleMan.LoadEnemy(Instantiate(TEMPEncounterBoss[UnityEngine.Random.Range(0, TEMPEncounterBoss.Count())]));
     }
 
     public void LoadEvent()
     {
+        OnStartDialog?.Invoke();
         AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
+    }
+    public void UnloadEvent()
+    {
+        Debug.Log("UnloadEvent;");
     }
 
     public void LoadAutel()
     {
-        OldAutelMan.StartAutel();
+
+        Debug.Log("Load Autel");
+        OnStartAutel?.Invoke();
+    }
+    public void UnloadAutel()
+    {
+        Debug.Log("Unload Autel");
     }
         
     public void StartStatJoueur()
@@ -271,9 +497,9 @@ public class GameManager : MonoBehaviour {
     //    StatMan.StartMenuStat();
     //}
     
-    void getClassRun()
+    void GetClassRun()
     {
-        if (classSO != null && TutoManager.Instance != null)
+        if (classSO != null && IsTuto /*TutoManager.Instance != null*/)
         {
             Debug.Log("Coucouuuuuuu");
             return;
@@ -295,10 +521,24 @@ public class GameManager : MonoBehaviour {
         //StartCoroutine(Reload());
 
         //ResetJoueurStat ?0
-        GameManager.instance.playerStat.ResetStat();
+        GameManager.Instance.playerStat.ResetStat();
 
-        SceneManager.LoadScene("MainMenu");
-        Destroy(GameManager.instance.gameObject);
+        //SceneManager.LoadScene("MainMenu");
+        //Destroy(GameManager.Instance.gameObject);
+        EndGame();
+    }
+    public void HideMap()
+    {
+        OnHideMap?.Invoke();
+    }
+    public void ShowMap()
+    {
+        Debug.Log("ShowMap");
+        OnShowMap?.Invoke();
+    }
+    public void EndGame()
+    {
+        OnEndGame?.Invoke();
     }
 
     public IEnumerator Reload()
@@ -306,6 +546,6 @@ public class GameManager : MonoBehaviour {
         yield return SceneManager.UnloadSceneAsync(1);
         yield return SceneManager.LoadSceneAsync(0);
         pmm = FindObjectOfType<PlayerMapManager>();
-        rm = FindObjectOfType<RoomManager>();
+        //rm = FindObjectOfType<RoomManager>();
     }
 }

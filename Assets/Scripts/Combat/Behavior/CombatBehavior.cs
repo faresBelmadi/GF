@@ -7,7 +7,6 @@ using UnityEngine.UI;
 
 public class CombatBehavior : MonoBehaviour
 {
-    [SerializeField] Sprite[] buffsSprites;  
     public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
     public GameObject BuffPrefab;
     public Transform BuffContainer;
@@ -23,8 +22,22 @@ public class CombatBehavior : MonoBehaviour
     public int LastDamageTaken;
     public bool gainedTension;
 
+    private Vector3 _startingPos;
 
+    public virtual string Name { get => name; }
 
+    private void Start()
+    {
+        _startingPos = transform.parent.position;
+    }
+    public void ClearBuffBar()
+    {
+        foreach(var buff in ListBuffDebuffGO)
+        {
+            Destroy(buff);
+        }
+        ListBuffDebuffGO.Clear();
+    }
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);
@@ -43,7 +56,8 @@ public class CombatBehavior : MonoBehaviour
         }
         if (buffObject)
         {
-            int buffCnt = characterStat.ListBuffDebuff.Count(x => x.Nom == buffDebuffName);
+            int buffCnt = characterStat.ListBuffDebuff.Count(x => TradManager.instance.GetTranslation(x.idTradName, x.Nom) == buffDebuffName);
+            buffObject.GetComponent<BuffDebuffComponant>().AddStack(toAdd);
             buffObject.GetComponent<BuffDebuffComponant>().buffCntLabel.text = buffCnt.ToString();
             buffObject.GetComponent<BuffDebuffComponant>().buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
             //buffObject.GetComponent<BuffDebuffComponant>().buffTimeLabel.text = toAdd.Temps.ToString();
@@ -54,8 +68,8 @@ public class CombatBehavior : MonoBehaviour
             ControlBuffBarsSize();
             BuffDebuffComponant buffComp = buffObject.GetComponent<BuffDebuffComponant>();
             //buffComp.buffSprite.sprite = CorrespondingSprite
-            //TEMP
-            buffComp.buffSprite.sprite = buffsSprites[toAdd.IsDebuff ? 1 : 0];
+            
+            buffComp.buffSprite.sprite = toAdd.IsDebuff ? GameManager.Instance.SpriteData.Debuff:GameManager.Instance.SpriteData.Buff;
 
             buffComp.buffName = buffDebuffName;
             buffComp.buffNameLabel.text = buffDebuffName;
@@ -77,7 +91,7 @@ public class CombatBehavior : MonoBehaviour
         float buffHeight = ListBuffDebuffGO[0].GetComponent<RectTransform>().rect.height;
         int buffCnt = BuffContainer.childCount - 1;
         int deBuffCnt = DebuffContainer.childCount - 1;
-        Debug.Log($"Limit:{limit}\nBuffHeight:{buffHeight}\nBuffCnt: {buffCnt}");
+       // Debug.Log($"Limit:{limit}\nBuffHeight:{buffHeight}\nBuffCnt: {buffCnt}");
         if ((buffCnt * buffHeight) > limit)
         {
             BuffContainer.GetComponent<VerticalLayoutGroup>().spacing = -limit*(1-limit/(buffCnt*buffHeight))/buffCnt;
@@ -101,24 +115,24 @@ public class CombatBehavior : MonoBehaviour
         string buffDebuffDescription;
         if (!string.IsNullOrEmpty(buff.idTradName) && !string.IsNullOrEmpty(buff.idTradDescription))
         {
-            //if (TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
+            //if (TradManager.Instance.CapaDictionary.TryGetValue(buff.idTradName,
             //        out List<string> capaNameAllLangueList) &&
-            //    TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
+            //    TradManager.Instance.CapaDictionary.TryGetValue(buff.idTradDescription,
             //        out List<string> capaDescAllLangueList)
-            //    && TradManager.instance.IdLanguage != -1000)
+            //    && TradManager.Instance.IdLanguage != -1000)
             //{
-            //    buffDebuffName = capaNameAllLangueList[TradManager.instance.IdLanguage];
-            //    buffDebuffDescription = capaDescAllLangueList[TradManager.instance.IdLanguage];
+            //    buffDebuffName = capaNameAllLangueList[TradManager.Instance.IdLanguage];
+            //    buffDebuffDescription = capaDescAllLangueList[TradManager.Instance.IdLanguage];
             //}
             //else
             //{
-            //    if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradName,
+            //    if (!TradManager.Instance.CapaDictionary.TryGetValue(buff.idTradName,
             //            out List<string> osef))
             //        Debug.Log("idTradName not in dictionary");
-            //    if (!TradManager.instance.CapaDictionary.TryGetValue(buff.idTradDescription,
+            //    if (!TradManager.Instance.CapaDictionary.TryGetValue(buff.idTradDescription,
             //            out List<string> osef2))
             //        Debug.Log("idTradDescription not in dictionary");
-            //    if (TradManager.instance.IdLanguage == -1000)
+            //    if (TradManager.Instance.IdLanguage == -1000)
             //        Debug.Log("IdLanguage not in dictionary");
             //    buffDebuffName = buff.name;
             //    buffDebuffDescription = buff.Description;
@@ -227,7 +241,8 @@ public class CombatBehavior : MonoBehaviour
                     //VERY DIRTY
                     int buffCnt = int.Parse(buffComponant.buffCntLabel.text);
                     buffCnt--;
-                    if(buffCnt > 0)
+                    buffComponant.RemoveNullStack();
+                    if (buffCnt > 0)
                     {
                         buffComponant.buffCntLabel.text = buffCnt.ToString();
                         buffComponant.buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
@@ -267,4 +282,9 @@ public class CombatBehavior : MonoBehaviour
         ListBuffDebuff.RemoveAll(c => c.Temps < 0);
         return ListBuffDebuff;
     }
+    public void ToggleVisibility(bool isVisible)
+    {
+        transform.parent.position = isVisible ? _startingPos : new Vector3(_startingPos.x, -10000f, _startingPos.z);
+    }
+
 }

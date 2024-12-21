@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +13,23 @@ public class TextComponent : MonoBehaviour
     [SerializeField]
     private Text _textObject;
 
+    public string IDLabel { get => _idLabel; }
+
+    private void OnEnable()
+    {
+        TradManager.OnRefreshTranslation += RefreshText;
+        if (TradManager.instance != null )
+            RefreshText();
+    }
+    private void OnDisable()
+    {
+        TradManager.OnRefreshTranslation -= RefreshText;
+    }
     void Start()
+    {
+        RefreshText();
+    }
+    public void RefreshText()
     {
         if (_textTMPObject != null)
         {

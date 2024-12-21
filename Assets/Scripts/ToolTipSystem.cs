@@ -1,8 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using UnityEditor.Search;
 using UnityEngine;
 
 public class ToolTipSystem : MonoBehaviour
@@ -15,7 +11,12 @@ public class ToolTipSystem : MonoBehaviour
     [SerializeField] float delay;
 
     Coroutine startDelayCoroutine = null;
+    private GameObject _positionGO;
     // Start is called before the first frame update
+    private void Start()
+    {
+        _positionGO = GameObject.FindGameObjectWithTag("TooltipPosition");
+    }
     public void CursorEnter()
     {
 
@@ -47,6 +48,14 @@ public class ToolTipSystem : MonoBehaviour
         }
         foreach (GameObject thisGO in delayedActivationObjects)
         {
+            if (_positionGO != null)
+            {
+                thisGO.transform.position = _positionGO.transform.position;
+            }
+            else
+            {
+                Debug.Log("Missing TooltipPosition");
+            }
             thisGO.SetActive(isEnter);
         }
     }

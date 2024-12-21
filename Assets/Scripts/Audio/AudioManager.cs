@@ -35,6 +35,8 @@ public class AudioManager : MonoBehaviour
         if (instance != null)
         {
             Destroy(this.gameObject);
+            Destroy(_sfx.gameObject);
+            Destroy(gameObject.transform.parent.gameObject);
         }
         else
         {
@@ -114,6 +116,23 @@ public class AudioManager : MonoBehaviour
         if (isMute)
         {
             SetVolume(group, 0.0001f, true);
+
+            switch(group)
+            {
+                case MixerGroup.Master:
+                    IsMasterMute = isMute;
+                    PlayerPrefs.SetInt("IsMasterMute", isMute ? 1 : 0);
+                    break;
+                case MixerGroup.Music:
+                    IsMusicMute = isMute;
+                    PlayerPrefs.SetInt("IsMasterMute", isMute ? 1 : 0);
+                    break;
+                case MixerGroup.SFX:
+                    IsSFXMute = isMute;
+                    PlayerPrefs.SetInt("IsMasterMute", isMute ? 1 : 0);
+                    break;
+                default:break;
+            }
         }
         else
         {

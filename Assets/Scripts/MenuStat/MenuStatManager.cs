@@ -5,6 +5,7 @@ using UnityEngine.UI.Extensions;
 using static UnityEngine.UI.Extensions.ReorderableList;
 using UnityEngine.UI;
 using System.Linq;
+using UnityEngine.Rendering;
 
 public class MenuStatManager : MonoBehaviour
 {
@@ -29,11 +30,16 @@ public class MenuStatManager : MonoBehaviour
 
     public void OnEnable/*MenuStat*/()
     {
+        TutoManager.OnEndTuto += ResetStat;
         foreach (var item in Souvenir)
         {
             Destroy(item);
         }
-        Stat = GameManager.instance.playerStat;
+
+        if (!GameManager.Instance.IsTuto)
+            Stat = GameManager.Instance.playerStat;
+        else
+            Stat = TutoManager.Instance.JoueurStat;
         StatTemp = Instantiate(Stat);
         foreach (var item in StatTemp.ListSouvenir)
         {
@@ -57,6 +63,10 @@ public class MenuStatManager : MonoBehaviour
             Souvenir.Add(temp);
         }
         UpdateStatUI();
+    }
+    private void OnDisable()
+    {
+        TutoManager.OnEndTuto -= ResetStat;
     }
 
     public void ResetStatEnter(Souvenir LeSouvenir)
@@ -104,7 +114,10 @@ public class MenuStatManager : MonoBehaviour
     {
         UpdateStatUI();
     }
-
+    public void ResetStat()
+    {
+        Stat = GameManager.Instance.playerStat;
+    }
     public void UpdateStatUI()
     {
         ValeurRadiance.text = StatTemp.Radiance.ToString() + "/" + StatTemp.RadianceMax;
@@ -384,7 +397,7 @@ public class MenuStatManager : MonoBehaviour
         if (e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped == true)
         {
             e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped = false;
-            GameManager.instance.CopyAllSouvenir.Add(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
+            GameManager.Instance.CopyAllSouvenir.Add(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
             EquipedSouvenir.Remove(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
             ModifStat(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir, false);
             NbSlotsEquiped -= e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots;
@@ -399,12 +412,12 @@ public class MenuStatManager : MonoBehaviour
     public void End()
     {
 
-        GameManager.instance.CopyAllSouvenir.AddRange(EquipedSouvenir.Where(c => !c.Equiped));
+        GameManager.Instance.CopyAllSouvenir.AddRange(EquipedSouvenir.Where(c => !c.Equiped));
         EquipedSouvenir.RemoveAll(c => !c.Equiped);
         StatTemp.ListSouvenir = EquipedSouvenir.ToList();
         NbSlotsEquiped = 0;
-        GameManager.instance.playerStat = StatTemp;
-        GameManager.instance.pmm.EndMenuStat();
+        GameManager.Instance.playerStat = StatTemp;
+        GameManager.Instance.pmm.EndMenuStat();
         EquipedSouvenir.Clear();
     }
 

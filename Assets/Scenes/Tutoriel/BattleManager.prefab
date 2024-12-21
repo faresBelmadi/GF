@@ -1,0 +1,136 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1344483168564097674
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3597844987009258212}
+  - component: {fileID: 4712843692220566938}
+  - component: {fileID: 970509524462378621}
+  - component: {fileID: 4195509490153171175}
+  m_Layer: 0
+  m_Name: BattleManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3597844987009258212
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344483168564097674}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -175.88681, y: 0, z: -14.896344}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4712843692220566938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344483168564097674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e3730a09109fd547bba8300d78af4be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  SpawnedEnemy: []
+  EnemyScripts: []
+  DeadEnemyScripts: []
+  spawnPos:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _encounter: {fileID: 0}
+  prefabEssence: {fileID: 2949636703588565037, guid: bb5710fb14e5fd14ca171e5b37c0264d, type: 3}
+  buttonEndCombat: {fileID: 0}
+  passifRules: {fileID: 11400000, guid: 015ed6124c70843498d9f16424db22db, type: 2}
+  IdOrder: []
+  nbPhase: 0
+  ListEssence: []
+  turnOrderUIManager: {fileID: 0}
+  CalmeMoyen: 0
+  CalmeMoyenAdversaire: 0
+  CalmeMoyenJoueur: 0
+  idIndexer: 0
+  idPlayer: 0
+  currentIdTurn: 0
+  nbTurn: 0
+  idTarget: -1
+  endBattle: 0
+  MostDamage: 0
+  MostDamageID: 0
+  LastPhaseDamage: 0
+  CurrentPhaseDamage: 0
+  DialogueManager: {fileID: 4195509490153171175}
+  IsLoot: 0
+  ConsumedEssence: 0
+  EssenceGained: 0
+  characterMaterial: {fileID: 2100000, guid: cb86deff1c2884748907cb2eebe34707, type: 2}
+  ennemiUIMaterial: {fileID: 2100000, guid: 82e4af01786c41c49b75d8149dd70b0f, type: 2}
+--- !u!114 &970509524462378621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344483168564097674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43eb271ec147a484ebc27c06256d5599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textPLayingTurn: {fileID: 0}
+  Stat1: {fileID: 0}
+  Stat2: {fileID: 0}
+  Stat3: {fileID: 0}
+  Stat4: {fileID: 0}
+  UIBattle:
+  - {fileID: 0}
+  - {fileID: 0}
+  UIDialogue:
+  - {fileID: 0}
+--- !u!114 &4195509490153171175
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1344483168564097674}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be9d14f132e4f244898326bc7ba035ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UIDialogue: {fileID: 0}
+  _fontSize: 36
+  UIJoueur: {fileID: 0}
+  MainText: {fileID: 0}
+  MainTextGO: {fileID: 0}
+  "R\xE9ponse":
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  "R\xE9ponseGO":
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  EndDialogue: {fileID: 0}
+  EndText: {fileID: 0}
+  ManagerBattle: {fileID: 4712843692220566938}
+  ManagerAlea: {fileID: 0}
+  _clairvoyanceIconData: {fileID: 11400000, guid: 5fc428ac238ffd8419f88a6cf4269f71, type: 2}

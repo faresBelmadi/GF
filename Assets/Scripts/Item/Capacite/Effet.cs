@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Text;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Effect", menuName = "Capacité/Create New Effet", order = 11)]
@@ -83,11 +84,12 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    public bool VisualizeAttack(CharacterStat caster, CharacterStat cible, out int damageAmount, int NbEnnemies = 1)
+    public bool VisualizeAttack(CharacterStat caster, CharacterStat cible, out int damageAmount, out int returnedDamages, int NbEnnemies = 1)
     {
         int percent;
         int nbProcDamage;
         damageAmount = 0;
+        returnedDamages = 0;
         int valueToChange = ValeurBrut * NbAttaque;
         switch (this.TypeEffet)
         {
@@ -99,9 +101,18 @@ public class Effet : ScriptableObject
                 damageAmount += Mathf.FloorToInt(valueToChange * caster .MultiplDegat);
                 break;
             case TypeEffet.RadianceMax:
-               
-                damageAmount = Mathf.FloorToInt((Pourcentage / 100f) * ((cible.Radiance / cible.RadianceMax) * cible.RadianceMaxOriginal));
-  
+
+                //damageAmount = Mathf.FloorToInt((Pourcentage / 100f) * caster.RadianceMaxOriginal); ;//Mathf.FloorToInt((Pourcentage / 100f) * ((cible.Radiance / cible.RadianceMax) * cible.RadianceMaxOriginal));
+                if (Cible == null)
+                {
+                    int addAmount = (int)(caster.RadianceMax * Pourcentage * .01f);
+                    damageAmount = caster.RadianceMax + addAmount;
+                }
+                else
+                {
+                    int addAmount = (int)(cible.RadianceMax * Pourcentage * .01f);
+                    damageAmount = cible.RadianceMax + addAmount;
+                }
                 break;
            
             case TypeEffet.DegatPVMax:
@@ -129,7 +140,7 @@ public class Effet : ScriptableObject
                                      caster.ForceAme);
                 break;
             case TypeEffet.DamageLastPhase:
-                damageAmount += -GameManager.instance.BattleMan.LastPhaseDamage;
+                damageAmount += -GameManager.Instance.BattleMan.LastPhaseDamage;
                 break;
             case TypeEffet.DegatsBrutConsequence:
                 damageAmount += valueToChange;
@@ -142,10 +153,14 @@ public class Effet : ScriptableObject
                     Mathf.FloorToInt((((percent / 100f) * NbAttaque) * caster.ForceAme) * caster.MultiplDegat);
                 break;
             case TypeEffet.UntilDeath:
-                damageAmount +=
-                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * caster.ForceAme) * caster.MultiplDegat);
+                damageAmount += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * caster.ForceAme) * caster.MultiplDegat);
+                if (damageAmount + cible.Radiance > 0)
+                {
+                    returnedDamages += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * cible.ForceAme) * cible.MultiplDegat * caster.MultiplDef);
+                }
                 //if (damageAmount < Cible.Radiance)
                 //    Caster.Radiance -= Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);
+                //returnedDamages
                 break;
             case TypeEffet.DegatsRetourSurAttaque:
                 damageAmount += Mathf.FloorToInt(Pourcentage / 100f * caster.ForceAme);
@@ -260,7 +275,7 @@ public class Effet : ScriptableObject
 
     private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
     {
-        //Debug.Log($"Trigger Effect Base: {this.TypeEffet} from {Caster} to {Cible}");
+        Debug.Log($"Trigger Effect Base: {this.TypeEffet} from {Caster} to {Cible}");
         int valueToChange = ValeurBrut * NbAttaque;
         CharacterStat ModifState = ScriptableObject.CreateInstance("CharacterStat") as CharacterStat;
         int percent;
@@ -289,19 +304,24 @@ public class Effet : ScriptableObject
             case TypeEffet.RadianceMax:
                 if (Cible == null)
                 {
-                    
-                    var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMaxOriginal);
-                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Caster.Radiance / Caster.RadianceMax) * Caster.RadianceMaxOriginal));
-                    ModifState.RadianceMax += radianceModifier;
-                    ModifState.Radiance += radianceActModifier;
-                    
+
+                    //var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMaxOriginal);
+                    //var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Caster.Radiance / Caster.RadianceMax) * Caster.RadianceMaxOriginal));
+                    //ModifState.RadianceMax += radianceModifier;
+                    //ModifState.Radiance += radianceActModifier;
+                    int addAmount = Mathf.FloorToInt(Caster.RadianceMax * Pourcentage * .01f);
+                    ModifState.RadianceMax += addAmount;
+                    ModifState.Radiance += addAmount;
                 }
                 else
                 {
-                    var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.RadianceMaxOriginal);
-                    var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Cible.Radiance / Cible.RadianceMax) * Cible.RadianceMaxOriginal));
-                    ModifState.RadianceMax += radianceModifier;
-                    ModifState.Radiance += radianceActModifier;
+                    //var radianceModifier = Mathf.FloorToInt((Pourcentage / 100f) * Cible.RadianceMaxOriginal);
+                    //var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Cible.Radiance / Cible.RadianceMax) * Cible.RadianceMaxOriginal));
+                    //ModifState.RadianceMax += radianceModifier;
+                    //ModifState.Radiance += radianceModifier;//radianceActModifier;
+                    int addAmount = Mathf.FloorToInt(Cible.RadianceMax * Pourcentage * .01f);
+                    ModifState.RadianceMax += addAmount;
+                    ModifState.Radiance += addAmount;
                 }
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:
@@ -353,7 +373,7 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.SoinFANbEnnemi:
                 ModifState.Radiance += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) *
-                                        GameManager.instance.BattleMan.EnemyScripts.Count);
+                                        GameManager.Instance.BattleMan.EnemyScripts.Count);
                 break;
             case TypeEffet.SoinRadianceMax:
                 ModifState.Radiance += Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.RadianceMax);
@@ -371,9 +391,11 @@ public class Effet : ScriptableObject
             case TypeEffet.ConsommeTensionAugmentationFA:
                 ModifState.Tension += -Cible.Tension;
                 var toAdd = AfterEffectToApply;
-                toAdd.Effet.First().ValeurBrut = (int)Cible.Tension * ValeurBrut;
-                GameManager.instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
-                toAdd.Effet.First().ValeurBrut = 0;
+                toAdd.Effet.First().NbAttaque = 1;
+                toAdd.Effet.First().Pourcentage = (int)Cible.Tension * ValeurBrut;
+                GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
+                toAdd.Effet.First().Pourcentage = 0;
+                toAdd.Effet.First().NbAttaque = 0;
                 break;
             case TypeEffet.RemoveDebuff:
                 var tempListRD = Cible.ListBuffDebuff.Where(c => c.IsDebuff).ToList();
@@ -397,7 +419,7 @@ public class Effet : ScriptableObject
                 TimeAlive++;
                 break;
             case TypeEffet.DamageLastPhase:
-                ModifState.Radiance += -GameManager.instance.BattleMan.LastPhaseDamage;
+                ModifState.Radiance += -GameManager.Instance.BattleMan.LastPhaseDamage;
                 break;
             case TypeEffet.NoEssence:
                 ModifState.Essence += -Cible.Essence;
@@ -422,10 +444,11 @@ public class Effet : ScriptableObject
                     Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
             case TypeEffet.UntilDeath:
-                ModifState.Radiance +=
-                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
-                if (ModifState.Radiance < Cible.Radiance)
-                    Caster.Radiance -= Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);
+                ModifState.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+                if (ModifState.Radiance + Cible.Radiance > 0)
+                {
+                    Caster.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);
+                }
                 break;
             case TypeEffet.DegatsRetourSurAttaque:
                 ModifState.Radiance += Mathf.FloorToInt(Pourcentage / 100f * Caster.ForceAme);
@@ -438,8 +461,9 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += Mathf.FloorToInt(valueToChange - ((Pourcentage / 100) * valueToChange));
                 break;
             case TypeEffet.AugmentationFARadianceManquante:
-                ModifState.ForceAme +=
-                    Mathf.FloorToInt(((Pourcentage / 100f) * (Caster.RadianceMax - Caster.Radiance)) * NbAttaque);
+                int faBonnus = Mathf.FloorToInt(ValeurBrut * ((1f - (Caster.Radiance*1f) / Caster.RadianceMax) * 100f) * NbAttaque);
+                ModifState.ForceAme += faBonnus;
+                Debug.Log($"Adding Mathf.FloorToInt({ValeurBrut} * ((1f - {Caster.Radiance} / {Caster.RadianceMax}) * 100f) * {NbAttaque}) = {faBonnus} FA");
                 break;
 
             case TypeEffet.DamageFaBuff:
@@ -593,5 +617,222 @@ public class Effet : ScriptableObject
             }
         }
         return nbBuffDebuffRemoved;
+    }
+    public Sprite GetSpriteOfEffect()
+    {
+
+        switch (TypeEffet)
+        {
+            case TypeEffet.AugmentationBrutFA:
+            case TypeEffet.AttaqueFADebuff:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatForceDameDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatForceDameUp;
+                }
+                ;
+            case TypeEffet.AugmentationPourcentageFACible:
+            case TypeEffet.AugmentationPourcentageFA:
+                if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatForceDameDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatForceDameUp;
+                }
+            case TypeEffet.RadianceMax:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                     return GameManager.Instance.StatIcons.StatRadianceDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatRadianceUp;
+                }
+            case TypeEffet.Resilience:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatRadianceDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatResilienceUp;
+                }
+            case TypeEffet.Clairvoyance:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatClairvoyanceDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatClairvoyanceUp;
+                }
+            case TypeEffet.Vitesse:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatVitesseDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatVitesseUp;
+                }
+            case TypeEffet.Conviction:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatConvictionDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatConvictionUp;
+                }
+            case TypeEffet.Conscience:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatConscienceDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatConscienceUp;
+                }
+            case TypeEffet.DegatsBrutConsequence:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.Damage;
+                }
+                else
+                    break;
+            case TypeEffet.Volonte:
+            case TypeEffet.VolonteMax:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatVolonteDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatVolonteUp;
+                }
+            case TypeEffet.TensionStep:
+            case TypeEffet.TensionValue:
+            case TypeEffet.TensionGainAttaqueValue:
+            case TypeEffet.TensionGainDebuffValue:
+            case TypeEffet.TensionGainSoinValue:
+            case TypeEffet.TensionGainDotValue:
+                if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
+                {
+                    return GameManager.Instance.StatIcons.StatTensionDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.StatTensionUp;
+                }
+            case TypeEffet.DegatsForceAme:
+                return GameManager.Instance.StatIcons.Damage;
+            case TypeEffet.MultiplDegat:
+                if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
+                {
+                    return GameManager.Instance.StatIcons.DecreaseAtk;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.IncreaseAtk;
+                }
+            case TypeEffet.MultiplSoin:
+                if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
+                {
+                    return GameManager.Instance.StatIcons.DecreaseHeal;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.IncreaseHeal;
+                }
+            case TypeEffet.MultiplDef:
+                if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
+                {
+                    return GameManager.Instance.StatIcons.DecreaseDef;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.IncreaseDef;
+                }
+            case TypeEffet.Colere:
+                if (Cible == Cible.joueur)
+                {
+                    return GameManager.Instance.StatIcons.WrathDown;
+                }
+                else
+                {
+                    return GameManager.Instance.StatIcons.WrathUp;
+                }
+            case TypeEffet.DegatPVMax:
+            case TypeEffet.DegatsBrut:
+            case TypeEffet.AugmentFADernierDegatsSubi:
+            case TypeEffet.ConscienceMax:
+            case TypeEffet.Soin:
+            case TypeEffet.SoinFA:
+            case TypeEffet.SoinFANbEnnemi:
+            case TypeEffet.SoinRadianceMax:
+            case TypeEffet.SoinRadianceActuelle:
+            case TypeEffet.RandomAttaque:
+            case TypeEffet.AugmentationFaRadianceActuelle:
+            case TypeEffet.ConsommeTensionAugmentationFA:
+            case TypeEffet.RemoveDebuff:
+            case TypeEffet.AttaqueStackAmant:
+            case TypeEffet.GainResilienceIncrementale:
+            case TypeEffet.DamageLastPhase:
+            case TypeEffet.NoEssence:
+            case TypeEffet.DoubleBuffDebuff:
+            case TypeEffet.AugmentationRadianceMaxPourcentage:
+            case TypeEffet.BuffFaCoupRecu:
+            case TypeEffet.BuffResilienceCoupRecu:
+            case TypeEffet.ConsommeTensionDmgAllExceptCaster:
+            case TypeEffet.Provocation:
+            case TypeEffet.VolEssence:
+            case TypeEffet.RandomChanceCastSpellSelf:
+            case TypeEffet.SwapMostLeastBuffDebuff:
+            case TypeEffet.RadianceRepartition:
+            case TypeEffet.RandomAttaqueDebuff:
+            case TypeEffet.DegatsRetourSurAttaque:
+            case TypeEffet.RedirectionDegatsOnCasteur:
+            case TypeEffet.CancelPourcentageDamage:
+            case TypeEffet.RedirectionCancel:
+            case TypeEffet.DispellBuffJoueurDamage:
+            case TypeEffet.DispellDebuffCasterDamage:
+            case TypeEffet.DamageAllEvenly:
+            case TypeEffet.DamageUpTargetLowRadiance:
+            case TypeEffet.OnKillStunAll:
+            case TypeEffet.UntilDeath:
+            case TypeEffet.AugmentationFARadianceManquante:
+            case TypeEffet.DamageFaBuff:
+            case TypeEffet.DamageFaBuffCible:
+            case TypeEffet.DamageDebuffCible:
+            case TypeEffet.RemoveAllTensionProcDamage:
+            case TypeEffet.RemoveAllTensionProcBuffDebuff:
+            case TypeEffet.RemoveAllDebuffProcBuffDebuf:
+            case TypeEffet.RemoveAllDebuffSelfProcBuffDebuf:
+            case TypeEffet.RemoveAllBuffProcBuffDebuf:
+            case TypeEffet.RemoveAllDebuffProcDamage:
+            case TypeEffet.RemoveAllDebuffSelfProcDamage:
+            case TypeEffet.RemoveAllBuffProcDamage:
+            case TypeEffet.NoCapaPossible:
+            case TypeEffet.ConsommeTensionReduitFa:
+            case TypeEffet.AugmentationDegatsHitJoueur:
+            case TypeEffet.GainFaBuffCible:
+            case TypeEffet.GainFaDebuffCible:
+            case TypeEffet.Ponction:
+            case TypeEffet.PonctionForceAme:
+            case TypeEffet.DegatsFaRadianceManquanteCible:
+            case TypeEffet.DegatsFaRadianceManquanteCaster:
+            case TypeEffet.PremiereAttaqueJeanne:
+            case TypeEffet.DeuxiemeAttaqueJeanne:
+            case TypeEffet.SupportJeanne:
+            case TypeEffet.UltimeJeanne:
+                Debug.Log($"Effet non géré : {TypeEffet})");
+                return null;
+        }
+        return null;
     }
 }

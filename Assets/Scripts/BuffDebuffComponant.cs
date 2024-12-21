@@ -16,7 +16,7 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] public TextMeshProUGUI buffDescriptionLabel;
     public string buffName;
 
-    private BuffDebuff _buffDebuff;
+    private List<BuffDebuff> _buffDebuff = new List<BuffDebuff>();
 
     private void OnEnable()
     {
@@ -29,17 +29,44 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void InitBuffDebuff (BuffDebuff buffDebuff)
     {
-        _buffDebuff = buffDebuff;
+        AddStack(buffDebuff);
+
+        buffName = TradManager.instance.GetTranslation(buffDebuff.idTradName, buffDebuff.Nom);
+        buffNameLabel.text = TradManager.instance.GetTranslation(buffDebuff.idTradName, buffDebuff.Nom);
+        buffDescriptionLabel.text = TradManager.instance.GetTranslation(buffDebuff.idTradDescription, buffDebuff.Description);
+       
+    }
+    public void AddStack(BuffDebuff buffDebuff)
+    {
+        _buffDebuff.Add(buffDebuff);
+    }
+    public void RemoveNullStack()
+    {
+        for (int i = _buffDebuff.Count - 1; i >= 0; i--)
+        {
+            if (_buffDebuff[i].TimeLeft <= 0)
+                _buffDebuff.RemoveAt(i);
+        }
+    
     }
     public void OnPointerEnter(PointerEventData eventData)
     {
         //Debug.Log("enter");
         popUpPanel.SetActive(true);
+        UpdateUI();
+        //TODO temporary fix, on place la tooltip a une position définit, plutot que la scroll indefinitivement sur la droite, ce qui amene a une boucle infini si on place les buff autre part
+        GameObject posGO = GameObject.FindGameObjectsWithTag("TooltipPosition")[0];
+        if (posGO != null)
+        {
+            popUpPanel.transform.position = posGO.transform.position;
+        }
+        //Erreur Critique, boucle infinie, a corriger
+        /*
         if (!IsFullyVisibleFrom(popUpPanel.GetComponent<RectTransform>()))
         {
             while (!IsFullyVisibleFrom(popUpPanel.GetComponent<RectTransform>()))
                 popUpPanel.transform.Translate(-1, 0, 0);
-        }
+        }*/
     }
     private bool IsFullyVisibleFrom(RectTransform rectTransform)
     {
@@ -70,7 +97,17 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     }
     public void UpdateUI()
     {
-        buffDescriptionLabel.text = TradManager.instance.GetTranslation(_buffDebuff.idTradDescription, "Missing description");
+        int timeLeft = -1;
+        foreach (var buff in _buffDebuff)
+        {
+            if (timeLeft < buff.TimeLeft)
+                timeLeft = buff.TimeLeft;
+        }
+        if (_buffDebuff.Count > 0)
+        {
+            buffDescriptionLabel.text = TradManager.instance.GetTranslation(_buffDebuff[0].idTradDescription, "Missing description")
+            + (timeLeft != -1 ? "\n(Time left : " + timeLeft + ")" : "");
+        }
     }
 
 }

@@ -26,9 +26,14 @@ public class UiMondeManager : MonoBehaviour
         UiStatHolder.SetActive(false);
     }
 
+    public void DisableStat()
+    {
+        UiStatHolder.SetActive(false);
+    }
+
     public void RetourMenuPrincipale()
     {
         SceneManager.LoadScene("MainMenu");
-        Destroy(GameManager.instance.gameObject);
+        Destroy(GameManager.Instance.gameObject);
     }
 }

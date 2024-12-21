@@ -4,25 +4,38 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 //using static UnityEditor.Progress;
 
 [System.Serializable]
 public class BattleManager : MonoBehaviour
 {
+    [Header("Tuto")]
+    [SerializeField] private bool _isTuto = false;
+    [Header("BattleLogger")]
+    [SerializeField]
+    private BattleLog _battleLogger;
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
     public List<EnnemyBehavior> DeadEnemyScripts;
     public Transform[] spawnPos;
     public Encounter _encounter;
-    public GameObject prefabEssence;
+
     public GameObject buttonEndCombat;
+    [SerializeField]
+    private string _idLabelForEssenceButton;
     const string Target = "Targeting";
     public PassifRules passifRules;
 
-
+    [Header("CrystalSoul Manager")]
+    [Tooltip("Put three Essence Prefab, from the smallest, to the greatest")]
+    [SerializeField]
+    public List<GameObject> _prefabEssenceList;
+    [SerializeField]
+    private int _amountForGreaestEssence;
+    [SerializeField]
+    private int _amountForMediumEssence;
+    
     [Header("Round/Turn variables")] public List<CombatOrder> IdOrder;
     public int nbPhase = 0;
     public Dictionary<int, int> IdSpeedDictionary;
@@ -43,7 +56,7 @@ public class BattleManager : MonoBehaviour
     public int MostDamage, MostDamageID;
     public int LastPhaseDamage;
     public int CurrentPhaseDamage;
-    [SerializeField] private DialogueManager DialogueManager;
+   // [SerializeField] private DialogueManager DialogueManager;
     public PassifManager PassifManager;
 
     public bool IsLoot;
@@ -55,6 +68,30 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Material characterMaterial;
     [SerializeField] private Material ennemiUIMaterial;
 
+    public bool IsTuto { get => _isTuto; }
+
+    public static Action<Transform> OnGatherEssence;
+
+    #region Reference
+    /// <summary>
+    /// Return Combat behavior linked to the given character stat
+    /// </summary>
+    /// <param name="stat">CharacterStat to find</param>
+    /// <returns>The linked COmbatBehaviour</returns>
+    public CombatBehavior GetBehaviorFromStat(CharacterStat stat)
+    {
+        if (stat == null) return null;
+        
+        if (player.Stat == stat)
+            return player;
+        foreach(var ennemy in EnemyScripts)
+        {
+            if (ennemy.Stat == stat)
+                return ennemy;
+        }
+        return null;
+    }
+    #endregion
     #region Loot
 
     public void Loot()
@@ -78,16 +115,16 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < _encounter.LootRarity.Count; i++)
         {
             if (random <= _encounter.LootRarity[i].Pourcentage &&
-                GameManager.instance.CopyAllSouvenir.Any(x => x.Rarete == _encounter.LootRarity[i].rareter))
+                GameManager.Instance.CopyAllSouvenir.Any(x => x.Rarete == _encounter.LootRarity[i].rareter))
             {
-                var allSouvenirRareter = GameManager.instance.CopyAllSouvenir
+                var allSouvenirRareter = GameManager.Instance.CopyAllSouvenir
                     .Where(x => x.Rarete == _encounter.LootRarity[i].rareter).ToList();
                 int randomSouvenir = UnityEngine.Random.Range(0, allSouvenirRareter.Count());
 
                 string NameLoot = allSouvenirRareter[randomSouvenir].SouvenirName;
-                var newSouvenir = GameManager.instance.CopyAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot);
+                var newSouvenir = GameManager.Instance.CopyAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot);
                 player.Stat.ListSouvenir.Add(Instantiate(newSouvenir));
-                GameManager.instance.CopyAllSouvenir.Remove(newSouvenir);
+                GameManager.Instance.CopyAllSouvenir.Remove(newSouvenir);
                 IsLoot = true;
                 return;
             }
@@ -210,21 +247,34 @@ public class BattleManager : MonoBehaviour
 
     private void OnEnable()
     {
-        CombatEnableSetup();
+        //CombatEnableSetup();
+        GameManager.OnStartDialog += CombatEnableSetup; // We need to instantiate character for the dialog
+    }
+    private void OnDisable()
+    {
+        GameManager.OnStartDialog -= CombatEnableSetup;
     }
 
     void DialogueEnableSetup()
     {
         player.InitRefBattleMan(this);
-        PassifManager = new PassifManager(new List<JoueurBehavior> {player}, EnemyScripts);
-        DialogueManager.SetupDialogue(_encounter);
+        if (GameManager.Instance != null)
+            PassifManager = new PassifManager(new List<JoueurBehavior> {player}, EnemyScripts);
+        GameManager.Instance.DialManager.SetupDialogue(_encounter);
     }
 
     void CombatEnableSetup()
     {
         idIndexer = 0;
         battleUI = GetComponent<BattleUI>();
-        player.Stat = GameManager.instance.playerStat;
+        //if (GameManager.Instance == null)
+        //    player.Stat = TutoManager.Instance.JoueurStat;
+        //else 
+        //    player.Stat = GameManager.Instance.playerStat;
+        if (GameManager.Instance.IsTuto)
+            player.Stat = TutoManager.Instance.JoueurStat;
+        else
+            player.Stat = GameManager.Instance.playerStat;
         player.EndTurnBM = EndTurn;
         player.StartUp();
         SpawnedEnemy = new List<GameObject>();
@@ -245,37 +295,40 @@ public class BattleManager : MonoBehaviour
         SpawnEnemy();
         player.UpdateUI();
         player.DesactivateSpells();
+        GameManager.Instance.DialManager.InitDialogOptionButton();
         DialogueEnableSetup();
 
 
         //StartCombat();
     }
+
     void SpawnEnemy()
     {
-        List<int> remainingPos = new List<int> { 0, 1, 2, 3 };
-        List<int> ennemyPosIds = new List<int> { -1,-1,-1,-1};
+        List<int> remainingPos = new List<int> {0, 1, 2, 3};
+        List<int> ennemyPosIds = new List<int> {-1, -1, -1, -1};
         List<EncounterOption> encounterOptions = _encounter.forcedOrder.ToList();
 
         int firstMaxPos = (spawnPos.Length - encounterOptions.Count);
         //Debug.Log($"firstMaxPos = {firstMaxPos}");
-        int firstChoosedPos = UnityEngine.Random.Range(0, firstMaxPos+1);
+        int firstChoosedPos = UnityEngine.Random.Range(0, firstMaxPos + 1);
         //Debug.Log($"firstChoosedPos = {firstChoosedPos}");
 
         for (int i = 0; i < encounterOptions.Count; i++)
         {
-            int ennemiPos = firstChoosedPos+i;//remainingPos[i];//UnityEngine.Random.Range(0, remainingPos.Count)];
+            int ennemiPos = firstChoosedPos + i; //remainingPos[i];//UnityEngine.Random.Range(0, remainingPos.Count)];
             //Debug.Log($"Choosed Forced Pos = {ennemiPos}");
 
             int ennemyId = encounterOptions[i].possibleId[UnityEngine.Random.Range(0, encounterOptions[i].Count)];
             //Debug.Log($"Choosed Ennemy Id = {ennemyId}");
 
-            for (int j=0;j< encounterOptions.Count;j++)
+            for (int j = 0; j < encounterOptions.Count; j++)
             {
                 if (encounterOptions[j].possibleId.Contains(ennemyId))
                 {
                     encounterOptions[j].possibleId.Remove(ennemyId);
                 }
             }
+
             ennemyPosIds[ennemiPos] = ennemyId;
         }
 
@@ -287,8 +340,9 @@ public class BattleManager : MonoBehaviour
         remainingPos = new List<int>();
         for (int i = 0; i < ennemyPosIds.Count; i++)
         {
-            if (ennemyPosIds[i] == -1 ) remainingPos.Add(i);
+            if (ennemyPosIds[i] == -1) remainingPos.Add(i);
         }
+
         for (int i = 0; i < _encounter.ToFight.Count; i++)
         {
             if (!ennemyPosIds.Contains(i))
@@ -301,8 +355,9 @@ public class BattleManager : MonoBehaviour
             }
 
         }
+
         //Debug.Log("Instantiate:");
-        for (int i =0; i< ennemyPosIds.Count; i++)
+        for (int i = 0; i < ennemyPosIds.Count; i++)
         {
             //Debug.Log($"pos: {i} spawn :{ennemyPosIds[i]}");
             if (ennemyPosIds[i] > -1)
@@ -310,108 +365,56 @@ public class BattleManager : MonoBehaviour
                 InstanciateEnnemy(ennemyPosIds[i], i);
             }
         }
-
-        void InstanciateEnnemy(int ennemyId, int spawnPosId)
-        {
-            EnnemiStat EnnemyStats = _encounter.ToFight[ennemyId];
-            var temp = Instantiate(EnnemyStats.Spawnable, spawnPos[spawnPosId].position, Quaternion.identity, spawnPos[spawnPosId]);
-            if (temp != null)
-            {
-                SpawnedEnemy.Add(temp);
-            }
-
-            var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
-            //instantiate tout les so modifiable
-            if (tempCombatScript != null)
-            {
-                tempCombatScript.Stat = Instantiate(EnnemyStats);
-                tempCombatScript.SetUp();
-                tempCombatScript.EndTurnBM = EndTurn;
-                tempCombatScript.isMainEnemy = ennemyId == _encounter.idMainMob ? true : false;
-                EnemyScripts.Add(tempCombatScript);
-
-                IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
-                tempCombatScript.combatID = idIndexer;
-                tempCombatScript.ChooseNextAction();
-                idIndexer++;
-            }
-
-            //AddingMaterial
-            temp.GetComponent<UIEnnemi>().imageCadreFGs[0].material = new Material(ennemiUIMaterial);
-            temp.GetComponent<UIEnnemi>().imageCadreFGs[1].material = new Material(ennemiUIMaterial);
-
-            Material thisCharMaterial = new Material(characterMaterial);
-            if (tempCombatScript != null) tempCombatScript.characterMaterial = thisCharMaterial;
-            temp.GetComponent<PulseBloom_System>().bloomMaterial = thisCharMaterial;
-
-
-            foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>(true))
-            {
-                renderer.material = thisCharMaterial;
-            }
-        }
     }
-    void OLDSpawnEnemy()
+
+    void InstanciateEnnemy(int ennemyId, int spawnPosId)
     {
-        List<Transform> used = new List<Transform>();
-        for (int i = 0; i < _encounter.ToFight.Count; i++)
+        EnnemiStat EnnemyStats = _encounter.ToFight[ennemyId];
+        var temp = Instantiate(EnnemyStats.Spawnable, spawnPos[spawnPosId].position, Quaternion.identity,
+            spawnPos[spawnPosId]);
+        if (temp != null)
         {
-
-            var item = _encounter.ToFight[i];
-
-            int index = 0;
-            if (_encounter.ToFight.Count == 1)
-                index = 2;
-            else
-                index = UnityEngine.Random.Range(0, spawnPos.Length);
-
-            while (used.Contains(spawnPos[index]))
-            {
-                index = UnityEngine.Random.Range(0, spawnPos.Length);
-            }
-
-            used.Add(spawnPos[index]);
-
-
-            var temp = Instantiate(item.Spawnable, spawnPos[index].position, Quaternion.identity, spawnPos[index]);
-            if (temp != null)
-            {
-                SpawnedEnemy.Add(temp);
-            }
-
-            var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
-            //instantiate tout les so modifiable
-            if (tempCombatScript != null)
-            {
-                tempCombatScript.Stat = Instantiate(item);
-                tempCombatScript.SetUp();
-                tempCombatScript.EndTurnBM = EndTurn;
-                tempCombatScript.isMainEnemy = i == _encounter.idMainMob ? true : false;
-                EnemyScripts.Add(tempCombatScript);
-
-                IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
-                tempCombatScript.combatID = idIndexer;
-                tempCombatScript.ChooseNextAction();
-                idIndexer++;
-            }
-
-            //AddingMaterial
-            temp.GetComponent<UIEnnemi>().imageCadreFGs[0].material = new Material(ennemiUIMaterial);
-            temp.GetComponent<UIEnnemi>().imageCadreFGs[1].material = new Material(ennemiUIMaterial);
-
-            Material thisCharMaterial = new Material(characterMaterial);
-            if (tempCombatScript != null) tempCombatScript.characterMaterial = thisCharMaterial;
-            temp.GetComponent<PulseBloom_System>().bloomMaterial = thisCharMaterial;
-
-            
-            foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>(true))
-            {
-                renderer.material = thisCharMaterial;
-            }
+            SpawnedEnemy.Add(temp);
         }
 
-    }
+        var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
+        //instantiate tout les so modifiable
+        if (tempCombatScript != null)
+        {
+            tempCombatScript.Stat = Instantiate(EnnemyStats);
+            tempCombatScript.SetUp();
+            tempCombatScript.EndTurnBM = EndTurn;
+            tempCombatScript.isMainEnemy = ennemyId == _encounter.idMainMob ? true : false;
+            EnemyScripts.Add(tempCombatScript);
 
+            IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
+            tempCombatScript.combatID = idIndexer;
+            tempCombatScript.ChooseNextAction();
+            idIndexer++;
+        }
+
+        //AddingMaterial
+        var uiEnnemi = temp.GetComponent<UIEnnemi>();
+        if (uiEnnemi != null)
+        {
+            uiEnnemi.imageCadreFGs[0].material = new Material(ennemiUIMaterial);
+            uiEnnemi.imageCadreFGs[1].material = new Material(ennemiUIMaterial);
+        }
+
+        Material thisCharMaterial = new Material(characterMaterial);
+        if (tempCombatScript != null) tempCombatScript.characterMaterial = thisCharMaterial;
+
+        var pulseBloomSystem = temp.GetComponent<PulseBloom_System>();
+        if (pulseBloomSystem != null)
+            pulseBloomSystem.bloomMaterial = thisCharMaterial;
+
+
+        foreach (SpriteRenderer renderer in temp.GetComponentsInChildren<SpriteRenderer>(true))
+        {
+            renderer.material = thisCharMaterial;
+        }
+    }
+    
     public void StartCombat()
     {
         IsCombatOn = true;
@@ -424,32 +427,38 @@ public class BattleManager : MonoBehaviour
     private void EndBattle()
     {
         IsCombatOn = false;
-        PassifManager.CurrentEvent = TimerPassif.FinCombat;
-        PassifManager.ResolvePassifs();
-
+        if (!GameManager.Instance.IsTuto)
+        {
+            PassifManager.CurrentEvent = TimerPassif.FinCombat;
+            PassifManager.ResolvePassifs();
+        }
         Loot();
         player.ResetStat();
         player.Stat.ListBuffDebuff.Clear();
+        player.ClearBuffBar();
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Stat.Tension = 0;
-        GameManager.instance.playerStat = player.Stat;
         Debug.Log(IsLoot);
-        if (TutoManager.Instance != null)
+        if (GameManager.Instance.IsTuto)
         {
+            TutoManager.Instance.EndCombat();
             TutoManager.Instance.Loot();
-            var gO = GameObject.Find("TutoPanel");
-            var child = gO.transform.GetChild(0);
+            var child = TutoManager.Instance.TutoPanel.transform.GetChild(0);
             child.gameObject.SetActive(true);
-            //UIDialogue.SetActive(false);
-            var tutoPanelScript = gO.GetComponent<TutoPanel>();
+            var tutoPanelScript = TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>();
             tutoPanelScript.ShowExplication();
-            //HideSoul
-            //Hidepos4 child
-            GameObject.Find("Soul(Clone)").SetActive(false);
+          
             buttonEndCombat.SetActive(false);
+            StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
         }
         else
-            StartCoroutine(GameManager.instance.pmm.EndBattle(IsLoot));
+        {
+            GameManager.Instance.playerStat = player.Stat;
+           
+            buttonEndCombat.SetActive(false);
+            StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
+        }
+        ClearListEssence();
     }
 
     #endregion Mise en place combat & fin
@@ -460,8 +469,11 @@ public class BattleManager : MonoBehaviour
     {
         //Play start phase sound
         AudioManager.instance.SFX.PlaySFXClip(SFXType.StartPhaseSFX);
-        PassifManager.CurrentEvent = TimerPassif.DebutPhase;
-        PassifManager.ResolvePassifs();
+        if (PassifManager != null)
+        {
+            PassifManager.CurrentEvent = TimerPassif.DebutPhase;
+            PassifManager.ResolvePassifs();
+        }
 
         LastPhaseDamage = CurrentPhaseDamage;
         CurrentPhaseDamage = 0;
@@ -503,8 +515,11 @@ public class BattleManager : MonoBehaviour
         currentIdTurn = key;
         if (key == idPlayer)
         {
+            //TEST FOR GENERAL POPUP
+            //GeneralPopUp.Instance.InvokePopUp("Start Player Turn","this is a test message describing the pop Up",.5f);
+            
             player.StartTurn(nbPhase<2);
-            battleUI.textPLayingTurn.text = "Guerrier";
+            battleUI.textPLayingTurn.text = (GameManager.Instance!=null)?GameManager.Instance.classSO.NameClass:TutoManager.Instance.TutoClassSo.NameClass;
         }
         else
         {
@@ -512,6 +527,7 @@ public class BattleManager : MonoBehaviour
             playing.StartTurn(nbPhase<2);
             battleUI.textPLayingTurn.text = playing.UICombat.NameText.text;
         }
+        player.UpdateUI();
         UpdateEnrageUI(key);
     }
 
@@ -523,12 +539,12 @@ public class BattleManager : MonoBehaviour
         nbTurn++;
         if (nbTurn >= IdOrder.Count)
         {
-
-            PassifManager.CurrentEvent = TimerPassif.FinPhase;
-            PassifManager.ResolvePassifs();
-
+            if (!IsTuto)
+            {
+                PassifManager.CurrentEvent = TimerPassif.FinPhase;
+                PassifManager.ResolvePassifs();
+            }
             StartPhase();
-
         }
         else
             turnOrderUIManager.EvovlveTurnOrder();//StartNextTurn();
@@ -539,11 +555,12 @@ public class BattleManager : MonoBehaviour
 
     #region Lien Joueur - Ennemi
 
-    public void LaunchSpellJoueur(Spell Spell)
+    public void LaunchSpellJoueur(Spell spell)
     {
+        LogLaunchedSpell(player, spell);
         player.DesactivateSpells();
-        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerSpellSFX, Spell.SpellSFX);
-        foreach (var effet in Spell.ActionEffet)
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerSpellSFX, spell.SpellSFX);
+        foreach (var effet in spell.ActionEffet)
         {
             PassageEffet(effet, idPlayer, idTarget, SourceEffet.Spell);
             if (effet.AfterEffectToApply != null)
@@ -580,13 +597,15 @@ public class BattleManager : MonoBehaviour
         }
 
         //EnemyScripts.First(c => c.combatID == idTarget).ApplicationBuffDebuff(TimerApplication.Attaque);
-        GiveBuffDebuff(Spell.ActionBuffDebuff, idTarget);
+        GiveBuffDebuff(spell.ActionBuffDebuff, idTarget);
         idTarget = -1;
 
     }
 
     public void LaunchSpellEnnemi(EnnemiSpell Spell)
     {
+        var playing = EnemyScripts.First(c => c.combatID == currentIdTurn);
+        LogLaunchedSpell(playing, Spell);
         foreach (var effet in Spell.Effet)
         {
             PassageEffet(effet, currentIdTurn, -1, SourceEffet.Spell);
@@ -600,6 +619,16 @@ public class BattleManager : MonoBehaviour
 
         GiveBuffDebuff(Spell.debuffsBuffs);
         //player.ApplicationBuffDebuff(TimerApplication.Attaque);
+    }
+    public void LogLaunchedSpell(CombatBehavior launcher, IBattleLogSpell spell)
+    {
+        if (_battleLogger.gameObject.activeInHierarchy)
+            _battleLogger.AddBattleLaunchSpellLogLine(launcher, spell);
+    }
+    public void LogRadianceChange(CombatBehavior target, CombatBehavior source, int amount)
+    {
+        if (_battleLogger.gameObject.activeInHierarchy)
+            _battleLogger.AddDamageLogLine(target, source, amount);
     }
 
     private void ApplyAfterEffect(Effet effet) // ICI DANGER: en cas d'after effect Applique 2 fois les buff debuff!
@@ -763,6 +792,18 @@ public class BattleManager : MonoBehaviour
                 {
                     player.ApplicationEffet(effet, null, source);
                 }
+                else if (target != -1) // TODO : Fix temporaire, à modifier pour gerer un ciblage plus complet
+                {
+                    if (target == 0)
+                    {
+                        player.ApplicationEffet(effet, null, source, Caster);
+                    }
+                    else
+                    {
+                        EnemyScripts.FirstOrDefault(c => c.combatID == target)
+                            ?.ApplicationEffet(effet, null, source, Caster);
+                    }
+                }
                 else
                 {
                     EnemyScripts.FirstOrDefault(c => c.combatID == Caster)
@@ -896,6 +937,18 @@ public class BattleManager : MonoBehaviour
 
     #region Essence
 
+    public GameObject GetPrefabEssence (int amount)
+    {
+        if (amount >= _amountForGreaestEssence)
+        {
+            return _prefabEssenceList[2];
+        }
+        if (amount >= _amountForMediumEssence)
+        {
+            return _prefabEssenceList[1];
+        }
+        return _prefabEssenceList[0];
+    }
     public void Consume(int essence)
     {
         ConsumedEssence = true;
@@ -912,42 +965,62 @@ public class BattleManager : MonoBehaviour
 
     private IEnumerator GatherEssence()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForEndOfFrame();
 
         int amount = 0;
         foreach (var item in ListEssence)
         {
-            amount += item.GetComponent<Essence>().getEssence();
+            amount += item.GetComponent<CrystalSoul>().Amount;
         }
-
-        for (int i = 0; i < ListEssence.Count; i++)
-        {
-            Destroy(ListEssence[i]);
-        }
+        OnGatherEssence?.Invoke(spawnPos[3]);
+        yield return new WaitForSeconds(0.5f);
 
         ListEssence.Clear();
-        var temp = Instantiate(prefabEssence, spawnPos[0]);
-        temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
-        temp.GetComponent<Essence>().AddEssence(amount);
-        temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
-        temp.GetComponent<Essence>().isEnd = true;
+        var temp = Instantiate(GetPrefabEssence(amount), spawnPos[3]); //we put it in the closest position of the player
+        //temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
+        temp.GetComponent<CrystalSoul>().AddAmountOfEssence(amount, true);
+        //temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
+
         ListEssence.Add(temp);
         buttonEndCombat.SetActive(true);
-        buttonEndCombat.GetComponentInChildren<TMP_Text>().text += $" ({amount})";
+        buttonEndCombat.GetComponentInChildren<TMP_Text>().text = $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount})";
         endBattle = true;
     }
 
     public void KeepEssence()
     {
-
-        int amount = 0;
-        foreach (var item in ListEssence)
+        if (GameManager.Instance.IsTuto)
         {
-            amount += item.GetComponent<Essence>().getEssence();
+            buttonEndCombat.SetActive(false);
+            TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>().EndCombat();
+            for (int i = 0; i < ListEssence.Count; i++)
+            {
+                Destroy(ListEssence[i]);
+            }
+            ListEssence.Clear();
+            EndBattle();
         }
+        else
+        {
 
-        player.Stat.Essence += amount;
-        EndBattle();
+            int amount = 0;
+            foreach (var item in ListEssence)
+            {
+                amount += item.GetComponent<CrystalSoul>().Amount;
+            }
+
+            player.Stat.Essence += amount;
+            EndBattle();
+        }
+    }
+    private void ClearListEssence()
+    {
+        for (int i = ListEssence.Count - 1; i >= 0; i--)
+        {
+            Destroy(ListEssence[i]);
+            ListEssence.RemoveAt(i);
+        }
+        ListEssence.Clear();
     }
 
     #endregion Essence
@@ -981,16 +1054,13 @@ public class BattleManager : MonoBehaviour
 
             if (EnemyScripts.Count <= 0)
             {
-                if (TutoManager.Instance != null)
+                if (GameManager.Instance.IsTuto /*TutoManager.Instance != null*/)
                 {
-                    //TutoManager.Instance.NextStep();
-                    var gO = GameObject.Find("TutoPanel");
-                    var child = gO.transform.GetChild(0);
+                    var child = TutoManager.Instance.TutoPanel.transform.GetChild(0);
                     child.gameObject.SetActive(true);
-                    //UIDialogue.SetActive(false);
-                    var tutoPanelScript = gO.GetComponent<TutoPanel>();
+                    var tutoPanelScript = TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>();
                     tutoPanelScript.ShowExplication();
-                    tutoPanelScript.UIJoueur.SetActive(false);
+                    //tutoPanelScript.UIJoueur.SetActive(false);
                     //Ici le TutoPanel
                 }
                 else
@@ -1014,7 +1084,7 @@ public class BattleManager : MonoBehaviour
 
     public void DeadPlayer()
     {
-        GameManager.instance.DeadPlayer();
+        GameManager.Instance.DeadPlayer();
     }
 
     #endregion Death
@@ -1084,7 +1154,7 @@ public class BattleManager : MonoBehaviour
     public void EndHurtAnimPlayer()
     {
 
-        player.endHurtAnim();
+        player.EndHurtAnim();
     }
 
     #endregion Animation

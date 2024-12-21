@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http.Headers;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class DialogueManager : MonoBehaviour
@@ -11,24 +11,56 @@ public class DialogueManager : MonoBehaviour
     #region UI Reference
 
     public GameObject UIDialogue;
+
     [Tooltip("Font size for dialogue options")]
     [SerializeField]
     private float _fontSize = 34f;
+
     public GameObject UIJoueur;
     [SerializeField]
     private Color _speakerColor;
-    public TextMeshProUGUI MainText;
-    public GameObject MainTextGO;
-    public List<TextMeshProUGUI> Réponse;
-    public List<GameObject> RéponseGO;
-    public GameObject EndDialogue;
-    public TextMeshProUGUI EndText;
-    public BattleManager ManagerBattle;
-
-    public AleaManager ManagerAlea;
-    //public Button skipButton; 
+    [Space]
     [SerializeField]
-    private ClairvoyanceIconData _clairvoyanceIconData;
+    protected DialogPanelComponent _dialogPanelComponent;
+    //[Header("Dialogue frame options")]
+    //[SerializeField]
+    //private GameObject _dialogFrameGO;
+    //[SerializeField]
+    //private GameObject _dialogBackgroundGO;
+    //[SerializeField]
+    //private Sprite _twoAnswerDialogFrame;
+    //[SerializeField]
+    //private Sprite _twoAnswerDialogBG;
+    //[SerializeField]
+    //private Sprite _threeAnswerDialogFrame;
+    //[SerializeField]
+    //private Sprite _threeAnswerDialogBG;
+    [Header("Dialog references")]
+    [SerializeField]
+    private List<Button> _answerButtons;
+    //public TextMeshProUGUI MainText;
+    //public GameObject MainTextGO;
+    //public List<TextMeshProUGUI> Reponse;
+    //public List<GameObject> ReponseGO;
+    //public GameObject EndDialogue;
+    //public TextMeshProUGUI EndText;
+    public BattleManager ManagerBattle;
+    [Header("BuffVisualization")]
+    [SerializeField]
+    private GameObject _buffPrefab;
+    [SerializeField]
+    private GameObject _effectPrefab;
+    [SerializeField]
+    private GameObject _buffContainer;
+    [Space]
+    public AleaManager ManagerAlea;
+
+    private List<GameObject> _listBuffEffectFromDialog = new List<GameObject>();
+    private List<GameObject> _listClairvEffect = new List<GameObject>();
+
+    //public Button skipButton; 
+    [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
+
     #endregion UI Reference
 
     #region SO
@@ -42,34 +74,47 @@ public class DialogueManager : MonoBehaviour
     #region Dialogue Property
 
     internal int DialogueIndex = 0;
-    private int NextDialogueIndex = 0;
+    protected int NextDialogueIndex = 0;
     private Dictionary<ClairvoyanceIconStatEnum, bool> _displayedClairvoyanceStats;
 
     #endregion Dialogue Property
 
     private void OnEnable()
     {
-        if (Réponse.Count>= 1 && Réponse[0] != null)
-            Réponse[0].GetComponent<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
-        if (EndText != null)
-            EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
+        if (_dialogPanelComponent.Reponse.Count >= 1 && _dialogPanelComponent.Reponse[0] != null)
+            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
+        if (_dialogPanelComponent.EndText != null)
+            _dialogPanelComponent.EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += StopSFX;
     }
+
     private void OnDisable()
     {
-        if (Réponse.Count >= 1 && Réponse[0] != null)
-            Réponse[0].GetComponent<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
-        if (EndText != null)
-            EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
+        if (_dialogPanelComponent.Reponse.Count >= 1 && _dialogPanelComponent.Reponse[0] != null)
+            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
+        if (_dialogPanelComponent.EndText != null)
+            _dialogPanelComponent.EndText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= StopSFX;
     }
+
     private void Start()
     {
         TMP_Text[] dialogArray = UIDialogue.GetComponentsInChildren<TMP_Text>(true);
-        for (int i = 0; i< dialogArray.Length; i++)
+        for (int i = 0; i < dialogArray.Length; i++)
         {
             dialogArray[i].enableAutoSizing = false;
             dialogArray[i].fontSize = _fontSize;
         }
     }
+
+    public virtual void InitDialogOptionButton()
+    {
+        for (int i = 0; i < _dialogPanelComponent.Reponse.Count; i++)
+        {
+            _dialogPanelComponent.Reponse[i].GetComponentInChildren<Button>(true).onClick.RemoveAllListeners();
+            int answerNum = i;
+            _dialogPanelComponent.Reponse[i].GetComponentInChildren<Button>(true).onClick.AddListener(() => GetRéponse(answerNum));
+        }
+    }
+
     public void SetupDialogue(Encounter encounterToSet)
     {
         _CurrentDialogue = encounterToSet.DialogueRencontre;
@@ -83,6 +128,8 @@ public class DialogueManager : MonoBehaviour
     {
         _CurrentDialogue = encounterToSet.DialogueRencontre;
         _CurrentEncounterAlea = encounterToSet;
+        UIJoueur.SetActive(false);
+        UIDialogue.SetActive(true);
         startDialogue();
     }
 
@@ -90,7 +137,7 @@ public class DialogueManager : MonoBehaviour
     {
         resetRéponse();
 
-        
+
         GoNext();
     }
 
@@ -98,12 +145,28 @@ public class DialogueManager : MonoBehaviour
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.DialogueSFX);
         DialogueIndex = NextDialogueIndex;
-        MainText.text = TextePrincipal();
-        MainTextGO.SetActive(true);
-        TextDisplayer textDisplayer = MainText.GetComponent<TextDisplayer>();
-        if (textDisplayer != null )
+
+        // On affiche le panel de dialogue avec le nombre requis de réponse
+        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat
+            || _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
         {
-            MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += GetAnswerList;
+            // Dialogue final, on affiche le layout avec le bouton
+            _dialogPanelComponent.SwitchNumberOfAnswer(0);
+        }
+        else
+        {
+            _dialogPanelComponent.SwitchNumberOfAnswer(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count);
+        }
+        _dialogPanelComponent.MainText.text = TextePrincipal();
+        _dialogPanelComponent.MainTextGO.SetActive(true);
+        InitDialogOptionButton();
+
+        TextDisplayer textDisplayer = _dialogPanelComponent.MainText.GetComponent<TextDisplayer>();
+
+
+        if (textDisplayer != null)
+        {
+            _dialogPanelComponent.MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += GetAnswerList;
         }
         else
         {
@@ -114,74 +177,91 @@ public class DialogueManager : MonoBehaviour
     private void GetAnswerList()
     {
         _displayedClairvoyanceStats = new Dictionary<ClairvoyanceIconStatEnum, bool>();
-        bool[] displayed = new bool[Enum.GetValues(typeof(ClairvoyanceIconStatEnum)).Length];
-        TextDisplayer textDisplayer = MainText.GetComponent<TextDisplayer>();
+
+        TextDisplayer textDisplayer = _dialogPanelComponent.MainText.GetComponent<TextDisplayer>();
         if (textDisplayer != null)
         {
-            MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= GetAnswerList;
+            _dialogPanelComponent.MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish -= GetAnswerList;
         }
+
         var currentQuestionType = _CurrentDialogue.Questions[DialogueIndex].Question.type;
         var currentPossibleResponseList = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible;
-        if ( currentQuestionType == TypeQuestion.startCombat ||
-             currentQuestionType == TypeQuestion.EndTutoDialogue)
+
+
+
+        if (currentQuestionType == TypeQuestion.startCombat ||
+            currentQuestionType == TypeQuestion.EndTutoDialogue)
         {
             string DialogueTrad;
             if (!string.IsNullOrEmpty(currentPossibleResponseList[0].IdStringReponse))
             {
                 //DialogueTrad =
-                //    TradManager.instance.DialogueDictionary[currentPossibleResponseList[0].IdStringReponse][
-                //        TradManager.instance.IdLanguage];
-                DialogueTrad = TradManager.instance.GetTranslation(currentPossibleResponseList[0].IdStringReponse, "ID_DIALOGUE_NOT_IMPLEMENTED");
+                //    TradManager.Instance.DialogueDictionary[currentPossibleResponseList[0].IdStringReponse][
+                //        TradManager.Instance.IdLanguage];
+                DialogueTrad = TradManager.instance.GetTranslation(currentPossibleResponseList[0].IdStringReponse,
+                    "ID_DIALOGUE_NOT_IMPLEMENTED");
             }
             else
             {
                 DialogueTrad = "ID_DIALOGUE_NOT_IMPLEMENTED";
             }
-            if (EndText != null)
+
+            if (_dialogPanelComponent.EndText != null)
             {
                 //if(EndText.text == null || EndText.text == "")
                 if (currentPossibleResponseList != null &&
                     currentPossibleResponseList.Count > 0 &&
                     !string.IsNullOrEmpty(DialogueTrad))
-                    EndText.text = DialogueTrad;
+                    _dialogPanelComponent.EndText.text = DialogueTrad;
                 else
                 {
-                    EndText.text = "Continuer";
+                    _dialogPanelComponent.EndText.text = "Continuer";
                 }
             }
             else
             {
-                var Text = EndDialogue.GetComponentInChildren<TextMeshProUGUI>();
+                var Text = _dialogPanelComponent.EndDialog.GetComponentInChildren<TextMeshProUGUI>();
                 if (Text != null)
                 {
                     Text.text = DialogueTrad;
                 }
             }
-            EndDialogue.SetActive(true);
+
+            _dialogPanelComponent.EndDialog.SetActive(true);
         }
         else
         {
             for (int i = 0; i < currentPossibleResponseList.Count; i++)
             {
-                string response;
-                if (!string.IsNullOrEmpty(currentPossibleResponseList[i].IdStringReponse))
+                Debug.Log("Conscience requise = " + currentPossibleResponseList[i].SeuilConscience + "\n Conscience joueur : " + GameManager.Instance.playerStat.Conscience);
+                string response = "";
+                if (GameManager.Instance.playerStat.Conscience >= currentPossibleResponseList[i].SeuilConscience)
                 {
-                    //response =
-                    //    TradManager.instance.DialogueDictionary[currentPossibleResponseList[i].IdStringReponse][
-                    //        TradManager.instance.IdLanguage];
-                    response = TradManager.instance.GetTranslation(currentPossibleResponseList[i].IdStringReponse, "ID_DIALOGUE_NOT_IMPLEMENTED");
+                    if (!string.IsNullOrEmpty(currentPossibleResponseList[i].IdStringReponse))
+                    {
+                        //response =
+                        //    TradManager.Instance.DialogueDictionary[currentPossibleResponseList[i].IdStringReponse][
+                        //        TradManager.Instance.IdLanguage];
+                        response = TradManager.instance.GetTranslation(currentPossibleResponseList[i].IdStringReponse,
+                            "ID_DIALOGUE_NOT_IMPLEMENTED");
+                    }
+                    else
+                    {
+                        response = "ID_DIALOGUE_NOT_IMPLEMENTED";
+                    }
+                    _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>(true).text = response;
+                    _dialogPanelComponent.Reponse[i].SetActive(true);
+                    //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
+                    if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
+                    {
+                        bool[] displayed = new bool[Enum.GetValues(typeof(ClairvoyanceIconStatEnum)).Length];
+                        ShowConsequenceForAnswer(i, ref displayed);
+                    }
                 }
                 else
                 {
-                    response = "ID_DIALOGUE_NOT_IMPLEMENTED";
-                }
-                Réponse[i].text = response;
-                RéponseGO[i].SetActive(true);
-                //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
-
-                if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
-                {
-                    ShowConsequenceForAnswer(i, ref displayed);
+                    _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>(true).text = response;
+                    _dialogPanelComponent.Reponse[i].SetActive(true);
                 }
             }
         }
@@ -194,71 +274,98 @@ public class DialogueManager : MonoBehaviour
         if (!string.IsNullOrEmpty(_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion))
         {
             //dialogueTrad =
-            //    TradManager.instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion]
-            //        [TradManager.instance.IdLanguage];
-            dialogueTrad = TradManager.instance.GetTranslation(_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion, "ID_DIALOGUE_NOT_IMPLEMENTED");
+            //    TradManager.Instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion]
+            //        [TradManager.Instance.IdLanguage];
+            dialogueTrad = TradManager.instance.GetTranslation(
+                _CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion, "ID_DIALOGUE_NOT_IMPLEMENTED");
         }
         else
         {
             dialogueTrad = "ID_DIALOGUE_NOT_IMPLEMENTED";
         }
-        if (ManagerBattle == null && _CurrentEncounterAlea != null)
+
+        if (/*ManagerBattle == null && _CurrentEncounterAlea != null*/ ManagerAlea.IsAlea)
         {
-            return "<allcaps><u><b><color=#"+ colorCode + ">" + _CurrentEncounterAlea.NamePnj + ": </color></b></u></allcaps> " + dialogueTrad;
+            return "<allcaps><u><b><color=#" + colorCode + ">" + _CurrentEncounterAlea.NamePnj +
+                   ": </color></b></u></allcaps> " + dialogueTrad;
         }
         else
         {
-            string encounteurName = TradManager.instance.GetTranslation(_CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].IdTradName,
+            string encounteurName = TradManager.instance.GetTranslation(
+                _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker]
+                    .IdTradName,
                 _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom);
-            return "<allcaps><u><b><color=#" + colorCode + ">" + encounteurName + ": </color></b></u></allcaps>" + dialogueTrad;
+            return "<allcaps><u><b><color=#" + colorCode + ">" + encounteurName + ": </color></b></u></allcaps>" +
+                   dialogueTrad;
         }
     }
-     
+
     void resetRéponse()
     {
-        foreach (var item in RéponseGO)
+        foreach (var item in _dialogPanelComponent.Reponse)
         {
             item.SetActive(false);
         }
-        EndDialogue.SetActive(false);
 
-        MainTextGO.SetActive(false);
-        foreach (var item in Réponse)
+        _dialogPanelComponent.EndDialog.SetActive(false);
+
+        _dialogPanelComponent.MainTextGO.SetActive(false);
+        foreach (var item in _dialogPanelComponent.ReponseText)
         {
             item.text = "";
         }
+        ClearClairvoyanceIcons();
     }
 
-    public void GetRéponse(int i)
+    public virtual void GetRéponse(int i)
     {
-        if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences.Count != 0)
+        if (GameManager.Instance.IsPaused)
+            return;
+        if (GameManager.Instance.playerStat.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].SeuilConscience)
+            return;
+        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat)
         {
-            ApplyConsequence(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences);
+            StartCombat();
         }
+        else if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
+        {
+            Debug.Log("End Dialog Alea");
+            EndDialogueFonction();
+        }
+        else
+        {
+            if (_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences.Count != 0)
+            {
+                ApplyConsequence(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].conséquences);
+            }
 
-        NextDialogueIndex = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].IDNextQuestion;
-        resetRéponse();
-        GoNext();
+            NextDialogueIndex = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].IDNextQuestion;
+            resetRéponse();
+            GoNext();
+        }
     }
-
-    private string BuildSpriteIcon(Effet effet, ref bool[] displayed)
+    
+    private string BuildSpriteIcon(Effet effet, int selectedAnswer, ref bool[] displayed)
     {
         StringBuilder strb = new StringBuilder();
         strb.Append("<sprite name=\"");
         Color color = Color.white;
-        Debug.Log($"EffectSprite : {effet.TypeEffet}, cible : {effet.Cible}");
-      
+        //Debug.Log($"EffectSprite : {effet.TypeEffet}, cible : {effet.Cible}");
+
         switch (effet.TypeEffet)
         {
+            case TypeEffet.AugmentationBrutFA:
             case TypeEffet.AttaqueFADebuff:
-                
-                color = (effet.Cible == Cible.joueur) ? Color.red : Color.green;
-                if (effet.Cible == Cible.joueur)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ForceDameDown])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ForceDameDown] = true;
-                        strb.Append((_clairvoyanceIconData.StatForceDameDown != null) ? _clairvoyanceIconData.StatForceDameDown.name : "FA");
+                        strb.Append((_clairvoyanceIconData.StatForceDameDown != null)
+                            ? _clairvoyanceIconData.StatForceDameDown.name
+                            : "FA");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
@@ -267,21 +374,27 @@ public class DialogueManager : MonoBehaviour
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ForceDameUp])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ForceDameUp] = true;
-                        strb.Append((_clairvoyanceIconData.StatForceDameUp != null) ? _clairvoyanceIconData.StatForceDameUp.name : "FA");
+                        strb.Append((_clairvoyanceIconData.StatForceDameUp != null)
+                            ? _clairvoyanceIconData.StatForceDameUp.name
+                            : "FA");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
+
                 break;
             case TypeEffet.AugmentationPourcentageFACible:
-            case TypeEffet.AugmentationBrutFA:
             case TypeEffet.AugmentationPourcentageFA:
-                color = (effet.Cible == Cible.joueur) ? Color.green : Color.red;
-                if (effet.Cible != Cible.joueur)
+                if ((effet.Cible == Cible.joueur && effet.Pourcentage < 0)
+                    || (effet.Cible != Cible.joueur && effet.Pourcentage > 0))
                 {
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ForceDameDown])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ForceDameDown] = true;
-                        strb.Append((_clairvoyanceIconData.StatForceDameDown != null) ? _clairvoyanceIconData.StatForceDameDown.name : "FA");
+                        strb.Append((_clairvoyanceIconData.StatForceDameDown != null)
+                            ? _clairvoyanceIconData.StatForceDameDown.name
+                            : "FA");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
@@ -290,19 +403,26 @@ public class DialogueManager : MonoBehaviour
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ForceDameUp])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ForceDameUp] = true;
-                        strb.Append((_clairvoyanceIconData.StatForceDameUp != null) ? _clairvoyanceIconData.StatForceDameUp.name : "FA");
+                        strb.Append((_clairvoyanceIconData.StatForceDameUp != null)
+                            ? _clairvoyanceIconData.StatForceDameUp.name
+                            : "FA");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
+
                 break;
             case TypeEffet.RadianceMax:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int)ClairvoyanceIconStatEnum.RadianceDown])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.RadianceDown] = true;
-                        strb.Append((_clairvoyanceIconData.StatRadianceDown != null) ? _clairvoyanceIconData.StatRadianceDown.name : "Rad");
+                        strb.Append((_clairvoyanceIconData.StatRadianceDown != null)
+                            ? _clairvoyanceIconData.StatRadianceDown.name
+                            : "Rad");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
@@ -311,19 +431,26 @@ public class DialogueManager : MonoBehaviour
                     if (!displayed[(int)ClairvoyanceIconStatEnum.RadianceUp])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.RadianceUp] = true;
-                        strb.Append((_clairvoyanceIconData.StatRadianceUp != null) ? _clairvoyanceIconData.StatRadianceUp.name : "Rad");
+                        strb.Append((_clairvoyanceIconData.StatRadianceUp != null)
+                            ? _clairvoyanceIconData.StatRadianceUp.name
+                            : "Rad");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
+
                 break;
             case TypeEffet.Resilience:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ResilienceDown])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ResilienceDown] = true;
-                        strb.Append((_clairvoyanceIconData.StatResilienceDown != null) ? _clairvoyanceIconData.StatResilienceDown.name : "Res");
+                        strb.Append((_clairvoyanceIconData.StatResilienceDown != null)
+                            ? _clairvoyanceIconData.StatResilienceDown.name
+                            : "Res");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
@@ -332,19 +459,26 @@ public class DialogueManager : MonoBehaviour
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ResilienceUp])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ResilienceUp] = true;
-                        strb.Append((_clairvoyanceIconData.StatResilienceUp != null) ? _clairvoyanceIconData.StatResilienceUp.name : "Res");
+                        strb.Append((_clairvoyanceIconData.StatResilienceUp != null)
+                            ? _clairvoyanceIconData.StatResilienceUp.name
+                            : "Res");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
+
                 break;
             case TypeEffet.Clairvoyance:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ClairvoyaneDown])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ClairvoyaneDown] = true;
-                        strb.Append((_clairvoyanceIconData.StatClairvoyanceDown != null) ? _clairvoyanceIconData.StatClairvoyanceDown.name : "Cla");
+                        strb.Append((_clairvoyanceIconData.StatClairvoyanceDown != null)
+                            ? _clairvoyanceIconData.StatClairvoyanceDown.name
+                            : "Cla");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
@@ -353,19 +487,26 @@ public class DialogueManager : MonoBehaviour
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ClairvoyaneUp])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ClairvoyaneUp] = true;
-                        strb.Append((_clairvoyanceIconData.StatClairvoyanceUp != null) ? _clairvoyanceIconData.StatClairvoyanceUp.name : "Cla");
+                        strb.Append((_clairvoyanceIconData.StatClairvoyanceUp != null)
+                            ? _clairvoyanceIconData.StatClairvoyanceUp.name
+                            : "Cla");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
+
                 break;
             case TypeEffet.Vitesse:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int)ClairvoyanceIconStatEnum.VitesseDown])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.VitesseDown] = true;
-                        strb.Append((_clairvoyanceIconData.StatVitesseDown != null) ? _clairvoyanceIconData.StatVitesseDown.name : "Vit");
+                        strb.Append((_clairvoyanceIconData.StatVitesseDown != null)
+                            ? _clairvoyanceIconData.StatVitesseDown.name
+                            : "Vit");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
@@ -374,19 +515,26 @@ public class DialogueManager : MonoBehaviour
                     if (!displayed[(int)ClairvoyanceIconStatEnum.VitesseUp])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.VitesseUp] = true;
-                        strb.Append((_clairvoyanceIconData.StatVitesseUp != null) ? _clairvoyanceIconData.StatVitesseUp.name : "Vit");
+                        strb.Append((_clairvoyanceIconData.StatVitesseUp != null)
+                            ? _clairvoyanceIconData.StatVitesseUp.name
+                            : "Vit");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
+
                 break;
             case TypeEffet.Conviction:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ConvictionDown])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ConvictionDown] = true;
-                        strb.Append((_clairvoyanceIconData.StatConvictionDown != null) ? _clairvoyanceIconData.StatConvictionDown.name : "Con");
+                        strb.Append((_clairvoyanceIconData.StatConvictionDown != null)
+                            ? _clairvoyanceIconData.StatConvictionDown.name
+                            : "Con");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
@@ -395,19 +543,26 @@ public class DialogueManager : MonoBehaviour
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ConvictionUp])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ConvictionUp] = true;
-                        strb.Append((_clairvoyanceIconData.StatConvictionUp != null) ? _clairvoyanceIconData.StatConvictionUp.name : "Con");
+                        strb.Append((_clairvoyanceIconData.StatConvictionUp != null)
+                            ? _clairvoyanceIconData.StatConvictionUp.name
+                            : "Con");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
+
                 break;
             case TypeEffet.Conscience:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ConscienceDown])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ConscienceDown] = true;
-                        strb.Append((_clairvoyanceIconData.StatConscienceDown != null) ? _clairvoyanceIconData.StatConscienceDown.name : "con");
+                        strb.Append((_clairvoyanceIconData.StatConscienceDown != null)
+                            ? _clairvoyanceIconData.StatConscienceDown.name
+                            : "con");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
@@ -416,23 +571,55 @@ public class DialogueManager : MonoBehaviour
                     if (!displayed[(int)ClairvoyanceIconStatEnum.ConscienceUp])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.ConscienceUp] = true;
-                        strb.Append((_clairvoyanceIconData.StatConscienceUp != null) ? _clairvoyanceIconData.StatConscienceUp.name : "con");
+                        strb.Append((_clairvoyanceIconData.StatConscienceUp != null)
+                            ? _clairvoyanceIconData.StatConscienceUp.name
+                            : "con");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
+
                 break;
-            case TypeEffet.DegatPVMax:
-            case TypeEffet.DegatsBrut:
             case TypeEffet.DegatsBrutConsequence:
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.Degats])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.Degats] = true;
+                        strb.Append((_clairvoyanceIconData.Damage != null)
+                            ? _clairvoyanceIconData.Damage.name
+                            : "DMG");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ConvictionUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ConvictionUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatConvictionUp != null)
+                            ? _clairvoyanceIconData.StatConvictionUp.name
+                            : "Con");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "";
+                }
+
+                break;
             case TypeEffet.Volonte:
             case TypeEffet.VolonteMax:
-                color = (effet.ValeurBrut > 0) ? Color.green : Color.red;
-                if (effet.ValeurBrut < 0)
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                    || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
                 {
                     if (!displayed[(int)ClairvoyanceIconStatEnum.VolonteDown])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.VolonteDown] = true;
-                        strb.Append((_clairvoyanceIconData.StatVolonteDown != null) ? _clairvoyanceIconData.StatVolonteDown.name : "Vol");
+                        strb.Append((_clairvoyanceIconData.StatVolonteDown != null)
+                            ? _clairvoyanceIconData.StatVolonteDown.name
+                            : "Vol");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
@@ -441,23 +628,173 @@ public class DialogueManager : MonoBehaviour
                     if (!displayed[(int)ClairvoyanceIconStatEnum.VolonteUp])
                     {
                         displayed[(int)ClairvoyanceIconStatEnum.VolonteUp] = true;
-                        strb.Append((_clairvoyanceIconData.StatVolonteUp != null) ? _clairvoyanceIconData.StatVolonteUp.name : "Vol");
+                        strb.Append((_clairvoyanceIconData.StatVolonteUp != null)
+                            ? _clairvoyanceIconData.StatVolonteUp.name
+                            : "Vol");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
                     }
                     else return "";
                 }
+
                 break;
-            case TypeEffet.DegatsForceAme:
-            case TypeEffet.Colere:
-            case TypeEffet.AugmentFADernierDegatsSubi:
-            case TypeEffet.MultiplDegat:
-            case TypeEffet.MultiplSoin:
-            case TypeEffet.MultiplDef:
             case TypeEffet.TensionStep:
             case TypeEffet.TensionValue:
             case TypeEffet.TensionGainAttaqueValue:
             case TypeEffet.TensionGainDebuffValue:
             case TypeEffet.TensionGainSoinValue:
             case TypeEffet.TensionGainDotValue:
+                if ((effet.Cible == Cible.joueur && effet.ValeurBrut < 0)
+                   || (effet.Cible != Cible.joueur && effet.ValeurBrut > 0))
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.TensionDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.TensionDown] = true;
+                        strb.Append((_clairvoyanceIconData.StatTensionDown != null)
+                            ? _clairvoyanceIconData.StatTensionDown.name
+                            : "FA");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.TensionUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.TensionUp] = true;
+                        strb.Append((_clairvoyanceIconData.StatTensionUp != null)
+                            ? _clairvoyanceIconData.StatTensionUp.name
+                            : "TENS");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "TENS";
+                }
+
+                break;
+            case TypeEffet.DegatsForceAme:
+
+                if (!displayed[(int)ClairvoyanceIconStatEnum.Degats])
+                {
+                    displayed[(int)ClairvoyanceIconStatEnum.Degats] = true;
+                    strb.Append((_clairvoyanceIconData.Damage != null)
+                        ? _clairvoyanceIconData.Damage.name
+                        : "DMG");
+                    AddClairvoyanceIcone(effet, selectedAnswer);
+                }
+
+                break;
+            case TypeEffet.MultiplDegat:
+                if ((effet.Cible == Cible.joueur && effet.Pourcentage < 0)
+                   || (effet.Cible != Cible.joueur && effet.Pourcentage > 0))
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.MultiAtkDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.MultiAtkDown] = true;
+                        strb.Append((_clairvoyanceIconData.DecreaseAtk != null)
+                            ? _clairvoyanceIconData.DecreaseAtk.name
+                            : "MultATK");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.MultiAtkUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.MultiAtkUp] = true;
+                        strb.Append((_clairvoyanceIconData.IncreaseAtk != null)
+                            ? _clairvoyanceIconData.IncreaseAtk.name
+                            : "MultATK");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "MultATK";
+                }
+
+                break;
+            case TypeEffet.MultiplDef:
+                if ((effet.Cible == Cible.joueur && effet.Pourcentage < 0)
+                  || (effet.Cible != Cible.joueur && effet.Pourcentage > 0))
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.MultiDefDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.MultiDefDown] = true;
+                        strb.Append((_clairvoyanceIconData.DecreaseDef != null)
+                            ? _clairvoyanceIconData.DecreaseDef.name
+                            : "MultDEF");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.MultiDefUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.MultiDefUp] = true;
+                        strb.Append((_clairvoyanceIconData.IncreaseDef != null)
+                            ? _clairvoyanceIconData.IncreaseDef.name
+                            : "MultDEF");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "MultDEF";
+                }
+
+                break;
+            case TypeEffet.MultiplSoin:
+                if ((effet.Cible == Cible.joueur && effet.Pourcentage < 0)
+                  || (effet.Cible != Cible.joueur && effet.Pourcentage > 0))
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.MultiHealDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.MultiHealDown] = true;
+                        strb.Append((_clairvoyanceIconData.DecreaseHeal != null)
+                            ? _clairvoyanceIconData.DecreaseHeal.name
+                            : "MultHeal");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.MultiHealUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.MultiHealUp] = true;
+                        strb.Append((_clairvoyanceIconData.IncreaseHeal != null)
+                            ? _clairvoyanceIconData.IncreaseHeal.name
+                            : "MultHeal");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "MultHeal";
+                }
+
+                break;
+            case TypeEffet.Colere:
+                if (effet.Cible == Cible.joueur)
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ColereDown])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ColereDown] = true;
+                        strb.Append((_clairvoyanceIconData.WrathDown != null)
+                            ? _clairvoyanceIconData.WrathDown.name
+                            : "WrathDown");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "WrathDown";
+                }
+                else
+                {
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.ColereUp])
+                    {
+                        displayed[(int)ClairvoyanceIconStatEnum.ColereUp] = true;
+                        strb.Append((_clairvoyanceIconData.WrathUp != null)
+                            ? _clairvoyanceIconData.WrathUp.name
+                            : "WrathUp");
+                        AddClairvoyanceIcone(effet, selectedAnswer);
+                    }
+                    else return "WrathUp";
+                }
+                break;
+            case TypeEffet.DegatPVMax:
+            case TypeEffet.DegatsBrut:
+            case TypeEffet.AugmentFADernierDegatsSubi:
             case TypeEffet.ConscienceMax:
             case TypeEffet.Soin:
             case TypeEffet.SoinFA:
@@ -522,25 +859,36 @@ public class DialogueManager : MonoBehaviour
                 break;
 
         }
-        strb.Append("\" color=#");
-        strb.Append(ColorUtility.ToHtmlStringRGBA(color));
-        strb.Append(">");
+        //strb.Append("\" color=#");
+        //strb.Append(ColorUtility.ToHtmlStringRGBA(color));
+        strb.Append("\">");
         return strb.ToString();
+    }
+
+    private void AddClairvoyanceIcone(Effet effet, int selectedAnswer)
+    {
+        GameObject effectGO = Instantiate(_effectPrefab, _dialogPanelComponent.ClairvContentListGO[selectedAnswer].transform);
+        effectGO.GetComponent<EffectComponent>().SetSprite(effet.GetSpriteOfEffect());
+        effectGO.GetComponent<EnflateSystem>().TriggerInflation();
+
+        _listClairvEffect.Add(effectGO);
     }
     private void ShowConsequenceForAnswer(int selectedAnswer, ref bool[] displayed)
     {
-        foreach (var consequence in _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[selectedAnswer].conséquences)
+        foreach (var consequence in _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[selectedAnswer]
+                     .conséquences)
         {
             foreach (var buffDebuff in consequence.Buffs)
             {
                 foreach (Effet effet in buffDebuff.Effet)
                 {
-                    Réponse[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
+                    _dialogPanelComponent.ReponseText[selectedAnswer].text += BuildSpriteIcon(effet, selectedAnswer, ref displayed);
                 }
             }
+
             foreach (var effet in consequence.Effects)
             {
-                Réponse[selectedAnswer].text += BuildSpriteIcon(effet, ref displayed);
+                _dialogPanelComponent.ReponseText[selectedAnswer].text += BuildSpriteIcon(effet, selectedAnswer, ref displayed);
             }
         }
     }
@@ -549,31 +897,50 @@ public class DialogueManager : MonoBehaviour
     {
         foreach (var Consequence in consequence)
         {
-            if (ManagerBattle == null)
+            // Tout les buff qu'applique le dialogue
+            foreach (var buffDebuff in Consequence.Buffs)
             {
-                foreach (var BuffDebuff in Consequence.Buffs)
-                {
-                    ManagerAlea.Stat.ListBuffDebuff.Add(BuffDebuff);
-                }
 
-                foreach (var effet in Consequence.Effects)
+
+                GameObject buff = Instantiate(_buffPrefab, _buffContainer.transform);
+                buff.GetComponent<BuffDebuffComponant>().InitBuffDebuff(buffDebuff);
+                buff.GetComponent<BuffDebuffComponant>().buffCntLabel.text = "1";
+                buff.GetComponent<EnflateSystem>().TriggerInflation();
+                
+                buff.GetComponent<BuffDebuffComponant>().buffSprite.sprite = buffDebuff.IsDebuff?GameManager.Instance.SpriteData.Debuff:GameManager.Instance.SpriteData.Buff;
+                _listBuffEffectFromDialog.Add(buff);
+
+                //Application du buff
+                if (/*ManagerBattle == null*/ManagerAlea.IsAlea)
+                {
+                    ManagerAlea.Stat.ListBuffDebuff.Add(buffDebuff);
+                }
+                else
+                {
+                    ChoosePathOfExecution(Consequence, buffDebuff);
+                }
+            }
+
+            //Tous les effets qu'applique le dialogue
+            foreach (var effet in Consequence.Effects)
+            {
+                //Affichage de l'effet dans le dialogue
+                Debug.Log("###Conséquence### - Ajout d'un nouvel Effet de type : " + effet.TypeEffet.ToString());
+                GameObject effectGO = Instantiate(_effectPrefab, _buffContainer.transform);
+                effectGO.GetComponent<EffectComponent>().SetSprite(effet.GetSpriteOfEffect());
+                effectGO.GetComponent<EnflateSystem>().TriggerInflation();
+                _listBuffEffectFromDialog.Add(effectGO);
+                //Application de l'effet
+                if (/*ManagerBattle == null*/ ManagerAlea.IsAlea)
                 {
                     ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat));
                 }
-            }
-            else
-            {
-                foreach (var BuffDebuff in Consequence.Buffs)
-                {
-                    ChoosePathOfExecution(Consequence, BuffDebuff);
-                }
-
-                foreach (var effet in Consequence.Effects)
+                else
                 {
                     ChoosePathOfExecution(Consequence, effet);
-
                 }
             }
+
         }
     }
 
@@ -584,45 +951,48 @@ public class DialogueManager : MonoBehaviour
             case CibleDialogue.joueur:
                 if (scriptableObject as BuffDebuff)
                 {
-                    ApplyBuffDebuffOnPlayer((BuffDebuff) scriptableObject);
+                    ApplyBuffDebuffOnPlayer((BuffDebuff)scriptableObject);
                 }
                 else if (scriptableObject as Effet)
                 {
-                    ApplyEffectOnPlayer((Effet) scriptableObject);
+                    ApplyEffectOnPlayer((Effet)scriptableObject);
                 }
 
                 break;
             case CibleDialogue.allEnnemi:
                 if (scriptableObject as BuffDebuff)
                 {
-                    ApplyBuffDebuffOnEnemies((BuffDebuff) scriptableObject);
+                    ApplyBuffDebuffOnEnemies((BuffDebuff)scriptableObject);
                 }
                 else if (scriptableObject as Effet)
                 {
-                    ApplyEffectOnEnemies((Effet) scriptableObject);
+                    ApplyEffectOnEnemies((Effet)scriptableObject);
                 }
+
                 break;
             case CibleDialogue.ennemi:
                 if (scriptableObject as BuffDebuff)
                 {
-                    ApplyBuffDebuffOneEnnemi((BuffDebuff) scriptableObject);
+                    ApplyBuffDebuffOneEnnemi((BuffDebuff)scriptableObject);
                 }
                 else if (scriptableObject as Effet)
                 {
-                    ApplyEffectOneEnnemi((Effet) scriptableObject);
+                    ApplyEffectOneEnnemi((Effet)scriptableObject);
                 }
+
                 break;
             case CibleDialogue.All:
                 if (scriptableObject as BuffDebuff)
                 {
-                    ApplyBuffDebuffOnPlayer((BuffDebuff) scriptableObject);
-                    ApplyBuffDebuffOnEnemies((BuffDebuff) scriptableObject);
+                    ApplyBuffDebuffOnPlayer((BuffDebuff)scriptableObject);
+                    ApplyBuffDebuffOnEnemies((BuffDebuff)scriptableObject);
                 }
                 else if (scriptableObject as Effet)
                 {
-                    ApplyEffectOnPlayer((Effet) scriptableObject);
-                    ApplyEffectOnEnemies((Effet) scriptableObject);
+                    ApplyEffectOnPlayer((Effet)scriptableObject);
+                    ApplyEffectOnEnemies((Effet)scriptableObject);
                 }
+
                 break;
             case CibleDialogue.AllExceptSelf:
                 break;
@@ -644,17 +1014,19 @@ public class DialogueManager : MonoBehaviour
         {
             enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat));
         }
-    }    
+    }
 
     private void ApplyEffectOneEnnemi(Effet scriptableObject)
     {
-        var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0,ManagerBattle.EnemyScripts.Count)];
-            enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(((JoueurStat)(CharacterStat)enemyScript.Stat),enemyScript.LastDamageTaken,enemyScript.Stat));
+        var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0, ManagerBattle.EnemyScripts.Count)];
+        enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(((JoueurStat)(CharacterStat)enemyScript.Stat),
+            enemyScript.LastDamageTaken, enemyScript.Stat));
     }
 
     private void ApplyBuffDebuffOnPlayer(BuffDebuff scriptableObject)
     {
-        ManagerBattle.player.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte, scriptableObject.timerApplication);
+        ManagerBattle.player.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte,
+            scriptableObject.timerApplication);
         ManagerBattle.player.AddBuffDebuff(scriptableObject, ManagerBattle.player.Stat);
     }
 
@@ -662,42 +1034,73 @@ public class DialogueManager : MonoBehaviour
     {
         foreach (var enemyScript in ManagerBattle.EnemyScripts)
         {
-            enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte, scriptableObject.timerApplication);
+            enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte,
+                scriptableObject.timerApplication);
             enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
         }
-    }   
+    }
+
     private void ApplyBuffDebuffOneEnnemi(BuffDebuff scriptableObject)
     {
-        var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0,ManagerBattle.EnemyScripts.Count)];
-        enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte, scriptableObject.timerApplication);
+        var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0, ManagerBattle.EnemyScripts.Count)];
+        enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte,
+            scriptableObject.timerApplication);
         enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
     }
+
     public void StopSFX()
     {
         AudioManager.instance.SFX.StopPlaying();
     }
+    private void ClearClairvoyanceIcons()
+    {
+        for (int i = _listClairvEffect.Count - 1; i >= 0; i--)
+        {
+            Destroy(_listClairvEffect[i]);
+        }
+        _listClairvEffect.Clear();
+    }
+    private void ResetDialog()
+    {
+        DialogueIndex = 0;
+        NextDialogueIndex = 0;
+
+        for (int i = _listBuffEffectFromDialog.Count - 1; i >= 0; i--)
+        {
+            Destroy(_listBuffEffectFromDialog[i]);
+        }
+        _listBuffEffectFromDialog.Clear();
+
+        ClearClairvoyanceIcons();
+    }
     public void StartCombat()
     {
+        ResetDialog();
         AudioManager.instance.SFX.StopPlaying();
-        if (TutoManager.Instance != null)
+        if (GameManager.Instance.IsTuto/*TutoManager.Instance != null */)
         {
-           var gO = GameObject.Find("TutoPanel");
-           var child = gO.transform.GetChild(0);
-           child.gameObject.SetActive(true);
-           UIDialogue.SetActive(false);
-           gO.GetComponent<TutoPanel>().ShowExplication();
+            if (TutoManager.Instance.StepTuto == 1)
+            {
+                var gO = TutoManager.Instance.TutoPanel;
+                var child = gO.transform.GetChild(0);
+                child.gameObject.SetActive(true);
+                UIDialogue.SetActive(false);
+                gO.GetComponent<TutoPanel>().ShowExplication();
+                GameManager.Instance.StartCombat();
+            }
         }
         else
         {
             UIJoueur.SetActive(true);
             UIDialogue.SetActive(false);
-            GameManager.instance.BattleMan.StartCombat();
+            GameManager.Instance.StartCombat();
         }
     }
 
     public void EndDialogueFonction()
     {
+        ResetDialog();
         AudioManager.instance.SFX.StopPlaying();
-        GameManager.instance.AleaMan.EndAlea();
+        GameManager.Instance.AleaMan.EndAlea();
     }
 }

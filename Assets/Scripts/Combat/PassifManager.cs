@@ -7,8 +7,8 @@ using Random = UnityEngine.Random;
 
 public class PassifManager
 {
-    private readonly PassifRules _rules = GameManager.instance.passifRules;
-    private readonly BattleManager _refBattleManager = GameManager.instance.BattleMan;
+    private readonly PassifRules _rules = GameManager.Instance.passifRules;
+    private readonly BattleManager _refBattleManager = GameManager.Instance.BattleMan;
 
     private List<EnnemyBehavior> _currentBattleEnemy;
     private List<JoueurBehavior> _currentBattleJoueur;
@@ -122,9 +122,9 @@ public class PassifManager
                             //Lorsque vous terminez un affrontement sans avoir consommé d'Essences, vous récupérez 1 point de Conscience et le total d'Essences obtenu est augmenté de 10%.        
                             if (!_refBattleManager.ConsumedEssence)
                             {
-                                var essenceAmount = _refBattleManager.ListEssence.First().GetComponent<Essence>().amount;
+                                var essenceAmount = _refBattleManager.ListEssence.First().GetComponent<CrystalSoul>().Amount;
                                 essenceAmount += (int)Math.Round((double)(_rules.PercentEssenceBonus * 100f) / essenceAmount);
-                                _refBattleManager.ListEssence.First().GetComponent<Essence>().amount = essenceAmount;
+                                _refBattleManager.ListEssence.First().GetComponent<CrystalSoul>().Amount = essenceAmount;
                                 behavior.Stat.Conscience += Mathf.RoundToInt(_rules.nbPtsConscienceEarned);
                             }
                             break;
@@ -151,14 +151,14 @@ public class PassifManager
 
     public void UpdateDivinInfoDisplay(EnnemyBehavior behavior)
     {
-        if (!behavior.Stat.ListBuffDebuff.Any(x => x.Nom == "CurrentDivin"))
+        if (!behavior.Stat.ListBuffDebuff.Any(x => x.Nom == TradManager.instance.GetTranslation(_rules.CurrentDivin.idTradName)))
         {
-            _rules.CurrentDivin.Description = behavior.Stat.Divin.ToString();
+           // _rules.CurrentDivin.Description = behavior.Stat.Divin.ToString();
             behavior.AddBuffDebuff(_rules.CurrentDivin, behavior.Stat);
         }
 
-        var currentDivin = behavior.ListBuffDebuffGO.FirstOrDefault(x => x.GetComponent<BuffDebuffComponant>().buffName == "CurrentDivin");
-        currentDivin.GetComponent<BuffDebuffComponant>().popUpPanel.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text =
-            "Divin : " + behavior.Stat.Divin;
+        var currentDivin = behavior.ListBuffDebuffGO.FirstOrDefault(x => x.GetComponent<BuffDebuffComponant>().buffName == TradManager.instance.GetTranslation(_rules.CurrentDivin.idTradName));
+        currentDivin.GetComponent<BuffDebuffComponant>().popUpPanel.gameObject.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text +=
+            "(Divin : " + behavior.Stat.Divin + ")";
     }
 } 

@@ -30,14 +30,14 @@ public class SkillTreePrinter : MonoBehaviour
     private void Awake() {
         SpawnedLines = new List<GameObject>();
         SpawnedNodes = new List<GameObject>();
-        ClassTitle.text = GameManager.instance.classSO.NameClass;
-        EssenceHeader.text = "Essence : " + GameManager.instance.playerStat.Essence;
+        ClassTitle.text = GameManager.Instance.classSO.NameClass;
+        EssenceHeader.text = "Essence : " + GameManager.Instance.playerStat.Essence;
         LoadNodes();
     }
 
     void LoadNodes()
     {
-        string dataAsJson = ListJson.First(c => c.name == "Class"+GameManager.instance.classSO.ID).text;
+        string dataAsJson = ListJson.First(c => c.name == "Class"+GameManager.Instance.classSO.ID).text;
 
        
         loadedData = JsonUtility.FromJson<DataClass>(dataAsJson);
@@ -60,7 +60,7 @@ public class SkillTreePrinter : MonoBehaviour
             temp.name = nodeToPrint.nodeDataCollection[i].spellId +"";
             ((RectTransform)temp.transform).localPosition = new Vector3(nodeToPrint.nodeDataCollection[i].position.x,-nodeToPrint.nodeDataCollection[i].position.y,0);
             SpawnedNodes.Add(temp);
-            temp.GetComponent<SpellUI>().LinkedSpell = GameManager.instance.classSO.spellClass.First(c => c.IDSpell == nodeToPrint.nodeDataCollection[i].spellId);
+            temp.GetComponent<SpellUI>().LinkedSpell = GameManager.Instance.classSO.spellClass.First(c => c.IDSpell == nodeToPrint.nodeDataCollection[i].spellId);
         }
         var t = ((RectTransform)SpawnedNodes.First(c => c.name == "0").transform).localPosition;
         ScrollView.content.localPosition -= new Vector3(t.x + 200,t.y-100,0); // ScrollRectExtensions.GetSnapToPositionToBringChildIntoView(ScrollView,(RectTransform)SpawnedNodes.First(c => c.name == "id : 0").transform);
@@ -70,7 +70,7 @@ public class SkillTreePrinter : MonoBehaviour
     {
         foreach (var item in SpawnedNodes)
         {
-            Spell currentSpell = GameManager.instance.classSO.spellClass.First(c => c.IDSpell.ToString() == item.name);
+            Spell currentSpell = GameManager.Instance.classSO.spellClass.First(c => c.IDSpell.ToString() == item.name);
             for (int i = 0; i < currentSpell.IDChildren.Count; i++)
             {
                 var destination = SpawnedNodes.First(d => d.name == currentSpell.IDChildren[i]+"");
@@ -91,8 +91,8 @@ public class SkillTreePrinter : MonoBehaviour
 
     public void UpdateSkillTree(SpellUI ToUpdate)
     {
-        GameManager.instance.playerStat.Essence -= ToUpdate.LinkedSpell.CostUnlock;
-        EssenceHeader.text = "Essence : " + GameManager.instance.playerStat.Essence;
+        GameManager.Instance.playerStat.Essence -= ToUpdate.LinkedSpell.CostUnlock;
+        EssenceHeader.text = "Essence : " + GameManager.Instance.playerStat.Essence;
         foreach (var item in ToUpdate.LinkedSpell.IDChildren)
         {
             var t = SpawnedNodes.First(c => c.name == item + "");

@@ -169,12 +169,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: -7552582706839291426, guid: 4d2b8bf24285e6f4d94b600f93f2e229, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: 4d2b8bf24285e6f4d94b600f93f2e229, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: 4d2b8bf24285e6f4d94b600f93f2e229, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: -7552582706839291426, guid: 4d2b8bf24285e6f4d94b600f93f2e229, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 29.67032
+      value: -178.17
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 4d2b8bf24285e6f4d94b600f93f2e229, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 24.733656
+      value: -8.19
       objectReference: {fileID: 0}
     - target: {fileID: -7552582706839291426, guid: 4d2b8bf24285e6f4d94b600f93f2e229, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2439,6 +2451,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 4d2b8bf24285e6f4d94b600f93f2e229, type: 3}
       insertIndex: -1
       addedObject: {fileID: 425865869475884222}
+    - targetCorrespondingSourceObject: {fileID: -8653719598885068355, guid: 4d2b8bf24285e6f4d94b600f93f2e229, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2242338318239526366}
   m_SourcePrefab: {fileID: 4843985084834002234, guid: 4d2b8bf24285e6f4d94b600f93f2e229, type: 3}
 --- !u!1 &1396688638752684362 stripped
 GameObject:
@@ -2466,3 +2481,63 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2242338318239526366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396688638752684362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e8508130e6b74d449b12209ea9dbb7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buffsSprites:
+  - {fileID: 21300000, guid: 6cae14e1031e2634c8bf30baf16d9099, type: 3}
+  - {fileID: 21300000, guid: 267612aab625a444cbd6e962660abe6f, type: 3}
+  ListBuffDebuffGO: []
+  BuffPrefab: {fileID: 8673195161482103611, guid: b0d011bbc909fee4aa8d4f0cbec06220, type: 3}
+  BuffContainer: {fileID: 0}
+  DebuffContainer: {fileID: 0}
+  _debuffTextColor: {r: 1, g: 0, b: 0, a: 1}
+  _buffTextColor: {r: 0, g: 1, b: 0, a: 1}
+  LastDamageTaken: 0
+  gainedTension: 0
+  Stat: {fileID: 0}
+  Spells: []
+  DamageSpawn: {fileID: 0}
+  DamagePrefab: {fileID: 6455525814061643745, guid: 9a2387407ca1b4e439ff7a03898d83b4, type: 3}
+  SoinPrefab: {fileID: 369757569958449724, guid: 27af5be5d6aa1cb4bab7c465b4dfdeae, type: 3}
+  SpellPrefab: {fileID: 1272631880010536278, guid: 4b19171d5af54b84d9181a6453c3cdff, type: 3}
+  SpellsSpawn: {fileID: 0}
+  EndTurnButton: {fileID: 0}
+  tempAddList: []
+  hPBarManager: {fileID: 0}
+  tensionBarManager: {fileID: 0}
+  conscienceBarManager: {fileID: 0}
+  VolonteSlider: {fileID: 0}
+  VolonteBarBack: {fileID: 0}
+  _highlightComponant: {fileID: 0}
+  green: {r: 0.58, g: 0.98, b: 0.65, a: 1}
+  red: {r: 0.996, g: 0.47, b: 0.4, a: 1}
+  TensionText: {fileID: 0}
+  HpText: {fileID: 0}
+  HpTextReduced: {fileID: 0}
+  HpToolTipText: {fileID: 0}
+  "Volont\xE9Text": {fileID: 0}
+  ConscienceText: {fileID: 0}
+  StatForceAmeText: {fileID: 0}
+  StatSpeedText: {fileID: 0}
+  StatResilienceText: {fileID: 0}
+  StatConvictionText: {fileID: 0}
+  StatClairvoyanceText: {fileID: 0}
+  StatForceAmeBg: {fileID: 0}
+  StatSpeedBg: {fileID: 0}
+  StatResilienceBg: {fileID: 0}
+  StatConvictionBg: {fileID: 0}
+  StatClairvoyanceBg: {fileID: 0}
+  SelectedSpell: {fileID: 0}
+  AnimationController: {fileID: 0}
+  _refBattleMan: {fileID: 0}
+  IsTurn: 0

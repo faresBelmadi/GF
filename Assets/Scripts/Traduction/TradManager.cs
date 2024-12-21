@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text;
 using UnityEngine;
 using yutokun;
@@ -31,6 +29,23 @@ public class TradManager : MonoBehaviour
             return value;
         }
     }
+    public SUPPORTEDLANGUAGES Language
+    {
+        get
+        {
+            switch (IdLanguage)
+            {
+                case 0:
+                    return SUPPORTEDLANGUAGES.FR;
+                case 1:
+                    return SUPPORTEDLANGUAGES.EN;
+                case 2:
+                    return SUPPORTEDLANGUAGES.ZH;
+                default:
+                    return SUPPORTEDLANGUAGES.FR;
+            }
+        }
+    }
 
     private Dictionary<string, List<string>> _dialogueDictionary = new Dictionary<string, List<string>>();
     private Dictionary<string, List<string>> _capaDictionary = new Dictionary<string, List<string>>();
@@ -40,6 +55,8 @@ public class TradManager : MonoBehaviour
     private HashSet<string> _idList = new HashSet<string>();
 
     private Analyzer _analyzer;
+
+    public static event Action OnRefreshTranslation;
 
     private void Awake()
     {
@@ -59,6 +76,17 @@ public class TradManager : MonoBehaviour
 
         LoadTrad();
         _analyzer = GetComponent<Analyzer>();
+    }
+
+    public void SetLanguage(SUPPORTEDLANGUAGES idLanguage)
+    {
+        PlayerPrefs.SetInt("Lang", (int)idLanguage);
+        RefreshTranslation();
+    }
+
+    public void RefreshTranslation()
+    {
+        OnRefreshTranslation?.Invoke();
     }
 
     #region LOGGER
@@ -107,8 +135,10 @@ public class TradManager : MonoBehaviour
                 List<string> templist = new List<string>();
                 templist.AddRange(row);
                 templist.RemoveAt(0);
-                _dialogueDictionary.Add(row[0], templist);
-
+                if (!_dialogueDictionary.TryAdd(row[0], templist))
+                {
+                    Debug.LogError("Error when adding key " + row[0] + " to dialogue dictionnary, key already added");
+                }
                 if (!row[0].ToLower().Equals("id") && !_idList.Add(row[0]))
                 {
                     Debug.LogError("Duplicate Key : " + (row[0]));

@@ -37,7 +37,7 @@ public class DescriptionHoverTriggerBuffDebuff : MonoBehaviour, IPointerEnterHan
         //    ToShow.SetActive(true);
         //}
 
-        Ray ray = GameManager.instance.pmm.CurrentRoomCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+        Ray ray = GameManager.Instance.pmm.CurrentRoomCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
         RaycastHit[] t = Physics.RaycastAll(ray);
         foreach (var item in t)
         {

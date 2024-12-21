@@ -1,34 +1,80 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TutoManager : MonoBehaviour
 {
-    public Encounter[] _encounter;
-
-    [SerializeField] private DialogueManager DialogueManager;
-
-    public int StepTuto;
-    public int StepMapTuto;
-    public int StepBatlleTuto;
-
     private static TutoManager instance;
 
+    public GameObject StatPanel;
+    public GameObject TutoPanel;
+
+    [Header("Battle")] public BattleManager BattleManager;
+    public JoueurStat JoueurStat;
+    public ClassPlayer TutoClassSo;
+    [SerializeField] private JoueurBehavior _playerHolder;
+
+    public Encounter[] _encounter;
+
+    [SerializeField] private TutoDialogueManager _dialogueManager;
+
+    public int StepTuto;
+    public int IndexEncounter;
+
+
     public bool ShowSoulConsumation;
+    private int _indEncounter = 0;
+    [Header("Datas")] [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
+    [SerializeField] private Souvenir _souvenirToLoot;
+
+    public ClairvoyanceIconData StatIcons
+    {
+        get => _clairvoyanceIconData;
+    }
+
+    public Encounter CurrentEncounter
+    {
+        get => _encounter[IndexEncounter];
+    }
+
+    public DialogueManager TutoDialogMngr
+    {
+        get => _dialogueManager;
+    }
+
+    public JoueurBehavior Player
+    {
+        get => _playerHolder;
+    }
+
+    public static event Action OnEndDialog;
+    public static event Action OnStartCombat;
+    public static event Action OnEndCombat;
+
+    public static event Action OnEndTuto;
 
     private void Awake()
     {
-        if (instance == null)
+        if (instance == null && GameManager.Instance.IsTuto)
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
             StepTuto = 0;
-            StepMapTuto = 0;
-            StepBatlleTuto = 0;
+            IndexEncounter = 0;
             ShowSoulConsumation = false;
+            //JoueurStat.ListBuffDebuff.Clear();          //On clear les buff sinon pour le cas ou le tuto n'es pas complété et qui resterait des objet buff dans le SO
+            JoueurStat = GameManager.Instance.playerStat;
+            JoueurStat.ListSouvenir.Add(_souvenirToLoot);
+
         }
         else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public void Start()
+    {
+        if (!GameManager.Instance.IsTuto)
         {
             Destroy(gameObject);
         }
@@ -42,82 +88,95 @@ public class TutoManager : MonoBehaviour
     public void NextStep()
     {
         StepTuto++;
-        LoadNextStep();
+        ShowNextStep();
     }
 
-    private void LoadNextStep()
+    private void ShowPanel(GameObject panel)
     {
-        if (StepTuto == 1 || StepTuto == 3 || StepTuto == 5 || StepTuto == 7)
-        {
-            StepMapTuto++;
-            AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
-            SceneManager.LoadScene("TutoMonde");
-        }
-        else if (StepTuto == 2 || StepTuto == 8)
-        {
-            StepBatlleTuto++;
-            AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
-            SceneManager.LoadScene("Tuto");
-        }
-        else if (StepTuto == 6)
-        {
-            StepBatlleTuto++;
-            AudioManager.instance.PlayMusic(MusicType.CombatMusic);
-            StartCoroutine("LoadSceneAsync", "TutoBattle");
-            //LoadSceneAsync("TutoBattle");
-        }
-        else if (StepTuto == 4)
-        {
-            AudioManager.instance.PlayMusic(MusicType.LevelUpMusic);
-            SceneManager.LoadScene("TutoAutel");
-            //SceneManager.LoadScene("TutoAutel OLD");
-        }
+        panel.SetActive(true);
     }
 
-    //public GameObject MenuCamera;
-    public GameObject CurrentRoomCamera;
-    GameObject[] rootScene;
-    Scene s;
-
-    IEnumerator LoadSceneAsync(string name)
+    private void ShowNextStep()
     {
-        yield return SceneManager.LoadSceneAsync(name, LoadSceneMode.Additive);
-        s = SceneManager.GetSceneByName(name);
+        ClearPos();
+        Debug.Log("StepTuto = " + StepTuto + " / stepbattle = " + IndexEncounter);
+        if (StepTuto == 2)
+            IndexEncounter++;
+        if (StepTuto == 1 || StepTuto == 2) //Battle moment
+        {
+            _dialogueManager.EnableButtonAnswer();
 
-        rootScene = s.GetRootGameObjects();
-        StartBattle();
+            StartBattle();
+        }
+        else if (StepTuto == 3) //End
+        {
+            Player.ToggleVisibility(true);
+            EndTuto();
+        }
     }
 
-    //public void LoadSceneAsync(string name)
-    //{
-    //    SceneManager.LoadScene(name);
-    //    s = SceneManager.GetSceneByName(name);
+    private void ClearPos()
+    {
+        foreach (var spawnPos in BattleManager.spawnPos)
+        {
+            if (spawnPos.childCount > 0)
+                Destroy(spawnPos.GetChild(0).gameObject);
+        }
+    }
 
-    //    rootScene = s.GetRootGameObjects(); 
-    //    StartBattle();
-    //}
+
 
     void StartBattle()
     {
-        CurrentRoomCamera = rootScene.First(c => c.name == "BattleCamera");
-        var BattleMan = rootScene.First(c => c.name == "BattleManager").GetComponent<BattleManager>();
-        //TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto]
-        BattleMan.LoadEnemy(Instantiate(TutoManager.Instance._encounter[TutoManager.Instance.StepBatlleTuto]));
-        CurrentRoomCamera.SetActive(true);
-        SceneManager.UnloadSceneAsync("TutoMonde");
-        //MenuCamera.SetActive(false);
+        _dialogueManager.InitDialogueStep();
+        Debug.Log("encounter : " + Instance.IndexEncounter);
+        GameManager.Instance.LoadCombat();
+        BattleManager.player.Stat.Volonter = 5;
     }
 
     public void Loot()
     {
-        var gO = GameObject.Find("StatPrefab");
-        gO.transform.GetChild(0).gameObject.SetActive(true);
-        gO.transform.GetChild(1).gameObject.SetActive(true);
+        StatPanel.SetActive(true);
     }
 
     public void SkipTutoDuringTuto()
     {
-        SceneManager.LoadSceneAsync(1);
-        Destroy(this.gameObject);
+        EndTuto();
+    }
+
+    // Raise the event to trigger UI panel
+    public void StartCombat()
+    {
+        OnStartCombat?.Invoke();
+        BattleManager.StartCombat();
+    }
+
+    public void EndCombat()
+    {
+        OnEndCombat?.Invoke();
+    }
+
+    public void EndDialogueTuto()
+    {
+        OnEndDialog?.Invoke();
+        if (IndexEncounter == 1)
+        {
+            _dialogueManager.StartCombat();
+        }
+        else
+        {
+            IndexEncounter++;
+            NextStep();
+        }
+    }
+
+    public void EndTuto()
+    {
+        ClearPos();
+        GameManager.Instance.EndTuto();
+        
+        OnEndTuto?.Invoke();
+
+        Destroy(gameObject);
     }
 }

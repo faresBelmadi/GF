@@ -22,13 +22,13 @@ public class Essence : MonoBehaviour
     {
         _essenceUI.StopPreviewOnHP();
         if(isEnd)
-            GameManager.instance.BattleMan.ConsumeEndBattle(amount);
+            GameManager.Instance.BattleMan.ConsumeEndBattle(amount);
         else
-            GameManager.instance.BattleMan.Consume(Mathf.FloorToInt(amount/2));
+            GameManager.Instance.BattleMan.Consume(Mathf.FloorToInt(amount/2));
 
-        if(GameManager.instance.BattleMan != null)
+        if(GameManager.Instance.BattleMan != null)
         {
-            GameManager.instance.BattleMan.ListEssence.Remove(this.gameObject);
+            GameManager.Instance.BattleMan.ListEssence.Remove(this.gameObject);
             Destroy(this.gameObject);
         }
     }
