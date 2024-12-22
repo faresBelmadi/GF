@@ -12,7 +12,7 @@ public class PlayerMapManager : MonoBehaviour
     [SerializeField] private Color basePathColor;
     [SerializeField] private Color visitedPathColors;
 
-    
+
 
     public Room CurrentRoom
     {
@@ -30,11 +30,12 @@ public class PlayerMapManager : MonoBehaviour
     private Room _currentRoom;
 
     public int mapUsedSeed = 0;
-    public List<int> visitedMapIndexs = new List<int>() { 0};
+    public List<int> visitedMapIndexs = new List<int>() {0};
     public List<Tuple<int, int>> roomSelectedEncounters = new List<Tuple<int, int>>();
 
     public List<MapNode> map = new List<MapNode>();
     public GameObject[,] pathsGameObjects;
+
     public class MapNode
     {
         public GameObject objectInstance;
@@ -87,63 +88,67 @@ public class PlayerMapManager : MonoBehaviour
             foreach (int connectedId in map[i].connections)
             {
                 if (i > connectedId) continue;
-            
-                if(map[i].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN
-                || map[connectedId].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN)
+
+                if (map[i].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN
+                    || map[connectedId].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN)
                 {
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", -1f);
-                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_curtainLength", -.5f);
-                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetColor("_Color", basePathColor);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
+                        .SetFloat("_curtainLength", -.5f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
+                        .SetColor("_Color", basePathColor);
 
                 }
                 else if (map[i].objectInstance.GetComponent<Room>().roomState == RoomState.VISITED
-                && map[connectedId].objectInstance.GetComponent<Room>().roomState == RoomState.VISITED)
+                         && map[connectedId].objectInstance.GetComponent<Room>().roomState == RoomState.VISITED)
                 {
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", 1f);
-                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_curtainLength", .5f);
-                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetColor("_Color", visitedPathColors);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
+                        .SetFloat("_curtainLength", .5f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
+                        .SetColor("_Color", visitedPathColors);
                 }
                 else
                 {
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", 3f);
-                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_curtainLength", 1f);
-                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetColor("_Color", basePathColor);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
+                        .SetFloat("_curtainLength", 1f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
+                        .SetColor("_Color", basePathColor);
 
                 }
-            }            
+            }
         }
     }
 
     private void MapAction()
     {
-
-
         switch (_currentRoom.roomType)
         {
             case TypeRoom.ENCOUNTER:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
                 //StartBattle("normal");
-                StartChoosenBattel();
+                StartChoosenBattle();
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.CLASS_ENCOUNTER:
                 //StartCoroutine("LoadSceneAsync", "BattleScene Normal");
-                StartChoosenBattel();
+                StartChoosenBattle();
                 //StartBattle("class");
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.ELITE:
-                StartChoosenBattel();
+                StartChoosenBattle();
                 //StartBattle("elite");
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.CLASS_ELITE:
-                StartChoosenBattel();
+                StartChoosenBattle();
                 //StartBattle("class_elite");
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.BOSS:
-                StartChoosenBattel();
+                StartChoosenBattle();
                 //StartBattle("boss");
                 //_currentRoom.roomState = RoomState.VISITED;
                 //StartCoroutine("LoadSceneAsync", "BattleScene Boss");
@@ -219,11 +224,12 @@ public class PlayerMapManager : MonoBehaviour
     //    }
     //    yield return null;
     //}
-    public void StartChoosenBattel()
+    public void StartChoosenBattle()
     {
         ToggleMap(false);
         StartCoroutine(WaitStartBattle());
     }
+
     void StartBattle(string enemieType)
     {
         //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
@@ -408,10 +414,11 @@ public class PlayerMapManager : MonoBehaviour
         yield return new WaitForSeconds(_rollingMapTime);
         actionToDo();
     }
+
     public IEnumerator WaitStartBattle()
     {
         yield return new WaitForSeconds(_rollingMapTime);
         Debug.Log($"Start Combat type: {_currentRoom.roomType}, Id: {_currentRoom.selectedEncounterId}");
-        GameManager.Instance.LoadChoosenCombat(_currentRoom.roomType,_currentRoom.selectedEncounterId);
+        GameManager.Instance.LoadChoosenCombat(_currentRoom.roomType, _currentRoom.selectedEncounterId);
     }
 }

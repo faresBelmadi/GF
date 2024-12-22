@@ -6,34 +6,32 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour {
-    
+public class GameManager : MonoBehaviour
+{
+
     public static GameManager Instance;
 
     //[Header("Debug")]
     //[SerializeField]
     //private bool _doTuto = true;
 
-    [SerializeField]
-    private GameObject _crystal;
-    [SerializeField]
-    private Transform _parent;
+    [SerializeField] private GameObject _crystal;
+    [SerializeField] private Transform _parent;
+
     [Header("Managers")]
     //public RoomManager rm;
     public PlayerMapManager pmm;
+
     public BattleManager BattleMan;
     public TutoManager TutoManager;
     public AleaManager AleaMan;
     public OldAutelManager OldAutelMan;
     public MenuStatManager StatMan;
     public UiMondeManager UiMondeMan;
-    [SerializeField]
-    private DialogueManager _dialogueManager;
-    [SerializeField]
-    private GamePanelManager _gamePanelManager;
+    [SerializeField] private DialogueManager _dialogueManager;
+    [SerializeField] private GamePanelManager _gamePanelManager;
 
-    [Header("Classes & Encounter")]
-    public List<ClassPlayer> AllClasses;
+    [Header("Classes & Encounter")] public List<ClassPlayer> AllClasses;
 
     public List<Encounter> AllEncounter;
     public int EncounterIndex;
@@ -44,32 +42,36 @@ public class GameManager : MonoBehaviour {
     [SerializeField] private List<Encounter> TEMPEncounterElite;
     [SerializeField] private List<Encounter> TEMPEncounterClassElite;
     [SerializeField] private List<Encounter> TEMPEncounterBoss;
-    [SerializeField] private List<Encounter> TutoEncounter;
-    [SerializeField] private int CurrentTutoEncounter = 0;
+    //[SerializeField] private List<Encounter> TutoEncounter;
+    //[SerializeField] private int CurrentTutoEncounter = 0;
 
     public List<Souvenir> AllSouvenir;
     public List<Souvenir> CopyAllSouvenir;
 
     public ClassPlayer classSO;
-    [HideInInspector]
-    public JoueurStat playerStat;
+    [HideInInspector] public JoueurStat playerStat;
 
     public int ClassIDSelected;
 
     public PassifRules passifRules;
-    [Header("Data")]
-    [SerializeField]
-    private SpriteData _spriteData;
+    [Header("Data")] [SerializeField] private SpriteData _spriteData;
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
-    [SerializeField]
-    private ClairvoyanceIconData _clairvoyanceIconData;
+    [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
 
-    public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
+    public ClairvoyanceIconData StatIcons
+    {
+        get => _clairvoyanceIconData;
+    }
 
     public bool IsTuto { get; set; }
     public bool IsPaused { get; set; } = false;
-    public GamePanelManager GamePanelMngr { get => _gamePanelManager; }
+
+    public GamePanelManager GamePanelMngr
+    {
+        get => _gamePanelManager;
+    }
+
     public DialogueManager DialManager
     {
         get
@@ -83,8 +85,13 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public SpriteData SpriteData { get { return _spriteData; } }
+    public SpriteData SpriteData
+    {
+        get { return _spriteData; }
+    }
+
     #region Events
+
     public static event Action OnStartCombat;
     public static event Action OnLootAfterCombat;
     public static event Action OnStartEvent;
@@ -98,7 +105,8 @@ public class GameManager : MonoBehaviour {
 
 
 
-    private void Awake() {
+    private void Awake()
+    {
         if (Instance != null)
             Destroy(this.gameObject);
         else
@@ -107,12 +115,12 @@ public class GameManager : MonoBehaviour {
             DontDestroyOnLoad(this);
         }
 
-        UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
+        UnityEngine.Random.InitState((int) DateTime.Now.Ticks);
         //LoadSave();
         ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
 
         IsTuto = PlayerPrefs.GetInt("DoTutorial", 0) == 0 ? false : true;
-        PlayerPrefs.SetInt("DoTutorial", 0);  //we set tuto mode to false
+        PlayerPrefs.SetInt("DoTutorial", 0); //we set tuto mode to false
 
         CreateSave();
         GetClassRun();
@@ -123,7 +131,7 @@ public class GameManager : MonoBehaviour {
             Destroy(TutoManager);
         */
     }
-   
+
     public void EndTuto()
     {
         IsTuto = false;
@@ -137,7 +145,7 @@ public class GameManager : MonoBehaviour {
 
     private void LoadSave()
     {
-        
+
 #if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
 #else
@@ -151,7 +159,7 @@ public class GameManager : MonoBehaviour {
 
             // Pass the json to JsonUtility, and tell it to create a SkillTree object from it
             loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
-            if(!loadedData.CurrentRun.Ended)
+            if (!loadedData.CurrentRun.Ended)
             {
                 GetClassRun();
 
@@ -172,11 +180,12 @@ public class GameManager : MonoBehaviour {
                 playerStat.Clairvoyance = loadedData.CurrentRun.player.Clairvoyance;
                 playerStat.ClairvoyanceOriginal = loadedData.CurrentRun.player.Clairvoyance;
                 playerStat.SlotsSouvenir = loadedData.CurrentRun.player.SlotsSouvenir;
-                
-                for(int i = 0; i < AllSouvenir.Count; i++)
+
+                for (int i = 0; i < AllSouvenir.Count; i++)
                 {
                     CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
                 }
+
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
                 playerStat.ListPassif = new List<Passif>();
@@ -191,7 +200,7 @@ public class GameManager : MonoBehaviour {
                         var t = classSO.PlayerStat.ListSpell.First(c => c.IDSpell == item2);
                         if(t.IsAvailable)
                             t.SpellStatue = SpellStatus.unlocked;
-                        
+
                     }
                     playerStat.ListSpell.Add(temp);
                 }*/
@@ -199,6 +208,7 @@ public class GameManager : MonoBehaviour {
                 {
                     playerStat.ListSpell.Add(item);
                 }
+
                 foreach (var item in classSO.PlayerStat.ListPassif)
                 {
                     playerStat.ListPassif.Add(item);
@@ -216,14 +226,16 @@ public class GameManager : MonoBehaviour {
     {
 
         GameData data = new GameData();
-        data.CurrentRun = new RunData() { ClassID = ClassIDSelected };
+        data.CurrentRun = new RunData() {ClassID = ClassIDSelected};
         data.previousRuns = new List<RunData>();
-        var spellsToAdd = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ListSpell.Where(c => c.SpellStatue == SpellStatus.bought);
+        var spellsToAdd = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ListSpell
+            .Where(c => c.SpellStatue == SpellStatus.bought);
         List<int> boughtspells = new List<int>();
         foreach (var item in spellsToAdd)
         {
             boughtspells.Add(item.IDSpell);
         }
+
         data.CurrentRun.player = new PlayerData()
         {
             Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
@@ -249,7 +261,7 @@ public class GameManager : MonoBehaviour {
             roomSelectedEncounter = pmm.roomSelectedEncounters
         };
         string json = JsonUtility.ToJson(data);
-        
+
 #if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
 #else
@@ -258,7 +270,7 @@ public class GameManager : MonoBehaviour {
         System.IO.Directory.CreateDirectory(Application.persistentDataPath+"/SavedData/GameData");
 #endif
 
-        System.IO.File.WriteAllText(path,json);
+        System.IO.File.WriteAllText(path, json);
 
 #if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
@@ -269,7 +281,7 @@ public class GameManager : MonoBehaviour {
     public void SaveGame()
     {
         SavePlayer();
-        if(loadedData.CurrentRun.Ended)
+        if (loadedData.CurrentRun.Ended)
         {
             loadedData.previousRuns.Add(loadedData.CurrentRun);
             loadedData.CurrentRun.player = new PlayerData()
@@ -287,11 +299,12 @@ public class GameManager : MonoBehaviour {
                 Conviction = playerStat.Conviction,
                 Resilience = playerStat.Resilience,
                 Calme = playerStat.Calme,
-                SlotsSouvenir = playerStat.SlotsSouvenir,        
-                BoughtSpellID = new List<int>(){0}
+                SlotsSouvenir = playerStat.SlotsSouvenir,
+                BoughtSpellID = new List<int>() {0}
             };
             loadedData.CurrentRun.Ended = false;
         }
+
         string json = JsonUtility.ToJson(loadedData);
 #if UNITY_EDITOR
         string path = "Assets/SavedData/GameData/Game.json";
@@ -299,7 +312,7 @@ public class GameManager : MonoBehaviour {
         string path = Application.persistentDataPath + "/SavedData/GameData/Game.json";
 #endif
 
-        System.IO.File.WriteAllText(path,json);
+        System.IO.File.WriteAllText(path, json);
 
 #if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
@@ -336,6 +349,7 @@ public class GameManager : MonoBehaviour {
     {
         pmm.CurrentRoom = set;
     }
+
     public int SelectEncounterId(TypeRoom type)
     {
         switch (type)
@@ -358,19 +372,25 @@ public class GameManager : MonoBehaviour {
             default: return 0;
         }
     }
+
     public void StartCombat()
     {
         Debug.Log("Raise event : OnStartCombat");
         OnStartCombat?.Invoke();
         BattleMan.StartCombat();
     }
+
     public void LoadCombat()
     {
         Debug.Log("Raise event : OnStartDialog");
         OnStartDialog?.Invoke();
         if (IsTuto)
         {
+            TutoManager.Instance.SavedEncounter = AllEncounter[EncounterIndex];
             BattleMan.LoadEnemy(Instantiate(TutoManager.Instance.CurrentEncounter));
+            if (TutoManager.Instance.CurrentEncounter.ToFight.All(x =>
+                    !x.Spawnable.gameObject.name.Contains("Fred")))
+                TutoManager.Instance.SpawnFredForFight();
         }
         else
         {
@@ -378,11 +398,13 @@ public class GameManager : MonoBehaviour {
             EncounterIndex++;
         }
     }
+
     public void Loot()
     {
         Debug.Log("Loot", gameObject);
         OnLootAfterCombat.Invoke();
     }
+
     public void UnloadCombat()
     {
         Debug.Log("Unload Combat");
@@ -391,30 +413,18 @@ public class GameManager : MonoBehaviour {
     public void LoadChoosenCombat(TypeRoom roomType, int encounterId)
     {
         OnStartDialog?.Invoke();
+        //if (IsTuto)
+        //{
+        //    BattleMan.LoadEnemy(Instantiate(TutoEncounter[CurrentTutoEncounter]));
+        //    CurrentTutoEncounter++;
+        //}
         switch (roomType)
         {
             case TypeRoom.ENCOUNTER:
-                if (IsTuto)
-                {
-                    BattleMan.LoadEnemy(Instantiate(TutoEncounter[CurrentTutoEncounter]));
-                    CurrentTutoEncounter++;
-                }
-                else
-                {
-                    BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[encounterId]));
-                }
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[encounterId]));
                 break;
             case TypeRoom.CLASS_ENCOUNTER:
-                if (IsTuto)
-                {
-                    BattleMan.LoadEnemy(Instantiate(TutoEncounter[CurrentTutoEncounter]));
-                    CurrentTutoEncounter++;
-                }
-                else
-                {
-                    BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[encounterId]));
-                }
-
+                BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[encounterId]));
                 break;
             case TypeRoom.ELITE:
                 BattleMan.LoadEnemy(Instantiate(TEMPEncounterElite[encounterId]));
@@ -437,9 +447,10 @@ public class GameManager : MonoBehaviour {
     {
         //BattleMan.LoadEnemy(Instantiate(AllEncounter[0]));
         OnStartDialog?.Invoke();
-        BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[UnityEngine.Random.Range(0, TEMPEncounterNeutral.Count())]));
+        BattleMan.LoadEnemy(
+            Instantiate(TEMPEncounterNeutral[UnityEngine.Random.Range(0, TEMPEncounterNeutral.Count())]));
     }
-    
+
     public void LoadCombatClass()
     {
         OnStartDialog?.Invoke();
@@ -452,11 +463,13 @@ public class GameManager : MonoBehaviour {
         //BattleMan.LoadEnemy(Instantiate(AllEncounter[1]));
         BattleMan.LoadEnemy(Instantiate(TEMPEncounterElite[UnityEngine.Random.Range(0, TEMPEncounterElite.Count())]));
     }
+
     public void LoadCombatClassElite()
     {
         OnStartDialog?.Invoke();
         //BattleMan.LoadEnemy(Instantiate(AllEncounter[1]));
-        BattleMan.LoadEnemy(Instantiate(TEMPEncounterClassElite[UnityEngine.Random.Range(0, TEMPEncounterClassElite.Count())]));
+        BattleMan.LoadEnemy(
+            Instantiate(TEMPEncounterClassElite[UnityEngine.Random.Range(0, TEMPEncounterClassElite.Count())]));
     }
 
     public void LoadCombatBoss()
@@ -471,6 +484,7 @@ public class GameManager : MonoBehaviour {
         OnStartDialog?.Invoke();
         AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
     }
+
     public void UnloadEvent()
     {
         Debug.Log("UnloadEvent;");
@@ -482,11 +496,12 @@ public class GameManager : MonoBehaviour {
         Debug.Log("Load Autel");
         OnStartAutel?.Invoke();
     }
+
     public void UnloadAutel()
     {
         Debug.Log("Unload Autel");
     }
-        
+
     public void StartStatJoueur()
     {
         pmm.ShowMenuStat();
@@ -496,7 +511,7 @@ public class GameManager : MonoBehaviour {
     //{
     //    StatMan.StartMenuStat();
     //}
-    
+
     void GetClassRun()
     {
         if (classSO != null && IsTuto /*TutoManager.Instance != null*/)
@@ -504,6 +519,7 @@ public class GameManager : MonoBehaviour {
             Debug.Log("Coucouuuuuuu");
             return;
         }
+
         classSO = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID));
         classSO.PlayerStat = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID).PlayerStat);
         classSO.PlayerStat.ListSpell.Clear();
@@ -527,15 +543,18 @@ public class GameManager : MonoBehaviour {
         //Destroy(GameManager.Instance.gameObject);
         EndGame();
     }
+
     public void HideMap()
     {
         OnHideMap?.Invoke();
     }
+
     public void ShowMap()
     {
         Debug.Log("ShowMap");
         OnShowMap?.Invoke();
     }
+
     public void EndGame()
     {
         OnEndGame?.Invoke();

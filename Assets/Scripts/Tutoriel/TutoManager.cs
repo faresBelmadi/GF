@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TutoManager : MonoBehaviour
@@ -13,8 +14,11 @@ public class TutoManager : MonoBehaviour
     public ClassPlayer TutoClassSo;
     [SerializeField] private JoueurBehavior _playerHolder;
 
-    public Encounter[] _encounter;
-
+    public List<Encounter> _encounter;
+    public GameObject FredPos;
+    public GameObject Fred;
+    public GameObject CanvasMap;
+    public Encounter SavedEncounter;
     [SerializeField] private TutoDialogueManager _dialogueManager;
 
     public int StepTuto;
@@ -51,6 +55,7 @@ public class TutoManager : MonoBehaviour
     public static event Action OnEndCombat;
 
     public static event Action OnEndTuto;
+    private GameObject FredForFight;
 
     private void Awake()
     {
@@ -174,9 +179,14 @@ public class TutoManager : MonoBehaviour
     {
         ClearPos();
         GameManager.Instance.EndTuto();
-        
+
         OnEndTuto?.Invoke();
 
         Destroy(gameObject);
+    }
+
+    public void SpawnFredForFight()
+    {
+        FredForFight = Instantiate(Fred, FredPos.transform.position, Quaternion.identity, FredPos.transform);
     }
 }
