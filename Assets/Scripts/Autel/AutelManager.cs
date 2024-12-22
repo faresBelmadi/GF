@@ -15,6 +15,8 @@ public class AutelManager : MonoBehaviour
     public JoueurStat stats;
     [SerializeField]
     private string _idTradCout;
+    [SerializeField]
+    private Animator _autelAnimator;
 
     [Header("Arbre")]
     public TextMeshProUGUI EssenceText;
@@ -148,6 +150,7 @@ public class AutelManager : MonoBehaviour
 
     public void SetShopActive()
     {
+        BackHover();
         ShopUiPanel.SetActive(true);
         MenuUiPanel.SetActive(false);
         SetUpShop();
@@ -155,6 +158,7 @@ public class AutelManager : MonoBehaviour
 
     public void SetLvlUpActive()
     {
+        BackHover();
         LevelUpUiPanel.SetActive(true);
         MenuUiPanel.SetActive(false);
         SetUpAllSpells();
@@ -678,4 +682,21 @@ public class AutelManager : MonoBehaviour
         Loot = true;
         RetourMap();
     }
+
+    #region Animation
+
+    public void HoverShop()
+    {
+        _autelAnimator.SetTrigger("ChooseShop");
+    }
+    public void HoverTree()
+    {
+        _autelAnimator.SetTrigger("ChooseTree");
+    }
+    public void BackHover()
+    {
+        _autelAnimator.SetTrigger("Back");
+    }
+
+    #endregion
 }
