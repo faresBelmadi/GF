@@ -64,6 +64,8 @@ public class GameManager : MonoBehaviour {
     public SkillTreePrinter SkillTreeUI;
     [SerializeField]
     private ClairvoyanceIconData _clairvoyanceIconData;
+    [field: SerializeField]
+    public CommonNameData CommonNameData { get; private set; }
 
     public ClairvoyanceIconData StatIcons { get => _clairvoyanceIconData; }
 
