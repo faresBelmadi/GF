@@ -181,6 +181,10 @@ public class EnnemyBehavior : CombatBehavior
         {
             var t = Instantiate(GameManager.Instance.BattleMan.GetPrefabEssence(Stat.Essence), this.transform.parent);
             t.GetComponent<CrystalSoul>().AddAmountOfEssence(Stat.Essence);
+            if (GameManager.Instance.IsTuto)
+            {
+                t.SetActive(false);
+            }
             _refBattleMan.ListEssence.Add(t);
         }
 

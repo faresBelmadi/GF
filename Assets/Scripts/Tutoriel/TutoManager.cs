@@ -127,6 +127,8 @@ public class TutoManager : MonoBehaviour
             if (spawnPos.childCount > 0)
                 Destroy(spawnPos.GetChild(0).gameObject);
         }
+        if (FredPos.transform.childCount > 0)
+            Destroy(FredPos.transform.GetChild(0).gameObject);
     }
 
 
