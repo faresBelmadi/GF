@@ -311,14 +311,7 @@ public class BattleManager : MonoBehaviour
 
     public void LoadEnemy(Encounter ToSpawn)
     {
-        if (GameManager.Instance.IsTuto)
-            //_encounter = TutoManager.Instance.IndexEncounter == 1
-            //    ? TutoManager.Instance.SavedEncounter
-            //    : Instantiate(TutoManager.Instance._encounter[TutoManager.Instance.IndexEncounter]);
-
-            _encounter = Instantiate(TutoManager.Instance._encounter[TutoManager.Instance.IndexEncounter]);
-        else
-            _encounter = ToSpawn;
+        _encounter = GameManager.Instance.IsTuto ? Instantiate(TutoManager.Instance._encounter[TutoManager.Instance.IndexEncounter]) : ToSpawn;
         SpawnEnemy();
         player.UpdateUI();
         player.DesactivateSpells();
