@@ -468,6 +468,7 @@ public class GameManager : MonoBehaviour {
 
     public void LoadEvent()
     {
+        OnStartEvent?.Invoke();
         OnStartDialog?.Invoke();
         AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
     }

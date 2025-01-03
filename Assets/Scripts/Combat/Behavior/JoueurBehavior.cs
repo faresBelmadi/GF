@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class JoueurBehavior : CombatBehavior
 {
@@ -92,7 +93,7 @@ public class JoueurBehavior : CombatBehavior
         Debug.Log("Active Children : " + i);
 
     }
-
+  
     public void StartUp()
     {
 
@@ -606,8 +607,104 @@ public class JoueurBehavior : CombatBehavior
         //    Destroy(tempBuff);
         //}
     }
+
+    private void ClearIncreaseConscienceBuff()
+    {
+        Debug.Log("ClearGainConscienceBuff");
+        ClearConditionnalBuff(ConditionalBuff.GainConscience);
+        Stat.OnConscienceIncrease -= ClearIncreaseConscienceBuff;
+    }
+    private void ClearDecreaseConscienceBuff()
+    {
+        Debug.Log("ClearPerteConscienceBuff");
+        ClearConditionnalBuff(ConditionalBuff.PerteConscience);
+        Stat.OnConscienceDecrease -= ClearDecreaseConscienceBuff;
+    }
+    private void ClearAleaBuff()
+    {
+        Debug.Log("ClearAleaBuff");
+        ClearConditionnalBuff(ConditionalBuff.RoomAlea);
+        GameManager.OnStartEvent -= ClearAleaBuff;
+    }
+    private void ClearAutelBuff()
+    {
+        Debug.Log("ClearAutelBuff");
+        ClearConditionnalBuff(ConditionalBuff.RoomAutel);
+        GameManager.OnStartAutel -= ClearAutelBuff;
+    }
+    private void ClearConditionnalBuff(ConditionalBuff condition)
+    {
+        var buffList = Stat.ListBuffDebuff.Where(x => x.ConditionnalBuff == condition).ToList();
+
+        foreach(var buff in buffList)
+        {
+            foreach (var effet in buff.Effet)
+            {
+                if (effet.TypeEffet != TypeEffet.RadianceMax)
+                    Stat.removeStat(effet.modifstate);
+                else
+                {
+                    effet.modifstate.Radiance =
+                        Mathf.FloorToInt((effet.Pourcentage / 100f) * Stat.Radiance);
+                    Stat.removeStat(effet.modifstate);
+                }
+
+
+                string buffDebuffName;
+                if (buff.idTradName != null)
+                {
+                    buffDebuffName = TradManager.instance.GetTranslation(buff.idTradName, buff.name);
+                }
+                else
+                {
+                    buffDebuffName = buff.name;
+                }
+
+                GameObject buffObject = null;
+                foreach (GameObject presentBuffObject in ListBuffDebuffGO)
+                {
+                    if (presentBuffObject.GetComponent<BuffDebuffComponant>().buffName == buffDebuffName)
+                    {
+                        buffObject = presentBuffObject;
+                        break;
+                    }
+                }
+
+                ListBuffDebuffGO.Remove(buffObject);
+                Destroy(buffObject);
+
+            }
+            Stat.ListBuffDebuff.Remove(buff);
+        }
+        
+    }
     public void AddDebuff(BuffDebuff toAdd, Decompte Decompte, TimerApplication Timer)
     {
+        
+        if (toAdd.ConditionnalBuff != ConditionalBuff.NONE)
+        {
+            switch (toAdd.ConditionnalBuff)
+            {
+                case ConditionalBuff.RoomAutel:
+                    Debug.Log("AutelBuff");
+                    GameManager.OnStartAutel += ClearAutelBuff;
+                    break;
+                case ConditionalBuff.RoomAlea:
+                    Debug.Log("AleaBuff");
+                    GameManager.OnStartEvent += ClearAleaBuff;
+                    break;
+                case ConditionalBuff.GainConscience:
+                    Debug.Log("GainConscienceBuff");
+                    Stat.OnConscienceIncrease += ClearIncreaseConscienceBuff;
+                    break;
+                case ConditionalBuff.PerteConscience:
+                    Debug.Log("PerteConscienceBuff");
+                    Stat.OnConscienceDecrease += ClearDecreaseConscienceBuff;
+                    break;
+            }
+        }
+        
+
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
             if (toAdd.IsDebuff)

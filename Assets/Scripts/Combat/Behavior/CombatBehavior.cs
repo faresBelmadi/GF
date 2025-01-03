@@ -32,16 +32,18 @@ public class CombatBehavior : MonoBehaviour
     }
     public void ClearBuffBar()
     {
-        foreach(var buff in ListBuffDebuffGO)
+        foreach (var buff in ListBuffDebuffGO)
         {
             Destroy(buff);
         }
         ListBuffDebuffGO.Clear();
     }
+   
 
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);
+       
         string[] buffDebuffInfos = GetBuffNameAndDescription(toAdd);
         string buffDebuffName = buffDebuffInfos[0];
         string buffDebuffDescription = buffDebuffInfos[1];
