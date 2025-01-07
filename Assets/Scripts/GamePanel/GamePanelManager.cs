@@ -76,6 +76,8 @@ public class GamePanelManager : MonoBehaviour
     {
         _canvaMap.SetActive(!doTutorial);
         _canvaDialog.SetActive(false);
+        _canvaAutel.SetActive(false);
+        _canvaBattle.SetActive(false);
     }
 
     public void EndTuto()
@@ -124,6 +126,10 @@ public class GamePanelManager : MonoBehaviour
         _canvaDialog.SetActive(false);
         _canvaBattle.SetActive(false);
         _canvaEnnemy.SetActive(false);
+    }
+    public void HideAutel()
+    {
+        _canvaAutel.SetActive(false);
     }
 
     public void ShowMap()

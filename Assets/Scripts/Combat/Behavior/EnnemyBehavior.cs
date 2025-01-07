@@ -28,7 +28,7 @@ public class EnnemyBehavior : CombatBehavior
     private int currentTension = 0;
     private Coroutine deathRoutine = null;
 
-    public string Name
+    public override string Name
     {
         get { return TradManager.instance.GetTranslation(Stat.IdTradName, Stat.Nom); }
     }
@@ -533,7 +533,7 @@ public class EnnemyBehavior : CombatBehavior
             effet.IsFirstApplication = false;
             ModifStat.Radiance += ModifStat.RadianceMax;
         }
-
+        GameManager.Instance.BattleMan.LogRadianceChange(this,  GameManager.Instance.BattleMan.GetBehaviorFromStat(Caster), ModifStat.Radiance);
         Stat.ModifStateAll(ModifStat);
         Stat.RectificationStat();
 

@@ -11,7 +11,6 @@ public class DescriptionHoverTrigger : MonoBehaviour, IPointerEnterHandler, IPoi
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("enter");
         ToShow.SetActive(true);
         GameObject pos = GameObject.FindGameObjectWithTag("TooltipPosition");
         if (pos != null)
@@ -23,7 +22,6 @@ public class DescriptionHoverTrigger : MonoBehaviour, IPointerEnterHandler, IPoi
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("exit");
         ToShow.SetActive(false);
     }
 

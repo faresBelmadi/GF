@@ -58,6 +58,8 @@ public class GameManager : MonoBehaviour {
 
     public PassifRules passifRules;
     [Header("Data")]
+    [SerializeField]
+    private SpriteData _spriteData;
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
     [SerializeField]
@@ -67,6 +69,7 @@ public class GameManager : MonoBehaviour {
 
     public bool IsTuto { get; set; }
     public bool IsPaused { get; set; } = false;
+    public GamePanelManager GamePanelMngr { get => _gamePanelManager; }
     public DialogueManager DialManager
     {
         get
@@ -80,6 +83,7 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public SpriteData SpriteData { get { return _spriteData; } }
     #region Events
     public static event Action OnStartCombat;
     public static event Action OnLootAfterCombat;
@@ -464,6 +468,7 @@ public class GameManager : MonoBehaviour {
 
     public void LoadEvent()
     {
+        OnStartEvent?.Invoke();
         OnStartDialog?.Invoke();
         AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
     }

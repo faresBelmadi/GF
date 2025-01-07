@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 //using static UnityEditor.Progress;
 
 [System.Serializable]
@@ -13,7 +11,9 @@ public class BattleManager : MonoBehaviour
 {
     [Header("Tuto")]
     [SerializeField] private bool _isTuto = false;
-
+    [Header("BattleLogger")]
+    [SerializeField]
+    private BattleLog _battleLogger;
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
@@ -26,6 +26,7 @@ public class BattleManager : MonoBehaviour
     private string _idLabelForEssenceButton;
     const string Target = "Targeting";
     public PassifRules passifRules;
+
     [Header("CrystalSoul Manager")]
     [Tooltip("Put three Essence Prefab, from the smallest, to the greatest")]
     [SerializeField]
@@ -71,6 +72,26 @@ public class BattleManager : MonoBehaviour
 
     public static Action<Transform> OnGatherEssence;
 
+    #region Reference
+    /// <summary>
+    /// Return Combat behavior linked to the given character stat
+    /// </summary>
+    /// <param name="stat">CharacterStat to find</param>
+    /// <returns>The linked COmbatBehaviour</returns>
+    public CombatBehavior GetBehaviorFromStat(CharacterStat stat)
+    {
+        if (stat == null) return null;
+        
+        if (player.Stat == stat)
+            return player;
+        foreach(var ennemy in EnemyScripts)
+        {
+            if (ennemy.Stat == stat)
+                return ennemy;
+        }
+        return null;
+    }
+    #endregion
     #region Loot
 
     public void Loot()
@@ -413,7 +434,9 @@ public class BattleManager : MonoBehaviour
         }
         Loot();
         player.ResetStat();
-        player.Stat.ListBuffDebuff.Clear();
+        //player.Stat.ListBuffDebuff.Clear();
+        //player.ClearBuffBar();
+        player.ClearBuff();
         player.Stat.Volonter = player.Stat.VolonterMax;
         player.Stat.Tension = 0;
         Debug.Log(IsLoot);
@@ -533,11 +556,12 @@ public class BattleManager : MonoBehaviour
 
     #region Lien Joueur - Ennemi
 
-    public void LaunchSpellJoueur(Spell Spell)
+    public void LaunchSpellJoueur(Spell spell)
     {
+        LogLaunchedSpell(player, spell);
         player.DesactivateSpells();
-        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerSpellSFX, Spell.SpellSFX);
-        foreach (var effet in Spell.ActionEffet)
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerSpellSFX, spell.SpellSFX);
+        foreach (var effet in spell.ActionEffet)
         {
             PassageEffet(effet, idPlayer, idTarget, SourceEffet.Spell);
             if (effet.AfterEffectToApply != null)
@@ -574,13 +598,15 @@ public class BattleManager : MonoBehaviour
         }
 
         //EnemyScripts.First(c => c.combatID == idTarget).ApplicationBuffDebuff(TimerApplication.Attaque);
-        GiveBuffDebuff(Spell.ActionBuffDebuff, idTarget);
+        GiveBuffDebuff(spell.ActionBuffDebuff, idTarget);
         idTarget = -1;
 
     }
 
     public void LaunchSpellEnnemi(EnnemiSpell Spell)
     {
+        var playing = EnemyScripts.First(c => c.combatID == currentIdTurn);
+        LogLaunchedSpell(playing, Spell);
         foreach (var effet in Spell.Effet)
         {
             PassageEffet(effet, currentIdTurn, -1, SourceEffet.Spell);
@@ -594,6 +620,16 @@ public class BattleManager : MonoBehaviour
 
         GiveBuffDebuff(Spell.debuffsBuffs);
         //player.ApplicationBuffDebuff(TimerApplication.Attaque);
+    }
+    public void LogLaunchedSpell(CombatBehavior launcher, IBattleLogSpell spell)
+    {
+        if (_battleLogger.gameObject.activeInHierarchy)
+            _battleLogger.AddBattleLaunchSpellLogLine(launcher, spell);
+    }
+    public void LogRadianceChange(CombatBehavior target, CombatBehavior source, int amount)
+    {
+        if (_battleLogger.gameObject.activeInHierarchy)
+            _battleLogger.AddDamageLogLine(target, source, amount);
     }
 
     private void ApplyAfterEffect(Effet effet) // ICI DANGER: en cas d'after effect Applique 2 fois les buff debuff!
