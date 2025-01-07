@@ -70,29 +70,9 @@ public class JoueurBehavior : CombatBehavior
     private void OnEnable()
     {
 
-        int i = 0;
-        foreach (Transform child in transform)
-        {
-            if (child.gameObject.activeSelf)
-                i++;
-            else
-                Debug.Log("trouvé !", gameObject);
-        }
-        Debug.Log("Active Children : " + i);
         GetComponent<Animator>().Rebind();
     }
     
-    private void OnDisable()
-    {
-        int i = 0;
-        foreach (Transform child in transform)
-        {
-            if (child.gameObject.activeSelf)
-                i++;
-        }
-        Debug.Log("Active Children : " + i);
-
-    }
   
     public void StartUp()
     {
@@ -700,6 +680,10 @@ public class JoueurBehavior : CombatBehavior
                 case ConditionalBuff.PerteConscience:
                     Debug.Log("PerteConscienceBuff");
                     Stat.OnConscienceDecrease += ClearDecreaseConscienceBuff;
+                    break;
+                case ConditionalBuff.NouvelEtage:
+                    Debug.Log("NouvelEtageBuff");
+                    // TODO: Ajouter subscribe a l'evenement de changement d'étage
                     break;
             }
         }

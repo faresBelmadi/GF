@@ -4,6 +4,7 @@ using UnityEngine;
 public enum ConditionalBuff
 {
     NONE,
+    NouvelEtage,
     RoomAutel,
     RoomAlea,
     GainConscience,

@@ -161,7 +161,7 @@ public class CombatBehavior : MonoBehaviour
         //Debug.Log($"Decompte Buffs: {Timer.ToString()}");
         foreach (var item in BuffDebuff)
         {
-            if (item.Decompte == Timer) 
+            if (item.ConditionnalBuff == ConditionalBuff.NONE && item.Decompte == Timer) 
             {
                 //Debug.Log($"Decompte {item.Nom} from {gameObject.name}");
 
