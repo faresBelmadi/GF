@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class JoueurBehavior : CombatBehavior
 {
@@ -69,30 +70,10 @@ public class JoueurBehavior : CombatBehavior
     private void OnEnable()
     {
 
-        int i = 0;
-        foreach (Transform child in transform)
-        {
-            if (child.gameObject.activeSelf)
-                i++;
-            else
-                Debug.Log("trouvé !", gameObject);
-        }
-        Debug.Log("Active Children : " + i);
         GetComponent<Animator>().Rebind();
     }
     
-    private void OnDisable()
-    {
-        int i = 0;
-        foreach (Transform child in transform)
-        {
-            if (child.gameObject.activeSelf)
-                i++;
-        }
-        Debug.Log("Active Children : " + i);
-
-    }
-
+  
     public void StartUp()
     {
 
@@ -137,7 +118,6 @@ public class JoueurBehavior : CombatBehavior
 
             Spells.Add(temp);
         }
-
         InitUI();
     }
 
@@ -272,6 +252,10 @@ public class JoueurBehavior : CombatBehavior
         OnUpdate();
     }
 
+    public void StartCombat()
+    {
+       
+    }
     public void StartPhase()
     {
         //ResetStat();
@@ -574,8 +558,137 @@ public class JoueurBehavior : CombatBehavior
 
     #region BuffDebuff
 
+    public void ClearBuff()
+    {
+        //for (int i = Stat.ListBuffDebuff.Count-1;i>=0;i--)
+        //{
+        //    if (Stat.ListBuffDebuff[i].Decompte != Decompte.combat)
+        //    {
+        //        Stat.ListBuffDebuff.RemoveAt(i);
+        //    }
+        //}
+        var tempListBuffGO = ListBuffDebuffGO.Where(x => x.GetComponent<BuffDebuffComponant>().BuffDebuffs[0].Decompte != Decompte.combat).ToList();
+        //var listBuffNoCombat = Stat.ListBuffDebuff.Where(x => x.Decompte != Decompte.combat).ToList();
+        foreach (var buffGO in tempListBuffGO)
+        {
+            foreach (var buff in buffGO.GetComponent<BuffDebuffComponant>().BuffDebuffs)
+            {
+                Stat.ListBuffDebuff.Remove(buff);
+            }
+            ListBuffDebuffGO.Remove(buffGO);
+            Destroy(buffGO);
+        }
+        
+        //foreach (var buff in listBuffNoCombat)
+        //{
+        //    Stat.ListBuffDebuff.Remove(buff);
+        //    var tempBuff = ListBuffDebuffGO.First(x => x.GetComponent<BuffDebuffComponant>().buffName == TradManager.instance.GetTranslation(buff.idTradName));
+        //    ListBuffDebuffGO.Remove(tempBuff);
+        //    Destroy(tempBuff);
+        //}
+    }
+
+    private void ClearIncreaseConscienceBuff()
+    {
+        Debug.Log("ClearGainConscienceBuff");
+        ClearConditionnalBuff(ConditionalBuff.GainConscience);
+        Stat.OnConscienceIncrease -= ClearIncreaseConscienceBuff;
+    }
+    private void ClearDecreaseConscienceBuff()
+    {
+        Debug.Log("ClearPerteConscienceBuff");
+        ClearConditionnalBuff(ConditionalBuff.PerteConscience);
+        Stat.OnConscienceDecrease -= ClearDecreaseConscienceBuff;
+    }
+    private void ClearAleaBuff()
+    {
+        Debug.Log("ClearAleaBuff");
+        ClearConditionnalBuff(ConditionalBuff.RoomAlea);
+        GameManager.OnStartEvent -= ClearAleaBuff;
+    }
+    private void ClearAutelBuff()
+    {
+        Debug.Log("ClearAutelBuff");
+        ClearConditionnalBuff(ConditionalBuff.RoomAutel);
+        GameManager.OnStartAutel -= ClearAutelBuff;
+    }
+    private void ClearConditionnalBuff(ConditionalBuff condition)
+    {
+        var buffList = Stat.ListBuffDebuff.Where(x => x.ConditionnalBuff == condition).ToList();
+
+        foreach(var buff in buffList)
+        {
+            foreach (var effet in buff.Effet)
+            {
+                if (effet.TypeEffet != TypeEffet.RadianceMax)
+                    Stat.removeStat(effet.modifstate);
+                else
+                {
+                    effet.modifstate.Radiance =
+                        Mathf.FloorToInt((effet.Pourcentage / 100f) * Stat.Radiance);
+                    Stat.removeStat(effet.modifstate);
+                }
+
+
+                string buffDebuffName;
+                if (buff.idTradName != null)
+                {
+                    buffDebuffName = TradManager.instance.GetTranslation(buff.idTradName, buff.name);
+                }
+                else
+                {
+                    buffDebuffName = buff.name;
+                }
+
+                GameObject buffObject = null;
+                foreach (GameObject presentBuffObject in ListBuffDebuffGO)
+                {
+                    if (presentBuffObject.GetComponent<BuffDebuffComponant>().buffName == buffDebuffName)
+                    {
+                        buffObject = presentBuffObject;
+                        break;
+                    }
+                }
+
+                ListBuffDebuffGO.Remove(buffObject);
+                Destroy(buffObject);
+
+            }
+            Stat.ListBuffDebuff.Remove(buff);
+        }
+        
+    }
     public void AddDebuff(BuffDebuff toAdd, Decompte Decompte, TimerApplication Timer)
     {
+        
+        if (toAdd.ConditionnalBuff != ConditionalBuff.NONE)
+        {
+            switch (toAdd.ConditionnalBuff)
+            {
+                case ConditionalBuff.RoomAutel:
+                    Debug.Log("AutelBuff");
+                    GameManager.OnStartAutel += ClearAutelBuff;
+                    break;
+                case ConditionalBuff.RoomAlea:
+                    Debug.Log("AleaBuff");
+                    GameManager.OnStartEvent += ClearAleaBuff;
+                    break;
+                case ConditionalBuff.GainConscience:
+                    Debug.Log("GainConscienceBuff");
+                    Stat.OnConscienceIncrease += ClearIncreaseConscienceBuff;
+                    break;
+                case ConditionalBuff.PerteConscience:
+                    Debug.Log("PerteConscienceBuff");
+                    Stat.OnConscienceDecrease += ClearDecreaseConscienceBuff;
+                    break;
+                case ConditionalBuff.NouvelEtage:
+                    Debug.Log("NouvelEtageBuff");
+                    // TODO: Ajouter subscribe a l'evenement de changement d'étage
+                    break;
+            }
+        }
+        
+
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
             if (toAdd.IsDebuff)

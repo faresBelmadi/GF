@@ -1,6 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+public enum ConditionalBuff
+{
+    NONE,
+    NouvelEtage,
+    RoomAutel,
+    RoomAlea,
+    GainConscience,
+    PerteConscience
+}
+
 [CreateAssetMenu(fileName = "New Buff/debuff", menuName = "Capacité/Create New BuffDebuff", order = 11)]
 public class BuffDebuff : ScriptableObject
 {
@@ -21,6 +31,11 @@ public class BuffDebuff : ScriptableObject
     public Sprite Icon;
     public GameObject SpawnObject;
     public bool DirectApplication = true;
+ 
+    [SerializeField]
+    private ConditionalBuff _condition = ConditionalBuff.NONE;
+
+    public ConditionalBuff ConditionnalBuff { get => _condition; }
 
     public int TimeLeft
     {

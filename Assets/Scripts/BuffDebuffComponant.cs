@@ -16,8 +16,9 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] public TextMeshProUGUI buffDescriptionLabel;
     public string buffName;
 
-    private List<BuffDebuff> _buffDebuff = new List<BuffDebuff>();
+    public List<BuffDebuff> BuffDebuffs { get; private set; } = new List<BuffDebuff>();
 
+    
     private void OnEnable()
     {
         CombatBehavior.OnUpdateUI += UpdateUI;
@@ -38,14 +39,14 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     }
     public void AddStack(BuffDebuff buffDebuff)
     {
-        _buffDebuff.Add(buffDebuff);
+        BuffDebuffs.Add(buffDebuff);
     }
     public void RemoveNullStack()
     {
-        for (int i = _buffDebuff.Count - 1; i >= 0; i--)
+        for (int i = BuffDebuffs.Count - 1; i >= 0; i--)
         {
-            if (_buffDebuff[i].TimeLeft <= 0)
-                _buffDebuff.RemoveAt(i);
+            if (BuffDebuffs[i].TimeLeft <= 0)
+                BuffDebuffs.RemoveAt(i);
         }
     
     }
@@ -98,14 +99,14 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     public void UpdateUI()
     {
         int timeLeft = -1;
-        foreach (var buff in _buffDebuff)
+        foreach (var buff in BuffDebuffs)
         {
             if (timeLeft < buff.TimeLeft)
                 timeLeft = buff.TimeLeft;
         }
-        if (_buffDebuff.Count > 0)
+        if (BuffDebuffs.Count > 0)
         {
-            buffDescriptionLabel.text = TradManager.instance.GetTranslation(_buffDebuff[0].idTradDescription, "Missing description")
+            buffDescriptionLabel.text = TradManager.instance.GetTranslation(BuffDebuffs[0].idTradDescription, "Missing description")
             + (timeLeft != -1 ? "\n(Time left : " + timeLeft + ")" : "");
         }
     }

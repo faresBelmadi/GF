@@ -32,15 +32,18 @@ public class CombatBehavior : MonoBehaviour
     }
     public void ClearBuffBar()
     {
-        foreach(var buff in ListBuffDebuffGO)
+        foreach (var buff in ListBuffDebuffGO)
         {
             Destroy(buff);
         }
         ListBuffDebuffGO.Clear();
     }
+   
+
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);
+       
         string[] buffDebuffInfos = GetBuffNameAndDescription(toAdd);
         string buffDebuffName = buffDebuffInfos[0];
         string buffDebuffDescription = buffDebuffInfos[1];
@@ -158,7 +161,7 @@ public class CombatBehavior : MonoBehaviour
         //Debug.Log($"Decompte Buffs: {Timer.ToString()}");
         foreach (var item in BuffDebuff)
         {
-            if (item.Decompte == Timer) 
+            if (item.ConditionnalBuff == ConditionalBuff.NONE && item.Decompte == Timer) 
             {
                 //Debug.Log($"Decompte {item.Nom} from {gameObject.name}");
 
