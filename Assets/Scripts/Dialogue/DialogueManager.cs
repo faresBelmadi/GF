@@ -176,6 +176,13 @@ public class DialogueManager : MonoBehaviour
 
     private void GetAnswerList()
     {
+        //test
+        foreach (var panel in _dialogPanelComponent.ClairvContentListGO)
+        {
+            panel.GetComponent<ClairvoyancePanel>().InitClairvoyancePanel();
+            
+        }
+        //end test
         _displayedClairvoyanceStats = new Dictionary<ClairvoyanceIconStatEnum, bool>();
 
         TextDisplayer textDisplayer = _dialogPanelComponent.MainText.GetComponent<TextDisplayer>();
@@ -270,6 +277,12 @@ public class DialogueManager : MonoBehaviour
                     _dialogPanelComponent.Reponse[i].SetActive(true);
                 }
             }
+        }
+        Debug.Log("Hello");
+        foreach (var panel in _dialogPanelComponent.ClairvContentListGO)
+        {
+            string str = panel.GetComponent<ClairvoyancePanel>().PrintListOfEffect();
+            Debug.Log(str);
         }
     }
 
@@ -371,7 +384,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatForceDameDown != null)
                             ? _clairvoyanceIconData.StatForceDameDown.name
                             : "FA");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -383,7 +396,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatForceDameUp != null)
                             ? _clairvoyanceIconData.StatForceDameUp.name
                             : "FA");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "";
                 }
@@ -400,7 +413,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatForceDameDown != null)
                             ? _clairvoyanceIconData.StatForceDameDown.name
                             : "FA");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -412,7 +425,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatForceDameUp != null)
                             ? _clairvoyanceIconData.StatForceDameUp.name
                             : "FA");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "";
                 }
@@ -428,7 +441,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatRadianceDown != null)
                             ? _clairvoyanceIconData.StatRadianceDown.name
                             : "Rad");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -440,7 +453,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatRadianceUp != null)
                             ? _clairvoyanceIconData.StatRadianceUp.name
                             : "Rad");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "";
                 }
@@ -456,7 +469,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatResilienceDown != null)
                             ? _clairvoyanceIconData.StatResilienceDown.name
                             : "Res");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -468,7 +481,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatResilienceUp != null)
                             ? _clairvoyanceIconData.StatResilienceUp.name
                             : "Res");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "";
                 }
@@ -484,7 +497,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatClairvoyanceDown != null)
                             ? _clairvoyanceIconData.StatClairvoyanceDown.name
                             : "Cla");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -496,7 +509,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatClairvoyanceUp != null)
                             ? _clairvoyanceIconData.StatClairvoyanceUp.name
                             : "Cla");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "";
                 }
@@ -512,7 +525,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatVitesseDown != null)
                             ? _clairvoyanceIconData.StatVitesseDown.name
                             : "Vit");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -524,7 +537,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatVitesseUp != null)
                             ? _clairvoyanceIconData.StatVitesseUp.name
                             : "Vit");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "";
                 }
@@ -540,7 +553,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatConvictionDown != null)
                             ? _clairvoyanceIconData.StatConvictionDown.name
                             : "Con");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -552,7 +565,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatConvictionUp != null)
                             ? _clairvoyanceIconData.StatConvictionUp.name
                             : "Con");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "";
                 }
@@ -568,7 +581,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatConscienceDown != null)
                             ? _clairvoyanceIconData.StatConscienceDown.name
                             : "con");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -580,7 +593,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatConscienceUp != null)
                             ? _clairvoyanceIconData.StatConscienceUp.name
                             : "con");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "";
                 }
@@ -596,19 +609,19 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.Damage != null)
                             ? _clairvoyanceIconData.Damage.name
                             : "DMG");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
                 else
                 {
-                    if (!displayed[(int)ClairvoyanceIconStatEnum.ConvictionUp])
+                    if (!displayed[(int)ClairvoyanceIconStatEnum.Degats])
                     {
-                        displayed[(int)ClairvoyanceIconStatEnum.ConvictionUp] = true;
-                        strb.Append((_clairvoyanceIconData.StatConvictionUp != null)
-                            ? _clairvoyanceIconData.StatConvictionUp.name
-                            : "Con");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        displayed[(int)ClairvoyanceIconStatEnum.Degats] = true;
+                        strb.Append((_clairvoyanceIconData.Damage != null)
+                            ? _clairvoyanceIconData.Damage.name
+                            : "DMG");
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "";
                 }
@@ -625,7 +638,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatVolonteDown != null)
                             ? _clairvoyanceIconData.StatVolonteDown.name
                             : "Vol");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -637,7 +650,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatVolonteUp != null)
                             ? _clairvoyanceIconData.StatVolonteUp.name
                             : "Vol");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "";
                 }
@@ -658,7 +671,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatTensionDown != null)
                             ? _clairvoyanceIconData.StatTensionDown.name
                             : "FA");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -670,7 +683,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.StatTensionUp != null)
                             ? _clairvoyanceIconData.StatTensionUp.name
                             : "TENS");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "TENS";
                 }
@@ -684,7 +697,7 @@ public class DialogueManager : MonoBehaviour
                     strb.Append((_clairvoyanceIconData.Damage != null)
                         ? _clairvoyanceIconData.Damage.name
                         : "DMG");
-                    AddClairvoyanceIcone(effet, selectedAnswer);
+                    AddClairvoyanceIcone(effet, selectedAnswer, true);
                 }
 
                 break;
@@ -698,7 +711,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.DecreaseAtk != null)
                             ? _clairvoyanceIconData.DecreaseAtk.name
                             : "MultATK");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -710,7 +723,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.IncreaseAtk != null)
                             ? _clairvoyanceIconData.IncreaseAtk.name
                             : "MultATK");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "MultATK";
                 }
@@ -726,7 +739,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.DecreaseDef != null)
                             ? _clairvoyanceIconData.DecreaseDef.name
                             : "MultDEF");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -738,7 +751,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.IncreaseDef != null)
                             ? _clairvoyanceIconData.IncreaseDef.name
                             : "MultDEF");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "MultDEF";
                 }
@@ -754,7 +767,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.DecreaseHeal != null)
                             ? _clairvoyanceIconData.DecreaseHeal.name
                             : "MultHeal");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "";
                 }
@@ -766,7 +779,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.IncreaseHeal != null)
                             ? _clairvoyanceIconData.IncreaseHeal.name
                             : "MultHeal");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "MultHeal";
                 }
@@ -781,7 +794,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.WrathDown != null)
                             ? _clairvoyanceIconData.WrathDown.name
                             : "WrathDown");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, false);
                     }
                     else return "WrathDown";
                 }
@@ -793,7 +806,7 @@ public class DialogueManager : MonoBehaviour
                         strb.Append((_clairvoyanceIconData.WrathUp != null)
                             ? _clairvoyanceIconData.WrathUp.name
                             : "WrathUp");
-                        AddClairvoyanceIcone(effet, selectedAnswer);
+                        AddClairvoyanceIcone(effet, selectedAnswer, true);
                     }
                     else return "WrathUp";
                 }
@@ -871,9 +884,11 @@ public class DialogueManager : MonoBehaviour
         return strb.ToString();
     }
 
-    private void AddClairvoyanceIcone(Effet effet, int selectedAnswer)
+    private void AddClairvoyanceIcone(Effet effet, int selectedAnswer, bool isBonus)
     {
         GameObject effectGO = Instantiate(_effectPrefab, _dialogPanelComponent.ClairvContentListGO[selectedAnswer].transform);
+        ClairvoyancePanel panel = _dialogPanelComponent.ClairvContentListGO[selectedAnswer].GetComponent<ClairvoyancePanel>();
+        panel.AddEffect(effet, isBonus);
         effectGO.GetComponent<EffectComponent>().SetSprite(effet.GetSpriteOfEffect());
         effectGO.GetComponent<EnflateSystem>().TriggerInflation();
 
@@ -1060,6 +1075,13 @@ public class DialogueManager : MonoBehaviour
     }
     private void ClearClairvoyanceIcons()
     {
+        //test
+        foreach (var panel in _dialogPanelComponent.ClairvContentListGO)
+        {
+            panel.GetComponent<ClairvoyancePanel>().ClearClairvoyancePanel();
+            
+        }
+        //end test
         for (int i = _listClairvEffect.Count - 1; i >= 0; i--)
         {
             Destroy(_listClairvEffect[i]);
