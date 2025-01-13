@@ -278,7 +278,6 @@ public class DialogueManager : MonoBehaviour
                 }
             }
         }
-        Debug.Log("Hello");
         foreach (var panel in _dialogPanelComponent.ClairvContentListGO)
         {
             string str = panel.GetComponent<ClairvoyancePanel>().PrintListOfEffect();
@@ -1079,9 +1078,12 @@ public class DialogueManager : MonoBehaviour
         foreach (var panel in _dialogPanelComponent.ClairvContentListGO)
         {
             panel.GetComponent<ClairvoyancePanel>().ClearClairvoyancePanel();
-            
         }
         //end test
+        foreach (var hidePanel in _dialogPanelComponent.ClairvoyancePanels)
+        {
+            hidePanel.Hide();
+        }
         for (int i = _listClairvEffect.Count - 1; i >= 0; i--)
         {
             Destroy(_listClairvEffect[i]);
