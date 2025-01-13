@@ -1080,10 +1080,7 @@ public class DialogueManager : MonoBehaviour
             panel.GetComponent<ClairvoyancePanel>().ClearClairvoyancePanel();
         }
         //end test
-        foreach (var hidePanel in _dialogPanelComponent.ClairvoyancePanels)
-        {
-            hidePanel.Hide();
-        }
+       
         for (int i = _listClairvEffect.Count - 1; i >= 0; i--)
         {
             Destroy(_listClairvEffect[i]);
