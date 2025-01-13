@@ -49,6 +49,11 @@ public class DialogPanelComponent : MonoBehaviour
     private List<GameObject> _reponseOneGO;
     [SerializeField]
     private GameObject _endOneDialogue;
+    [Header("Panel for clairvoyance hints")]
+    [SerializeField]
+    private GameObject _clairvoyanceHintsPanel;
+    [SerializeField]
+    private TMP_Text _clairvoyanceHintsText;
 
     private List<TMP_Text> _reponseTextList = new List<TMP_Text>();
     private TMP_Text _mainText;
@@ -71,6 +76,10 @@ public class DialogPanelComponent : MonoBehaviour
     void Awake()
     {
         SwitchNumberOfAnswer(2);   
+    }
+    private void OnAnimatorIK(int layerIndex)
+    {
+        _clairvoyanceHintsPanel.SetActive(false);
     }
 
     private void SetReference()
@@ -127,6 +136,15 @@ public class DialogPanelComponent : MonoBehaviour
                 _dialogFrameGO.GetComponent<Image>().sprite = _twoAnswerDialogFrame;
                 break;
         }
+    }
+    public void ShowPanel(int selectedPanel)
+    {
+        _clairvoyanceHintsPanel.SetActive(true);
+        _clairvoyanceHintsText.text = ClairvContentListGO[selectedPanel].GetComponent<ClairvoyancePanel>().PrintListOfEffect();
+    }
+    public void HidePanel()
+    {
+        _clairvoyanceHintsPanel.SetActive(false);
     }
 
 }
