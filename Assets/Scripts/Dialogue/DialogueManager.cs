@@ -226,13 +226,14 @@ public class DialogueManager : MonoBehaviour
                     Text.text = DialogueTrad;
                 }
             }
-
+            _dialogPanelComponent.HideClairvoyancePanel();
             _dialogPanelComponent.EndDialog.SetActive(true);
         }
         else
         {
             for (int i = 0; i < currentPossibleResponseList.Count; i++)
             {
+                _dialogPanelComponent.ClairvoyancePanels[i].SetPanel(currentPossibleResponseList.Count);
                 Debug.Log("Conscience requise = " + currentPossibleResponseList[i].SeuilConscience + "\n Conscience joueur : " + GameManager.Instance.playerStat.Conscience);
                 string response = "";
                 if (GameManager.Instance.playerStat.Conscience >= currentPossibleResponseList[i].SeuilConscience)
@@ -254,8 +255,13 @@ public class DialogueManager : MonoBehaviour
                     //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
                     if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
                     {
+                        _dialogPanelComponent.ClairvoyancePanels[i].Show();
                         bool[] displayed = new bool[Enum.GetValues(typeof(ClairvoyanceIconStatEnum)).Length];
                         ShowConsequenceForAnswer(i, ref displayed);
+                    }
+                    else
+                    {
+                        _dialogPanelComponent.ClairvoyancePanels[i].Hide();
                     }
                 }
                 else
