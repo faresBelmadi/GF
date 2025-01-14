@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -19,11 +20,23 @@ public class JoueurStat : CharacterStat
     public int SlotsSouvenir;
     public List<Souvenir> ListSouvenir;
     
+    public event Action OnConscienceIncrease;
+    public event Action OnConscienceDecrease;
 
     public void ModifStateAll(JoueurStat ModifState)
     {
         this.Volonter += ModifState.Volonter;
         this.VolonterMax += ModifState.VolonterMax;
+        if (ModifState.Conscience > 0 || ModifState.ConscienceMax > 0)
+        {
+            Debug.LogWarning("ModifStatConscience+Joueur");
+            OnConscienceIncrease?.Invoke();
+        }
+        else if (ModifState.Conscience < 0 || ModifState.ConscienceMax < 0)
+        {
+            Debug.LogWarning("ModifStatConscience-Joueur");
+            OnConscienceDecrease?.Invoke();
+        }
         this.Conscience += ModifState.Conscience;
         this.ConscienceMax += ModifState.ConscienceMax;
         this.Clairvoyance += ModifState.Clairvoyance;

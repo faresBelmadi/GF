@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -908,6 +906,8 @@ public class DialogueManager : MonoBehaviour
                 buff.GetComponent<BuffDebuffComponant>().InitBuffDebuff(buffDebuff);
                 buff.GetComponent<BuffDebuffComponant>().buffCntLabel.text = "1";
                 buff.GetComponent<EnflateSystem>().TriggerInflation();
+                
+                buff.GetComponent<BuffDebuffComponant>().buffSprite.sprite = buffDebuff.IsDebuff?GameManager.Instance.SpriteData.Debuff:GameManager.Instance.SpriteData.Buff;
                 _listBuffEffectFromDialog.Add(buff);
 
                 //Application du buff
