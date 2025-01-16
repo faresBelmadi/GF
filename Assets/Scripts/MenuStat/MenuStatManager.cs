@@ -10,8 +10,9 @@ using UnityEngine.Rendering;
 public class MenuStatManager : MonoBehaviour
 {
     public JoueurStat Stat, StatTemp;
-
     public GameObject SouvenirPrefab;
+    [SerializeField]
+    private GameObject SouvenirPrefab2;
     public GameObject SouvenirSpawnEquiped;
     public GameObject SouvenirSpawnUnEquiped;
     public List<GameObject> Souvenir;
@@ -117,6 +118,17 @@ public class MenuStatManager : MonoBehaviour
     void Update()
     {
         UpdateStatUI();
+
+
+        if (Input.GetKeyUp(KeyCode.L))
+        {
+            Debug.Log("Loot");
+            var s = GameManager.Instance.CopyAllSouvenir[0];
+            var temp = Instantiate(SouvenirPrefab2, SouvenirSpawnUnEquiped.transform);
+            temp.GetComponent<SouvenirUI>().LeSouvenir = s;
+            //temp.GetComponent<SouvenirUI>().StartUp();
+        }
+
     }
     public void ResetStat()
     {
