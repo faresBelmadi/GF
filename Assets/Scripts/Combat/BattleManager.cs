@@ -255,6 +255,10 @@ public class BattleManager : MonoBehaviour
         GameManager.OnStartDialog -= CombatEnableSetup;
     }
 
+    public int getJoueurClairvoyance()
+    {
+        return player.Stat.Clairvoyance;
+    }
     void DialogueEnableSetup()
     {
         player.InitRefBattleMan(this);
