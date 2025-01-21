@@ -166,11 +166,11 @@ public class AutelManager : MonoBehaviour
 
         foreach (var capa in listOfCompetences)
         {
-            if (ShouldIgnoreCapaLier(capa.IDLvl))
-            {
-                AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().color = Color.gray;
-                capa.isBuyable = false;
-            }
+            //if (ShouldIgnoreCapaLier(capa.IDLvl))
+            //{
+            //    AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().color = Color.gray;
+            //    capa.isBuyable = false;
+            //}
             //if (capa.IDLvl == 13 || capa.IDLvl == 14)
             //{
             //    AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.Sprite;
