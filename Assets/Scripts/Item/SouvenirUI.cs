@@ -7,7 +7,7 @@ using UnityEngine.UI;
 [System.Serializable]
 public class SouvenirUI : MonoBehaviour
 {
-    [HideInInspector]
+   // [HideInInspector]
     public Souvenir LeSouvenir;
     public TextMeshProUGUI TexteDescription;
     [SerializeField]
