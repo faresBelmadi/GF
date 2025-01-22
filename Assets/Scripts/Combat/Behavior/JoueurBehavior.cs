@@ -688,7 +688,7 @@ public class JoueurBehavior : CombatBehavior
         }
         
 
-        for (int i = 1; i < Stat.MultipleBuffDebuff; i++)
+        for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
             if (toAdd.IsDebuff)
             {
@@ -709,7 +709,7 @@ public class JoueurBehavior : CombatBehavior
         }
 
 
-        DecompteDebuffJoueur(Decompte, Timer);
+        //DecompteDebuffJoueur(Decompte, Timer);
 
         UpdateUI();
     }
