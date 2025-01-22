@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[CreateAssetMenu(fileName = " new CommonNameData", menuName = "CommonNameData/Create New CommonNameData")]
-
+[CreateAssetMenu(fileName = " new CommonNameData", menuName = "CommonData/Create New CommonNameData")]
 public class CommonNameData : ScriptableObject
 {
     [SerializeField]

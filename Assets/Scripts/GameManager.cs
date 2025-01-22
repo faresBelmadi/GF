@@ -62,6 +62,9 @@ public class GameManager : MonoBehaviour
     [field: SerializeField]
     public CommonNameData CommonNameData { get; private set; }
 
+    [field: SerializeField]
+    public CommonDescData CommonDescData { get; private set; }
+
     public ClairvoyanceIconData StatIcons
     {
         get => _clairvoyanceIconData;
