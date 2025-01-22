@@ -15,6 +15,14 @@ public class AutelManager : MonoBehaviour
     public JoueurStat stats;
     [SerializeField]
     private string _idTradCout;
+    [SerializeField]
+    private Animator _autelAnimator;
+    [SerializeField]
+    private Transform _autelArm;
+    [SerializeField]
+    private Transform _autelLeftPivot;
+    [SerializeField]
+    private Transform _autelRightPivot;
 
     [Header("Arbre")]
     public TextMeshProUGUI EssenceText;
@@ -75,6 +83,7 @@ public class AutelManager : MonoBehaviour
     public bool isOn = false;
     private void OnEnable()
     {
+        ResetPositionBalance();
         GameManager.OnStartAutel += InitAutel;
     }
     private void OnDisable()
@@ -131,6 +140,9 @@ public class AutelManager : MonoBehaviour
     public void InitAutel()
     {
         stats = GameManager.Instance.playerStat;
+        RetourButton.onClick.RemoveAllListeners();
+        //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
+        RetourButton.onClick.AddListener(delegate { ShowMenuUiPanel(); });
 
         SetUpStatsDescription();
         ShowMenuUiPanel();
@@ -145,9 +157,16 @@ public class AutelManager : MonoBehaviour
         MenuUiPanel.SetActive(true);
 
     }
-
+    private void ResetPositionBalance()
+    {
+        _autelArm.rotation = Quaternion.identity;
+        _autelLeftPivot.rotation = Quaternion.identity;
+        _autelRightPivot.rotation = Quaternion.identity;
+    }
     public void SetShopActive()
     {
+        BackHover();
+        ResetPositionBalance();
         ShopUiPanel.SetActive(true);
         MenuUiPanel.SetActive(false);
         SetUpShop();
@@ -155,6 +174,8 @@ public class AutelManager : MonoBehaviour
 
     public void SetLvlUpActive()
     {
+        BackHover();
+        ResetPositionBalance();
         LevelUpUiPanel.SetActive(true);
         MenuUiPanel.SetActive(false);
         SetUpAllSpells();
@@ -337,7 +358,7 @@ public class AutelManager : MonoBehaviour
 
         RetourButton.onClick.RemoveAllListeners();
         //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
-        RetourButton.onClick.AddListener(delegate { StartCoroutine(GameManager.Instance.pmm.EndAutel(false)); });
+        RetourButton.onClick.AddListener(delegate { RetourMap(); });
 
         BuyButton.onClick.RemoveAllListeners();
         BuyButton.GetComponent<Image>().color = Color.gray;
@@ -678,4 +699,21 @@ public class AutelManager : MonoBehaviour
         Loot = true;
         RetourMap();
     }
+
+    #region Animation
+
+    public void HoverShop()
+    {
+        _autelAnimator.SetTrigger("ChooseShop");
+    }
+    public void HoverTree()
+    {
+        _autelAnimator.SetTrigger("ChooseTree");
+    }
+    public void BackHover()
+    {
+        _autelAnimator.SetTrigger("Back");
+    }
+
+    #endregion
 }
