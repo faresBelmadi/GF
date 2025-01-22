@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class VolonteManager : MonoBehaviour
 {
-    [Tooltip("Trié du premier point au 7ème")]
+    [Tooltip("Trie du premier point au 7eme")]
     [SerializeField]
     private List<VolontePoint> _volontePoints;
 
