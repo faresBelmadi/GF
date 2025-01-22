@@ -15,7 +15,8 @@ public class DialogueManager : MonoBehaviour
     [Tooltip("Font size for dialogue options")]
     [SerializeField]
     private float _fontSize = 34f;
-
+    [SerializeField]
+    private string _idTradDefaultConscience;
     public GameObject UIJoueur;
     [SerializeField]
     private Color _speakerColor;
@@ -76,6 +77,7 @@ public class DialogueManager : MonoBehaviour
     internal int DialogueIndex = 0;
     protected int NextDialogueIndex = 0;
     private Dictionary<ClairvoyanceIconStatEnum, bool> _displayedClairvoyanceStats;
+
 
     #endregion Dialogue Property
 
@@ -274,7 +276,7 @@ public class DialogueManager : MonoBehaviour
                 }
                 else
                 {
-                    _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>(true).text = response;
+                    _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>(true).text = TradManager.instance.GetTranslation(_idTradDefaultConscience, "Conscience required"); ;
                     _dialogPanelComponent.Reponse[i].SetActive(true);
                 }
             }
