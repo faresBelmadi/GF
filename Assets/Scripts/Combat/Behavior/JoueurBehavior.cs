@@ -69,7 +69,6 @@ public class JoueurBehavior : CombatBehavior
     }
     private void OnEnable()
     {
-
         GetComponent<Animator>().Rebind();
     }
     

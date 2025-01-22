@@ -27,6 +27,8 @@ public class EnnemyBehavior : CombatBehavior
     private int currentHp = 0;
     private int currentTension = 0;
     private Coroutine deathRoutine = null;
+    private ClairvoyanceIconData clairvoyanceIconData = GameManager.Instance.StatIcons;
+
 
     public override string Name
     {
@@ -358,7 +360,28 @@ public class EnnemyBehavior : CombatBehavior
 
     private void UpdateIntention()
     {
-        UICombat.ChangeIntention(nextAction.ImageIntentionSpell);
+        if (GameManager.Instance.BattleMan.getJoueurClairvoyance() >= Stat.Dissimulation)
+        {
+            switch (nextActionType)
+            {
+                case nextActionEnum.Attaque:
+                    UICombat.ChangeIntention(clairvoyanceIconData.IntentionAtk);
+                    break;
+                case nextActionEnum.Attaque2:
+                    UICombat.ChangeIntention(clairvoyanceIconData.IntentionHeavyAtk);
+                    break;
+                case nextActionEnum.Buff:
+                    UICombat.ChangeIntention(clairvoyanceIconData.IntentionBuff);
+                    break;
+                case nextActionEnum.Debuff:
+                    UICombat.ChangeIntention(clairvoyanceIconData.IntentionDebuff);
+                    break;
+                default:
+                    break;
+            }
+        }
+        else
+            UICombat.ChangeIntention(clairvoyanceIconData.HiddenIntention);
     }
 
     #endregion IA
