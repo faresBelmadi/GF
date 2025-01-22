@@ -9,11 +9,11 @@ using UnityEngine;
 [System.Serializable]
 public class BattleManager : MonoBehaviour
 {
-    [Header("Tuto")]
-    [SerializeField] private bool _isTuto = false;
-    [Header("BattleLogger")]
-    [SerializeField]
+    [Header("Tuto")] [SerializeField] private bool _isTuto = false;
+
+    [Header("BattleLogger")] [SerializeField]
     private BattleLog _battleLogger;
+
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
@@ -22,8 +22,7 @@ public class BattleManager : MonoBehaviour
     public Encounter _encounter;
 
     public GameObject buttonEndCombat;
-    [SerializeField]
-    private string _idLabelForEssenceButton;
+    [SerializeField] private string _idLabelForEssenceButton;
     const string Target = "Targeting";
     public PassifRules passifRules;
 
@@ -31,11 +30,10 @@ public class BattleManager : MonoBehaviour
     [Tooltip("Put three Essence Prefab, from the smallest, to the greatest")]
     [SerializeField]
     public List<GameObject> _prefabEssenceList;
-    [SerializeField]
-    private int _amountForGreaestEssence;
-    [SerializeField]
-    private int _amountForMediumEssence;
-    
+
+    [SerializeField] private int _amountForGreaestEssence;
+    [SerializeField] private int _amountForMediumEssence;
+
     [Header("Round/Turn variables")] public List<CombatOrder> IdOrder;
     public int nbPhase = 0;
     public Dictionary<int, int> IdSpeedDictionary;
@@ -55,8 +53,10 @@ public class BattleManager : MonoBehaviour
     BattleUI battleUI;
     public int MostDamage, MostDamageID;
     public int LastPhaseDamage;
+
     public int CurrentPhaseDamage;
-   // [SerializeField] private DialogueManager DialogueManager;
+
+    // [SerializeField] private DialogueManager DialogueManager;
     public PassifManager PassifManager;
 
     public bool IsLoot;
@@ -68,11 +68,15 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Material characterMaterial;
     [SerializeField] private Material ennemiUIMaterial;
 
-    public bool IsTuto { get => _isTuto; }
+    public bool IsTuto
+    {
+        get => _isTuto;
+    }
 
     public static Action<Transform> OnGatherEssence;
 
     #region Reference
+
     /// <summary>
     /// Return Combat behavior linked to the given character stat
     /// </summary>
@@ -81,17 +85,20 @@ public class BattleManager : MonoBehaviour
     public CombatBehavior GetBehaviorFromStat(CharacterStat stat)
     {
         if (stat == null) return null;
-        
+
         if (player.Stat == stat)
             return player;
-        foreach(var ennemy in EnemyScripts)
+        foreach (var ennemy in EnemyScripts)
         {
             if (ennemy.Stat == stat)
                 return ennemy;
         }
+
         return null;
     }
+
     #endregion
+
     #region Loot
 
     public void Loot()
@@ -144,9 +151,14 @@ public class BattleManager : MonoBehaviour
     {
         player.Stat.TensionMax = (CalmeMoyenAdversaire / CalmeMoyen) * player.Stat.Calme;
         player.Stat.ValeurPalier = player.Stat.TensionMax / player.Stat.NbPalier;
-        if(player.Stat.PalierChangement > 0) { player.Stat.Tension = player.Stat.ValeurPalier * player.Stat.PalierChangement; }
+        if (player.Stat.PalierChangement > 0)
+        {
+            player.Stat.Tension = player.Stat.ValeurPalier * player.Stat.PalierChangement;
+        }
+
         Debug.Log($"Caculate tension joueur");
-        Debug.Log($"TMax = {player.Stat.TensionMax};\nVPal = {player.Stat.ValeurPalier};\nCurrent Tens = {player.Stat.Tension}];\nPalChange = {player.Stat.PalierChangement}]") ;
+        Debug.Log(
+            $"TMax = {player.Stat.TensionMax};\nVPal = {player.Stat.ValeurPalier};\nCurrent Tens = {player.Stat.Tension}];\nPalChange = {player.Stat.PalierChangement}]");
     }
 
     private void CalcTensionEnemy()
@@ -157,9 +169,14 @@ public class BattleManager : MonoBehaviour
             {
                 item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.Calme;
                 item.Stat.ValeurPalier = (item.Stat.TensionMax) / item.Stat.NbPalier;
-                if (item.Stat.PalierChangement > 0) { item.Stat.Tension = item.Stat.ValeurPalier * item.Stat.PalierChangement; }
+                if (item.Stat.PalierChangement > 0)
+                {
+                    item.Stat.Tension = item.Stat.ValeurPalier * item.Stat.PalierChangement;
+                }
+
                 Debug.Log($"Caculate tension Ennemie");
-                Debug.Log($"TMax = {item.Stat.TensionMax};\nVPal = {item.Stat.ValeurPalier};\nCurrent Tens = {item.Stat.Tension}];\nPalChange = {item.Stat.PalierChangement}]");
+                Debug.Log(
+                    $"TMax = {item.Stat.TensionMax};\nVPal = {item.Stat.ValeurPalier};\nCurrent Tens = {item.Stat.Tension}];\nPalChange = {item.Stat.PalierChangement}]");
             }
         }
     }
@@ -212,7 +229,8 @@ public class BattleManager : MonoBehaviour
                 //SFX to play when full tension
                 AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyFullTensionSFX);
                 return true;
-            }else
+            }
+            else
             {
                 t.GetComponent<UIEnnemi>().imageCadreFGs[0].material.SetInt("_isEnraged", 0);
                 t.GetComponent<UIEnnemi>().imageCadreFGs[1].material.SetInt("_isEnraged", 0);
@@ -221,13 +239,14 @@ public class BattleManager : MonoBehaviour
 
         return false;
     }
+
     private void UpdateEnrageUI(int turnId)
     {
         if (turnId == idPlayer)
         {
             if (!player.CanHaveAnotherTurn())
             {
-                player.EndTurnButton.GetComponent<UnityEngine.UI.Image>().material.SetInt("_isEnraged", 0); 
+                player.EndTurnButton.GetComponent<UnityEngine.UI.Image>().material.SetInt("_isEnraged", 0);
             }
         }
         else
@@ -250,6 +269,7 @@ public class BattleManager : MonoBehaviour
         //CombatEnableSetup();
         GameManager.OnStartDialog += CombatEnableSetup; // We need to instantiate character for the dialog
     }
+
     private void OnDisable()
     {
         GameManager.OnStartDialog -= CombatEnableSetup;
@@ -291,7 +311,7 @@ public class BattleManager : MonoBehaviour
 
     public void LoadEnemy(Encounter ToSpawn)
     {
-        _encounter = ToSpawn;
+        _encounter = GameManager.Instance.IsTuto ? Instantiate(TutoManager.Instance._encounter[TutoManager.Instance.IndexEncounter]) : ToSpawn;
         SpawnEnemy();
         player.UpdateUI();
         player.DesactivateSpells();
@@ -414,7 +434,7 @@ public class BattleManager : MonoBehaviour
             renderer.material = thisCharMaterial;
         }
     }
-    
+
     public void StartCombat()
     {
         IsCombatOn = true;
@@ -432,6 +452,7 @@ public class BattleManager : MonoBehaviour
             PassifManager.CurrentEvent = TimerPassif.FinCombat;
             PassifManager.ResolvePassifs();
         }
+
         Loot();
         player.ResetStat();
         //player.Stat.ListBuffDebuff.Clear();
@@ -448,17 +469,13 @@ public class BattleManager : MonoBehaviour
             child.gameObject.SetActive(true);
             var tutoPanelScript = TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>();
             tutoPanelScript.ShowExplication();
-          
-            buttonEndCombat.SetActive(false);
-            StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
+            TutoManager.Instance.TutoPanel.transform.parent = TutoManager.Instance.CanvasMap.transform;
         }
         else
-        {
             GameManager.Instance.playerStat = player.Stat;
-           
-            buttonEndCombat.SetActive(false);
-            StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
-        }
+
+        buttonEndCombat.SetActive(false);
+        StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
         ClearListEssence();
     }
 
@@ -518,16 +535,19 @@ public class BattleManager : MonoBehaviour
         {
             //TEST FOR GENERAL POPUP
             //GeneralPopUp.Instance.InvokePopUp("Start Player Turn","this is a test message describing the pop Up",.5f);
-            
-            player.StartTurn(nbPhase<2);
-            battleUI.textPLayingTurn.text = (GameManager.Instance!=null)?GameManager.Instance.classSO.NameClass:TutoManager.Instance.TutoClassSo.NameClass;
+
+            player.StartTurn(nbPhase < 2);
+            battleUI.textPLayingTurn.text = (GameManager.Instance != null)
+                ? GameManager.Instance.classSO.NameClass
+                : TutoManager.Instance.TutoClassSo.NameClass;
         }
         else
         {
             var playing = EnemyScripts.First(c => c.combatID == key);
-            playing.StartTurn(nbPhase<2);
+            playing.StartTurn(nbPhase < 2);
             battleUI.textPLayingTurn.text = playing.UICombat.NameText.text;
         }
+
         player.UpdateUI();
         UpdateEnrageUI(key);
     }
@@ -545,10 +565,11 @@ public class BattleManager : MonoBehaviour
                 PassifManager.CurrentEvent = TimerPassif.FinPhase;
                 PassifManager.ResolvePassifs();
             }
+
             StartPhase();
         }
         else
-            turnOrderUIManager.EvovlveTurnOrder();//StartNextTurn();
+            turnOrderUIManager.EvovlveTurnOrder(); //StartNextTurn();
 
     }
 
@@ -621,11 +642,13 @@ public class BattleManager : MonoBehaviour
         GiveBuffDebuff(Spell.debuffsBuffs);
         //player.ApplicationBuffDebuff(TimerApplication.Attaque);
     }
+
     public void LogLaunchedSpell(CombatBehavior launcher, IBattleLogSpell spell)
     {
         if (_battleLogger.gameObject.activeInHierarchy)
             _battleLogger.AddBattleLaunchSpellLogLine(launcher, spell);
     }
+
     public void LogRadianceChange(CombatBehavior target, CombatBehavior source, int amount)
     {
         if (_battleLogger.gameObject.activeInHierarchy)
@@ -660,21 +683,21 @@ public class BattleManager : MonoBehaviour
                     if (target != -1)
                         if (EnemyScripts.FirstOrDefault(c => c.combatID == target) != null)
                             EnemyScripts.First(c => c.combatID == target).AddDebuff(item, Decompte, Timer);
-                    else
-                    {
-                        int index;
-                        do
-                        {
-                            index = UnityEngine.Random.Range(1, EnemyScripts.Count + 1);
-
-                        } while (index == origine && EnemyScripts.Count > 1);
-
-                        var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == index);
-                        if (ennemy != null)
-                            ennemy.AddDebuff(item, Decompte, Timer);
                         else
-                            EnemyScripts.First().AddDebuff(item, Decompte, Timer);
-                    }
+                        {
+                            int index;
+                            do
+                            {
+                                index = UnityEngine.Random.Range(1, EnemyScripts.Count + 1);
+
+                            } while (index == origine && EnemyScripts.Count > 1);
+
+                            var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == index);
+                            if (ennemy != null)
+                                ennemy.AddDebuff(item, Decompte, Timer);
+                            else
+                                EnemyScripts.First().AddDebuff(item, Decompte, Timer);
+                        }
 
                     break;
                 case Cible.Ally:
@@ -767,7 +790,7 @@ public class BattleManager : MonoBehaviour
                 {
                     if (target != -1)
                     {
-                        if(EnemyScripts.FirstOrDefault(c => c.combatID == target) != null)
+                        if (EnemyScripts.FirstOrDefault(c => c.combatID == target) != null)
                             EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
                     }
                     else
@@ -938,18 +961,21 @@ public class BattleManager : MonoBehaviour
 
     #region Essence
 
-    public GameObject GetPrefabEssence (int amount)
+    public GameObject GetPrefabEssence(int amount)
     {
         if (amount >= _amountForGreaestEssence)
         {
             return _prefabEssenceList[2];
         }
+
         if (amount >= _amountForMediumEssence)
         {
             return _prefabEssenceList[1];
         }
+
         return _prefabEssenceList[0];
     }
+
     public void Consume(int essence)
     {
         ConsumedEssence = true;
@@ -973,6 +999,7 @@ public class BattleManager : MonoBehaviour
         {
             amount += item.GetComponent<CrystalSoul>().Amount;
         }
+
         OnGatherEssence?.Invoke(spawnPos[3]);
         yield return new WaitForSeconds(0.5f);
 
@@ -984,7 +1011,8 @@ public class BattleManager : MonoBehaviour
 
         ListEssence.Add(temp);
         buttonEndCombat.SetActive(true);
-        buttonEndCombat.GetComponentInChildren<TMP_Text>().text = $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount})";
+        buttonEndCombat.GetComponentInChildren<TMP_Text>().text =
+            $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount})";
         endBattle = true;
     }
 
@@ -998,6 +1026,7 @@ public class BattleManager : MonoBehaviour
             {
                 Destroy(ListEssence[i]);
             }
+
             ListEssence.Clear();
             EndBattle();
         }
@@ -1014,6 +1043,7 @@ public class BattleManager : MonoBehaviour
             EndBattle();
         }
     }
+
     private void ClearListEssence()
     {
         for (int i = ListEssence.Count - 1; i >= 0; i--)
@@ -1021,6 +1051,7 @@ public class BattleManager : MonoBehaviour
             Destroy(ListEssence[i]);
             ListEssence.RemoveAt(i);
         }
+
         ListEssence.Clear();
     }
 

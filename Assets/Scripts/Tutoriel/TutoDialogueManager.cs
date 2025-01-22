@@ -12,8 +12,7 @@ public class TutoDialogueManager : DialogueManager
     public GameObject Conscience;
     public Image ConscienceFill;
 
-    [SerializeField]
-    private ProgressBarManager _hpBarManager;
+    [SerializeField] private ProgressBarManager _hpBarManager;
 
     public void EndDialogueTuto()
     {
@@ -36,7 +35,8 @@ public class TutoDialogueManager : DialogueManager
         }
         else if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.TutoDialogueAndAction)
         {
-            Debug.Log("DialogueIndex = " + DialogueIndex + " / IndexEncounter : " + TutoManager.Instance.IndexEncounter);
+            Debug.Log("DialogueIndex = " + DialogueIndex + " / IndexEncounter : " +
+                      TutoManager.Instance.IndexEncounter);
             if (DialogueIndex == 0 && TutoManager.Instance.IndexEncounter == 0)
             {
                 UiHolder.SetActive(true);
@@ -69,11 +69,13 @@ public class TutoDialogueManager : DialogueManager
             {
                 ConscienceFill.fillAmount = 0.1f;
                 //GoeargeTapeLeMob
-                var toDelete = BattleManager.spawnPos.FirstOrDefault(x => x.GetChild(0).gameObject.name == "Choristes_neuf Variant(Clone)");
+                var toDelete = BattleManager.spawnPos.FirstOrDefault(x =>
+                    x.GetChild(0).gameObject.name == "Choristes_neuf Variant(Clone)");
                 Destroy(toDelete.gameObject);
                 Instantiate(CrystauxEssence, BattleManager.spawnPos[2].position, Quaternion.identity,
                     BattleManager.spawnPos[2]);
             }
+
             if (DialogueIndex == 7 && TutoManager.Instance.IndexEncounter == 2)
             {
                 TutoManager.Instance.Player.ToggleVisibility(false);
@@ -85,7 +87,7 @@ public class TutoDialogueManager : DialogueManager
                 TutoManager.Instance.EndTuto();
             }
         }
-        
+
         base.GetRéponse(i);
     }
 
@@ -94,10 +96,12 @@ public class TutoDialogueManager : DialogueManager
     {
         ToggleAnswerButton(true);
     }
+
     public void DisableButtonAnswer()
     {
         ToggleAnswerButton(false);
     }
+
     private void ToggleAnswerButton(bool value)
     {
         foreach (GameObject repGO in _dialogPanelComponent.Reponse)
