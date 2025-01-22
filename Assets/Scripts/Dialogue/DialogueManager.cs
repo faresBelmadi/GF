@@ -268,7 +268,8 @@ public class DialogueManager : MonoBehaviour
                     }
                     else
                     {
-                        _dialogPanelComponent.ClairvoyancePanels[i].Hide();
+                        if (currentPossibleResponseList.Count > 1)
+                            _dialogPanelComponent.ClairvoyancePanels[i].Hide();
                     }
                 }
                 else
