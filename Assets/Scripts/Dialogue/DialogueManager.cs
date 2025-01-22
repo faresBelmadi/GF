@@ -264,19 +264,20 @@ public class DialogueManager : MonoBehaviour
                     //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
                     if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
                     {
-                        _dialogPanelComponent.ClairvoyancePanels[i].Show();
+                        if (!GameManager.Instance.IsTuto && currentPossibleResponseList.Count > 1)
+                            _dialogPanelComponent.ClairvoyancePanels[i].Show();
                         bool[] displayed = new bool[Enum.GetValues(typeof(ClairvoyanceIconStatEnum)).Length];
                         ShowConsequenceForAnswer(i, ref displayed);
                     }
                     else
                     {
-                        if (currentPossibleResponseList.Count > 1)
+                        if (!GameManager.Instance.IsTuto && currentPossibleResponseList.Count > 1)
                             _dialogPanelComponent.ClairvoyancePanels[i].Hide();
                     }
                 }
                 else
                 {
-                    _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>(true).text = TradManager.instance.GetTranslation(_idTradDefaultConscience, "Conscience required"); ;
+                    _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>(true).text = $"<b><i>{TradManager.instance.GetTranslation(_idTradDefaultConscience, "Conscience required")}</i></b>";
                     _dialogPanelComponent.Reponse[i].SetActive(true);
                 }
             }
