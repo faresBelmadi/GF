@@ -47,7 +47,7 @@ public class HideClairvoyance : MonoBehaviour
         {
             _image.enabled = false;
         }
-        if (numberOfReponse == 0 || numberOfReponse == 1)
+        if (numberOfReponse == 0 || numberOfReponse == 1 || GameManager.Instance.IsTuto)
         {
             _image.enabled = false;
         }
