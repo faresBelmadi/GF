@@ -31,7 +31,7 @@ public class Effet : ScriptableObject
         switch (this.TypeEffet)
         {
             case TypeEffet.Clairvoyance:
-                ModifState.Clairvoyance = valueToChange;
+                ModifState.Clairvoyance += valueToChange;
                 break;
             case TypeEffet.Volonte:
                 ModifState.Volonter += valueToChange;
