@@ -948,6 +948,7 @@ public class DialogueManager : MonoBehaviour
                 Debug.Log("###Conséquence### - Ajout d'un nouvel Effet de type : " + effet.TypeEffet.ToString());
                 GameObject effectGO = Instantiate(_effectPrefab, _buffContainer.transform);
                 effectGO.GetComponent<EffectComponent>().SetSprite(effet.GetSpriteOfEffect());
+                effectGO.GetComponent<EffectComponent>().SetText(effet.GetTargetStat());
                 effectGO.GetComponent<EnflateSystem>().TriggerInflation();
                 _listBuffEffectFromDialog.Add(effectGO);
                 //Application de l'effet
