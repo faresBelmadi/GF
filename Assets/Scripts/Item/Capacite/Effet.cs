@@ -593,6 +593,9 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += Mathf.FloorToInt(-JeanneStat4.Divin / 100f * Caster.ForceAme);
                 JeanneStat4.Divin = -30;
                 break;
+            case TypeEffet.MultiplTension:
+                modifstate.MultipleTension += (Pourcentage / 100f) * NbAttaque;
+                break;
             default:
                 break;
         }
@@ -926,6 +929,7 @@ public class Effet : ScriptableObject
             TypeEffet.DeuxiemeAttaqueJeanne => throw new System.NotImplementedException(),
             TypeEffet.SupportJeanne => throw new System.NotImplementedException(),
             TypeEffet.UltimeJeanne => throw new System.NotImplementedException(),
+            TypeEffet.MultiplTension => GameManager.Instance.CommonNameData.Tension,
             _ => throw new System.NotImplementedException(),
         };
     }
