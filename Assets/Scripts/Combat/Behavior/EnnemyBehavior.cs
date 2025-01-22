@@ -27,7 +27,7 @@ public class EnnemyBehavior : CombatBehavior
     private int currentHp = 0;
     private int currentTension = 0;
     private Coroutine deathRoutine = null;
-    private ClairvoyanceIconData clairvoyanceIconData = GameManager.Instance.StatIcons;
+    private ClairvoyanceIconData clairvoyanceIconData;
 
 
     public override string Name
@@ -59,7 +59,10 @@ public class EnnemyBehavior : CombatBehavior
         if (GameManager.Instance == null)
             _refBattleMan = TutoManager.Instance.BattleManager;
         else
+        {
             _refBattleMan = GameManager.Instance.BattleMan;
+            clairvoyanceIconData = GameManager.Instance.StatIcons;
+        }
         IsDead = false;
         UICombat = this.GetComponent<UIEnnemi>();
         UpdateUI();
