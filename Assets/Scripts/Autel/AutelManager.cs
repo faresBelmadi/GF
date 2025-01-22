@@ -366,7 +366,7 @@ public class AutelManager : MonoBehaviour
 
     public void SetStatBougthCapa(Competence capa)
     {
-        JoueurStat modifJoueurStat = new JoueurStat();
+        JoueurStat modifJoueurStat = ScriptableObject.CreateInstance<JoueurStat>();
         foreach (var modifStat in capa.ModifStat)
         {
             var value = modifStat.Valeur;
