@@ -292,10 +292,15 @@ public class PlayerMapManager : MonoBehaviour
             // + PopUp new Souvenir
             GameManager.Instance.Loot();
             ShowMenuStat();
+            GameManager.Instance.UnloadCombat();
+        }
+        else
+        {
+            GameManager.Instance.UnloadCombat();
+            GameManager.Instance.ShowMap();
         }
 
         AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
-        GameManager.Instance.UnloadCombat();
         //yield return SceneManager.UnloadSceneAsync(_scene);
         yield return null;
 
