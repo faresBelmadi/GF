@@ -1045,8 +1045,7 @@ public class DialogueManager : MonoBehaviour
     private void ApplyEffectOneEnnemi(Effet scriptableObject)
     {
         var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0, ManagerBattle.EnemyScripts.Count)];
-        enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(((JoueurStat)(CharacterStat)enemyScript.Stat),
-            enemyScript.LastDamageTaken, enemyScript.Stat));
+        enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat));
     }
 
     private void ApplyBuffDebuffOnPlayer(BuffDebuff scriptableObject)
