@@ -958,7 +958,8 @@ public class DialogueManager : MonoBehaviour
                 //Application de l'effet
                 if (/*ManagerBattle == null*/ ManagerAlea.IsAlea)
                 {
-                    ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat));
+                    var cibleJoueur = effet.Cible == Cible.joueur ? ManagerBattle.player.Stat : null;
+                    ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat, Cible: cibleJoueur));
                 }
                 else
                 {
