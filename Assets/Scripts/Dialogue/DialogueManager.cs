@@ -924,7 +924,7 @@ public class DialogueManager : MonoBehaviour
             // Tout les buff qu'applique le dialogue
             foreach (var buffDebuff in Consequence.Buffs)
             {
-
+                if (buffDebuff == null) continue;           //null safe condition
 
                 GameObject buff = Instantiate(_buffPrefab, _buffContainer.transform);
                 buff.GetComponent<BuffDebuffComponant>().InitBuffDebuff(buffDebuff);
