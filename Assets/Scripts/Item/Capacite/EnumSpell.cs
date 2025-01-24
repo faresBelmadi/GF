@@ -88,6 +88,7 @@ public enum TypeEffet
     MultiplDegat=9,
     MultiplSoin=10,
     MultiplDef=11,
+    MultiplTension=87,
     Vitesse=12,
     Volonte=13,
     VolonteMax=14,

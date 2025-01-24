@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class JoueurBehavior : CombatBehavior
 {
@@ -69,7 +67,6 @@ public class JoueurBehavior : CombatBehavior
     }
     private void OnEnable()
     {
-
         GetComponent<Animator>().Rebind();
     }
     
@@ -710,7 +707,7 @@ public class JoueurBehavior : CombatBehavior
         }
 
 
-        DecompteDebuffJoueur(Decompte, Timer);
+        //DecompteDebuffJoueur(Decompte, Timer);
 
         UpdateUI();
     }
