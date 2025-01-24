@@ -30,5 +30,5 @@ public class ConséquenceSO : ScriptableObject
 
     [Header("Self is always the player")]
     public CibleDialogue target;
-    public List<int> IdTarget;
+    //public List<int> IdTarget;
 }

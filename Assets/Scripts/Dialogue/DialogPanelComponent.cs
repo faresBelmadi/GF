@@ -49,6 +49,15 @@ public class DialogPanelComponent : MonoBehaviour
     private List<GameObject> _reponseOneGO;
     [SerializeField]
     private GameObject _endOneDialogue;
+    [Header("Dialog references for ClairvoyancePanel")]
+    [SerializeField]
+    private List<HideClairvoyance> _clairvoyancePanels;
+    
+    [Header("Panel for clairvoyance hints")]
+    [SerializeField]
+    private GameObject _clairvoyanceHintsPanel;
+    [SerializeField]
+    private TMP_Text _clairvoyanceHintsText;
 
     private List<TMP_Text> _reponseTextList = new List<TMP_Text>();
     private TMP_Text _mainText;
@@ -63,6 +72,8 @@ public class DialogPanelComponent : MonoBehaviour
     public TMP_Text MainText { get => _mainText; }
     public TMP_Text EndText { get => _endText; }
     public List<GameObject> ClairvContentListGO { get => _clairvContentListGO; }
+    public List<HideClairvoyance> ClairvoyancePanels{ get => _clairvoyancePanels; }
+
 
     private int _numberAnswer = -1;
 
@@ -71,6 +82,10 @@ public class DialogPanelComponent : MonoBehaviour
     void Awake()
     {
         SwitchNumberOfAnswer(2);   
+    }
+    private void OnAnimatorIK(int layerIndex)
+    {
+        _clairvoyanceHintsPanel.SetActive(false);
     }
 
     private void SetReference()
@@ -93,6 +108,13 @@ public class DialogPanelComponent : MonoBehaviour
             _endText = EndDialog.GetComponent<TMP_Text>();
         }
         
+    }
+    public void HideClairvoyancePanel()
+    {
+        foreach (var panel in _clairvoyancePanels)
+        {
+            panel.DisablePanel();
+        }
     }
 
     public void SwitchNumberOfAnswer(int numberOfAnswer)
@@ -127,6 +149,20 @@ public class DialogPanelComponent : MonoBehaviour
                 _dialogFrameGO.GetComponent<Image>().sprite = _twoAnswerDialogFrame;
                 break;
         }
+
+        for (int i=0; i< _clairvoyancePanels.Count;i++)
+        {
+            _clairvoyancePanels[i].SetPanel(numberOfAnswer);
+        }
+    }
+    public void ShowPanel(int selectedPanel)
+    {
+        _clairvoyanceHintsPanel.SetActive(true);
+        _clairvoyanceHintsText.text = ClairvContentListGO[selectedPanel].GetComponent<ClairvoyancePanel>().PrintListOfEffect();
+    }
+    public void HidePanel()
+    {
+        _clairvoyanceHintsPanel.SetActive(false);
     }
 
 }

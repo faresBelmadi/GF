@@ -14,6 +14,8 @@ public class BattleLog : MonoBehaviour
     private List<GameObject> _logList;
     [SerializeField]
     private ScrollRect _scrollRect;
+    [SerializeField]
+    private GameObject _battleLogObject;
 
 
     private void OnEnable()
@@ -34,7 +36,7 @@ public class BattleLog : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.BackQuote))
         {
-            _scrollRect.gameObject.SetActive(!_scrollRect.gameObject.activeSelf);
+            _battleLogObject.SetActive(!_battleLogObject.activeSelf);
         }
 
     }
