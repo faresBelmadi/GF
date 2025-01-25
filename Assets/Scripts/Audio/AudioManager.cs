@@ -24,9 +24,7 @@ public class AudioManager : MonoBehaviour
     public float MasterVolume { get; private set; }
     public float SFXVolume { get; private set; }
     public float MusicVolume { get; private set; }
-    public bool IsMasterMute { get; private set; }
-    public bool IsMusicMute { get; private set; }
-    public bool IsSFXMute { get; private set; }
+   
     public SFXPlayer SFX => _sfx;
     private AudioSource _audioSource;
 
@@ -53,20 +51,13 @@ public class AudioManager : MonoBehaviour
         MasterVolume = PlayerPrefs.GetFloat("MasterVolume",0.75f);
         MusicVolume = PlayerPrefs.GetFloat("MusicVolume",0.75f);
         SFXVolume = PlayerPrefs.GetFloat("SFXVolume",0.75f);
-        IsMasterMute = PlayerPrefs.GetInt("IsMasterMute", 0) == 0 ? false : true;
-        IsMusicMute = PlayerPrefs.GetInt("IsMusicMute", 0) == 0 ? false : true;
-        IsSFXMute = PlayerPrefs.GetInt("IsSFXMute", 0) == 0 ? false : true;
+     
 
         SetVolume(MixerGroup.Master, MasterVolume);
         SetVolume(MixerGroup.Music, MusicVolume);
         SetVolume(MixerGroup.SFX, SFXVolume);
 
-        if (IsMasterMute)
-            MuteUnmuteMaster(true);
-        if (IsMusicMute)
-            MuteUnmuteMusic(true);
-        if (IsSFXMute)
-            MuteUnmuteSFX(true);
+     
 
         _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
@@ -99,48 +90,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void MuteUnmuteMaster(bool isMute)
-    {
-        MuteUnmute(MixerGroup.Master, isMute);
-    }
-    public void MuteUnmuteMusic(bool isMute)
-    {
-        MuteUnmute(MixerGroup.Music, isMute);
-    }
-    public void MuteUnmuteSFX(bool isMute)
-    {
-        MuteUnmute(MixerGroup.SFX, isMute);
-    }
-    private void MuteUnmute(MixerGroup group, bool isMute)
-    {
-        if (isMute)
-        {
-            SetVolume(group, 0.0001f, true);
-
-            switch(group)
-            {
-                case MixerGroup.Master:
-                    IsMasterMute = isMute;
-                    PlayerPrefs.SetInt("IsMasterMute", isMute ? 1 : 0);
-                    break;
-                case MixerGroup.Music:
-                    IsMusicMute = isMute;
-                    PlayerPrefs.SetInt("IsMasterMute", isMute ? 1 : 0);
-                    break;
-                case MixerGroup.SFX:
-                    IsSFXMute = isMute;
-                    PlayerPrefs.SetInt("IsMasterMute", isMute ? 1 : 0);
-                    break;
-                default:break;
-            }
-        }
-        else
-        {
-            float volume = PlayerPrefs.GetFloat(group.ToString() + "Volume");
-            SetVolume(group, volume, false);
-        }
-
-    }
+   
     public void SetMasterVolume(float volume)
     {
         SetVolume(MixerGroup.Master, volume);

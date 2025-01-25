@@ -14,9 +14,8 @@ public class TutoPanel : MonoBehaviour
         public string Answer;
     }
 
-    [SerializeField]
-    private List<PanelElement> ExplicationsListe;
-   
+    [SerializeField] private List<PanelElement> ExplicationsListe;
+
     public List<Image> ExplicationImageListe;
     public int IndexExplication;
     public TextMeshProUGUI TextExplication;
@@ -114,16 +113,18 @@ public class TutoPanel : MonoBehaviour
         {
             //UiToShowForFigth[0].SetActive(true);
         }
-        
+
         TextExplication.text = TradManager.instance.GetTranslation(ExplicationsListe[IndexExplication].Question);
 
         if (ExplicationImageListe[IndexExplication] != null)
         {
-            
+
             ExplicationImageListe[IndexExplication].gameObject.SetActive(true);
         }
+
         var reponse = ExplicationsListe[IndexExplication].Answer;
-        Debug.Log("Panel // Question : " + ExplicationsListe[IndexExplication].Question + " Réponse : " + ExplicationsListe[IndexExplication].Answer);
+        Debug.Log("Panel // Question : " + ExplicationsListe[IndexExplication].Question + " Réponse : " +
+                  ExplicationsListe[IndexExplication].Answer);
         if (reponse is not (null or ""))
         {
             TextReponse.text = TradManager.instance.GetTranslation(reponse);

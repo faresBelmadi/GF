@@ -54,6 +54,10 @@ public class JoueurStat : CharacterStat
         {
             this.Conscience = this.ConscienceMax;
         }
+        if (this.Conscience < 0)
+        {
+            this.Conscience = 0;
+        }
         base.RectificationStat();
     }
     

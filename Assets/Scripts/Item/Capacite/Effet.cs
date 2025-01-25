@@ -31,7 +31,7 @@ public class Effet : ScriptableObject
         switch (this.TypeEffet)
         {
             case TypeEffet.Clairvoyance:
-                ModifState.Clairvoyance = valueToChange;
+                ModifState.Clairvoyance += valueToChange;
                 break;
             case TypeEffet.Volonte:
                 ModifState.Volonter += valueToChange;
@@ -593,6 +593,9 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += Mathf.FloorToInt(-JeanneStat4.Divin / 100f * Caster.ForceAme);
                 JeanneStat4.Divin = -30;
                 break;
+            case TypeEffet.MultiplTension:
+                modifstate.MultipleTension += (Pourcentage / 100f) * NbAttaque;
+                break;
             default:
                 break;
         }
@@ -834,5 +837,100 @@ public class Effet : ScriptableObject
                 return null;
         }
         return null;
+    }
+    public string GetTargetStat()
+    {
+        return TypeEffet switch
+        {
+            TypeEffet.AugmentationBrutFA => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.DegatsForceAme => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.DegatsBrut => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.Clairvoyance => GameManager.Instance.CommonNameData.Clairvoyance,
+            TypeEffet.Colere => GameManager.Instance.CommonDescData.IdTradColere,
+            TypeEffet.Conviction => GameManager.Instance.CommonNameData.Conviction,
+            TypeEffet.AugmentationPourcentageFA => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.RadianceMax => GameManager.Instance.CommonNameData.Radiance,
+            TypeEffet.AugmentFADernierDegatsSubi => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.AugmentationPourcentageFACible => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.MultiplDegat => GameManager.Instance.CommonDescData.IdTradBuffMultAtt,
+            TypeEffet.MultiplSoin => GameManager.Instance.CommonDescData.IdTradBuffMultHeal,
+            TypeEffet.MultiplDef => GameManager.Instance.CommonDescData.IdTradBuffMultDef,
+            TypeEffet.Vitesse => GameManager.Instance.CommonNameData.Vitesse,
+            TypeEffet.Volonte => GameManager.Instance.CommonNameData.Volonte,
+            TypeEffet.VolonteMax => GameManager.Instance.CommonNameData.Volonte,
+            TypeEffet.Resilience => GameManager.Instance.CommonNameData.Resilience,
+            TypeEffet.TensionStep => GameManager.Instance.CommonNameData.Tension,
+            TypeEffet.TensionValue => GameManager.Instance.CommonNameData.Tension,
+            TypeEffet.TensionGainAttaqueValue => GameManager.Instance.CommonNameData.Tension,
+            TypeEffet.TensionGainDebuffValue => GameManager.Instance.CommonNameData.Tension,
+            TypeEffet.TensionGainSoinValue => GameManager.Instance.CommonNameData.Tension,
+            TypeEffet.TensionGainDotValue => GameManager.Instance.CommonNameData.Tension,
+            TypeEffet.Conscience => GameManager.Instance.CommonNameData.Conscience,
+            TypeEffet.ConscienceMax => GameManager.Instance.CommonNameData.Conscience,
+            TypeEffet.Soin => GameManager.Instance.CommonNameData.Radiance,
+            TypeEffet.SoinFA => GameManager.Instance.CommonNameData.Radiance,
+            TypeEffet.SoinFANbEnnemi => GameManager.Instance.CommonNameData.Radiance,
+            TypeEffet.SoinRadianceMax => GameManager.Instance.CommonNameData.Radiance,
+            TypeEffet.SoinRadianceActuelle => GameManager.Instance.CommonNameData.Radiance,
+            TypeEffet.DegatPVMax => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.RandomAttaque => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.AugmentationFaRadianceActuelle => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.ConsommeTensionAugmentationFA => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.RemoveDebuff => GameManager.Instance.CommonDescData.IdTradBuff,
+            TypeEffet.AttaqueStackAmant => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.AttaqueFADebuff => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.GainResilienceIncrementale => GameManager.Instance.CommonNameData.Resilience,
+            TypeEffet.DamageLastPhase => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.NoEssence => GameManager.Instance.CommonNameData.Essence,
+            TypeEffet.DoubleBuffDebuff => throw new System.NotImplementedException(),
+            TypeEffet.AugmentationRadianceMaxPourcentage => throw new System.NotImplementedException(),
+            TypeEffet.BuffFaCoupRecu => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.BuffResilienceCoupRecu => GameManager.Instance.CommonNameData.Resilience,
+            TypeEffet.ConsommeTensionDmgAllExceptCaster => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.Provocation => throw new System.NotImplementedException(),
+            TypeEffet.VolEssence => GameManager.Instance.CommonNameData.Essence,
+            TypeEffet.RandomChanceCastSpellSelf => throw new System.NotImplementedException(),
+            TypeEffet.SwapMostLeastBuffDebuff => throw new System.NotImplementedException(),
+            TypeEffet.RadianceRepartition => GameManager.Instance.CommonNameData.Radiance,
+            TypeEffet.RandomAttaqueDebuff => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.DegatsRetourSurAttaque => throw new System.NotImplementedException(),
+            TypeEffet.RedirectionDegatsOnCasteur => throw new System.NotImplementedException(),
+            TypeEffet.CancelPourcentageDamage => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.RedirectionCancel => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.DispellBuffJoueurDamage => GameManager.Instance.CommonDescData.IdTradBuff,
+            TypeEffet.DispellDebuffCasterDamage => GameManager.Instance.CommonDescData.IdTradDebuff,
+            TypeEffet.DamageAllEvenly => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.DamageUpTargetLowRadiance => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.OnKillStunAll => throw new System.NotImplementedException(),
+            TypeEffet.UntilDeath => throw new System.NotImplementedException(),
+            TypeEffet.AugmentationFARadianceManquante => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.DamageFaBuff => GameManager.Instance.CommonDescData.IdTradDegat   ,
+            TypeEffet.DamageFaBuffCible => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.DamageDebuffCible => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.RemoveAllTensionProcDamage => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.RemoveAllTensionProcBuffDebuff => GameManager.Instance.CommonDescData.IdTradBuff,
+            TypeEffet.RemoveAllDebuffProcBuffDebuf => GameManager.Instance.CommonDescData.IdTradDebuff,
+            TypeEffet.RemoveAllDebuffSelfProcBuffDebuf => throw new System.NotImplementedException(),
+            TypeEffet.RemoveAllBuffProcBuffDebuf => throw new System.NotImplementedException(),
+            TypeEffet.RemoveAllDebuffProcDamage => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.RemoveAllDebuffSelfProcDamage => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.RemoveAllBuffProcDamage => throw new System.NotImplementedException(),
+            TypeEffet.NoCapaPossible => throw new System.NotImplementedException(),
+            TypeEffet.ConsommeTensionReduitFa => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.AugmentationDegatsHitJoueur => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.GainFaBuffCible => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.GainFaDebuffCible => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.Ponction => GameManager.Instance.CommonNameData.Radiance,
+            TypeEffet.PonctionForceAme => GameManager.Instance.CommonNameData.Radiance,
+            TypeEffet.DegatsBrutConsequence => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.DegatsFaRadianceManquanteCible => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.DegatsFaRadianceManquanteCaster => GameManager.Instance.CommonDescData.IdTradDegat,
+            TypeEffet.PremiereAttaqueJeanne => throw new System.NotImplementedException(),
+            TypeEffet.DeuxiemeAttaqueJeanne => throw new System.NotImplementedException(),
+            TypeEffet.SupportJeanne => throw new System.NotImplementedException(),
+            TypeEffet.UltimeJeanne => throw new System.NotImplementedException(),
+            TypeEffet.MultiplTension => GameManager.Instance.CommonNameData.Tension,
+            _ => throw new System.NotImplementedException(),
+        };
     }
 }

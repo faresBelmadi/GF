@@ -6,20 +6,26 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class EffectComponent : MonoBehaviour
+public class EffectComponent : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField]
     private TMP_Text _descriptionText;
     [SerializeField]
+    private string _idTradEffect;
+    [SerializeField]
+    private string _idTradEffectDesc;
+    [SerializeField]
     private TMP_Text _nameText;
     [SerializeField]
     private GameObject _popupPanel;
+  
     
 
     
     private void OnEnable()
     {
         CombatBehavior.OnUpdateUI += UpdateUI;
+        _nameText.text = TradManager.instance.GetTranslation(_idTradEffect, "Effect");
     }
     private void OnDisable()
     {
@@ -31,6 +37,11 @@ public class EffectComponent : MonoBehaviour
     {
         GetComponent<Image>().sprite = sprite;
     }
+    public void SetText(string text)
+    {
+        _descriptionText.text = $"{TradManager.instance.GetTranslation(_idTradEffectDesc, "This effect will modify:")}\n{text}";   
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
 

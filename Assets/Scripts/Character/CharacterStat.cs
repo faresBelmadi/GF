@@ -45,6 +45,7 @@ public class CharacterStat : ScriptableObject
     public float MultiplSoin = 1;
     public float MultiplDegat = 1;
     public float MultipleBuffDebuff = 1;
+    public float MultipleTension = 1;
     public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>();
     public int TensionAttaque = 4;
     public int TensionDebuff = 3;
@@ -127,7 +128,7 @@ public class CharacterStat : ScriptableObject
         this._resilience += ModifState._resilience;
         this.Calme += ModifState.Calme;
         this.Essence += ModifState.Essence;
-        this.Tension += ModifState.Tension;
+        this.Tension += ModifState.Tension * MultipleTension;
         this.PalierChangement += ModifState.PalierChangement;
         if (ModifState.Radiance < 0)
         {
