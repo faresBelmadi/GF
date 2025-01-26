@@ -14,7 +14,9 @@ public class SouvenirUI : MonoBehaviour
     private GameObject SouvenirImageGameObject;
     [Tooltip("Set the rarity border, starting with 0 = most common")]
     [SerializeField]
-    private List<GameObject> _rarityBorders;
+    private List<Sprite> _rarityBorders;
+    [SerializeField]
+    private SpriteRenderer _rarityBordersRenderer;
 
     private const string EMOTIONID      = "Souv1Desc1";
     private const string SLOTID         = "Souv1Desc2";
@@ -36,19 +38,7 @@ public class SouvenirUI : MonoBehaviour
 
     private void SetRarityBorder(Rarity rarity)
     {
-        for (int i=0; i < _rarityBorders.Count;i++)
-        {
-            _rarityBorders[i].SetActive(false);
-        }
-        if ((int)rarity>= _rarityBorders.Count)
-        {
-            Debug.LogError($"Rarity {LeSouvenir.Rarete} for souvenir {LeSouvenir.name} not supported");
-            _rarityBorders[0].SetActive(true);
-        }
-        else
-        {
-            _rarityBorders[(int)LeSouvenir.Rarete].SetActive(true);
-        }
+        _rarityBordersRenderer.sprite = _rarityBorders[(int)LeSouvenir.Rarete];
     }
 
     private string DescriptionEmotion()

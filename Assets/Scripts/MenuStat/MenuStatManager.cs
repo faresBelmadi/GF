@@ -31,6 +31,9 @@ public class MenuStatManager : MonoBehaviour
     public GameObject ArbreCompetencePrefab;
     public GameObject ArbreCompetence, Canvas, Menu;
 
+    public List<SouvenirUI> ListSouvenirUIEquipped { get; private set; } = new List<SouvenirUI>();
+    
+
     #region Start
 
     public void OnEnable/*MenuStat*/()
@@ -420,6 +423,7 @@ public class MenuStatManager : MonoBehaviour
         {
             souv.LeSouvenir.Equiped = true;
             EquipedSouvenir.Add(souv.LeSouvenir);
+            ListSouvenirUIEquipped.Add(souv);
             ModifStat(souv.LeSouvenir, true);
             NbSlotsEquiped += souv.LeSouvenir.Slots;
             return true;
@@ -446,6 +450,7 @@ public class MenuStatManager : MonoBehaviour
             souv.LeSouvenir.Equiped = false;
             GameManager.Instance.CopyAllSouvenir.Add(souv.LeSouvenir);
             EquipedSouvenir.Remove(souv.LeSouvenir);
+            ListSouvenirUIEquipped.Remove(souv);
             ModifStat(souv.LeSouvenir, false);
             NbSlotsEquiped -= souv.LeSouvenir.Slots;
             return true;

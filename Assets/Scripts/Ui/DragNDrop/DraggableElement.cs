@@ -52,8 +52,8 @@ public class DraggableElement : MonoBehaviour
    
     private void OnMouseEnter()
     {
+        Debug.Log("drag enter, " + name);
         if (drag == true) { return; }
-        Debug.Log("drag enter");
         OnHoverDragElement?.Invoke(gameObject);
     }
     private void OnMouseDown()

@@ -9,6 +9,8 @@ public interface IDropZone
     /// </summary>
     /// <returns>The transform where to drop</returns>
     Transform GetDropZone();
-    void EquipSouvenir(int price);
-    void UnequipSouvenir(int price);
+    void EquipSouvenir(SouvenirUI souvenir);
+    void UnequipSouvenir(SouvenirUI souvenir);
+    void EnterDropZone();
+    void ExitDropZone();
 }

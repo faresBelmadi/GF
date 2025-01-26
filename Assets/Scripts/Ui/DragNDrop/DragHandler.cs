@@ -76,15 +76,26 @@ public class DragHandler : MonoBehaviour
     {
         if (_isOverDropZone && _menuStatManager.Equiped(_draggedElement.GetComponent<SouvenirUI>()))
         {
+            Debug.Log("Equip");
+           // _targetZoneToDrop.ExitDropZone();
             Transform tr = _dropZone.GetDropZone();
             _targetZoneToDrop.GetComponent<Collider2D>().enabled = false;
             _draggedElement.transform.SetParent(tr);
             _draggedElement.transform.localPosition = Vector3.zero;
             //equip
-            _dropZone.EquipSouvenir(_draggedElement.GetComponent<SouvenirUI>().LeSouvenir.Slots);
+            _dropZone.EquipSouvenir(_draggedElement.GetComponent<SouvenirUI>());
         }
         else
         {
+            if (_draggedElement.GetComponent<SouvenirUI>().LeSouvenir.Equiped)
+            {
+                if (_menuStatManager.UnEquiped(_draggedElement.GetComponent<SouvenirUI>()))
+                {
+                    Debug.Log("Unequip");
+                    _dropZone.UnequipSouvenir(_draggedElement.GetComponent<SouvenirUI>());
+
+                }
+            }
             _draggedElement.transform.SetParent(_defaultPositionToDrop.transform);
         }
         _draggedElement.Drop();
@@ -102,10 +113,18 @@ public class DragHandler : MonoBehaviour
     public void HoverEnterDropZone()
     {
         _isOverDropZone = true;
+        //if (_state == DragState.Drag)             //TODO: Non concluant, mieux à faire
+        //{
+        //    _targetZoneToDrop.EnterDropZone();
+        //}
     }
     public void HoverExitDropZone()
     {
         _isOverDropZone = false;
+        //if (_state == DragState.Drag)
+        //{
+        //    _targetZoneToDrop.ExitDropZone();
+        //}
     }
     public void DragElement()
     {
@@ -117,11 +136,7 @@ public class DragHandler : MonoBehaviour
                 _draggedElement = _target.GetComponent<DraggableElement>();
                 _target.gameObject.GetComponent<Collider2D>().enabled = false;
                 _target.transform.SetParent(_target.transform.root);
-                if (_draggedElement.GetComponent<SouvenirUI>().LeSouvenir.Equiped)
-                {
-                    Debug.Log("Unequip");
-                    _dropZone.UnequipSouvenir(_draggedElement.GetComponent<SouvenirUI>().LeSouvenir.Slots);
-                }
+               
                 break;
         }
     }
