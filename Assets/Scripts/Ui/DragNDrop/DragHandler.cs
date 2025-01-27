@@ -65,10 +65,7 @@ public class DragHandler : MonoBehaviour
         {
             Instantiate(_prefab, Input.mousePosition, Quaternion.identity);
         }
-        if (Input.GetMouseButtonDown(0))
-        {
-            Debug.Log("Drag");
-        }
+       
 
     }
 
@@ -76,7 +73,6 @@ public class DragHandler : MonoBehaviour
     {
         if (_isOverDropZone && _menuStatManager.Equiped(_draggedElement.GetComponent<SouvenirUI>()))
         {
-            Debug.Log("Equip");
            // _targetZoneToDrop.ExitDropZone();
             Transform tr = _dropZone.GetDropZone();
             _targetZoneToDrop.GetComponent<Collider2D>().enabled = false;
@@ -91,7 +87,6 @@ public class DragHandler : MonoBehaviour
             {
                 if (_menuStatManager.UnEquiped(_draggedElement.GetComponent<SouvenirUI>()))
                 {
-                    Debug.Log("Unequip");
                     _dropZone.UnequipSouvenir(_draggedElement.GetComponent<SouvenirUI>());
 
                 }
@@ -106,7 +101,6 @@ public class DragHandler : MonoBehaviour
     {
         if (_state == DragState.None)
         { 
-            Debug.Log("Drag element : " +  target);
             _target = target; 
         }
     }

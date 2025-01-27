@@ -49,6 +49,7 @@ public class MenuStatManager : MonoBehaviour
         else
             Stat = TutoManager.Instance.JoueurStat;
         StatTemp = Instantiate(Stat);
+        ListSouvenirUIEquipped.Clear();
         foreach (var item in StatTemp.ListSouvenir)
         {
             GameObject temp;
@@ -56,7 +57,8 @@ public class MenuStatManager : MonoBehaviour
             {
                 ResetStatEnter(item);
                 NbSlotsEquiped += item.Slots;
-                temp = Instantiate(SouvenirPrefab, SouvenirSpawnEquiped.transform);
+                temp = Instantiate(SouvenirPrefab, SouvenirSpawnEquiped.GetComponent<Cristopher>().GetDropZone());
+                ListSouvenirUIEquipped.Add(temp.GetComponent<SouvenirUI>());
             }
             else
             {
@@ -70,6 +72,7 @@ public class MenuStatManager : MonoBehaviour
             }
             Souvenir.Add(temp);
         }
+        SouvenirSpawnEquiped.GetComponent<Cristopher>().RearrangeSouvenir();
         UpdateStatUI();
     }
     private void OnDisable()
@@ -121,17 +124,6 @@ public class MenuStatManager : MonoBehaviour
     void Update()
     {
         UpdateStatUI();
-
-
-        if (Input.GetKeyUp(KeyCode.L))
-        {
-            Debug.Log("Loot");
-            var s = GameManager.Instance.CopyAllSouvenir[0];
-            var temp = Instantiate(SouvenirPrefab, SouvenirSpawnUnEquiped.transform);
-            temp.GetComponent<SouvenirUI>().LeSouvenir = s;
-            //temp.GetComponent<SouvenirUI>().StartUp();
-        }
-
     }
     public void ResetStat()
     {

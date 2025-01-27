@@ -24,16 +24,6 @@ public class DraggableElement : MonoBehaviour
         canvas = GetComponentInParent<Canvas>();
         canvasGroup = GetComponent<CanvasGroup>();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-       
-    }
     public void Drag()
     {
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -52,7 +42,6 @@ public class DraggableElement : MonoBehaviour
    
     private void OnMouseEnter()
     {
-        Debug.Log("drag enter, " + name);
         if (drag == true) { return; }
         OnHoverDragElement?.Invoke(gameObject);
     }
@@ -60,15 +49,7 @@ public class DraggableElement : MonoBehaviour
     {
        //transform.SetParent(gameObject.transform.root);
         drag = true;
-        Debug.Log("clic");
         OnDragElement?.Invoke();
     }
-    private void OnMouseUp()
-    {
-        //  Debug.Log("clic");
-    }
-    private void OnMouseDrag()
-    {
-        //  Debug.Log("Drag : " + Input.mousePosition);
-    }
+   
 }

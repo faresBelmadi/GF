@@ -9,9 +9,11 @@ public class SouvenirUI : MonoBehaviour
 {
    // [HideInInspector]
     public Souvenir LeSouvenir;
+    [SerializeField]
+    private GameObject _descriptionGO;
     public TextMeshProUGUI TexteDescription;
     [SerializeField]
-    private GameObject SouvenirImageGameObject;
+    private SpriteRenderer _souvenirImageRenderer;
     [Tooltip("Set the rarity border, starting with 0 = most common")]
     [SerializeField]
     private List<Sprite> _rarityBorders;
@@ -29,11 +31,13 @@ public class SouvenirUI : MonoBehaviour
     private const string SHAMEID        = "SE7";
     private const string NOSTALGIAID    = "SE8";
 
+    private DescriptionHoverVisibility rectVisibility = new DescriptionHoverVisibility();
     public void StartUp()
     {
-        SouvenirImageGameObject.GetComponent<Image>().sprite = LeSouvenir.Icon;
+        _souvenirImageRenderer.sprite = LeSouvenir.Icon;
         TexteDescription.text = LeSouvenir.SouvenirName + "\n" + DescriptionEmotion() + "\n" + TradManager.instance.GetTranslation("Souv1Desc2", "Slots") + " : " + LeSouvenir.Slots.ToString() + "\n" + LeSouvenir.SouvenirDesc;
         SetRarityBorder(LeSouvenir.Rarete);
+        HideDescription();
     }
 
     private void SetRarityBorder(Rarity rarity)
@@ -72,5 +76,24 @@ public class SouvenirUI : MonoBehaviour
                 break;
         }
         return DescTemp;
+    }
+    public void ShowDescription()
+    {
+        _descriptionGO.SetActive(true);
+       
+        rectVisibility.CheckVisibilityAndAdjustPosition(_descriptionGO.GetComponent<RectTransform>(), FindAnyObjectByType<Camera>());
+    }
+    public void HideDescription()
+    {
+        _descriptionGO.SetActive(false);
+    }
+
+    private void OnMouseEnter()
+    {
+        ShowDescription();
+    }
+    private void OnMouseExit()
+    {
+        HideDescription();
     }
 }

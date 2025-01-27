@@ -65,7 +65,6 @@ public class Cristopher : MonoBehaviour, IDropZone
         var listFreeSlot = _usedSlot.Where(x => x.Value == false).ToList();
         int slot = UnityEngine.Random.Range(0, listFreeSlot.Count);
         _currentFreeSlot = listFreeSlot[slot].Key;
-        Debug.Log("random slot : " + _currentFreeSlot);
     }
     public Transform GetDropZone()
     {
@@ -74,12 +73,10 @@ public class Cristopher : MonoBehaviour, IDropZone
     }
     private void OnMouseEnter()
     {
-        Debug.Log("enter Cristophe");
         OnHoverOn?.Invoke();
     }
     private void OnMouseExit()
     {
-        Debug.Log("exit Cristophe");
         OnHoverOff?.Invoke();
     }
     private void ActivateSlot(int slotID)
@@ -142,7 +139,7 @@ public class Cristopher : MonoBehaviour, IDropZone
         ActivateSlot(_currentFreeSlot);
         RearrangeSouvenir();
     }
-    private void RearrangeSouvenir()
+    public void RearrangeSouvenir()
     {
         int tempSlot = 0;
         foreach (var souvenirUI in _menuStatManager.ListSouvenirUIEquipped)
@@ -155,7 +152,6 @@ public class Cristopher : MonoBehaviour, IDropZone
     private IEnumerator FadePart(SpriteRenderer spriteToFade, Color startValue, Color endValue)
     {
         float time = 0;
-        Debug.Log("Fade " + spriteToFade.gameObject.name);
         while (time < _lerpDuration)
         {
             spriteToFade.color = Color.Lerp(startValue, endValue, time / _lerpDuration);
