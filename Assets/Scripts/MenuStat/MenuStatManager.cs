@@ -176,7 +176,9 @@ public class MenuStatManager : MonoBehaviour
         else if (nouveau == original)
         {
             Text.color = Color.grey;
-            Text.text = "(";
+            //Text.text = "(";
+            Text.text = "";
+            return;         // we display nothing when there are no modifications
         }
         Text.text += (nouveau - original).ToString() + ")";
     }

@@ -35,7 +35,8 @@ public class SouvenirUI : MonoBehaviour
     public void StartUp()
     {
         _souvenirImageRenderer.sprite = LeSouvenir.Icon;
-        TexteDescription.text = LeSouvenir.SouvenirName + "\n" + DescriptionEmotion() + "\n" + TradManager.instance.GetTranslation("Souv1Desc2", "Slots") + " : " + LeSouvenir.Slots.ToString() + "\n" + LeSouvenir.SouvenirDesc;
+        //TODO: Ajouter émotions le moment venu
+        TexteDescription.text = LeSouvenir.SouvenirName + "\n" + /*DescriptionEmotion() + "\n" +*/ TradManager.instance.GetTranslation("Souv1Desc2", "Slots") + " : " + LeSouvenir.Slots.ToString() + "\n" + LeSouvenir.SouvenirDesc;
         SetRarityBorder(LeSouvenir.Rarete);
         HideDescription();
     }
