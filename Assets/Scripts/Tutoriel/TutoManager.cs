@@ -29,6 +29,7 @@ public class TutoManager : MonoBehaviour
     private int _indEncounter = 0;
     [Header("Datas")] [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
     [SerializeField] private Souvenir _souvenirToLoot;
+    [field:SerializeField] public Transform SouvenirPosTuto { get; private set; }
 
     public ClairvoyanceIconData StatIcons
     {

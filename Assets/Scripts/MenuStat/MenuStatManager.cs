@@ -60,6 +60,10 @@ public class MenuStatManager : MonoBehaviour
                 temp = Instantiate(SouvenirPrefab, SouvenirSpawnEquiped.GetComponent<Cristopher>().GetDropZone());
                 ListSouvenirUIEquipped.Add(temp.GetComponent<SouvenirUI>());
             }
+            else if (GameManager.Instance.IsTuto)
+            {
+                temp = Instantiate(SouvenirPrefab, TutoManager.Instance.SouvenirPosTuto);
+            }
             else
             {
                 temp = Instantiate(SouvenirPrefab, SouvenirSpawnUnEquiped.transform);
