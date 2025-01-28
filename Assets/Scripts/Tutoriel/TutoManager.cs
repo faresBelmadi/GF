@@ -145,6 +145,7 @@ public class TutoManager : MonoBehaviour
     public void Loot()
     {
         StatPanel.SetActive(true);
+        TutoPanel.transform.localPosition = new Vector3(0f,-150f,0f); 
     }
 
     public void SkipTutoDuringTuto()

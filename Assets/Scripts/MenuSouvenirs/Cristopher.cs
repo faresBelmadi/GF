@@ -49,7 +49,10 @@ public class Cristopher : MonoBehaviour, IDropZone
             part.color = new Color(part.color.r, part.color.g, part.color.b, _unactiveAlpha);
         }
         //SetCurrentSlot(); //For random test
-         _rendererSlots[_currentFreeSlot].color = new Color(_rendererSlots[_currentFreeSlot].color.r, _rendererSlots[_currentFreeSlot].color.g, _rendererSlots[_currentFreeSlot].color.b, 1);
+        if (!GameManager.Instance.IsTuto)
+        {
+            _rendererSlots[_currentFreeSlot].color = new Color(_rendererSlots[_currentFreeSlot].color.r, _rendererSlots[_currentFreeSlot].color.g, _rendererSlots[_currentFreeSlot].color.b, 1);
+        }
     }
 
     // Update is called once per frame
@@ -59,6 +62,10 @@ public class Cristopher : MonoBehaviour, IDropZone
         {
             Instantiate(_prefab, _freeSlots[0]);
         }
+    }
+    public void ActivateCurrentSlot()
+    {
+        ActivateSlot(_currentFreeSlot);
     }
     private void SetCurrentSlot()
     {

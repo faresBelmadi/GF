@@ -62,7 +62,8 @@ public class MenuStatManager : MonoBehaviour
             }
             else if (GameManager.Instance.IsTuto)
             {
-                temp = Instantiate(SouvenirPrefab, TutoManager.Instance.SouvenirPosTuto);
+                temp = Instantiate(SouvenirPrefab, SouvenirSpawnUnEquiped.transform);
+                Destroy(temp.GetComponent<DraggableElement>());
             }
             else
             {
@@ -77,6 +78,7 @@ public class MenuStatManager : MonoBehaviour
             Souvenir.Add(temp);
         }
         SouvenirSpawnEquiped.GetComponent<Cristopher>().RearrangeSouvenir();
+        SouvenirSpawnEquiped.GetComponent<Cristopher>().ActivateCurrentSlot();
         UpdateStatUI();
     }
     private void OnDisable()
