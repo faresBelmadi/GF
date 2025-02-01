@@ -29,6 +29,7 @@ public class TutoManager : MonoBehaviour
     private int _indEncounter = 0;
     [Header("Datas")] [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
     [SerializeField] private Souvenir _souvenirToLoot;
+    [field:SerializeField] public Transform SouvenirPosTuto { get; private set; }
 
     public ClairvoyanceIconData StatIcons
     {
@@ -144,6 +145,7 @@ public class TutoManager : MonoBehaviour
     public void Loot()
     {
         StatPanel.SetActive(true);
+        TutoPanel.transform.localPosition = new Vector3(0f,-150f,0f); 
     }
 
     public void SkipTutoDuringTuto()

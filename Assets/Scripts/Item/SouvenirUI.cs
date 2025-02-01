@@ -7,14 +7,18 @@ using UnityEngine.UI;
 [System.Serializable]
 public class SouvenirUI : MonoBehaviour
 {
-    [HideInInspector]
+   // [HideInInspector]
     public Souvenir LeSouvenir;
+    [SerializeField]
+    private GameObject _descriptionGO;
     public TextMeshProUGUI TexteDescription;
     [SerializeField]
-    private GameObject SouvenirImageGameObject;
+    private SpriteRenderer _souvenirImageRenderer;
     [Tooltip("Set the rarity border, starting with 0 = most common")]
     [SerializeField]
-    private List<GameObject> _rarityBorders;
+    private List<Sprite> _rarityBorders;
+    [SerializeField]
+    private SpriteRenderer _rarityBordersRenderer;
 
     private const string EMOTIONID      = "Souv1Desc1";
     private const string SLOTID         = "Souv1Desc2";
@@ -27,28 +31,19 @@ public class SouvenirUI : MonoBehaviour
     private const string SHAMEID        = "SE7";
     private const string NOSTALGIAID    = "SE8";
 
+    private DescriptionHoverVisibility rectVisibility = new DescriptionHoverVisibility();
     public void StartUp()
     {
-        SouvenirImageGameObject.GetComponent<Image>().sprite = LeSouvenir.Icon;
-        TexteDescription.text = LeSouvenir.SouvenirName + "\n" + DescriptionEmotion() + "\n" + TradManager.instance.GetTranslation("Souv1Desc2", "Slots") + " : " + LeSouvenir.Slots.ToString() + "\n" + LeSouvenir.SouvenirDesc;
+        _souvenirImageRenderer.sprite = LeSouvenir.Icon;
+        //TODO: Ajouter émotions le moment venu
+        TexteDescription.text = LeSouvenir.SouvenirName + "\n" + /*DescriptionEmotion() + "\n" +*/ TradManager.instance.GetTranslation("Souv1Desc2", "Slots") + " : " + LeSouvenir.Slots.ToString() + "\n" + LeSouvenir.SouvenirDesc;
         SetRarityBorder(LeSouvenir.Rarete);
+        HideDescription();
     }
 
     private void SetRarityBorder(Rarity rarity)
     {
-        for (int i=0; i < _rarityBorders.Count;i++)
-        {
-            _rarityBorders[i].SetActive(false);
-        }
-        if ((int)rarity>= _rarityBorders.Count)
-        {
-            Debug.LogError($"Rarity {LeSouvenir.Rarete} for souvenir {LeSouvenir.name} not supported");
-            _rarityBorders[0].SetActive(true);
-        }
-        else
-        {
-            _rarityBorders[(int)LeSouvenir.Rarete].SetActive(true);
-        }
+        _rarityBordersRenderer.sprite = _rarityBorders[(int)LeSouvenir.Rarete];
     }
 
     private string DescriptionEmotion()
@@ -82,5 +77,24 @@ public class SouvenirUI : MonoBehaviour
                 break;
         }
         return DescTemp;
+    }
+    public void ShowDescription()
+    {
+        _descriptionGO.SetActive(true);
+       
+        rectVisibility.CheckVisibilityAndAdjustPosition(_descriptionGO.GetComponent<RectTransform>(), FindAnyObjectByType<Camera>());
+    }
+    public void HideDescription()
+    {
+        _descriptionGO.SetActive(false);
+    }
+
+    private void OnMouseEnter()
+    {
+        ShowDescription();
+    }
+    private void OnMouseExit()
+    {
+        HideDescription();
     }
 }

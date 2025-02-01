@@ -35,13 +35,9 @@ public class GameManager : MonoBehaviour
 
     public List<Encounter> AllEncounter;
     public int EncounterIndex;
-    public List<EncounterAlea> AllEncounterAlea;
 
-    [SerializeField] private List<Encounter> TEMPEncounterNeutral;
-    [SerializeField] private List<Encounter> TEMPEncounterClass;
-    [SerializeField] private List<Encounter> TEMPEncounterElite;
-    [SerializeField] private List<Encounter> TEMPEncounterClassElite;
-    [SerializeField] private List<Encounter> TEMPEncounterBoss;
+  
+    [field: SerializeField] public EncounterSetData EncounterSet { get; private set; }
     //[SerializeField] private List<Encounter> TutoEncounter;
     //[SerializeField] private int CurrentTutoEncounter = 0;
 
@@ -361,19 +357,19 @@ public class GameManager : MonoBehaviour
         switch (type)
         {
             case TypeRoom.ENCOUNTER:
-                return UnityEngine.Random.Range(0, TEMPEncounterNeutral.Count);
+                return UnityEngine.Random.Range(0, EncounterSet.EncounterNeutralList.Count);
                 break;
             case TypeRoom.CLASS_ENCOUNTER:
-                return UnityEngine.Random.Range(0, TEMPEncounterClass.Count);
+                return UnityEngine.Random.Range(0, EncounterSet.EncounterClassList.Count);
                 break;
             case TypeRoom.ELITE:
-                return UnityEngine.Random.Range(0, TEMPEncounterElite.Count);
+                return UnityEngine.Random.Range(0, EncounterSet.EncounterEliteList.Count);
                 break;
             case TypeRoom.CLASS_ELITE:
-                return UnityEngine.Random.Range(0, TEMPEncounterClassElite.Count);
+                return UnityEngine.Random.Range(0, EncounterSet.EncounterClassEliteList.Count);
                 break;
             case TypeRoom.BOSS:
-                return UnityEngine.Random.Range(0, TEMPEncounterBoss.Count);
+                return UnityEngine.Random.Range(0, EncounterSet.EncounterBossList.Count);
                 break;
             default: return 0;
         }
@@ -428,19 +424,19 @@ public class GameManager : MonoBehaviour
         switch (roomType)
         {
             case TypeRoom.ENCOUNTER:
-                BattleMan.LoadEnemy(Instantiate(TEMPEncounterNeutral[encounterId]));
+                BattleMan.LoadEnemy(Instantiate(EncounterSet.EncounterNeutralList[encounterId]));
                 break;
             case TypeRoom.CLASS_ENCOUNTER:
-                BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[encounterId]));
+                BattleMan.LoadEnemy(Instantiate(EncounterSet.EncounterClassList[encounterId]));
                 break;
             case TypeRoom.ELITE:
-                BattleMan.LoadEnemy(Instantiate(TEMPEncounterElite[encounterId]));
+                BattleMan.LoadEnemy(Instantiate(EncounterSet.EncounterEliteList[encounterId]));
                 break;
             case TypeRoom.CLASS_ELITE:
-                BattleMan.LoadEnemy(Instantiate(TEMPEncounterClassElite[encounterId]));
+                BattleMan.LoadEnemy(Instantiate(EncounterSet.EncounterClassEliteList[encounterId]));
                 break;
             case TypeRoom.BOSS:
-                BattleMan.LoadEnemy(Instantiate(TEMPEncounterBoss[encounterId]));
+                BattleMan.LoadEnemy(Instantiate(EncounterSet.EncounterBossList[encounterId]));
                 break;
         }
     }
@@ -455,20 +451,20 @@ public class GameManager : MonoBehaviour
         //BattleMan.LoadEnemy(Instantiate(AllEncounter[0]));
         OnStartDialog?.Invoke();
         BattleMan.LoadEnemy(
-            Instantiate(TEMPEncounterNeutral[UnityEngine.Random.Range(0, TEMPEncounterNeutral.Count())]));
+            Instantiate(EncounterSet.EncounterNeutralList[UnityEngine.Random.Range(0, EncounterSet.EncounterNeutralList.Count())]));
     }
 
     public void LoadCombatClass()
     {
         OnStartDialog?.Invoke();
-        BattleMan.LoadEnemy(Instantiate(TEMPEncounterClass[UnityEngine.Random.Range(0, TEMPEncounterClass.Count())]));
+        BattleMan.LoadEnemy(Instantiate(EncounterSet.EncounterClassList[UnityEngine.Random.Range(0, EncounterSet.EncounterClassList.Count())]));
     }
 
     public void LoadCombatElite()
     {
         OnStartDialog?.Invoke();
         //BattleMan.LoadEnemy(Instantiate(AllEncounter[1]));
-        BattleMan.LoadEnemy(Instantiate(TEMPEncounterElite[UnityEngine.Random.Range(0, TEMPEncounterElite.Count())]));
+        BattleMan.LoadEnemy(Instantiate(EncounterSet.EncounterEliteList[UnityEngine.Random.Range(0, EncounterSet.EncounterEliteList.Count())]));
     }
 
     public void LoadCombatClassElite()
@@ -476,21 +472,21 @@ public class GameManager : MonoBehaviour
         OnStartDialog?.Invoke();
         //BattleMan.LoadEnemy(Instantiate(AllEncounter[1]));
         BattleMan.LoadEnemy(
-            Instantiate(TEMPEncounterClassElite[UnityEngine.Random.Range(0, TEMPEncounterClassElite.Count())]));
+            Instantiate(EncounterSet.EncounterClassEliteList[UnityEngine.Random.Range(0, EncounterSet.EncounterClassEliteList.Count())]));
     }
 
     public void LoadCombatBoss()
     {
         OnStartDialog?.Invoke();
         //BattleMan.LoadEnemy(Instantiate(AllEncounter[2]));
-        BattleMan.LoadEnemy(Instantiate(TEMPEncounterBoss[UnityEngine.Random.Range(0, TEMPEncounterBoss.Count())]));
+        BattleMan.LoadEnemy(Instantiate(EncounterSet.EncounterBossList[UnityEngine.Random.Range(0, EncounterSet.EncounterBossList.Count())]));
     }
 
-    public void LoadEvent()
+    public void LoadEvent() //TODO: Add encounter Class Alea
     {
         OnStartEvent?.Invoke();
         OnStartDialog?.Invoke();
-        AleaMan.StartAlea(Instantiate(AllEncounterAlea[UnityEngine.Random.Range(0, AllEncounterAlea.Count)]));
+        AleaMan.StartAlea(Instantiate(EncounterSet.EncounterClassAleaList[UnityEngine.Random.Range(0, EncounterSet.EncounterClassAleaList.Count)]));
     }
 
     public void UnloadEvent()
