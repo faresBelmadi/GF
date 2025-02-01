@@ -35,14 +35,8 @@ public class GameManager : MonoBehaviour
 
     public List<Encounter> AllEncounter;
     public int EncounterIndex;
-    public List<EncounterAlea> AllEncounterAlea;
 
-    [SerializeField] private List<Encounter> TEMPEncounterNeutral;
-    [SerializeField] private List<Encounter> TEMPEncounterClass;
-    [SerializeField] private List<Encounter> TEMPEncounterElite;
-    [SerializeField] private List<Encounter> TEMPEncounterClassElite;
-    [SerializeField] private List<Encounter> TEMPEncounterBoss;
-
+  
     [field: SerializeField] public EncounterSetData EncounterSet { get; private set; }
     //[SerializeField] private List<Encounter> TutoEncounter;
     //[SerializeField] private int CurrentTutoEncounter = 0;
@@ -488,11 +482,11 @@ public class GameManager : MonoBehaviour
         BattleMan.LoadEnemy(Instantiate(EncounterSet.EncounterBossList[UnityEngine.Random.Range(0, EncounterSet.EncounterBossList.Count())]));
     }
 
-    public void LoadEvent()
+    public void LoadEvent() //TODO: Add encounter Class Alea
     {
         OnStartEvent?.Invoke();
         OnStartDialog?.Invoke();
-        AleaMan.StartAlea(Instantiate(EncounterSet.EncounterAleaList[UnityEngine.Random.Range(0, EncounterSet.EncounterAleaList.Count)]));
+        AleaMan.StartAlea(Instantiate(EncounterSet.EncounterClassAleaList[UnityEngine.Random.Range(0, EncounterSet.EncounterClassAleaList.Count)]));
     }
 
     public void UnloadEvent()

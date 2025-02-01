@@ -34,7 +34,7 @@ public class Cristopher : MonoBehaviour, IDropZone
     public event Action OnHoverOn;
     public event Action OnHoverOff;
     // Start is called before the first frame update
-    void Start()
+    void OnEnable()
     {
         _usedSlot = new Dictionary<int, bool>();
         _rendererSlots = new List<SpriteRenderer>(_freeSlots.Count);

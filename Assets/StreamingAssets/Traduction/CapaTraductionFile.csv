@@ -30,7 +30,7 @@ P1C5D;"Applique Hémorragie à un adversaire cible pendant 2 tours.
 Hémorragie : Perd 15% de sa {stat value=RAD} actuelle au début de son Tour";Apply Hemoragy on an opponent for 2 turns.         Hemorragy : Lose 15 % of their current {stat value=RAD} at the beginning of their turn.;对一名对手施放嗜血术，持续 2 个回合。Hemorragy ：在其回合开始时失去 15 % 的当前光芒。;;;
 P1C6D;"Retire tous les désavantages de l'adversaire ciblé. Pour chaque désavantage retiré, vous applique Bienfaiteur.
 Bienfaiteur : +5% de {stat value=RAM}. Récupère 1% de {stat value=RAD} au début de son Tour.";Withdraw every debuff of the selected opponent. For each debuff withdrawned that way, apply Benefactor to you.                          Benefactor :+5 % {stat value=RAM}. At the beginning of turn, heal 1% of {stat value=RAD} max.;撤消所选对手的所有眩晕。每撤回一个debuff，就会对你施放 恩惠。恩人 :+5 % 最大光芒值。在回合开始时，治疗最大光芒值的 1%。;;;
-P1C7D;Vide votre Tension totale et vous applique Savoir Primordial pour chaque palier de tension consommé de cette manière.;Consume your tension and apply Primordial knowledge to you for each level of Tension consummed that way.;消耗你的张力，每消耗1级张力，你就会获得 原始知识。;;;
+P1C7D;Vide votre Tension totale et vous applique Savoir Primordial pour chaque palier de tension consommé de cette manière.          Savoir primordial : {stat value=VIT} +3, {stat value=CL} +3, {stat value=CONV} +3;Consume your tension and apply Primordial knowledge to you for each level of Tension consummed that way.          Primordial knowledge : {stat value=VIT} +3, {stat value=CL} +3, {stat value=CONV} +3;消耗你的张力，每消耗1级张力，你就会获得 原始知识。;;;
 P1C8D;"Inflige {damage type=percent value=60 stat=FA} à l'adversaire ciblé.
 Applique Vulnérable et Estropié à l'adversaire ciblé.
 Vulnérable : Augmente les dégats subis de 20%.
@@ -40,9 +40,9 @@ P1C10D;"Applique Sous Pression à l'adversaire cible.    Inflige {stat value=FA}
 P1C11D;"Vous applique Protection rapprochée  et applique Doute à tous les adversaires.
 Protection rapprochée : Inflige 20% de sa {stat value=FA} à tout adversaire effectuant une action offensive
 Doute : +10% de chances de ne pas faire d'action lors de son prochain tour";You receive Close Protection and apply Doubt to each opponent.                                      Close Protection : Inflict 20% of their {stat value=FA} at any opponent who does an attack                                Doubt : +10 % chances to not do any action during the turn;对玩家应用 贴身保护，并对每个对手应用 怀疑。 贴身保护：对任何进行攻击的对手造成 20% 的坚韧值： 在本回合内不采取任何行动的几率+10;;;
-P1C12D;Inflige {damage type=percent value=100 stat=FA} à l'adversaire ciblé. S'il survit, vous inflige 100% de sa {stat value=FA} et vous applique Soif de vengeance.;Inflict {damage type=percent value=100 stat=FA} to target opponent. If they survive, they inflict 100% of their {stat value=FA} to you and apply Thirst for Vengeance to you.                Thirst for Vengeance : Increase {stat value=FA} by 5 point for each % of missing radiance.;对目标对手造成 100 % 的毅力值。Thirst for vengeance （渴求复仇）：每缺少 1%的光芒，就会增加 5 点防御力。;;;
-P1C13D;Inflige {damage type=percent value=80 stat=FA} et applique Commotion à l'adversaire ciblé.;Inflict {damage type=percent value=80 stat=FA} to target opponent and apply Concussion to them.;对目标对手造成你80%的毅力 并对他施以 震荡;;;
-P1C14D;"Inflige {damage type=percent value=40 stat=FA} à l'adversaire ciblé; si la cible a moins de 20% de sa {stat value=RAM}, triple les dégats. Si ce coup lui est fatal, applique le désavantage Stun à tous les autres adversaires.";"Inflict {damage type=percent value=40 stat=FA} to target opponent; if they have less than 20 % of their {stat value=RAM}, triple the damage. If the damage kills him, apply Stun to each other opponent.";对目标对手造成40%的毅力值，如果他的光芒值低于最大值的20%，则造成三倍伤害。如果伤害杀死了他，就对对方使用 眩晕。;;;
+P1C12D;"Inflige {damage type=percent value=100 stat=FA} à l'adversaire ciblé. S'il survit, vous inflige 100% de sa {stat value=FA} et vous applique Soif de vengeance.   ""Soif de vengeance"" : Augmente de 5 points la {stat value=FA} pour chaque pourcentage de {stat value=RAD} manquant";Inflict {damage type=percent value=100 stat=FA} to target opponent. If they survive, they inflict 100% of their {stat value=FA} to you and apply Thirst for Vengeance to you.                Thirst for Vengeance : Increase {stat value=FA} by 5 point for each % of missing radiance.;对目标对手造成 100 % 的毅力值。Thirst for vengeance （渴求复仇）：每缺少 1%的光芒，就会增加 5 点防御力。;;;
+P1C13D;"Inflige {damage type=percent value=80 stat=FA} et applique Commotion à l'adversaire ciblé.       ""commotion"" {stat value=RES} -3, {stat value=FA} -15% , divise par deux les gains de tension du porteur";"Inflict {damage type=percent value=80 stat=FA} to target opponent and apply Concussion to them.    ""Concussion"" {stat value=RES} -3, {stat value=FA} -15%, wielder's Tension gains are divided by 2";对目标对手造成你80%的毅力 并对他施以 震荡;;;
+P1C14D;"Inflige {damage type=percent value=40 stat=FA} à l'adversaire ciblé; si la cible a moins de 20% de sa {stat value=RAM}, triple les dégats. Si ce coup lui est fatal, applique le désavantage ""étourdis"" à tous les autres adversaires.    ""étourdi"" Ne peut pas effectuer d'action durant son Tour.";"Inflict {damage type=percent value=40 stat=FA} to target opponent; if they have less than 20 % of their {stat value=RAM}, triple the damage. If the damage kills him, apply Stun to each other opponent.     ""Stun"" Can't do any action during their turn";对目标对手造成40%的毅力值，如果他的光芒值低于最大值的20%，则造成三倍伤害。如果伤害杀死了他，就对对方使用 眩晕。;;;
 P1C15D;Inflige {damage type=percent value=50 stat=FA} à l'adversaire ciblé pour chaque désavantage sur cet adversaire.;Inflict {damage type=percent value=50 stat=FA} to target oppennet for each debuff they bear.;对目标对手的每个debuff造成50%的毅力值。;;;
 P1C16D;"Retire tous les avantages dont vous bénéficiez. Pour chaque avantage retiré, applique Remords à tous les adversaires.
 Remords : -10% de dégâts infligés";Withdraw every buff that you have. For each buff withdrawed that way, apply Remorse to each opponent.             Remorse : Fortitude -10%;撤消你拥有的所有 BUFF。每撤掉一个 BUFF，就对每个对手施放 悔恨 悔恨：坚毅 -10;;;
@@ -87,6 +87,7 @@ B36N;Aide mal comprise;Misunderstood help;;B39;;
 B37N;Persévérant;Persevering;;;;
 B38N;Espoir;Hope;;B40D;;
 B39N;S'excuser;Apologize;;;;
+B40N;Certain;Certain;;;;
 B1D;Dégats subis -10%;Take 10% less damage;受到的伤害降低 10;;;
 B2D; {stat value=FA} +10 % et +10 % {stat value=RAM};{stat value=FA} +10 %,  +10% {stat value=RAM};坚韧 +10%，最大辐射 +10;;;
 B3D;{stat value=RAM} +5%. Récupère 1% de {stat value=RAD} au début de son Tour;{stat value=RAM} +5%, heal 1% of {stat value=RAM} at the beginning of your turn;最大辐射值 +5%，回合开始时治疗最大辐射值的 1%。;;;
@@ -129,6 +130,7 @@ B39D;{stat value=FA} +15%;{stat value=FA} +15%;;;;
 B40D;Les soins sont augmenté de 20% pendant 2 combat;Heal are increase by 20 % for 2 fight;;;;
 B41D;{stat value=RAM} +20%  jusqu'a la prochaine perte de conscience;{stat value=RAM} +20%  until the next loss of conscious;;;;
 B42D;{stat value=VOL} +1;{stat value=VOL} +1;;;;
+B43D;{stat value=CONV} +5;{stat value=CONV} +5;;;;
 D1N;Crainte;Apprehension;理解力;;;
 D2N;Doute;Doubt;怀疑;;;
 D3N;éstropié;Crippled;残废;;;
@@ -167,6 +169,7 @@ D35N;Chercher une excuse;Search for an excuse;;D44D;;
 D36N;Confus;Confused;;;;
 D37N;Rejeter la faute;putting the blame on someone else;;;;
 D38N;Abandon;Abandon;;;;
+D39N;Craquage;Breakdown;;;;
 D1D;{stat value=RAD} -5 %, {stat value=CONV} -2;{stat value=RAD} -5%, {stat value=CONV} -2;光芒-5%，信念-2;;;
 D2D;chances de 10% de ne pas faire d'action lors de son prochain tour;There is 10 % chance that the opponent will lose their action at the beginning of their turn;对手在回合开始时有 10 % 的几率失去行动能力;;;
 D3D;{stat value=VIT} -50% pendant 2 phase;{stat value=VIT} -50% during 2 phases;在两个阶段内速度-50;;;
@@ -189,10 +192,10 @@ D19D;-5% de {stat value=RAM};-5% {stat value=RAM};-5%最大辐射;;;
 D20D;-8% {stat value=RAM};-8% {stat value=RAM};最大 -8% 光辉值;;;
 D21D;{stat value=RES} et {stat value=CONV} -2;{stat value=RES} and {stat value=CONV} -2;复原力和信念 -2;;;
 D22D;{stat value=FA} +15 % et {stat value=CONV} +2;{stat value=FA} +15 % and {stat value=CONV} +2;毅力 +15 % 和信念 +2;;;
-D23D;{stat value=FA} -50%;{stat value=FA} -50%;恢复力 -3;;;
+D23D;{stat value=FA} -25%;{stat value=FA} -25%;恢复力 -3;;;
 D24D;{stat value=FA} +15% et {stat value=CL} -3;{stat value=FA} +15% and {stat value=CL} -3;;;;
 D25D;Perd 15% de sa {stat value=RAD} actuelle au début de son Tour;Loose 15% of {stat value=RAD} at the beginning of their turn;;;;
-D26D;"Inflige {stat value=FA} 25 % à l'ennemi ciblé au début de son tour, quand consommé crée un débuff ""crainte"" ";"Inflict {stat value=FA} 25 % to target ennemy at the beginning of his turn, when consumed, create a debuff  ""apprehension""";;;;
+D26D;"Inflige {stat value=FA} 25 % à l'ennemi ciblé au début de son tour, quand consommé crée un débuff ""crainte"" . Dure 2 phase";"Inflict {stat value=FA} 25 % to target ennemy at the beginning of his turn, when consumed, create a debuff  ""apprehension"". Stay on 2 phase";;;;
 D27D;{stat value=RAD} -15 % {stat value=FA} -15% jusqu'a la fin des 2 prochains combat;{stat value=RAD} -15 % {stat value=FA} -15% until the end of the next two fight;;;;
 D28D;{stat value=FA} +5 % {stat value=CL} -2;{stat value=FA} +5 % {stat value=CL} -2;;;;
 D29D;{stat value=CONV} -2;{stat value=CONV} -2;;;;
@@ -213,6 +216,7 @@ D43D;-8% {stat value=RAM} et {stat value=CONV} +2 jusqu'au prochain gain de cons
 D44D;{stat value=VOL} -1 les deux premiers tours ;{stat value=VOL} -1 the first two turn;;;;
 D45D;-15% {stat value=RAM} jusqu'au prochain gain de conscience;-15% {stat value=RAM} until the next gain of conscience;;;;
 D46D;{stat value=CONV} -5 {stat value=RES} -5 jusqu'au prochain autel;{stat value=CONV} -5 {stat value=RES} -5 until the next autel;;;;
+D47D;{stat value=CONV} -3;{stat value=CONV} -3;;;;
 EN1;Eveque;Bishop;主教;;;
 EN2;Mère supérieur;Mother Superior;女上司;;;
 EN3;Choriste;Chorist;牧师;;;
@@ -291,7 +295,7 @@ Le buff en garde gagne un bonus de 10 %";{stat value=RES} +2, En guard gain a bo
 SC4D;"{stat value=FA} +10% 
 +15 % de dégats en plus sur la capacité base du combat";{stat value=FA} +10%, Combat basis deal 15 % more damage;;;;
 SC5D;"{stat value=CL} +6
-Calme +3         ";{stat value=CL} +6 calm +3 ;;;;
+Calme +3   ""Trone d'or"" ponctionne 5% de plus et n'applique plus ""colère""";"{stat value=CL} +6 calm +3  ""Golden throne"" Gain +5% punction, it does not apply ""anger"" anymore";;;;
 SC6D;"Force d’ame +30 %
 {stat value=RAM} -10 %
 +15 % dégats de “mise a mort”";{stat value=FA} +30% {stat value=RAM} -10%, +15% damage to Execution;;;;
@@ -306,25 +310,25 @@ SC9D;"Calme -6
 SC10D;"{stat value=CL} +3
 {stat value=RAM} -10%
 Coup bas inflige {damage type=percent value=20 stat=FA} en plus
-éstropié inflige un débuff de -100 en {stat value=VIT}";{stat value=CL} +3 {stat value=RAM} -10% Low blow inflict {damage type=percent value=20 stat=FA}, crippled inflict a debuff -100 {stat value=VIT} instead;;;;
+, éstropié inflige un débuff de -100 en {stat value=VIT}";{stat value=CL} +3 {stat value=RAM} -10% Low blow inflict {damage type=percent value=20 stat=FA}, crippled inflict a debuff -100 {stat value=VIT} instead;;;;
 SC11D;"{stat value=FA} +30%
-Conscience max -1 ";{stat value=FA} +30%, Max conscience -1;;;;
+Conscience max -1,  Augmente les dégats d'""opprimer les faibles"" de 25 % par débuff";"{stat value=FA} +30%, Max conscience -1.    Increase the damage of ""opress the weak"" by 25% per debuff";;;;
 SC12D;"Calme -5
 {stat value=CL} -3
 Seul contre tous inflige +40% de dégâts";Calm -5, {stat value=CL}-3, Alone against the world inflict +40% Damage;;;;
 SC13D;"Conscience max +1
 Calme +4 Savoir primordiale augmente le bonus de {stat value=CL} de +2";Max conscience +1, Calm +4 Primordial knowledge {stat value=CL} boost is increased by +2;;;;
 SC14D;"{stat value=CONV} +2
-{stat value=RAD} -10%";{stat value=CONV} +2, Max {stat value=RAD} -10%;;;;
+{stat value=RAD} -10%       sous pression inflige également un débuff de {stat value=CONV} -3";{stat value=CONV} +2, Max {stat value=RAD} -10%  Under pressure also apply a debuff of {stat value=CONV} -3;;;;
 SC15D;"{stat value=CL} +5
-{stat value=VIT} -3 bienfaiteur {stat value=RAM} +10% et augmente le soin de 4%";{stat value=CL} +5, {stat value=VIT} -3 benefecator {stat value=RAM}  +10 % and increase healing by +4%;;;;
+{stat value=VIT} -3 bienfaiteur {stat value=RAM} +5% et augmente le soin de 2%";{stat value=CL} +5, {stat value=VIT} -3 benefecator {stat value=RAM}  +5 % and increase healing by +2%;;;;
 SC16D;"{stat value=RAM} +30%
 {stat value=RES} -4
 {stat value=VIT} +6
-Appliquer soif de vengeance, vous donne aussi un buff de {stat value=CONV} de +5";{stat value=RAM} +30%,  {stat value=VIT} +6, {stat value=RES} -4, Apply thirst for vengence also give you a buff of +5 {stat value=CONV};;;;
+Appliquer soif de vengeance, vous donne aussi un buff de {stat value=CONV} de +5     ""Soif de vengeance"" : Augmente de 5 points la {stat value=FA} pour chaque pourcentage de {stat value=RAD} manquant";{stat value=RAM} +30%,  {stat value=VIT} +6, {stat value=RES} -4, Apply thirst for vengence also give you a buff of +5 {stat value=CONV};;;;
 SC17D;"{stat value=FA} +30%
 Calme -5
-{stat value=CL} -8   Hémmoragie passe la {stat value=CONV} du porteur à 0";{stat value=FA} +30% Calm -5, {stat value=CL} -8 Hemorrhage make the opponent {stat value=CONV} pass to 0;;;;
+{stat value=CL} -8   Hémmoragie passe la {stat value=CONV} du porteur à -20";{stat value=FA} +30% Calm -5, {stat value=CL} -8 Hemorrhage make the opponent {stat value=CONV} pass to -20;;;;
 SC18D;{stat value=RAM} +15%, {stat value=CL} +8, Calm +6, Remord gagne 5% de réduction de dégats;{stat value=RAM} +15%, {stat value=CL} +8, Calm +6, Remorse gain 5% damage reduction ;;;;
 SC19D;"{stat value=RAM} +15%
 {stat value=RES} +4
@@ -332,49 +336,53 @@ SC19D;"{stat value=RAM} +15%
 Protection rapprochée inflige 15 % de dégats supplémentaire, et dure une phase de plus";{stat value=RAM} +15%, {stat value=RES} +4, {stat value=VIT}-10, Close protection inflict +15% Damage, and stay one more phase;;;;
 SC20D;"{stat value=FA} +40%
 Calme -6
-Conscience max -3";{stat value=FA} +40%, Calm -6, Max Conscience  -3;;;;
+Conscience max -3    Si mise a mort tue sa cible. applique 2 étourdis à tous les autres adversaires.     ""étourdi"" Ne peut pas effectuer d'action durant son Tour.";"{stat value=FA} +40%, Calm -6, Max Conscience  -3     If execution kill the tarder, apply two ""stun"" to each other opponent      ""Stun"" Can't do any action during their turn";;;;
 SC21D;"{stat value=RAM} +35 %
 {stat value=CONV} +6
-{stat value=VIT} -12";{stat value=RAM} +35%, {stat value=CONV} +6, {stat value=VIT} -12;;;;
+{stat value=VIT} -12       Garde royale applique colère au lieu de doute         ""colère"" 20% de chance d'effectuer une action offensive durant son tour";"{stat value=RAM} +35%, {stat value=CONV} +6, {stat value=VIT} -12   Royal guard apply anger instead of doubt       ""anger"" 20% chances to do an offensive action during their turn.";;;;
 SC22D;"{stat value=RES} +6
 {stat value=CONV} +6
-{stat value=FA} -40% ";{stat value=RES} +6, {stat value=CONV} +6, {stat value=FA} -40%;;;;
+{stat value=FA} -40%      Calmez les tension retire un palier de tension par débuff appliqué";{stat value=RES} +6, {stat value=CONV} +6, {stat value=FA} -40%    Appease tension reduce by 1 the tension of the opponent it's applied to;;;;
 P1C1DVS;Inflige {damage type=percent value=60 stat=FA} et gagne un bonus de 20% de resistance aux dégats pour 1 tour;Inflict {damage type=percent value=60 stat=FA} to target opponent, gain a bonus of 20 % to damage resistance for 1 turn;;;;
 P1C2DVS;"Gagne {percent value=10 target=RAM} et {percent value=10 target=FA}. 
 Dure 3 phases.";Gain  {percent value=10 target=RAM} and {percent value=10 target=FA}, for 3 phases;;;;
 P1C3DVS;"Applique a tout les adversaires deux fois le débuff  Febrile.
  Fébrile : Si le porteur est frappé par le guerrier, augmente les dégats reçus de 20% et consomme le débuff, quand consommée crée un débuff  Crainte. 
  Crainte : Réduit la {stat value=RAM} de 7 % et la {stat value=CONV} de 2 du porteur.";Apply to each opponent the debuff  Feverish twice.        Feverish : If the holder is hit by the player, increase by 20 % the damage received and consume the debuff. When consumed, create a debuff Apprehension     Apprehension : Reduce {stat value=RAM} by 7% and {stat value=CONV} -2 of the holder.;;;;
-P1C4DVS;"Applique a tous les ennemis Trone d'or : Ponctionne 5% de {stat value=RAD} actuelle à chaque adversaire au début de son tour
-et leur applique Colère : +20% de chances d'effectuer une action offensive durant son tour";Apply to all opponent Golden Throne : Puncture 5 % of the current {stat value=RAD} of each opponent at the beginning of their turn and apply Anger to them : +20% chances that they do an offensive action during their turn.;;;;
+P1C4DVS;Applique a tous les ennemis Trone d'or : Ponctionne 10% de {stat value=RAD} actuelle à chaque adversaire au début de son tour;Apply to all opponent Golden Throne : Puncture 10 % of the current {stat value=RAD} of each opponent at the beginning of their turn.;;;;
 P1C5DVS;"Applique Hémorragie à un adversaire cible pendant 2 tours.
-Hémorragie : Perd 15% de sa {stat value=RAD} actuelle au début de son Tour et passe sa {stat value=CONV} à 0";Apply Hemoragy on an opponent for 2 turns.         Hemorragy : Lose 15 % of their current {stat value=RAD} at the beginning of their turn, and make his {stat value=CONV} pass to 0 .;;;;
+Hémorragie : Perd 15% de sa {stat value=RAD} actuelle au début de son Tour et passe sa {stat value=CONV} à -20";Apply Hemoragy on an opponent for 2 turns.         Hemorragy : Lose 15 % of their current {stat value=RAD} at the beginning of their turn, and make his {stat value=CONV} pass to 0 .;;;;
 P1C6DVS;"Retire tous les désavantages de l'adversaire ciblé. Pour chaque désavantage retiré, vous applique Bienfaiteur.
-Bienfaiteur : +15% de {stat value=RAM}. Récupère 5% de {stat value=RAD} au début de son Tour.";Withdraw every debuff of the selected opponent. For each debuff withdrawned that way, apply Benefactor to you.                          Benefactor :+15 % {stat value=RAM}. At the beginning of turn, heal 4% of {stat value=RAD} max.;;;;
-P1C7DVS;Vide votre Tension totale et vous applique Savoir Primordial pour chaque palier de tension consommé de cette manière.;Consume your tension and apply Primordial knowledge to you for each level of Tension consummed that way.;;;;
+Bienfaiteur : +10% de {stat value=RAM}. Récupère 3% de {stat value=RAD} au début de son Tour.";Withdraw every debuff of the selected opponent. For each debuff withdrawned that way, apply Benefactor to you.                          Benefactor :+10 % {stat value=RAM}. At the beginning of turn, heal 3% of {stat value=RAD} max.;;;;
+P1C7DVS;Vide votre Tension totale et vous applique Savoir Primordial pour chaque palier de tension consommé de cette manière.          Savoir primordial : {stat value=VIT} +5, {stat value=CL} +3, {stat value=CONV} +3;Consume your tension and apply Primordial knowledge to you for each level of Tension consummed that way.          Primordial knowledge : {stat value=VIT} +5, {stat value=CL} +3, {stat value=CONV} +3;;;;
+P1C71DVS;Vide votre Tension totale et vous applique Savoir Primordial pour chaque palier de tension consommé de cette manière.          Savoir primordial : {stat value=VIT} +3, {stat value=CL} +5, {stat value=CONV} +3;Consume your tension and apply Primordial knowledge to you for each level of Tension consummed that way.          Primordial knowledge : {stat value=VIT} +3, {stat value=CL} +5, {stat value=CONV} +3;;;;
 P1C8DVS;"Inflige {damage type=percent value=80 stat=FA} à l'adversaire ciblé.
 Applique Vulnérable et Estropié à l'adversaire ciblé.
 Vulnérable : Augmente les dégats subis de 20%.
 Estropié : -100 de {stat value=VIT}.";Inflict {damage type=percent value 80 stat=FA} to target opponent. Also apply Vulnerable and Crippled.                     Vulnerable: Increase the damage taken by 20 %           Crippled : -100 {stat value=VIT};;;;
 P1C9DVS;Vous applique deux fois le buff Coup pour Coup. Coup pour Coup : Augmente la {stat value=FA} de 40 % du dernier dégat subit quand ce buff est appliqué;You receive Blow for blow twice. Blow for blow : Increase {stat value=FA} of 40% of the lastly received hit when this buff is applied ;;;;
-P1C10DVS;Applique Sous Pression à tous les adversaires.;Apply Under Pressure to all opponents.;;;;
+P1C10DVS;"Applique Sous Pression à l'adversaire cible.    Inflige {stat value=FA} 25 % à l'ennemi ciblé au début de son tour, quand consommé crée un débuff ""crainte"".      Et ""Craquage"" {stat value=CONV} -3";"Apply Under Pressure to target opponent.    Inflict {stat value=FA} 25 % to target ennemy at the beginning of his turn, when consumed, create a debuff  ""apprehension""     Also apply ""Breakdown""   {stat value=CONV} -3";;;;
 P1C11DVS;"Vous applique Protection rapprochée  et applique Doute à tous les adversaires.
 Protection rapprochée : Inflige 35% de sa {stat value=FA} à tout adversaire effectuant une action offensive
 Doute : +10% de chances de ne pas faire d'action lors de son prochain tour";You receive Close Protection and apply Doubt to each opponent.                                      Close Protection : Inflict 35% of their {stat value=FA} at any opponent who does an attack                                Doubt : +10 % chances to not do any action during the turn;;;;
-P1C12DVS;Inflige {damage type=percent value=100 stat=FA} à l'adversaire ciblé. S'il survit, vous inflige 100% de sa {stat value=FA} et vous applique Soif de vengeance.;Inflict {damage type=percent value=100 stat=FA} to target opponent. If they survive, they inflict 100% of their {stat value=FA} to you and apply Thirst for Vengeance to you.                Thirst for Vengeance : Increase {stat value=FA} by 5 point for each % of missing radiance.;;;;
+P1C12DVS;Inflige {damage type=percent value=100 stat=FA} à l'adversaire ciblé. S'il survit, vous inflige 100% de sa {stat value=FA} et vous applique Soif de vengeance.      Augmente de 5 points la {stat value=FA} pour chaque pourcentage de {stat value=RAD} manquant;Inflict {damage type=percent value=100 stat=FA} to target opponent. If they survive, they inflict 100% of their {stat value=FA} to you and apply Thirst for Vengeance to you.                Thirst for Vengeance : Increase {stat value=FA} by 5 point for each % of missing radiance.;;;;
 P1C13DVS;Inflige {damage type=percent value=80 stat=FA} et 20% a tout les autres adversaires, applique Commotion à tout les l'adversaires.;Inflict {damage type=percent value=80 stat=FA} to target opponent, and {damage type=percent value=20 stat=FA} to all other opponent, and apply Concussion to them.;;;;
 P1C14DVS;"Inflige {damage type=percent value=55 stat=FA} à l'adversaire ciblé; si la cible a moins de 20% de sa {stat value=RAM}, triple les dégats. Si ce coup lui est fatal, applique le désavantage Stun à tous les autres adversaires.";"Inflict {damage type=percent value=55 stat=FA} to target opponent; if they have less than 20 % of their {stat value=RAM}, triple the damage. If the damage kills him, apply Stun to each other opponent.";;;;
-P1C15DVS;Inflige {damage type=percent value=50 stat=FA} à l'adversaire ciblé pour chaque désavantage sur cet adversaire.;Inflict {damage type=percent value=50 stat=FA} to target oppennet for each debuff they bear.;;;;
+P1C15DVS;Inflige {damage type=percent value=75 stat=FA} à l'adversaire ciblé pour chaque désavantage sur cet adversaire.;Inflict {damage type=percent value=75 stat=FA} to target oppennet for each debuff they bear.;;;;
 P1C16DVS;"Retire tous les avantages dont vous bénéficiez. Pour chaque avantage retiré, applique Remords à tous les adversaires.
 Remords : -15% de dégâts infligés";Withdraw every buff that you have. For each buff withdrawed that way, apply Remorse to each opponent.             Remorse : Fortitude -15%;;;;
 P1C17DVS;"Inflige {damage type=percent value=140 stat=FA} divisé équitablement entre tous les adversaires et leur applique Crainte.
 Crainte : {stat value=RAD} -5 % et {stat value=CONV} -2";Inflict {damage type=percent value=140 stat=FA} divided into all opponents, also apply to Apprehension to them.                         Apprehension : {stat value=RAD} -5% and {stat value=CONV} -2;;;;
 P1C18DVS;Inflige {damage type=percent value=75 stat=FA} et gagne un bonus de 10% de resistance aux dégats pour 1 tour;Inflict {damage type=percent value=75 stat=FA} to target opponent, gain a bonus of 10 % to damage resistance for 1 turn;;;;
 P1C19DVS;Inflige {damage type=percent value=75 stat=FA} et gagne un bonus de 20% de resistance aux dégats pour 1 tour;Inflict {damage type=percent value=75 stat=FA} to target opponent, gain a bonus of 20 % to damage resistance for 1 turn;;;;
+;;;;;;
 D3DVS;{stat value=VIT} -100 pendant 2 phase;{stat value=VIT} -100 during 2 phases;在两个阶段内速度-100;;;
+D6DVS;Hémorragie : Perd 15% de sa {stat value=RAD} actuelle au début de son Tour et passe sa {stat value=CONV} a-20; Hemorragy : Lose 15 % of their current {stat value=RAD} at the beginning of their turn, and make his {stat value=CONV} pass to -20;;;;
+B5DVS; +10% de {stat value=RAM}. Récupère 3% de {stat value=RAD} au début de son Tour.; +10 % {stat value=RAM}. At the beginning of turn, heal 3% of {stat value=RAD} max.;;;;
 B6DVS;Augmente de 5 points la {stat value=FA} pour chaque pourcentage de {stat value=RAD} manquant, gagne aussi +5 {stat value=CONV};Increase {stat value=FA} by 5 point for each % of {stat value=RAD} missing, also gain +5 {stat value=CONV};每缺少 5%的光芒，坚毅值就增加 5 点;;;
 B8DVS;{stat value=VIT} +5, {stat value=CL} +3, {stat value=CONV} +3;{stat value=VIT} +5, {stat value=CL} +3, {stat value=CONV} +3;速度 +3、千里眼 +3、信念 +3;;;
 B81DVS;{stat value=VIT} +3, {stat value=CL} +5, {stat value=CONV} +3;{stat value=VIT} +3, {stat value=CL} +5, {stat value=CONV} +3;速度 +3、千里眼 +3、信念 +3;;;
+;;;;;;
 DC1D;Conscience {stat value=CONS} -1; Conscience {stat value=CONS} -1 ;;DC =debuff conséquence;;
 DC2D;Conscience  {stat value=CONS} -2;Conscience {stat value=CONS} -2;;;;
 DC3D;Conscience {stat value=CONS} -3;Conscience {stat value=CONS}-3;;;;
