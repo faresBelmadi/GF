@@ -482,11 +482,18 @@ public class GameManager : MonoBehaviour
         BattleMan.LoadEnemy(Instantiate(EncounterSet.EncounterBossList[UnityEngine.Random.Range(0, EncounterSet.EncounterBossList.Count())]));
     }
 
-    public void LoadEvent() //TODO: Add encounter Class Alea
+    public void LoadClassEvent()
     {
         OnStartEvent?.Invoke();
         OnStartDialog?.Invoke();
         AleaMan.StartAlea(Instantiate(EncounterSet.EncounterClassAleaList[UnityEngine.Random.Range(0, EncounterSet.EncounterClassAleaList.Count)]));
+    }
+
+    public void LoadNeutralEvent()
+    {
+        OnStartEvent?.Invoke();
+        OnStartDialog?.Invoke();
+        AleaMan.StartAlea(Instantiate(EncounterSet.EncounterNeutralAleaList[UnityEngine.Random.Range(0, EncounterSet.EncounterNeutralAleaList.Count)]));
     }
 
     public void UnloadEvent()
