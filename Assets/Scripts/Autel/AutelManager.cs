@@ -11,6 +11,8 @@ public class AutelManager : MonoBehaviour
     public GameObject LevelUpUiPanel;
     public GameObject ShopUiPanel;
     public GameObject StatUiPanel;
+    [SerializeField]
+    private GameObject _backgroundSky;
     public int Etage = 1;
     public JoueurStat stats;
     [SerializeField]
@@ -155,6 +157,7 @@ public class AutelManager : MonoBehaviour
         ShopUiPanel.SetActive(false);
         LevelUpUiPanel.SetActive(false);
         MenuUiPanel.SetActive(true);
+        _backgroundSky.SetActive(false);
 
     }
     private void ResetPositionBalance()
@@ -169,6 +172,7 @@ public class AutelManager : MonoBehaviour
         ResetPositionBalance();
         ShopUiPanel.SetActive(true);
         MenuUiPanel.SetActive(false);
+        _backgroundSky.SetActive(true);
         SetUpShop();
     }
 
@@ -178,6 +182,7 @@ public class AutelManager : MonoBehaviour
         ResetPositionBalance();
         LevelUpUiPanel.SetActive(true);
         MenuUiPanel.SetActive(false);
+        _backgroundSky.SetActive(true);
         SetUpAllSpells();
     }
 

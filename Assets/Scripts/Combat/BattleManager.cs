@@ -107,6 +107,7 @@ public class BattleManager : MonoBehaviour
         Debug.Log("Loot : " + random);
         if (random > _encounter.PourcentageLootSouvenir)
         {
+            IsLoot = false;
             return;
         }
 
