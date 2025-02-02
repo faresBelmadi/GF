@@ -113,7 +113,7 @@ public class DialogueManager : MonoBehaviour
         {
             _dialogPanelComponent.Reponse[i].GetComponentInChildren<Button>(true).onClick.RemoveAllListeners();
             int answerNum = i;
-            _dialogPanelComponent.Reponse[i].GetComponentInChildren<Button>(true).onClick.AddListener(() => GetRéponse(answerNum));
+            _dialogPanelComponent.Reponse[i].GetComponentInChildren<Button>(true).onClick.AddListener(() => GetFullAnswer(answerNum));
         }
     }
 
@@ -143,37 +143,59 @@ public class DialogueManager : MonoBehaviour
         GoNext();
     }
 
+    public void GetFullAnswer(int idReponse)
+    {
+        _dialogPanelComponent.SwitchNumberOfAnswer(0);
+        _dialogPanelComponent.MainText.text = ReponsePrincipal(idReponse);
+        _dialogPanelComponent.MainTextGO.SetActive(true);
+        _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
+        _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetRéponse(idReponse));
+        _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
+
+    }
     void GoNext()
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.DialogueSFX);
         DialogueIndex = NextDialogueIndex;
 
-        // On affiche le panel de dialogue avec le nombre requis de réponse
+        //// On affiche le panel de dialogue avec le nombre requis de réponse
+        //if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat
+        //    || _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
+        //{
+        //    // Dialogue final, on affiche le layout avec le bouton
+        _dialogPanelComponent.SwitchNumberOfAnswer(0);
+        //}
+        //else
+        //{
+        //    _dialogPanelComponent.SwitchNumberOfAnswer(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count);
+        //}
+        _dialogPanelComponent.MainText.text = TextePrincipal();
+        _dialogPanelComponent.MainTextGO.SetActive(true);
+        _dialogPanelComponent.Reponse[0].SetActive(true);
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat
             || _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
         {
-            // Dialogue final, on affiche le layout avec le bouton
-            _dialogPanelComponent.SwitchNumberOfAnswer(0);
+            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
+            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetRéponse(0));
         }
         else
         {
-            _dialogPanelComponent.SwitchNumberOfAnswer(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count);
-        }
-        _dialogPanelComponent.MainText.text = TextePrincipal();
-        _dialogPanelComponent.MainTextGO.SetActive(true);
-        InitDialogOptionButton();
+            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
+            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetAnswerList());
+            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
 
-        TextDisplayer textDisplayer = _dialogPanelComponent.MainText.GetComponent<TextDisplayer>();
+        }
+        //TextDisplayer textDisplayer = _dialogPanelComponent.MainText.GetComponent<TextDisplayer>();
 
 
-        if (textDisplayer != null)
-        {
-            _dialogPanelComponent.MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += GetAnswerList;
-        }
-        else
-        {
-            GetAnswerList();
-        }
+        //if (textDisplayer != null)
+        //{
+        //    _dialogPanelComponent.MainText.GetComponent<TextDisplayer>().OnDisplayAnimFinish += GetAnswerList;
+        //}
+        //else
+        //{
+        //    GetAnswerList();
+        //}
     }
 
     private void GetAnswerList()
@@ -182,7 +204,7 @@ public class DialogueManager : MonoBehaviour
         foreach (var panel in _dialogPanelComponent.ClairvContentListGO)
         {
             panel.GetComponent<ClairvoyancePanel>().InitClairvoyancePanel();
-            
+
         }
         //end test
         _displayedClairvoyanceStats = new Dictionary<ClairvoyanceIconStatEnum, bool>();
@@ -195,7 +217,7 @@ public class DialogueManager : MonoBehaviour
 
         var currentQuestionType = _CurrentDialogue.Questions[DialogueIndex].Question.type;
         var currentPossibleResponseList = _CurrentDialogue.Questions[DialogueIndex].ReponsePossible;
-
+        _dialogPanelComponent.SwitchNumberOfAnswer(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count);
 
 
         if (currentQuestionType == TypeQuestion.startCombat ||
@@ -252,7 +274,7 @@ public class DialogueManager : MonoBehaviour
                         //response =
                         //    TradManager.Instance.DialogueDictionary[currentPossibleResponseList[i].IdStringReponse][
                         //        TradManager.Instance.IdLanguage];
-                        response = TradManager.instance.GetTranslation(currentPossibleResponseList[i].IdStringReponse,
+                        response = TradManager.instance.GetTranslation(currentPossibleResponseList[i].IdStringReponse+"RAC",
                             "ID_DIALOGUE_NOT_IMPLEMENTED");
                     }
                     else
@@ -282,6 +304,7 @@ public class DialogueManager : MonoBehaviour
                 }
             }
         }
+        InitDialogOptionButton();
         foreach (var panel in _dialogPanelComponent.ClairvContentListGO)
         {
             string str = panel.GetComponent<ClairvoyancePanel>().PrintListOfEffect();
@@ -317,6 +340,35 @@ public class DialogueManager : MonoBehaviour
                 _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker]
                     .IdTradName,
                 _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom);
+            return "<allcaps><u><b><color=#" + colorCode + ">" + encounteurName + ": </color></b></u></allcaps>" +
+                   dialogueTrad;
+        }
+    }
+    private string ReponsePrincipal(int id)
+    {
+        string dialogueTrad;
+        string colorCode = ColorUtility.ToHtmlStringRGB(_speakerColor);
+        if (!string.IsNullOrEmpty(_CurrentDialogue.Questions[DialogueIndex].ReponsePossible[id].IdStringReponse))
+        {
+            //dialogueTrad =
+            //    TradManager.Instance.DialogueDictionary[_CurrentDialogue.Questions[DialogueIndex].Question.IdStringQuestion]
+            //        [TradManager.Instance.IdLanguage];
+            dialogueTrad = TradManager.instance.GetTranslation(
+                _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[id].IdStringReponse, "ID_DIALOGUE_NOT_IMPLEMENTED");
+        }
+        else
+        {
+            dialogueTrad = "ID_DIALOGUE_NOT_IMPLEMENTED";
+        }
+
+        if (/*ManagerBattle == null && _CurrentEncounterAlea != null*/ ManagerAlea.IsAlea)
+        {
+            return "<allcaps><u><b><color=#" + colorCode + ">" + GameManager.Instance.AllClasses[GameManager.Instance.ClassIDSelected].NameClass +
+                   ": </color></b></u></allcaps> " + dialogueTrad;
+        }
+        else
+        {
+            string encounteurName = GameManager.Instance.AllClasses[GameManager.Instance.ClassIDSelected].NameClass;
             return "<allcaps><u><b><color=#" + colorCode + ">" + encounteurName + ": </color></b></u></allcaps>" +
                    dialogueTrad;
         }
@@ -366,7 +418,7 @@ public class DialogueManager : MonoBehaviour
             GoNext();
         }
     }
-    
+
     private string BuildSpriteIcon(Effet effet, int selectedAnswer, ref bool[] displayed)
     {
         StringBuilder strb = new StringBuilder();
@@ -931,8 +983,8 @@ public class DialogueManager : MonoBehaviour
                 buff.GetComponent<BuffDebuffComponant>().InitBuffDebuff(buffDebuff);
                 buff.GetComponent<BuffDebuffComponant>().buffCntLabel.text = "1";
                 buff.GetComponent<EnflateSystem>().TriggerInflation();
-                
-                buff.GetComponent<BuffDebuffComponant>().buffSprite.sprite = buffDebuff.IsDebuff?GameManager.Instance.SpriteData.Debuff:GameManager.Instance.SpriteData.Buff;
+
+                buff.GetComponent<BuffDebuffComponant>().buffSprite.sprite = buffDebuff.IsDebuff ? GameManager.Instance.SpriteData.Debuff : GameManager.Instance.SpriteData.Buff;
                 _listBuffEffectFromDialog.Add(buff);
 
                 //Application du buff
@@ -1087,7 +1139,7 @@ public class DialogueManager : MonoBehaviour
             panel.GetComponent<ClairvoyancePanel>().ClearClairvoyancePanel();
         }
         //end test
-       
+
         for (int i = _listClairvEffect.Count - 1; i >= 0; i--)
         {
             Destroy(_listClairvEffect[i]);

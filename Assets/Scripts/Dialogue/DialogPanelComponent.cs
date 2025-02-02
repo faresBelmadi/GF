@@ -161,8 +161,8 @@ public class DialogPanelComponent : MonoBehaviour
                 _dialogFrameGO.GetComponent<Image>().sprite = _endingDialogFrame;
                 break;
             case 1:
-                _dialogOneOption.SetActive(false);
-                _dialogTwoOptions.SetActive(true);
+                _dialogOneOption.SetActive(true);
+                _dialogTwoOptions.SetActive(false);
                 _dialogThreeOptions.SetActive(false);
                 _dialogBackgroundGO.GetComponent<Image>().sprite = _oneAnswerDialogBG;
                 _dialogFrameGO.GetComponent<Image>().sprite = _oneAnswerDialogFrame;
