@@ -917,6 +917,7 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    #region Consequence
     void ApplyConsequence(List<ConséquenceSO> consequence)
     {
         foreach (var Consequence in consequence)
@@ -1072,7 +1073,8 @@ public class DialogueManager : MonoBehaviour
             scriptableObject.timerApplication);
         enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
     }
-
+    #endregion Consequence
+    #region End of Dialogue
     public void StopSFX()
     {
         AudioManager.instance.SFX.StopPlaying();
@@ -1135,4 +1137,5 @@ public class DialogueManager : MonoBehaviour
         AudioManager.instance.SFX.StopPlaying();
         GameManager.Instance.AleaMan.EndAlea();
     }
+    #endregion End of Dialogue
 }
