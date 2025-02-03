@@ -5,19 +5,25 @@ using UnityEngine.EventSystems;
 
 public class MainButton : MonoBehaviour, ISelectHandler, IPointerEnterHandler, IPointerExitHandler
 {
+    [SerializeField]
+    private GameObject _fleches;
+    private void OnEnable()
+    {
+        _fleches.SetActive(false);
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Debug.Log("Enter");
+        _fleches.SetActive(true);
+        
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("Exit");
+        _fleches.SetActive(false);
     }
 
     public void OnSelect(BaseEventData eventData)
     {
-        Debug.Log("Select");
     }
 
     

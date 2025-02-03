@@ -29,11 +29,11 @@ public class OptionsMenu : MonoBehaviour
 
     private void OnEnable()
     {
-        //_masterVolumeSlider.value = AudioManager.instance.MasterVolume;
-        //_musicVolumeSlider.value = AudioManager.instance.MusicVolume;
-        //_SFXVolumeSlider.value = AudioManager.instance.SFXVolume;
+        _masterVolumeSlider.value = AudioManager.instance.MasterVolume;
+        _musicVolumeSlider.value = AudioManager.instance.MusicVolume;
+        _SFXVolumeSlider.value = AudioManager.instance.SFXVolume;
 
-        foreach(var tabButton in _tabs)
+        foreach (var tabButton in _tabs)
         {
             tabButton.Unselect();
         }

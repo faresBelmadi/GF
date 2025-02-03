@@ -15,7 +15,6 @@ public class TabOptionButton : MonoBehaviour
     {
         _select.SetActive(true);
         _gray.SetActive(false);
-        Button b;
         
     }
     public void Unselect()
