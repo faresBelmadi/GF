@@ -11,6 +11,8 @@ public class MainMenu : MonoBehaviour
     private GameObject _welcomeText;
     [SerializeField]
     private GameObject _mainMenu;
+    [SerializeField]
+    private GameObject _optionMenu;
 
     private bool _anyKeyPushed = false;
 
@@ -19,6 +21,7 @@ public class MainMenu : MonoBehaviour
     {
         _welcomeText.SetActive(true);
         _mainMenu.SetActive(false);
+       // _optionMenu.SetActive(false);
     }
 
     // Update is called once per frame

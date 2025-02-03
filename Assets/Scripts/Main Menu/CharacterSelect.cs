@@ -28,6 +28,10 @@ public class CharacterSelect : MonoBehaviour
     void Start()
     {
         _selected= SelectedCharacter.None;
+        _warriorGO.SetActive(false);
+        _witchGO.SetActive(false);
+        _warriorCristopher.SetActive(true);
+        _witchCristopher.SetActive(true);
     }
 
     public void ShowWitch()
