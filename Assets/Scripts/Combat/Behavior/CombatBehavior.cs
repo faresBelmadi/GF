@@ -72,7 +72,7 @@ public class CombatBehavior : MonoBehaviour
             BuffDebuffComponant buffComp = buffObject.GetComponent<BuffDebuffComponant>();
             //buffComp.buffSprite.sprite = CorrespondingSprite
             
-            buffComp.buffSprite.sprite = toAdd.IsDebuff ? GameManager.Instance.SpriteData.Debuff:GameManager.Instance.SpriteData.Buff;
+            buffComp.buffSprite.sprite = toAdd.Icon;
 
             buffComp.buffName = buffDebuffName;
             buffComp.buffNameLabel.text = buffDebuffName;

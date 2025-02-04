@@ -135,7 +135,7 @@ public class DialogPanelComponent : MonoBehaviour
             _reponseTextList.Clear();
             _reponseTextList.Add(_reponseOneGO[0].GetComponentInChildren<TMP_Text>());
             _mainText = MainTextGO.GetComponent<TMP_Text>();
-            _endText = EndDialog.GetComponent<TMP_Text>();
+            _endText = EndDialog.GetComponentInChildren<TMP_Text>();
         }
         
     }
