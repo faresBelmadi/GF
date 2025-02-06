@@ -43,4 +43,9 @@ public class MainMenu : MonoBehaviour
 
         _animator.SetTrigger("CharacterSelect");
     }
+    public void CharacterSelectBack()
+    {
+
+        _animator.SetTrigger("CharacterSelect");
+    }
 }

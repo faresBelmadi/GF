@@ -10,6 +10,8 @@ public class StartGame : MonoBehaviour
     public GameObject OptionMenuGO;
 
     [SerializeField]
+    public CharacterSelect _characterSelect;
+    [SerializeField]
     private LevelLoader _levelLoader;
 
     public void Button_StartGame(int classe)
