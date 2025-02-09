@@ -22,6 +22,8 @@ public class CharacterSelect : MonoBehaviour
     [SerializeField]
     private TMP_Text _gameplayText;
     [SerializeField]
+    private GameObject _tutoToggle;
+    [SerializeField]
     private string _comingSoonLabel;
     [Space]
     [SerializeField]
@@ -221,6 +223,7 @@ public class CharacterSelect : MonoBehaviour
     }
     public void RefreshText(SelectedCharacter selected)
     {
+        _tutoToggle.SetActive(false);
         if (selected == SelectedCharacter.None)
         {
             _nameText.text = "";
@@ -234,6 +237,10 @@ public class CharacterSelect : MonoBehaviour
                 _nameText.text = TradManager.instance.GetTranslation(GetNameLabel(selected), "My name");
                 _gameplayText.text = TradManager.instance.GetTranslation(GetGameplayLabel(selected), "My gameplay");
                 _loreText.text = TradManager.instance.GetTranslation(GetLoreLabel(selected), "My lore");
+                if (selected == SelectedCharacter.Warrior)
+                {
+                    _tutoToggle.SetActive(true);
+                }
             }
             else
             {

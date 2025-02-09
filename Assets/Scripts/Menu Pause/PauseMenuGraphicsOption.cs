@@ -16,7 +16,7 @@ public class PauseMenuGraphicsOption : MonoBehaviour
         int width, height;
         switch (_resolutionDropdown.value)
         {
-            case 0: // 1920 x 1082
+            case 0: // 1920 x 1080
                 width = 1920;
                 height = 1080;
                 break;
