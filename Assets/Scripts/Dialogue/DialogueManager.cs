@@ -172,19 +172,21 @@ public class DialogueManager : MonoBehaviour
         _dialogPanelComponent.MainText.text = TextePrincipal();
         _dialogPanelComponent.MainTextGO.SetActive(true);
         _dialogPanelComponent.Reponse[0].SetActive(true);
-        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat
-            || _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
-        {
-            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
-            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetRéponse(0));
-        }
-        else
-        {
-            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
-            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetAnswerList());
-            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
+        
+            if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat
+                || _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
+            {
+                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
+                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetRéponse(0));
+            }
+            else
+            {
+                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
+                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetAnswerList());
+                _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
 
-        }
+            }
+
         //TextDisplayer textDisplayer = _dialogPanelComponent.MainText.GetComponent<TextDisplayer>();
 
 
@@ -221,7 +223,7 @@ public class DialogueManager : MonoBehaviour
 
 
         if (currentQuestionType == TypeQuestion.startCombat ||
-            currentQuestionType == TypeQuestion.EndTutoDialogue)
+            currentQuestionType == TypeQuestion.EndTutoDialogue || _CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count == 1)
         {
             string DialogueTrad;
             if (!string.IsNullOrEmpty(currentPossibleResponseList[0].IdStringReponse))
@@ -257,6 +259,10 @@ public class DialogueManager : MonoBehaviour
                     Text.text = DialogueTrad;
                 }
             }
+            if(GameManager.Instance.IsTuto)
+            {
+                GetFullAnswer(0);
+            }
             _dialogPanelComponent.HideClairvoyancePanel();
             _dialogPanelComponent.EndDialog.SetActive(true);
         }
@@ -274,7 +280,13 @@ public class DialogueManager : MonoBehaviour
                         //response =
                         //    TradManager.Instance.DialogueDictionary[currentPossibleResponseList[i].IdStringReponse][
                         //        TradManager.Instance.IdLanguage];
-                        response = TradManager.instance.GetTranslation(currentPossibleResponseList[i].IdStringReponse+"RAC",
+                        if (!GameManager.Instance.IsTuto)
+                        {
+                            response = TradManager.instance.GetTranslation(currentPossibleResponseList[i].IdStringReponse + "RAC",
+                            "ID_DIALOGUE_NOT_IMPLEMENTED");
+                        }
+                        else
+                            response = TradManager.instance.GetTranslation(currentPossibleResponseList[i].IdStringReponse,
                             "ID_DIALOGUE_NOT_IMPLEMENTED");
                     }
                     else

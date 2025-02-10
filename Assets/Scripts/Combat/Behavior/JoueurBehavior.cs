@@ -566,14 +566,17 @@ public class JoueurBehavior : CombatBehavior
         //}
         var tempListBuffGO = ListBuffDebuffGO.Where(x => x.GetComponent<BuffDebuffComponant>().BuffDebuffs[0].Decompte != Decompte.combat).ToList();
         //var listBuffNoCombat = Stat.ListBuffDebuff.Where(x => x.Decompte != Decompte.combat).ToList();
-        foreach (var buffGO in tempListBuffGO)
+        if(tempListBuffGO != null && tempListBuffGO.Count > 0)
         {
-            foreach (var buff in buffGO.GetComponent<BuffDebuffComponant>().BuffDebuffs)
+            foreach (var buffGO in tempListBuffGO)
             {
-                Stat.ListBuffDebuff.Remove(buff);
+                foreach (var buff in buffGO.GetComponent<BuffDebuffComponant>().BuffDebuffs)
+                {
+                    Stat.ListBuffDebuff.Remove(buff);
+                }
+                ListBuffDebuffGO.Remove(buffGO);
+                Destroy(buffGO);
             }
-            ListBuffDebuffGO.Remove(buffGO);
-            Destroy(buffGO);
         }
         
         //foreach (var buff in listBuffNoCombat)

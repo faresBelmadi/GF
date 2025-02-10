@@ -92,9 +92,9 @@ public class PlayerMapManager : MonoBehaviour
                 if (map[i].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN
                     || map[connectedId].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN)
                 {
-                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", -1f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", -2f);
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
-                        .SetFloat("_curtainLength", -.5f);
+                        .SetFloat("_curtainLength", 0.8f);
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
                         .SetColor("_Color", basePathColor);
 
@@ -104,7 +104,7 @@ public class PlayerMapManager : MonoBehaviour
                 {
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", 1f);
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
-                        .SetFloat("_curtainLength", .5f);
+                        .SetFloat("_curtainLength", 0.8f);
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
                         .SetColor("_Color", visitedPathColors);
                 }

@@ -74,7 +74,7 @@ public class DialogPanelComponent : MonoBehaviour
     { 
         get
         {
-            if (_numberAnswer != 0)
+            if (_numberAnswer > 1)
             {
                 if (_numberAnswer == 3)
                     return _reponseThreeGO;
@@ -120,12 +120,18 @@ public class DialogPanelComponent : MonoBehaviour
                 _mainText = MainTextGO.GetComponent<TMP_Text>();
                 _endText = EndDialog.GetComponentInChildren<TMP_Text>(true);
             }
-            else
+            else if (_numberAnswer == 2)
             {
                 for (int i = 0; i < _reponseTwoGO.Count; i++)
                 {
                     _reponseTextList.Add(_reponseTwoGO[i].GetComponentInChildren<TMP_Text>(true));
                 }
+                _mainText = MainTextGO.GetComponent<TMP_Text>();
+                _endText = EndDialog.GetComponentInChildren<TMP_Text>(true);
+            }
+            else if (_numberAnswer == 1)
+            {
+                _reponseTextList.Add(_reponseOneGO[0].GetComponentInChildren<TMP_Text>(true));
                 _mainText = MainTextGO.GetComponent<TMP_Text>();
                 _endText = EndDialog.GetComponentInChildren<TMP_Text>(true);
             }
@@ -154,12 +160,6 @@ public class DialogPanelComponent : MonoBehaviour
         switch (numberOfAnswer)
         {
             case 0:
-                _dialogOneOption.SetActive(true);
-                _dialogTwoOptions.SetActive(false);
-                _dialogThreeOptions.SetActive(false);
-                _dialogBackgroundGO.GetComponent<Image>().sprite = _endingDialogBG;
-                _dialogFrameGO.GetComponent<Image>().sprite = _endingDialogFrame;
-                break;
             case 1:
                 _dialogOneOption.SetActive(true);
                 _dialogTwoOptions.SetActive(false);
