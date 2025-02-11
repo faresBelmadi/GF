@@ -149,7 +149,11 @@ public class DialogueManager : MonoBehaviour
         _dialogPanelComponent.MainText.text = ReponsePrincipal(idReponse);
         _dialogPanelComponent.MainTextGO.SetActive(true);
         _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
-        _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetRéponse(idReponse));
+        if(!GameManager.Instance.IsTuto)
+            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetRéponse(idReponse));
+        else
+
+            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.TutoManager.TutoDialogMngr.GetRéponse(idReponse));
         _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
 
     }
