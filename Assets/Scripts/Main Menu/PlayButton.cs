@@ -22,6 +22,7 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnPointerEnter(PointerEventData eventData)
     {
         _objetToHightlight.SetActive(true);
+        _objetToHightlight.GetComponent<PortalRunes>().StartBloom();
     }
     public void OnPointerExit(PointerEventData eventData)
     {

@@ -141,6 +141,7 @@ public class RotateObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerExit(PointerEventData eventData)
     {
+
         Debug.Log("Button Ex");
         transform.localScale = Vector3.one;
     }
