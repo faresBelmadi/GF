@@ -116,8 +116,10 @@ public class CharacterSelect : MonoBehaviour
         _selected = SelectedCharacter.None;
         _warriorGO.SetActive(false);
         _witchGO.SetActive(false);
+        _unknownGO.SetActive(false);
         _warriorCristopher.SetActive(true);
         _witchCristopher.SetActive(true);
+        _unknownCristopher.SetActive(true);
         RefreshText();
     }
     private string GetNameLabel(SelectedCharacter selected) => selected switch
