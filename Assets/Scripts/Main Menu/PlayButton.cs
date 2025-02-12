@@ -8,6 +8,8 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     [SerializeField]
     private GameObject _objetToHightlight;
+    [SerializeField]
+    private PortalRunes _portalToBloom;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,11 +25,12 @@ public class PlayButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         _objetToHightlight.SetActive(true);
         _objetToHightlight.GetComponent<PortalRunes>().StartBloom();
+        _portalToBloom.StartBloom();
     }
     public void OnPointerExit(PointerEventData eventData)
     {
         _objetToHightlight.SetActive(false);
-
+        _portalToBloom.StopBloom();
     }
 
 }
