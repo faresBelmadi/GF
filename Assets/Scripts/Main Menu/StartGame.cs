@@ -14,6 +14,11 @@ public class StartGame : MonoBehaviour
     [SerializeField]
     private LevelLoader _levelLoader;
 
+    private void Awake()
+    {
+        //TODO: Temporary FIX
+        Screen.SetResolution(1920, 1080, true);
+    }
     public void Button_StartGame(int classe)
     {
         PlayerPrefs.SetInt("ClassSelected", classe);
