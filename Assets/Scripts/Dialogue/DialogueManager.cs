@@ -154,7 +154,7 @@ public class DialogueManager : MonoBehaviour
         else
 
             _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.TutoManager.TutoDialogMngr.GetRéponse(idReponse));
-        _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
+        _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = TradManager.instance.GetTranslation("TutoContinue", "Continuer");
 
     }
     void GoNext()
@@ -186,13 +186,13 @@ public class DialogueManager : MonoBehaviour
             else
 
                 _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.TutoManager.TutoDialogMngr.GetRéponse(0));
-            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
+            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = TradManager.instance.GetTranslation("TutoContinue","Continuer");
         }
         else
         {
             _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
             _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetAnswerList());
-            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
+            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = TradManager.instance.GetTranslation("TutoContinue", "Continuer");
 
         }
 
