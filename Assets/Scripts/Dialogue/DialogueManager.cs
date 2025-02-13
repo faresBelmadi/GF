@@ -269,7 +269,8 @@ public class DialogueManager : MonoBehaviour
                 }
             }
             if(GameManager.Instance.IsTuto)
-            {                GetFullAnswer(0);
+            {
+                GetFullAnswer(0);
             }
             _dialogPanelComponent.HideClairvoyancePanel();
             _dialogPanelComponent.EndDialog.SetActive(true);
@@ -324,7 +325,10 @@ public class DialogueManager : MonoBehaviour
                 }
             }
         }
-        InitDialogOptionButton();
+        if (!GameManager.Instance.IsTuto)
+        {
+            InitDialogOptionButton();
+        }
         foreach (var panel in _dialogPanelComponent.ClairvContentListGO)
         {
             string str = panel.GetComponent<ClairvoyancePanel>().PrintListOfEffect();
