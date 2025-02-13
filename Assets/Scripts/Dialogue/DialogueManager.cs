@@ -177,26 +177,24 @@ public class DialogueManager : MonoBehaviour
         _dialogPanelComponent.MainTextGO.SetActive(true);
         _dialogPanelComponent.Reponse[0].SetActive(true);
         
-            if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat
-                || _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
-            {
-                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
-                if (!GameManager.Instance.IsTuto)
-                    _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetRéponse(0));
-                else
-
-                    _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.TutoManager.TutoDialogMngr.GetRéponse(0));
-                _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
-            }
-            else if (GameManager.Instance.IsTuto)
-                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.TutoManager.TutoDialogMngr.GetRéponse(0));
+        if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat
+            || _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
+        {
+            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
+            if (!GameManager.Instance.IsTuto)
+                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetRéponse(0));
             else
-            {
-                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
-                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetAnswerList());
-                _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
 
-            }
+                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.TutoManager.TutoDialogMngr.GetRéponse(0));
+            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
+        }
+        else
+        {
+            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
+            _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetAnswerList());
+            _dialogPanelComponent.Reponse[0].GetComponentInChildren<TextMeshProUGUI>().text = "Continuer";
+
+        }
 
         //TextDisplayer textDisplayer = _dialogPanelComponent.MainText.GetComponent<TextDisplayer>();
 
@@ -234,7 +232,7 @@ public class DialogueManager : MonoBehaviour
 
 
         if (currentQuestionType == TypeQuestion.startCombat ||
-            currentQuestionType == TypeQuestion.EndTutoDialogue || _CurrentDialogue.Questions[DialogueIndex].ReponsePossible.Count == 1)
+            currentQuestionType == TypeQuestion.EndTutoDialogue || GameManager.Instance.IsTuto)
         {
             string DialogueTrad;
             if (!string.IsNullOrEmpty(currentPossibleResponseList[0].IdStringReponse))
@@ -271,8 +269,7 @@ public class DialogueManager : MonoBehaviour
                 }
             }
             if(GameManager.Instance.IsTuto)
-            {
-                GetFullAnswer(0);
+            {                GetFullAnswer(0);
             }
             _dialogPanelComponent.HideClairvoyancePanel();
             _dialogPanelComponent.EndDialog.SetActive(true);

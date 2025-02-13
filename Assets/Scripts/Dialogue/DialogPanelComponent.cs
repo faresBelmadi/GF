@@ -43,16 +43,14 @@ public class DialogPanelComponent : MonoBehaviour
     [SerializeField]
     private List<GameObject> _reponseTwoGO;
     [SerializeField]
-    private GameObject _endDialogue;
-    [SerializeField]
-    private List<GameObject> _clairvContentListGO;
-    [Header("Dialog references for ending option")]
-    [SerializeField]
-    private GameObject _mainTextOneGO;
-    [SerializeField]
     private List<GameObject> _reponseOneGO;
     [SerializeField]
-    private GameObject _endOneDialogue;
+    private GameObject _endDialogue;
+    [Header("Clairvoyances panels references for icons")]
+    [SerializeField]
+    private List<GameObject> _clairvContentListGO3Reponses;
+    [SerializeField]
+    private List<GameObject> _clairvContentListGO2Reponses;
     [Header("Dialog references for ClairvoyancePanel")]
     [SerializeField]
     private List<HideClairvoyance> _clairvoyancePanels;
@@ -69,7 +67,7 @@ public class DialogPanelComponent : MonoBehaviour
     
     public GameObject DialogFrame { get => _dialogFrameGO; }
     public GameObject DialogBG { get => _dialogBackgroundGO; }
-    public GameObject MainTextGO { get => (_numberAnswer != 0) ? _mainTextGO : _mainTextOneGO; }
+    public GameObject MainTextGO { get => _mainTextGO; }
     public List<GameObject> Reponse 
     { 
         get
@@ -86,10 +84,10 @@ public class DialogPanelComponent : MonoBehaviour
         }
     }
     public List<TMP_Text> ReponseText { get => _reponseTextList; }
-    public GameObject EndDialog { get => (_numberAnswer != 0) ? _endDialogue : _endOneDialogue; }
+    public GameObject EndDialog { get => _endDialogue; }
     public TMP_Text MainText { get => _mainText; }
     public TMP_Text EndText { get => _endText; }
-    public List<GameObject> ClairvContentListGO { get => _clairvContentListGO; }
+    public List<GameObject> ClairvContentListGO { get => (_numberAnswer == 2) ? _clairvContentListGO2Reponses : _clairvContentListGO3Reponses; }
     public List<HideClairvoyance> ClairvoyancePanels{ get => _clairvoyancePanels; }
 
 
