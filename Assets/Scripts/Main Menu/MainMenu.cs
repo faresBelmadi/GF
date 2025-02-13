@@ -13,6 +13,8 @@ public class MainMenu : MonoBehaviour
     private GameObject _mainMenu;
     [SerializeField]
     private GameObject _optionMenu;
+    [SerializeField]
+    private CharacterSelect _characterSelect;
 
     private bool _anyKeyPushed = false;
 
@@ -40,12 +42,12 @@ public class MainMenu : MonoBehaviour
     }
     public void ShowCharacterSelect()
     {
-
+        _characterSelect.Init();
         _animator.SetTrigger("CharacterSelect");
     }
     public void CharacterSelectBack()
     {
-
-        _animator.SetTrigger("CharacterSelect");
+        _animator.SetTrigger("CharacterBack");
+        ShowMainMenu();
     }
 }
