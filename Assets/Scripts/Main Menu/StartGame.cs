@@ -10,9 +10,10 @@ public class StartGame : MonoBehaviour
     public GameObject OptionMenuGO;
 
     [SerializeField]
+    public CharacterSelect _characterSelect;
+    [SerializeField]
     private LevelLoader _levelLoader;
 
-    [SerializeField] private GameObject[] menuCursors;
     public void Button_StartGame(int classe)
     {
         PlayerPrefs.SetInt("ClassSelected", classe);
@@ -52,10 +53,6 @@ public class StartGame : MonoBehaviour
         MainMenuGO.SetActive(true);
         //activation du OptionMenuGO
         OptionMenuGO.SetActive(false);
-        //Reseting all cursors
-        foreach (GameObject gO in menuCursors)
-        {
-            gO.SetActive(false);
-        }
+       
     }
 }
