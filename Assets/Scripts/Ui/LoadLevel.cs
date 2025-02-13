@@ -8,6 +8,7 @@ public class LoadLevel : MonoBehaviour
     public void LoadMainMenu()
     {
         SceneManager.LoadScene("MainMenu");
+        Destroy(GameManager.Instance.gameObject); //TODO change probably to save correctly game state
     }
 }
 
