@@ -181,7 +181,7 @@ public class DialogueManager : MonoBehaviour
                 || _CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
             {
                 _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.RemoveAllListeners();
-                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GetRéponse(0));
+                _dialogPanelComponent.Reponse[0].GetComponent<Button>().onClick.AddListener(() => GameManager.Instance.TutoManager.TutoDialogMngr.GetRéponse(0));
             }
             else
             {
