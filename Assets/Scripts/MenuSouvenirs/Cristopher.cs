@@ -53,6 +53,13 @@ public class Cristopher : MonoBehaviour, IDropZone
         {
             _rendererSlots[_currentFreeSlot].color = new Color(_rendererSlots[_currentFreeSlot].color.r, _rendererSlots[_currentFreeSlot].color.g, _rendererSlots[_currentFreeSlot].color.b, 1);
         }
+        for (int i = 0; i < _currentFreeSlot; i++)
+        {
+            Color startColor = _cristopherParts[i].color;
+            Color endColor = new Color(_cristopherParts[i].color.r, _cristopherParts[i].color.g, _cristopherParts[i].color.b, _activeAlpha);
+            StartCoroutine(FadePart(_cristopherParts[i], startColor, endColor));
+        }
+      
     }
 
     // Update is called once per frame
