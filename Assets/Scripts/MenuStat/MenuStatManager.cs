@@ -6,6 +6,7 @@ using static UnityEngine.UI.Extensions.ReorderableList;
 using UnityEngine.UI;
 using System.Linq;
 using UnityEngine.Rendering;
+using System;
 
 public class MenuStatManager : MonoBehaviour
 {
@@ -407,6 +408,7 @@ public class MenuStatManager : MonoBehaviour
         }
     }
 
+    [Obsolete]
     public void Equiped(ReorderableListEventStruct e)
     {
         if (e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped == false && NbSlotsEquiped+e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots <= StatTemp.SlotsSouvenir)
@@ -426,11 +428,16 @@ public class MenuStatManager : MonoBehaviour
             ListSouvenirUIEquipped.Add(souv);
             ModifStat(souv.LeSouvenir, true);
             NbSlotsEquiped += souv.LeSouvenir.Slots;
+            if (GameManager.Instance.CopyAllSouvenir.Contains(souv.LeSouvenir))
+            {
+                GameManager.Instance.CopyAllSouvenir.Remove(souv.LeSouvenir);
+            }
             return true;
         }
         return false;
     }
 
+    [Obsolete]
     public void UnEquiped(ReorderableListEventStruct e)
     {
         if (e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped == true)
