@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Classes & Encounter")] public List<ClassPlayer> AllClasses;
 
+
     public List<Encounter> AllEncounter;
     public int EncounterIndex;
 
@@ -41,7 +42,8 @@ public class GameManager : MonoBehaviour
     //[SerializeField] private List<Encounter> TutoEncounter;
     //[SerializeField] private int CurrentTutoEncounter = 0;
 
-    public List<Souvenir> AllSouvenir;
+    [field: SerializeField] private SouvenirListData _souvenirListData;
+    
     public List<Souvenir> CopyAllSouvenir;
 
     public ClassPlayer classSO;
@@ -183,10 +185,11 @@ public class GameManager : MonoBehaviour
                 playerStat.ClairvoyanceOriginal = loadedData.CurrentRun.player.Clairvoyance;
                 playerStat.SlotsSouvenir = loadedData.CurrentRun.player.SlotsSouvenir;
 
-                for (int i = 0; i < AllSouvenir.Count; i++)
+                for (int i = 0; i < _souvenirListData.AllSouvenir.Count; i++)
                 {
-                    CopyAllSouvenir.Add(Instantiate(AllSouvenir[i]));
+                    CopyAllSouvenir.Add(Instantiate(_souvenirListData.AllSouvenir[i]));
                 }
+               
 
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
