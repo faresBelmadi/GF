@@ -121,6 +121,7 @@ public class DialogueManager : MonoBehaviour
     {
         _CurrentDialogue = encounterToSet.DialogueRencontre;
         _CurrentEncounterBattle = encounterToSet;
+        Debug.Log("Start Battle dialogue of encounter : " + encounterToSet.name);
         UIJoueur.SetActive(false);
         UIDialogue.SetActive(true);
         startDialogue();
@@ -130,6 +131,7 @@ public class DialogueManager : MonoBehaviour
     {
         _CurrentDialogue = encounterToSet.DialogueRencontre;
         _CurrentEncounterAlea = encounterToSet;
+        Debug.Log("Start Alea dialogue of encounter : " + encounterToSet.name);
         UIJoueur.SetActive(false);
         UIDialogue.SetActive(true);
         startDialogue();
@@ -1014,7 +1016,7 @@ public class DialogueManager : MonoBehaviour
                 //Application du buff
                 if (/*ManagerBattle == null*/ManagerAlea.IsAlea)
                 {
-                    ManagerAlea.Stat.ListBuffDebuff.Add(buffDebuff);
+                    ManagerAlea.Stat.ListBuffDebuff.Add(Instantiate(buffDebuff));
                 }
                 else
                 {
