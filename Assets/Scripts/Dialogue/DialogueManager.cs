@@ -147,6 +147,8 @@ public class DialogueManager : MonoBehaviour
 
     public void GetFullAnswer(int idReponse)
     {
+        if (GameManager.Instance.playerStat.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[idReponse].SeuilConscience)
+            return;
         _dialogPanelComponent.SwitchNumberOfAnswer(0);
         _dialogPanelComponent.MainText.text = ReponsePrincipal(idReponse);
         _dialogPanelComponent.MainTextGO.SetActive(true);
