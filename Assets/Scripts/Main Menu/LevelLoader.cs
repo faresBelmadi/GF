@@ -8,8 +8,16 @@ public class LevelLoader : MonoBehaviour
 {
     [SerializeField]
     private GameObject _loadingScreen;
+    //[SerializeField]
+    //private Slider _loadingBar;
     [SerializeField]
-    private Slider _loadingBar;
+    private Image _loadingBar;
+
+    private void Start()
+    {
+        _loadingScreen.SetActive(false);
+    }
+    
     public void LoadGameScene()
     {
         _loadingScreen.SetActive(true);
@@ -25,7 +33,7 @@ public class LevelLoader : MonoBehaviour
         while (!operation.isDone)
         {
             float progress = Mathf.Clamp01(operation.progress / 0.9f);
-            _loadingBar.value = progress;
+            _loadingBar.fillAmount = progress;
             yield return null;
         }
     }
