@@ -121,6 +121,7 @@ public class DialogueManager : MonoBehaviour
     {
         _CurrentDialogue = encounterToSet.DialogueRencontre;
         _CurrentEncounterBattle = encounterToSet;
+        Debug.Log("Start Battle dialogue of encounter : " + encounterToSet.name);
         UIJoueur.SetActive(false);
         UIDialogue.SetActive(true);
         startDialogue();
@@ -130,6 +131,7 @@ public class DialogueManager : MonoBehaviour
     {
         _CurrentDialogue = encounterToSet.DialogueRencontre;
         _CurrentEncounterAlea = encounterToSet;
+        Debug.Log("Start Alea dialogue of encounter : " + encounterToSet.name);
         UIJoueur.SetActive(false);
         UIDialogue.SetActive(true);
         startDialogue();
@@ -145,6 +147,8 @@ public class DialogueManager : MonoBehaviour
 
     public void GetFullAnswer(int idReponse)
     {
+        if (GameManager.Instance.playerStat.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[idReponse].SeuilConscience)
+            return;
         _dialogPanelComponent.SwitchNumberOfAnswer(0);
         _dialogPanelComponent.MainText.text = ReponsePrincipal(idReponse);
         _dialogPanelComponent.MainTextGO.SetActive(true);
@@ -1012,14 +1016,15 @@ public class DialogueManager : MonoBehaviour
                 _listBuffEffectFromDialog.Add(buff);
 
                 //Application du buff
-                if (/*ManagerBattle == null*/ManagerAlea.IsAlea)
-                {
-                    ManagerAlea.Stat.ListBuffDebuff.Add(buffDebuff);
-                }
-                else
-                {
-                    ChoosePathOfExecution(Consequence, buffDebuff);
-                }
+                ChoosePathOfExecution(Consequence, buffDebuff);
+                //if (/*ManagerBattle == null*/ManagerAlea.IsAlea)
+                //{
+                //    ManagerAlea.Stat.ListBuffDebuff.Add(Instantiate(buffDebuff));
+                //}
+                //else
+                //{
+                //    ChoosePathOfExecution(Consequence, buffDebuff);
+                //}
             }
 
             //Tous les effets qu'applique le dialogue
