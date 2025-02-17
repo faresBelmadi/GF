@@ -1016,14 +1016,15 @@ public class DialogueManager : MonoBehaviour
                 _listBuffEffectFromDialog.Add(buff);
 
                 //Application du buff
-                if (/*ManagerBattle == null*/ManagerAlea.IsAlea)
-                {
-                    ManagerAlea.Stat.ListBuffDebuff.Add(Instantiate(buffDebuff));
-                }
-                else
-                {
-                    ChoosePathOfExecution(Consequence, buffDebuff);
-                }
+                ChoosePathOfExecution(Consequence, buffDebuff);
+                //if (/*ManagerBattle == null*/ManagerAlea.IsAlea)
+                //{
+                //    ManagerAlea.Stat.ListBuffDebuff.Add(Instantiate(buffDebuff));
+                //}
+                //else
+                //{
+                //    ChoosePathOfExecution(Consequence, buffDebuff);
+                //}
             }
 
             //Tous les effets qu'applique le dialogue

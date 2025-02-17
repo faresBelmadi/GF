@@ -47,7 +47,7 @@ public class JoueurBehavior : CombatBehavior
 
     [SerializeField] private AnimationControllerAttack AnimationController;
 
-    [SerializeField] private BattleManager _refBattleMan;
+    private BattleManager _refBattleMan => GameManager.Instance.BattleMan;
     [SerializeField] private bool IsTurn;
 
     public Spell SelectSpell => SelectedSpell;
@@ -63,7 +63,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void InitRefBattleMan(BattleManager battleManager)
     {
-        _refBattleMan = battleManager;
+       // _refBattleMan = battleManager;
     }
     private void OnEnable()
     {

@@ -449,6 +449,7 @@ public class BattleManager : MonoBehaviour
     public void StartCombat()
     {
         IsCombatOn = true;
+        player.DecompteDebuff(player.Stat.ListBuffDebuff, Decompte.combat, player.Stat);
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
