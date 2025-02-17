@@ -10,13 +10,20 @@ public class PauseMenuGraphicsOption : MonoBehaviour
     private TMP_Dropdown _resolutionDropdown;
     [SerializeField]
     private Toggle _fullscreenToggle;
-   
+
+    private void OnEnable()
+    {
+        //TODO: Temporary FIX
+        var option = _resolutionDropdown.options[0];
+        _resolutionDropdown.ClearOptions();
+        _resolutionDropdown.options.Add(option);
+    }
     public void ApplyResolution()
     {
         int width, height;
         switch (_resolutionDropdown.value)
         {
-            case 0: // 1920 x 1082
+            case 0: // 1920 x 1080
                 width = 1920;
                 height = 1080;
                 break;

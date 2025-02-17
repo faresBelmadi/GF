@@ -13,4 +13,12 @@ public class Encounter : ScriptableObject
     public List<LootRarity> LootRarity;
     [Header("EncouterOptions")]
     public List<EncounterOption> forcedOrder;
+    [Header("ForcedPosition")]
+    [SerializeField]
+    bool _isForced;
+    [SerializeField]
+    int _forcedPosition;
+
+    public bool IsForced { get => _isForced; }
+    public int ForcedPosition { get => _forcedPosition; }
 }

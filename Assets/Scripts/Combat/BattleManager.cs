@@ -372,8 +372,14 @@ public class BattleManager : MonoBehaviour
         {
             if (!ennemyPosIds.Contains(i))
             {
+                int choosedPos;
                 //Debug.Log($"Ennemy {i} not in list");
-                int choosedPos = remainingPos[UnityEngine.Random.Range(0, remainingPos.Count)];
+                if (_encounter.IsForced)
+                {
+                    choosedPos = remainingPos[_encounter.ForcedPosition];
+                }
+                else
+                    choosedPos = remainingPos[UnityEngine.Random.Range(0, remainingPos.Count)];
                 remainingPos.Remove(choosedPos);
                 ennemyPosIds[choosedPos] = i;
                 //Debug.Log($"Adding it to pos {choosedPos}");

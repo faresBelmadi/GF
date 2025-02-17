@@ -10,7 +10,9 @@ public class DialogPanelComponent : MonoBehaviour
     [SerializeField]
     private GameObject _dialogOneOption;
     [SerializeField]
-    private GameObject _dialogTwoOrThreeOptions;
+    private GameObject _dialogTwoOptions;
+    [SerializeField]
+    private GameObject _dialogThreeOptions;
     [SerializeField]
     private GameObject _dialogFrameGO;
     [SerializeField]
@@ -37,18 +39,18 @@ public class DialogPanelComponent : MonoBehaviour
     [SerializeField]
     private GameObject _mainTextGO;
     [SerializeField]
-    private List<GameObject> _reponseGO;
+    private List<GameObject> _reponseThreeGO;
     [SerializeField]
-    private GameObject _endDialogue;
-    [SerializeField]
-    private List<GameObject> _clairvContentListGO;
-    [Header("Dialog references for ending option")]
-    [SerializeField]
-    private GameObject _mainTextOneGO;
+    private List<GameObject> _reponseTwoGO;
     [SerializeField]
     private List<GameObject> _reponseOneGO;
     [SerializeField]
-    private GameObject _endOneDialogue;
+    private GameObject _endDialogue;
+    [Header("Clairvoyances panels references for icons")]
+    [SerializeField]
+    private List<GameObject> _clairvContentListGO3Reponses;
+    [SerializeField]
+    private List<GameObject> _clairvContentListGO2Reponses;
     [Header("Dialog references for ClairvoyancePanel")]
     [SerializeField]
     private List<HideClairvoyance> _clairvoyancePanels;
@@ -65,13 +67,27 @@ public class DialogPanelComponent : MonoBehaviour
     
     public GameObject DialogFrame { get => _dialogFrameGO; }
     public GameObject DialogBG { get => _dialogBackgroundGO; }
-    public GameObject MainTextGO { get => (_numberAnswer != 0) ? _mainTextGO : _mainTextOneGO; }
-    public List<GameObject> Reponse { get => (_numberAnswer != 0) ? _reponseGO : _reponseOneGO; }
+    public GameObject MainTextGO { get => _mainTextGO; }
+    public List<GameObject> Reponse 
+    { 
+        get
+        {
+            if (_numberAnswer > 1)
+            {
+                if (_numberAnswer == 3)
+                    return _reponseThreeGO;
+                else
+                    return _reponseTwoGO;
+            }
+            else
+                return _reponseOneGO;
+        }
+    }
     public List<TMP_Text> ReponseText { get => _reponseTextList; }
-    public GameObject EndDialog { get => (_numberAnswer != 0) ? _endDialogue : _endOneDialogue; }
+    public GameObject EndDialog { get => _endDialogue; }
     public TMP_Text MainText { get => _mainText; }
     public TMP_Text EndText { get => _endText; }
-    public List<GameObject> ClairvContentListGO { get => _clairvContentListGO; }
+    public List<GameObject> ClairvContentListGO { get => (_numberAnswer == 2) ? _clairvContentListGO2Reponses : _clairvContentListGO3Reponses; }
     public List<HideClairvoyance> ClairvoyancePanels{ get => _clairvoyancePanels; }
 
 
@@ -93,19 +109,37 @@ public class DialogPanelComponent : MonoBehaviour
         if (_numberAnswer != 0)
         {
             _reponseTextList.Clear();
-            for (int i = 0; i < _reponseGO.Count; i++)
+            if (_numberAnswer == 3)
             {
-                _reponseTextList.Add(_reponseGO[i].GetComponentInChildren<TMP_Text>(true));
+                for (int i = 0; i < _reponseThreeGO.Count; i++)
+                {
+                    _reponseTextList.Add(_reponseThreeGO[i].GetComponentInChildren<TMP_Text>(true));
+                }
+                _mainText = MainTextGO.GetComponent<TMP_Text>();
+                _endText = EndDialog.GetComponentInChildren<TMP_Text>(true);
             }
-            _mainText = MainTextGO.GetComponent<TMP_Text>();
-            _endText = EndDialog.GetComponentInChildren<TMP_Text>(true);
+            else if (_numberAnswer == 2)
+            {
+                for (int i = 0; i < _reponseTwoGO.Count; i++)
+                {
+                    _reponseTextList.Add(_reponseTwoGO[i].GetComponentInChildren<TMP_Text>(true));
+                }
+                _mainText = MainTextGO.GetComponent<TMP_Text>();
+                _endText = EndDialog.GetComponentInChildren<TMP_Text>(true);
+            }
+            else if (_numberAnswer == 1)
+            {
+                _reponseTextList.Add(_reponseOneGO[0].GetComponentInChildren<TMP_Text>(true));
+                _mainText = MainTextGO.GetComponent<TMP_Text>();
+                _endText = EndDialog.GetComponentInChildren<TMP_Text>(true);
+            }
         }
         else // number of answer = 0
         {
             _reponseTextList.Clear();
             _reponseTextList.Add(_reponseOneGO[0].GetComponentInChildren<TMP_Text>());
             _mainText = MainTextGO.GetComponent<TMP_Text>();
-            _endText = EndDialog.GetComponent<TMP_Text>();
+            _endText = EndDialog.GetComponentInChildren<TMP_Text>();
         }
         
     }
@@ -124,27 +158,25 @@ public class DialogPanelComponent : MonoBehaviour
         switch (numberOfAnswer)
         {
             case 0:
-                _dialogOneOption.SetActive(true);
-                _dialogTwoOrThreeOptions.SetActive(false);
-                _dialogBackgroundGO.GetComponent<Image>().sprite = _endingDialogBG;
-                _dialogFrameGO.GetComponent<Image>().sprite = _endingDialogFrame;
-                break;
             case 1:
-                _dialogOneOption.SetActive(false);
-                _dialogTwoOrThreeOptions.SetActive(true);
+                _dialogOneOption.SetActive(true);
+                _dialogTwoOptions.SetActive(false);
+                _dialogThreeOptions.SetActive(false);
                 _dialogBackgroundGO.GetComponent<Image>().sprite = _oneAnswerDialogBG;
                 _dialogFrameGO.GetComponent<Image>().sprite = _oneAnswerDialogFrame;
                 break;
             case 3:
                 _dialogOneOption.SetActive(false);
-                _dialogTwoOrThreeOptions.SetActive(true);
+                _dialogTwoOptions.SetActive(false);
+                _dialogThreeOptions.SetActive(true);
                 _dialogBackgroundGO.GetComponent<Image>().sprite = _threeAnswerDialogBG;
                 _dialogFrameGO.GetComponent<Image>().sprite = _threeAnswerDialogFrame;
                 break;
             default:
             case 2:
                 _dialogOneOption.SetActive(false);
-                _dialogTwoOrThreeOptions.SetActive(true);
+                _dialogTwoOptions.SetActive(true);
+                _dialogThreeOptions.SetActive(false);
                 _dialogBackgroundGO.GetComponent<Image>().sprite = _twoAnswerDialogBG;
                 _dialogFrameGO.GetComponent<Image>().sprite = _twoAnswerDialogFrame;
                 break;

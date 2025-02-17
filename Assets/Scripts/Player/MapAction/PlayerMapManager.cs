@@ -92,9 +92,9 @@ public class PlayerMapManager : MonoBehaviour
                 if (map[i].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN
                     || map[connectedId].objectInstance.GetComponent<Room>().roomState == RoomState.UNKNOWN)
                 {
-                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", -1f);
+                    pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", -2f);
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
-                        .SetFloat("_curtainLength", -.5f);
+                        .SetFloat("_curtainLength", 0.8f);
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
                         .SetColor("_Color", basePathColor);
 
@@ -104,7 +104,7 @@ public class PlayerMapManager : MonoBehaviour
                 {
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material.SetFloat("_Intensity", 1f);
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
-                        .SetFloat("_curtainLength", .5f);
+                        .SetFloat("_curtainLength", 0.8f);
                     pathsGameObjects[i, connectedId].GetComponent<LineRenderer>().material
                         .SetColor("_Color", visitedPathColors);
                 }
@@ -170,8 +170,12 @@ public class PlayerMapManager : MonoBehaviour
             //    StartCoroutine("LoadSceneAsync", "Autel");
             //    break;
             case TypeRoom.RANDOM:
-                StartAlea();
-                //_currentRoom.roomState = RoomState.VISITED;
+                ToggleMap(false); //We hide the map
+                StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadNeutralEvent));
+                break;
+            case TypeRoom.CLASS_RANDOM:
+                ToggleMap(false); //We hide the map
+                StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadClassEvent));
                 break;
             //case TypeRoom.Visited:
             //    break;
@@ -306,22 +310,11 @@ public class PlayerMapManager : MonoBehaviour
 
 
     }
-
-    void StartAlea()
-    {
-        //CurrentRoomCamera = rootScene.First(c => c.name == "GameCamera");
-        //GameManager.Instance.AleaMan = rootScene.First(c => c.name == "AleaManager").GetComponent<AleaManager>();
-        //GameManager.Instance.LoadEvent();
-        ToggleMap(false); //We hide the map
-        StartCoroutine(WaitBeforeAction(GameManager.Instance.LoadEvent));
-        //CurrentRoomCamera.SetActive(true);
-        //MenuCamera.SetActive(false);
-    }
-
+    
     public IEnumerator EndAlea()
     {
         //CurrentRoomCamera.SetActive(false);
-        GameManager.Instance.AleaMan = null;
+        //GameManager.Instance.AleaMan = null;
         //MenuCamera.SetActive(true);
         GameManager.Instance.UnloadEvent();
         GameManager.Instance.ShowMap();

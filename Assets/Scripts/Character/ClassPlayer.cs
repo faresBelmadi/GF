@@ -19,4 +19,5 @@ public class ClassPlayer : ScriptableObject
     public List<Competence> Competences;
 
     public string NameClass { get { return TradManager.instance.GetTranslation(_idTradName, nameClass); } }
+
 }

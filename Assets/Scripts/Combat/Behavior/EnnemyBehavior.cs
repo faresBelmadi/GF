@@ -324,9 +324,9 @@ public class EnnemyBehavior : CombatBehavior
             }
             else if (item.Weight < nextAction.Weight)
             {
-                if (item.name.Contains("UltimeJeanne"))
-                {
-                    if (Stat.Divin >= 70)
+                var tempAction = item.Effet.FirstOrDefault(c => c.TypeEffet == TypeEffet.UltimeJeanne);
+                if (tempAction != null&& Stat.Divin >= 70)
+                { 
                         nextAction = item;
                 }
                 else
