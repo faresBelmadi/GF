@@ -36,9 +36,22 @@ public class BattleLog : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.BackQuote))
         {
-            _battleLogObject.SetActive(!_battleLogObject.activeSelf);
+            ToggleBattleLog(!_battleLogObject.activeSelf);
         }
 
+    }
+
+    public void ToggleBattleLog(bool toggle)
+    {
+        _battleLogObject.SetActive(toggle);
+    }
+    public void ShowBattleLog()
+    {
+        ToggleBattleLog(true);
+    }
+    public void HideBattleLog()
+    {
+        ToggleBattleLog(false);
     }
     public void AddBattleLaunchSpellLogLine(CombatBehavior launcher, IBattleLogSpell spell)
     {

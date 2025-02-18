@@ -68,6 +68,16 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Material characterMaterial;
     [SerializeField] private Material ennemiUIMaterial;
 
+    private bool _isDetailledCombat;
+    public bool IsDetailledCombat 
+    {
+        get => _isDetailledCombat;
+        set
+        {
+            _isDetailledCombat = value;
+        }
+    }
+
     public bool IsTuto
     {
         get => _isTuto;
