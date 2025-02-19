@@ -80,7 +80,7 @@ public enum TypeEffet
     Clairvoyance=2,
     Colere=3,
     Conviction=4,
-    AugmentationPourcentageFA=5,
+    AugmentationPourcentageFACaster=5,
     AugmentationBrutFA=6,
     RadianceMax=7,
     AugmentFADernierDegatsSubi=8,

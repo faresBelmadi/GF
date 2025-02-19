@@ -19,7 +19,7 @@ public class Effet : ScriptableObject
     public BuffDebuff AfterEffectToApply;
 
     [SerializeField]
-    public JoueurStat modifstate;
+    public JoueurStat modifstateOutput;
 
     [System.NonSerialized] public int nbProcAfterEffect;
 
@@ -49,7 +49,7 @@ public class Effet : ScriptableObject
                 ModifState = ResultEffetCommun(Caster, LastDamageTake,Cible);
                 break;
         }
-        modifstate = ModifState;
+        modifstateOutput = ModifState;
         return ModifState;
     }
 
@@ -57,7 +57,7 @@ public class Effet : ScriptableObject
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, Cible);
-        modifstate = ModifState;
+        modifstateOutput = ModifState;
         return ModifState;
     }
 
@@ -65,21 +65,21 @@ public class Effet : ScriptableObject
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi, NbEnnemies);
-        modifstate = ModifState;
+        modifstateOutput = ModifState;
         return ModifState;
     }
     public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken, EnnemiStat CibleEnnemi = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi, NbEnnemies);
-        modifstate = ModifState;
+        modifstateOutput = ModifState;
         return ModifState;
     }
     private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken, Cible, NbEnnemies));
-        modifstate = ModifState;
+        modifstateOutput = ModifState;
 
         return ModifState;
     }
@@ -292,7 +292,7 @@ public class Effet : ScriptableObject
             case TypeEffet.Conviction:
                 ModifState.Conviction += ValeurBrut;
                 break;
-            case TypeEffet.AugmentationPourcentageFA:
+            case TypeEffet.AugmentationPourcentageFACaster:
                 ModifState.ForceAme += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme));
                 break;            
             case TypeEffet.AugmentationPourcentageFACible:
@@ -594,13 +594,13 @@ public class Effet : ScriptableObject
                 JeanneStat4.Divin = -30;
                 break;
             case TypeEffet.MultiplTension:
-                modifstate.MultipleTension += (Pourcentage / 100f) * NbAttaque;
+                ModifState.MultipleTension += (Pourcentage / 100f) * NbAttaque;
                 break;
             default:
                 break;
         }
 
-        modifstate = ModifState as JoueurStat;
+        modifstateOutput = ModifState as JoueurStat;
         return ModifState;
     }
 
@@ -638,7 +638,7 @@ public class Effet : ScriptableObject
                 }
                 ;
             case TypeEffet.AugmentationPourcentageFACible:
-            case TypeEffet.AugmentationPourcentageFA:
+            case TypeEffet.AugmentationPourcentageFACaster:
                 if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
                 {
                     return GameManager.Instance.StatIcons.StatForceDameDown;
@@ -848,7 +848,7 @@ public class Effet : ScriptableObject
             TypeEffet.Clairvoyance => GameManager.Instance.CommonNameData.Clairvoyance,
             TypeEffet.Colere => GameManager.Instance.CommonDescData.IdTradColere,
             TypeEffet.Conviction => GameManager.Instance.CommonNameData.Conviction,
-            TypeEffet.AugmentationPourcentageFA => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.AugmentationPourcentageFACaster => GameManager.Instance.CommonNameData.ForceDame,
             TypeEffet.RadianceMax => GameManager.Instance.CommonNameData.Radiance,
             TypeEffet.AugmentFADernierDegatsSubi => GameManager.Instance.CommonNameData.ForceDame,
             TypeEffet.AugmentationPourcentageFACible => GameManager.Instance.CommonNameData.ForceDame,
