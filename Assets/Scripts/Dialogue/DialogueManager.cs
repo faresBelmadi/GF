@@ -486,7 +486,7 @@ public class DialogueManager : MonoBehaviour
 
                 break;
             case TypeEffet.AugmentationPourcentageFACible:
-            case TypeEffet.AugmentationPourcentageFA:
+            case TypeEffet.AugmentationPourcentageFACaster:
                 if ((effet.Cible == Cible.joueur && effet.Pourcentage < 0)
                     || (effet.Cible != Cible.joueur && effet.Pourcentage > 0))
                 {

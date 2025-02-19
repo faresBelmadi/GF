@@ -292,7 +292,7 @@ public class Effet : ScriptableObject
             case TypeEffet.Conviction:
                 ModifState.Conviction += ValeurBrut;
                 break;
-            case TypeEffet.AugmentationPourcentageFA:
+            case TypeEffet.AugmentationPourcentageFACaster:
                 ModifState.ForceAme += (Mathf.FloorToInt(((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme));
                 break;            
             case TypeEffet.AugmentationPourcentageFACible:
@@ -638,7 +638,7 @@ public class Effet : ScriptableObject
                 }
                 ;
             case TypeEffet.AugmentationPourcentageFACible:
-            case TypeEffet.AugmentationPourcentageFA:
+            case TypeEffet.AugmentationPourcentageFACaster:
                 if ((Cible == Cible.joueur && Pourcentage < 0) || (Cible != Cible.joueur && Pourcentage > 0))
                 {
                     return GameManager.Instance.StatIcons.StatForceDameDown;
@@ -848,7 +848,7 @@ public class Effet : ScriptableObject
             TypeEffet.Clairvoyance => GameManager.Instance.CommonNameData.Clairvoyance,
             TypeEffet.Colere => GameManager.Instance.CommonDescData.IdTradColere,
             TypeEffet.Conviction => GameManager.Instance.CommonNameData.Conviction,
-            TypeEffet.AugmentationPourcentageFA => GameManager.Instance.CommonNameData.ForceDame,
+            TypeEffet.AugmentationPourcentageFACaster => GameManager.Instance.CommonNameData.ForceDame,
             TypeEffet.RadianceMax => GameManager.Instance.CommonNameData.Radiance,
             TypeEffet.AugmentFADernierDegatsSubi => GameManager.Instance.CommonNameData.ForceDame,
             TypeEffet.AugmentationPourcentageFACible => GameManager.Instance.CommonNameData.ForceDame,
