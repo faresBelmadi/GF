@@ -39,6 +39,13 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     }
     public void AddStack(BuffDebuff buffDebuff)
     {
+        for (int i = BuffDebuffs.Count - 1; i >= 0; i--)
+        {
+            if (BuffDebuffs[i] == null)
+            {
+                BuffDebuffs.RemoveAt(i);
+            }
+        }
         BuffDebuffs.Add(buffDebuff);
     }
     public void RemoveNullStack()
