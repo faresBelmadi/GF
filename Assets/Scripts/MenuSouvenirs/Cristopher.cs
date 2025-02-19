@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Cristopher : MonoBehaviour, IDropZone
 {
@@ -11,7 +12,8 @@ public class Cristopher : MonoBehaviour, IDropZone
     [SerializeField]
     private List<Transform> _freeSlots;
     [SerializeField]
-    private List<SpriteRenderer> _cristopherParts;
+    private List<Image> _cristopherParts;
+   
     private GameObject _prefab;
     [SerializeField]
     [Range(0f,1f)]
@@ -26,7 +28,8 @@ public class Cristopher : MonoBehaviour, IDropZone
     private float _lerpDuration = 1f;
 
     private List<SouvenirSlot> _slots;
-    private List<SpriteRenderer> _rendererSlots;
+    private List<Image> _rendererSlots;
+    
     [SerializeField]
     private int _currentFreeSlot = 0;
 
@@ -37,10 +40,11 @@ public class Cristopher : MonoBehaviour, IDropZone
     void OnEnable()
     {
         _usedSlot = new Dictionary<int, bool>();
-        _rendererSlots = new List<SpriteRenderer>(_freeSlots.Count);
+        _rendererSlots = new List<Image>(_freeSlots.Count);
+        
         for (int i = 0; i < _freeSlots.Count; i++)
         {
-            _rendererSlots.Add(_freeSlots[i].gameObject.GetComponent<SpriteRenderer>());
+            _rendererSlots.Add(_freeSlots[i].gameObject.GetComponent<Image>());
             _rendererSlots[i].color = new Color(_rendererSlots[i].color.r, _rendererSlots[i].color.g, _rendererSlots[i].color.b, 0);
             _usedSlot.Add(i, false);
         }
@@ -163,7 +167,7 @@ public class Cristopher : MonoBehaviour, IDropZone
             tempSlot += souvenirUI.LeSouvenir.Slots;
         }
     }
-    private IEnumerator FadePart(SpriteRenderer spriteToFade, Color startValue, Color endValue)
+    private IEnumerator FadePart(Image spriteToFade, Color startValue, Color endValue)
     {
         float time = 0;
         while (time < _lerpDuration)

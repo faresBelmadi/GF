@@ -122,6 +122,7 @@ public class DragHandler : MonoBehaviour
     }
     public void DragElement()
     {
+        if (_menuStatManager.IsExplicationVisible) { return; }
         switch (_state)
         {
             case DragState.None:
