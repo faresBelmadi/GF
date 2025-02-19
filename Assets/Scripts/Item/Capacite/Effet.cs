@@ -19,7 +19,7 @@ public class Effet : ScriptableObject
     public BuffDebuff AfterEffectToApply;
 
     [SerializeField]
-    public JoueurStat modifstate;
+    public JoueurStat modifstateOutput;
 
     [System.NonSerialized] public int nbProcAfterEffect;
 
@@ -49,7 +49,7 @@ public class Effet : ScriptableObject
                 ModifState = ResultEffetCommun(Caster, LastDamageTake,Cible);
                 break;
         }
-        modifstate = ModifState;
+        modifstateOutput = ModifState;
         return ModifState;
     }
 
@@ -57,7 +57,7 @@ public class Effet : ScriptableObject
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, Cible);
-        modifstate = ModifState;
+        modifstateOutput = ModifState;
         return ModifState;
     }
 
@@ -65,21 +65,21 @@ public class Effet : ScriptableObject
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi, NbEnnemies);
-        modifstate = ModifState;
+        modifstateOutput = ModifState;
         return ModifState;
     }
     public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken, EnnemiStat CibleEnnemi = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi, NbEnnemies);
-        modifstate = ModifState;
+        modifstateOutput = ModifState;
         return ModifState;
     }
     private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken, Cible, NbEnnemies));
-        modifstate = ModifState;
+        modifstateOutput = ModifState;
 
         return ModifState;
     }
@@ -594,13 +594,13 @@ public class Effet : ScriptableObject
                 JeanneStat4.Divin = -30;
                 break;
             case TypeEffet.MultiplTension:
-                modifstate.MultipleTension += (Pourcentage / 100f) * NbAttaque;
+                ModifState.MultipleTension += (Pourcentage / 100f) * NbAttaque;
                 break;
             default:
                 break;
         }
 
-        modifstate = ModifState as JoueurStat;
+        modifstateOutput = ModifState as JoueurStat;
         return ModifState;
     }
 
