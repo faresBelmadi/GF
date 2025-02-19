@@ -54,6 +54,7 @@ public class GameManager : MonoBehaviour
     public PassifRules passifRules;
     [Header("Data")] [SerializeField] private SpriteData _spriteData;
     public GameData loadedData;
+    public SkillTreePrinter SkillTreeUI;
     [SerializeField]
     private ClairvoyanceIconData _clairvoyanceIconData;
     [field: SerializeField]
