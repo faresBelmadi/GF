@@ -564,7 +564,8 @@ public class JoueurBehavior : CombatBehavior
         //        Stat.ListBuffDebuff.RemoveAt(i);
         //    }
         //}
-        var tempListBuffGO = ListBuffDebuffGO.Where(x => x.GetComponent<BuffDebuffComponant>().BuffDebuffs[0].Decompte != Decompte.combat).ToList();
+        
+        var tempListBuffGO = ListBuffDebuffGO.Where(x => x.GetComponent<BuffDebuffComponant>().BuffDebuffs.FirstOrDefault()?.Decompte != Decompte.combat).ToList();
         //var listBuffNoCombat = Stat.ListBuffDebuff.Where(x => x.Decompte != Decompte.combat).ToList();
         if(tempListBuffGO != null && tempListBuffGO.Count > 0)
         {
@@ -621,12 +622,12 @@ public class JoueurBehavior : CombatBehavior
             foreach (var effet in buff.Effet)
             {
                 if (effet.TypeEffet != TypeEffet.RadianceMax)
-                    Stat.removeStat(effet.modifstate);
+                    Stat.removeStat(effet.modifstateOutput);
                 else
                 {
-                    effet.modifstate.Radiance =
+                    effet.modifstateOutput.Radiance =
                         Mathf.FloorToInt((effet.Pourcentage / 100f) * Stat.Radiance);
-                    Stat.removeStat(effet.modifstate);
+                    Stat.removeStat(effet.modifstateOutput);
                 }
 
 

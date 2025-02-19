@@ -209,12 +209,12 @@ public class CombatBehavior : MonoBehaviour
                     foreach (var effet in item.Effet)
                     {
                         if (effet.TypeEffet != TypeEffet.RadianceMax)
-                            toChange.removeStat(effet.modifstate);
+                            toChange.removeStat(effet.modifstateOutput);
                         else
                         {
-                            effet.modifstate.Radiance =
+                            effet.modifstateOutput.Radiance =
                                 Mathf.FloorToInt((effet.Pourcentage / 100f) * toChange.Radiance);
-                            toChange.removeStat(effet.modifstate);
+                            toChange.removeStat(effet.modifstateOutput);
                         }
                     }
                 }
