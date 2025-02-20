@@ -48,7 +48,7 @@ public class MenuStatManager : MonoBehaviour
             Destroy(item);
         }
 
-        if (_isFirsVisit)
+        if (_isFirsVisit && !GameManager.Instance.IsTuto)
         {
             ShowExplicationPanel();
             _isFirsVisit = false;
