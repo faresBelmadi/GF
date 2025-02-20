@@ -194,6 +194,7 @@ public class AutelManager : MonoBehaviour
         {
             HideExplicationAutelPanel();
         }
+        CostCapaText.text = "";
         DescriptionSpellText.text = string.Empty;
         emptyStat();
         ShopUiPanel.SetActive(false);
