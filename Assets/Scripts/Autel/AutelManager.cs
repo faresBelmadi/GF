@@ -194,6 +194,7 @@ public class AutelManager : MonoBehaviour
         {
             HideExplicationAutelPanel();
         }
+        EssenceText.color = Color.black;
         CostCapaText.text = "";
         DescriptionSpellText.text = string.Empty;
         emptyStat();
@@ -220,6 +221,7 @@ public class AutelManager : MonoBehaviour
         {
             HideExplicationShopPanel();
         }
+        EssenceText.color = Color.white;
         BackHover();
         ResetPositionBalance();
         ShopUiPanel.SetActive(true);
@@ -239,6 +241,7 @@ public class AutelManager : MonoBehaviour
         {
             HideExplicationLevelUpPanel();
         }
+        EssenceText.color = Color.white;
         BackHover();
         ResetPositionBalance();
         LevelUpUiPanel.SetActive(true);
