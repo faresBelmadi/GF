@@ -36,12 +36,24 @@ public class Cristopher : MonoBehaviour, IDropZone
     private Dictionary<int, bool> _usedSlot;
     public event Action OnHoverOn;
     public event Action OnHoverOff;
-    // Start is called before the first frame update
-    void OnEnable()
+
+    private void OnEnable()
+    {
+        InitCristopher();
+    }
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyUp(KeyCode.G))
+        {
+            Instantiate(_prefab, _freeSlots[0]);
+        }
+    }
+    public void InitCristopher()
     {
         _usedSlot = new Dictionary<int, bool>();
         _rendererSlots = new List<Image>(_freeSlots.Count);
-        
+
         for (int i = 0; i < _freeSlots.Count; i++)
         {
             _rendererSlots.Add(_freeSlots[i].gameObject.GetComponent<Image>());
@@ -62,16 +74,6 @@ public class Cristopher : MonoBehaviour, IDropZone
             Color startColor = _cristopherParts[i].color;
             Color endColor = new Color(_cristopherParts[i].color.r, _cristopherParts[i].color.g, _cristopherParts[i].color.b, _activeAlpha);
             StartCoroutine(FadePart(_cristopherParts[i], startColor, endColor));
-        }
-      
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.G))
-        {
-            Instantiate(_prefab, _freeSlots[0]);
         }
     }
     public void ActivateCurrentSlot()

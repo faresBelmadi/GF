@@ -63,6 +63,7 @@ public class MenuStatManager : MonoBehaviour
         else
             Stat = TutoManager.Instance.JoueurStat;
         StatTemp = Instantiate(Stat);
+        SouvenirSpawnEquiped.GetComponent<Cristopher>().InitCristopher();
         ListSouvenirUIEquipped.Clear();
         foreach (var item in StatTemp.ListSouvenir)
         {

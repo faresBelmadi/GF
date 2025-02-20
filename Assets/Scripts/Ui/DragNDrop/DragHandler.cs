@@ -71,11 +71,12 @@ public class DragHandler : MonoBehaviour
 
     public void Drop()
     {
+        _targetZoneToDrop.GetComponent<Collider2D>().enabled = false;
         if (_isOverDropZone && _menuStatManager.Equiped(_draggedElement.GetComponent<SouvenirUI>()))
         {
            // _targetZoneToDrop.ExitDropZone();
             Transform tr = _dropZone.GetDropZone();
-            _targetZoneToDrop.GetComponent<Collider2D>().enabled = false;
+            
             _draggedElement.transform.SetParent(tr);
             _draggedElement.transform.localPosition = Vector3.zero;
             //equip
