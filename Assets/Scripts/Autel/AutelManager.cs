@@ -637,7 +637,7 @@ public class AutelManager : MonoBehaviour
                 //TextCoutChoix1.text = "Cout : " + CoutChoix1[0].ToString() + " essence";
                 //TextCoutChoix2.text = "Cout : " + CoutChoix2[0].ToString() + " essence";
                 //TextCoutChoix3.text = "Cout : " + CoutChoix3[0].ToString() + " essence\n" + CoutStatChoix3[0].ToString() + " point de Calme";
-                TextCoutChoix3.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix1[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}\n" +
+                TextCoutChoix3.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix3[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}\n" +
                     $"{CoutStatChoix3[0]} {TradManager.instance.GetTranslation(_idTradNameCalmPoint, "point de calm")}";
                 break;
             case 2:
