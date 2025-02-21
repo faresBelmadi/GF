@@ -83,6 +83,15 @@ public class AutelManager : MonoBehaviour
     public List<Souvenir> listAllSouvenir;
 
     public bool isOn = false;
+    [SerializeField]
+    private GameObject _explicationPanelAutel;
+    [SerializeField]
+    private GameObject _explicationPanelShop;
+    [SerializeField]
+    private GameObject _explicationPanelLvlUp;
+    private bool _isFirstVisitAutel = true;
+    private bool _isFirstVisitShop = true;
+    private bool _isFirstVisitLvlUp = true;
     private void OnEnable()
     {
         ResetPositionBalance();
@@ -150,8 +159,43 @@ public class AutelManager : MonoBehaviour
         ShowMenuUiPanel();
         isOn = true;
     }
+    public void ShowExplicationShopPanel()
+    {
+        _explicationPanelShop.SetActive(true);
+    }
+    public void HideExplicationShopPanel()
+    {
+        _explicationPanelShop.SetActive(false);
+    }
+    public void ShowExplicationAutelPanel()
+    {
+        _explicationPanelAutel.SetActive(true);
+    }
+    public void HideExplicationAutelPanel()
+    {
+        _explicationPanelAutel.SetActive(false);
+    }
+    public void ShowExplicationLevelUpPanel()
+    {
+        _explicationPanelLvlUp.SetActive(true);
+    }
+    public void HideExplicationLevelUpPanel()
+    {
+        _explicationPanelLvlUp.SetActive(false);
+    }
     public void ShowMenuUiPanel()
     {
+        if (_isFirstVisitAutel)
+        {
+            ShowExplicationAutelPanel();
+            _isFirstVisitAutel = false;
+        }
+        else
+        {
+            HideExplicationAutelPanel();
+        }
+        EssenceText.color = Color.black;
+        CostCapaText.text = "";
         DescriptionSpellText.text = string.Empty;
         emptyStat();
         ShopUiPanel.SetActive(false);
@@ -168,6 +212,16 @@ public class AutelManager : MonoBehaviour
     }
     public void SetShopActive()
     {
+        if (_isFirstVisitShop)
+        {
+            ShowExplicationShopPanel();
+            _isFirstVisitShop = false;
+        }
+        else
+        {
+            HideExplicationShopPanel();
+        }
+        EssenceText.color = Color.white;
         BackHover();
         ResetPositionBalance();
         ShopUiPanel.SetActive(true);
@@ -178,6 +232,16 @@ public class AutelManager : MonoBehaviour
 
     public void SetLvlUpActive()
     {
+        if (_isFirstVisitLvlUp)
+        {
+            ShowExplicationLevelUpPanel();
+            _isFirstVisitLvlUp = false;
+        }
+        else
+        {
+            HideExplicationLevelUpPanel();
+        }
+        EssenceText.color = Color.white;
         BackHover();
         ResetPositionBalance();
         LevelUpUiPanel.SetActive(true);
@@ -577,7 +641,7 @@ public class AutelManager : MonoBehaviour
                 //TextCoutChoix1.text = "Cout : " + CoutChoix1[0].ToString() + " essence";
                 //TextCoutChoix2.text = "Cout : " + CoutChoix2[0].ToString() + " essence";
                 //TextCoutChoix3.text = "Cout : " + CoutChoix3[0].ToString() + " essence\n" + CoutStatChoix3[0].ToString() + " point de Calme";
-                TextCoutChoix3.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix1[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}\n" +
+                TextCoutChoix3.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix3[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}\n" +
                     $"{CoutStatChoix3[0]} {TradManager.instance.GetTranslation(_idTradNameCalmPoint, "point de calm")}";
                 break;
             case 2:

@@ -33,8 +33,11 @@ public class MenuStatManager : MonoBehaviour
     public GameObject ArbreCompetence, Canvas, Menu;
 
     public List<SouvenirUI> ListSouvenirUIEquipped { get; private set; } = new List<SouvenirUI>();
-    
 
+    public bool IsExplicationVisible { get; private set; } = false;
+    [SerializeField]
+    private GameObject _explicationPanel;
+    private bool _isFirsVisit = true;
     #region Start
 
     public void OnEnable/*MenuStat*/()
@@ -45,11 +48,22 @@ public class MenuStatManager : MonoBehaviour
             Destroy(item);
         }
 
+        if (_isFirsVisit && !GameManager.Instance.IsTuto)
+        {
+            ShowExplicationPanel();
+            _isFirsVisit = false;
+        }
+        else
+        {
+            HideExplicationPanel();
+        }
+
         if (!GameManager.Instance.IsTuto)
             Stat = GameManager.Instance.playerStat;
         else
             Stat = TutoManager.Instance.JoueurStat;
         StatTemp = Instantiate(Stat);
+        SouvenirSpawnEquiped.GetComponent<Cristopher>().InitCristopher();
         ListSouvenirUIEquipped.Clear();
         foreach (var item in StatTemp.ListSouvenir)
         {
@@ -87,6 +101,16 @@ public class MenuStatManager : MonoBehaviour
         TutoManager.OnEndTuto -= ResetStat;
     }
 
+    public void ShowExplicationPanel()
+    {
+        IsExplicationVisible = true;
+        _explicationPanel.SetActive(true);
+    }
+    public void HideExplicationPanel()
+    {
+        IsExplicationVisible = false;
+        _explicationPanel.SetActive(false);
+    }
     public void ResetStatEnter(Souvenir LeSouvenir)
     {
         foreach (var item in LeSouvenir.ModificationStat)
