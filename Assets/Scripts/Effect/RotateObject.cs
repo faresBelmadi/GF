@@ -45,7 +45,7 @@ public class RotateObject : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     void Update()
     {
         if (_rotate)
-            transform.Rotate(0f, 0f, _rotationSpeed);
+            transform.Rotate(0f, 0f, _rotationSpeed * Time.deltaTime);
     }
     public void Init()
     {

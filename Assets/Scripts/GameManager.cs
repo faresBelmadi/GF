@@ -391,7 +391,7 @@ public class GameManager : MonoBehaviour
         OnStartDialog?.Invoke();
         if (IsTuto)
         {
-            TutoManager.Instance._encounter[1].ToFight = AllEncounter[EncounterIndex].ToFight;
+            //TutoManager.Instance._encounter[1].ToFight = AllEncounter[EncounterIndex].ToFight;
             TutoManager.Instance._encounter[1].forcedOrder = AllEncounter[EncounterIndex].forcedOrder;
             BattleMan.LoadEnemy(Instantiate(TutoManager.Instance.CurrentEncounter));
             if (TutoManager.Instance.CurrentEncounter.ToFight.All(x =>

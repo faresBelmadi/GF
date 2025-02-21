@@ -64,7 +64,7 @@ public class TutoPanel : MonoBehaviour
                 break;
             case 7: //Explication tension2
                 break;
-            case 8: //Déroulement narmol du combat
+            case 9: //Déroulement narmol du combat
                 GameManager.Instance.BattleMan.player.ActivateSpells();
 
                 StartCombat();
@@ -85,7 +85,7 @@ public class TutoPanel : MonoBehaviour
             TutoManager.Instance.ShowSoulConsumation = false;
             this.transform.GetChild(0).gameObject.SetActive(true);
         }
-        else if (IndexExplication == 14)
+        else if (IndexExplication == 15)
         {
             var menuStatManager = StatTransform.GetComponentInChildren<MenuStatManager>();
             foreach (var souvenirGo in menuStatManager.Souvenir)
@@ -95,7 +95,7 @@ public class TutoPanel : MonoBehaviour
 
             StatTransform.GetComponentInChildren<MenuStatManager>().EquipedSouvenir.Clear();
         }
-        else if (IndexExplication == 15) //16
+        else if (IndexExplication == 14) //16
         {
 
             StatTransform.GetComponentInChildren<MenuStatManager>().End();
