@@ -1040,6 +1040,13 @@ public class BattleManager : MonoBehaviour
 
     public void KeepEssence()
     {
+        int amount = 0;
+        foreach (var item in ListEssence)
+        {
+            amount += item.GetComponent<CrystalSoul>().Amount;
+        }
+
+        player.Stat.Essence += amount;
         if (GameManager.Instance.IsTuto)
         {
             buttonEndCombat.SetActive(false);
@@ -1050,20 +1057,9 @@ public class BattleManager : MonoBehaviour
             }
 
             ListEssence.Clear();
-            EndBattle();
         }
-        else
-        {
-
-            int amount = 0;
-            foreach (var item in ListEssence)
-            {
-                amount += item.GetComponent<CrystalSoul>().Amount;
-            }
-
-            player.Stat.Essence += amount;
             EndBattle();
-        }
+     
     }
 
     private void ClearListEssence()
