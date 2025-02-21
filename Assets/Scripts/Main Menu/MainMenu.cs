@@ -50,4 +50,8 @@ public class MainMenu : MonoBehaviour
         _animator.SetTrigger("CharacterBack");
         ShowMainMenu();
     }
+    public void OpenSteamPage()
+    {
+        Application.OpenURL("https://store.steampowered.com/app/1949310/Eternals_Path/");
+    }
 }
