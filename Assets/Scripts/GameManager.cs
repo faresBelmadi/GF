@@ -528,11 +528,11 @@ public class GameManager : MonoBehaviour
 
     void GetClassRun()
     {
-        if (classSO != null && IsTuto /*TutoManager.Instance != null*/)
-        {
-            Debug.Log("Coucouuuuuuu");
-            return;
-        }
+        //if (classSO != null && IsTuto /*TutoManager.Instance != null*/)
+        //{
+        //    Debug.Log("Coucouuuuuuu");
+        //    return;
+        //}
 
         classSO = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID));
         classSO.PlayerStat = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID).PlayerStat);

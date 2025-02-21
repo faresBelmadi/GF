@@ -18,9 +18,12 @@ public class MainMenu : MonoBehaviour
 
     private bool _anyKeyPushed = false;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        //on réinitialise l'animator
+
         _welcomeText.SetActive(true);
         _mainMenu.SetActive(false);
        // _optionMenu.SetActive(false);
