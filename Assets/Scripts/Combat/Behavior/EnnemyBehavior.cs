@@ -51,6 +51,8 @@ public class EnnemyBehavior : CombatBehavior
         }
 
         Dead();
+       
+       
         deathRoutine = null;
     }
 

@@ -1082,6 +1082,10 @@ public class BattleManager : MonoBehaviour
         var killed = EnemyScripts.FirstOrDefault(c => c.combatID == id);
         if (killed != null)
         {
+            //var i = IdOrder.FindIndex(c => c.id == id);
+            //if (i + 1 < IdOrder.Count && IdOrder[i + 1].id == idPlayer)
+            //    player.ActivateSpells();
+
             nbTurn -= IdOrder.Count(c => c.id == id && c.Played == true);
             IdOrder.RemoveAll(c => c.id == id);
             IdSpeedDictionary.Remove(id);
@@ -1120,15 +1124,19 @@ public class BattleManager : MonoBehaviour
 
             }
 
-            if (currentIdTurn == id && IdOrder.Count > 2)
-            {
-                var enemi = IdOrder.FirstOrDefault(c => c.id != currentIdTurn && !c.Played);
-                if (enemi != null)
-                    currentIdTurn = enemi.id;
-            }
-
             if (currentIdTurn != idPlayer)
                 EndTurn();
+
+            if (currentIdTurn == id && IdOrder.Count > 2)
+            {
+                var nextPlayer = IdOrder.FirstOrDefault(c => c.id != currentIdTurn && !c.Played);
+                if (nextPlayer != null)
+                    currentIdTurn = nextPlayer.id;
+            }
+
+
+            
+           
         }
     }
 

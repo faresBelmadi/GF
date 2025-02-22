@@ -480,7 +480,6 @@ public class GameManager : MonoBehaviour
 
     public void LoadCombatBoss()
     {
-        AudioManager.instance.PlayMusic(MusicType.BossJeanneMusic);
         OnStartDialog?.Invoke();
         //BattleMan.LoadEnemy(Instantiate(AllEncounter[2]));
         BattleMan.LoadEnemy(Instantiate(EncounterSet.EncounterBossList[UnityEngine.Random.Range(0, EncounterSet.EncounterBossList.Count())]));

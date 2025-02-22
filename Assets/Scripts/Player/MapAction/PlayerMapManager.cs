@@ -148,6 +148,7 @@ public class PlayerMapManager : MonoBehaviour
                 //_currentRoom.roomState = RoomState.VISITED;
                 break;
             case TypeRoom.BOSS:
+                AudioManager.instance.PlayMusic(MusicType.BossJeanneMusic);
                 StartChoosenBattle();
                 //StartBattle("boss");
                 //_currentRoom.roomState = RoomState.VISITED;
@@ -383,7 +384,7 @@ public class PlayerMapManager : MonoBehaviour
         GameManager.Instance.StatMan = null;
         //MenuCamera.SetActive(true);
         //yield return SceneManager.UnloadSceneAsync(s);
-
+        AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
         if (TutoManager.Instance == null)
         {
             GameManager.Instance.UiMondeMan.EnableMonde();

@@ -59,7 +59,7 @@ public class MainMenu : MonoBehaviour
     }
     public void OpenDiscordPage()
     {
-        Application.OpenURL("https://discord.com/invite/naCEPbru");
+        Application.OpenURL("https://discord.gg/YvBYf74Paj");
     }
     public void OpenLinktreePage()
     {
