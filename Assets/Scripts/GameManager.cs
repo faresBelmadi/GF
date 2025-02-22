@@ -134,6 +134,8 @@ public class GameManager : MonoBehaviour
         if (TutoManager.Instance != null)
             Destroy(TutoManager);
         */
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlayMusic(MusicType.CombatMusic);
     }
 
     public void EndTuto()
