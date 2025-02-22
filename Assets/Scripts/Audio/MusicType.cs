@@ -5,7 +5,8 @@ public enum MusicType
 {
     MainMenuMusic,
     CombatMusic,
-    LevelUpMusic
+    LevelUpMusic,
+    BossJeanneMusic
 }
 [Serializable]
 public enum SFXType

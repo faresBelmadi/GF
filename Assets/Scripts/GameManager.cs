@@ -134,6 +134,8 @@ public class GameManager : MonoBehaviour
         if (TutoManager.Instance != null)
             Destroy(TutoManager);
         */
+        if (AudioManager.instance != null)
+            AudioManager.instance.PlayMusic(MusicType.CombatMusic);
     }
 
     public void EndTuto()
@@ -391,7 +393,7 @@ public class GameManager : MonoBehaviour
         OnStartDialog?.Invoke();
         if (IsTuto)
         {
-            TutoManager.Instance._encounter[1].ToFight = AllEncounter[EncounterIndex].ToFight;
+            //TutoManager.Instance._encounter[1].ToFight = AllEncounter[EncounterIndex].ToFight;
             TutoManager.Instance._encounter[1].forcedOrder = AllEncounter[EncounterIndex].forcedOrder;
             BattleMan.LoadEnemy(Instantiate(TutoManager.Instance.CurrentEncounter));
             if (TutoManager.Instance.CurrentEncounter.ToFight.All(x =>
@@ -528,11 +530,11 @@ public class GameManager : MonoBehaviour
 
     void GetClassRun()
     {
-        if (classSO != null && IsTuto /*TutoManager.Instance != null*/)
-        {
-            Debug.Log("Coucouuuuuuu");
-            return;
-        }
+        //if (classSO != null && IsTuto /*TutoManager.Instance != null*/)
+        //{
+        //    Debug.Log("Coucouuuuuuu");
+        //    return;
+        //}
 
         classSO = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID));
         classSO.PlayerStat = Instantiate(AllClasses.First(c => c.ID == loadedData.CurrentRun.ClassID).PlayerStat);

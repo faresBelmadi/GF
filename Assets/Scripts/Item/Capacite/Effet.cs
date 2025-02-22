@@ -275,7 +275,7 @@ public class Effet : ScriptableObject
 
     private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
     {
-        Debug.Log($"Trigger Effect Base: {this.TypeEffet} from {Caster} to {Cible}");
+        Debug.Log($"Trigger Effect Base: {this.name} - {this.TypeEffet} from {Caster} to {Cible}");
         int valueToChange = ValeurBrut * NbAttaque;
         CharacterStat ModifState = ScriptableObject.CreateInstance("CharacterStat") as CharacterStat;
         int percent;

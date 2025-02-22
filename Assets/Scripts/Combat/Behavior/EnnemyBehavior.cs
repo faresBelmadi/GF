@@ -51,6 +51,8 @@ public class EnnemyBehavior : CombatBehavior
         }
 
         Dead();
+       
+       
         deathRoutine = null;
     }
 
@@ -539,7 +541,10 @@ public class EnnemyBehavior : CombatBehavior
                 if (caster != null)
                     ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, this.Stat);
                 else
-                    ModifStat = effet.ResultEffet(Stat, LastDamageTaken, null, 1);
+                {
+                    ModifStat = effet.ResultEffet(Stat, LastDamageTaken, this.Stat, 1);
+
+                }
 
             }
 
