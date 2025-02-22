@@ -305,7 +305,7 @@ public class PlayerMapManager : MonoBehaviour
             GameManager.Instance.ShowMap();
         }
 
-        AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
+        AudioManager.instance.PlayMusic(MusicType.CombatMusic);
         //yield return SceneManager.UnloadSceneAsync(_scene);
         yield return null;
 
@@ -356,7 +356,7 @@ public class PlayerMapManager : MonoBehaviour
         }
         else
         {
-            AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
+            AudioManager.instance.PlayMusic(MusicType.CombatMusic);
             GameManager.Instance.ShowMap();
             yield return null;
             //yield return SceneManager.UnloadSceneAsync(_scene);
@@ -384,7 +384,7 @@ public class PlayerMapManager : MonoBehaviour
         GameManager.Instance.StatMan = null;
         //MenuCamera.SetActive(true);
         //yield return SceneManager.UnloadSceneAsync(s);
-        AudioManager.instance.PlayMusic(MusicType.MainMenuMusic);
+        AudioManager.instance.PlayMusic(MusicType.CombatMusic);
         if (TutoManager.Instance == null)
         {
             GameManager.Instance.UiMondeMan.EnableMonde();
