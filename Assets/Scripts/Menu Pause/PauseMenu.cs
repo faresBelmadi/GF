@@ -111,6 +111,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
         Destroy(GameManager.Instance.gameObject);
+        Destroy(AudioManager.instance.gameObject);
     }
     public void QuitGame()
     {
