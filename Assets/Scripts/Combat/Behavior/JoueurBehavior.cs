@@ -60,6 +60,7 @@ public class JoueurBehavior : CombatBehavior
     private float currentTens = -1;
     private int currentCons = -1;
     private bool _isHurt;
+    private int _playedTurn = 0;
 
     public void InitRefBattleMan(BattleManager battleManager)
     {
@@ -251,7 +252,7 @@ public class JoueurBehavior : CombatBehavior
 
     public void StartCombat()
     {
-       
+        _playedTurn = 0;
     }
     public void StartPhase()
     {
@@ -272,7 +273,8 @@ public class JoueurBehavior : CombatBehavior
             _refBattleMan.PassifManager.ResolvePassifs();
         }
 
-        if (_refBattleMan.nbPhase >= 2) //If it's first player turn, we don't resplanish willpower.
+        /* Resplenish willpower */
+        if(_playedTurn >= 1)
             Stat.Volonter = Stat.VolonterMax;
         if (!GameManager.Instance.IsTuto|| !isFirstTurn)
             ActivateSpells();
@@ -308,6 +310,7 @@ public class JoueurBehavior : CombatBehavior
 
         IsTurn = false;
         DesactivateSpells();
+        _playedTurn++;
         EndTurnBM();
     }
 
