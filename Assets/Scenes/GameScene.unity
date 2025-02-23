@@ -12705,6 +12705,7 @@ GameObject:
   - component: {fileID: 406303509}
   - component: {fileID: 406303508}
   - component: {fileID: 406303512}
+  - component: {fileID: 406303513}
   m_Layer: 5
   m_Name: CanvaUIGeneral
   m_TagString: CanvasLayer
@@ -12808,6 +12809,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8d64df52fc79c9e4e8e953d8b39bad79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &406303513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 406303507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d00fd11a6acab446a6314f4cfdae0ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &411506748
@@ -18826,7 +18839,7 @@ GameObject:
   - component: {fileID: 598216796}
   - component: {fileID: 598216795}
   m_Layer: 5
-  m_Name: Button
+  m_Name: ButtonMenuPrincipal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34978,8 +34991,9 @@ GameObject:
   - component: {fileID: 1060881064}
   - component: {fileID: 1060881063}
   - component: {fileID: 1060881062}
+  - component: {fileID: 1060881065}
   m_Layer: 5
-  m_Name: Button (2)
+  m_Name: ButtonDiscord
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35048,7 +35062,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1060881063}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1060881065}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 406303513}
+        m_TargetAssemblyTypeName: OpenSocialLink, Assembly-CSharp
+        m_MethodName: OpenDiscordPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1060881063
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -35087,6 +35125,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1060881060}
   m_CullTransparentMesh: 1
+--- !u!114 &1060881065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1060881060}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1061243002
 GameObject:
   m_ObjectHideFlags: 0
@@ -36715,8 +36765,9 @@ GameObject:
   - component: {fileID: 1108442868}
   - component: {fileID: 1108442867}
   - component: {fileID: 1108442866}
+  - component: {fileID: 1108442869}
   m_Layer: 5
-  m_Name: Button (1)
+  m_Name: ButtonWishlist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36785,7 +36836,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1108442867}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1108442869}
+        m_TargetAssemblyTypeName: ButtonComponent, Assembly-CSharp
+        m_MethodName: Clic
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 406303513}
+        m_TargetAssemblyTypeName: OpenSocialLink, Assembly-CSharp
+        m_MethodName: OpenSteamPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1108442867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36824,6 +36899,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1108442864}
   m_CullTransparentMesh: 1
+--- !u!114 &1108442869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108442864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244f2b645c23f7541bbec1844bb0606b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1109653251
 PrefabInstance:
   m_ObjectHideFlags: 0
