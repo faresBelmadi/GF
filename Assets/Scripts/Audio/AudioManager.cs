@@ -96,6 +96,10 @@ public class AudioManager : MonoBehaviour
             _audioSource.Stop();
             _audioSource.clip = clip;
             _audioSource.Play();
+            if (musicType == MusicType.MainMenuMusic)
+            {
+                _audioSource.time = 4f;
+            }
         }
     }
 
