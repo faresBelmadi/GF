@@ -9,9 +9,10 @@ using UnityEngine;
 [System.Serializable]
 public class BattleManager : MonoBehaviour
 {
-    [Header("Tuto")] [SerializeField] private bool _isTuto = false;
+    [Header("Tuto")][SerializeField] private bool _isTuto = false;
 
-    [Header("BattleLogger")] [SerializeField]
+    [Header("BattleLogger")]
+    [SerializeField]
     private BattleLog _battleLogger;
 
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
@@ -69,7 +70,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Material ennemiUIMaterial;
 
     private bool _isDetailledCombat;
-    public bool IsDetailledCombat 
+    public bool IsDetailledCombat
     {
         get => _isDetailledCombat;
         set
@@ -294,7 +295,7 @@ public class BattleManager : MonoBehaviour
     {
         player.InitRefBattleMan(this);
         if (GameManager.Instance != null)
-            PassifManager = new PassifManager(new List<JoueurBehavior> {player}, EnemyScripts);
+            PassifManager = new PassifManager(new List<JoueurBehavior> { player }, EnemyScripts);
         GameManager.Instance.DialManager.SetupDialogue(_encounter);
     }
 
@@ -339,8 +340,8 @@ public class BattleManager : MonoBehaviour
 
     void SpawnEnemy()
     {
-        List<int> remainingPos = new List<int> {0, 1, 2, 3};
-        List<int> ennemyPosIds = new List<int> {-1, -1, -1, -1};
+        List<int> remainingPos = new List<int> { 0, 1, 2, 3 };
+        List<int> ennemyPosIds = new List<int> { -1, -1, -1, -1 };
         List<EncounterOption> encounterOptions = _encounter.forcedOrder.ToList();
 
         int firstMaxPos = (spawnPos.Length - encounterOptions.Count);
@@ -378,32 +379,34 @@ public class BattleManager : MonoBehaviour
             if (ennemyPosIds[i] == -1) remainingPos.Add(i);
         }
 
-        for (int i = 0; i < _encounter.ToFight.Count; i++)
+        if (_encounter.IsForced)
         {
-            if (!ennemyPosIds.Contains(i))
+            InstanciateEnnemy(0, _encounter.ForcedPosition);
+        }
+        else
+        {
+            for (int i = 0; i < _encounter.ToFight.Count; i++)
             {
-                int choosedPos;
-                //Debug.Log($"Ennemy {i} not in list");
-                if (_encounter.IsForced)
+                if (!ennemyPosIds.Contains(i))
                 {
-                    choosedPos = remainingPos[_encounter.ForcedPosition];
-                }
-                else
+                    int choosedPos;
                     choosedPos = remainingPos[UnityEngine.Random.Range(0, remainingPos.Count)];
-                remainingPos.Remove(choosedPos);
-                ennemyPosIds[choosedPos] = i;
-                //Debug.Log($"Adding it to pos {choosedPos}");
+                    //Debug.Log($"Ennemy {i} not in list");
+                    remainingPos.Remove(choosedPos);
+                    ennemyPosIds[choosedPos] = i;
+                    //Debug.Log($"Adding it to pos {choosedPos}");
+                }
+
             }
 
-        }
-
-        //Debug.Log("Instantiate:");
-        for (int i = 0; i < ennemyPosIds.Count; i++)
-        {
-            //Debug.Log($"pos: {i} spawn :{ennemyPosIds[i]}");
-            if (ennemyPosIds[i] > -1)
+            //Debug.Log("Instantiate:");
+            for (int i = 0; i < ennemyPosIds.Count; i++)
             {
-                InstanciateEnnemy(ennemyPosIds[i], i);
+                //Debug.Log($"pos: {i} spawn :{ennemyPosIds[i]}");
+                if (ennemyPosIds[i] > -1)
+                {
+                    InstanciateEnnemy(ennemyPosIds[i], i);
+                }
             }
         }
     }
@@ -537,9 +540,9 @@ public class BattleManager : MonoBehaviour
         IdOrder = new List<CombatOrder>();
         foreach (var item in test)
         {
-            IdOrder.Add(new CombatOrder() {id = item.Key, Played = false});
+            IdOrder.Add(new CombatOrder() { id = item.Key, Played = false });
             if (CheckTension(item.Key))
-                IdOrder.Add(new CombatOrder() {id = item.Key, Played = false});
+                IdOrder.Add(new CombatOrder() { id = item.Key, Played = false });
         }
         //turnOrderUIManager.GenerateTurnItems(IdOrder);
     }
@@ -1058,8 +1061,8 @@ public class BattleManager : MonoBehaviour
 
             ListEssence.Clear();
         }
-            EndBattle();
-     
+        EndBattle();
+
     }
 
     private void ClearListEssence()
@@ -1135,8 +1138,8 @@ public class BattleManager : MonoBehaviour
             }
 
 
-            
-           
+
+
         }
     }
 

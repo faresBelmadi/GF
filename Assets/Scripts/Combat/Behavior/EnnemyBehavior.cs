@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class EnnemyBehavior : CombatBehavior
 {
@@ -326,15 +327,27 @@ public class EnnemyBehavior : CombatBehavior
             }
             else if (item.Weight < nextAction.Weight)
             {
-                var tempAction = item.Effet.FirstOrDefault(c => c.TypeEffet == TypeEffet.UltimeJeanne);
-                if (tempAction != null&& Stat.Divin >= 70)
-                { 
-                        nextAction = item;
-                }
-                else
-                    nextAction = item;
+               
+               nextAction = item;
             }
         }
+
+        if (nextAction.Effet.FirstOrDefault(c => c.TypeEffet == TypeEffet.UltimeJeanne))
+        {
+            if (Stat.Divin < 70)
+            {
+                var temp = Spells.First();
+                foreach(var item in Spells)
+                {
+                    if (nextAction != item && temp.Weight > item.Weight)
+                    {
+                        temp = item;
+                    }
+                }
+                nextAction = temp;
+            }
+        }
+
 
         nextAction.Weight += nextAction.AddedWeight;
         foreach (var item in Spells)
