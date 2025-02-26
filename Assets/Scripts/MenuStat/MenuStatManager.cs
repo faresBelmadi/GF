@@ -101,6 +101,31 @@ public class MenuStatManager : MonoBehaviour
         TutoManager.OnEndTuto -= ResetStat;
     }
 
+    public void Loot()
+    {
+        var ind = UnityEngine.Random.Range(0, GameManager.Instance.CopyAllSouvenir.Count());
+        var newSouvenir = GameManager.Instance.CopyAllSouvenir[ind];
+        GameManager.Instance.playerStat.ListSouvenir.Add(Instantiate(newSouvenir));
+        GameManager.Instance.CopyAllSouvenir.Remove(newSouvenir);
+
+        Stat = GameManager.Instance.playerStat;
+        StatTemp = Instantiate(Stat);
+        SouvenirSpawnEquiped.GetComponent<Cristopher>().InitCristopher();
+        ListSouvenirUIEquipped.Clear();
+     
+            GameObject temp;
+           
+                temp = Instantiate(SouvenirPrefab, SouvenirSpawnUnEquiped.transform);
+            
+            temp.GetComponent<SouvenirUI>().LeSouvenir = newSouvenir;
+            temp.GetComponent<SouvenirUI>().StartUp();
+           
+            Souvenir.Add(temp);
+        
+        SouvenirSpawnEquiped.GetComponent<Cristopher>().RearrangeSouvenir();
+        SouvenirSpawnEquiped.GetComponent<Cristopher>().ActivateCurrentSlot();
+        UpdateStatUI();
+    }
     public void ShowExplicationPanel()
     {
         IsExplicationVisible = true;
