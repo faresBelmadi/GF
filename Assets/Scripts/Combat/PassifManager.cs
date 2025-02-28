@@ -145,7 +145,7 @@ public class PassifManager
             behavior.Stat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * behavior.Stat.RadianceMax);
 
             behavior.Stat.ForceAme = behavior.Stat.ForceAmeOriginal;
-            behavior.Stat.ForceAme += behavior.Stat.Divin * 2;
+            behavior.Stat.ForceAme += behavior.Stat.Divin * 1;
             //}
     }
 
