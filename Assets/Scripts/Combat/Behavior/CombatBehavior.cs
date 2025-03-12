@@ -5,8 +5,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CombatBehavior : MonoBehaviour
+public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 {
+    [SerializeField] public T Stat;
     public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
     public GameObject BuffPrefab;
     public Transform BuffContainer;
@@ -18,6 +19,7 @@ public class CombatBehavior : MonoBehaviour
 
     public Action EndTurnBM;
     public static Action OnUpdateUI;
+
 
     public int LastDamageTaken;
     public bool gainedTension;
@@ -288,6 +290,74 @@ public class CombatBehavior : MonoBehaviour
     public void ToggleVisibility(bool isVisible)
     {
         transform.parent.position = isVisible ? _startingPos : new Vector3(_startingPos.x, -10000f, _startingPos.z);
+    }
+
+    public void EnervementTension()
+    {
+        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        if (t >= Stat.NbPalier)
+            t = Stat.NbPalier;
+        else
+            t++;
+
+        Stat.Tension = t * Stat.ValeurPalier;
+    }
+
+    public void ApaisementTension()
+    {
+
+        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        if (t <= 0)
+            t = 0;
+        else
+            t--;
+
+        Stat.Tension = t * Stat.ValeurPalier;
+    }
+
+    public void ReceiveTension(Source sourceDamage)
+    {
+        switch (sourceDamage)
+        {
+            case Source.Attaque:
+                Stat.Tension += Stat.TensionAttaque;
+                gainedTension = true;
+                break;
+            case Source.Dot:
+                Stat.Tension += Stat.TensionDot;
+                gainedTension = true;
+                break;
+            case Source.Buff:
+                Stat.Tension += Stat.TensionDebuff;
+                gainedTension = true;
+                break;
+            case Source.Soin:
+                Stat.Tension += Stat.TensionSoin;
+                gainedTension = true;
+                break;
+        }
+
+        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
+            Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
+        if (Stat.Tension < 0)
+            Stat.Tension = 0;
+    }
+
+    public virtual bool CanHaveAnotherTurn()
+    {
+        return Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier;
+    }
+    public virtual void ResetStat()
+    {
+        Stat.MultiplDegat = 1;
+        Stat.MultiplDef = 1;
+        Stat.MultiplSoin = 1;
+        Stat.MultipleBuffDebuff = 1;
+        Stat.RadianceMax = Stat.RadianceMaxOriginal;
+        Stat.Vitesse = Stat.VitesseOriginal;
+        Stat.Resilience = Stat.ResilienceOriginal;
+        Stat.ForceAme = Stat.ForceAmeOriginal;
+        Stat.Conviction = Stat.ConvictionOriginal;
     }
 
 }

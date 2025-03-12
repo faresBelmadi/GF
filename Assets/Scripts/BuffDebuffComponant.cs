@@ -21,11 +21,11 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     
     private void OnEnable()
     {
-        CombatBehavior.OnUpdateUI += UpdateUI;
+        CombatBehavior<CharacterStat>.OnUpdateUI += UpdateUI;
     }
     private void OnDisable()
     {
-        CombatBehavior.OnUpdateUI -= UpdateUI;
+        CombatBehavior<CharacterStat>.OnUpdateUI -= UpdateUI;
     }
 
     public void InitBuffDebuff (BuffDebuff buffDebuff)

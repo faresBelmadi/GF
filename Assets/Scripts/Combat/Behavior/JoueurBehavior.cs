@@ -4,9 +4,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class JoueurBehavior : CombatBehavior
+public class JoueurBehavior : CombatBehavior<JoueurStat>
 {
-    [SerializeField] public JoueurStat Stat;
+    
 
     [SerializeField] private List<GameObject> Spells;
     [SerializeField] private Transform DamageSpawn;
@@ -30,7 +30,7 @@ public class JoueurBehavior : CombatBehavior
     [SerializeField] private TextMeshProUGUI HpText;
     [SerializeField] private TextMeshProUGUI HpTextReduced;
     [SerializeField] private TextMeshProUGUI HpToolTipText;
-    [SerializeField] private TextMeshProUGUI VolontéText;
+    [SerializeField] private TextMeshProUGUI VolonteText;
     [SerializeField] private TextMeshProUGUI ConscienceText;
     [SerializeField] private TextMeshProUGUI StatForceAmeText;
     [SerializeField] private TextMeshProUGUI StatSpeedText;
@@ -68,6 +68,7 @@ public class JoueurBehavior : CombatBehavior
     }
     private void OnEnable()
     {
+        
         GetComponent<Animator>().Rebind();
     }
     
@@ -314,20 +315,12 @@ public class JoueurBehavior : CombatBehavior
         EndTurnBM();
     }
 
-    public void ResetStat()
+    public override void ResetStat()
     {
-        Stat.MultiplDegat = 1;
-        Stat.MultiplDef = 1;
-        Stat.MultiplSoin = 1;
-        Stat.MultipleBuffDebuff = 1;
-        Stat.Radiance = Mathf.RoundToInt((Stat.Radiance / (Stat.RadianceMax * 1f)) * Stat.RadianceMaxOriginal);
-        Stat.RadianceMax = Stat.RadianceMaxOriginal;
-        Stat.Vitesse = Stat.VitesseOriginal;
-        Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
-        Stat.Resilience = Stat.ResilienceOriginal;
-        Stat.ForceAme = Stat.ForceAmeOriginal;
-        Stat.Conviction = Stat.ConvictionOriginal;
+        base.ResetStat();
 
+        Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
+        Stat.Radiance = Mathf.RoundToInt((Stat.Radiance / (Stat.RadianceMax * 1f)) * Stat.RadianceMaxOriginal);
     }
 
     void Dead()
@@ -367,65 +360,7 @@ public class JoueurBehavior : CombatBehavior
 
     #region Tension
 
-    public void EnervementTension()
-    {
-        var t = (int) ((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
-        if (t >= Stat.NbPalier)
-            t = Stat.NbPalier;
-        else
-            t++;
-
-        Stat.Tension = t * Stat.ValeurPalier;
-    }
-
-    public void ApaisementTension()
-    {
-
-        var t = (int) ((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
-        if (t <= 0)
-            t = 0;
-        else
-            t--;
-
-        Stat.Tension = t * Stat.ValeurPalier;
-    }
-
-    public void ReceiveTension(Source sourceDamage)
-    {
-        switch (sourceDamage)
-        {
-            case Source.Attaque:
-                Stat.Tension += Stat.TensionAttaque;
-                gainedTension = true;
-                break;
-            case Source.Dot:
-                Stat.Tension += Stat.TensionDot;
-                gainedTension = true;
-                break;
-            case Source.Buff:
-                Stat.Tension += Stat.TensionDebuff;
-                gainedTension = true;
-                break;
-            case Source.Soin:
-                Stat.Tension += Stat.TensionSoin;
-                gainedTension = true;
-                break;
-        }
-
-        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
-            Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
-        if (Stat.Tension < 0)
-            Stat.Tension = 0;
-    }
-
-    public bool CanHaveAnotherTurn()
-    {
-        bool can = false;
-        var maxTension = (Stat.ValeurPalier * Stat.NbPalier);
-        if (Stat.Tension >= maxTension)
-            can = true;
-        return can;
-    }
+  
 
     #endregion Tension
 
@@ -821,7 +756,7 @@ public class JoueurBehavior : CombatBehavior
         //    effet.IsFirstApplication = false;
         //    ModifStat.Radiance += ModifStat.RadianceMax;
         //}
-        GameManager.Instance.BattleMan.LogRadianceChange(this, GameManager.Instance.BattleMan.GetBehaviorFromStat(Caster), ModifStat.Radiance);
+        GameManager.Instance.BattleMan.LogRadianceChange(this.Name, GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster), ModifStat.Radiance);
         Stat.ModifStateAll(ModifStat);
         if (ModifStat.PalierChangement > 0)
             EnervementTension();
