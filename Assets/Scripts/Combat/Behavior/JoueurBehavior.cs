@@ -317,10 +317,11 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     public override void ResetStat()
     {
-        base.ResetStat();
 
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
         Stat.Radiance = Mathf.RoundToInt((Stat.Radiance / (Stat.RadianceMax * 1f)) * Stat.RadianceMaxOriginal);
+
+        base.ResetStat();
     }
 
     void Dead()

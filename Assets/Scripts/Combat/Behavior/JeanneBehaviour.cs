@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class JeanneBehaviour : BossBehaviour
 {
-    public new void ChooseNextAction()
+    public override void ChooseNextAction()
     {
         bool colere = false;
         foreach (var item in Stat.ListBuffDebuff)

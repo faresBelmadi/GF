@@ -87,9 +87,9 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     public override void ResetStat()
     {
-        base.ResetStat();
-
         Stat.Dissimulation = Stat.DissimulationOriginal;
+
+        base.ResetStat();
     }
 
     public void StartPhase()
@@ -227,7 +227,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     #region IA
 
-    public void ChooseNextAction()
+    public virtual void ChooseNextAction()
     {
         bool colere = false;
         foreach (var item in Stat.ListBuffDebuff)
