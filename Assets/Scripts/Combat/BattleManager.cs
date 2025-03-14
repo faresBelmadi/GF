@@ -93,19 +93,19 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     /// <param name="stat">CharacterStat to find</param>
     /// <returns>The linked COmbatBehaviour</returns>
-    public CombatBehavior GetBehaviorFromStat(CharacterStat stat)
+    public string GetBehaviorNameFromStat(CharacterStat stat)
     {
         if (stat == null) return null;
 
         if (player.Stat == stat)
-            return player;
+            return player.Name;
         foreach (var ennemy in EnemyScripts)
         {
             if (ennemy.Stat == stat)
-                return ennemy;
+                return ennemy.Name;
         }
 
-        return null;
+        return "Undidentified";
     }
 
     #endregion
@@ -604,7 +604,7 @@ public class BattleManager : MonoBehaviour
 
     public void LaunchSpellJoueur(Spell spell)
     {
-        LogLaunchedSpell(player, spell);
+        LogLaunchedSpell(player.Name, spell);
         player.DesactivateSpells();
         AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerSpellSFX, spell.SpellSFX);
         foreach (var effet in spell.ActionEffet)
@@ -652,7 +652,7 @@ public class BattleManager : MonoBehaviour
     public void LaunchSpellEnnemi(EnnemiSpell Spell)
     {
         var playing = EnemyScripts.First(c => c.combatID == currentIdTurn);
-        LogLaunchedSpell(playing, Spell);
+        LogLaunchedSpell(playing.Name, Spell);
         foreach (var effet in Spell.Effet)
         {
             PassageEffet(effet, currentIdTurn, -1, SourceEffet.Spell);
@@ -668,13 +668,13 @@ public class BattleManager : MonoBehaviour
         //player.ApplicationBuffDebuff(TimerApplication.Attaque);
     }
 
-    public void LogLaunchedSpell(CombatBehavior launcher, IBattleLogSpell spell)
+    public void LogLaunchedSpell(string launcherName, IBattleLogSpell spell)
     {
         if (_battleLogger.gameObject.activeInHierarchy)
-            _battleLogger.AddBattleLaunchSpellLogLine(launcher, spell);
+            _battleLogger.AddBattleLaunchSpellLogLine(launcherName, spell);
     }
 
-    public void LogRadianceChange(CombatBehavior target, CombatBehavior source, int amount)
+    public void LogRadianceChange(string target, string source, int amount)
     {
         if (_battleLogger.gameObject.activeInHierarchy)
             _battleLogger.AddDamageLogLine(target, source, amount);
