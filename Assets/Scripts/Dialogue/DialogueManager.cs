@@ -59,8 +59,11 @@ public class DialogueManager : MonoBehaviour
     private List<GameObject> _listBuffEffectFromDialog = new List<GameObject>();
     private List<GameObject> _listClairvEffect = new List<GameObject>();
 
+    [SerializeField]
+    private SpeakComponent _playerSpeakers;
     //public Button skipButton; 
     [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
+
 
     #endregion UI Reference
 
@@ -77,7 +80,7 @@ public class DialogueManager : MonoBehaviour
     internal int DialogueIndex = 0;
     protected int NextDialogueIndex = 0;
     private Dictionary<ClairvoyanceIconStatEnum, bool> _displayedClairvoyanceStats;
-
+    private Dictionary<int, SpeakComponent> _listSpeakers = new Dictionary<int, SpeakComponent>();
 
     #endregion Dialogue Property
 
@@ -135,6 +138,11 @@ public class DialogueManager : MonoBehaviour
         UIJoueur.SetActive(false);
         UIDialogue.SetActive(true);
         startDialogue();
+    }
+
+    public void AddSpeakers(int id, EnnemyBehavior speaker)
+    {
+        _listSpeakers.Add(id, speaker.gameObject.GetComponentInChildren<SpeakComponent>());
     }
 
     void startDialogue()
@@ -215,6 +223,8 @@ public class DialogueManager : MonoBehaviour
 
     private void GetAnswerList()
     {
+        //Afficher bulle joueur
+        DisplayBulleSpeakers(-1);
         //test
         foreach (var panel in _dialogPanelComponent.ClairvContentListGO)
         {
@@ -357,6 +367,9 @@ public class DialogueManager : MonoBehaviour
             dialogueTrad = "ID_DIALOGUE_NOT_IMPLEMENTED";
         }
 
+
+        DisplayBulleSpeakers(_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker);
+
         if (/*ManagerBattle == null && _CurrentEncounterAlea != null*/ ManagerAlea.IsAlea)
         {
             return "<allcaps><u><b><color=#" + colorCode + ">" + _CurrentEncounterAlea.NamePnj +
@@ -421,6 +434,7 @@ public class DialogueManager : MonoBehaviour
 
     public virtual void GetRéponse(int i)
     {
+        HideBullSpeakers();
         if (GameManager.Instance.IsPaused)
             return;
         if (GameManager.Instance.playerStat.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].SeuilConscience)
@@ -446,6 +460,34 @@ public class DialogueManager : MonoBehaviour
             GoNext();
         }
     }
+
+    #region Gestion Bulle de dialogue
+    /// <summary>
+    /// Affiche la bulle de dialogue au personnage indiqué. (-1 = joueur)
+    /// </summary>
+    /// <param name="idSpeakers">Id du personnage qui parle, si le joueur, alors = -1</param>
+    public void DisplayBulleSpeakers(int idSpeakers)
+    {
+        HideBullSpeakers();
+        if (idSpeakers != -1)
+        {
+            if (_listSpeakers.ContainsKey(idSpeakers))
+                _listSpeakers[idSpeakers].ShowTalking();
+        }
+        else
+        {
+            _playerSpeakers.ShowTalking();
+        }
+    }
+    public void HideBullSpeakers()
+    {
+        foreach (var speakers in _listSpeakers)
+        {
+            speakers.Value.HideTalking();
+        }
+        _playerSpeakers.HideTalking();
+    }
+    #endregion
 
     private string BuildSpriteIcon(Effet effet, int selectedAnswer, ref bool[] displayed)
     {
