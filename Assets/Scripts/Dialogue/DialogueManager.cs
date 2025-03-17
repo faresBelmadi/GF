@@ -472,20 +472,20 @@ public class DialogueManager : MonoBehaviour
         if (idSpeakers != -1)
         {
             if (_listSpeakers.ContainsKey(idSpeakers))
-                _listSpeakers[idSpeakers].ShowTalking();
+                _listSpeakers[idSpeakers]?.ShowTalking();
         }
         else
         {
-            _playerSpeakers.ShowTalking();
+            _playerSpeakers?.ShowTalking();
         }
     }
     public void HideBullSpeakers()
     {
         foreach (var speakers in _listSpeakers)
         {
-            speakers.Value.HideTalking();
+            speakers.Value?.HideTalking();
         }
-        _playerSpeakers.HideTalking();
+        _playerSpeakers?.HideTalking();
     }
     #endregion
 
