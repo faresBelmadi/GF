@@ -40,7 +40,7 @@ P1C10D;"Applique Sous Pression à tout les adversaires.    Inflige {stat value=F
 P1C11D;"Vous applique Protection rapprochée  et applique Doute à tous les adversaires.
 Protection rapprochée : Inflige 20% de sa {stat value=FA} à tout adversaire effectuant une action offensive
 Doute : +10% de chances de ne pas faire d'action lors de son prochain tour";You receive Close Protection and apply Doubt to each opponent.                                      Close Protection : Inflict 20% of their {stat value=FA} at any opponent who does an attack                                Doubt : +10 % chances to not do any action during the turn;对玩家应用 贴身保护，并对每个对手应用 怀疑。 贴身保护：对任何进行攻击的对手造成 20% 的坚韧值： 在本回合内不采取任何行动的几率+10;;;
-P1C12D;"Inflige {damage type=percent value=100 stat=FA} à l'adversaire ciblé. S'il survit, vous inflige 100% de sa {stat value=FA} et vous applique Soif de vengeance.   ""Soif de vengeance"" : Augmente de 5 points la {stat value=FA} pour chaque pourcentage de {stat value=RAD} manquant";Inflict {damage type=percent value=100 stat=FA} to target opponent. If they survive, they inflict 100% of their {stat value=FA} to you and apply Thirst for Vengeance to you.                Thirst for Vengeance : Increase {stat value=FA} by 5 point for each % of missing radiance.;对目标对手造成 100 % 的毅力值。Thirst for vengeance （渴求复仇）：每缺少 1%的光芒，就会增加 5 点防御力。;;;
+P1C12D;"Inflige {damage type=percent value=100 stat=FA} à l'adversaire ciblé. S'il survit, vous inflige 100% de sa {stat value=FA} et vous applique Soif de vengeance.   ""Soif de vengeance"" : Augmente de 3 points la {stat value=FA} pour chaque pourcentage de {stat value=RAD} manquant";Inflict {damage type=percent value=100 stat=FA} to target opponent. If they survive, they inflict 100% of their {stat value=FA} to you and apply Thirst for Vengeance to you.                Thirst for Vengeance : Increase {stat value=FA} by 3 point for each % of missing radiance.;对目标对手造成 100 % 的毅力值。Thirst for vengeance （渴求复仇）：每缺少 1%的光芒，就会增加 5 点防御力。;;;
 P1C13D;"Inflige {damage type=percent value=80 stat=FA} et applique Commotion à l'adversaire ciblé.       ""commotion"" {stat value=RES} -3, {stat value=FA} -15% , divise par deux les gains de tension du porteur";"Inflict {damage type=percent value=80 stat=FA} to target opponent and apply Concussion to them.    ""Concussion"" {stat value=RES} -3, {stat value=FA} -15%, wielder's Tension gains are divided by 2";对目标对手造成你80%的毅力 并对他施以 震荡;;;
 P1C14D;"Inflige {damage type=percent value=40 stat=FA} à l'adversaire ciblé; si la cible a moins de 20% de sa {stat value=RAM}, triple les dégats. Si ce coup lui est fatal, applique le désavantage ""étourdis"" à tous les autres adversaires.    ""étourdi"" Ne peut pas effectuer d'action durant son Tour.";"Inflict {damage type=percent value=40 stat=FA} to target opponent; if they have less than 20 % of their {stat value=RAM}, triple the damage. If the damage kills him, apply Stun to each other opponent.     ""Stun"" Can't do any action during their turn";对目标对手造成40%的毅力值，如果他的光芒值低于最大值的20%，则造成三倍伤害。如果伤害杀死了他，就对对方使用 眩晕。;;;
 P1C15D;Inflige {damage type=percent value=30 stat=FA} à l'adversaire ciblé pour chaque désavantage sur cet adversaire.;Inflict {damage type=percent value=30 stat=FA} to target oppennet for each debuff they bear.;对目标对手的每个debuff造成50%的毅力值。;;;
@@ -95,7 +95,7 @@ B2D; {stat value=FA} +20 % ;{stat value=FA} +20 %, ;坚韧 +10%，最大辐射 +
 B3D;{stat value=RAM} +5%. Récupère 1% de {stat value=RAD} au début de son Tour;{stat value=RAM} +5%, heal 1% of {stat value=RAM} at the beginning of your turn;最大辐射值 +5%，回合开始时治疗最大辐射值的 1%。;;;
 B4D;Augmente la {stat value=FA} de la valeur de 40 % du dernier dégât subi quand ce buff est appliqué;Increase {stat value=FA} by 40 % of the last hit taken when this buff is applied;使用此 BUFF 时，坚毅值增加上次所受伤害的 40%。;;;
 B5D;Inflige 20% de sa {stat value=FA} à tout adversaire effectuant une action offensive;Inflict 20% of {stat value=FA} to each attacking opponent;对每个攻击对手造成 20% 的坚毅值。;;;
-B6D;Augmente de 5 points la {stat value=FA} pour chaque pourcentage de {stat value=RAD} manquant;Increase {stat value=FA} by 5 point for each % of {stat value=RAD} missing;每缺少 5%的光芒，坚毅值就增加 5 点;;;
+B6D;Augmente de 3 points la {stat value=FA} pour chaque pourcentage de {stat value=RAD} manquant;Increase {stat value=FA} by 3 point for each % of {stat value=RAD} missing;每缺少 5%的光芒，坚毅值就增加 5 点;;;
 B7D;Ponctionne 5% de la {stat value=RAD} actuelle de chaque adversaire au début de son tour;Puncture 5 % of the current {stat value=RAD} of each opponent at the beginning of their turn;在回合开始时，刺穿每个对手 5 % 的实际光芒。;;;
 B8D;{stat value=VIT} +3, {stat value=CL} +3, {stat value=CONV} +3;{stat value=VIT} +3, {stat value=CL} +3, {stat value=CONV} +3;速度 +3、千里眼 +3、信念 +3;;;
 B9D;{stat value=FA} +20 % ;{stat value=FA} +20%;毅力 +20;;;
@@ -108,7 +108,7 @@ B15D; {stat value=VIT} +5, augmente les dégats subis de 20 %;{stat value=VIT} +
 B16D; {stat value=FA} +10%, {stat value=CONV} +1;{stat value=FA} +10% and {stat value=CONV} +1;坚韧+10%，信念+1;;;
 B17D;{stat value=RES} +3;{stat value=RES} +3;恢复力 +3;;;
 B18D;Consomme toute la tension pour gagner 15 % {stat value=FA} par palier consommé;Consume all of Tension, gain 15% of {stat value=FA} for each Tension level consummed;消耗所有张力，每消耗一级获得 15%的坚韧;;;
-B19D;"Pour chaque point de Divin gagne + 10 {stat value=RAM} et + 2 {stat value=FA} (points actuel : {passif type=""DIV""})";"For each point of Divine gain +10 {stat value=RAM} and +2 {stat value=FA} (current points : {passif type=""DIV""})";每点神圣值获得最大辐射+10，坚韧+2;;;
+B19D;Pour chaque point de Divin gagne + 10 {stat value=RAM} et + 2 {stat value=FA} (points actuel : {passif type=DIV});For each point of Divine gain +10 {stat value=RAM} and +2 {stat value=FA} (current points : {passif type=DIV});每点神圣值获得最大辐射+10，坚韧+2;;;
 B20D;{stat value=FA} +10%, {stat value=CL} -2;{stat value=FA} +10%, {stat value=CL} -2;坚毅+10;;;
 B21D;{stat value=RES} +2 & {stat value=CONV} +2;{stat value=RES} +2 & {stat value=CONV} +2;信念和复原力在本场战斗中+2;;;
 B22D;{stat value=CL} +2 & {stat value=CONV} +2;{stat value=CL} +2 & {stat value=CONV} +2;信念和远见+2 本场战斗;;;
@@ -125,7 +125,7 @@ B32D;{stat value=FA} +10% et {stat value=CL} +6;{stat value=FA} +10% and {stat v
 B33D;{stat value=RAM} +10% et {stat value=CL} +4;{stat value=RAM} +10% and {stat value=CL} +4;;;;
 B34D;{stat value=CONV} +3 et {stat value=FA} +10% jusqu'a la prochaine perte de conscience;{stat value=CONV} +3 and {stat value=FA} +10% until the next loss of conscious;;Trad a verif ici;;
 B35D;{stat value=CL} +6 jusqu'au la prochaine perte de conscience;{stat value=CL} +6, until next conscious loss or usage;;;;
-B36D;{stat value=CONV} +4, {stat value=FA} +15% et {stat value=RESI} +2  jusqu'a la prochaine perte de conscience;{stat value=CONV} +4, {stat value=FA} +15% and {stat value=RESI} +2 until the next loss of conscious;;Trad a verif ici;;
+B36D;{stat value=CONV} +4, {stat value=FA} +15% et {stat value=RES} +2  jusqu'a la prochaine perte de conscience;{stat value=CONV} +4, {stat value=FA} +15% and {stat value=RES} +2 until the next loss of conscious;;Trad a verif ici;;
 B37D;{stat value=CONV} +20;{stat value=CONV} +20;;;;
 B38D;{stat value=CL} +2, {stat value=FA} +15%;{stat value=CL} +2, {stat value=FA} +15%;;;;
 B39D;{stat value=FA} +15%;{stat value=FA} +15%;;;;
@@ -187,7 +187,7 @@ D10D;{stat value=VIT} -3, {stat value=CL} -3;{stat value=VIT}-3, {stat value=CL}
 D11D;{stat value=RAD} -5 % {stat value=FA} -5%;{stat value=RAD} 5%, {stat value=FA} -5%;光芒 5%，坚毅 -5;;;
 D12D;Quand il meurt, ne laisse pas d'essence;Will not drop Essence when they die;当他死亡时，不会掉落精华。;;;
 D13D;{stat value=CONV} -2 pour tout le combat;{stat value=CONV} -2 this fight;整场战斗信念-2;;;
-D14D;-10 % {stat value=FA}, -1 {stat value=CONV} -1;{stat value=FA} -10%, {stat value=CONV} -1.;坚韧 -10%，信念 -1。;;;
+D14D;-10 % {stat value=FA}, -1 {stat value=CONV};{stat value=FA} -10%, {stat value=CONV};坚韧 -10%，信念 -1。;;;
 D15D; Dégats subit +20 %;Increase damage taken by 20%;受到的伤害提高 20;;;
 D16D; {stat value=RES} -3, {stat value=FA} -15% , divise par deux les gains de tension du porteur;{stat value=RES} -3, {stat value=FA} -15%, wielder's Tension gains are divided by 2;;;;
 D17D;20% de chance d'effectuer une action offensive durant son tour;20% chances to do an offensive action during their turn.;在其回合内有 20% 的几率采取攻击行动。;;;

@@ -80,13 +80,26 @@ public class AudioManager : MonoBehaviour
     /// <param name="forceRestart">Si il est vrai, on va forcer la musique a se  rejouer depuis le début</param>
     public void PlayMusic(MusicType musicType, bool forceRestart = false)
     {
+        
         AudioClip clip = _musicData.Clip(musicType);
+        if (musicType == MusicType.MainMenuMusic)
+        {
+            _audioSource.volume = 1f;
+        }
+        else
+        {
+            _audioSource.volume = 0.85f;
+        }
         // Si la musique qu'on souhaite lancer est la meme que l'actuelle, on laisse la possibilité de la laisser se jouer ou de la restart
         if (clip != _audioSource.clip || forceRestart)
         {
             _audioSource.Stop();
             _audioSource.clip = clip;
             _audioSource.Play();
+            if (musicType == MusicType.MainMenuMusic)
+            {
+                _audioSource.time = 4f;
+            }
         }
     }
 

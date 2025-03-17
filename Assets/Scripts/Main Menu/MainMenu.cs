@@ -18,9 +18,12 @@ public class MainMenu : MonoBehaviour
 
     private bool _anyKeyPushed = false;
 
+
     // Start is called before the first frame update
     void Start()
     {
+        //on réinitialise l'animator
+
         _welcomeText.SetActive(true);
         _mainMenu.SetActive(false);
        // _optionMenu.SetActive(false);
@@ -50,16 +53,5 @@ public class MainMenu : MonoBehaviour
         _animator.SetTrigger("CharacterBack");
         ShowMainMenu();
     }
-    public void OpenSteamPage()
-    {
-        Application.OpenURL("https://store.steampowered.com/app/1949310/Eternals_Path/");
-    }
-    public void OpenDiscordPage()
-    {
-        Application.OpenURL("https://discord.com/invite/naCEPbru");
-    }
-    public void OpenLinktreePage()
-    {
-        Application.OpenURL("https://linktr.ee/sleeplessparadise");
-    }
+  
 }

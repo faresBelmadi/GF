@@ -53,10 +53,10 @@ public class BattleLog : MonoBehaviour
     {
         ToggleBattleLog(false);
     }
-    public void AddBattleLaunchSpellLogLine(CombatBehavior launcher, IBattleLogSpell spell)
+    public void AddBattleLaunchSpellLogLine(string launcherName, IBattleLogSpell spell)
     {
         GameObject line = Instantiate(_battleLogLinePrefabGO, _contentHolder.transform);
-        line.GetComponent<TMP_Text>().text = $"{launcher.Name} launches {spell.TradName}";
+        line.GetComponent<TMP_Text>().text = $"{launcherName} launches {spell.TradName}";
         if (_logList.Count >= _maxLine) 
         {
             Destroy(_logList[0]);
@@ -66,16 +66,16 @@ public class BattleLog : MonoBehaviour
         _scrollRect.verticalNormalizedPosition = 0;
         Canvas.ForceUpdateCanvases();
     }
-    public void AddDamageLogLine(CombatBehavior target, CombatBehavior source, int amount)
+    public void AddDamageLogLine(string targetName, string sourceName, int amount)
     {
         if (amount == 0) return;
         GameObject line = Instantiate(_battleLogLinePrefabGO, _contentHolder.transform);
         if (amount < 0)
         {
-            line.GetComponent<TMP_Text>().text = $"{target.Name} take {Mathf.Abs(amount)} {(source != null?" from " + source.Name:"")}"; 
+            line.GetComponent<TMP_Text>().text = $"{targetName} take {Mathf.Abs(amount)} {(sourceName != null?" from " + sourceName : "")}"; 
         }
         else
-            line.GetComponent<TMP_Text>().text = $"{target.Name} heals {amount} radiance point";
+            line.GetComponent<TMP_Text>().text = $"{targetName} heals {amount} radiance point";
         if (_logList.Count >= _maxLine)
         {
             Destroy(_logList[0]);

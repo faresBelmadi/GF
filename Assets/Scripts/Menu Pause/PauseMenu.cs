@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
@@ -103,6 +104,14 @@ public class PauseMenu : MonoBehaviour
     public void PreviousPage()
     {
         ShowSelectedGlossaryPage(_pageShowed - 1);
+    }
+    public void RetourMenuPrincipale()
+    {
+        GameManager.Instance.IsPaused = false;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
+        Destroy(GameManager.Instance.gameObject);
+        Destroy(AudioManager.instance.gameObject);
     }
     public void QuitGame()
     {

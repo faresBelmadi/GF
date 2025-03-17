@@ -67,7 +67,8 @@ public class Cristopher : MonoBehaviour, IDropZone
         //SetCurrentSlot(); //For random test
         if (!GameManager.Instance.IsTuto)
         {
-            _rendererSlots[_currentFreeSlot].color = new Color(_rendererSlots[_currentFreeSlot].color.r, _rendererSlots[_currentFreeSlot].color.g, _rendererSlots[_currentFreeSlot].color.b, 1);
+            if (_currentFreeSlot < _rendererSlots.Count)
+                _rendererSlots[_currentFreeSlot].color = new Color(_rendererSlots[_currentFreeSlot].color.r, _rendererSlots[_currentFreeSlot].color.g, _rendererSlots[_currentFreeSlot].color.b, 1);
         }
         for (int i = 0; i < _currentFreeSlot; i++)
         {
@@ -88,8 +89,7 @@ public class Cristopher : MonoBehaviour, IDropZone
     }
     public Transform GetDropZone()
     {
-        
-        return _freeSlots[_currentFreeSlot]; ;
+        return _currentFreeSlot<_freeSlots.Count?_freeSlots[_currentFreeSlot]: _freeSlots[_freeSlots.Count-1];
     }
     private void OnMouseEnter()
     {
@@ -105,7 +105,8 @@ public class Cristopher : MonoBehaviour, IDropZone
         {
             rendererSlots.color = new Color(rendererSlots.color.r, rendererSlots.color.g, rendererSlots.color.b, 0);
         }
-        _rendererSlots[slotID].color = new Color(_rendererSlots[slotID].color.r, _rendererSlots[slotID].color.g, _rendererSlots[slotID].color.b, 1);
+        if (slotID < _rendererSlots.Count)
+            _rendererSlots[slotID].color = new Color(_rendererSlots[slotID].color.r, _rendererSlots[slotID].color.g, _rendererSlots[slotID].color.b, 1);
     }
     public void EquipSouvenir(SouvenirUI souvenir)
     {

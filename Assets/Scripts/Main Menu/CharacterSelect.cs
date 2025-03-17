@@ -25,6 +25,8 @@ public class CharacterSelect : MonoBehaviour
     private GameObject _tutoToggle;
     [SerializeField]
     private string _comingSoonLabel;
+    [SerializeField]
+    private string _chooseCharLabel;
     [Space]
     [SerializeField]
     private CharacterSpriteHolder _warriorSpriteHolder;
@@ -230,12 +232,11 @@ public class CharacterSelect : MonoBehaviour
         {
             _nameText.text = "";
             _gameplayText.text = "";
-            _loreText.text = "";
+            _loreText.text = TradManager.instance.GetTranslation(_chooseCharLabel, "Choose"); ;
         }
         else
         {
-            if (IsAvailable(selected))
-            {
+           
                 _nameText.text = TradManager.instance.GetTranslation(GetNameLabel(selected), "My name");
                 _gameplayText.text = TradManager.instance.GetTranslation(GetGameplayLabel(selected), "My gameplay");
                 _loreText.text = TradManager.instance.GetTranslation(GetLoreLabel(selected), "My lore");
@@ -243,13 +244,7 @@ public class CharacterSelect : MonoBehaviour
                 {
                     _tutoToggle.SetActive(true);
                 }
-            }
-            else
-            {
-                _nameText.text = TradManager.instance.GetTranslation(_comingSoonLabel, "Coming soon");
-                _gameplayText.text = "";
-                _loreText.text = "";
-            }
+           
         }
     }
     public void RefreshText() => RefreshText(_selected);
