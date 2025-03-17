@@ -409,6 +409,7 @@ public class BattleManager : MonoBehaviour
                 }
             }
         }
+        Debug.Log("end spawn");
     }
 
     void InstanciateEnnemy(int ennemyId, int spawnPosId)
@@ -422,6 +423,7 @@ public class BattleManager : MonoBehaviour
         }
 
         var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
+        GameManager.Instance.DialManager.AddSpeakers(ennemyId, tempCombatScript);
         //instantiate tout les so modifiable
         if (tempCombatScript != null)
         {
