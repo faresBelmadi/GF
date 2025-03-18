@@ -196,5 +196,16 @@ public class DialogPanelComponent : MonoBehaviour
     {
         _clairvoyanceHintsPanel.SetActive(false);
     }
+    public void ClearClairvoyancePanel()
+    {
+        foreach (var panel in _clairvContentListGO2Reponses)
+        {
+            panel.GetComponent<ClairvoyancePanel>().ClearClairvoyancePanel();
+        }
+        foreach (var panel in _clairvContentListGO3Reponses)
+        {
+            panel.GetComponent<ClairvoyancePanel>().ClearClairvoyancePanel();
+        }
+    }
 
 }
