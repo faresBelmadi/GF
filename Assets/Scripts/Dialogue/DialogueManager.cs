@@ -144,6 +144,10 @@ public class DialogueManager : MonoBehaviour
     {
         _listSpeakers.Add(id, speaker.gameObject.GetComponentInChildren<SpeakComponent>());
     }
+    public void AddSpeakers(int id, SpeakComponent speaker)
+    {
+        _listSpeakers.Add(id, speaker);
+    }
 
     void startDialogue()
     {
