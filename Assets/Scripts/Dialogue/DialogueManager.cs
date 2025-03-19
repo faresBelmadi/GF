@@ -445,11 +445,13 @@ public class DialogueManager : MonoBehaviour
             return;
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat)
         {
+            ClearSpeakers();
             StartCombat();
         }
         else if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.EndAleaDialogue)
         {
             Debug.Log("End Dialog Alea");
+            ClearSpeakers();
             EndDialogueFonction();
         }
         else
@@ -490,6 +492,10 @@ public class DialogueManager : MonoBehaviour
             speakers.Value?.HideTalking();
         }
         _playerSpeakers?.HideTalking();
+    }
+    private void ClearSpeakers()
+    {
+        _listSpeakers.Clear();
     }
     #endregion
 
