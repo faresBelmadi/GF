@@ -117,17 +117,18 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             gainedTension = false;
         }
 
-        if (Stat.isStun)
-        {
-            Debug.Log("is stuned");
-            //Stat.isStun = false;
-            EndTurn();
-        }
-
         if (!skip && !Stat.isStun)
         {
             DoAction();
         }
+
+        if (Stat.isStun)
+        {
+            Debug.Log("is stuned");
+            Stat.isStun = false;
+            EndTurn();
+        }
+
     }
 
     public void EndTurn()
