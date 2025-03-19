@@ -125,7 +125,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         if (Stat.isStun)
         {
             Debug.Log("is stuned");
-            Stat.isStun = false;
+            //Stat.isStun = false;
             EndTurn();
         }
 
@@ -337,7 +337,10 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     {
         //Debug.Log("commencement des degats");
         //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
-        _refBattleMan.LaunchSpellEnnemi(nextAction);
+        if (!Stat.isStun)
+        {
+            _refBattleMan.LaunchSpellEnnemi(nextAction);
+        }
     }
 
     public void CreateSpellList()
