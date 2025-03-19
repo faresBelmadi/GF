@@ -526,6 +526,68 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5253109563632732045, guid: 3e2be98b734eb2e4bb97e3495f2f5b1f, type: 3}
   m_PrefabInstance: {fileID: 738048281128535653}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4422098748164529930
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 5507489438645248029}
+    m_Modifications:
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.055
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.024467811
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2309818346539118949, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_Name
+      value: SpeakComponent
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+--- !u!4 &4446424315296390321 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+  m_PrefabInstance: {fileID: 4422098748164529930}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5394136631101708059
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3752,6 +3814,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -9165143637508537287, guid: e0d2819afe870d94eb4dfbfe35e52de9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6654006376712512794}
+    - targetCorrespondingSourceObject: {fileID: -9165143637508537287, guid: e0d2819afe870d94eb4dfbfe35e52de9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4446424315296390321}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -6747211107572532808, guid: e0d2819afe870d94eb4dfbfe35e52de9, type: 3}
       insertIndex: -1
@@ -3886,9 +3951,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fec9b970d31eee5479309846a749daf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buffsSprites:
-  - {fileID: 21300000, guid: 6cae14e1031e2634c8bf30baf16d9099, type: 3}
-  - {fileID: 21300000, guid: 267612aab625a444cbd6e962660abe6f, type: 3}
+  Stat: {fileID: 0}
   ListBuffDebuffGO: []
   BuffPrefab: {fileID: 8673195161482103611, guid: b0d011bbc909fee4aa8d4f0cbec06220, type: 3}
   BuffContainer: {fileID: 5070172071360209100}
@@ -3897,14 +3960,12 @@ MonoBehaviour:
   _buffTextColor: {r: 0, g: 1, b: 0, a: 1}
   LastDamageTaken: 0
   gainedTension: 0
-  Stat: {fileID: 0}
   UICombat: {fileID: 5332895153513737216}
   TensionUI: 0
   characterMaterial: {fileID: 0}
   deathDisolveTime: 2
   combatID: 0
   nextAction: {fileID: 0}
-  EssencePrefab: {fileID: 2949636703588565037, guid: bb5710fb14e5fd14ca171e5b37c0264d, type: 3}
   IsTurn: 0
   isMainEnemy: 0
 --- !u!114 &2503727553703346271

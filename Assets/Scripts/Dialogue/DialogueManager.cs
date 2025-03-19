@@ -144,6 +144,10 @@ public class DialogueManager : MonoBehaviour
     {
         _listSpeakers.Add(id, speaker.gameObject.GetComponentInChildren<SpeakComponent>());
     }
+    public void AddSpeakers(int id, SpeakComponent speaker)
+    {
+        _listSpeakers.Add(id, speaker);
+    }
 
     void startDialogue()
     {
@@ -1205,10 +1209,7 @@ public class DialogueManager : MonoBehaviour
     private void ClearClairvoyanceIcons()
     {
         //test
-        foreach (var panel in _dialogPanelComponent.ClairvContentListGO)
-        {
-            panel.GetComponent<ClairvoyancePanel>().ClearClairvoyancePanel();
-        }
+        _dialogPanelComponent.ClearClairvoyancePanel();
         //end test
 
         for (int i = _listClairvEffect.Count - 1; i >= 0; i--)
