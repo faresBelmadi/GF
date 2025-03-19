@@ -23,6 +23,7 @@ public class AleaManager : MonoBehaviour
         Rencontre = rencontre;
         _stat = GameManager.Instance.playerStat;
         _pnj = Instantiate(Rencontre.Pnj, spawnPos.position, Quaternion.identity, spawnPos);
+        GameManager.Instance.DialManager.AddSpeakers(0, _pnj.GetComponentInChildren<SpeakComponent>());
         Dialogue.SetupDialogue(Rencontre);
     }
 
