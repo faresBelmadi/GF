@@ -443,7 +443,7 @@ public class Effet : ScriptableObject
                 ModifState.Radiance +=
                     Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
 
-                if(ModifState.Radiance  >= (float)Cible.Radiance)
+                if(-ModifState.Radiance  >= (float)Cible.Radiance)
                     foreach (var item in GameManager.Instance.BattleMan.EnemyScripts)
                     {
                         item.AddDebuff(AfterEffectToApply,AfterEffectToApply.Decompte,AfterEffectToApply.timerApplication);
