@@ -47,7 +47,7 @@ public class GameManager : MonoBehaviour
     public List<Souvenir> CopyAllSouvenir;
 
     public ClassPlayer classSO;
-    [HideInInspector] public JoueurStat playerStat;
+    /*[HideInInspector]*/ public JoueurStat playerStat;
 
     public int ClassIDSelected;
 
