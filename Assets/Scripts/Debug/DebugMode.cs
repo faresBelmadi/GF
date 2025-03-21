@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class DebugMode : MonoBehaviour
 {
@@ -12,6 +12,10 @@ public class DebugMode : MonoBehaviour
     [SerializeField]
     private TMP_Dropdown _souvenirDropdown;
     [Header("Rencontres")]
+    [SerializeField]
+    private TMP_Dropdown _aleaDropdown;
+    [SerializeField]
+    private TMP_Dropdown _combatDropdown;
     [SerializeField]
     private GameObject _contentAleaNeutre;
     [SerializeField]
@@ -26,7 +30,10 @@ public class DebugMode : MonoBehaviour
     private GameObject _contentCombatEliteClasse;
     [SerializeField]
     private GameObject _contentBoss;
-    
+    [Header("Combat")]
+    [SerializeField]
+    private GameObject _spellContent;
+
 
 
 
@@ -45,17 +52,47 @@ public class DebugMode : MonoBehaviour
     private Dictionary<string, Encounter> _eliteClass = new Dictionary<string, Encounter>();
     private Dictionary<string, Encounter> _boss = new Dictionary<string, Encounter>();
 
+    private Dictionary<string, EncounterAlea> _alea = new Dictionary<string, EncounterAlea>();
+    private Dictionary<string, Encounter> _combat = new Dictionary<string, Encounter>();
+
+    private List<string> _aleaString = new List<string>();
+    private List<string> _combatString = new List<string>();
+
+    private List<Spell> _spells = new List<Spell>();
+    private List<string> _equipedSpells = new List<string>();
+
     // Start is called before the first frame update
     void Start()
     {
         RefreshListSouvenir();
         ListRencontre();
+        ListSpell();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    private void ListSpell()
+    {
+        foreach (var item in GameManager.Instance.classSO.Competences)
+        {
+            _spells.Add(item.Spell);
+        }
+
+        foreach(var item in GameManager.Instance.playerStat.ListSpell)
+        {
+            _equipedSpells.Add(item.Nom);
+        }
+
+        foreach(var item in _spells)
+        {
+            var toggle = Instantiate(_togglePrefab, _spellContent.transform);
+            toggle.GetComponentInChildren<TMP_Text>().text = item.Nom;
+            toggle.GetComponent<Toggle>().isOn = _equipedSpells.Contains(item.Nom);
+        }
+
     }
     private void ListRencontre()
     {
@@ -65,12 +102,16 @@ public class DebugMode : MonoBehaviour
             var toggle = Instantiate(_togglePrefab, _contentAleaNeutre.transform);
             toggle.GetComponentInChildren<TMP_Text>().text = item.name;
             _aleaNeutre.Add(item.name, item);
+            _alea.Add(item.name, item);
+            _aleaString.Add(item.name);
         }
         foreach (var item in GameManager.Instance.EncounterSet.EncounterClassAleaList)
         {
             var toggle = Instantiate(_togglePrefab, _contentAleaClasse.transform);
             toggle.GetComponentInChildren<TMP_Text>().text = item.name;
             _aleaClass.Add(item.name, item);
+            _alea.Add(item.name, item);
+            _aleaString.Add(item.name);
         }
 
         foreach (var item in GameManager.Instance.EncounterSet.EncounterNeutralList)
@@ -78,12 +119,16 @@ public class DebugMode : MonoBehaviour
             var toggle = Instantiate(_togglePrefab, _contentCombatNeutre.transform);
             toggle.GetComponentInChildren<TMP_Text>().text = item.name;
             _combatNeutre.Add(item.name, item);
+            _combat.Add(item.name, item);
+            _combatString.Add(item.name);
         }
         foreach (var item in GameManager.Instance.EncounterSet.EncounterClassList)
         {
             var toggle = Instantiate(_togglePrefab, _contentCombatClasse.transform);
             toggle.GetComponentInChildren<TMP_Text>().text = item.name;
             _combatClass.Add(item.name, item); ;
+            _combat.Add(item.name, item);
+            _combatString.Add(item.name);
         }
 
         foreach (var item in GameManager.Instance.EncounterSet.EncounterEliteList)
@@ -91,12 +136,16 @@ public class DebugMode : MonoBehaviour
             var toggle = Instantiate(_togglePrefab, _contentCombatEliteNeutre.transform);
             toggle.GetComponentInChildren<TMP_Text>().text = item.name;
             _eliteNeutre.Add(item.name, item);
+            _combat.Add(item.name, item);
+            _combatString.Add(item.name);
         }
         foreach (var item in GameManager.Instance.EncounterSet.EncounterClassEliteList)
         {
             var toggle = Instantiate(_togglePrefab, _contentCombatEliteClasse.transform);
             toggle.GetComponentInChildren<TMP_Text>().text = item.name;
             _eliteClass.Add(item.name, item);
+            _combat.Add(item.name, item);
+            _combatString.Add(item.name);
         }
 
         foreach (var item in GameManager.Instance.EncounterSet.EncounterBossList)
@@ -104,7 +153,16 @@ public class DebugMode : MonoBehaviour
             var toggle = Instantiate(_togglePrefab, _contentBoss.transform);
             toggle.GetComponentInChildren<TMP_Text>().text = item.name;
             _boss.Add(item.name, item);
+            _combat.Add(item.name, item);
+            _combatString.Add(item.name);
         }
+
+        _aleaDropdown.ClearOptions();
+        _combatDropdown.ClearOptions();
+
+        _aleaDropdown.AddOptions(_aleaString);
+        _combatDropdown.AddOptions(_combatString);
+            
     }
     private void RefreshListSouvenir()
     {
