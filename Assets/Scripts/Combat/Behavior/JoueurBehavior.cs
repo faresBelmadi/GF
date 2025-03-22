@@ -46,7 +46,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     [SerializeField] private Spell SelectedSpell;
 
     [SerializeField] private AnimationControllerAttack AnimationController;
-    private CommonStats commonstats = GameManager.Instance.CommonStatsData;
     private BattleManager _refBattleMan => GameManager.Instance.BattleMan;
     [SerializeField] private bool IsTurn;
 
@@ -635,10 +634,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             {
                 ReceiveTension(Source.Buff);
             }
-
-            var buff = Instantiate(toAdd);
+            var modifiedBuff = ApplyConviction(toAdd);
+            var buff = Instantiate(modifiedBuff);
             buff.Effet = new List<Effet>();
-            foreach (var item in toAdd.Effet)
+            foreach (var item in modifiedBuff.Effet)
             {
                 buff.Effet.Add(Instantiate(item));
             }

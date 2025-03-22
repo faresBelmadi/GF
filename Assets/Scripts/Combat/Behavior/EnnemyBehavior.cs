@@ -26,7 +26,6 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     private int currentTension = 0;
     private Coroutine deathRoutine = null;
     private ClairvoyanceIconData clairvoyanceIconData;
-    private CommonStats commonstats = GameManager.Instance.CommonStatsData;
 
     public override string Name
     {
@@ -373,15 +372,16 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
                 ReceiveTension(Source.Buff);
             }
 
-            var buff = Instantiate(toAdd);
+            var modifiedBuff = ApplyConviction(toAdd);
+            var buff = Instantiate(modifiedBuff);
             buff.Effet = new List<Effet>();
-            foreach (var item in toAdd.Effet)
+            foreach (var item in modifiedBuff.Effet)
             {
                 buff.Effet.Add(Instantiate(item));
             }
 
             Stat.ListBuffDebuff.Add(buff);
-            base.AddBuffDebuff(toAdd, Stat);
+            base.AddBuffDebuff(buff, Stat);
 
             ApplicationBuffDebuff(Timer, buff);
         }
