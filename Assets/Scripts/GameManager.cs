@@ -52,6 +52,16 @@ public class GameManager : MonoBehaviour
     public int ClassIDSelected;
 
     public PassifRules passifRules;
+    [Header("Common Stats")]
+    [SerializeField] private CommonStats _commonStats;
+    public CommonStats CommonStatsData 
+    { 
+        get
+        {
+            return _commonStats;
+        }
+    }
+
     [Header("Data")] [SerializeField] private SpriteData _spriteData;
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;

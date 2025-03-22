@@ -21,8 +21,6 @@ public class CharacterStat : ScriptableObject
     public int Vitesse;
     public int VitesseOriginal;
     public int Conviction;
-    public int ConvictionMin = -10;
-    public int ConvictionMax = 10;
     public int ConvictionOriginal;
 
     public int Resilience
@@ -36,8 +34,6 @@ public class CharacterStat : ScriptableObject
 
     //[HideInInspector]
     public float ResiliencePassif;
-    public int ResilienceMin = -10;
-    public int ResilienceMax = 10;
     public int ResilienceOriginal;
     public int Calme;
     public int Essence;
@@ -47,14 +43,9 @@ public class CharacterStat : ScriptableObject
     public float MultipleBuffDebuff = 1;
     public float MultipleTension = 1;
     public List<BuffDebuff> ListBuffDebuff = new List<BuffDebuff>();
-    public int TensionAttaque = 4;
-    public int TensionDebuff = 3;
-    public int TensionSoin = -1;
-    public int TensionDot = 1;
     public float Tension = 0;
     public float TensionMax = 0;
     public float ValeurPalier = 0;
-    public int NbPalier = 3;
     public int PalierChangement = 0;
     public int nbAttaqueRecu = 0;
     public List<Passif> ListPassif;
@@ -150,22 +141,22 @@ public class CharacterStat : ScriptableObject
             this.Radiance = this.RadianceMax;
         }
 
-        if (this.Conviction > this.ConvictionMax)
+        if (this.Conviction > GameManager.Instance.CommonStatsData.ConvictionMax)
         {
-            this.Conviction = this.ConvictionMax;
+            this.Conviction = GameManager.Instance.CommonStatsData.ConvictionMax;
         }
-        else if (this.Conviction < this.ConvictionMin)
+        else if (this.Conviction < GameManager.Instance.CommonStatsData.ConvictionMin)
         {
-            this.Conviction = this.ConvictionMin;
+            this.Conviction = GameManager.Instance.CommonStatsData.ConvictionMin;
         }
 
-        if (this.Resilience > this.ResilienceMax)
+        if (this.Resilience > GameManager.Instance.CommonStatsData.ResilienceMax)
         {
-            this.Resilience = this.ResilienceMax - (int) ResiliencePassif;
+            this.Resilience = GameManager.Instance.CommonStatsData.ResilienceMax - (int) ResiliencePassif;
         }
-        else if (this.Resilience < this.ResilienceMin)
+        else if (this.Resilience < GameManager.Instance.CommonStatsData.ResilienceMin)
         {
-            this.Resilience = this.ResilienceMin + (int) ResiliencePassif;
+            this.Resilience = GameManager.Instance.CommonStatsData.ResilienceMin + (int) ResiliencePassif;
         }
 
         if (this.ForceAme < 0)
@@ -267,10 +258,6 @@ public class CharacterStat : ScriptableObject
         this.MultiplSoin = 1;
         this.MultiplDegat = 1;
         this.MultipleBuffDebuff = 1;
-        this.TensionAttaque = 4;
-        this.TensionDebuff = 3;
-        this.TensionSoin = -1;
-        this.TensionDot = 1;
         this.Tension = 0;
         this.TensionMax = 0;
         this.ValeurPalier = 0;

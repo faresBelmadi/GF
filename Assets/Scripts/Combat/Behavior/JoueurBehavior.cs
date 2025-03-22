@@ -46,7 +46,7 @@ public class JoueurBehavior : CombatBehavior
     [SerializeField] private Spell SelectedSpell;
 
     [SerializeField] private AnimationControllerAttack AnimationController;
-
+    private CommonStats commonstats = GameManager.Instance.CommonStatsData;
     private BattleManager _refBattleMan => GameManager.Instance.BattleMan;
     [SerializeField] private bool IsTurn;
 
@@ -148,7 +148,7 @@ public class JoueurBehavior : CombatBehavior
     private void InitUI()
     {
         hPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
-        tensionBarManager.InitPBar(0, Stat.NbPalier);
+        tensionBarManager.InitPBar(0, commonstats.NbPalier);
         conscienceBarManager.InitPBar(Stat.Conscience, Stat.ConscienceMax);
     }
 
@@ -166,10 +166,10 @@ public class JoueurBehavior : CombatBehavior
 
         if (Stat.Tension != currentTens)
         {
-            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax),
-                Stat.NbPalier);
+            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * commonstats.NbPalier) / Stat.TensionMax),
+                commonstats.NbPalier);
 
-            tensionBarManager.ToggleBloomPulses(((Stat.Tension * Stat.NbPalier) / Stat.TensionMax) >= Stat.NbPalier);
+            tensionBarManager.ToggleBloomPulses(((Stat.Tension * commonstats.NbPalier) / Stat.TensionMax) >= commonstats.NbPalier);
 
         }
 
@@ -352,7 +352,7 @@ public class JoueurBehavior : CombatBehavior
     public void PreviewTensionBarUpddate()
     {
         tensionBarManager.PreviewBar(
-            Mathf.FloorToInt(((Stat.Tension + Stat.TensionSoin) * Stat.NbPalier) / Stat.TensionMax), Stat.NbPalier);
+            Mathf.FloorToInt(((Stat.Tension + commonstats.GainTensionSoin) * commonstats.NbPalier) / Stat.TensionMax), commonstats.NbPalier);
     }
 
     public void StopPreviewTensionBar()
@@ -366,9 +366,9 @@ public class JoueurBehavior : CombatBehavior
 
     public void EnervementTension()
     {
-        var t = (int) ((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
-        if (t >= Stat.NbPalier)
-            t = Stat.NbPalier;
+        var t = (int) ((Stat.Tension / (commonstats.NbPalier * Stat.ValeurPalier)) * commonstats.NbPalier);
+        if (t >= commonstats.NbPalier)
+            t = commonstats.NbPalier;
         else
             t++;
 
@@ -378,7 +378,7 @@ public class JoueurBehavior : CombatBehavior
     public void ApaisementTension()
     {
 
-        var t = (int) ((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        var t = (int) ((Stat.Tension / (commonstats.NbPalier * Stat.ValeurPalier)) * commonstats.NbPalier);
         if (t <= 0)
             t = 0;
         else
@@ -392,25 +392,25 @@ public class JoueurBehavior : CombatBehavior
         switch (sourceDamage)
         {
             case Source.Attaque:
-                Stat.Tension += Stat.TensionAttaque;
+                Stat.Tension += commonstats.GainTensionAttaque;
                 gainedTension = true;
                 break;
             case Source.Dot:
-                Stat.Tension += Stat.TensionDot;
+                Stat.Tension += commonstats.GainTensionDot;
                 gainedTension = true;
                 break;
             case Source.Buff:
-                Stat.Tension += Stat.TensionDebuff;
+                Stat.Tension += commonstats.GainTensionDebuff;
                 gainedTension = true;
                 break;
             case Source.Soin:
-                Stat.Tension += Stat.TensionSoin;
+                Stat.Tension += commonstats.GainTensionSoin;
                 gainedTension = true;
                 break;
         }
 
-        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
-            Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
+        if (Stat.Tension >= Stat.ValeurPalier * commonstats.NbPalier)
+            Stat.Tension = Stat.ValeurPalier * commonstats.NbPalier;
         if (Stat.Tension < 0)
             Stat.Tension = 0;
     }
@@ -418,7 +418,7 @@ public class JoueurBehavior : CombatBehavior
     public bool CanHaveAnotherTurn()
     {
         bool can = false;
-        var maxTension = (Stat.ValeurPalier * Stat.NbPalier);
+        var maxTension = (Stat.ValeurPalier * commonstats.NbPalier);
         if (Stat.Tension >= maxTension)
             can = true;
         return can;
@@ -750,7 +750,12 @@ public class JoueurBehavior : CombatBehavior
             {
                 if ((toApply.timerApplication != TimerApplication.Attaque) ||
                     (toApply.timerApplication == TimerApplication.Attaque && !IsTurn))
+                {
+                    
+
                     _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
+
+                }
 
                 /*if(item.CibleApplication == effet.Cible)
                 {
@@ -807,7 +812,7 @@ public class JoueurBehavior : CombatBehavior
         if (ModifStat.Radiance < 0)
         {
             var toRemove = ModifStat.Radiance;
-            toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
+            toRemove -= Mathf.FloorToInt(((Stat.Resilience * commonstats.ResilienceValue) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
             if (effet.IsAttaqueEffet)
                 GetAttacked();

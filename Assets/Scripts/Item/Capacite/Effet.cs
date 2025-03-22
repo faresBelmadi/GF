@@ -340,18 +340,18 @@ public class Effet : ScriptableObject
             case TypeEffet.TensionValue:
                 ModifState.Tension += valueToChange;
                 break;
-            case TypeEffet.TensionGainAttaqueValue:
-                ModifState.TensionAttaque += valueToChange;
-                break;
-            case TypeEffet.TensionGainDebuffValue:
-                ModifState.TensionDebuff += valueToChange;
-                break;
-            case TypeEffet.TensionGainSoinValue:
-                ModifState.TensionSoin += valueToChange;
-                break;
-            case TypeEffet.TensionGainDotValue:
-                ModifState.TensionDot += valueToChange;
-                break;
+            //case TypeEffet.TensionGainAttaqueValue:
+            //    ModifState.TensionAttaque += valueToChange;
+            //    break;
+            //case TypeEffet.TensionGainDebuffValue:
+            //    ModifState.TensionDebuff += valueToChange;
+            //    break;
+            //case TypeEffet.TensionGainSoinValue:
+            //    ModifState.TensionSoin += valueToChange;
+            //    break;
+            //case TypeEffet.TensionGainDotValue:
+            //    ModifState.TensionDot += valueToChange;
+            //    break;
             case TypeEffet.MultiplDef:
                 ModifState.MultiplDef += (Pourcentage / 100f) * NbAttaque;
                 break;

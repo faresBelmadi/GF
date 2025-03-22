@@ -28,7 +28,7 @@ public class EnnemyBehavior : CombatBehavior
     private int currentTension = 0;
     private Coroutine deathRoutine = null;
     private ClairvoyanceIconData clairvoyanceIconData;
-
+    private CommonStats commonstats = GameManager.Instance.CommonStatsData;
 
     public override string Name
     {
@@ -204,9 +204,9 @@ public class EnnemyBehavior : CombatBehavior
 
     public void EnervementTension()
     {
-        var t = (int) ((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
-        if (t >= Stat.NbPalier)
-            t = Stat.NbPalier;
+        var t = (int) ((Stat.Tension / (commonstats.NbPalier * Stat.ValeurPalier)) * commonstats.NbPalier);
+        if (t >= commonstats.NbPalier)
+            t = commonstats.NbPalier;
         else
             t++;
 
@@ -216,7 +216,7 @@ public class EnnemyBehavior : CombatBehavior
     public void ApaisementTension()
     {
 
-        var t = (int) ((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        var t = (int) ((Stat.Tension / (commonstats.NbPalier * Stat.ValeurPalier)) * commonstats.NbPalier);
         if (t <= 0)
             t = 0;
         else
@@ -227,7 +227,7 @@ public class EnnemyBehavior : CombatBehavior
 
     public bool CanHaveAnotherTurn()
     {
-        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier && !Stat.NoTension)
+        if (Stat.Tension >= Stat.ValeurPalier * commonstats.NbPalier && !Stat.NoTension)
         {
             return true;
         }
@@ -241,25 +241,25 @@ public class EnnemyBehavior : CombatBehavior
         switch (sourceDamage)
         {
             case Source.Attaque:
-                Stat.Tension += Stat.TensionAttaque;
+                Stat.Tension += commonstats.GainTensionAttaque;
                 gainedTension = true;
                 break;
             case Source.Dot:
-                Stat.Tension += Stat.TensionDot;
+                Stat.Tension += commonstats.GainTensionDot;
                 gainedTension = true;
                 break;
             case Source.Buff:
-                Stat.Tension += Stat.TensionDebuff;
+                Stat.Tension += commonstats.GainTensionDebuff;
                 gainedTension = true;
                 break;
             case Source.Soin:
-                Stat.Tension += Stat.TensionSoin;
+                Stat.Tension += commonstats.GainTensionSoin;
                 gainedTension = true;
                 break;
         }
 
-        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
-            Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
+        if (Stat.Tension >= Stat.ValeurPalier * commonstats.NbPalier)
+            Stat.Tension = Stat.ValeurPalier * commonstats.NbPalier;
         if (Stat.Tension < 0)
             Stat.Tension = 0;
     }
@@ -280,8 +280,8 @@ public class EnnemyBehavior : CombatBehavior
         if (currentHp != Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
         currentHp = Stat.Radiance;
 
-        TensionUI = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
-        if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, Stat.NbPalier);
+        TensionUI = Mathf.FloorToInt((Stat.Tension * commonstats.NbPalier) / Stat.TensionMax);
+        if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, commonstats.NbPalier);
         currentTension = TensionUI;
 
         string[] t = Stat.Nom.Split('(');
@@ -489,6 +489,29 @@ public class EnnemyBehavior : CombatBehavior
         {
             foreach (var effet in toApply.Effet)
             {
+                int positif = toApply.IsDebuff ? -1 : 1;
+                int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
+                effet.Pourcentage += (Stat.Conviction * commonstats.ConvictionValue) * positif * percentPositif;
+
+                int ajout = 0;
+                int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
+                if (Stat.Conviction >= commonstats.ConvictionPalier1)
+                {
+                    if (Stat.Conviction >= commonstats.ConvictionPalier2)
+                        ajout = commonstats.ConvictionPalierValue * 2;
+                    else
+                        ajout = commonstats.ConvictionValue;
+                }
+                else if (Stat.Conviction <= -commonstats.ConvictionPalier1)
+                {
+                    if (Stat.Conviction <= -commonstats.ConvictionPalier2)
+                        ajout = -commonstats.ConvictionPalierValue * 2;
+                    else
+                        ajout = -commonstats.ConvictionValue;
+                }
+
+                effet.ValeurBrut += ajout * positif * valuePositif;
+
                 _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
                 /*if (item.CibleApplication == effet.Cible)
                 {

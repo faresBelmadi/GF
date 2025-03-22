@@ -39,6 +39,33 @@ public class CombatBehavior : MonoBehaviour
         ListBuffDebuffGO.Clear();
     }
    
+    protected BuffDebuff ApplyConviction(BuffDebuff toModify)
+    {
+        foreach (var effet in toModify.Effet)
+        {
+            int positif = toModify.IsDebuff ? -1 : 1;
+            int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
+            effet.Pourcentage += (Stat.Conviction * commonstats.ConvictionValue) * positif * percentPositif;
+
+            int ajout = 0;
+            int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
+            if (Stat.Conviction >= commonstats.ConvictionPalier1)
+            {
+                if (Stat.Conviction >= commonstats.ConvictionPalier2)
+                    ajout = commonstats.ConvictionPalierValue * 2;
+                else
+                    ajout = commonstats.ConvictionValue;
+            }
+            else if (Stat.Conviction <= -commonstats.ConvictionPalier1)
+            {
+                if (Stat.Conviction <= -commonstats.ConvictionPalier2)
+                    ajout = -commonstats.ConvictionPalierValue * 2;
+                else
+                    ajout = -commonstats.ConvictionValue;
+            }
+
+            effet.ValeurBrut += ajout * positif * valuePositif;
+        }
 
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
