@@ -149,7 +149,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     private void InitUI()
     {
         hPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
-        tensionBarManager.InitPBar(0, commonstats.NbPalier);
+        tensionBarManager.InitPBar(0, GameManager.Instance.CommonStatsData.NbPalier);
         conscienceBarManager.InitPBar(Stat.Conscience, Stat.ConscienceMax);
     }
 
@@ -167,10 +167,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         if (Stat.Tension != currentTens)
         {
-            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * commonstats.NbPalier) / Stat.TensionMax),
-                commonstats.NbPalier);
+            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax),
+                GameManager.Instance.CommonStatsData.NbPalier);
 
-            tensionBarManager.ToggleBloomPulses(((Stat.Tension * commonstats.NbPalier) / Stat.TensionMax) >= commonstats.NbPalier);
+            tensionBarManager.ToggleBloomPulses(((Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax) >= GameManager.Instance.CommonStatsData.NbPalier);
 
         }
 
@@ -348,7 +348,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     public void PreviewTensionBarUpddate()
     {
         tensionBarManager.PreviewBar(
-            Mathf.FloorToInt(((Stat.Tension + commonstats.GainTensionSoin) * commonstats.NbPalier) / Stat.TensionMax), commonstats.NbPalier);
+            Mathf.FloorToInt(((Stat.Tension + GameManager.Instance.CommonStatsData.GainTensionSoin) * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax), GameManager.Instance.CommonStatsData.NbPalier);
     }
 
     public void StopPreviewTensionBar()
@@ -750,7 +750,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         if (ModifStat.Radiance < 0)
         {
             var toRemove = ModifStat.Radiance;
-            toRemove -= Mathf.FloorToInt(((Stat.Resilience * commonstats.ResilienceValue) / 100f) * toRemove);
+            toRemove -= Mathf.FloorToInt(((Stat.Resilience * GameManager.Instance.CommonStatsData.ResilienceValue) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
             if (effet.IsAttaqueEffet)
                 GetAttacked();

@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 {
     [SerializeField] public T Stat;
-    protected CommonStats commonstats;
     public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
     public GameObject BuffPrefab;
     public Transform BuffContainer;
@@ -31,7 +30,6 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     private void Start()
     {
-        commonstats = GameManager.Instance.CommonStatsData;
         _startingPos = transform.parent.position;
     }
     public void ClearBuffBar()
@@ -50,23 +48,23 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         {
             int positif = buff.IsDebuff ? -1 : 1;
             int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
-            effet.Pourcentage += (Stat.Conviction * commonstats.ConvictionValue) * positif * percentPositif;
+            effet.Pourcentage += (Stat.Conviction * GameManager.Instance.CommonStatsData.ConvictionValue) * positif * percentPositif;
 
             int ajout = 0;
             int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
-            if (Stat.Conviction >= commonstats.ConvictionPalier1)
+            if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier1)
             {
-                if (Stat.Conviction >= commonstats.ConvictionPalier2)
-                    ajout = commonstats.ConvictionPalierValue * 2;
+                if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier2)
+                    ajout = GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
                 else
-                    ajout = commonstats.ConvictionValue;
+                    ajout = GameManager.Instance.CommonStatsData.ConvictionValue;
             }
-            else if (Stat.Conviction <= -commonstats.ConvictionPalier1)
+            else if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier1)
             {
-                if (Stat.Conviction <= -commonstats.ConvictionPalier2)
-                    ajout = -commonstats.ConvictionPalierValue * 2;
+                if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier2)
+                    ajout = -GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
                 else
-                    ajout = -commonstats.ConvictionValue;
+                    ajout = -GameManager.Instance.CommonStatsData.ConvictionValue;
             }
 
             effet.ValeurBrut += ajout * positif * valuePositif;
@@ -327,9 +325,9 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     public void EnervementTension()
     {
-        var t = (int)((Stat.Tension / (commonstats.NbPalier * Stat.ValeurPalier)) * commonstats.NbPalier);
-        if (t >= commonstats.NbPalier)
-            t = commonstats.NbPalier;
+        var t = (int)((Stat.Tension / (GameManager.Instance.CommonStatsData.NbPalier * Stat.ValeurPalier)) * GameManager.Instance.CommonStatsData.NbPalier);
+        if (t >= GameManager.Instance.CommonStatsData.NbPalier)
+            t = GameManager.Instance.CommonStatsData.NbPalier;
         else
             t++;
 
@@ -339,7 +337,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     public void ApaisementTension()
     {
 
-        var t = (int)((Stat.Tension / (commonstats.NbPalier * Stat.ValeurPalier)) * commonstats.NbPalier);
+        var t = (int)((Stat.Tension / (GameManager.Instance.CommonStatsData.NbPalier * Stat.ValeurPalier)) * GameManager.Instance.CommonStatsData.NbPalier);
         if (t <= 0)
             t = 0;
         else
@@ -353,32 +351,32 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         switch (sourceDamage)
         {
             case Source.Attaque:
-                Stat.Tension += commonstats.GainTensionAttaque;
+                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionAttaque;
                 gainedTension = true;
                 break;
             case Source.Dot:
-                Stat.Tension += commonstats.GainTensionDot;
+                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionDot;
                 gainedTension = true;
                 break;
             case Source.Buff:
-                Stat.Tension += commonstats.GainTensionDebuff;
+                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionDebuff;
                 gainedTension = true;
                 break;
             case Source.Soin:
-                Stat.Tension += commonstats.GainTensionSoin;
+                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionSoin;
                 gainedTension = true;
                 break;
         }
 
-        if (Stat.Tension >= Stat.ValeurPalier * commonstats.NbPalier)
-            Stat.Tension = Stat.ValeurPalier * commonstats.NbPalier;
+        if (Stat.Tension >= Stat.ValeurPalier * GameManager.Instance.CommonStatsData.NbPalier)
+            Stat.Tension = Stat.ValeurPalier * GameManager.Instance.CommonStatsData.NbPalier;
         if (Stat.Tension < 0)
             Stat.Tension = 0;
     }
 
     public virtual bool CanHaveAnotherTurn()
     {
-        return Stat.Tension >= Stat.ValeurPalier * commonstats.NbPalier;
+        return Stat.Tension >= Stat.ValeurPalier * GameManager.Instance.CommonStatsData.NbPalier;
     }
     public virtual void ResetStat()
     {

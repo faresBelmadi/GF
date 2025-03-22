@@ -211,8 +211,8 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         if (currentHp != Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
         currentHp = Stat.Radiance;
 
-        TensionUI = Mathf.FloorToInt((Stat.Tension * commonstats.NbPalier) / Stat.TensionMax);
-        if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, commonstats.NbPalier);
+        TensionUI = Mathf.FloorToInt((Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax);
+        if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, GameManager.Instance.CommonStatsData.NbPalier);
         currentTension = TensionUI;
 
         string[] t = Stat.Nom.Split('(');
@@ -421,23 +421,23 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             {
                 int positif = toApply.IsDebuff ? -1 : 1;
                 int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
-                effet.Pourcentage += (Stat.Conviction * commonstats.ConvictionValue) * positif * percentPositif;
+                effet.Pourcentage += (Stat.Conviction * GameManager.Instance.CommonStatsData.ConvictionValue) * positif * percentPositif;
 
                 int ajout = 0;
                 int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
-                if (Stat.Conviction >= commonstats.ConvictionPalier1)
+                if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier1)
                 {
-                    if (Stat.Conviction >= commonstats.ConvictionPalier2)
-                        ajout = commonstats.ConvictionPalierValue * 2;
+                    if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier2)
+                        ajout = GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
                     else
-                        ajout = commonstats.ConvictionValue;
+                        ajout = GameManager.Instance.CommonStatsData.ConvictionValue;
                 }
-                else if (Stat.Conviction <= -commonstats.ConvictionPalier1)
+                else if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier1)
                 {
-                    if (Stat.Conviction <= -commonstats.ConvictionPalier2)
-                        ajout = -commonstats.ConvictionPalierValue * 2;
+                    if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier2)
+                        ajout = -GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
                     else
-                        ajout = -commonstats.ConvictionValue;
+                        ajout = -GameManager.Instance.CommonStatsData.ConvictionValue;
                 }
 
                 effet.ValeurBrut += ajout * positif * valuePositif;
