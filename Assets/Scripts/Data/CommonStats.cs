@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
 [CreateAssetMenu(fileName = " new CommonStats", menuName = "CommonData/Create New CommonStats")]
 public class CommonStats : ScriptableObject
 {

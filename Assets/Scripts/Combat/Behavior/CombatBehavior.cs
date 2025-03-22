@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 {
     [SerializeField] public T Stat;
-    protected CommonStats commonstats = GameManager.Instance.CommonStatsData;
+    protected CommonStats commonstats;
     public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
     public GameObject BuffPrefab;
     public Transform BuffContainer;
@@ -31,6 +31,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     private void Start()
     {
+        commonstats = GameManager.Instance.CommonStatsData;
         _startingPos = transform.parent.position;
     }
     public void ClearBuffBar()
