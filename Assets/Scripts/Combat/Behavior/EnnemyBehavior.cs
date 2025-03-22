@@ -1,13 +1,11 @@
-﻿using JetBrains.Annotations;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EnnemyBehavior : CombatBehavior
+public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 {
-    public EnnemiStat Stat;
 
     public UIEnnemi UICombat;
     public int TensionUI;
@@ -19,7 +17,7 @@ public class EnnemyBehavior : CombatBehavior
     bool skip;
     public bool IsTurn;
     nextActionEnum nextActionType;
-    List<EnnemiSpell> Spells;
+    protected List<EnnemiSpell> Spells;
     public bool isMainEnemy;
     private BattleManager _refBattleMan;
     List<BuffDebuff> tempAddList = new List<BuffDebuff>();
@@ -88,20 +86,11 @@ public class EnnemyBehavior : CombatBehavior
             Stat.Debuff = Instantiate(Stat.Debuff);
     }
 
-    public void ResetStat()
+    public override void ResetStat()
     {
-        Stat.RadianceMax = Stat.RadianceMaxOriginal;
-        Stat.Vitesse = Stat.VitesseOriginal;
         Stat.Dissimulation = Stat.DissimulationOriginal;
-        Stat.Resilience = Stat.ResilienceOriginal;
-        Stat.MultipleBuffDebuff = 1;
 
-        Stat.MultiplDegat = 1;
-        Stat.MultiplDef = 1;
-        Stat.MultiplSoin = 1;
-        Stat.MultipleBuffDebuff = 1;
-        Stat.ForceAme = Stat.ForceAmeOriginal;
-        Stat.Conviction = Stat.ConvictionOriginal;
+        base.ResetStat();
     }
 
     public void StartPhase()
@@ -202,66 +191,9 @@ public class EnnemyBehavior : CombatBehavior
 
     #region Tension
 
-    public void EnervementTension()
+    public override bool CanHaveAnotherTurn()
     {
-        var t = (int) ((Stat.Tension / (commonstats.NbPalier * Stat.ValeurPalier)) * commonstats.NbPalier);
-        if (t >= commonstats.NbPalier)
-            t = commonstats.NbPalier;
-        else
-            t++;
-
-        Stat.Tension = t * Stat.ValeurPalier;
-    }
-
-    public void ApaisementTension()
-    {
-
-        var t = (int) ((Stat.Tension / (commonstats.NbPalier * Stat.ValeurPalier)) * commonstats.NbPalier);
-        if (t <= 0)
-            t = 0;
-        else
-            t--;
-
-        Stat.Tension = t * Stat.ValeurPalier;
-    }
-
-    public bool CanHaveAnotherTurn()
-    {
-        if (Stat.Tension >= Stat.ValeurPalier * commonstats.NbPalier && !Stat.NoTension)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    public void ReceiveTension(Source sourceDamage)
-    {
-
-        switch (sourceDamage)
-        {
-            case Source.Attaque:
-                Stat.Tension += commonstats.GainTensionAttaque;
-                gainedTension = true;
-                break;
-            case Source.Dot:
-                Stat.Tension += commonstats.GainTensionDot;
-                gainedTension = true;
-                break;
-            case Source.Buff:
-                Stat.Tension += commonstats.GainTensionDebuff;
-                gainedTension = true;
-                break;
-            case Source.Soin:
-                Stat.Tension += commonstats.GainTensionSoin;
-                gainedTension = true;
-                break;
-        }
-
-        if (Stat.Tension >= Stat.ValeurPalier * commonstats.NbPalier)
-            Stat.Tension = Stat.ValeurPalier * commonstats.NbPalier;
-        if (Stat.Tension < 0)
-            Stat.Tension = 0;
+        return base.CanHaveAnotherTurn() && !Stat.NoTension;
     }
 
     #endregion Tension
@@ -296,7 +228,7 @@ public class EnnemyBehavior : CombatBehavior
 
     #region IA
 
-    public void ChooseNextAction()
+    public virtual void ChooseNextAction()
     {
         bool colere = false;
         foreach (var item in Stat.ListBuffDebuff)
@@ -326,15 +258,13 @@ public class EnnemyBehavior : CombatBehavior
             }
             else if (item.Weight < nextAction.Weight)
             {
-                var tempAction = item.Effet.FirstOrDefault(c => c.TypeEffet == TypeEffet.UltimeJeanne);
-                if (tempAction != null&& Stat.Divin >= 70)
-                { 
-                        nextAction = item;
-                }
-                else
-                    nextAction = item;
+               
+               nextAction = item;
             }
         }
+
+       
+
 
         nextAction.Weight += nextAction.AddedWeight;
         foreach (var item in Spells)
@@ -347,7 +277,7 @@ public class EnnemyBehavior : CombatBehavior
         UpdateIntention();
     }
 
-    private void NextActionType()
+    protected void NextActionType()
     {
         if (Stat.Att1 != null)
             if (Stat.Att1 == nextAction)
@@ -363,7 +293,7 @@ public class EnnemyBehavior : CombatBehavior
                 nextActionType = nextActionEnum.Debuff;
     }
 
-    private void UpdateIntention()
+    protected void UpdateIntention()
     {
         if (GameManager.Instance.BattleMan.getJoueurClairvoyance() >= Stat.Dissimulation)
         {
@@ -591,7 +521,7 @@ public class EnnemyBehavior : CombatBehavior
             effet.IsFirstApplication = false;
             ModifStat.Radiance += ModifStat.RadianceMax;
         }
-        GameManager.Instance.BattleMan.LogRadianceChange(this,  GameManager.Instance.BattleMan.GetBehaviorFromStat(Caster), ModifStat.Radiance);
+        GameManager.Instance.BattleMan.LogRadianceChange(this.Name,  GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster), ModifStat.Radiance);
         Stat.ModifStateAll(ModifStat);
         Stat.RectificationStat();
 

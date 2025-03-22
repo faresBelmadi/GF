@@ -1939,6 +1939,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5817335319482566745, guid: 3424f4aae5fb551419be083aed5f69c9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4587239523438584848}
+    - targetCorrespondingSourceObject: {fileID: 5817335319482566745, guid: 3424f4aae5fb551419be083aed5f69c9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7604322863224091180}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2049541532593887095, guid: 3424f4aae5fb551419be083aed5f69c9, type: 3}
       insertIndex: -1
@@ -2068,9 +2071,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fec9b970d31eee5479309846a749daf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buffsSprites:
-  - {fileID: 21300000, guid: 6cae14e1031e2634c8bf30baf16d9099, type: 3}
-  - {fileID: 21300000, guid: 267612aab625a444cbd6e962660abe6f, type: 3}
+  Stat: {fileID: 0}
   ListBuffDebuffGO: []
   BuffPrefab: {fileID: 8673195161482103611, guid: b0d011bbc909fee4aa8d4f0cbec06220, type: 3}
   BuffContainer: {fileID: 5626185650938584842}
@@ -2079,14 +2080,12 @@ MonoBehaviour:
   _buffTextColor: {r: 0, g: 1, b: 0, a: 1}
   LastDamageTaken: 0
   gainedTension: 0
-  Stat: {fileID: 0}
   UICombat: {fileID: 193015430629659538}
   TensionUI: 0
   characterMaterial: {fileID: 0}
   deathDisolveTime: 2
   combatID: 0
   nextAction: {fileID: 0}
-  EssencePrefab: {fileID: 2949636703588565037, guid: bb5710fb14e5fd14ca171e5b37c0264d, type: 3}
   IsTurn: 0
   isMainEnemy: 0
 --- !u!114 &2968959745300678727
@@ -2174,4 +2173,66 @@ MonoBehaviour:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5817335319482566745, guid: 3424f4aae5fb551419be083aed5f69c9, type: 3}
   m_PrefabInstance: {fileID: 2953986007873337057}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7596824217685275031
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8666607082357931704}
+    m_Modifications:
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.024467811
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2309818346539118949, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+      propertyPath: m_Name
+      value: SpeakComponent
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+--- !u!4 &7604322863224091180 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 66054512341500859, guid: bf5832f3329430d419f17357706b0cb0, type: 3}
+  m_PrefabInstance: {fileID: 7596824217685275031}
   m_PrefabAsset: {fileID: 0}

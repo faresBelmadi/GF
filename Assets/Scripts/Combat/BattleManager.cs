@@ -9,9 +9,10 @@ using UnityEngine;
 [System.Serializable]
 public class BattleManager : MonoBehaviour
 {
-    [Header("Tuto")] [SerializeField] private bool _isTuto = false;
+    [Header("Tuto")][SerializeField] private bool _isTuto = false;
 
-    [Header("BattleLogger")] [SerializeField]
+    [Header("BattleLogger")]
+    [SerializeField]
     private BattleLog _battleLogger;
 
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
@@ -69,7 +70,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private Material ennemiUIMaterial;
 
     private bool _isDetailledCombat;
-    public bool IsDetailledCombat 
+    public bool IsDetailledCombat
     {
         get => _isDetailledCombat;
         set
@@ -92,19 +93,19 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     /// <param name="stat">CharacterStat to find</param>
     /// <returns>The linked COmbatBehaviour</returns>
-    public CombatBehavior GetBehaviorFromStat(CharacterStat stat)
+    public string GetBehaviorNameFromStat(CharacterStat stat)
     {
         if (stat == null) return null;
 
         if (player.Stat == stat)
-            return player;
+            return player.Name;
         foreach (var ennemy in EnemyScripts)
         {
             if (ennemy.Stat == stat)
-                return ennemy;
+                return ennemy.Name;
         }
 
-        return null;
+        return "Undidentified";
     }
 
     #endregion
@@ -294,7 +295,7 @@ public class BattleManager : MonoBehaviour
     {
         player.InitRefBattleMan(this);
         if (GameManager.Instance != null)
-            PassifManager = new PassifManager(new List<JoueurBehavior> {player}, EnemyScripts);
+            PassifManager = new PassifManager(new List<JoueurBehavior> { player }, EnemyScripts);
         GameManager.Instance.DialManager.SetupDialogue(_encounter);
     }
 
@@ -339,8 +340,8 @@ public class BattleManager : MonoBehaviour
 
     void SpawnEnemy()
     {
-        List<int> remainingPos = new List<int> {0, 1, 2, 3};
-        List<int> ennemyPosIds = new List<int> {-1, -1, -1, -1};
+        List<int> remainingPos = new List<int> { 0, 1, 2, 3 };
+        List<int> ennemyPosIds = new List<int> { -1, -1, -1, -1 };
         List<EncounterOption> encounterOptions = _encounter.forcedOrder.ToList();
 
         int firstMaxPos = (spawnPos.Length - encounterOptions.Count);
@@ -378,34 +379,37 @@ public class BattleManager : MonoBehaviour
             if (ennemyPosIds[i] == -1) remainingPos.Add(i);
         }
 
-        for (int i = 0; i < _encounter.ToFight.Count; i++)
+        if (_encounter.IsForced)
         {
-            if (!ennemyPosIds.Contains(i))
+            InstanciateEnnemy(0, _encounter.ForcedPosition);
+        }
+        else
+        {
+            for (int i = 0; i < _encounter.ToFight.Count; i++)
             {
-                int choosedPos;
-                //Debug.Log($"Ennemy {i} not in list");
-                if (_encounter.IsForced)
+                if (!ennemyPosIds.Contains(i))
                 {
-                    choosedPos = remainingPos[_encounter.ForcedPosition];
-                }
-                else
+                    int choosedPos;
                     choosedPos = remainingPos[UnityEngine.Random.Range(0, remainingPos.Count)];
-                remainingPos.Remove(choosedPos);
-                ennemyPosIds[choosedPos] = i;
-                //Debug.Log($"Adding it to pos {choosedPos}");
+                    //Debug.Log($"Ennemy {i} not in list");
+                    remainingPos.Remove(choosedPos);
+                    ennemyPosIds[choosedPos] = i;
+                    //Debug.Log($"Adding it to pos {choosedPos}");
+                }
+
             }
 
-        }
-
-        //Debug.Log("Instantiate:");
-        for (int i = 0; i < ennemyPosIds.Count; i++)
-        {
-            //Debug.Log($"pos: {i} spawn :{ennemyPosIds[i]}");
-            if (ennemyPosIds[i] > -1)
+            //Debug.Log("Instantiate:");
+            for (int i = 0; i < ennemyPosIds.Count; i++)
             {
-                InstanciateEnnemy(ennemyPosIds[i], i);
+                //Debug.Log($"pos: {i} spawn :{ennemyPosIds[i]}");
+                if (ennemyPosIds[i] > -1)
+                {
+                    InstanciateEnnemy(ennemyPosIds[i], i);
+                }
             }
         }
+        Debug.Log("end spawn");
     }
 
     void InstanciateEnnemy(int ennemyId, int spawnPosId)
@@ -419,6 +423,7 @@ public class BattleManager : MonoBehaviour
         }
 
         var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
+        GameManager.Instance.DialManager.AddSpeakers(ennemyId, tempCombatScript);
         //instantiate tout les so modifiable
         if (tempCombatScript != null)
         {
@@ -537,9 +542,9 @@ public class BattleManager : MonoBehaviour
         IdOrder = new List<CombatOrder>();
         foreach (var item in test)
         {
-            IdOrder.Add(new CombatOrder() {id = item.Key, Played = false});
+            IdOrder.Add(new CombatOrder() { id = item.Key, Played = false });
             if (CheckTension(item.Key))
-                IdOrder.Add(new CombatOrder() {id = item.Key, Played = false});
+                IdOrder.Add(new CombatOrder() { id = item.Key, Played = false });
         }
         //turnOrderUIManager.GenerateTurnItems(IdOrder);
     }
@@ -601,7 +606,7 @@ public class BattleManager : MonoBehaviour
 
     public void LaunchSpellJoueur(Spell spell)
     {
-        LogLaunchedSpell(player, spell);
+        LogLaunchedSpell(player.Name, spell);
         player.DesactivateSpells();
         AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerSpellSFX, spell.SpellSFX);
         foreach (var effet in spell.ActionEffet)
@@ -649,7 +654,7 @@ public class BattleManager : MonoBehaviour
     public void LaunchSpellEnnemi(EnnemiSpell Spell)
     {
         var playing = EnemyScripts.First(c => c.combatID == currentIdTurn);
-        LogLaunchedSpell(playing, Spell);
+        LogLaunchedSpell(playing.Name, Spell);
         foreach (var effet in Spell.Effet)
         {
             PassageEffet(effet, currentIdTurn, -1, SourceEffet.Spell);
@@ -665,13 +670,13 @@ public class BattleManager : MonoBehaviour
         //player.ApplicationBuffDebuff(TimerApplication.Attaque);
     }
 
-    public void LogLaunchedSpell(CombatBehavior launcher, IBattleLogSpell spell)
+    public void LogLaunchedSpell(string launcherName, IBattleLogSpell spell)
     {
         if (_battleLogger.gameObject.activeInHierarchy)
-            _battleLogger.AddBattleLaunchSpellLogLine(launcher, spell);
+            _battleLogger.AddBattleLaunchSpellLogLine(launcherName, spell);
     }
 
-    public void LogRadianceChange(CombatBehavior target, CombatBehavior source, int amount)
+    public void LogRadianceChange(string target, string source, int amount)
     {
         if (_battleLogger.gameObject.activeInHierarchy)
             _battleLogger.AddDamageLogLine(target, source, amount);
@@ -1058,8 +1063,8 @@ public class BattleManager : MonoBehaviour
 
             ListEssence.Clear();
         }
-            EndBattle();
-     
+        EndBattle();
+
     }
 
     private void ClearListEssence()
@@ -1135,8 +1140,8 @@ public class BattleManager : MonoBehaviour
             }
 
 
-            
-           
+
+
         }
     }
 

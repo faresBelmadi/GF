@@ -590,7 +590,7 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.UltimeJeanne:
                 var JeanneStat4 = (EnnemiStat) Caster;
-                ModifState.Radiance += Mathf.FloorToInt(-JeanneStat4.Divin / 100f * Caster.ForceAme);
+                ModifState.Radiance += Mathf.FloorToInt(((JeanneStat4.Divin * Pourcentage) / 100f * Caster.ForceAme) * Caster.MultiplDegat);
                 JeanneStat4.Divin = -30;
                 break;
             case TypeEffet.MultiplTension:
