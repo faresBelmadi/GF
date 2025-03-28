@@ -8,6 +8,8 @@ public class DebugMode : MonoBehaviour
 {
     [SerializeField]
     private GameObject _togglePrefab;
+    [SerializeField]
+    private GameObject _inputFieldPrefab;
     [Header("Souvenir")]
     [SerializeField]
     private TMP_Dropdown _souvenirDropdown;
@@ -33,6 +35,10 @@ public class DebugMode : MonoBehaviour
     [Header("Combat")]
     [SerializeField]
     private GameObject _spellContent;
+    [Header("Stats")]
+    [SerializeField]
+    private GameObject _statContent;
+   
 
 
 
@@ -60,6 +66,7 @@ public class DebugMode : MonoBehaviour
 
     private List<Spell> _spells = new List<Spell>();
     private List<string> _equipedSpells = new List<string>();
+    private Dictionary<string, int> _stats = new Dictionary<string, int>();
 
     // Start is called before the first frame update
     void Start()
@@ -67,6 +74,7 @@ public class DebugMode : MonoBehaviour
         RefreshListSouvenir();
         ListRencontre();
         ListSpell();
+        ListStats();
     }
 
     // Update is called once per frame
@@ -74,6 +82,30 @@ public class DebugMode : MonoBehaviour
     {
         
     }
+
+    private void ListStats()
+    {
+        _stats = new Dictionary<string, int>
+        {
+            { "Radiance", GameManager.Instance.classSO.PlayerStat.RadianceMaxOriginal },
+            { "Force d'ame", GameManager.Instance.classSO.PlayerStat.ForceAmeOriginal },
+            { "Vitesse", GameManager.Instance.classSO.PlayerStat.VitesseOriginal },
+            { "Resilience", GameManager.Instance.classSO.PlayerStat.ResilienceOriginal },
+            { "Clairvoyance", GameManager.Instance.classSO.PlayerStat.ClairvoyanceOriginal },
+            { "Conviction", GameManager.Instance.classSO.PlayerStat.ConvictionOriginal },
+            { "Calme", GameManager.Instance.classSO.PlayerStat.Calme },
+            { "Volonte", GameManager.Instance.classSO.PlayerStat.VolonterMax },
+        };
+
+        foreach (var item in _stats)
+        {
+            var input = Instantiate(_inputFieldPrefab, _statContent.transform);
+            input.GetComponentInChildren<TMP_Text>().text = item.Key;
+            input.GetComponentInChildren<TMP_InputField>().text = item.Value.ToString();
+            input.GetComponentInChildren<TMP_InputField>().onValueChanged.AddListener(x => _stats[item.Key] = int.Parse(x));
+        }
+    }
+
     private void ListSpell()
     {
         foreach (var item in GameManager.Instance.classSO.Competences)
@@ -209,5 +241,36 @@ public class DebugMode : MonoBehaviour
             GameManager.Instance.CopyAllSouvenir.Remove(_souv);
         }
         RefreshListSouvenir();
+    }
+
+    public void LaunchGame()
+    {
+
+        /*
+        { "Radiance", GameManager.Instance.classSO.PlayerStat.RadianceMaxOriginal },
+            { "Force d'ame", GameManager.Instance.classSO.PlayerStat.ForceAmeOriginal },
+            { "Vitesse", GameManager.Instance.classSO.PlayerStat.VitesseOriginal },
+            { "Resilience", GameManager.Instance.classSO.PlayerStat.ResilienceOriginal },
+            { "Clairvoyance", GameManager.Instance.classSO.PlayerStat.ClairvoyanceOriginal },
+            { "Conviction", GameManager.Instance.classSO.PlayerStat.ConvictionOriginal },
+            { "Calme", GameManager.Instance.classSO.PlayerStat.Calme },
+            { "Volonté", GameManager.Instance.classSO.PlayerStat.VolonterMax },
+        };*/
+    //EquipeSouvenir();
+        var stat = Instantiate(GameManager.Instance.playerStat);
+        stat.Radiance = _stats["Radiance"];
+        stat.ForceAmeOriginal = _stats["Force d'ame"];
+        stat.ForceAme = _stats["Force d'ame"];
+        stat.VitesseOriginal = _stats["Vitesse"];
+        stat.Vitesse = _stats["Vitesse"];
+        stat.ResilienceOriginal = _stats["Resilience"];
+        stat.Resilience = _stats["Resilience"];
+        stat.ClairvoyanceOriginal = _stats["Clairvoyance"];
+        stat.Clairvoyance = _stats["Clairvoyance"];
+        stat.ConvictionOriginal = _stats["Conviction"];
+        stat.Conviction = _stats["Conviction"];
+        stat.Calme = _stats["Calme"];
+        stat.Volonter = _stats["Volonte"];
+        GameManager.Instance.playerStat = stat;
     }
 }
