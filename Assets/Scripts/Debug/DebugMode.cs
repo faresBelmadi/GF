@@ -18,20 +18,6 @@ public class DebugMode : MonoBehaviour
     private TMP_Dropdown _aleaDropdown;
     [SerializeField]
     private TMP_Dropdown _combatDropdown;
-    [SerializeField]
-    private GameObject _contentAleaNeutre;
-    [SerializeField]
-    private GameObject _contentAleaClasse;
-    [SerializeField]
-    private GameObject _contentCombatNeutre;
-    [SerializeField]
-    private GameObject _contentCombatClasse;
-    [SerializeField]
-    private GameObject _contentCombatEliteNeutre;
-    [SerializeField]
-    private GameObject _contentCombatEliteClasse;
-    [SerializeField]
-    private GameObject _contentBoss;
     [Header("Combat")]
     [SerializeField]
     private GameObject _spellContent;
@@ -39,12 +25,6 @@ public class DebugMode : MonoBehaviour
     [SerializeField]
     private GameObject _statContent;
    
-
-
-
-
-
-
     private Dictionary<string, Souvenir> _souvenir = new Dictionary<string, Souvenir>();
     
     private List<string> _souvenirList = new List<string>();
@@ -65,23 +45,21 @@ public class DebugMode : MonoBehaviour
     private List<string> _combatString = new List<string>();
 
     private List<Spell> _spells = new List<Spell>();
-    private List<string> _equipedSpells = new List<string>();
+    private List<Spell> _equipedSpells = new List<Spell>();
+    private Dictionary<string, Spell> _dictionnarySpells = new Dictionary<string, Spell>();
     private Dictionary<string, int> _stats = new Dictionary<string, int>();
 
     // Start is called before the first frame update
     void Start()
     {
+        GameManager.Instance.IsPaused = true;
         RefreshListSouvenir();
         ListRencontre();
         ListSpell();
         ListStats();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 
     private void ListStats()
     {
@@ -111,36 +89,44 @@ public class DebugMode : MonoBehaviour
         foreach (var item in GameManager.Instance.classSO.Competences)
         {
             _spells.Add(item.Spell);
+            _dictionnarySpells.Add(item.Spell.Nom, item.Spell);
         }
 
         foreach(var item in GameManager.Instance.playerStat.ListSpell)
         {
-            _equipedSpells.Add(item.Nom);
+            _equipedSpells.Add(item);
         }
 
         foreach(var item in _spells)
         {
             var toggle = Instantiate(_togglePrefab, _spellContent.transform);
             toggle.GetComponentInChildren<TMP_Text>().text = item.Nom;
-            toggle.GetComponent<Toggle>().isOn = _equipedSpells.Contains(item.Nom);
+            toggle.GetComponent<Toggle>().isOn = _equipedSpells.Find(x=>x.Nom == item.Nom) != null;
+            //toggle.GetComponent<Toggle>().onValueChanged.AddListener(x => 
+            //{
+            //    if (x)
+            //    {
+            //        _equipedSpells
+            //    }
+            //})
         }
 
     }
     private void ListRencontre()
     {
-        // plutot faireu ne liste des alea, et une liste de tout les combat
+        _aleaString.Add("DEFAULT");
+        _combatString.Add("DEFAULT");
         foreach (var item in GameManager.Instance.EncounterSet.EncounterNeutralAleaList)
         {
-            var toggle = Instantiate(_togglePrefab, _contentAleaNeutre.transform);
-            toggle.GetComponentInChildren<TMP_Text>().text = item.name;
+           
+           
             _aleaNeutre.Add(item.name, item);
             _alea.Add(item.name, item);
             _aleaString.Add(item.name);
         }
         foreach (var item in GameManager.Instance.EncounterSet.EncounterClassAleaList)
         {
-            var toggle = Instantiate(_togglePrefab, _contentAleaClasse.transform);
-            toggle.GetComponentInChildren<TMP_Text>().text = item.name;
+           
             _aleaClass.Add(item.name, item);
             _alea.Add(item.name, item);
             _aleaString.Add(item.name);
@@ -148,16 +134,14 @@ public class DebugMode : MonoBehaviour
 
         foreach (var item in GameManager.Instance.EncounterSet.EncounterNeutralList)
         {
-            var toggle = Instantiate(_togglePrefab, _contentCombatNeutre.transform);
-            toggle.GetComponentInChildren<TMP_Text>().text = item.name;
+           
             _combatNeutre.Add(item.name, item);
             _combat.Add(item.name, item);
             _combatString.Add(item.name);
         }
         foreach (var item in GameManager.Instance.EncounterSet.EncounterClassList)
         {
-            var toggle = Instantiate(_togglePrefab, _contentCombatClasse.transform);
-            toggle.GetComponentInChildren<TMP_Text>().text = item.name;
+           
             _combatClass.Add(item.name, item); ;
             _combat.Add(item.name, item);
             _combatString.Add(item.name);
@@ -165,16 +149,14 @@ public class DebugMode : MonoBehaviour
 
         foreach (var item in GameManager.Instance.EncounterSet.EncounterEliteList)
         {
-            var toggle = Instantiate(_togglePrefab, _contentCombatEliteNeutre.transform);
-            toggle.GetComponentInChildren<TMP_Text>().text = item.name;
+           
             _eliteNeutre.Add(item.name, item);
             _combat.Add(item.name, item);
             _combatString.Add(item.name);
         }
         foreach (var item in GameManager.Instance.EncounterSet.EncounterClassEliteList)
         {
-            var toggle = Instantiate(_togglePrefab, _contentCombatEliteClasse.transform);
-            toggle.GetComponentInChildren<TMP_Text>().text = item.name;
+           
             _eliteClass.Add(item.name, item);
             _combat.Add(item.name, item);
             _combatString.Add(item.name);
@@ -182,8 +164,7 @@ public class DebugMode : MonoBehaviour
 
         foreach (var item in GameManager.Instance.EncounterSet.EncounterBossList)
         {
-            var toggle = Instantiate(_togglePrefab, _contentBoss.transform);
-            toggle.GetComponentInChildren<TMP_Text>().text = item.name;
+           
             _boss.Add(item.name, item);
             _combat.Add(item.name, item);
             _combatString.Add(item.name);
@@ -245,18 +226,6 @@ public class DebugMode : MonoBehaviour
 
     public void LaunchGame()
     {
-
-        /*
-        { "Radiance", GameManager.Instance.classSO.PlayerStat.RadianceMaxOriginal },
-            { "Force d'ame", GameManager.Instance.classSO.PlayerStat.ForceAmeOriginal },
-            { "Vitesse", GameManager.Instance.classSO.PlayerStat.VitesseOriginal },
-            { "Resilience", GameManager.Instance.classSO.PlayerStat.ResilienceOriginal },
-            { "Clairvoyance", GameManager.Instance.classSO.PlayerStat.ClairvoyanceOriginal },
-            { "Conviction", GameManager.Instance.classSO.PlayerStat.ConvictionOriginal },
-            { "Calme", GameManager.Instance.classSO.PlayerStat.Calme },
-            { "Volonté", GameManager.Instance.classSO.PlayerStat.VolonterMax },
-        };*/
-    //EquipeSouvenir();
         var stat = Instantiate(GameManager.Instance.playerStat);
         stat.Radiance = _stats["Radiance"];
         stat.ForceAmeOriginal = _stats["Force d'ame"];
@@ -271,6 +240,67 @@ public class DebugMode : MonoBehaviour
         stat.Conviction = _stats["Conviction"];
         stat.Calme = _stats["Calme"];
         stat.Volonter = _stats["Volonte"];
+
+        stat.ListSpell.Clear();
+        for (int i=0; i< _spellContent.transform.childCount; i++)
+        {
+            var go = _spellContent.transform.GetChild(i).gameObject;
+            if (go.GetComponent<Toggle>().isOn)
+            {
+                Spell spell = _dictionnarySpells[go.GetComponentInChildren<TMP_Text>().text];
+                stat.ListSpell.Add(Instantiate(spell));
+            }
+        }
+        
         GameManager.Instance.playerStat = stat;
+
+        if (_souvenirDropdown.value != 0)
+        {
+            EquipeSouvenir();
+        }
+
+
+        /* Changer la génération de la map*/
+        bool isEncounterChanged = false;
+        EncounterSetData debugEncounter = Instantiate(GameManager.Instance.EncounterSet);
+        if (_aleaDropdown.value != 0)
+        {
+            isEncounterChanged = true;
+            debugEncounter.EncounterClassAleaList.Clear();
+            debugEncounter.EncounterNeutralAleaList.Clear();
+            string aleaName = _aleaDropdown.options[_aleaDropdown.value].text;
+            var alea = _alea[aleaName];
+            debugEncounter.EncounterClassAleaList.Add(Instantiate(alea));
+            debugEncounter.EncounterNeutralAleaList.Add(Instantiate(alea));
+        }
+        if (_combatDropdown.value != 0)
+        {
+            isEncounterChanged = true;
+            debugEncounter.EncounterNeutralList.Clear();
+            debugEncounter.EncounterEliteList.Clear();
+            debugEncounter.EncounterBossList.Clear();
+            debugEncounter.EncounterClassList.Clear();
+            debugEncounter.EncounterClassEliteList.Clear();
+
+            string combatName = _combatDropdown.options[_combatDropdown.value].text;
+            var combat = _combat[combatName];
+
+            debugEncounter.EncounterNeutralList.Add(Instantiate(combat));
+            debugEncounter.EncounterEliteList.Add(Instantiate(combat));
+            debugEncounter.EncounterBossList.Add(Instantiate(combat));
+            debugEncounter.EncounterClassList.Add(Instantiate(combat));
+            debugEncounter.EncounterClassEliteList.Add(Instantiate(combat));
+
+        }
+
+        if (isEncounterChanged)
+        {
+            GameManager.Instance.ChangeEncounterSet(debugEncounter);
+            GameManager.Instance.GenerateNewMap();
+        }
+
+        gameObject.SetActive(false);
+        GameManager.Instance.IsPaused = false;
+        Destroy(gameObject);
     }
 }

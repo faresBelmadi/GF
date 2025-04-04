@@ -11,10 +11,13 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
-    //[Header("Debug")]
-    //[SerializeField]
-    //private bool _doTuto = true;
-
+    
+    [Header("Debug")]
+    [SerializeField]
+    private bool _debugMode = false;
+    [SerializeField]
+    private GameObject _debugModePrefab;
+    [Space]
     [SerializeField] private GameObject _crystal;
     [SerializeField] private Transform _parent;
 
@@ -30,6 +33,7 @@ public class GameManager : MonoBehaviour
     public UiMondeManager UiMondeMan;
     [SerializeField] private DialogueManager _dialogueManager;
     [SerializeField] private GamePanelManager _gamePanelManager;
+    [field: SerializeField] public Generator MapGenerator { get; private set; }
 
     [Header("Classes & Encounter")] public List<ClassPlayer> AllClasses;
 
@@ -136,6 +140,11 @@ public class GameManager : MonoBehaviour
         */
         if (AudioManager.instance != null)
             AudioManager.instance.PlayMusic(MusicType.CombatMusic);
+
+        if (_debugMode)
+        {
+            Instantiate(_debugModePrefab);
+        }
     }
 
     public void EndTuto()
@@ -149,6 +158,10 @@ public class GameManager : MonoBehaviour
         ShowMap();
     }
 
+    public void GenerateNewMap()
+    {
+        MapGenerator.GenerateNewMap();
+    }
     private void LoadSave()
     {
 
@@ -350,6 +363,10 @@ public class GameManager : MonoBehaviour
             loadedData.CurrentRun.player.BoughtSpellID.Add(item.IDSpell);
         }
 
+    }
+    public void ChangeEncounterSet(EncounterSetData encounterSet)
+    {
+        EncounterSet = encounterSet;
     }
 
     public void SetRoom(Room set)
