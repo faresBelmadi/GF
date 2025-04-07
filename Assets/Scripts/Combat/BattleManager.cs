@@ -478,6 +478,9 @@ public class BattleManager : MonoBehaviour
         {
             PassifManager.CurrentEvent = TimerPassif.FinCombat;
             PassifManager.ResolvePassifs();
+
+
+
         }
 
         Loot();
@@ -1031,12 +1034,28 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         ListEssence.Clear();
+       
         var temp = Instantiate(GetPrefabEssence(amount), spawnPos[3]); //we put it in the closest position of the player
         //temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
-        temp.GetComponent<CrystalSoul>().AddAmountOfEssence(amount, true);
         //temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
+        temp.GetComponent<CrystalSoul>().AddAmountOfEssence(amount, true);
 
         ListEssence.Add(temp);
+        foreach (var passif in player.Stat.ListTESTPassif)
+        {
+            if (passif is ILootEssencePassive)
+            {
+                ILootEssencePassive lootPassif  = passif as ILootEssencePassive;
+                lootPassif.Apply(player.Stat);
+                if (lootPassif.Value != 0)
+                {
+                    amount += lootPassif.Value;
+                    temp.GetComponent<CrystalSoul>().AddAmountOfEssence(amount, true);
+                }
+                
+            }
+        }
+        amount = temp.GetComponent<CrystalSoul>().Amount;
         buttonEndCombat.SetActive(true);
         buttonEndCombat.GetComponentInChildren<TMP_Text>().text =
             $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount})";

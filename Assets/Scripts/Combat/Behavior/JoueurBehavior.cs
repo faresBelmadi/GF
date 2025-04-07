@@ -6,8 +6,17 @@ using UnityEngine.UI;
 
 public class JoueurBehavior : CombatBehavior<JoueurStat>
 {
-    
-
+    public override JoueurStat Stat {
+        set
+        {
+            _stat = value;
+            foreach (var item in _stat.ListTESTPassif)
+            {
+                if (item is StatPerConsciencePassive)
+                    ((StatPerConsciencePassive) item).InitPassif(_stat);
+            }
+        }
+    }
     [SerializeField] private List<GameObject> Spells;
     [SerializeField] private Transform DamageSpawn;
     [SerializeField] private GameObject DamagePrefab;
@@ -71,8 +80,22 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         
         GetComponent<Animator>().Rebind();
     }
-    
-  
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            var modif = ScriptableObject.CreateInstance<JoueurStat>();
+            modif.Conscience = 1;
+            Stat.ModifStateAll(modif);
+        }
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            var modif = ScriptableObject.CreateInstance<JoueurStat>();
+            modif.Conscience = -1;
+            Stat.ModifStateAll(modif);
+        }
+    }
+
     public void StartUp()
     {
 
@@ -850,5 +873,16 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         _isHurt = false;
         AnimationController.EndAnimAttack();
     }
+
+    #region Passif
+    protected virtual void ResolvePassif()
+    {
+
+    }
+    protected virtual void UpdateStat()
+    {
+
+    }
+    #endregion
 
 }

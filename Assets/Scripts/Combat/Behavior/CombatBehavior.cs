@@ -7,7 +7,13 @@ using UnityEngine.UI;
 
 public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 {
-    [SerializeField] public T Stat;
+    [SerializeField]
+    protected T _stat;
+    public virtual T Stat 
+    {
+        get => _stat;
+        set { _stat = value; }
+    }
     public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
     public GameObject BuffPrefab;
     public Transform BuffContainer;
@@ -30,6 +36,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     private void Start()
     {
+
         _startingPos = transform.parent.position;
     }
     public void ClearBuffBar()

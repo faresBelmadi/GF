@@ -113,21 +113,21 @@ public class PassifManager
                 {
                     switch (item.passif)
                     {
-                        case TypePassif.PassifGuerrier1:
-                            // vous avez 1 points de résilience par point de conscience que vous possédez
-                            var resilienceBonus = (behavior.Stat.Conscience / _rules.nbPtsConscience) * _rules.nbPtsResilience;
-                            behavior.Stat.ResiliencePassif = Mathf.FloorToInt(resilienceBonus);
-                            break;
-                        case TypePassif.PassifGuerrier2:
+                        //case TypePassif.PassifGuerrier1:
+                        //    // vous avez 1 points de résilience par point de conscience que vous possédez
+                        //    var resilienceBonus = (behavior.Stat.Conscience / _rules.nbPtsConscience) * _rules.nbPtsResilience;
+                        //    behavior.Stat.ResiliencePassif = Mathf.FloorToInt(resilienceBonus);
+                        //    break;
+                        //case TypePassif.PassifGuerrier2:
                             //Lorsque vous terminez un affrontement sans avoir consommé d'Essences, vous récupérez 1 point de Conscience et le total d'Essences obtenu est augmenté de 10%.        
-                            if (!_refBattleManager.ConsumedEssence)
-                            {
-                                var essenceAmount = _refBattleManager.ListEssence.First().GetComponent<CrystalSoul>().Amount;
-                                essenceAmount += (int)Math.Round((double)(_rules.PercentEssenceBonus * 100f) / essenceAmount);
-                                _refBattleManager.ListEssence.First().GetComponent<CrystalSoul>().Amount = essenceAmount;
-                                behavior.Stat.Conscience += Mathf.RoundToInt(_rules.nbPtsConscienceEarned);
-                            }
-                            break;
+                            //if (!_refBattleManager.ConsumedEssence)
+                            //{
+                            //    var essenceAmount = _refBattleManager.ListEssence.First().GetComponent<CrystalSoul>().Amount;
+                            //    essenceAmount += (int)Math.Round((double)(_rules.PercentEssenceBonus * 100f) / essenceAmount);
+                            //    _refBattleManager.ListEssence.First().GetComponent<CrystalSoul>().Amount = essenceAmount;
+                            //    behavior.Stat.Conscience += Mathf.RoundToInt(_rules.nbPtsConscienceEarned);
+                            //}
+                            //break;
                     }
                 }
             }
