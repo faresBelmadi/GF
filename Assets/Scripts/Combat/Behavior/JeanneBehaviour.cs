@@ -1,11 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class JeanneBehaviour : BossBehaviour
 {
+    public override void OnDestroy()
+    {
+        Stat.OnCustomStatModification -= UpdateDivin;
+        base.OnDestroy();
+    }
     public override void ChooseNextAction()
     {
         bool colere = false;
@@ -67,5 +74,25 @@ public class JeanneBehaviour : BossBehaviour
 
         NextActionType();
         UpdateIntention();
+    }
+    public override void SetUp()
+    {
+        base.SetUp();
+
+        Stat.OnCustomStatModification += UpdateDivin;
+    }
+    private void UpdateDivin()
+    {
+        if (GameManager.Instance.BattleMan.IsCombatOn)
+        {
+            if (!Stat.ListBuffDebuff.Any(x => x.Nom == TradManager.instance.GetTranslation(GameManager.Instance.passifRules.CurrentDivin.idTradName)))
+            {
+                // _rules.CurrentDivin.Description = behavior.Stat.Divin.ToString();
+                AddBuffDebuff(GameManager.Instance.passifRules.CurrentDivin, Stat);
+            }
+
+            var currentDivin = ListBuffDebuffGO.FirstOrDefault(x => x.GetComponent<BuffDebuffComponant>().buffName == TradManager.instance.GetTranslation(GameManager.Instance.passifRules.CurrentDivin.idTradName));
+            currentDivin.GetComponent<BuffDebuffComponant>().popUpPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text += "(Divin : " + Stat.Divin + ")";
+        }
     }
 }

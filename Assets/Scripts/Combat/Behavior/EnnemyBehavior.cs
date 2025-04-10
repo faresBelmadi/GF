@@ -7,6 +7,18 @@ using UnityEngine;
 public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 {
 
+    public override EnnemiStat Stat
+    {
+        set
+        {
+            _stat = value;
+            foreach (var item in _stat.ListTESTPassif)
+            {
+                if (item is IUpdateStatPassive)
+                    ((IUpdateStatPassive)item).InitPassif(_stat);
+            }
+        }
+    }
     public UIEnnemi UICombat;
     public int TensionUI;
     public Material characterMaterial;
@@ -34,6 +46,14 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     public bool IsDead { get; private set; } = false;
 
+    public virtual void OnDestroy()
+    {
+        foreach (var item in _stat.ListTESTPassif)
+        {
+            if (item is IUpdateStatPassive)
+                ((IUpdateStatPassive)item).Clear();
+        }
+    }
     #region Divers start & fin
 
     IEnumerator DeathCoroutine()
@@ -53,7 +73,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         deathRoutine = null;
     }
 
-    public void SetUp()
+    public virtual void SetUp()
     {
         if (GameManager.Instance == null)
             _refBattleMan = TutoManager.Instance.BattleManager;
@@ -69,7 +89,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         //assignation des container dans le parent
         base.BuffContainer = UICombat.buffParents;
         base.DebuffContainer = UICombat.debuffParents;
-
+        Stat.Radiance = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.DissimulationOriginal = Stat.Dissimulation;
         Stat.ResilienceOriginal = Stat.Resilience;
@@ -104,6 +124,15 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         {
             _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
             _refBattleMan.PassifManager.ResolvePassifs();
+        }
+
+        foreach (var passif in Stat.ListTESTPassif)
+        {
+            if (passif is IStartTurnPassive)
+            {
+                IStartTurnPassive startTurnpassif = passif as IStartTurnPassive;
+                startTurnpassif.Apply(Stat);
+            }
         }
 
         DecompteDebuffEnnemi(Decompte.tour, TimerApplication.DebutTour);
@@ -204,7 +233,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         UpdateUI();
     }
 
-    private void UpdateUI()
+    protected virtual void UpdateUI()
     {
         if (Stat == null)
             return;

@@ -33,32 +33,32 @@ public class PassifManager
                 {
                     switch (item.passif)
                     {
-                        case TypePassif.PassifJeanneFinAction:
-                            UpdateJeanneStat(behavior);
-                            UpdateDivinInfoDisplay(behavior);
-                            break;
-                        case TypePassif.PassifJeanneDebutTour:
-                            int rand;
+                        //case TypePassif.PassifJeanneFinAction:
+                        //    UpdateJeanneStat(behavior);
+                        //    UpdateDivinInfoDisplay(behavior);
+                        //    break;
+                        //case TypePassif.PassifJeanneDebutTour:
+                        //    int rand;
 
-                            if (behavior.nextAction.Name.Contains("UltimeJeanne"))
-                                rand = Random.Range(1,4);
-                            else
-                                rand = Random.Range(0, 4);
-                            if (rand == 0)
-                            {
-                                behavior.Stat.Tension += behavior.Stat.Divin;
-                                behavior.Stat.Divin = 0;
-                            }
-                            else
-                            {
-                                behavior.Stat.Divin += rand * 10;
-                            }
+                        //    if (behavior.nextAction.Name.Contains("UltimeJeanne"))
+                        //        rand = Random.Range(1,4);
+                        //    else
+                        //        rand = Random.Range(0, 4);
+                        //    if (rand == 0)
+                        //    {
+                        //        behavior.Stat.Tension += behavior.Stat.Divin;
+                        //        behavior.Stat.Divin = 0;
+                        //    }
+                        //    else
+                        //    {
+                        //        behavior.Stat.Divin += rand * 10;
+                        //    }
 
-                            StartTurnDivin = -1000;
-                            UpdateJeanneStat(behavior);
-                            StartTurnDivin = behavior.Stat.Divin;
-                            UpdateDivinInfoDisplay(behavior);
-                            break;
+                        //    StartTurnDivin = -1000;
+                        //    UpdateJeanneStat(behavior);
+                        //    StartTurnDivin = behavior.Stat.Divin;
+                        //    UpdateDivinInfoDisplay(behavior);
+                        //    break;
                         //case TypePassif.PassifCameleon:
                         //    break;
                         case TypePassif.PassifChefCultiste:
@@ -70,34 +70,34 @@ public class PassifManager
                         case TypePassif.PassifClou:
                             break;
                         case TypePassif.PassifPapa:
-                            foreach (var joueurBehavior in _currentBattleJoueur)
-                            {
-                                if (joueurBehavior.Stat.Radiance > behavior.Stat.Radiance)
-                                {
-                                    behavior.Stat.ForceAmeBonus = Mathf.FloorToInt(((_rules.nbPercentBuffForceAmePapa / 100f) * behavior.Stat._forceAme));
-                                }
-                                else if (joueurBehavior.Stat.Radiance < behavior.Stat.Radiance)
-                                {
-                                    behavior.Stat.ForceAmeBonus = Mathf.FloorToInt(((_rules.nbPercentDebuffForceAmePapa / 100f) * behavior.Stat._forceAme));
-                                }
-                            }
+                            //foreach (var joueurBehavior in _currentBattleJoueur)
+                            //{
+                            //    if (joueurBehavior.Stat.Radiance > behavior.Stat.Radiance)
+                            //    {
+                            //        behavior.Stat.ForceAmeBonus = Mathf.FloorToInt(((_rules.nbPercentBuffForceAmePapa / 100f) * behavior.Stat._forceAme));
+                            //    }
+                            //    else if (joueurBehavior.Stat.Radiance < behavior.Stat.Radiance)
+                            //    {
+                            //        behavior.Stat.ForceAmeBonus = Mathf.FloorToInt(((_rules.nbPercentDebuffForceAmePapa / 100f) * behavior.Stat._forceAme));
+                            //    }
+                            //}
                             break;
                         case TypePassif.PassifPapy:
-                            foreach (var joueurBehavior in _currentBattleJoueur)
-                            {
-                                if (joueurBehavior.ListBuffDebuffGO.Count >= _rules.nbBuffTriggerPapy)
-                                {
-                                    behavior.Stat.Tension += behavior.Stat.ValeurPalier;
-                                    List<BuffDebuff> tempPapyDebuffs = new List<BuffDebuff>
-                                    {
-                                        _rules.DebuffClairvoyancePapy,
-                                        _rules.DebuffFaPapy,
-                                        _rules.DebuffVitessePapy
-                                    };
-                                    var randomInt = UnityEngine.Random.Range(0, tempPapyDebuffs.Count);
-                                    joueurBehavior.AddDebuff(tempPapyDebuffs[randomInt], tempPapyDebuffs[randomInt].Decompte, tempPapyDebuffs[randomInt].timerApplication);
-                                }
-                            }
+                            //foreach (var joueurBehavior in _currentBattleJoueur)
+                            //{
+                            //    if (joueurBehavior.ListBuffDebuffGO.Count >= _rules.nbBuffTriggerPapy)
+                            //    {
+                            //        behavior.Stat.Tension += behavior.Stat.ValeurPalier;
+                            //        List<BuffDebuff> tempPapyDebuffs = new List<BuffDebuff>
+                            //        {
+                            //            _rules.DebuffClairvoyancePapy,
+                            //            _rules.DebuffFaPapy,
+                            //            _rules.DebuffVitessePapy
+                            //        };
+                            //        var randomInt = UnityEngine.Random.Range(0, tempPapyDebuffs.Count);
+                            //        joueurBehavior.AddDebuff(tempPapyDebuffs[randomInt], tempPapyDebuffs[randomInt].Decompte, tempPapyDebuffs[randomInt].timerApplication);
+                            //    }
+                            //}
                             break;
                     }
                 }

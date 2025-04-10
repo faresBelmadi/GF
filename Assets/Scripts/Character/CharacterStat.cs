@@ -5,7 +5,23 @@ using UnityEngine;
 [System.Serializable]
 public class CharacterStat : ScriptableObject
 {
-    public int Radiance;
+    public event Action OnRadianceChange;
+  
+    private int _radiance;
+
+    public int Radiance
+    {
+        get => _radiance;
+        set
+        {
+            if (_radiance != value)
+            {
+                _radiance = value;
+                OnRadianceChange?.Invoke();
+            }
+        }
+    }
+
     public int RadianceMax;
     public int RadianceMaxOriginal;
 

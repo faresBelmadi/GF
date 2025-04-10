@@ -1,0 +1,81 @@
+using JetBrains.Annotations;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+
+public enum  CustomStatPalierAction
+{
+    GainStat,
+    ResetAndRefreshTension
+}
+
+[Serializable]
+public struct PalierAction
+{
+    public CustomStatPalierAction CustomAction;
+    public int Value;
+}
+
+
+
+[CreateAssetMenu(fileName = "New Custom Stat Passiv", menuName = "PassiveEffect/New Custom Stat¨Passiv")]
+public class CustomStatPassiv : ScriptableObject, IUpdateStatPassive, IStartTurnPassive
+{
+    [SerializeField]
+    private List<PalierAction> _palierActions;
+    [Tooltip("Chaque point de la custom stat donnera autant de points de stat que le ratio indique")]
+    [SerializeField]
+    private List<StatToModif> _conversionStat;
+    private EnnemiStat _ennemiStat;
+    public void Apply(CharacterStat charStat)
+    {
+        int indPalier = UnityEngine.Random.Range(0, _palierActions.Count);
+
+        switch (_palierActions[indPalier].CustomAction)
+        {
+            case CustomStatPalierAction.GainStat:
+                Debug.Log("Gain Stat : " + _palierActions[indPalier].Value);
+                ((EnnemiStat)charStat).Divin += _palierActions[indPalier].Value;
+                break;
+            case CustomStatPalierAction.ResetAndRefreshTension:
+                Debug.Log("Reset");
+                charStat.Tension += Mathf.RoundToInt(((EnnemiStat)charStat).Divin * _palierActions[indPalier].Value);
+                ((EnnemiStat)charStat).Divin = 0;
+                break;
+        }
+    }
+
+    public void InitPassif(CharacterStat stat)
+    {
+        _ennemiStat = stat as EnnemiStat;
+        _ennemiStat.OnCustomStatModification += UpdateStat;
+        
+    }
+    public void Clear()
+    {
+        _ennemiStat.OnCustomStatModification -= UpdateStat;
+    }
+
+    public void UpdateStat()
+    {
+        foreach (var item in _conversionStat)
+        {
+            switch (item.Stat)
+            {
+                case StatModif.RadianceMax:
+                    var pourcentagePVActuel = (float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMax * 100f;
+                    _ennemiStat.RadianceMax = _ennemiStat.RadianceMaxOriginal;
+                    _ennemiStat.RadianceMax += _ennemiStat.Divin * 10;
+                    _ennemiStat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * _ennemiStat.RadianceMax);
+                    break;
+                case StatModif.ForceAme:
+                    _ennemiStat.ForceAme = _ennemiStat.ForceAmeOriginal;
+                    _ennemiStat.ForceAme += _ennemiStat.Divin * 1;
+                    break;
+               
+            }
+        }
+    }
+}

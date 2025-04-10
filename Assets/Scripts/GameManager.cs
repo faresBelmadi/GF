@@ -245,7 +245,8 @@ public class GameManager : MonoBehaviour
 
         data.CurrentRun.player = new PlayerData()
         {
-            Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
+            //Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
+            Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.RadianceMax, // On set les pv sur radiance max
             RadianceMax = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.RadianceMax,
             Conscience = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Conscience,
             ForceAme = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ForceAme,
