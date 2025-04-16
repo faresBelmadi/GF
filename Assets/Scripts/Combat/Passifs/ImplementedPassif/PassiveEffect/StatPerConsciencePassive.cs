@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public struct StatToModif
+public class StatToModif
 {
-    public StatModif Stat;
+    public BaseStats Stat;
     public int Ratio;
 }
 [CreateAssetMenu(fileName = "New Stat By Stat effect", menuName = "PassiveEffect/New Effect Stat By Stat")]
@@ -51,13 +51,13 @@ public class StatPerConsciencePassive : ScriptableObject, IPassiveEffect
         {
             switch (item.Stat)
             {
-                case StatModif.Resilience:
+                case BaseStats.Resilience:
                     _joueurStat.ResiliencePassif = mainStat * item.Ratio * modificator;
                     break;
-                case StatModif.Clairvoyance:
+                case BaseStats.Clairvoyance:
                     modifStat.Clairvoyance += mainStat * item.Ratio * modificator;
                     break;
-                case StatModif.Conviction:
+                case BaseStats.Conviction:
                     modifStat.Conviction += mainStat * item.Ratio * modificator;
                     break;
             }

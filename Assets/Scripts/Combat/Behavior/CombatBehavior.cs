@@ -35,6 +35,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     #region Events
     public event Action OnGainTensionLevel;
+    public event Action OnTakeDamage;
     #endregion
 
     public virtual string Name { get => name; }

@@ -64,13 +64,13 @@ public class CustomStatPassiv : ScriptableObject, IUpdateStatPassive, IStartTurn
         {
             switch (item.Stat)
             {
-                case StatModif.RadianceMax:
+                case BaseStats.RadianceMax:
                     var pourcentagePVActuel = (float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMax * 100f;
                     _ennemiStat.RadianceMax = _ennemiStat.RadianceMaxOriginal;
                     _ennemiStat.RadianceMax += _ennemiStat.Divin * 10;
                     _ennemiStat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * _ennemiStat.RadianceMax);
                     break;
-                case StatModif.ForceAme:
+                case BaseStats.ForceAme:
                     _ennemiStat.ForceAme = _ennemiStat.ForceAmeOriginal;
                     _ennemiStat.ForceAme += _ennemiStat.Divin * 1;
                     break;

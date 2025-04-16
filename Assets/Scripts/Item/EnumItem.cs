@@ -34,6 +34,7 @@ public enum BaseStats
 {
     None,
     Radiance,
+    RadianceMax,
     ForceAme,
     Vitesse,
     Conviction,
