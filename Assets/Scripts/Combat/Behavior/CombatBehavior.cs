@@ -4,6 +4,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 {
@@ -31,6 +32,10 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     public bool gainedTension;
 
     private Vector3 _startingPos;
+
+    #region Events
+    public event Action OnGainTensionLevel;
+    #endregion
 
     public virtual string Name { get => name; }
 
@@ -206,7 +211,71 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     {
         OnUpdateUI?.Invoke();
     }
-    
+
+    //TODO: a voir mieux
+    public void RemoveBuffByIdTradName(string idTradName)
+    {
+        var ListBuff = Stat.ListBuffDebuff.FindAll(x => x.idTradName.Equals(idTradName));
+        foreach(var buff in ListBuff)
+        {
+            
+            foreach (var effet in buff.Effet)
+            {
+                if (effet.TypeEffet != TypeEffet.RadianceMax)
+                    Stat.removeStat(effet.modifstateOutput);
+                else
+                {
+                    effet.modifstateOutput.Radiance =
+                        Mathf.FloorToInt((effet.Pourcentage / 100f) * Stat.Radiance);
+                    Stat.removeStat(effet.modifstateOutput);
+                }
+            }
+            string buffDebuffName;
+            if (buff.idTradName != null)
+            {
+                buffDebuffName = TradManager.instance.GetTranslation(buff.idTradName, buff.name);
+            }
+            else
+            {
+                buffDebuffName = buff.name;
+            }
+
+            GameObject buffObject = null;
+            foreach (GameObject presentBuffObject in ListBuffDebuffGO)
+            {
+                if (presentBuffObject.GetComponent<BuffDebuffComponant>().buffName == GetBuffNameAndDescription(buff)[0])
+                {
+                    buffObject = presentBuffObject;
+                    break;
+                }
+            }
+            if (buffObject)
+            {
+                BuffDebuffComponant buffComponant = buffObject.GetComponent<BuffDebuffComponant>();
+                //VERY DIRTY
+                int buffCnt = int.Parse(buffComponant.buffCntLabel.text);
+                buffCnt--;
+                buffComponant.RemoveNullStack();
+                if (buffCnt > 0)
+                {
+                    buffComponant.buffCntLabel.text = buffCnt.ToString();
+                    buffComponant.buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
+                }
+                else
+                {
+                    AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffDisapearSFX);
+                    ListBuffDebuffGO.Remove(buffObject);
+                    Destroy(buffObject);
+                }
+            }
+            else
+            {
+                Debug.Log("ERROR: Buff Not Found");
+            }
+            Stat.ListBuffDebuff.Remove(buff);
+
+        }
+    }
     public List<BuffDebuff> UpdateBuffDebuffGameObject(List<BuffDebuff> ListBuffDebuff, CharacterStat toChange)
     {
         foreach (var item in ListBuffDebuff)
@@ -345,7 +414,10 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         }
 
         if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
+        {
             Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
+            OnGainTensionLevel?.Invoke();
+        }
         if (Stat.Tension < 0)
             Stat.Tension = 0;
     }

@@ -468,6 +468,22 @@ public class BattleManager : MonoBehaviour
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
+
+        //Launch Passive effect for players
+        foreach (var item in player.Stat.ListTESTPassif)
+        {
+            if (item is IStartCombatPassive passive)
+                passive.ApplyEffectOnStartCombat();
+        }
+        //Launch passive effect for ennemies
+        for (int i=0;i<EnemyScripts.Count;i++)
+        {
+            foreach (var item in EnemyScripts[i].Stat.ListTESTPassif)
+            {
+                if (item is IStartCombatPassive passive)
+                    passive.ApplyEffectOnStartCombat();
+            }
+        }
         StartPhase();
     }
 
@@ -695,7 +711,7 @@ public class BattleManager : MonoBehaviour
 
         GiveBuffDebuff(afterEffect, idTarget);
     }
-
+ 
     public void GiveBuffDebuff(List<BuffDebuff> BuffDebuff, int target = -1)
     {
         int origine = currentIdTurn;

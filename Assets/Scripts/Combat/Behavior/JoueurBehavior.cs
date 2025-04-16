@@ -12,8 +12,8 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             _stat = value;
             foreach (var item in _stat.ListTESTPassif)
             {
-                if (item is StatPerConsciencePassive)
-                    ((StatPerConsciencePassive) item).InitPassif(_stat);
+                if (item is StatPerConsciencePassive passive)
+                    passive.InitPassif(_stat);
             }
         }
     }

@@ -32,6 +32,7 @@ public enum StatModif
 }
 public enum BaseStats
 {
+    None,
     Radiance,
     ForceAme,
     Vitesse,
@@ -41,6 +42,7 @@ public enum BaseStats
     Volonte,
     Conscience,
     Clairvoyance,
+    PalierTension,
     NombreBuff,
     NombreDebuff
 }

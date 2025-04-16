@@ -14,8 +14,8 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             _stat = value;
             foreach (var item in _stat.ListTESTPassif)
             {
-                if (item is IUpdateStatPassive)
-                    ((IUpdateStatPassive)item).InitPassif(_stat);
+                if (item is IUpdateStatPassive passive)
+                    passive.InitPassif(_stat);
             }
         }
     }
