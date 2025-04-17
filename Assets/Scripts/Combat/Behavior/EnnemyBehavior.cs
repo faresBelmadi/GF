@@ -185,6 +185,12 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             _refBattleMan.PassifManager.ResolvePassifs();
         }
 
+        foreach (var item in _stat.ListTESTPassif)
+        {
+            if (item is IDeathEffectPassive passive)
+                passive.Apply(_stat);
+        }
+
         /*
         foreach (var item in Stat.ListBuffDebuff)
         {
