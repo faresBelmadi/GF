@@ -32,7 +32,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     public bool gainedTension;
 
     private Vector3 _startingPos;
-
+    [field: SerializeField] public bool IsIntangible { get; protected set; } = false;
     #region Events
     public event Action OnGainTensionLevel;
     public event Action OnTakeDamage;
@@ -438,6 +438,14 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         Stat.Resilience = Stat.ResilienceOriginal;
         Stat.ForceAme = Stat.ForceAmeOriginal;
         Stat.Conviction = Stat.ConvictionOriginal;
+    }
+    public void MakeIntangible()
+    {
+        IsIntangible = true;
+    }
+    public void MakeTangible()
+    {
+        IsIntangible = false;
     }
 
 }

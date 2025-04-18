@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IDeathEffectPassive : IEffect
+public interface IDecoyPassive : IEffect
 {
-    void OnDeathAction();
 }

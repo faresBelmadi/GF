@@ -11,6 +11,11 @@ public class OnDeathEffectOnEnnemyPassif : AbstractPassive, IDeathEffectPassive
 
     public void Apply(CharacterStat charStat)
     {
+        //...
+    }
+
+    public void OnDeathAction()
+    {
         EnnemyBehavior dependencyBehavior = null;
         foreach (var enemy in GameManager.Instance.BattleMan.EnemyScripts)
         {
@@ -22,13 +27,11 @@ public class OnDeathEffectOnEnnemyPassif : AbstractPassive, IDeathEffectPassive
 
         if (dependencyBehavior == null) return;
 
-        switch(_statToModif.Stat)
+        switch (_statToModif.Stat)
         {
             case BaseStats.PalierTension:
                 dependencyBehavior.Stat.Tension += dependencyBehavior.Stat.ValeurPalier * _statToModif.Ratio;
                 break;
         }
     }
-
-   
 }

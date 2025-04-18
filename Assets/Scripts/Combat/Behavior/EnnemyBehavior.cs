@@ -38,7 +38,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     private int currentTension = 0;
     private Coroutine deathRoutine = null;
     private ClairvoyanceIconData clairvoyanceIconData;
-
+   
     public override string Name
     {
         get { return TradManager.instance.GetTranslation(Stat.IdTradName, Stat.Nom); }
@@ -188,7 +188,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         foreach (var item in _stat.ListTESTPassif)
         {
             if (item is IDeathEffectPassive passive)
-                passive.Apply(_stat);
+                passive.OnDeathAction();
         }
 
         /*

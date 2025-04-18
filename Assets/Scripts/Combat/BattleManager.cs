@@ -423,10 +423,10 @@ public class BattleManager : MonoBehaviour
         }
 
         var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
-        GameManager.Instance.DialManager.AddSpeakers(ennemyId, tempCombatScript);
         //instantiate tout les so modifiable
         if (tempCombatScript != null)
         {
+            GameManager.Instance.DialManager.AddSpeakers(ennemyId, tempCombatScript);
             tempCombatScript.Stat = Instantiate(EnnemyStats);
             tempCombatScript.SetUp();
             tempCombatScript.EndTurnBM = EndTurn;
@@ -482,6 +482,8 @@ public class BattleManager : MonoBehaviour
             {
                 if (item is IStartCombatPassive passive)
                     passive.ApplyEffectOnStartCombat();
+                if (item is IDecoyPassive)
+                    EnemyScripts[i].MakeTangible(); //On rend le decoy tangible
             }
         }
         StartPhase();
@@ -804,12 +806,38 @@ public class BattleManager : MonoBehaviour
 
     public void PassageEffet(Effet effet, int Caster, int target = -1, SourceEffet source = SourceEffet.Spell)
     {
+        bool isDecoy = false;
+        EnnemyBehavior decoy = null;
+        foreach (var ennemy in EnemyScripts)
+        {
+            foreach (var item in ennemy.Stat.ListTESTPassif)
+            {
+                if (item is IDecoyPassive passive)
+                {
+                    isDecoy = true;
+                    decoy = ennemy;
+                }
+            }
+        }
         switch (effet.Cible)
         {
             case Cible.joueur:
                 if (Caster == idPlayer)
                 {
                     player.ApplicationEffet(effet, null, source);
+                }
+                else if (isDecoy)
+                {
+                    if (EnemyScripts.FirstOrDefault(c => c.combatID == Caster) == null)
+                    {
+                        decoy.ApplicationEffet(effet, null, source,
+                            Caster);
+                    }
+                    else
+                    {
+                        decoy.ApplicationEffet(effet, null, source,
+                            Caster);
+                    }
                 }
                 else
                 {
@@ -1209,7 +1237,7 @@ public class BattleManager : MonoBehaviour
 
         foreach (var item in EnemyScripts)
         {
-            item.EndTargetingMode();
+             item.EndTargetingMode();
         }
 
         player.SendSpell(true, IdSpell);

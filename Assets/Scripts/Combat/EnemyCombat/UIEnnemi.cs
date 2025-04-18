@@ -51,6 +51,11 @@ public class UIEnnemi : MonoBehaviour
 
     private void OnMouseEnter()
     {
+        //ici pour arreter le ciblage
+        if (gameObject.GetComponent<EnnemyBehavior>().IsIntangible)
+        {
+            return;
+        }
         if (TargetingMode)
         {
             Ciblage.SetActive(true);
@@ -62,6 +67,10 @@ public class UIEnnemi : MonoBehaviour
 
     private void OnMouseExit()
     {
+        if (gameObject.GetComponent<EnnemyBehavior>().IsIntangible)
+        {
+            return;
+        }
         if (TargetingMode)
         {
             Ciblage.SetActive(false);
@@ -102,6 +111,10 @@ public class UIEnnemi : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (gameObject.GetComponent<EnnemyBehavior>().IsIntangible)
+        {
+            return;
+        }
         if (TargetingMode)
         {
             RaiseEvent();
