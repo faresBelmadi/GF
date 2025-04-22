@@ -910,6 +910,11 @@ public class BattleManager : MonoBehaviour
 
                 break;
             case Cible.allEnnemi:
+                if (isDecoy)
+                {
+                    decoy.ApplicationEffet(effet, null, source, Caster);
+                    break;
+                }
                 var nbEnemies = EnemyScripts.Count;
                 for (int x = EnemyScripts.Count - 1; x >= 0; x--)
                 {
