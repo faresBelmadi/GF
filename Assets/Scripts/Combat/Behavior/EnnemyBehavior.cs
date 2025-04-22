@@ -103,6 +103,11 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             Stat.Buff = Instantiate(Stat.Buff);
         if (Stat.Debuff != null)
             Stat.Debuff = Instantiate(Stat.Debuff);
+        EnemyPassiveDescription passDesc = GetComponentInChildren<EnemyPassiveDescription>(true);
+        if (passDesc != null && _stat.ListTESTPassif.Count > 0)
+        {
+            passDesc.InitTooltip(_stat.ListTESTPassif[0].IdTradDesc, _stat.ListTESTPassif[0].DefaultDescription);
+        }
     }
 
     public override void ResetStat()

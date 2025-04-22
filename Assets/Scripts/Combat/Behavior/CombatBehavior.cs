@@ -23,6 +23,8 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     private Color _debuffTextColor = Color.red;
     [SerializeField]
     private Color _buffTextColor = Color.green;
+    [SerializeField]
+    protected List<TextComponent> _passiveTooltips;
 
     public Action EndTurnBM;
     public static Action OnUpdateUI;
@@ -44,6 +46,12 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     {
 
         _startingPos = transform.parent.position;
+
+        for (int i = 0; i < _passiveTooltips.Count && i < Stat.ListTESTPassif.Count; i++)
+        {
+            _passiveTooltips[i].InitTextComponent(Stat.ListTESTPassif[i].IdTradDesc, Stat.ListTESTPassif[i].DefaultDescription);
+        }
+
     }
     public void ClearBuffBar()
     {

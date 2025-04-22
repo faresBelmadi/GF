@@ -175,6 +175,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         hPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
         tensionBarManager.InitPBar(0, Stat.NbPalier);
         conscienceBarManager.InitPBar(Stat.Conscience, Stat.ConscienceMax);
+        for (int i = 0; i < _passiveTooltips.Count && i < Stat.ListTESTPassif.Count; i++)
+        {
+            _passiveTooltips[i].InitTextComponent(Stat.ListTESTPassif[i].IdTradDesc, Stat.ListTESTPassif[i].DefaultDescription);
+        }
     }
 
     public void UpdateUI()
