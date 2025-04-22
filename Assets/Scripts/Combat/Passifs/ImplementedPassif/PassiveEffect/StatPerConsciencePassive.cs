@@ -9,9 +9,10 @@ public class StatToModif
     public int Ratio;
 }
 [CreateAssetMenu(fileName = "New Stat By Stat effect", menuName = "PassiveEffect/New Effect Stat By Stat")]
-public class StatPerConsciencePassive : ScriptableObject, IPassiveEffect
+public class StatPerConsciencePassive : AbstractPassive, IPassiveEffect
 {
-
+    [Space]
+    [Header("StatPerConsciencePassive")]
     [SerializeField]
     private StatModif _mainStat;
     [SerializeField]

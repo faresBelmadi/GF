@@ -3,7 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New OnDeathEffectOnEnnemyPassif passiv", menuName = "PassiveEffect/New OnDeathEffectOnEnnemyPassif passiv")]
 public class OnDeathEffectOnEnnemyPassif : AbstractPassive, IDeathEffectPassive
 {
-   
+    [Space]
+    [Header("OnDeathEffectOnEnnemyPassif")]
     [SerializeField]
     private EnnemiStat _dependency;
     [SerializeField]

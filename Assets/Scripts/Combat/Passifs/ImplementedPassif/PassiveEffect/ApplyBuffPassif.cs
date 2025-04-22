@@ -5,8 +5,10 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New ApplyBuff passiv", menuName = "PassiveEffect/New ApplyBuff passiv")]
-public class ApplyBuffPassif : ScriptableObject, IStartTurnPassive, IUpdateBehaviorPassive
+public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateBehaviorPassive
 {
+    [Space]
+    [Header("ApplyBuffPassif")]
     [SerializeField]
     private BaseStats _triggerStat;
     [SerializeField]

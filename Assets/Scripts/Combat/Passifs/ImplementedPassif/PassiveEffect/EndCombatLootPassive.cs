@@ -22,9 +22,10 @@ public struct EndReward
     public int value;
 }
 [CreateAssetMenu(fileName = "New Loot Passiv", menuName = "PassiveEffect/New Loot Passive")]
-public class EndCombatLootPassive : ScriptableObject, ILootEssencePassive
+public class EndCombatLootPassive : AbstractPassive, ILootEssencePassive
 {
-
+    [Space]
+    [Header("EndCombatLootPassive")]
     [SerializeField]
     private List<EndReward> _endRewardList;
     public int Value { get; private set; }

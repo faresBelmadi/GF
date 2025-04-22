@@ -16,8 +16,10 @@ public class BuffByRangeStat
     public BuffDebuff BuffToApply;
 }
 [CreateAssetMenu(fileName = "New ApplyBuffOnStatRange passiv", menuName = "PassiveEffect/New ApplyBuffOnStatRange passiv")]
-public class ApplyBuffOnStatRange : ScriptableObject, IUpdateStatPassive, IStartCombatPassive
+public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartCombatPassive
 {
+    [Space]
+    [Header("ApplyBuffOnStatRange")]
     [SerializeField]
     private BaseStats _triggerStat;
     [SerializeField]

@@ -10,7 +10,7 @@ public enum ConditionComparaison
 }
 
 [CreateAssetMenu(fileName = "New EnnemyStat per JoueurStat passiv", menuName = "PassiveEffect/New EnnemyStatPerPlayerStat passiv")]
-public class EnnemyStatPerPlayerStat : ScriptableObject, IUpdateStatPassive
+public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
 {
     [Serializable]
     public struct ConditionStat
@@ -21,6 +21,8 @@ public class EnnemyStatPerPlayerStat : ScriptableObject, IUpdateStatPassive
         public int IfLesserBonus;
     }
 
+    [Space]
+    [Header("EnnemyStatPerPlayerStat")]
     [SerializeField]
     private ConditionComparaison _conditionComparaison;
     [SerializeField]

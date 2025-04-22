@@ -5,6 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New StatOnDamagePassive passiv", menuName = "PassiveEffect/New StatOnDamagePassive passiv")]
 public class StatOnDamagePassive : AbstractPassive, IOnDamagePassive, IStartCombatPassive
 {
+    [Space]
+    [Header("StatOnDamagePassive")]
     [SerializeField]
     private List<StatToModif> _statsToModif;
     [SerializeField]

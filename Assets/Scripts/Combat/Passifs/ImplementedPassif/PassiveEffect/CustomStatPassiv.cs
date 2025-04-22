@@ -12,17 +12,18 @@ public enum  CustomStatPalierAction
 }
 
 [Serializable]
-public struct PalierAction
+public class PalierAction
 {
     public CustomStatPalierAction CustomAction;
     public int Value;
 }
 
 
-
 [CreateAssetMenu(fileName = "New Custom Stat Passiv", menuName = "PassiveEffect/New Custom Stat¨Passiv")]
-public class CustomStatPassiv : ScriptableObject, IUpdateStatPassive, IStartTurnPassive
+public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnPassive
 {
+    [Space]
+    [Header("CustomStatPassiv")]
     [SerializeField]
     private List<PalierAction> _palierActions;
     [Tooltip("Chaque point de la custom stat donnera autant de points de stat que le ratio indique")]
