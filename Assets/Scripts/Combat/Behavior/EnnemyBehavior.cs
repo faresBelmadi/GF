@@ -48,10 +48,13 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     public virtual void OnDestroy()
     {
-        foreach (var item in _stat.ListTESTPassif)
+        if (_stat != null)
         {
-            if (item is IUpdateStatPassive)
-                ((IUpdateStatPassive)item).Clear();
+            foreach (var item in _stat.ListTESTPassif)
+            {
+                if (item is IUpdateStatPassive)
+                    ((IUpdateStatPassive)item).Clear();
+            }
         }
     }
     #region Divers start & fin
