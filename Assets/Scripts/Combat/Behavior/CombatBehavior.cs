@@ -47,11 +47,13 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
         _startingPos = transform.parent.position;
 
-        for (int i = 0; i < _passiveTooltips.Count && i < Stat.ListTESTPassif.Count; i++)
+        if (_stat != null)
         {
-            _passiveTooltips[i].InitTextComponent(Stat.ListTESTPassif[i].IdTradDesc, Stat.ListTESTPassif[i].DefaultDescription);
+            for (int i = 0; i < _passiveTooltips.Count && i < _stat.ListTESTPassif.Count; i++)
+            {
+                _passiveTooltips[i].InitTextComponent(_stat.ListTESTPassif[i].IdTradDesc, _stat.ListTESTPassif[i].DefaultDescription);
+            }
         }
-
     }
     public void ClearBuffBar()
     {

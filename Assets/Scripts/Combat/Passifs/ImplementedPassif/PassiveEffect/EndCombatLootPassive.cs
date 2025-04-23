@@ -38,8 +38,11 @@ public class EndCombatLootPassive : AbstractPassive, ILootEssencePassive
             case EndCombatReward.GrantConscience:
                 if (!battleM.ConsumedEssence)
                 {
-                    ((JoueurStat)charStat).Conscience += Mathf.RoundToInt(reward.value);
+                    JoueurStat modifStat = CreateInstance<JoueurStat>();
+                    modifStat.Conscience = reward.value;
+                    ((JoueurStat)charStat).ModifStateAll(modifStat);
                     GameManager.Instance.BattleMan.player.UpdateUI();
+                    
                 }
                 break;
             case EndCombatReward.IncreaseEssence:
