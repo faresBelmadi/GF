@@ -46,7 +46,7 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
         //Nothing to do
     }
 
-    private int ChangeStat(int modificator)
+    private void ChangeStat(int modificator)
     {
         switch (_statToModif.StatToModif)
         {
@@ -54,7 +54,6 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
                 _ennemiStat.ForceAmeBonus = Mathf.FloorToInt(((modificator / 100f) * _ennemiStat._forceAme));
                 break;
         }
-        return 0;
     }
     public void UpdateStat()
     {
@@ -68,6 +67,7 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
                     modificator = _statToModif.IfLesserBonus;
                 if (_ennemiStat.Radiance == GameManager.Instance.playerStat.Radiance)
                     modificator = _statToModif.IfEqualsBonus;
+                ChangeStat(modificator);
                 break;
         }
     }
