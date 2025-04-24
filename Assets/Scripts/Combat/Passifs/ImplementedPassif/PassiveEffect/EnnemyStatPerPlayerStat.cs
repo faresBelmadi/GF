@@ -6,7 +6,7 @@ using UnityEngine;
 
 public enum ConditionComparaison
 {
-    CompareRadiance
+    ComparePercentRadiance
 }
 
 [CreateAssetMenu(fileName = "New EnnemyStat per JoueurStat passiv", menuName = "PassiveEffect/New EnnemyStatPerPlayerStat passiv")]
@@ -59,13 +59,15 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
     {
         switch(_conditionComparaison)
         {
-            case ConditionComparaison.CompareRadiance:
+            case ConditionComparaison.ComparePercentRadiance:
                 int modificator = 0;
-                if (_ennemiStat.Radiance > GameManager.Instance.playerStat.Radiance)
+                float enemyPercent = ((float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMax) * 100f;
+                float playerPercent = ((float)GameManager.Instance.playerStat.Radiance / (float)GameManager.Instance.playerStat.RadianceMax) * 100f;
+                if (enemyPercent > playerPercent)
                     modificator = _statToModif.IfGreaterBonus;
-                if (_ennemiStat.Radiance < GameManager.Instance.playerStat.Radiance)
+                if (enemyPercent < playerPercent)
                     modificator = _statToModif.IfLesserBonus;
-                if (_ennemiStat.Radiance == GameManager.Instance.playerStat.Radiance)
+                if (enemyPercent == playerPercent)
                     modificator = _statToModif.IfEqualsBonus;
                 ChangeStat(modificator);
                 break;
