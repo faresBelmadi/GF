@@ -596,6 +596,15 @@ public class Effet : ScriptableObject
             case TypeEffet.MultiplTension:
                 ModifState.MultipleTension += (Pourcentage / 100f) * NbAttaque;
                 break;
+            case TypeEffet.AddPassiveStack:
+                foreach (var passif in Caster.ListTESTPassif)
+                {
+                    if (passif is IAddStackPassive addStackPassiv)
+                    {
+                        return addStackPassiv.GetStackModifStat(Caster, ValeurBrut);
+                    }
+                }
+                break;
             default:
                 break;
         }
@@ -904,7 +913,7 @@ public class Effet : ScriptableObject
             TypeEffet.OnKillStunAll => throw new System.NotImplementedException(),
             TypeEffet.UntilDeath => throw new System.NotImplementedException(),
             TypeEffet.AugmentationFARadianceManquante => GameManager.Instance.CommonNameData.ForceDame,
-            TypeEffet.DamageFaBuff => GameManager.Instance.CommonDescData.IdTradDegat   ,
+            TypeEffet.DamageFaBuff => GameManager.Instance.CommonDescData.IdTradDegat,
             TypeEffet.DamageFaBuffCible => GameManager.Instance.CommonDescData.IdTradDegat,
             TypeEffet.DamageDebuffCible => GameManager.Instance.CommonDescData.IdTradDegat,
             TypeEffet.RemoveAllTensionProcDamage => GameManager.Instance.CommonDescData.IdTradDegat,
@@ -930,6 +939,7 @@ public class Effet : ScriptableObject
             TypeEffet.SupportJeanne => throw new System.NotImplementedException(),
             TypeEffet.UltimeJeanne => throw new System.NotImplementedException(),
             TypeEffet.MultiplTension => GameManager.Instance.CommonNameData.Tension,
+            TypeEffet.AddPassiveStack => GameManager.Instance.CommonNameData.Passif,
             _ => throw new System.NotImplementedException(),
         };
     }

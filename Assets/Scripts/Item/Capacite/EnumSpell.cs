@@ -163,7 +163,8 @@ public enum TypeEffet
     DeuxiemeAttaqueJeanne = 82,
     SupportJeanne = 83,
     UltimeJeanne = 84,
-        //87
+    AddPassiveStack = 88,
+        //max = 88
 }
 
 public enum TypePassif

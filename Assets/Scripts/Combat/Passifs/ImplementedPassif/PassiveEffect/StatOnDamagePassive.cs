@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "New StatOnDamagePassive passiv", menuName = "PassiveEffect/New StatOnDamagePassive passiv")]
-public class StatOnDamagePassive : AbstractPassive, IOnDamagePassive, IStartCombatPassive
+public class StatOnDamagePassive : AbstractPassive, IOnDamagePassive, IStartCombatPassive, IAddStackPassive
 {
     [Space]
     [Header("StatOnDamagePassive")]
@@ -48,5 +49,25 @@ public class StatOnDamagePassive : AbstractPassive, IOnDamagePassive, IStartComb
     public void ApplyEffectOnStartCombat()
     {
         _currentSource = 0;
+    }
+
+    public void AddStack(CharacterStat stat,int numberOfStackToAdd)
+    {
+        CharacterStat modifStat = CreateInstance<CharacterStat>();
+        foreach (var statToModif in _statsToModif)
+        {
+            ModifStat(statToModif, modifStat);
+        }
+        stat.ModifStateAll(modifStat);
+    }
+
+    public JoueurStat GetStackModifStat(CharacterStat stat, int numberOfStackToAdd)
+    {
+        JoueurStat modifStat = CreateInstance<JoueurStat>();
+        foreach (var statToModif in _statsToModif)
+        {
+            ModifStat(statToModif, modifStat);
+        }
+        return modifStat;
     }
 }
