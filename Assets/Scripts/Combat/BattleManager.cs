@@ -484,6 +484,8 @@ public class BattleManager : MonoBehaviour
                     passive.ApplyEffectOnStartCombat();
                 if (item is IDecoyPassive)
                     EnemyScripts[i].MakeTangible(); //On rend le decoy tangible
+                if (item is IUpdateEnnemyBehaviorPassive updatePassive)
+                    updatePassive.InitPassif(EnemyScripts[i]);
             }
         }
         StartPhase();

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New ApplyBuff passiv", menuName = "PassiveEffect/New ApplyBuff passiv")]
-public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateBehaviorPassive
+public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemyBehaviorPassive
 {
     [Space]
     [Header("ApplyBuffPassif")]
@@ -18,7 +18,7 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateBehavi
     [Tooltip("Choisis un des buff aléatoirement a appliquer")]
     [SerializeField]
     private List<BuffDebuff> _listBuffToApply;
-    CombatBehavior<CharacterStat> _behavior;
+    EnnemyBehavior _behavior;
 
     public void Apply(CharacterStat charStat)
     {
@@ -53,7 +53,7 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateBehavi
         }
     }
 
-    public void InitPassif(CombatBehavior<CharacterStat> behavior)
+    public void InitPassif(EnnemyBehavior behavior)
     {
         _behavior = behavior;
         switch (_triggerStat)
@@ -72,7 +72,7 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateBehavi
     private void ApplyBuff()
     {
         int ind = Random.Range(0, _listBuffToApply.Count);
-        GameManager.Instance.BattleMan.GiveBuffDebuff(new List<BuffDebuff>{ _listBuffToApply[ind]});
+        GameManager.Instance.BattleMan.GiveBuffDebuff(new List<BuffDebuff>{ _listBuffToApply[ind]}, _behavior.combatID);
        //GameManager.Instance.BattleMan.player.AddDebuff(_listBuffToApply[ind], _listBuffToApply[ind].Decompte, _listBuffToApply[ind].timerApplication);
     }
 }

@@ -404,6 +404,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     public void ReceiveTension(Source sourceDamage)
     {
+        int oldPalier = (int)(_stat.Tension / _stat.ValeurPalier);
         switch (sourceDamage)
         {
             case Source.Attaque:
@@ -423,11 +424,12 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
                 gainedTension = true;
                 break;
         }
-
+        int newPalier = (int)(_stat.Tension / _stat.ValeurPalier);
+        if (oldPalier < newPalier)
+            OnGainTensionLevel?.Invoke();                               // On gagne un palier de tension
         if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
         {
             Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
-            OnGainTensionLevel?.Invoke();
         }
         if (Stat.Tension < 0)
             Stat.Tension = 0;
