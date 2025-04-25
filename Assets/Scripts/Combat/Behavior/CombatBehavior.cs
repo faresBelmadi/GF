@@ -165,8 +165,8 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
             //    buffDebuffName = buff.name;
             //    buffDebuffDescription = buff.Description;
             //}
-            buffDebuffName = TradManager.instance.GetTranslation(buff.idTradName);
-            buffDebuffDescription = TradManager.instance.GetTranslation(buff.idTradDescription);
+            buffDebuffName = TradManager.instance.GetTranslation(buff.idTradName, buff.Nom);
+            buffDebuffDescription = TradManager.instance.GetTranslation(buff.idTradDescription, buff.Description);
 
         }
         else
