@@ -470,7 +470,7 @@ public class BattleManager : MonoBehaviour
         CalcTensionJoueur();
 
         //Launch Passive effect for players
-        foreach (var item in player.Stat.ListTESTPassif)
+        foreach (var item in player.PassiveList)
         {
             if (item is IStartCombatPassive passive)
                 passive.ApplyEffectOnStartCombat();
@@ -478,7 +478,7 @@ public class BattleManager : MonoBehaviour
         //Launch passive effect for ennemies
         for (int i=0;i<EnemyScripts.Count;i++)
         {
-            foreach (var item in EnemyScripts[i].Stat.ListTESTPassif)
+            foreach (var item in EnemyScripts[i].PassiveList)
             {
                 if (item is IStartCombatPassive passive)
                     passive.ApplyEffectOnStartCombat();
@@ -812,7 +812,7 @@ public class BattleManager : MonoBehaviour
         EnnemyBehavior decoy = null;
         foreach (var ennemy in EnemyScripts)
         {
-            foreach (var item in ennemy.Stat.ListTESTPassif)
+            foreach (var item in ennemy.PassiveList)
             {
                 if (item is IDecoyPassive passive)
                 {
@@ -1092,7 +1092,7 @@ public class BattleManager : MonoBehaviour
         temp.GetComponent<CrystalSoul>().AddAmountOfEssence(amount, true);
 
         ListEssence.Add(temp);
-        foreach (var passif in player.Stat.ListTESTPassif)
+        foreach (var passif in player.PassiveList)
         {
             if (passif is ILootEssencePassive)
             {

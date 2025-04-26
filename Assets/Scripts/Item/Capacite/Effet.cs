@@ -596,15 +596,6 @@ public class Effet : ScriptableObject
             case TypeEffet.MultiplTension:
                 ModifState.MultipleTension += (Pourcentage / 100f) * NbAttaque;
                 break;
-            case TypeEffet.AddPassiveStack:
-                foreach (var passif in Caster.ListTESTPassif)
-                {
-                    if (passif is IAddStackPassive addStackPassiv)
-                    {
-                        return addStackPassiv.GetStackModifStat(Caster, ValeurBrut);
-                    }
-                }
-                break;
             default:
                 break;
         }

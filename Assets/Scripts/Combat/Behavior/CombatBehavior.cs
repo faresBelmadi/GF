@@ -38,6 +38,8 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     #region Events
     public event Action OnGainTensionLevel;
     public event Action OnTakeDamage;
+
+    public List<AbstractPassive> PassiveList { get; protected set; }
     #endregion
 
     public virtual string Name { get => name; }
@@ -47,11 +49,13 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
         _startingPos = transform.parent.position;
 
+
         if (_stat != null)
         {
-            for (int i = 0; i < _passiveTooltips.Count && i < _stat.ListTESTPassif.Count; i++)
+           
+            for (int i = 0; i < _passiveTooltips.Count && i < PassiveList.Count; i++)
             {
-                _passiveTooltips[i].InitTextComponent(_stat.ListTESTPassif[i].IdTradDesc, _stat.ListTESTPassif[i].DefaultDescription);
+                _passiveTooltips[i].InitTextComponent(PassiveList[i].IdTradDesc, PassiveList[i].DefaultDescription);
             }
         }
     }

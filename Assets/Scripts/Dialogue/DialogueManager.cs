@@ -1172,7 +1172,20 @@ public class DialogueManager : MonoBehaviour
     {
         foreach (var enemyScript in ManagerBattle.EnemyScripts)
         {
-            enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat));
+            if (scriptableObject.TypeEffet == TypeEffet.AddPassiveStack)
+            {
+                foreach (var passif in enemyScript.PassiveList)
+                {
+                    if (passif is IAddStackPassive addStackPassiv)
+                    {
+                        enemyScript.Stat.ModifStateAll(addStackPassiv.GetStackModifStat(enemyScript.Stat, scriptableObject.ValeurBrut));
+                    }
+                }
+            }
+            else
+            {
+                enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat));
+            }
         }
     }
 

@@ -12,11 +12,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         set
         {
             _stat = value;
-            foreach (var item in _stat.ListTESTPassif)
-            {
-                if (item is IUpdateStatPassive passive)
-                    passive.InitPassif(_stat);
-            }
+           
         }
     }
     public UIEnnemi UICombat;
@@ -50,7 +46,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     {
         if (_stat != null)
         {
-            foreach (var item in _stat.ListTESTPassif)
+            foreach (var item in PassiveList)
             {
                 if (item is IUpdateStatPassive)
                     ((IUpdateStatPassive)item).Clear();
@@ -106,10 +102,22 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             Stat.Buff = Instantiate(Stat.Buff);
         if (Stat.Debuff != null)
             Stat.Debuff = Instantiate(Stat.Debuff);
-        EnemyPassiveDescription passDesc = GetComponentInChildren<EnemyPassiveDescription>(true);
-        if (passDesc != null && _stat.ListTESTPassif.Count > 0)
+
+        PassiveList = new List<AbstractPassive>();
+        for (int i = 0; i < _stat.ListTESTPassif.Count; i++)
         {
-            passDesc.InitTooltip(_stat.ListTESTPassif[0].IdTradDesc, _stat.ListTESTPassif[0].DefaultDescription);
+            PassiveList.Add(Instantiate(_stat.ListTESTPassif[i]));
+        }
+        foreach (var item in PassiveList)
+        {
+            if (item is IUpdateStatPassive passive)
+                passive.InitPassif(_stat);
+        }
+
+        EnemyPassiveDescription passDesc = GetComponentInChildren<EnemyPassiveDescription>(true);
+        if (passDesc != null && PassiveList.Count > 0)
+        {
+            passDesc.InitTooltip(PassiveList[0].IdTradDesc, PassiveList[0].DefaultDescription);
         }
     }
 
@@ -134,7 +142,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             _refBattleMan.PassifManager.ResolvePassifs();
         }
 
-        foreach (var passif in Stat.ListTESTPassif)
+        foreach (var passif in PassiveList)
         {
             if (passif is IStartTurnPassive)
             {
@@ -193,7 +201,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             _refBattleMan.PassifManager.ResolvePassifs();
         }
 
-        foreach (var item in _stat.ListTESTPassif)
+        foreach (var item in PassiveList)
         {
             if (item is IDeathEffectPassive passive)
                 passive.OnDeathAction();
@@ -544,7 +552,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         if (ModifStat.Radiance < 0)
         {
             Debug.Log($"{Name} take {ModifStat.Radiance * -1} damage.");
-            foreach (var item in _stat.ListTESTPassif)
+            foreach (var item in PassiveList)
             {
                 if (item is IOnDamagePassive passive)
                     passive.Apply(_stat);
