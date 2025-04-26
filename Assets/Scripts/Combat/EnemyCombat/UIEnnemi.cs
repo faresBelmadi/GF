@@ -30,6 +30,8 @@ public class UIEnnemi : MonoBehaviour
     public GameObject degatPrefab;
     public List<GameObject> DebuffSpawned = new List<GameObject>();
 
+    public CadreStatsUiManager CadreStatsUiManager;
+
     public void UpdateHp(int newHp, int newMaxHp)
     {
         if (!HPBarManager) return;
@@ -56,6 +58,13 @@ public class UIEnnemi : MonoBehaviour
             Ciblage.SetActive(true);
             OnPreviewDamage?.Invoke();
         }
+
+        if (CadreStatsUiManager == null)
+        {
+            var CadreStatsObj = GameObject.Find("CadreStatsMobs");
+            CadreStatsUiManager = CadreStatsObj?.GetComponent<CadreStatsUiManager>();
+        }
+        CadreStatsUiManager?.ShowStats(gameObject.GetComponent<EnnemyBehavior>().Stat);
         //if (debuffParents.childCount > 0 || buffParents.childCount > 0)
         //    GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("ShowDescription");
     }
@@ -66,8 +75,8 @@ public class UIEnnemi : MonoBehaviour
         {
             Ciblage.SetActive(false);
             OnStopPreviewDamage?.Invoke();
-        }
-
+        } 
+        CadreStatsUiManager?.HideStats();
         //if (debuffParents.childCount > 0 || buffParents.childCount > 0)
         //    GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("HideDescription");
     }
