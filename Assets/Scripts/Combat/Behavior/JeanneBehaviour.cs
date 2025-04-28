@@ -8,6 +8,9 @@ using UnityEngine;
 
 public class JeanneBehaviour : BossBehaviour
 {
+    [Space]
+    [SerializeField]
+    private BuffDebuff _currentDivinBuff;
     public override void OnDestroy()
     {
         Stat.OnCustomStatModification -= UpdateDivin;
@@ -50,7 +53,7 @@ public class JeanneBehaviour : BossBehaviour
 
         if (nextAction.Effet.FirstOrDefault(c => c.TypeEffet == TypeEffet.UltimeJeanne))
         {
-            if (Stat.Divin < 70)
+            if (Stat.CustomStat < 70)
             {
                 var temp = Spells.First();
                 foreach (var item in Spells)
@@ -85,14 +88,14 @@ public class JeanneBehaviour : BossBehaviour
     {
         if (GameManager.Instance.BattleMan.IsCombatOn)
         {
-            //if (!Stat.ListBuffDebuff.Any(x => x.Nom == TradManager.instance.GetTranslation(GameManager.Instance.passifRules.CurrentDivin.idTradName)))
-            //{
-            //    // _rules.CurrentDivin.Description = behavior.Stat.Divin.ToString();
-            //    AddBuffDebuff(GameManager.Instance.passifRules.CurrentDivin, Stat);
-            //}
+            if (!Stat.ListBuffDebuff.Any(x => x.Nom == TradManager.instance.GetTranslation(_currentDivinBuff.idTradName)))
+            {
+                // _rules.CurrentDivin.Description = behavior.Stat.Divin.ToString();
+                AddBuffDebuff(_currentDivinBuff, Stat);
+            }
 
-            //var currentDivin = ListBuffDebuffGO.FirstOrDefault(x => x.GetComponent<BuffDebuffComponant>().buffName == TradManager.instance.GetTranslation(GameManager.Instance.passifRules.CurrentDivin.idTradName));
-            //currentDivin.GetComponent<BuffDebuffComponant>().popUpPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text += "(Divin : " + Stat.Divin + ")";
+            var currentDivin = ListBuffDebuffGO.FirstOrDefault(x => x.GetComponent<BuffDebuffComponant>().buffName == TradManager.instance.GetTranslation(_currentDivinBuff.idTradName));
+            currentDivin.GetComponent<BuffDebuffComponant>().popUpPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text += "(Divin : " + Stat.CustomStat + ")";
         }
     }
 }
