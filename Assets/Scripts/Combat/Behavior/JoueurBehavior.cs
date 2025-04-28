@@ -140,9 +140,9 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         if (_stat != null)
         {
             PassiveList = new List<AbstractPassive>();
-            for (int i = 0; i < _stat.ListTESTPassif.Count; i++)
+            for (int i = 0; i < _stat.PassiveList.Count; i++)
             {
-                PassiveList.Add(Instantiate(_stat.ListTESTPassif[i]));
+                PassiveList.Add(Instantiate(_stat.PassiveList[i]));
             }
         }
         foreach (var item in PassiveList)
@@ -305,12 +305,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         AudioManager.instance.SFX.PlaySFXClip(SFXType.StartTurnSFX);
         IsTurn = true;
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
-
+       
         /* Resplenish willpower */
         if(_playedTurn >= 1)
             Stat.Volonter = Stat.VolonterMax;
@@ -340,11 +335,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     public void EndTurn()
     {
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
 
         IsTurn = false;
         DesactivateSpells();
@@ -517,12 +507,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     {
         //A Mettre une fois les combats terminer
         _refBattleMan.LaunchSpellJoueur(SelectedSpell);
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
-
+       
         UpdateUI();
         //  ActivateSpells();
     }
@@ -838,11 +823,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             }
         }
 
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
 
         UpdateUI();
 

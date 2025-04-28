@@ -85,14 +85,14 @@ public class JeanneBehaviour : BossBehaviour
     {
         if (GameManager.Instance.BattleMan.IsCombatOn)
         {
-            if (!Stat.ListBuffDebuff.Any(x => x.Nom == TradManager.instance.GetTranslation(GameManager.Instance.passifRules.CurrentDivin.idTradName)))
-            {
-                // _rules.CurrentDivin.Description = behavior.Stat.Divin.ToString();
-                AddBuffDebuff(GameManager.Instance.passifRules.CurrentDivin, Stat);
-            }
+            //if (!Stat.ListBuffDebuff.Any(x => x.Nom == TradManager.instance.GetTranslation(GameManager.Instance.passifRules.CurrentDivin.idTradName)))
+            //{
+            //    // _rules.CurrentDivin.Description = behavior.Stat.Divin.ToString();
+            //    AddBuffDebuff(GameManager.Instance.passifRules.CurrentDivin, Stat);
+            //}
 
-            var currentDivin = ListBuffDebuffGO.FirstOrDefault(x => x.GetComponent<BuffDebuffComponant>().buffName == TradManager.instance.GetTranslation(GameManager.Instance.passifRules.CurrentDivin.idTradName));
-            currentDivin.GetComponent<BuffDebuffComponant>().popUpPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text += "(Divin : " + Stat.Divin + ")";
+            //var currentDivin = ListBuffDebuffGO.FirstOrDefault(x => x.GetComponent<BuffDebuffComponant>().buffName == TradManager.instance.GetTranslation(GameManager.Instance.passifRules.CurrentDivin.idTradName));
+            //currentDivin.GetComponent<BuffDebuffComponant>().popUpPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>().text += "(Divin : " + Stat.Divin + ")";
         }
     }
 }

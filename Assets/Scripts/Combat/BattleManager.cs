@@ -25,7 +25,6 @@ public class BattleManager : MonoBehaviour
     public GameObject buttonEndCombat;
     [SerializeField] private string _idLabelForEssenceButton;
     const string Target = "Targeting";
-    public PassifRules passifRules;
 
     [Header("CrystalSoul Manager")]
     [Tooltip("Put three Essence Prefab, from the smallest, to the greatest")]
@@ -58,7 +57,7 @@ public class BattleManager : MonoBehaviour
     public int CurrentPhaseDamage;
 
     // [SerializeField] private DialogueManager DialogueManager;
-    public PassifManager PassifManager;
+
 
     public bool IsLoot;
     public bool ConsumedEssence;
@@ -294,8 +293,7 @@ public class BattleManager : MonoBehaviour
     void DialogueEnableSetup()
     {
         player.InitRefBattleMan(this);
-        if (GameManager.Instance != null)
-            PassifManager = new PassifManager(new List<JoueurBehavior> { player }, EnemyScripts);
+       
         GameManager.Instance.DialManager.SetupDialogue(_encounter);
     }
 
@@ -494,15 +492,7 @@ public class BattleManager : MonoBehaviour
     private void EndBattle()
     {
         IsCombatOn = false;
-        if (!GameManager.Instance.IsTuto)
-        {
-            PassifManager.CurrentEvent = TimerPassif.FinCombat;
-            PassifManager.ResolvePassifs();
-
-
-
-        }
-
+       
         Loot();
         player.ResetStat();
         //player.Stat.ListBuffDebuff.Clear();
@@ -537,11 +527,6 @@ public class BattleManager : MonoBehaviour
     {
         //Play start phase sound
         AudioManager.instance.SFX.PlaySFXClip(SFXType.StartPhaseSFX);
-        if (PassifManager != null)
-        {
-            PassifManager.CurrentEvent = TimerPassif.DebutPhase;
-            PassifManager.ResolvePassifs();
-        }
 
         LastPhaseDamage = CurrentPhaseDamage;
         CurrentPhaseDamage = 0;
@@ -610,12 +595,6 @@ public class BattleManager : MonoBehaviour
         nbTurn++;
         if (nbTurn >= IdOrder.Count)
         {
-            if (!IsTuto)
-            {
-                PassifManager.CurrentEvent = TimerPassif.FinPhase;
-                PassifManager.ResolvePassifs();
-            }
-
             StartPhase();
         }
         else

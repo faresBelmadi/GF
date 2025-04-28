@@ -104,9 +104,9 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             Stat.Debuff = Instantiate(Stat.Debuff);
 
         PassiveList = new List<AbstractPassive>();
-        for (int i = 0; i < _stat.ListTESTPassif.Count; i++)
+        for (int i = 0; i < _stat.PassiveList.Count; i++)
         {
-            PassiveList.Add(Instantiate(_stat.ListTESTPassif[i]));
+            PassiveList.Add(Instantiate(_stat.PassiveList[i]));
         }
         foreach (var item in PassiveList)
         {
@@ -136,12 +136,6 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     public void StartTurn(bool isFirstTurn = false)
     {
         IsTurn = true;
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
-
         foreach (var passif in PassiveList)
         {
             if (passif is IStartTurnPassive)
@@ -177,12 +171,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     public void EndTurn()
     {
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
-
+       
         IsTurn = false;
         if (!skip)
             EndAnimBool();
@@ -195,11 +184,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     {
         if (IsDead) return;
         IsDead = true;
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.Death;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
+        
 
         foreach (var item in PassiveList)
         {
@@ -593,11 +578,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
 
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
+        
 
         UpdateUI();
 
