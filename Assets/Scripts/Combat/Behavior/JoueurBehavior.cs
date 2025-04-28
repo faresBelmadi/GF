@@ -75,21 +75,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         
         GetComponent<Animator>().Rebind();
     }
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            var modif = ScriptableObject.CreateInstance<JoueurStat>();
-            modif.Conscience = 1;
-            Stat.ModifStateAll(modif);
-        }
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            var modif = ScriptableObject.CreateInstance<JoueurStat>();
-            modif.Conscience = -1;
-            Stat.ModifStateAll(modif);
-        }
-    }
 
     public void StartUp()
     {
