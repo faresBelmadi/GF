@@ -9,6 +9,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     public override EnnemiStat Stat
     {
+        get => _stat;
         set
         {
             _stat = value;
