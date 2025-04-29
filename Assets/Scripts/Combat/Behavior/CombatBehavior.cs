@@ -176,12 +176,12 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         return new string[2] { buffDebuffName, buffDebuffDescription };
     }
     
-    public void DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte decompte, CharacterStat toChange)
+    public void DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte Timer, CharacterStat toChange)
     {
         //Debug.Log($"Decompte Buffs: {Timer.ToString()}");
         foreach (var item in BuffDebuff)
         {
-            if (item.ConditionnalBuff == ConditionalBuff.NONE && item.Decompte == decompte && item.timerApplication != TimerApplication.Persistant) 
+            if (item.ConditionnalBuff == ConditionalBuff.NONE && item.Decompte == Timer) 
             {
                 //Debug.Log($"Decompte {item.Nom} from {gameObject.name}");
 
