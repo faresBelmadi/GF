@@ -13,5 +13,5 @@ public abstract class AbstractPassive : ScriptableObject
     [field: SerializeField]
     public string DefaultDescription { get; private set; } = "Missing";
     [field: SerializeField]
-    public string IdTradDesc { get; private set; }
+    public virtual string IdTradDesc { get; private set; }
 }

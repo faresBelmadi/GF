@@ -49,15 +49,6 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
         _startingPos = transform.parent.position;
 
-
-        if (_stat != null)
-        {
-           
-            for (int i = 0; i < _passiveTooltips.Count && i < PassiveList.Count; i++)
-            {
-                _passiveTooltips[i].InitTextComponent(PassiveList[i].IdTradDesc, PassiveList[i].DefaultDescription);
-            }
-        }
     }
     public void ClearBuffBar()
     {
@@ -68,7 +59,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         ListBuffDebuffGO.Clear();
     }
    
-
+  
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);

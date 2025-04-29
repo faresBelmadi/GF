@@ -114,11 +114,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
                 passive.InitPassif(_stat);
         }
 
-        EnemyPassiveDescription passDesc = GetComponentInChildren<EnemyPassiveDescription>(true);
-        if (passDesc != null && PassiveList.Count > 0)
-        {
-            passDesc.InitTooltip(PassiveList[0].IdTradDesc, PassiveList[0].DefaultDescription);
-        }
+        RefreshPassiveDescription();
     }
 
     public override void ResetStat()
@@ -396,6 +392,18 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     }
 
     #endregion Spell
+
+    #region Passif
+
+    public void RefreshPassiveDescription()
+    {
+        EnemyPassiveDescription passDesc = GetComponentInChildren<EnemyPassiveDescription>(true);
+        if (passDesc != null && PassiveList.Count > 0)
+        {
+            passDesc.InitTooltip(PassiveList[0].IdTradDesc, PassiveList[0].DefaultDescription);
+        }
+    }
+#endregion
 
     #region BuffDebuff
 
