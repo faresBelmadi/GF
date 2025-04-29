@@ -51,7 +51,6 @@ public class GameManager : MonoBehaviour
 
     public int ClassIDSelected;
 
-    public PassifRules passifRules;
     [Header("Data")] [SerializeField] private SpriteData _spriteData;
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
@@ -195,7 +194,7 @@ public class GameManager : MonoBehaviour
 
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
-                playerStat.ListPassif = new List<Passif>();
+                playerStat.PassiveList = new List<AbstractPassive>();
                 //TODO : a decommenter quand le systeme de save sera mis en ligne
                 //       cette boucle load les spells acheté dans les runs d'avant.
                 /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
@@ -216,9 +215,9 @@ public class GameManager : MonoBehaviour
                     playerStat.ListSpell.Add(item);
                 }
 
-                foreach (var item in classSO.PlayerStat.ListPassif)
+                foreach (var item in classSO.PlayerStat.PassiveList)
                 {
-                    playerStat.ListPassif.Add(item);
+                    playerStat.PassiveList.Add(item);
                 }
             }
         }

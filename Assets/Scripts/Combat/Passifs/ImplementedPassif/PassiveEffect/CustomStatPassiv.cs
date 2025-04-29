@@ -38,12 +38,12 @@ public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnP
         {
             case CustomStatPalierAction.GainStat:
                 Debug.Log("Gain Stat : " + _palierActions[indPalier].Value);
-                ((EnnemiStat)charStat).Divin += _palierActions[indPalier].Value;
+                ((EnnemiStat)charStat).CustomStat += _palierActions[indPalier].Value;
                 break;
             case CustomStatPalierAction.ResetAndRefreshTension:
                 Debug.Log("Reset");
-                charStat.Tension += Mathf.RoundToInt(((EnnemiStat)charStat).Divin * _palierActions[indPalier].Value);
-                ((EnnemiStat)charStat).Divin = 0;
+                charStat.Tension += Mathf.RoundToInt(((EnnemiStat)charStat).CustomStat * _palierActions[indPalier].Value);
+                ((EnnemiStat)charStat).CustomStat = 0;
                 break;
         }
     }
@@ -68,12 +68,12 @@ public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnP
                 case BaseStats.RadianceMax:
                     var pourcentagePVActuel = (float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMax * 100f;
                     _ennemiStat.RadianceMax = _ennemiStat.RadianceMaxOriginal;
-                    _ennemiStat.RadianceMax += _ennemiStat.Divin * 10;
+                    _ennemiStat.RadianceMax += _ennemiStat.CustomStat * 10;
                     _ennemiStat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * _ennemiStat.RadianceMax);
                     break;
                 case BaseStats.ForceAme:
                     _ennemiStat.ForceAme = _ennemiStat.ForceAmeOriginal;
-                    _ennemiStat.ForceAme += _ennemiStat.Divin * 1;
+                    _ennemiStat.ForceAme += _ennemiStat.CustomStat * 1;
                     break;
                
             }

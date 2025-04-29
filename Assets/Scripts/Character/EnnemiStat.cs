@@ -20,15 +20,15 @@ public class EnnemiStat : CharacterStat
     public EnnemiSpell Buff;
     public EnnemiSpell Debuff;
     //Uniquement pour Jeanne
-    private int _divin;
-    public int Divin
+    private int _customStat;
+    public int CustomStat
     {
-        get => _divin;
+        get => _customStat;
         set
         {
-            if (value != _divin)
+            if (value != _customStat)
             {
-                _divin = value;
+                _customStat = value;
                 OnCustomStatModification?.Invoke();
             }
         }
