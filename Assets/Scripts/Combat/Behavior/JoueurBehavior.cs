@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class JoueurBehavior : CombatBehavior<JoueurStat>
 {
     public override JoueurStat Stat {
+        get => _stat;
         set
         {
             _stat = value;
