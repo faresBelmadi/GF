@@ -230,17 +230,17 @@ public class Effet : ScriptableObject
             case TypeEffet.PremiereAttaqueJeanne:
                 var JeanneStat = (EnnemiStat)caster;
                 int percentageFa = 0;
-                if (JeanneStat.Divin <= 25)
+                if (JeanneStat.CustomStat <= 25)
                 {
                     percentageFa = 0;
                     nbProcAfterEffect = 1;
                 }
-                else if (JeanneStat.Divin > 25 && JeanneStat.Divin <= 50)
+                else if (JeanneStat.CustomStat > 25 && JeanneStat.CustomStat <= 50)
                 {
                     percentageFa = 20;
                     nbProcAfterEffect = 2;
                 }
-                else if (JeanneStat.Divin > 50)
+                else if (JeanneStat.CustomStat > 50)
                 {
                     percentageFa = 40;
                     nbProcAfterEffect = 4;
@@ -252,19 +252,19 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.DeuxiemeAttaqueJeanne:
                 var JeanneStat2 = (EnnemiStat)caster;
-                var divin = JeanneStat2.Divin > 0 ? JeanneStat2.Divin : JeanneStat2.Divin * -1;
+                var divin = JeanneStat2.CustomStat > 0 ? JeanneStat2.CustomStat : JeanneStat2.CustomStat * -1;
                 var TotalPercentage = -(divin + (Pourcentage * -1));
                 damageAmount += Mathf.FloorToInt(((TotalPercentage / 100f) * caster.ForceAme) * caster.MultiplDegat);
                 break;
             case TypeEffet.SupportJeanne:
                 var JeanneStat3 = (EnnemiStat)caster;
-                JeanneStat3.Divin -= 20;
+                JeanneStat3.CustomStat -= 20;
                 damageAmount += Mathf.FloorToInt((Pourcentage / 100f) * caster.RadianceMax);
                 break;
             case TypeEffet.UltimeJeanne:
                 var JeanneStat4 = (EnnemiStat)caster;
-                damageAmount += Mathf.FloorToInt(-JeanneStat4.Divin / 100f * caster.ForceAme);
-                JeanneStat4.Divin = -30;
+                damageAmount += Mathf.FloorToInt(-JeanneStat4.CustomStat / 100f * caster.ForceAme);
+                JeanneStat4.CustomStat = -30;
                 break;
             default:
                 return false;
@@ -557,17 +557,17 @@ public class Effet : ScriptableObject
             case TypeEffet.PremiereAttaqueJeanne:
                 var JeanneStat = (EnnemiStat) Caster;
                 int percentageFa = 0;
-                if (JeanneStat.Divin <= 25)
+                if (JeanneStat.CustomStat <= 25)
                 {
                     percentageFa = 0;
                     nbProcAfterEffect = 1;
                 }
-                else if (JeanneStat.Divin > 25 && JeanneStat.Divin <= 50)
+                else if (JeanneStat.CustomStat > 25 && JeanneStat.CustomStat <= 50)
                 {
                     percentageFa = 20;
                     nbProcAfterEffect = 2;
                 }
-                else if (JeanneStat.Divin > 50)
+                else if (JeanneStat.CustomStat > 50)
                 {
                     percentageFa = 40;
                     nbProcAfterEffect = 4;
@@ -579,19 +579,19 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.DeuxiemeAttaqueJeanne:
                 var JeanneStat2 = (EnnemiStat)Caster;
-                var divin = JeanneStat2.Divin > 0? JeanneStat2.Divin : JeanneStat2.Divin * -1;
+                var divin = JeanneStat2.CustomStat > 0? JeanneStat2.CustomStat : JeanneStat2.CustomStat * -1;
                 var TotalPercentage = -(divin + (Pourcentage * -1));
                 ModifState.Radiance += Mathf.FloorToInt(((TotalPercentage / 100f) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
             case TypeEffet.SupportJeanne:
                 var JeanneStat3 = (EnnemiStat)Caster;
-                JeanneStat3.Divin -= 20;
+                JeanneStat3.CustomStat -= 20;
                 ModifState.Radiance += Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMax);
                 break;
             case TypeEffet.UltimeJeanne:
                 var JeanneStat4 = (EnnemiStat) Caster;
-                ModifState.Radiance += Mathf.FloorToInt(((JeanneStat4.Divin * Pourcentage) / 100f * Caster.ForceAme) * Caster.MultiplDegat);
-                JeanneStat4.Divin = -30;
+                ModifState.Radiance += Mathf.FloorToInt(((JeanneStat4.CustomStat * Pourcentage) / 100f * Caster.ForceAme) * Caster.MultiplDegat);
+                JeanneStat4.CustomStat = -30;
                 break;
             case TypeEffet.MultiplTension:
                 ModifState.MultipleTension += (Pourcentage / 100f) * NbAttaque;
@@ -904,7 +904,7 @@ public class Effet : ScriptableObject
             TypeEffet.OnKillStunAll => throw new System.NotImplementedException(),
             TypeEffet.UntilDeath => throw new System.NotImplementedException(),
             TypeEffet.AugmentationFARadianceManquante => GameManager.Instance.CommonNameData.ForceDame,
-            TypeEffet.DamageFaBuff => GameManager.Instance.CommonDescData.IdTradDegat   ,
+            TypeEffet.DamageFaBuff => GameManager.Instance.CommonDescData.IdTradDegat,
             TypeEffet.DamageFaBuffCible => GameManager.Instance.CommonDescData.IdTradDegat,
             TypeEffet.DamageDebuffCible => GameManager.Instance.CommonDescData.IdTradDegat,
             TypeEffet.RemoveAllTensionProcDamage => GameManager.Instance.CommonDescData.IdTradDegat,
@@ -930,6 +930,7 @@ public class Effet : ScriptableObject
             TypeEffet.SupportJeanne => throw new System.NotImplementedException(),
             TypeEffet.UltimeJeanne => throw new System.NotImplementedException(),
             TypeEffet.MultiplTension => GameManager.Instance.CommonNameData.Tension,
+            TypeEffet.AddPassiveStack => GameManager.Instance.CommonNameData.Passif,
             _ => throw new System.NotImplementedException(),
         };
     }

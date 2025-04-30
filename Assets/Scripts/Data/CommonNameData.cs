@@ -28,6 +28,8 @@ public class CommonNameData : ScriptableObject
     private string _idTradTension;
     [SerializeField]
     private string _idTradEssence;
+    [SerializeField]
+    private string _idTradPassive;
 
 
     public string Radiance => TradManager.instance.GetTranslation(_idTradRadiance, "Radiance");
@@ -41,4 +43,5 @@ public class CommonNameData : ScriptableObject
     public string Volonte => TradManager.instance.GetTranslation(_idTradVolonte, "Willpower");
     public string Tension => TradManager.instance.GetTranslation(_idTradTension, "Tension");
     public string Essence => TradManager.instance.GetTranslation(_idTradEssence, "Essence");
+    public string Passif => TradManager.instance.GetTranslation(_idTradPassive, "Passive");
 }

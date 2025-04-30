@@ -6,8 +6,13 @@ using UnityEngine.UI;
 
 public class JoueurBehavior : CombatBehavior<JoueurStat>
 {
-    
-
+    public override JoueurStat Stat {
+        get => _stat;
+        set
+        {
+            _stat = value;
+        }
+    }
     [SerializeField] private List<GameObject> Spells;
     [SerializeField] private Transform DamageSpawn;
     [SerializeField] private GameObject DamagePrefab;
@@ -71,8 +76,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         
         GetComponent<Animator>().Rebind();
     }
-    
-  
+
     public void StartUp()
     {
 
@@ -117,6 +121,21 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
             Spells.Add(temp);
         }
+
+        //On instancie les passifs
+        if (_stat != null)
+        {
+            PassiveList = new List<AbstractPassive>();
+            for (int i = 0; i < _stat.PassiveList.Count; i++)
+            {
+                PassiveList.Add(Instantiate(_stat.PassiveList[i]));
+            }
+        }
+        foreach (var item in PassiveList)
+        {
+            if (item is StatPerConsciencePassive passive)
+                passive.InitPassif(_stat);
+        }
         InitUI();
     }
 
@@ -152,6 +171,11 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         hPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
         tensionBarManager.InitPBar(0, Stat.NbPalier);
         conscienceBarManager.InitPBar(Stat.Conscience, Stat.ConscienceMax);
+
+        for (int i = 0; i < _passiveTooltips.Count && i < PassiveList.Count; i++)
+        {
+            _passiveTooltips[i].InitTextComponent(PassiveList[i].IdTradDesc, PassiveList[i].DefaultDescription);
+        }
     }
 
     public void UpdateUI()
@@ -268,12 +292,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         AudioManager.instance.SFX.PlaySFXClip(SFXType.StartTurnSFX);
         IsTurn = true;
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
-
+       
         /* Resplenish willpower */
         if(_playedTurn >= 1)
             Stat.Volonter = Stat.VolonterMax;
@@ -303,11 +322,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     public void EndTurn()
     {
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
 
         IsTurn = false;
         DesactivateSpells();
@@ -480,12 +494,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     {
         //A Mettre une fois les combats terminer
         _refBattleMan.LaunchSpellJoueur(SelectedSpell);
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
-
+       
         UpdateUI();
         //  ActivateSpells();
     }
@@ -801,11 +810,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             }
         }
 
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
 
         UpdateUI();
 
@@ -850,5 +854,16 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         _isHurt = false;
         AnimationController.EndAnimAttack();
     }
+
+    #region Passif
+    protected virtual void ResolvePassif()
+    {
+
+    }
+    protected virtual void UpdateStat()
+    {
+
+    }
+    #endregion
 
 }

@@ -513,6 +513,7 @@ public class MenuStatManager : MonoBehaviour
         }
         return false;
     }
+   
 
     #endregion Equiped
 
