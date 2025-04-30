@@ -11,10 +11,13 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
-    //[Header("Debug")]
-    //[SerializeField]
-    //private bool _doTuto = true;
-
+    
+    [Header("Debug")]
+    [SerializeField]
+    private bool _debugMode = false;
+    [SerializeField]
+    private GameObject _debugModePrefab;
+    [Space]
     [SerializeField] private GameObject _crystal;
     [SerializeField] private Transform _parent;
 
@@ -30,6 +33,7 @@ public class GameManager : MonoBehaviour
     public UiMondeManager UiMondeMan;
     [SerializeField] private DialogueManager _dialogueManager;
     [SerializeField] private GamePanelManager _gamePanelManager;
+    [field: SerializeField] public Generator MapGenerator { get; private set; }
 
     [Header("Classes & Encounter")] public List<ClassPlayer> AllClasses;
 
@@ -47,11 +51,10 @@ public class GameManager : MonoBehaviour
     public List<Souvenir> CopyAllSouvenir;
 
     public ClassPlayer classSO;
-    [HideInInspector] public JoueurStat playerStat;
+    /*[HideInInspector]*/ public JoueurStat playerStat;
 
     public int ClassIDSelected;
 
-    public PassifRules passifRules;
     [Header("Data")] [SerializeField] private SpriteData _spriteData;
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
@@ -136,6 +139,11 @@ public class GameManager : MonoBehaviour
         */
         if (AudioManager.instance != null)
             AudioManager.instance.PlayMusic(MusicType.CombatMusic);
+
+        if (_debugMode)
+        {
+            Instantiate(_debugModePrefab);
+        }
     }
 
     public void EndTuto()
@@ -149,6 +157,10 @@ public class GameManager : MonoBehaviour
         ShowMap();
     }
 
+    public void GenerateNewMap()
+    {
+        MapGenerator.GenerateNewMap();
+    }
     private void LoadSave()
     {
 
@@ -195,7 +207,7 @@ public class GameManager : MonoBehaviour
 
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
-                playerStat.ListPassif = new List<Passif>();
+                playerStat.PassiveList = new List<AbstractPassive>();
                 //TODO : a decommenter quand le systeme de save sera mis en ligne
                 //       cette boucle load les spells acheté dans les runs d'avant.
                 /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
@@ -216,9 +228,9 @@ public class GameManager : MonoBehaviour
                     playerStat.ListSpell.Add(item);
                 }
 
-                foreach (var item in classSO.PlayerStat.ListPassif)
+                foreach (var item in classSO.PlayerStat.PassiveList)
                 {
-                    playerStat.ListPassif.Add(item);
+                    playerStat.PassiveList.Add(item);
                 }
             }
         }
@@ -245,7 +257,8 @@ public class GameManager : MonoBehaviour
 
         data.CurrentRun.player = new PlayerData()
         {
-            Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
+            //Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
+            Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.RadianceMax, // On set les pv sur radiance max
             RadianceMax = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.RadianceMax,
             Conscience = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Conscience,
             ForceAme = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ForceAme,
@@ -350,6 +363,10 @@ public class GameManager : MonoBehaviour
             loadedData.CurrentRun.player.BoughtSpellID.Add(item.IDSpell);
         }
 
+    }
+    public void ChangeEncounterSet(EncounterSetData encounterSet)
+    {
+        EncounterSet = encounterSet;
     }
 
     public void SetRoom(Room set)

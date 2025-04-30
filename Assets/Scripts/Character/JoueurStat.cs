@@ -27,6 +27,16 @@ public class JoueurStat : CharacterStat
     {
         this.Volonter += ModifState.Volonter;
         this.VolonterMax += ModifState.VolonterMax;
+        
+        this.Conscience += ModifState.Conscience;
+        this.ConscienceMax += ModifState.ConscienceMax;
+        this.Clairvoyance += ModifState.Clairvoyance;
+
+
+        base.ModifStateAll(ModifState);
+        RectificationStat();
+
+        //La conscience a été modifié, on notifie
         if (ModifState.Conscience > 0 || ModifState.ConscienceMax > 0)
         {
             Debug.LogWarning("ModifStatConscience+Joueur");
@@ -37,11 +47,6 @@ public class JoueurStat : CharacterStat
             Debug.LogWarning("ModifStatConscience-Joueur");
             OnConscienceDecrease?.Invoke();
         }
-        this.Conscience += ModifState.Conscience;
-        this.ConscienceMax += ModifState.ConscienceMax;
-        this.Clairvoyance += ModifState.Clairvoyance;
-        base.ModifStateAll(ModifState);
-        RectificationStat();
     }
 
     public new void RectificationStat()

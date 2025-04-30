@@ -30,6 +30,23 @@ public enum StatModif
     ConscienceMax,
     Clairvoyance
 }
+public enum BaseStats
+{
+    None,
+    Radiance,
+    RadianceMax,
+    ForceAme,
+    Vitesse,
+    Conviction,
+    Resilience,
+    Calme,
+    Volonte,
+    Conscience,
+    Clairvoyance,
+    PalierTension,
+    NombreBuff,
+    NombreDebuff
+}
 
 public enum ParametreStat
 {
