@@ -51,7 +51,7 @@ public class TradManager : MonoBehaviour
     private Dictionary<string, List<string>> _capaDictionary = new Dictionary<string, List<string>>();
     private Dictionary<string, List<string>> _miscDictionary = new Dictionary<string, List<string>>();
 
-    // Pour la vérification de l'unicité des ID de traductions
+    // Pour la vï¿½rification de l'unicitï¿½ des ID de traductions
     private HashSet<string> _idList = new HashSet<string>();
 
     private Analyzer _analyzer;
@@ -225,19 +225,37 @@ public class TradManager : MonoBehaviour
     /// <param name="key">The key of the translated Text</param>
     /// <param name="defaultTranslation">The default translation wanted if the key or language doesn't exist</param>
     /// <returns>Translated text</returns>
-    public string GetTranslation(string key, string defaultTranslation = "missing translation")
+    // public string GetTranslation(string key, string defaultTranslation = "missing translation")
+    // {
+    //     if (_dialogueDictionary.ContainsKey(key) && _dialogueDictionary[key].Count > IdLanguage)
+    //     {
+    //         return _analyzer.Execute(_dialogueDictionary[key][IdLanguage]);
+    //     }
+    //     else if (_capaDictionary.ContainsKey(key) && _capaDictionary[key].Count > IdLanguage)
+    //     {
+    //         return _analyzer.Execute(_capaDictionary[key][IdLanguage]);
+    //     }
+    //     else if (_miscDictionary.ContainsKey(key) && _miscDictionary[key].Count > IdLanguage)
+    //     {
+    //         return _analyzer.Execute(_miscDictionary[key][IdLanguage]);
+    //     }
+    //     LogError(key);
+    //     return defaultTranslation;
+    // }    
+    
+    public string GetTranslation(string key, string defaultTranslation = "missing translation", List<float> variableValues = null)
     {
         if (_dialogueDictionary.ContainsKey(key) && _dialogueDictionary[key].Count > IdLanguage)
         {
-            return _analyzer.Execute(_dialogueDictionary[key][IdLanguage]);
+            return _analyzer.Execute(_dialogueDictionary[key][IdLanguage], variableValues);
         }
         else if (_capaDictionary.ContainsKey(key) && _capaDictionary[key].Count > IdLanguage)
         {
-            return _analyzer.Execute(_capaDictionary[key][IdLanguage]);
+            return _analyzer.Execute(_capaDictionary[key][IdLanguage], variableValues);
         }
         else if (_miscDictionary.ContainsKey(key) && _miscDictionary[key].Count > IdLanguage)
         {
-            return _analyzer.Execute(_miscDictionary[key][IdLanguage]);
+            return _analyzer.Execute(_miscDictionary[key][IdLanguage], variableValues);
         }
         LogError(key);
         return defaultTranslation;
