@@ -161,7 +161,7 @@ public class BattleManager : MonoBehaviour
     private void CalcTensionJoueur()
     {
         player.Stat.TensionMax = (CalmeMoyenAdversaire / CalmeMoyen) * player.Stat.Calme;
-        player.Stat.ValeurPalier = player.Stat.TensionMax / player.Stat.NbPalier;
+        player.Stat.ValeurPalier = player.Stat.TensionMax / GameManager.Instance.CommonStatsData.NbPalier;
         if (player.Stat.PalierChangement > 0)
         {
             player.Stat.Tension = player.Stat.ValeurPalier * player.Stat.PalierChangement;
@@ -179,7 +179,7 @@ public class BattleManager : MonoBehaviour
             if (!item.Stat.NoTension)
             {
                 item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.Calme;
-                item.Stat.ValeurPalier = (item.Stat.TensionMax) / item.Stat.NbPalier;
+                item.Stat.ValeurPalier = (item.Stat.TensionMax) / GameManager.Instance.CommonStatsData.NbPalier;
                 if (item.Stat.PalierChangement > 0)
                 {
                     item.Stat.Tension = item.Stat.ValeurPalier * item.Stat.PalierChangement;

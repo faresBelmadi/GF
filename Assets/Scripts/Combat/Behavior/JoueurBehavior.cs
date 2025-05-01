@@ -51,7 +51,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     [SerializeField] private Spell SelectedSpell;
 
     [SerializeField] private AnimationControllerAttack AnimationController;
-
     private BattleManager _refBattleMan => GameManager.Instance.BattleMan;
     [SerializeField] private bool IsTurn;
 
@@ -169,7 +168,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     private void InitUI()
     {
         hPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
-        tensionBarManager.InitPBar(0, Stat.NbPalier);
+        tensionBarManager.InitPBar(0, GameManager.Instance.CommonStatsData.NbPalier);
         conscienceBarManager.InitPBar(Stat.Conscience, Stat.ConscienceMax);
 
         for (int i = 0; i < _passiveTooltips.Count && i < PassiveList.Count; i++)
@@ -192,10 +191,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         if (Stat.Tension != currentTens)
         {
-            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax),
-                Stat.NbPalier);
+            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax),
+                GameManager.Instance.CommonStatsData.NbPalier);
 
-            tensionBarManager.ToggleBloomPulses(((Stat.Tension * Stat.NbPalier) / Stat.TensionMax) >= Stat.NbPalier);
+            tensionBarManager.ToggleBloomPulses(((Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax) >= GameManager.Instance.CommonStatsData.NbPalier);
 
         }
 
@@ -363,7 +362,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     public void PreviewTensionBarUpddate()
     {
         tensionBarManager.PreviewBar(
-            Mathf.FloorToInt(((Stat.Tension + Stat.TensionSoin) * Stat.NbPalier) / Stat.TensionMax), Stat.NbPalier);
+            Mathf.FloorToInt(((Stat.Tension + GameManager.Instance.CommonStatsData.GainTensionSoin) * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax), GameManager.Instance.CommonStatsData.NbPalier);
     }
 
     public void StopPreviewTensionBar()
@@ -644,10 +643,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             {
                 ReceiveTension(Source.Buff);
             }
-
-            var buff = Instantiate(toAdd);
+            var modifiedBuff = ApplyConviction(toAdd);
+            var buff = Instantiate(modifiedBuff);
             buff.Effet = new List<Effet>();
-            foreach (var item in toAdd.Effet)
+            foreach (var item in modifiedBuff.Effet)
             {
                 buff.Effet.Add(Instantiate(item));
             }
@@ -698,7 +697,12 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             {
                 if ((toApply.timerApplication != TimerApplication.Attaque) ||
                     (toApply.timerApplication == TimerApplication.Attaque && !IsTurn))
+                {
+                    
+
                     _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, 0, SourceEffet.BuffDebuff);
+
+                }
 
                 /*if(item.CibleApplication == effet.Cible)
                 {
@@ -755,7 +759,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         if (ModifStat.Radiance < 0)
         {
             var toRemove = ModifStat.Radiance;
-            toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
+            toRemove -= Mathf.FloorToInt(((Stat.Resilience * GameManager.Instance.CommonStatsData.ResilienceValue) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
             if (effet.IsAttaqueEffet)
                 GetAttacked();

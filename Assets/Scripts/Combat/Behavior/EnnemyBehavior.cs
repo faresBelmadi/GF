@@ -244,8 +244,8 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         if (currentHp != Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
         currentHp = Stat.Radiance;
 
-        TensionUI = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
-        if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, Stat.NbPalier);
+        TensionUI = Mathf.FloorToInt((Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax);
+        if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, GameManager.Instance.CommonStatsData.NbPalier);
         currentTension = TensionUI;
 
         string[] t = Stat.Nom.Split('(');
@@ -417,15 +417,16 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
                 ReceiveTension(Source.Buff);
             }
 
-            var buff = Instantiate(toAdd);
+            var modifiedBuff = ApplyConviction(toAdd);
+            var buff = Instantiate(modifiedBuff);
             buff.Effet = new List<Effet>();
-            foreach (var item in toAdd.Effet)
+            foreach (var item in modifiedBuff.Effet)
             {
                 buff.Effet.Add(Instantiate(item));
             }
 
             Stat.ListBuffDebuff.Add(buff);
-            base.AddBuffDebuff(toAdd, Stat);
+            base.AddBuffDebuff(buff, Stat);
 
             ApplicationBuffDebuff(Timer, buff);
         }
@@ -463,6 +464,29 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         {
             foreach (var effet in toApply.Effet)
             {
+                int positif = toApply.IsDebuff ? -1 : 1;
+                int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
+                effet.Pourcentage += (Stat.Conviction * GameManager.Instance.CommonStatsData.ConvictionValue) * positif * percentPositif;
+
+                int ajout = 0;
+                int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
+                if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier1)
+                {
+                    if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier2)
+                        ajout = GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
+                    else
+                        ajout = GameManager.Instance.CommonStatsData.ConvictionValue;
+                }
+                else if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier1)
+                {
+                    if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier2)
+                        ajout = -GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
+                    else
+                        ajout = -GameManager.Instance.CommonStatsData.ConvictionValue;
+                }
+
+                effet.ValeurBrut += ajout * positif * valuePositif;
+
                 _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
                 /*if (item.CibleApplication == effet.Cible)
                 {

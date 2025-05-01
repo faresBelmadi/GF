@@ -58,8 +58,39 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         }
         ListBuffDebuffGO.Clear();
     }
-   
-  
+
+    protected BuffDebuff ApplyConviction(BuffDebuff toModify)
+    {
+        BuffDebuff buff = toModify;
+        foreach (var effet in buff.Effet)
+        {
+            int positif = buff.IsDebuff ? -1 : 1;
+            int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
+            effet.Pourcentage += (Stat.Conviction * GameManager.Instance.CommonStatsData.ConvictionValue) * positif * percentPositif;
+
+            int ajout = 0;
+            int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
+            if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier1)
+            {
+                if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier2)
+                    ajout = GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
+                else
+                    ajout = GameManager.Instance.CommonStatsData.ConvictionValue;
+            }
+            else if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier1)
+            {
+                if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier2)
+                    ajout = -GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
+                else
+                    ajout = -GameManager.Instance.CommonStatsData.ConvictionValue;
+            }
+
+            effet.ValeurBrut += ajout * positif * valuePositif;
+        }
+
+        return buff;
+    }
+
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);
@@ -376,9 +407,9 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     public void EnervementTension()
     {
-        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
-        if (t >= Stat.NbPalier)
-            t = Stat.NbPalier;
+        var t = (int)((Stat.Tension / (GameManager.Instance.CommonStatsData.NbPalier * Stat.ValeurPalier)) * GameManager.Instance.CommonStatsData.NbPalier);
+        if (t >= GameManager.Instance.CommonStatsData.NbPalier)
+            t = GameManager.Instance.CommonStatsData.NbPalier;
         else
             t++;
 
@@ -388,7 +419,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     public void ApaisementTension()
     {
 
-        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        var t = (int)((Stat.Tension / (GameManager.Instance.CommonStatsData.NbPalier * Stat.ValeurPalier)) * GameManager.Instance.CommonStatsData.NbPalier);
         if (t <= 0)
             t = 0;
         else
@@ -403,28 +434,28 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         switch (sourceDamage)
         {
             case Source.Attaque:
-                Stat.Tension += Stat.TensionAttaque;
+                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionAttaque;
                 gainedTension = true;
                 break;
             case Source.Dot:
-                Stat.Tension += Stat.TensionDot;
+                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionDot;
                 gainedTension = true;
                 break;
             case Source.Buff:
-                Stat.Tension += Stat.TensionDebuff;
+                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionDebuff;
                 gainedTension = true;
                 break;
             case Source.Soin:
-                Stat.Tension += Stat.TensionSoin;
+                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionSoin;
                 gainedTension = true;
                 break;
         }
         int newPalier = (int)(_stat.Tension / _stat.ValeurPalier);
         if (oldPalier < newPalier)
             OnGainTensionLevel?.Invoke();                               // On gagne un palier de tension
-        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
+        if (Stat.Tension >= Stat.ValeurPalier * GameManager.Instance.CommonStatsData.NbPalier)
         {
-            Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
+            Stat.Tension = Stat.ValeurPalier * GameManager.Instance.CommonStatsData.NbPalier;
         }
         if (Stat.Tension < 0)
             Stat.Tension = 0;
@@ -432,7 +463,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     public virtual bool CanHaveAnotherTurn()
     {
-        return Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier;
+        return Stat.Tension >= Stat.ValeurPalier * GameManager.Instance.CommonStatsData.NbPalier;
     }
     public virtual void ResetStat()
     {
