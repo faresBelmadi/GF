@@ -122,6 +122,21 @@ public class ClairvoyanceIconData : ScriptableObject
     private Sprite _wrathDown;
     [SerializeField]
     private Sprite _wrathUp;
+    [field: SerializeField]
+    public Sprite Stun;
+    [field: SerializeField]
+    public Sprite StunDown;
+    [field: SerializeField]
+    public Sprite StunUp;
+    [field: SerializeField]
+    public Sprite Essence;
+    [field: SerializeField]
+    public Sprite EssenceDown;
+    [field: SerializeField]
+    public Sprite EssenceUp;
+    [field: SerializeField]
+    public Sprite Divin;
+
 
     public Sprite Damage { get => _damage; }
     public Sprite IntentionAtk { get => _intentionAtk; }
