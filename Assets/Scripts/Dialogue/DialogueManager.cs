@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using TMPro;
 using UnityEngine;
@@ -51,6 +52,8 @@ public class DialogueManager : MonoBehaviour
     private GameObject _buffPrefab;
     [SerializeField]
     private GameObject _effectPrefab;
+    [SerializeField]
+    private GameObject _dialogBuffEffectPrefab;
     [SerializeField]
     private GameObject _buffContainer;
     [Space]
@@ -1050,6 +1053,34 @@ public class DialogueManager : MonoBehaviour
     }
 
     #region Consequence
+    private GameObject InstantiateDialogBuffEffect(Sprite buffEffectSprite, Cible target)
+    {
+        GameObject buffEffect = Instantiate(_dialogBuffEffectPrefab, _buffContainer.transform);
+        List<Sprite> targets;
+        
+        switch (target)
+        {
+            case Cible.joueur:
+                targets = new List<Sprite> { GameManager.Instance.BattleMan.player.Stat.Icon };
+                break;
+            case Cible.allEnnemi:
+                targets = new List<Sprite>();
+                targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.Icon));
+                break;
+            case Cible.All:
+                targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.Icon))
+                {
+                    GameManager.Instance.BattleMan.player.Stat.Icon
+                };
+                break;
+            default:
+                targets = new List<Sprite>();
+                Debug.LogWarning("Error when instanting BuffEffectDialog with target(" + target.ToString() + ") on effect");
+                break;
+        }
+        buffEffect.GetComponent<DialogBuffEffectComponent>().SetSprites(buffEffectSprite, targets);
+        return buffEffect;
+    }
     void ApplyConsequence(List<ConséquenceSO> consequence)
     {
         foreach (var Consequence in consequence)
@@ -1059,13 +1090,22 @@ public class DialogueManager : MonoBehaviour
             {
                 if (buffDebuff == null) continue;           //null safe condition
 
-                GameObject buff = Instantiate(_buffPrefab, _buffContainer.transform);
-                buff.GetComponent<BuffDebuffComponant>().InitBuffDebuff(buffDebuff);
-                buff.GetComponent<BuffDebuffComponant>().buffCntLabel.text = "1";
-                buff.GetComponent<EnflateSystem>().TriggerInflation();
+                //GameObject buff = Instantiate(_buffPrefab, _buffContainer.transform);
+                //buff.GetComponent<BuffDebuffComponant>().InitBuffDebuff(buffDebuff);
+                //buff.GetComponent<BuffDebuffComponant>().buffCntLabel.text = "1";
+                //buff.GetComponent<EnflateSystem>().TriggerInflation();
 
-                buff.GetComponent<BuffDebuffComponant>().buffSprite.sprite = buffDebuff.IsDebuff ? GameManager.Instance.SpriteData.Debuff : GameManager.Instance.SpriteData.Buff;
-                _listBuffEffectFromDialog.Add(buff);
+                //buff.GetComponent<BuffDebuffComponant>().buffSprite.sprite = buffDebuff.IsDebuff ? GameManager.Instance.SpriteData.Debuff : GameManager.Instance.SpriteData.Buff;
+
+
+                //_listBuffEffectFromDialog.Add(buff);
+
+
+               
+
+
+                var buffGO = InstantiateDialogBuffEffect(buffDebuff.IsDebuff ? GameManager.Instance.SpriteData.Debuff : GameManager.Instance.SpriteData.Buff, buffDebuff.CibleApplication);
+                _listBuffEffectFromDialog.Add(buffGO);
 
                 //Application du buff
                 ChoosePathOfExecution(Consequence, buffDebuff);
@@ -1084,11 +1124,15 @@ public class DialogueManager : MonoBehaviour
             {
                 //Affichage de l'effet dans le dialogue
                 Debug.Log("###Conséquence### - Ajout d'un nouvel Effet de type : " + effet.TypeEffet.ToString());
-                GameObject effectGO = Instantiate(_effectPrefab, _buffContainer.transform);
-                effectGO.GetComponent<EffectComponent>().SetSprite(effet.GetSpriteOfEffect());
-                effectGO.GetComponent<EffectComponent>().SetText(effet.GetTargetStat());
-                effectGO.GetComponent<EnflateSystem>().TriggerInflation();
-                _listBuffEffectFromDialog.Add(effectGO);
+                //GameObject effectGO = Instantiate(_effectPrefab, _buffContainer.transform);
+                //effectGO.GetComponent<EffectComponent>().SetSprite(effet.GetSpriteOfEffect());
+                //effectGO.GetComponent<EffectComponent>().SetText(effet.GetTargetStat());
+                //effectGO.GetComponent<EnflateSystem>().TriggerInflation();
+                //_listBuffEffectFromDialog.Add(effectGO);
+
+                var effetGO = InstantiateDialogBuffEffect(effet.GetSpriteOfEffect(), effet.Cible);
+                _listBuffEffectFromDialog.Add(effetGO);
+
                 //Application de l'effet
                 if (/*ManagerBattle == null*/ ManagerAlea.IsAlea)
                 {
