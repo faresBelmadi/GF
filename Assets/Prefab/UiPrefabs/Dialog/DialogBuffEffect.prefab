@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6317581826058603772}
   - component: {fileID: 2659774389848075529}
+  - component: {fileID: 5785187446634572561}
   m_Layer: 5
   m_Name: DialogBuffEffect
   m_TagString: Untagged
@@ -52,6 +53,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _targetImage: {fileID: 8131610963731319989}
   _effectImage: {fileID: 146808039377431916}
+--- !u!114 &5785187446634572561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624071545552489559}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94af3253ed8919c46a2fc018a80e01a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  triggerOnStart: 0
+  duration: 0.5
+  amplitude: 0.5
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.7100214
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1621043351654753122
 GameObject:
   m_ObjectHideFlags: 0

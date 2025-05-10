@@ -67,6 +67,14 @@ public class DialogueManager : MonoBehaviour
     //public Button skipButton; 
     [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
 
+    [Space]
+    [Header("Buff Effect Description panel")]
+    [SerializeField]
+    private GameObject _popupPanel;
+    [SerializeField]
+    private TMP_Text _nameText;
+    [SerializeField]
+    private TMP_Text _descriptionText;
 
     #endregion UI Reference
 
@@ -1053,7 +1061,7 @@ public class DialogueManager : MonoBehaviour
     }
 
     #region Consequence
-    private GameObject InstantiateDialogBuffEffect(Sprite buffEffectSprite, Cible target)
+    private GameObject InstantiateDialogBuffEffect(Sprite buffEffectSprite, Cible target, string name, string description, EnnemyBehavior enemyTarget = null)
     {
         GameObject buffEffect = Instantiate(_dialogBuffEffectPrefab, _buffContainer.transform);
         List<Sprite> targets;
@@ -1073,16 +1081,22 @@ public class DialogueManager : MonoBehaviour
                     GameManager.Instance.BattleMan.player.Stat.Icon
                 };
                 break;
+            case Cible.ennemi:
+                targets = new List<Sprite> { enemyTarget.Stat.Icon };
+                break;
             default:
                 targets = new List<Sprite>();
                 Debug.LogWarning("Error when instanting BuffEffectDialog with target(" + target.ToString() + ") on effect");
                 break;
         }
         buffEffect.GetComponent<DialogBuffEffectComponent>().SetSprites(buffEffectSprite, targets);
+        buffEffect.GetComponent<DialogBuffEffectComponent>().SetNameAdDescriptionText(name, description);
+        buffEffect.GetComponent<EnflateSystem>().TriggerInflation();
         return buffEffect;
     }
     void ApplyConsequence(List<ConséquenceSO> consequence)
     {
+        ClearBuffEffectList();
         foreach (var Consequence in consequence)
         {
             // Tout les buff qu'applique le dialogue
@@ -1104,11 +1118,19 @@ public class DialogueManager : MonoBehaviour
                
 
 
-                var buffGO = InstantiateDialogBuffEffect(buffDebuff.IsDebuff ? GameManager.Instance.SpriteData.Debuff : GameManager.Instance.SpriteData.Buff, buffDebuff.CibleApplication);
-                _listBuffEffectFromDialog.Add(buffGO);
 
                 //Application du buff
-                ChoosePathOfExecution(Consequence, buffDebuff);
+                EnnemyBehavior target = ChoosePathOfExecution(Consequence, buffDebuff);
+
+
+                string buffName = TradManager.instance.GetTranslation(buffDebuff.idTradName, buffDebuff.Nom);
+                string buffDescription = TradManager.instance.GetTranslation(buffDebuff.idTradDescription, buffDebuff.Description);
+
+
+                var buffGO = InstantiateDialogBuffEffect(buffDebuff.IsDebuff ? GameManager.Instance.SpriteData.Debuff : GameManager.Instance.SpriteData.Buff, buffDebuff.CibleApplication, buffName, buffDescription, target);
+                _listBuffEffectFromDialog.Add(buffGO);
+
+
                 //if (/*ManagerBattle == null*/ManagerAlea.IsAlea)
                 //{
                 //    ManagerAlea.Stat.ListBuffDebuff.Add(Instantiate(buffDebuff));
@@ -1130,9 +1152,8 @@ public class DialogueManager : MonoBehaviour
                 //effectGO.GetComponent<EnflateSystem>().TriggerInflation();
                 //_listBuffEffectFromDialog.Add(effectGO);
 
-                var effetGO = InstantiateDialogBuffEffect(effet.GetSpriteOfEffect(), effet.Cible);
-                _listBuffEffectFromDialog.Add(effetGO);
 
+                EnnemyBehavior target = null;
                 //Application de l'effet
                 if (/*ManagerBattle == null*/ ManagerAlea.IsAlea)
                 {
@@ -1141,14 +1162,17 @@ public class DialogueManager : MonoBehaviour
                 }
                 else
                 {
-                    ChoosePathOfExecution(Consequence, effet);
+                    target = ChoosePathOfExecution(Consequence, effet);
                 }
+                string effectDescription = $"{GameManager.Instance.CommonDescData.IdTradDescriptionEffect}\n{effet.GetTargetStat()}";
+                var effetGO = InstantiateDialogBuffEffect(effet.GetSpriteOfEffect(), effet.Cible,GameManager.Instance.CommonNameData.Effet, effectDescription, target);
+                _listBuffEffectFromDialog.Add(effetGO);
             }
 
         }
     }
 
-    private void ChoosePathOfExecution(ConséquenceSO Consequence, ScriptableObject scriptableObject)
+    private EnnemyBehavior ChoosePathOfExecution(ConséquenceSO Consequence, ScriptableObject scriptableObject)
     {
         switch (Consequence.target)
         {
@@ -1177,11 +1201,11 @@ public class DialogueManager : MonoBehaviour
             case CibleDialogue.ennemi:
                 if (scriptableObject as BuffDebuff)
                 {
-                    ApplyBuffDebuffOneEnnemi((BuffDebuff)scriptableObject);
+                    return ApplyBuffDebuffOneEnnemi((BuffDebuff)scriptableObject);
                 }
                 else if (scriptableObject as Effet)
                 {
-                    ApplyEffectOneEnnemi((Effet)scriptableObject);
+                    return ApplyEffectOneEnnemi((Effet)scriptableObject);
                 }
 
                 break;
@@ -1205,6 +1229,7 @@ public class DialogueManager : MonoBehaviour
             case CibleDialogue.Self:
                 break;
         }
+        return null;
     }
 
     private void ApplyEffectOnPlayer(Effet scriptableObject)
@@ -1233,10 +1258,11 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void ApplyEffectOneEnnemi(Effet scriptableObject)
+    private EnnemyBehavior ApplyEffectOneEnnemi(Effet scriptableObject)
     {
         var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0, ManagerBattle.EnemyScripts.Count)];
         enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat, enemyScript.LastDamageTaken, enemyScript.Stat));
+        return enemyScript;
     }
 
     private void ApplyBuffDebuffOnPlayer(BuffDebuff scriptableObject)
@@ -1256,12 +1282,13 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    private void ApplyBuffDebuffOneEnnemi(BuffDebuff scriptableObject)
+    private EnnemyBehavior ApplyBuffDebuffOneEnnemi(BuffDebuff scriptableObject)
     {
         var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0, ManagerBattle.EnemyScripts.Count)];
         enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte,
             scriptableObject.timerApplication);
         enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
+        return enemyScript;
     }
     #endregion Consequence
     #region End of Dialogue
@@ -1281,17 +1308,21 @@ public class DialogueManager : MonoBehaviour
         }
         _listClairvEffect.Clear();
     }
-    private void ResetDialog()
+    private void ClearBuffEffectList()
     {
-        DialogueIndex = 0;
-        NextDialogueIndex = 0;
-
         for (int i = _listBuffEffectFromDialog.Count - 1; i >= 0; i--)
         {
             Destroy(_listBuffEffectFromDialog[i]);
         }
         _listBuffEffectFromDialog.Clear();
+    }
+    private void ResetDialog()
+    {
+        DialogueIndex = 0;
+        NextDialogueIndex = 0;
 
+        HidePopup();
+        ClearBuffEffectList();
         ClearClairvoyanceIcons();
     }
     public void StartCombat()
@@ -1325,4 +1356,25 @@ public class DialogueManager : MonoBehaviour
         GameManager.Instance.AleaMan.EndAlea();
     }
     #endregion End of Dialogue
+    #region PopupPanel
+    public void ShopPopup(string name, string description)
+    {
+        _popupPanel.SetActive(true);
+
+        GameObject posGO = GameObject.FindGameObjectsWithTag("TooltipPosition")[0];
+        if (posGO != null)
+        {
+            _popupPanel.transform.position = posGO.transform.position;
+        }
+
+        _nameText.text = name;
+        _descriptionText.text = description;
+    }
+    public void HidePopup()
+    {
+        _popupPanel.SetActive(false);
+
+      
+    }
+    #endregion
 }
