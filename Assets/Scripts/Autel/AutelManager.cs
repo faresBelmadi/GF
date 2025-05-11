@@ -268,7 +268,7 @@ public class AutelManager : MonoBehaviour
             //}
             if (capa.Spell?.Sprite)
             {
-                AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.Sprite;
+                AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.RoundSprite;
 
                 //DEMO ONLY
                 capa.isBuyable = true;
