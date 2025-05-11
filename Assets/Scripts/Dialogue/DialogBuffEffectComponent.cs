@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
 public class DialogBuffEffectComponent : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
@@ -22,22 +20,14 @@ public class DialogBuffEffectComponent : MonoBehaviour, IPointerEnterHandler, IP
     private string _description;
 
     private List<Sprite> _targets;
+    private List<UIEnnemi> _enemyUIList;
+    private JoueurBehavior _player = null;
 
     private int _currentIndex = 0;
     private float _currentTime = 0;
     private float _currentRotTime = 0;
     private bool _isSpinning = false;
     private float _currentRot;
-
-    private void OnEnable()
-    {
-        CombatBehavior<CharacterStat>.OnUpdateUI += UpdateUI;
-    }
-    private void OnDisable()
-    {
-        CombatBehavior<CharacterStat>.OnUpdateUI -= UpdateUI;
-    }
-
     private void Start()
     {
         _currentIndex = 0;
@@ -48,8 +38,6 @@ public class DialogBuffEffectComponent : MonoBehaviour, IPointerEnterHandler, IP
     // Update is called once per frame
     void Update()
     {
-
-       
         if (_targets.Count > 1)
         {
             _currentTime += Time.deltaTime;
@@ -61,6 +49,7 @@ public class DialogBuffEffectComponent : MonoBehaviour, IPointerEnterHandler, IP
             }
         }
     }
+    // Coroutine pour tourner et swap le sprite du cadre de cible
     private IEnumerator SpinAndSwap()
     {
         _currentRotTime = 0f;
@@ -93,16 +82,24 @@ public class DialogBuffEffectComponent : MonoBehaviour, IPointerEnterHandler, IP
         _currentIndex = (_currentIndex + 1) % _targets.Count;
         _targetImage.sprite = _targets[_currentIndex];
     }
+    public void SetEnemyUI(List<UIEnnemi> enemyList)
+    {
+        _enemyUIList = new List<UIEnnemi>(enemyList);
+    }
+    public void SetPlayer(JoueurBehavior player)
+    {
+        _player = player;
+    }
     public void SetTargetsSprite(List<Sprite> targetSprites) => SetSprites(null, targetSprites);
     public void SetEffectSprite(Sprite effectSprite) => SetSprites(effectSprite, null);
-    public void SetSprites(Sprite effectSprite, List<Sprite> targetSprites)
+    public void SetSprites(Sprite effectSprite, List<Sprite> targetSprite)
     {
         if (effectSprite != null)
             _effectImage.sprite = effectSprite;
 
-        if (targetSprites != null)
+        if (targetSprite != null)
         {
-            _targets = new List<Sprite>(targetSprites);
+            _targets = new List<Sprite>(targetSprite);
             _targetImage.sprite = _targets.FirstOrDefault();
         }
     }
@@ -112,19 +109,40 @@ public class DialogBuffEffectComponent : MonoBehaviour, IPointerEnterHandler, IP
         _name = name;
         _description = desc;
     }
+    public void ShowEnemyTargeting()
+    {
+        foreach(var enemyUI in _enemyUIList)
+        {
+            enemyUI.ShowTargeting();
+        }
 
+        if (_player != null)
+        {
+            _player.ShowTargeting();
+        }
+    }
+    public void HideEnemyTargeting()
+    {
+        foreach (var enemyUI in _enemyUIList)
+        {
+            enemyUI.HideTargeting();
+        }
+
+        if (_player != null)
+        {
+            _player.HideTargeting();
+        }
+    }
     public void OnPointerEnter(PointerEventData eventData)
     {
         GameManager.Instance.DialManager.ShopPopup(_name, _description);
-
+        ShowEnemyTargeting();
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         GameManager.Instance.DialManager.HidePopup();
+        HideEnemyTargeting();
     }
-    public void UpdateUI()
-    {
-        // buffDescriptionLabel.text = TradManager.instance.GetTranslation(_buffDebuff.idTradDescription, "Missing description");
-    }
+   
 }

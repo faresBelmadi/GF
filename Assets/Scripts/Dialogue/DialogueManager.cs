@@ -1061,28 +1061,43 @@ public class DialogueManager : MonoBehaviour
     }
 
     #region Consequence
+    /// <summary>
+    /// Instancie un objet BuffEffect pour le faire apparaitre dans la liste des buff et effet lors des dialogues.
+    /// </summary>
+    /// <param name="buffEffectSprite">Le sprite a afficher</param>
+    /// <param name="target">le type de cible</param>
+    /// <param name="name"></param>
+    /// <param name="description"></param>
+    /// <param name="enemyTarget">La cible si l'effet a une cible random, null sinon</param>
+    /// <returns></returns>
     private GameObject InstantiateDialogBuffEffect(Sprite buffEffectSprite, Cible target, string name, string description, EnnemyBehavior enemyTarget = null)
     {
         GameObject buffEffect = Instantiate(_dialogBuffEffectPrefab, _buffContainer.transform);
         List<Sprite> targets;
-        
+        List<UIEnnemi> UIs = new List<UIEnnemi>(); ;
         switch (target)
         {
             case Cible.joueur:
-                targets = new List<Sprite> { GameManager.Instance.BattleMan.player.Stat.Icon };
+                targets = new List<Sprite> { GameManager.Instance.BattleMan.player.Stat.Icon};
+                buffEffect.GetComponent<DialogBuffEffectComponent>().SetPlayer(ManagerBattle.player);
                 break;
             case Cible.allEnnemi:
                 targets = new List<Sprite>();
                 targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.Icon));
+                UIs = new List<UIEnnemi>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.UICombat));
+                
                 break;
             case Cible.All:
                 targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.Icon))
                 {
                     GameManager.Instance.BattleMan.player.Stat.Icon
                 };
+                UIs = new List<UIEnnemi>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.UICombat));
+                buffEffect.GetComponent<DialogBuffEffectComponent>().SetPlayer(ManagerBattle.player);
                 break;
             case Cible.ennemi:
                 targets = new List<Sprite> { enemyTarget.Stat.Icon };
+                UIs = new List<UIEnnemi> { enemyTarget.UICombat };
                 break;
             default:
                 targets = new List<Sprite>();
@@ -1091,6 +1106,7 @@ public class DialogueManager : MonoBehaviour
         }
         buffEffect.GetComponent<DialogBuffEffectComponent>().SetSprites(buffEffectSprite, targets);
         buffEffect.GetComponent<DialogBuffEffectComponent>().SetNameAdDescriptionText(name, description);
+        buffEffect.GetComponent<DialogBuffEffectComponent>().SetEnemyUI(UIs);
         buffEffect.GetComponent<EnflateSystem>().TriggerInflation();
         return buffEffect;
     }
@@ -1103,42 +1119,15 @@ public class DialogueManager : MonoBehaviour
             foreach (var buffDebuff in Consequence.Buffs)
             {
                 if (buffDebuff == null) continue;           //null safe condition
-
-                //GameObject buff = Instantiate(_buffPrefab, _buffContainer.transform);
-                //buff.GetComponent<BuffDebuffComponant>().InitBuffDebuff(buffDebuff);
-                //buff.GetComponent<BuffDebuffComponant>().buffCntLabel.text = "1";
-                //buff.GetComponent<EnflateSystem>().TriggerInflation();
-
-                //buff.GetComponent<BuffDebuffComponant>().buffSprite.sprite = buffDebuff.IsDebuff ? GameManager.Instance.SpriteData.Debuff : GameManager.Instance.SpriteData.Buff;
-
-
-                //_listBuffEffectFromDialog.Add(buff);
-
-
-               
-
-
-
                 //Application du buff
                 EnnemyBehavior target = ChoosePathOfExecution(Consequence, buffDebuff);
-
 
                 string buffName = TradManager.instance.GetTranslation(buffDebuff.idTradName, buffDebuff.Nom);
                 string buffDescription = TradManager.instance.GetTranslation(buffDebuff.idTradDescription, buffDebuff.Description);
 
-
                 var buffGO = InstantiateDialogBuffEffect(buffDebuff.IsDebuff ? GameManager.Instance.SpriteData.Debuff : GameManager.Instance.SpriteData.Buff, buffDebuff.CibleApplication, buffName, buffDescription, target);
                 _listBuffEffectFromDialog.Add(buffGO);
 
-
-                //if (/*ManagerBattle == null*/ManagerAlea.IsAlea)
-                //{
-                //    ManagerAlea.Stat.ListBuffDebuff.Add(Instantiate(buffDebuff));
-                //}
-                //else
-                //{
-                //    ChoosePathOfExecution(Consequence, buffDebuff);
-                //}
             }
 
             //Tous les effets qu'applique le dialogue
@@ -1146,13 +1135,6 @@ public class DialogueManager : MonoBehaviour
             {
                 //Affichage de l'effet dans le dialogue
                 Debug.Log("###Conséquence### - Ajout d'un nouvel Effet de type : " + effet.TypeEffet.ToString());
-                //GameObject effectGO = Instantiate(_effectPrefab, _buffContainer.transform);
-                //effectGO.GetComponent<EffectComponent>().SetSprite(effet.GetSpriteOfEffect());
-                //effectGO.GetComponent<EffectComponent>().SetText(effet.GetTargetStat());
-                //effectGO.GetComponent<EnflateSystem>().TriggerInflation();
-                //_listBuffEffectFromDialog.Add(effectGO);
-
-
                 EnnemyBehavior target = null;
                 //Application de l'effet
                 if (/*ManagerBattle == null*/ ManagerAlea.IsAlea)

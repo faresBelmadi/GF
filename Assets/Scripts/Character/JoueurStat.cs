@@ -6,9 +6,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Stat Joueur", menuName = "Character/Create New Joueur", order = 11)]
 public class JoueurStat : CharacterStat
 {
-    [Space]
-    public Sprite Icon;
-
     public int Lvl;
     public int Volonter;
     public int VolonterMax;
