@@ -51,6 +51,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     [SerializeField] private Spell SelectedSpell;
 
     [SerializeField] private AnimationControllerAttack AnimationController;
+    [SerializeField] private GameObject _ciblage;
 
     private BattleManager _refBattleMan => GameManager.Instance.BattleMan;
     [SerializeField] private bool IsTurn;
@@ -864,6 +865,11 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     {
 
     }
+    #endregion
+
+    #region UI Ciblage
+    public void ShowTargeting() => _ciblage.SetActive(true);
+    public void HideTargeting() => _ciblage.SetActive(false);
     #endregion
 
 }
