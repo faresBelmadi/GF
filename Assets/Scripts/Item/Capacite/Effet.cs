@@ -776,6 +776,8 @@ public class Effet : ScriptableObject
                 {
                     return GameManager.Instance.StatIcons.WrathUp;
                 }
+            case TypeEffet.AddPassiveStack:
+                return GameManager.Instance.StatIcons.Divin;
             case TypeEffet.DegatPVMax:
             case TypeEffet.DegatsBrut:
             case TypeEffet.AugmentFADernierDegatsSubi:

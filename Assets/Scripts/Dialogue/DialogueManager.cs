@@ -1096,6 +1096,7 @@ public class DialogueManager : MonoBehaviour
                 buffEffect.GetComponent<DialogBuffEffectComponent>().SetPlayer(ManagerBattle.player);
                 break;
             case Cible.ennemi:
+            case Cible.Speaker:
                 targets = new List<Sprite> { enemyTarget.Stat.Icon };
                 UIs = new List<UIEnnemi> { enemyTarget.UICombat };
                 break;
@@ -1191,6 +1192,17 @@ public class DialogueManager : MonoBehaviour
                 }
 
                 break;
+            case CibleDialogue.Speaker:
+                if (scriptableObject as BuffDebuff)
+                {
+                    return ApplyBuffDebuffOnSpeaker((BuffDebuff)scriptableObject);
+                }
+                else if (scriptableObject as Effet)
+                {
+                    return ApplyEffectOnSpeaker((Effet)scriptableObject);
+                }
+
+                break;
             case CibleDialogue.All:
                 if (scriptableObject as BuffDebuff)
                 {
@@ -1246,6 +1258,12 @@ public class DialogueManager : MonoBehaviour
         enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat, enemyScript.LastDamageTaken, enemyScript.Stat));
         return enemyScript;
     }
+    private EnnemyBehavior ApplyEffectOnSpeaker(Effet scriptableObject)
+    {
+        var enemyScript = _listSpeakers[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].transform.parent.gameObject.GetComponent<EnnemyBehavior>();
+        enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat, enemyScript.LastDamageTaken, enemyScript.Stat));
+        return enemyScript;
+    }
 
     private void ApplyBuffDebuffOnPlayer(BuffDebuff scriptableObject)
     {
@@ -1267,6 +1285,14 @@ public class DialogueManager : MonoBehaviour
     private EnnemyBehavior ApplyBuffDebuffOneEnnemi(BuffDebuff scriptableObject)
     {
         var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0, ManagerBattle.EnemyScripts.Count)];
+        enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte,
+            scriptableObject.timerApplication);
+        enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
+        return enemyScript;
+    }
+    private EnnemyBehavior ApplyBuffDebuffOnSpeaker(BuffDebuff scriptableObject)
+    {
+        var enemyScript = _listSpeakers[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].transform.parent.gameObject.GetComponent<EnnemyBehavior>();
         enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte,
             scriptableObject.timerApplication);
         enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
