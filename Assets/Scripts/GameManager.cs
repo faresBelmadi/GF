@@ -380,19 +380,19 @@ public class GameManager : MonoBehaviour
         {
             case TypeRoom.ENCOUNTER:
                 return UnityEngine.Random.Range(0, EncounterSet.EncounterNeutralList.Count);
-                break;
+
             case TypeRoom.CLASS_ENCOUNTER:
                 return UnityEngine.Random.Range(0, EncounterSet.EncounterClassList.Count);
-                break;
+
             case TypeRoom.ELITE:
                 return UnityEngine.Random.Range(0, EncounterSet.EncounterEliteList.Count);
-                break;
+
             case TypeRoom.CLASS_ELITE:
                 return UnityEngine.Random.Range(0, EncounterSet.EncounterClassEliteList.Count);
-                break;
+
             case TypeRoom.BOSS:
                 return UnityEngine.Random.Range(0, EncounterSet.EncounterBossList.Count);
-                break;
+
             default: return 0;
         }
     }
