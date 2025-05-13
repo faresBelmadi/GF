@@ -79,6 +79,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     public void StartUp()
     {
+        commonStats = GameManager.Instance.CommonStatsData;
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.ClairvoyanceOriginal = Stat.Clairvoyance;
@@ -167,7 +168,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     private void InitUI()
     {
-        commonStats = GameManager.Instance.CommonStatsData;
         hPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
         tensionBarManager.InitPBar(0, commonStats.NbPalier);
         conscienceBarManager.InitPBar(Stat.Conscience, Stat.ConscienceMax);
@@ -641,7 +641,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
-            nbBuffDebuffApplied++;
+            if((toAdd.IDCombatOrigine == _refBattleMan.idPlayer && Stat.Conviction > 0 && !toAdd.IsDebuff) 
+                || (toAdd.IDCombatOrigine !=  _refBattleMan.idPlayer && Stat.Conviction<0 && toAdd.IsDebuff))
+                nbBuffDebuffApplied++;
+
             if (toAdd.IsDebuff)
             {
                 ReceiveTension(Source.Buff);

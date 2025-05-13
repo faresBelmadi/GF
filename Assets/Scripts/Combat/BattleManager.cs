@@ -697,7 +697,7 @@ public class BattleManager : MonoBehaviour
  
     public void GiveBuffDebuff(List<BuffDebuff> BuffDebuff, int target = -1)
     {
-        int origine = currentIdTurn;
+        int origine = IsCombatOn ? currentIdTurn : -1;
         Decompte Decompte = Decompte.none;
         TimerApplication Timer = TimerApplication.Attaque;
         foreach (var item in BuffDebuff)

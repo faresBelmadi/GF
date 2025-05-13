@@ -79,6 +79,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             _refBattleMan = TutoManager.Instance.BattleManager;
         else
         {
+            commonStats = GameManager.Instance.CommonStatsData;
             _refBattleMan = GameManager.Instance.BattleMan;
             clairvoyanceIconData = GameManager.Instance.StatIcons;
         }
