@@ -101,18 +101,9 @@ public class Effet : ScriptableObject
                 damageAmount += Mathf.FloorToInt(valueToChange * caster .MultiplDegat);
                 break;
             case TypeEffet.RadianceMax:
-
-                //damageAmount = Mathf.FloorToInt((Pourcentage / 100f) * caster.RadianceMaxOriginal); ;//Mathf.FloorToInt((Pourcentage / 100f) * ((cible.Radiance / cible.RadianceMax) * cible.RadianceMaxOriginal));
-                if (Cible == null)
-                {
-                    int addAmount = (int)(caster.RadianceMax * Pourcentage * .01f);
-                    damageAmount = caster.RadianceMax + addAmount;
-                }
-                else
-                {
-                    int addAmount = (int)(cible.RadianceMax * Pourcentage * .01f);
-                    damageAmount = cible.RadianceMax + addAmount;
-                }
+                int radianceMax = cible?.RadianceMax ?? caster.RadianceMax;
+                int addAmount = (int)(radianceMax * Pourcentage * .01f);
+                damageAmount = radianceMax + addAmount;
                 break;
            
             case TypeEffet.DegatPVMax:
