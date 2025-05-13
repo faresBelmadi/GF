@@ -1128,7 +1128,6 @@ public class DialogueManager : MonoBehaviour
 
                 var buffGO = InstantiateDialogBuffEffect(buffDebuff.IsDebuff ? GameManager.Instance.SpriteData.Debuff : GameManager.Instance.SpriteData.Buff, Consequence.target, buffName, buffDescription, target);
                 _listBuffEffectFromDialog.Add(buffGO);
-
             }
 
             //Tous les effets qu'applique le dialogue
