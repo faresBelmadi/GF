@@ -442,6 +442,12 @@ public class Effet : ScriptableObject
                     percent *= 3;
                 ModifState.Radiance +=
                     Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+
+                if(-ModifState.Radiance  >= (float)Cible.Radiance)
+                    foreach (var item in GameManager.Instance.BattleMan.EnemyScripts)
+                    {
+                        item.AddDebuff(AfterEffectToApply,AfterEffectToApply.Decompte,AfterEffectToApply.timerApplication);
+                    }
                 break;
             case TypeEffet.UntilDeath:
                 ModifState.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);

@@ -27,6 +27,8 @@ public class CommonDescData : ScriptableObject
     private string _idTradDegat;
     [SerializeField]
     private string _idTradColere;
+    [SerializeField]
+    private string _idTradEffectDescription;
 
 
     public string IdTradAttLegere => TradManager.instance.GetTranslation(_idTradAttLegere, "A light attack will be performed.");
@@ -41,4 +43,6 @@ public class CommonDescData : ScriptableObject
     public string IdTradDebuffMultHeal => TradManager.instance.GetTranslation(_idTradDebuffMultHeal, "A bonus/malus multiplier on healing.");
     public string IdTradDegat => TradManager.instance.GetTranslation(_idTradDegat, "Damage will be inflicted.");
     public string IdTradColere => TradManager.instance.GetTranslation(_idTradColere, "Wrath provides a chance to deal an offensive attack.");
+    public string IdTradDescriptionEffect => TradManager.instance.GetTranslation(_idTradEffectDescription, "This effect will modify:");
+
 }

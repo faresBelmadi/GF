@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 {

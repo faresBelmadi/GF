@@ -48,7 +48,11 @@ public class UIEnnemi : MonoBehaviour
     {
         NameText.text = nom;
     }
-
+    public void ShowTargeting() => Ciblage.SetActive(true);
+    public void HideTargeting()
+    {
+        Ciblage.SetActive(false);
+    }
     private void OnMouseEnter()
     {
         //ici pour arreter le ciblage
@@ -58,7 +62,7 @@ public class UIEnnemi : MonoBehaviour
         }
         if (TargetingMode)
         {
-            Ciblage.SetActive(true);
+            ShowTargeting();
             OnPreviewDamage?.Invoke();
         }
         //if (debuffParents.childCount > 0 || buffParents.childCount > 0)
@@ -73,7 +77,7 @@ public class UIEnnemi : MonoBehaviour
         }
         if (TargetingMode)
         {
-            Ciblage.SetActive(false);
+            HideTargeting();
             OnStopPreviewDamage?.Invoke();
         }
 

@@ -153,6 +153,11 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             gainedTension = false;
         }
 
+        if (!skip && !Stat.isStun)
+        {
+            DoAction();
+        }
+
         if (Stat.isStun)
         {
             Debug.Log("is stuned");
@@ -160,10 +165,6 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             EndTurn();
         }
 
-        if (!skip && !Stat.isStun)
-        {
-            DoAction();
-        }
     }
 
     public void EndTurn()
@@ -369,7 +370,10 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     {
         //Debug.Log("commencement des degats");
         //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
-        _refBattleMan.LaunchSpellEnnemi(nextAction);
+        if (!Stat.isStun)
+        {
+            _refBattleMan.LaunchSpellEnnemi(nextAction);
+        }
     }
 
     public void CreateSpellList()

@@ -5,6 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class CharacterStat : ScriptableObject
 {
+    public Sprite Icon;
     public event Action OnRadianceChange;
   
     private int _radiance;
