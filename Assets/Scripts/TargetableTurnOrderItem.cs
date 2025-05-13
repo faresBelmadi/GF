@@ -32,10 +32,10 @@ public class TargetableTurnOrderItem : MonoBehaviour
 
     private void OnMouseDown()
     {
-        //TODO do something?
         return;
-        if (Ciblage == null) return;
-        RaiseEvent();
-        Ciblage.SetActive(false);
+        //TODO do something?
+        //if (Ciblage == null) return;
+        //RaiseEvent();
+        //Ciblage.SetActive(false);
     }
 }
