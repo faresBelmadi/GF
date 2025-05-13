@@ -93,9 +93,9 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
                 {
                     int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
                     int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
-                    effet.Pourcentage += Mathf.FloorToInt(effet.Pourcentage * valueToApply * positif * percentPositif);
+                    effet.Pourcentage += Mathf.FloorToInt(Mathf.Abs(effet.Pourcentage * valueToApply) *  percentPositif);
 
-                    effet.ValeurBrut += Mathf.FloorToInt(effet.ValeurBrut * valueToApply * positif * valuePositif);
+                    effet.ValeurBrut += Mathf.FloorToInt(Mathf.Abs(effet.ValeurBrut * valueToApply) *  valuePositif);
                 }
             }
             else if (!buff.IsDebuff && valueToApply > 0)
@@ -104,9 +104,9 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
                 {
                     int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
                     int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
-                    effet.Pourcentage += Mathf.FloorToInt(effet.Pourcentage * valueToApply * positif * percentPositif);
+                    effet.Pourcentage += Mathf.FloorToInt(Mathf.Abs(effet.Pourcentage * valueToApply) * percentPositif);
 
-                    effet.ValeurBrut += Mathf.FloorToInt(effet.ValeurBrut * valueToApply * positif * valuePositif);
+                    effet.ValeurBrut += Mathf.FloorToInt(Mathf.Abs(effet.ValeurBrut * valueToApply)  * valuePositif);
                 }
             }
             nbBuffDebuffApplied %= commonStats.ConvictionNbBuffTrigger;
