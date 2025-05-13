@@ -11,7 +11,8 @@ public enum TimerApplication
     DebutPhase,
     DebutTour,
     Attaque,
-    Persistant
+    Persistant,
+    Dialogue
 }
 public enum TimerPassif
 {

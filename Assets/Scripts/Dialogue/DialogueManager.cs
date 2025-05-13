@@ -1266,8 +1266,7 @@ public class DialogueManager : MonoBehaviour
 
     private void ApplyBuffDebuffOnPlayer(BuffDebuff scriptableObject)
     {
-        ManagerBattle.player.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte,
-            scriptableObject.timerApplication);
+        ManagerBattle.player.AddDebuff(Instantiate(scriptableObject), TimerApplication.Dialogue);
         ManagerBattle.player.AddBuffDebuff(scriptableObject, ManagerBattle.player.Stat);
     }
 
@@ -1275,8 +1274,7 @@ public class DialogueManager : MonoBehaviour
     {
         foreach (var enemyScript in ManagerBattle.EnemyScripts)
         {
-            enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte,
-                scriptableObject.timerApplication);
+            enemyScript.AddDebuff(Instantiate(scriptableObject), TimerApplication.Dialogue);
             enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
         }
     }
@@ -1284,16 +1282,14 @@ public class DialogueManager : MonoBehaviour
     private EnnemyBehavior ApplyBuffDebuffOneEnnemi(BuffDebuff scriptableObject)
     {
         var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0, ManagerBattle.EnemyScripts.Count)];
-        enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte,
-            scriptableObject.timerApplication);
+        enemyScript.AddDebuff(Instantiate(scriptableObject), TimerApplication.Dialogue);
         enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
         return enemyScript;
     }
     private EnnemyBehavior ApplyBuffDebuffOnSpeaker(BuffDebuff scriptableObject)
     {
         var enemyScript = _listSpeakers[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].transform.parent.gameObject.GetComponent<EnnemyBehavior>();
-        enemyScript.AddDebuff(Instantiate(scriptableObject), scriptableObject.Decompte,
-            scriptableObject.timerApplication);
+        enemyScript.AddDebuff(Instantiate(scriptableObject), TimerApplication.Dialogue);
         enemyScript.AddBuffDebuff(scriptableObject, enemyScript.Stat);
         return enemyScript;
     }

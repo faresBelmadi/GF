@@ -11,7 +11,7 @@ public class Effet : ScriptableObject
     public int ValeurBrut;
     public int RandomX;
     public int RandomY;
-    public int NbAttaque;
+    public int NbAttaque = 1;
     public int ValeurParBuffDebuff;
     private int TimeAlive = 1;
     public bool IsAttaqueEffet;
@@ -393,7 +393,7 @@ public class Effet : ScriptableObject
                 var toAdd = AfterEffectToApply;
                 toAdd.Effet.First().NbAttaque = 1;
                 toAdd.Effet.First().Pourcentage = (int)Cible.Tension * ValeurBrut;
-                GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
+                GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.timerApplication);
                 toAdd.Effet.First().Pourcentage = 0;
                 toAdd.Effet.First().NbAttaque = 0;
                 break;
@@ -446,7 +446,7 @@ public class Effet : ScriptableObject
                 if(-ModifState.Radiance  >= (float)Cible.Radiance)
                     foreach (var item in GameManager.Instance.BattleMan.EnemyScripts)
                     {
-                        item.AddDebuff(AfterEffectToApply,AfterEffectToApply.Decompte,AfterEffectToApply.timerApplication);
+                        item.AddDebuff(AfterEffectToApply, AfterEffectToApply.timerApplication);
                     }
                 break;
             case TypeEffet.UntilDeath:
