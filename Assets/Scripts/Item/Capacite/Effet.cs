@@ -11,7 +11,7 @@ public class Effet : ScriptableObject
     public int ValeurBrut;
     public int RandomX;
     public int RandomY;
-    public int NbAttaque;
+    public int NbAttaque = 1;
     public int ValeurParBuffDebuff;
     private int TimeAlive = 1;
     public bool IsAttaqueEffet;
@@ -384,7 +384,7 @@ public class Effet : ScriptableObject
                 var toAdd = AfterEffectToApply;
                 toAdd.Effet.First().NbAttaque = 1;
                 toAdd.Effet.First().Pourcentage = (int)Cible.Tension * ValeurBrut;
-                GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
+                GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.timerApplication);
                 toAdd.Effet.First().Pourcentage = 0;
                 toAdd.Effet.First().NbAttaque = 0;
                 break;
@@ -437,7 +437,7 @@ public class Effet : ScriptableObject
                 if(-ModifState.Radiance  >= (float)Cible.Radiance)
                     foreach (var item in GameManager.Instance.BattleMan.EnemyScripts)
                     {
-                        item.AddDebuff(AfterEffectToApply,AfterEffectToApply.Decompte,AfterEffectToApply.timerApplication);
+                        item.AddDebuff(AfterEffectToApply, AfterEffectToApply.timerApplication);
                     }
                 break;
             case TypeEffet.UntilDeath:
@@ -690,6 +690,7 @@ public class Effet : ScriptableObject
                     return GameManager.Instance.StatIcons.StatConvictionUp;
                 }
             case TypeEffet.Conscience:
+            case TypeEffet.ConscienceMax:
                 if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
                 {
                     return GameManager.Instance.StatIcons.StatConscienceDown;
@@ -767,15 +768,28 @@ public class Effet : ScriptableObject
                 {
                     return GameManager.Instance.StatIcons.WrathUp;
                 }
+            case TypeEffet.AddPassiveStack:
+                return GameManager.Instance.StatIcons.Divin;
             case TypeEffet.DegatPVMax:
             case TypeEffet.DegatsBrut:
-            case TypeEffet.AugmentFADernierDegatsSubi:
-            case TypeEffet.ConscienceMax:
+            case TypeEffet.DegatsRetourSurAttaque:
+            case TypeEffet.DamageAllEvenly:
+            case TypeEffet.DamageUpTargetLowRadiance:
+            case TypeEffet.DamageFaBuff:
+            case TypeEffet.DamageFaBuffCible:
+            case TypeEffet.DamageDebuffCible:
+            case TypeEffet.Ponction:
+            case TypeEffet.PonctionForceAme:
+            case TypeEffet.DegatsFaRadianceManquanteCible:
+            case TypeEffet.DegatsFaRadianceManquanteCaster:
+                return GameManager.Instance.StatIcons.Damage;
             case TypeEffet.Soin:
             case TypeEffet.SoinFA:
             case TypeEffet.SoinFANbEnnemi:
             case TypeEffet.SoinRadianceMax:
             case TypeEffet.SoinRadianceActuelle:
+                return GameManager.Instance.StatIcons.IncreaseHeal;
+            case TypeEffet.AugmentFADernierDegatsSubi:
             case TypeEffet.RandomAttaque:
             case TypeEffet.AugmentationFaRadianceActuelle:
             case TypeEffet.ConsommeTensionAugmentationFA:
@@ -795,20 +809,14 @@ public class Effet : ScriptableObject
             case TypeEffet.SwapMostLeastBuffDebuff:
             case TypeEffet.RadianceRepartition:
             case TypeEffet.RandomAttaqueDebuff:
-            case TypeEffet.DegatsRetourSurAttaque:
             case TypeEffet.RedirectionDegatsOnCasteur:
             case TypeEffet.CancelPourcentageDamage:
             case TypeEffet.RedirectionCancel:
             case TypeEffet.DispellBuffJoueurDamage:
             case TypeEffet.DispellDebuffCasterDamage:
-            case TypeEffet.DamageAllEvenly:
-            case TypeEffet.DamageUpTargetLowRadiance:
             case TypeEffet.OnKillStunAll:
             case TypeEffet.UntilDeath:
             case TypeEffet.AugmentationFARadianceManquante:
-            case TypeEffet.DamageFaBuff:
-            case TypeEffet.DamageFaBuffCible:
-            case TypeEffet.DamageDebuffCible:
             case TypeEffet.RemoveAllTensionProcDamage:
             case TypeEffet.RemoveAllTensionProcBuffDebuff:
             case TypeEffet.RemoveAllDebuffProcBuffDebuf:
@@ -822,10 +830,6 @@ public class Effet : ScriptableObject
             case TypeEffet.AugmentationDegatsHitJoueur:
             case TypeEffet.GainFaBuffCible:
             case TypeEffet.GainFaDebuffCible:
-            case TypeEffet.Ponction:
-            case TypeEffet.PonctionForceAme:
-            case TypeEffet.DegatsFaRadianceManquanteCible:
-            case TypeEffet.DegatsFaRadianceManquanteCaster:
             case TypeEffet.PremiereAttaqueJeanne:
             case TypeEffet.DeuxiemeAttaqueJeanne:
             case TypeEffet.SupportJeanne:
