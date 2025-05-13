@@ -82,6 +82,8 @@ public class CharacterStat : ScriptableObject
     public AudioClip DamageSFX => _damageSFX;
     public AudioClip DeathSFX => _deathSFX;
 
+    public event Action OnConvictionChanged;
+
     public void ModifStateAll(CharacterStat ModifState)
     {
         if (ModifState.MultiplDef != 1)
@@ -131,6 +133,8 @@ public class CharacterStat : ScriptableObject
         this.RadianceMax += ModifState.RadianceMax;
         this.ForceAme += ModifState.ForceAme;
         this.Vitesse += ModifState.Vitesse;
+        if (ModifState.Conviction != 0)
+            OnConvictionChanged?.Invoke();
         this.Conviction += ModifState.Conviction;
         this._resilience += ModifState._resilience;
         this.Calme += ModifState.Calme;

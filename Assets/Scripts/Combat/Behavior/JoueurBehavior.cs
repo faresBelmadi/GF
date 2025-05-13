@@ -120,6 +120,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
             Spells.Add(temp);
         }
+        Stat.OnConvictionChanged += base.UpdateConviction;
 
         //On instancie les passifs
         if (_stat != null)
@@ -643,18 +644,18 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             {
                 ReceiveTension(Source.Buff);
             }
-            var modifiedBuff = ApplyConviction(toAdd);
-            var buff = Instantiate(modifiedBuff);
+            var buff = Instantiate(toAdd);
             buff.Effet = new List<Effet>();
-            foreach (var item in modifiedBuff.Effet)
+            foreach (var item in toAdd.Effet)
             {
                 buff.Effet.Add(Instantiate(item));
             }
 
-            Stat.ListBuffDebuff.Add(buff);
-            base.AddBuffDebuff(buff, Stat);
+            var modifiedBuff = ApplyConviction(buff);
+            Stat.ListBuffDebuff.Add(modifiedBuff);
+            base.AddBuffDebuff(modifiedBuff, Stat);
             if (toAdd.timerApplication != TimerApplication.Attaque)
-                ApplicationBuffDebuff(Timer, buff);
+                ApplicationBuffDebuff(Timer, modifiedBuff);
         }
 
 

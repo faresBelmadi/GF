@@ -417,18 +417,18 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
                 ReceiveTension(Source.Buff);
             }
 
-            var modifiedBuff = ApplyConviction(toAdd);
-            var buff = Instantiate(modifiedBuff);
+            var buff = Instantiate(toAdd);
             buff.Effet = new List<Effet>();
-            foreach (var item in modifiedBuff.Effet)
+            foreach (var item in toAdd.Effet)
             {
                 buff.Effet.Add(Instantiate(item));
             }
 
-            Stat.ListBuffDebuff.Add(buff);
-            base.AddBuffDebuff(buff, Stat);
+            var modifiedBuff = ApplyConviction(buff);
+            Stat.ListBuffDebuff.Add(modifiedBuff);
+            base.AddBuffDebuff(modifiedBuff, Stat);
 
-            ApplicationBuffDebuff(Timer, buff);
+            ApplicationBuffDebuff(Timer, modifiedBuff);
         }
 
         UpdateUI();

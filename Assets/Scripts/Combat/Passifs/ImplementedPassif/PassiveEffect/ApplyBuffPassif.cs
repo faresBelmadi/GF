@@ -15,7 +15,7 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemy
     private int _levelStatToTrigger;
     [SerializeField]
     private bool _gainTension;
-    [Tooltip("Choisis un des buff aléatoirement a appliquer")]
+    [Tooltip("Choisis un des buff alï¿½atoirement a appliquer")]
     [SerializeField]
     private List<BuffDebuff> _listBuffToApply;
     EnnemyBehavior _behavior;

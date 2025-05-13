@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
 
@@ -46,9 +47,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     private void Start()
     {
-
         _startingPos = transform.parent.position;
-
     }
     public void ClearBuffBar()
     {
@@ -57,6 +56,16 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
             Destroy(buff);
         }
         ListBuffDebuffGO.Clear();
+    }
+
+    protected void UpdateConviction()
+    {
+        List<BuffDebuff> tempListBuffDebuff = new List<BuffDebuff>();
+        tempListBuffDebuff.AddRange(Stat.ListBuffDebuff);
+        Stat.OnConvictionChanged -= UpdateConviction;
+        RemoveAllBuffDebuff();
+        GameManager.Instance.BattleMan.GiveBuffDebuff(tempListBuffDebuff);
+        Stat.OnConvictionChanged += UpdateConviction;
     }
 
     protected BuffDebuff ApplyConviction(BuffDebuff toModify)
@@ -191,8 +200,19 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
             //    buffDebuffName = buff.name;
             //    buffDebuffDescription = buff.Description;
             //}
+            List<float> variableValues = new List<float>();
+
+
+            foreach (Effet e in buff.Effet)
+            {
+                if (e.ValeurBrut != 0)
+                    variableValues.Add(Mathf.Abs(e.ValeurBrut));
+                if (e.Pourcentage != 0)
+                    variableValues.Add(Mathf.Abs((float)e.Pourcentage));
+            }
+            
             buffDebuffName = TradManager.instance.GetTranslation(buff.idTradName, buff.Nom);
-            buffDebuffDescription = TradManager.instance.GetTranslation(buff.idTradDescription, buff.Description);
+            buffDebuffDescription = TradManager.instance.GetTranslation(buff.idTradDescription, buff.Description,variableValues);
 
         }
         else
@@ -248,6 +268,33 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     {
         OnUpdateUI?.Invoke();
     }
+
+    private void RemoveAllBuffDebuff()
+    {
+        foreach (var buff in Stat.ListBuffDebuff)
+        {
+
+            foreach (var effet in buff.Effet)
+            {
+                if (effet.TypeEffet != TypeEffet.RadianceMax)
+                    Stat.removeStat(effet.modifstateOutput);
+                else
+                {
+                    effet.modifstateOutput.Radiance =
+                        Mathf.FloorToInt((effet.Pourcentage / 100f) * Stat.Radiance);
+                    Stat.removeStat(effet.modifstateOutput);
+                }
+            }
+        }
+        for (int i = ListBuffDebuffGO.Count-1; i > -1 ; i--)
+        {
+            Destroy(ListBuffDebuffGO[i].gameObject);
+        }
+        ListBuffDebuffGO.Clear();
+        Stat.ListBuffDebuff.Clear();
+
+    }
+
 
     //TODO: a voir mieux
     public void RemoveBuffByIdTradName(string idTradName)
