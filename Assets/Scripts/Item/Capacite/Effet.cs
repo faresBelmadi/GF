@@ -780,6 +780,17 @@ public class Effet : ScriptableObject
                 return GameManager.Instance.StatIcons.Divin;
             case TypeEffet.DegatPVMax:
             case TypeEffet.DegatsBrut:
+            case TypeEffet.DegatsRetourSurAttaque:
+            case TypeEffet.DamageAllEvenly:
+            case TypeEffet.DamageUpTargetLowRadiance:
+            case TypeEffet.DamageFaBuff:
+            case TypeEffet.DamageFaBuffCible:
+            case TypeEffet.DamageDebuffCible:
+            case TypeEffet.Ponction:
+            case TypeEffet.PonctionForceAme:
+            case TypeEffet.DegatsFaRadianceManquanteCible:
+            case TypeEffet.DegatsFaRadianceManquanteCaster:
+                return GameManager.Instance.StatIcons.Damage;
             case TypeEffet.AugmentFADernierDegatsSubi:
             case TypeEffet.ConscienceMax:
             case TypeEffet.Soin:
@@ -806,20 +817,14 @@ public class Effet : ScriptableObject
             case TypeEffet.SwapMostLeastBuffDebuff:
             case TypeEffet.RadianceRepartition:
             case TypeEffet.RandomAttaqueDebuff:
-            case TypeEffet.DegatsRetourSurAttaque:
             case TypeEffet.RedirectionDegatsOnCasteur:
             case TypeEffet.CancelPourcentageDamage:
             case TypeEffet.RedirectionCancel:
             case TypeEffet.DispellBuffJoueurDamage:
             case TypeEffet.DispellDebuffCasterDamage:
-            case TypeEffet.DamageAllEvenly:
-            case TypeEffet.DamageUpTargetLowRadiance:
             case TypeEffet.OnKillStunAll:
             case TypeEffet.UntilDeath:
             case TypeEffet.AugmentationFARadianceManquante:
-            case TypeEffet.DamageFaBuff:
-            case TypeEffet.DamageFaBuffCible:
-            case TypeEffet.DamageDebuffCible:
             case TypeEffet.RemoveAllTensionProcDamage:
             case TypeEffet.RemoveAllTensionProcBuffDebuff:
             case TypeEffet.RemoveAllDebuffProcBuffDebuf:
@@ -833,10 +838,6 @@ public class Effet : ScriptableObject
             case TypeEffet.AugmentationDegatsHitJoueur:
             case TypeEffet.GainFaBuffCible:
             case TypeEffet.GainFaDebuffCible:
-            case TypeEffet.Ponction:
-            case TypeEffet.PonctionForceAme:
-            case TypeEffet.DegatsFaRadianceManquanteCible:
-            case TypeEffet.DegatsFaRadianceManquanteCaster:
             case TypeEffet.PremiereAttaqueJeanne:
             case TypeEffet.DeuxiemeAttaqueJeanne:
             case TypeEffet.SupportJeanne:
