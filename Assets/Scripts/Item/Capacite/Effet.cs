@@ -699,6 +699,7 @@ public class Effet : ScriptableObject
                     return GameManager.Instance.StatIcons.StatConvictionUp;
                 }
             case TypeEffet.Conscience:
+            case TypeEffet.ConscienceMax:
                 if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
                 {
                     return GameManager.Instance.StatIcons.StatConscienceDown;
@@ -791,13 +792,13 @@ public class Effet : ScriptableObject
             case TypeEffet.DegatsFaRadianceManquanteCible:
             case TypeEffet.DegatsFaRadianceManquanteCaster:
                 return GameManager.Instance.StatIcons.Damage;
-            case TypeEffet.AugmentFADernierDegatsSubi:
-            case TypeEffet.ConscienceMax:
             case TypeEffet.Soin:
             case TypeEffet.SoinFA:
             case TypeEffet.SoinFANbEnnemi:
             case TypeEffet.SoinRadianceMax:
             case TypeEffet.SoinRadianceActuelle:
+                return GameManager.Instance.StatIcons.IncreaseHeal;
+            case TypeEffet.AugmentFADernierDegatsSubi:
             case TypeEffet.RandomAttaque:
             case TypeEffet.AugmentationFaRadianceActuelle:
             case TypeEffet.ConsommeTensionAugmentationFA:
