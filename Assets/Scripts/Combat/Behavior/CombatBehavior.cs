@@ -34,6 +34,10 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     private Vector3 _startingPos;
     [field: SerializeField] public bool IsIntangible { get; protected set; } = false;
+
+    [SerializeField] protected int nbBuffDebuffApplied;
+
+    protected CommonStats commonStats;
     #region Events
     public event Action OnGainTensionLevel;
     public event Action OnTakeDamage;
@@ -56,43 +60,56 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         ListBuffDebuffGO.Clear();
     }
 
-    protected void UpdateConviction()
+    protected float ValueConviction()
     {
-        List<BuffDebuff> tempListBuffDebuff = new List<BuffDebuff>();
-        tempListBuffDebuff.AddRange(Stat.ListBuffDebuff);
-        Stat.OnConvictionChanged -= UpdateConviction;
-        RemoveAllBuffDebuff();
-        GameManager.Instance.BattleMan.GiveBuffDebuff(tempListBuffDebuff);
-        Stat.OnConvictionChanged += UpdateConviction;
-    }
+        float value = 0f;
+        
+        switch(Stat.Conviction)
+        {
+            case 10:
+                value = (Stat.Conviction + commonStats.MaxConvictionBonusValue) * commonStats.ConvictionValue / 100f;
 
-    protected BuffDebuff ApplyConviction(BuffDebuff toModify)
+                break;
+            case -10:
+                value = (Stat.Conviction - commonStats.MaxConvictionBonusValue) * commonStats.ConvictionValue / 100f;
+
+                break;
+            default:
+                value = Stat.Conviction * commonStats.ConvictionValue / 100f;
+                break;
+        }
+        return value;
+    }
+    protected BuffDebuff ApplyConviction(BuffDebuff toModify, float valueToApply)
     {
         BuffDebuff buff = toModify;
-        foreach (var effet in buff.Effet)
+
+        if(nbBuffDebuffApplied >= commonStats.ConvictionNbBuffTrigger)
         {
             int positif = buff.IsDebuff ? -1 : 1;
-            int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
-            effet.Pourcentage += (Stat.Conviction * GameManager.Instance.CommonStatsData.ConvictionValue) * positif * percentPositif;
-
-            int ajout = 0;
-            int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
-            if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier1)
+            if (buff.IsDebuff && valueToApply < 0)
             {
-                if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier2)
-                    ajout = GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
-                else
-                    ajout = GameManager.Instance.CommonStatsData.ConvictionValue;
-            }
-            else if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier1)
-            {
-                if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier2)
-                    ajout = -GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
-                else
-                    ajout = -GameManager.Instance.CommonStatsData.ConvictionValue;
-            }
+                foreach (var effet in buff.Effet)
+                {
+                    int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
+                    int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
+                    effet.Pourcentage += Mathf.FloorToInt(effet.Pourcentage * valueToApply * positif * percentPositif);
 
-            effet.ValeurBrut += ajout * positif * valuePositif;
+                    effet.ValeurBrut += Mathf.FloorToInt(effet.ValeurBrut * valueToApply * positif * valuePositif);
+                }
+            }
+            else if (!buff.IsDebuff && valueToApply > 0)
+            {
+                foreach (var effet in buff.Effet)
+                {
+                    int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
+                    int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
+                    effet.Pourcentage += Mathf.FloorToInt(effet.Pourcentage * valueToApply * positif * percentPositif);
+
+                    effet.ValeurBrut += Mathf.FloorToInt(effet.ValeurBrut * valueToApply * positif * valuePositif);
+                }
+            }
+            nbBuffDebuffApplied %= commonStats.ConvictionNbBuffTrigger;
         }
 
         return buff;
@@ -452,9 +469,9 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     public void EnervementTension()
     {
-        var t = (int)((Stat.Tension / (GameManager.Instance.CommonStatsData.NbPalier * Stat.ValeurPalier)) * GameManager.Instance.CommonStatsData.NbPalier);
-        if (t >= GameManager.Instance.CommonStatsData.NbPalier)
-            t = GameManager.Instance.CommonStatsData.NbPalier;
+        var t = (int)((Stat.Tension / (commonStats.NbPalier * Stat.ValeurPalier)) * commonStats.NbPalier);
+        if (t >= commonStats.NbPalier)
+            t = commonStats.NbPalier;
         else
             t++;
 
@@ -464,7 +481,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     public void ApaisementTension()
     {
 
-        var t = (int)((Stat.Tension / (GameManager.Instance.CommonStatsData.NbPalier * Stat.ValeurPalier)) * GameManager.Instance.CommonStatsData.NbPalier);
+        var t = (int)((Stat.Tension / (commonStats.NbPalier * Stat.ValeurPalier)) * commonStats.NbPalier);
         if (t <= 0)
             t = 0;
         else
@@ -479,28 +496,28 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         switch (sourceDamage)
         {
             case Source.Attaque:
-                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionAttaque;
+                Stat.Tension += commonStats.GainTensionAttaque;
                 gainedTension = true;
                 break;
             case Source.Dot:
-                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionDot;
+                Stat.Tension += commonStats.GainTensionDot;
                 gainedTension = true;
                 break;
             case Source.Buff:
-                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionDebuff;
+                Stat.Tension += commonStats.GainTensionDebuff;
                 gainedTension = true;
                 break;
             case Source.Soin:
-                Stat.Tension += GameManager.Instance.CommonStatsData.GainTensionSoin;
+                Stat.Tension += commonStats.GainTensionSoin;
                 gainedTension = true;
                 break;
         }
         int newPalier = (int)(_stat.Tension / _stat.ValeurPalier);
         if (oldPalier < newPalier)
             OnGainTensionLevel?.Invoke();                               // On gagne un palier de tension
-        if (Stat.Tension >= Stat.ValeurPalier * GameManager.Instance.CommonStatsData.NbPalier)
+        if (Stat.Tension >= Stat.ValeurPalier * commonStats.NbPalier)
         {
-            Stat.Tension = Stat.ValeurPalier * GameManager.Instance.CommonStatsData.NbPalier;
+            Stat.Tension = Stat.ValeurPalier * commonStats.NbPalier;
         }
         if (Stat.Tension < 0)
             Stat.Tension = 0;
@@ -508,7 +525,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     public virtual bool CanHaveAnotherTurn()
     {
-        return Stat.Tension >= Stat.ValeurPalier * GameManager.Instance.CommonStatsData.NbPalier;
+        return Stat.Tension >= Stat.ValeurPalier * commonStats.NbPalier;
     }
     public virtual void ResetStat()
     {

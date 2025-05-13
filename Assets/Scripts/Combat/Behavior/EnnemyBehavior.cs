@@ -416,6 +416,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     {
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
+            nbBuffDebuffApplied++;
             if (toAdd.IsDebuff && !Stat.NoTension)
             {
                 ReceiveTension(Source.Buff);
@@ -428,7 +429,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
                 buff.Effet.Add(Instantiate(item));
             }
 
-            var modifiedBuff = ApplyConviction(buff);
+            var modifiedBuff = ApplyConviction(buff, ValueConviction());
             Stat.ListBuffDebuff.Add(modifiedBuff);
             base.AddBuffDebuff(modifiedBuff, Stat);
 
@@ -468,29 +469,6 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         {
             foreach (var effet in toApply.Effet)
             {
-                int positif = toApply.IsDebuff ? -1 : 1;
-                int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
-                effet.Pourcentage += (Stat.Conviction * GameManager.Instance.CommonStatsData.ConvictionValue) * positif * percentPositif;
-
-                int ajout = 0;
-                int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
-                if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier1)
-                {
-                    if (Stat.Conviction >= GameManager.Instance.CommonStatsData.ConvictionPalier2)
-                        ajout = GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
-                    else
-                        ajout = GameManager.Instance.CommonStatsData.ConvictionValue;
-                }
-                else if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier1)
-                {
-                    if (Stat.Conviction <= -GameManager.Instance.CommonStatsData.ConvictionPalier2)
-                        ajout = -GameManager.Instance.CommonStatsData.ConvictionPalierValue * 2;
-                    else
-                        ajout = -GameManager.Instance.CommonStatsData.ConvictionValue;
-                }
-
-                effet.ValeurBrut += ajout * positif * valuePositif;
-
                 _refBattleMan.PassageEffet(effet, toApply.IDCombatOrigine, combatID, SourceEffet.BuffDebuff);
                 /*if (item.CibleApplication == effet.Cible)
                 {

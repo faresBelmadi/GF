@@ -31,11 +31,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     [SerializeField] private Color green = new Color(0.58f, 0.98f, 0.65f);
     [SerializeField] private Color red = new Color(0.996f, 0.47f, 0.40f);
-    [SerializeField] private TextMeshProUGUI TensionText;
+    [SerializeField] private TextMeshProUGUI ConvictionNbBuffText;
     [SerializeField] private TextMeshProUGUI HpText;
     [SerializeField] private TextMeshProUGUI HpTextReduced;
     [SerializeField] private TextMeshProUGUI HpToolTipText;
-    [SerializeField] private TextMeshProUGUI VolonteText;
     [SerializeField] private TextMeshProUGUI ConscienceText;
     [SerializeField] private TextMeshProUGUI StatForceAmeText;
     [SerializeField] private TextMeshProUGUI StatSpeedText;
@@ -80,7 +79,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     public void StartUp()
     {
-
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.ClairvoyanceOriginal = Stat.Clairvoyance;
@@ -169,8 +167,9 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     private void InitUI()
     {
+        commonStats = GameManager.Instance.CommonStatsData;
         hPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
-        tensionBarManager.InitPBar(0, Stat.NbPalier);
+        tensionBarManager.InitPBar(0, commonStats.NbPalier);
         conscienceBarManager.InitPBar(Stat.Conscience, Stat.ConscienceMax);
 
         for (int i = 0; i < _passiveTooltips.Count && i < PassiveList.Count; i++)
@@ -193,10 +192,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         if (Stat.Tension != currentTens)
         {
-            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax),
-                Stat.NbPalier);
+            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * commonStats.NbPalier) / Stat.TensionMax),
+                commonStats.NbPalier);
 
-            tensionBarManager.ToggleBloomPulses(((Stat.Tension * Stat.NbPalier) / Stat.TensionMax) >= Stat.NbPalier);
+            tensionBarManager.ToggleBloomPulses(((Stat.Tension * commonStats.NbPalier) / Stat.TensionMax) >= commonStats.NbPalier);
 
         }
 
@@ -272,6 +271,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             spell.GetComponent<SpellCombat>().UpdateDescription();
         }
 
+        ConvictionNbBuffText.text = nbBuffDebuffApplied + "/" + commonStats.ConvictionNbBuffTrigger;
         _highlightComponant.DisableHighlighting();
         OnUpdate();
     }
@@ -364,7 +364,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     public void PreviewTensionBarUpddate()
     {
         tensionBarManager.PreviewBar(
-            Mathf.FloorToInt(((Stat.Tension + Stat.TensionSoin) * Stat.NbPalier) / Stat.TensionMax), Stat.NbPalier);
+            Mathf.FloorToInt(((Stat.Tension + commonStats.GainTensionSoin) * commonStats.NbPalier) / Stat.TensionMax), commonStats.NbPalier);
     }
 
     public void StopPreviewTensionBar()
@@ -641,6 +641,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
+            nbBuffDebuffApplied++;
             if (toAdd.IsDebuff)
             {
                 ReceiveTension(Source.Buff);
@@ -652,11 +653,11 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             {
                 buff.Effet.Add(Instantiate(item));
             }
-
-            Stat.ListBuffDebuff.Add(buff);
-            base.AddBuffDebuff(buff, Stat);
+            var modifiedBuff = ApplyConviction(buff,ValueConviction());
+            Stat.ListBuffDebuff.Add(modifiedBuff);
+            base.AddBuffDebuff(modifiedBuff, Stat);
             if (toAdd.timerApplication != TimerApplication.Attaque)
-                ApplicationBuffDebuff(Timer, buff);
+                ApplicationBuffDebuff(Timer, modifiedBuff);
         }
 
 
