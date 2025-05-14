@@ -287,7 +287,7 @@ public class Analyzer : MonoBehaviour
                 case AnalexState.AttributeState:
                     Debug.Log("perdu");
                     return string.Empty;
-                    break;
+                    
                 case AnalexState.ValueState:
                     currentAttribute.Value = ReadValue(stringTab[currentIndex]);
                     currenAtttributes.Add(currentAttribute);

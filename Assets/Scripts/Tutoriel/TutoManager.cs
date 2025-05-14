@@ -26,7 +26,6 @@ public class TutoManager : MonoBehaviour
 
 
     public bool ShowSoulConsumation;
-    private int _indEncounter = 0;
     [Header("Datas")] [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
     [SerializeField] private Souvenir _souvenirToLoot;
     [field:SerializeField] public Transform SouvenirPosTuto { get; private set; }
