@@ -42,7 +42,7 @@ public class AnimationControllerAttack : MonoBehaviour
     {
         Debug.Log("Start animation");
         Debug.Log("Change pose to Transition");
-
+        MainAnimator.SetFloat("SpeedMultiplier", GameManager.Instance.BattleMan.AnimationSpeedMultiplier);
         //yield return LerpPosition(Main.transform,Waypoints[0].transform,TimeTransition);
         //OmbreIdle.GetComponent<SpriteRenderer>().enabled = true;
         //MainAnimator.SetBool("Transition", true);
@@ -117,6 +117,8 @@ public class AnimationControllerAttack : MonoBehaviour
     
     public void GetAttacked()
     {
+
+        MainAnimator.SetFloat("SpeedMultiplier", GameManager.Instance.BattleMan.AnimationSpeedMultiplier);
         MainAnimator.SetBool("IsAttacked", true);
     }
 

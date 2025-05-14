@@ -82,6 +82,25 @@ public class BattleManager : MonoBehaviour
     {
         get => _isTuto;
     }
+    [SerializeField]
+    public float _animationSpeedMultiplier = 2;
+    public bool IsAnimationSpeedUp { get; private set; } = false;
+    public float AnimationSpeedMultiplier
+    {
+        get
+        {
+            if (IsAnimationSpeedUp)
+            {
+                Debug.Log("Animation speed up : " + _animationSpeedMultiplier);
+                return _animationSpeedMultiplier == 0 ? 1 : _animationSpeedMultiplier;
+            }
+            else
+            {
+                Debug.Log("Animation speed up : " + 1);
+                return 1f;
+            }
+        }
+    }
 
     public static Action<Transform> OnGatherEssence;
 
@@ -108,7 +127,10 @@ public class BattleManager : MonoBehaviour
     }
 
     #endregion
-
+    private void Start()
+    {
+        IsAnimationSpeedUp = PlayerPrefs.GetInt("AnimationSpeedUp") == 1;
+    }
     #region Loot
 
     public void Loot()
@@ -1233,6 +1255,11 @@ public class BattleManager : MonoBehaviour
 
     #region Animation
 
+    public void SetAnimationSpeedMultiplier(bool isSpeedup)
+    {
+        PlayerPrefs.SetInt("AnimationSpeedUp", isSpeedup ? 1 : 0);
+        IsAnimationSpeedUp = isSpeedup;
+    }
     public void LaunchAnimAttacked()
     {
         var tempEnemy = EnemyScripts.FirstOrDefault(c => c.combatID == idTarget);

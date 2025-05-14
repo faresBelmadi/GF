@@ -677,6 +677,8 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDamageTakenSFX, Stat.DamageSFX);
         DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
+
+        GetComponent<Animator>().SetFloat("SpeedMultiplier", GameManager.Instance.BattleMan.AnimationSpeedMultiplier);
         this.GetComponent<Animator>().SetBool("IsAttacked", true);
         gameObject.GetComponent<PulseBloom_System>().TriggerBloom();
     }
@@ -711,6 +713,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     void LaunchAnimBool()
     {
+        GetComponent<Animator>().SetFloat("SpeedMultiplier", GameManager.Instance.BattleMan.AnimationSpeedMultiplier);
         switch (nextActionType)
         {
             case nextActionEnum.Attaque:
