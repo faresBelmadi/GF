@@ -106,7 +106,7 @@ public class AutelManager : MonoBehaviour
     {
         if (!isOn)
             return;
-        EssenceText.text = $"{TradManager.instance.GetTranslation(_idTradEssence, "Essence") } : {stats.Essence}";
+        EssenceText.text = stats.Essence + GameManager.Instance.StatIcons.EssenceSpriteTMP;
         SetUpStatsDescription();
         if (ShopUiPanel.activeInHierarchy == true)
         {
@@ -221,7 +221,7 @@ public class AutelManager : MonoBehaviour
         {
             HideExplicationShopPanel();
         }
-        EssenceText.color = Color.white;
+        //EssenceText.color = Color.white;
         BackHover();
         ResetPositionBalance();
         ShopUiPanel.SetActive(true);
@@ -241,7 +241,7 @@ public class AutelManager : MonoBehaviour
         {
             HideExplicationLevelUpPanel();
         }
-        EssenceText.color = Color.white;
+        //EssenceText.color = Color.white;
         BackHover();
         ResetPositionBalance();
         LevelUpUiPanel.SetActive(true);
@@ -268,7 +268,7 @@ public class AutelManager : MonoBehaviour
             //}
             if (capa.Spell?.Sprite)
             {
-                AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.Sprite;
+                AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().sprite = capa.Spell.RoundSprite;
 
                 //DEMO ONLY
                 capa.isBuyable = true;
@@ -641,30 +641,30 @@ public class AutelManager : MonoBehaviour
                 //TextCoutChoix1.text = "Cout : " + CoutChoix1[0].ToString() + " essence";
                 //TextCoutChoix2.text = "Cout : " + CoutChoix2[0].ToString() + " essence";
                 //TextCoutChoix3.text = "Cout : " + CoutChoix3[0].ToString() + " essence\n" + CoutStatChoix3[0].ToString() + " point de Calme";
-                TextCoutChoix3.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix3[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}\n" +
-                    $"{CoutStatChoix3[0]} {TradManager.instance.GetTranslation(_idTradNameCalmPoint, "point de calm")}";
+                TextCoutChoix3.text = $"{CoutChoix3[Etage - 1]} {GameManager.Instance.StatIcons.EssenceSpriteTMP}\n" +
+                    $"{CoutStatChoix3[0]} {GameManager.Instance.StatIcons.StatCalmeSpriteTMP}";
                 break;
             case 2:
                 //TextCoutChoix1.text = "Cout : " + CoutChoix1[1].ToString() + " essence";
                 //TextCoutChoix2.text = "Cout : " + CoutChoix2[1].ToString() + " essence";
                 //TextCoutChoix3.text = "Cout : " + CoutChoix3[1].ToString() + " essence\n" + CoutStatChoix3[1].ToString() + " point de Radiance";
-                TextCoutChoix3.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix3[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}\n" +
-                    $"{CoutStatChoix3[1]} {TradManager.instance.GetTranslation(_idTradNameRadPoint, "point de radiance")}";
+                TextCoutChoix3.text = $"{CoutChoix3[Etage - 1]} {GameManager.Instance.StatIcons.EssenceSpriteTMP}\n" +
+                    $"{CoutStatChoix3[1]} {GameManager.Instance.StatIcons.StatRadianceSpriteTMP}";
                 break;
             case 3:
                 //TextCoutChoix1.text = "Cout : " + CoutChoix1[2].ToString() + " essence";
                 //TextCoutChoix2.text = "Cout : " + CoutChoix2[2].ToString() + " essence";
                 //TextCoutChoix3.text = "Cout : " + CoutChoix3[2].ToString() + " essence\n" + CoutStatChoix3[2].ToString() + " point de Clairvoyance";
-                TextCoutChoix3.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix3[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}\n" +
-                    $"{CoutStatChoix3[2]} {TradManager.instance.GetTranslation(_idTradNameInsightPoint, "point de clairvoyance")}";
+                TextCoutChoix3.text = $"{CoutChoix3[Etage - 1]}   {GameManager.Instance.StatIcons.EssenceSpriteTMP}\n" +
+                    $"{CoutStatChoix3[2]} {GameManager.Instance.StatIcons.StatClairvoyanceSpriteTMP}";
                 break;
         }
         if (Etage <= 0 || Etage > CoutChoix1.Count || Etage > CoutChoix2.Count || Etage > CoutChoix3.Count)
         {
             Debug.LogError("Nombre d'étage trop faible ou trop important");
         }
-        TextCoutChoix1.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix1[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}";
-        TextCoutChoix2.text = $"{TradManager.instance.GetTranslation(_idTradCout, "Cout")} : {CoutChoix2[Etage - 1]} {TradManager.instance.GetTranslation(_idTradEssence, "essence")}";
+        TextCoutChoix1.text = $"{CoutChoix1[Etage - 1]} {GameManager.Instance.StatIcons.EssenceSpriteTMP}";
+        TextCoutChoix2.text = $"{CoutChoix2[Etage - 1]} {GameManager.Instance.StatIcons.EssenceSpriteTMP}";
     }
 
     public void Choix1()

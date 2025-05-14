@@ -7,8 +7,6 @@ public class EnnemiStat : CharacterStat
 {
     public event Action OnCustomStatModification;
 
-    [Space]
-    public Sprite Icon;
     public string IdTradName;
     public string Nom;
     public int Dissimulation;

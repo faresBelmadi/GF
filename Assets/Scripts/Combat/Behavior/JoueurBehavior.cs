@@ -51,6 +51,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     [SerializeField] private Spell SelectedSpell;
 
     [SerializeField] private AnimationControllerAttack AnimationController;
+    [SerializeField] private GameObject _ciblage;
 
     private BattleManager _refBattleMan => GameManager.Instance.BattleMan;
     [SerializeField] private bool IsTurn;
@@ -291,11 +292,13 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         //Play SFX for starting turn
         AudioManager.instance.SFX.PlaySFXClip(SFXType.StartTurnSFX);
         IsTurn = true;
-        DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
        
         /* Resplenish willpower */
         if(_playedTurn >= 1)
-            Stat.Volonter = Stat.VolonterMax;
+            Stat.Volonter = Stat.VolonterMax; 
+
+        DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
+
         if (!GameManager.Instance.IsTuto|| !isFirstTurn)
             ActivateSpells();
 
@@ -607,7 +610,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         }
         
     }
-    public void AddDebuff(BuffDebuff toAdd, Decompte Decompte, TimerApplication Timer)
+    public void AddDebuff(BuffDebuff toAdd, TimerApplication Timer)
     {
         
         if (toAdd.ConditionnalBuff != ConditionalBuff.NONE)
@@ -659,8 +662,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         }
 
 
-        //DecompteDebuffJoueur(Decompte, Timer);
-
         UpdateUI();
     }
 
@@ -668,7 +669,11 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     {
       
         DecompteDebuff(Stat.ListBuffDebuff, Decompte, this.Stat);
+        Stat.ListBuffDebuff = UpdateBuffDebuffGameObject(Stat.ListBuffDebuff, Stat);
+
         var tempListBuffDebuff = Stat.ListBuffDebuff;
+
+
         foreach (var item in tempListBuffDebuff)
         {
             if (item.timerApplication == Timer)
@@ -677,10 +682,9 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         foreach (var item in tempAddList)
         {
-            AddDebuff(item, Decompte.none, TimerApplication.Persistant);
+            AddDebuff(item, TimerApplication.Persistant);
         }
 
-        Stat.ListBuffDebuff = UpdateBuffDebuffGameObject(Stat.ListBuffDebuff, Stat);
         UpdateUI();
     }
 
@@ -864,6 +868,11 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     {
 
     }
+    #endregion
+
+    #region UI Ciblage
+    public void ShowTargeting() => _ciblage.SetActive(true);
+    public void HideTargeting() => _ciblage.SetActive(false);
     #endregion
 
 }
