@@ -106,6 +106,7 @@ public class GameManager : MonoBehaviour
     public static event Action OnHideMap;
     public static event Action OnShowMap;
     public static event Action OnStartAutel;
+    public static event Action OnStartTreasure;
     public static event Action OnEndGame;
 
     #endregion
@@ -525,9 +526,14 @@ public class GameManager : MonoBehaviour
 
     public void LoadAutel()
     {
-
         Debug.Log("Load Autel");
         OnStartAutel?.Invoke();
+    }
+
+    public void LoadTreasure()
+    {
+        Debug.Log("Load Treasure");
+        OnStartTreasure?.Invoke();
     }
 
     public void UnloadAutel()

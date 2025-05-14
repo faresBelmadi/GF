@@ -184,6 +184,9 @@ public class PlayerMapManager : MonoBehaviour
             //    break;
             //case TypeRoom.NotSet:
             //    break;
+            case TypeRoom.LOOT:
+                StartTreasure();
+                break;
             default:
                 break;
         }
@@ -356,6 +359,31 @@ public class PlayerMapManager : MonoBehaviour
         }
         else
         {
+            AudioManager.instance.PlayMusic(MusicType.CombatMusic);
+            GameManager.Instance.ShowMap();
+            yield return null;
+            //yield return SceneManager.UnloadSceneAsync(_scene);
+        }
+    }
+
+    void StartTreasure()
+    {
+        GameManager.Instance.LoadTreasure();
+        ToggleMap(false); //We hide the map
+        AudioManager.instance.PlayMusic(MusicType.LevelUpMusic);
+    }
+
+    public IEnumerator EndTreasure(bool Loot)
+    {
+        if (Loot)
+        {
+            ShowMenuStat();
+        }
+        else
+        {
+            //CurrentRoomCamera.SetActive(false);
+            //GameManager.Instance.OldAutelMan = null;
+            //MenuCamera.SetActive(true);
             AudioManager.instance.PlayMusic(MusicType.CombatMusic);
             GameManager.Instance.ShowMap();
             yield return null;

@@ -12,7 +12,9 @@ public class GamePanelManager : MonoBehaviour
     [SerializeField]
     private GameObject _canvaEnnemy;
     [SerializeField]
-    private GameObject _canvaAutel;
+    private GameObject _canvaAutel; 
+    [SerializeField]
+    private GameObject _canvaTreasure;
     [SerializeField]
     private JoueurBehavior _characterBehavior;
 
@@ -35,6 +37,7 @@ public class GamePanelManager : MonoBehaviour
         GameManager.OnStartCombat += StartCombat;
         GameManager.OnStartDialog += StartDialog;
         GameManager.OnStartAutel += StartAutel;
+        GameManager.OnStartTreasure += StartTreasure;
         GameManager.OnLootAfterCombat += StartLoot;
         GameManager.OnShowMap += ShowMap;
         GameManager.OnEndGame += EndGame;
@@ -50,6 +53,7 @@ public class GamePanelManager : MonoBehaviour
         GameManager.OnStartCombat -= StartCombat;
         GameManager.OnStartDialog -= StartDialog;
         GameManager.OnStartAutel -= StartAutel;
+        GameManager.OnStartTreasure -= StartTreasure;
         GameManager.OnLootAfterCombat -= StartLoot;
         GameManager.OnShowMap -= ShowMap;
         GameManager.OnEndGame -= EndGame;
@@ -127,9 +131,28 @@ public class GamePanelManager : MonoBehaviour
         _canvaBattle.SetActive(false);
         _canvaEnnemy.SetActive(false);
     }
+
+    public void StartTreasure()
+    {
+        //TEMP
+        _characterBehavior.ToggleVisibility(false);
+        //_cloudCharacter.SetActive(false);
+        // _canvaMap.SetActive(false);
+
+        _canvaTreasure.SetActive(true);
+        _canvaDialog.SetActive(false);
+        _canvaBattle.SetActive(false);
+        _canvaEnnemy.SetActive(false);
+    }
+
     public void HideAutel()
     {
         _canvaAutel.SetActive(false);
+    }
+
+    public void HideTreasure()
+    {
+        _canvaTreasure.SetActive(false);
     }
 
     public void ShowMap()
