@@ -29,6 +29,12 @@ public class TextComponent : MonoBehaviour
     {
         RefreshText();
     }
+    public void InitTextComponent(string idLabel, string defaultText)
+    {
+        _idLabel = idLabel;
+        _defaultText = defaultText;
+        RefreshText();
+    }
     public void RefreshText()
     {
         if (_textTMPObject != null)

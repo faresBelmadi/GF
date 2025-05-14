@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dd4f7d6642da7c46884bf7f51860f2b, type: 3}
   m_Name: Martyr
   m_EditorClassIdentifier: 
-  Radiance: 2000
-  RadianceMax: 2000
-  RadianceMaxOriginal: 2000
+  RadianceMax: 800
+  RadianceMaxOriginal: 800
   _forceAme: 100
   ForceAmeBonus: 0
   ForceAmeOriginal: 100
@@ -35,6 +34,7 @@ MonoBehaviour:
   MultiplSoin: 1
   MultiplDegat: 1
   MultipleBuffDebuff: 1
+  MultipleTension: 1
   ListBuffDebuff: []
   TensionAttaque: 4
   TensionDebuff: 3
@@ -46,12 +46,13 @@ MonoBehaviour:
   NbPalier: 3
   PalierChangement: 0
   nbAttaqueRecu: 0
-  ListPassif: []
+  PassiveList:
+  - {fileID: 11400000, guid: 0642330c6e29a434a95e3b11ea7714ba, type: 2}
   isStun: 0
   _deathSFX: {fileID: 0}
   _tensionSFX: {fileID: 0}
   _damageSFX: {fileID: 0}
-  Icon: {fileID: 21300000, guid: b249217de15826247bf02af337138a6c, type: 3}
+  Icon: {fileID: 21300000, guid: 6c272064c945ece4ea01e5e20d9aff80, type: 3}
   IdTradName: EN8
   Nom: Martyr
   Dissimulation: 0
@@ -62,4 +63,3 @@ MonoBehaviour:
   Att2: {fileID: 11400000, guid: b13b1959c0dda00409389fb2bd0f6851, type: 2}
   Buff: {fileID: 0}
   Debuff: {fileID: 11400000, guid: 76eedc3db1bd68c4e9fdbd9c7f2687b2, type: 2}
-  Divin: 0

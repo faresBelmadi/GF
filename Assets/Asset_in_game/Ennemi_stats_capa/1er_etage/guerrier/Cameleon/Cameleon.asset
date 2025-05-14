@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dd4f7d6642da7c46884bf7f51860f2b, type: 3}
   m_Name: Cameleon
   m_EditorClassIdentifier: 
-  Radiance: 750
   RadianceMax: 750
   RadianceMaxOriginal: 750
-  _forceAme: 125
+  _forceAme: 80
   ForceAmeBonus: 0
   ForceAmeOriginal: 125
   Vitesse: 3
@@ -35,6 +34,7 @@ MonoBehaviour:
   MultiplSoin: 1
   MultiplDegat: 1
   MultipleBuffDebuff: 1
+  MultipleTension: 1
   ListBuffDebuff: []
   TensionAttaque: 0
   TensionDebuff: 0
@@ -46,9 +46,14 @@ MonoBehaviour:
   NbPalier: 3
   PalierChangement: 0
   nbAttaqueRecu: 0
-  ListPassif: []
+  PassiveList:
+  - {fileID: 11400000, guid: 7847165edf662c547b55f0d6dcd1cc00, type: 2}
   isStun: 0
-  Icon: {fileID: 21300000, guid: 6b7f3f7e5138dad44be0b8f5f55c76a2, type: 3}
+  _deathSFX: {fileID: 0}
+  _tensionSFX: {fileID: 0}
+  _damageSFX: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 41ea5e6c00983ad4bb6427cda7cb6f69, type: 3}
+  IdTradName: 
   Nom: chameleon
   Dissimulation: 5
   DissimulationOriginal: 5
@@ -58,4 +63,3 @@ MonoBehaviour:
   Att2: {fileID: 11400000, guid: e26c4c125aa59b4468b56cb72e8aaa3c, type: 2}
   Buff: {fileID: 11400000, guid: 5f900829afccc1e42800cc7aed4a1101, type: 2}
   Debuff: {fileID: 0}
-  Divin: 0

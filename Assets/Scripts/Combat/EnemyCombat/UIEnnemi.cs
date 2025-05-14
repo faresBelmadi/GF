@@ -50,12 +50,21 @@ public class UIEnnemi : MonoBehaviour
     {
         NameText.text = nom;
     }
-
+    public void ShowTargeting() => Ciblage.SetActive(true);
+    public void HideTargeting()
+    {
+        Ciblage.SetActive(false);
+    }
     private void OnMouseEnter()
     {
+        //ici pour arreter le ciblage
+        if (gameObject.GetComponent<EnnemyBehavior>().IsIntangible)
+        {
+            return;
+        }
         if (TargetingMode)
         {
-            Ciblage.SetActive(true);
+            ShowTargeting();
             OnPreviewDamage?.Invoke();
         }
 
@@ -71,9 +80,13 @@ public class UIEnnemi : MonoBehaviour
 
     private void OnMouseExit()
     {
+        if (gameObject.GetComponent<EnnemyBehavior>().IsIntangible)
+        {
+            return;
+        }
         if (TargetingMode)
         {
-            Ciblage.SetActive(false);
+            HideTargeting();
             OnStopPreviewDamage?.Invoke();
         } 
         CadreStatsUiManager?.HideStats();
@@ -111,6 +124,10 @@ public class UIEnnemi : MonoBehaviour
 
     private void OnMouseDown()
     {
+        if (gameObject.GetComponent<EnnemyBehavior>().IsIntangible)
+        {
+            return;
+        }
         if (TargetingMode)
         {
             RaiseEvent();

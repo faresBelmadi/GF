@@ -5,7 +5,24 @@ using UnityEngine;
 [System.Serializable]
 public class CharacterStat : ScriptableObject
 {
-    public int Radiance;
+    public Sprite Icon;
+    public event Action OnRadianceChange;
+  
+    private int _radiance;
+
+    public int Radiance
+    {
+        get => _radiance;
+        set
+        {
+            if (_radiance != value)
+            {
+                _radiance = value;
+                OnRadianceChange?.Invoke();
+            }
+        }
+    }
+
     public int RadianceMax;
     public int RadianceMaxOriginal;
 
@@ -57,7 +74,7 @@ public class CharacterStat : ScriptableObject
     public int NbPalier = 3;
     public int PalierChangement = 0;
     public int nbAttaqueRecu = 0;
-    public List<Passif> ListPassif;
+    public List<AbstractPassive> PassiveList;
     public Action ActionPassif;
     public bool isStun = false;
     [Header("SFX")]

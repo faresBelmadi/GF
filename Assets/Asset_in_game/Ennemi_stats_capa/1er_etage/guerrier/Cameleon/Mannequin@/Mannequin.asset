@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dd4f7d6642da7c46884bf7f51860f2b, type: 3}
   m_Name: Mannequin
   m_EditorClassIdentifier: 
-  Radiance: 200
-  RadianceMax: 200
-  RadianceMaxOriginal: 200
+  RadianceMax: 600
+  RadianceMaxOriginal: 600
   _forceAme: 0
   ForceAmeBonus: 0
   ForceAmeOriginal: 100
@@ -35,6 +34,7 @@ MonoBehaviour:
   MultiplSoin: 1
   MultiplDegat: 1
   MultipleBuffDebuff: 1
+  MultipleTension: 1
   ListBuffDebuff: []
   TensionAttaque: 0
   TensionDebuff: 0
@@ -46,16 +46,20 @@ MonoBehaviour:
   NbPalier: 3
   PalierChangement: 0
   nbAttaqueRecu: 0
-  ListPassif: []
+  PassiveList:
+  - {fileID: 11400000, guid: 74f594526164cbe40b8e9a786b65c736, type: 2}
   isStun: 0
-  Icon: {fileID: 21300000, guid: 732a29d7f1dc8194aa083ade7258fa49, type: 3}
+  _deathSFX: {fileID: 0}
+  _tensionSFX: {fileID: 0}
+  _damageSFX: {fileID: 0}
+  Icon: {fileID: 21300000, guid: 2aea7c7189d46324891e2e72ab97b1d5, type: 3}
+  IdTradName: 
   Nom: Mannequin
   Dissimulation: 0
   DissimulationOriginal: 0
   NoTension: 0
-  Spawnable: {fileID: 8486208892235837792, guid: 33d7e88a1254dcc4f8d02f49f7dc1ac6, type: 3}
+  Spawnable: {fileID: 8263101123885912303, guid: 9f775c4d1196ec243a8c07f5c92d056a, type: 3}
   Att1: {fileID: 0}
   Att2: {fileID: 11400000, guid: bff1346a1c23a104fb16d6949e77893c, type: 2}
   Buff: {fileID: 11400000, guid: 321c5bfe6e4e8964d9f5ab12256fb326, type: 2}
   Debuff: {fileID: 0}
-  Divin: 0

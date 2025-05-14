@@ -19,6 +19,7 @@ public class Spell : ScriptableObject, IBattleLogSpell
     public List<Effet> ActionEffet;
     public List<BuffDebuff> ActionBuffDebuff;
     public Sprite Sprite;
+    public Sprite RoundSprite;
     [Header("Audio")]
     [SerializeField]
     private AudioClip _spellSFX;

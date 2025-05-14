@@ -11,7 +11,7 @@ public class Effet : ScriptableObject
     public int ValeurBrut;
     public int RandomX;
     public int RandomY;
-    public int NbAttaque;
+    public int NbAttaque = 1;
     public int ValeurParBuffDebuff;
     private int TimeAlive = 1;
     public bool IsAttaqueEffet;
@@ -101,18 +101,9 @@ public class Effet : ScriptableObject
                 damageAmount += Mathf.FloorToInt(valueToChange * caster .MultiplDegat);
                 break;
             case TypeEffet.RadianceMax:
-
-                //damageAmount = Mathf.FloorToInt((Pourcentage / 100f) * caster.RadianceMaxOriginal); ;//Mathf.FloorToInt((Pourcentage / 100f) * ((cible.Radiance / cible.RadianceMax) * cible.RadianceMaxOriginal));
-                if (Cible == null)
-                {
-                    int addAmount = (int)(caster.RadianceMax * Pourcentage * .01f);
-                    damageAmount = caster.RadianceMax + addAmount;
-                }
-                else
-                {
-                    int addAmount = (int)(cible.RadianceMax * Pourcentage * .01f);
-                    damageAmount = cible.RadianceMax + addAmount;
-                }
+                int radianceMax = cible?.RadianceMax ?? caster.RadianceMax;
+                int addAmount = (int)(radianceMax * Pourcentage * .01f);
+                damageAmount = radianceMax + addAmount;
                 break;
            
             case TypeEffet.DegatPVMax:
@@ -230,17 +221,17 @@ public class Effet : ScriptableObject
             case TypeEffet.PremiereAttaqueJeanne:
                 var JeanneStat = (EnnemiStat)caster;
                 int percentageFa = 0;
-                if (JeanneStat.Divin <= 25)
+                if (JeanneStat.CustomStat <= 25)
                 {
                     percentageFa = 0;
                     nbProcAfterEffect = 1;
                 }
-                else if (JeanneStat.Divin > 25 && JeanneStat.Divin <= 50)
+                else if (JeanneStat.CustomStat > 25 && JeanneStat.CustomStat <= 50)
                 {
                     percentageFa = 20;
                     nbProcAfterEffect = 2;
                 }
-                else if (JeanneStat.Divin > 50)
+                else if (JeanneStat.CustomStat > 50)
                 {
                     percentageFa = 40;
                     nbProcAfterEffect = 4;
@@ -252,19 +243,19 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.DeuxiemeAttaqueJeanne:
                 var JeanneStat2 = (EnnemiStat)caster;
-                var divin = JeanneStat2.Divin > 0 ? JeanneStat2.Divin : JeanneStat2.Divin * -1;
+                var divin = JeanneStat2.CustomStat > 0 ? JeanneStat2.CustomStat : JeanneStat2.CustomStat * -1;
                 var TotalPercentage = -(divin + (Pourcentage * -1));
                 damageAmount += Mathf.FloorToInt(((TotalPercentage / 100f) * caster.ForceAme) * caster.MultiplDegat);
                 break;
             case TypeEffet.SupportJeanne:
                 var JeanneStat3 = (EnnemiStat)caster;
-                JeanneStat3.Divin -= 20;
+                JeanneStat3.CustomStat -= 20;
                 damageAmount += Mathf.FloorToInt((Pourcentage / 100f) * caster.RadianceMax);
                 break;
             case TypeEffet.UltimeJeanne:
                 var JeanneStat4 = (EnnemiStat)caster;
-                damageAmount += Mathf.FloorToInt(-JeanneStat4.Divin / 100f * caster.ForceAme);
-                JeanneStat4.Divin = -30;
+                damageAmount += Mathf.FloorToInt(-JeanneStat4.CustomStat / 100f * caster.ForceAme);
+                JeanneStat4.CustomStat = -30;
                 break;
             default:
                 return false;
@@ -393,7 +384,7 @@ public class Effet : ScriptableObject
                 var toAdd = AfterEffectToApply;
                 toAdd.Effet.First().NbAttaque = 1;
                 toAdd.Effet.First().Pourcentage = (int)Cible.Tension * ValeurBrut;
-                GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.Decompte,toAdd.timerApplication);
+                GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.timerApplication);
                 toAdd.Effet.First().Pourcentage = 0;
                 toAdd.Effet.First().NbAttaque = 0;
                 break;
@@ -442,6 +433,12 @@ public class Effet : ScriptableObject
                     percent *= 3;
                 ModifState.Radiance +=
                     Mathf.FloorToInt((((percent / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
+
+                if(-ModifState.Radiance  >= (float)Cible.Radiance)
+                    foreach (var item in GameManager.Instance.BattleMan.EnemyScripts)
+                    {
+                        item.AddDebuff(AfterEffectToApply, AfterEffectToApply.timerApplication);
+                    }
                 break;
             case TypeEffet.UntilDeath:
                 ModifState.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
@@ -557,17 +554,17 @@ public class Effet : ScriptableObject
             case TypeEffet.PremiereAttaqueJeanne:
                 var JeanneStat = (EnnemiStat) Caster;
                 int percentageFa = 0;
-                if (JeanneStat.Divin <= 25)
+                if (JeanneStat.CustomStat <= 25)
                 {
                     percentageFa = 0;
                     nbProcAfterEffect = 1;
                 }
-                else if (JeanneStat.Divin > 25 && JeanneStat.Divin <= 50)
+                else if (JeanneStat.CustomStat > 25 && JeanneStat.CustomStat <= 50)
                 {
                     percentageFa = 20;
                     nbProcAfterEffect = 2;
                 }
-                else if (JeanneStat.Divin > 50)
+                else if (JeanneStat.CustomStat > 50)
                 {
                     percentageFa = 40;
                     nbProcAfterEffect = 4;
@@ -579,19 +576,19 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.DeuxiemeAttaqueJeanne:
                 var JeanneStat2 = (EnnemiStat)Caster;
-                var divin = JeanneStat2.Divin > 0? JeanneStat2.Divin : JeanneStat2.Divin * -1;
+                var divin = JeanneStat2.CustomStat > 0? JeanneStat2.CustomStat : JeanneStat2.CustomStat * -1;
                 var TotalPercentage = -(divin + (Pourcentage * -1));
                 ModifState.Radiance += Mathf.FloorToInt(((TotalPercentage / 100f) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
             case TypeEffet.SupportJeanne:
                 var JeanneStat3 = (EnnemiStat)Caster;
-                JeanneStat3.Divin -= 20;
+                JeanneStat3.CustomStat -= 20;
                 ModifState.Radiance += Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMax);
                 break;
             case TypeEffet.UltimeJeanne:
                 var JeanneStat4 = (EnnemiStat) Caster;
-                ModifState.Radiance += Mathf.FloorToInt(((JeanneStat4.Divin * Pourcentage) / 100f * Caster.ForceAme) * Caster.MultiplDegat);
-                JeanneStat4.Divin = -30;
+                ModifState.Radiance += Mathf.FloorToInt(((JeanneStat4.CustomStat * Pourcentage) / 100f * Caster.ForceAme) * Caster.MultiplDegat);
+                JeanneStat4.CustomStat = -30;
                 break;
             case TypeEffet.MultiplTension:
                 ModifState.MultipleTension += (Pourcentage / 100f) * NbAttaque;
@@ -693,6 +690,7 @@ public class Effet : ScriptableObject
                     return GameManager.Instance.StatIcons.StatConvictionUp;
                 }
             case TypeEffet.Conscience:
+            case TypeEffet.ConscienceMax:
                 if ((Cible == Cible.joueur && ValeurBrut < 0) || (Cible != Cible.joueur && ValeurBrut > 0))
                 {
                     return GameManager.Instance.StatIcons.StatConscienceDown;
@@ -770,15 +768,28 @@ public class Effet : ScriptableObject
                 {
                     return GameManager.Instance.StatIcons.WrathUp;
                 }
+            case TypeEffet.AddPassiveStack:
+                return GameManager.Instance.StatIcons.Divin;
             case TypeEffet.DegatPVMax:
             case TypeEffet.DegatsBrut:
-            case TypeEffet.AugmentFADernierDegatsSubi:
-            case TypeEffet.ConscienceMax:
+            case TypeEffet.DegatsRetourSurAttaque:
+            case TypeEffet.DamageAllEvenly:
+            case TypeEffet.DamageUpTargetLowRadiance:
+            case TypeEffet.DamageFaBuff:
+            case TypeEffet.DamageFaBuffCible:
+            case TypeEffet.DamageDebuffCible:
+            case TypeEffet.Ponction:
+            case TypeEffet.PonctionForceAme:
+            case TypeEffet.DegatsFaRadianceManquanteCible:
+            case TypeEffet.DegatsFaRadianceManquanteCaster:
+                return GameManager.Instance.StatIcons.Damage;
             case TypeEffet.Soin:
             case TypeEffet.SoinFA:
             case TypeEffet.SoinFANbEnnemi:
             case TypeEffet.SoinRadianceMax:
             case TypeEffet.SoinRadianceActuelle:
+                return GameManager.Instance.StatIcons.IncreaseHeal;
+            case TypeEffet.AugmentFADernierDegatsSubi:
             case TypeEffet.RandomAttaque:
             case TypeEffet.AugmentationFaRadianceActuelle:
             case TypeEffet.ConsommeTensionAugmentationFA:
@@ -798,20 +809,14 @@ public class Effet : ScriptableObject
             case TypeEffet.SwapMostLeastBuffDebuff:
             case TypeEffet.RadianceRepartition:
             case TypeEffet.RandomAttaqueDebuff:
-            case TypeEffet.DegatsRetourSurAttaque:
             case TypeEffet.RedirectionDegatsOnCasteur:
             case TypeEffet.CancelPourcentageDamage:
             case TypeEffet.RedirectionCancel:
             case TypeEffet.DispellBuffJoueurDamage:
             case TypeEffet.DispellDebuffCasterDamage:
-            case TypeEffet.DamageAllEvenly:
-            case TypeEffet.DamageUpTargetLowRadiance:
             case TypeEffet.OnKillStunAll:
             case TypeEffet.UntilDeath:
             case TypeEffet.AugmentationFARadianceManquante:
-            case TypeEffet.DamageFaBuff:
-            case TypeEffet.DamageFaBuffCible:
-            case TypeEffet.DamageDebuffCible:
             case TypeEffet.RemoveAllTensionProcDamage:
             case TypeEffet.RemoveAllTensionProcBuffDebuff:
             case TypeEffet.RemoveAllDebuffProcBuffDebuf:
@@ -825,10 +830,6 @@ public class Effet : ScriptableObject
             case TypeEffet.AugmentationDegatsHitJoueur:
             case TypeEffet.GainFaBuffCible:
             case TypeEffet.GainFaDebuffCible:
-            case TypeEffet.Ponction:
-            case TypeEffet.PonctionForceAme:
-            case TypeEffet.DegatsFaRadianceManquanteCible:
-            case TypeEffet.DegatsFaRadianceManquanteCaster:
             case TypeEffet.PremiereAttaqueJeanne:
             case TypeEffet.DeuxiemeAttaqueJeanne:
             case TypeEffet.SupportJeanne:
@@ -904,7 +905,7 @@ public class Effet : ScriptableObject
             TypeEffet.OnKillStunAll => throw new System.NotImplementedException(),
             TypeEffet.UntilDeath => throw new System.NotImplementedException(),
             TypeEffet.AugmentationFARadianceManquante => GameManager.Instance.CommonNameData.ForceDame,
-            TypeEffet.DamageFaBuff => GameManager.Instance.CommonDescData.IdTradDegat   ,
+            TypeEffet.DamageFaBuff => GameManager.Instance.CommonDescData.IdTradDegat,
             TypeEffet.DamageFaBuffCible => GameManager.Instance.CommonDescData.IdTradDegat,
             TypeEffet.DamageDebuffCible => GameManager.Instance.CommonDescData.IdTradDegat,
             TypeEffet.RemoveAllTensionProcDamage => GameManager.Instance.CommonDescData.IdTradDegat,
@@ -930,6 +931,7 @@ public class Effet : ScriptableObject
             TypeEffet.SupportJeanne => throw new System.NotImplementedException(),
             TypeEffet.UltimeJeanne => throw new System.NotImplementedException(),
             TypeEffet.MultiplTension => GameManager.Instance.CommonNameData.Tension,
+            TypeEffet.AddPassiveStack => GameManager.Instance.CommonNameData.Passif,
             _ => throw new System.NotImplementedException(),
         };
     }

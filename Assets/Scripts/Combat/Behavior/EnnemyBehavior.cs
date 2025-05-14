@@ -7,6 +7,15 @@ using UnityEngine;
 public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 {
 
+    public override EnnemiStat Stat
+    {
+        get => _stat;
+        set
+        {
+            _stat = value;
+           
+        }
+    }
     public UIEnnemi UICombat;
     public int TensionUI;
     public Material characterMaterial;
@@ -26,7 +35,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     private int currentTension = 0;
     private Coroutine deathRoutine = null;
     private ClairvoyanceIconData clairvoyanceIconData;
-
+   
     public override string Name
     {
         get { return TradManager.instance.GetTranslation(Stat.IdTradName, Stat.Nom); }
@@ -34,6 +43,17 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     public bool IsDead { get; private set; } = false;
 
+    public virtual void OnDestroy()
+    {
+        if (_stat != null)
+        {
+            foreach (var item in PassiveList)
+            {
+                if (item is IUpdateStatPassive)
+                    ((IUpdateStatPassive)item).Clear();
+            }
+        }
+    }
     #region Divers start & fin
 
     IEnumerator DeathCoroutine()
@@ -53,7 +73,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         deathRoutine = null;
     }
 
-    public void SetUp()
+    public virtual void SetUp()
     {
         if (GameManager.Instance == null)
             _refBattleMan = TutoManager.Instance.BattleManager;
@@ -69,7 +89,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         //assignation des container dans le parent
         base.BuffContainer = UICombat.buffParents;
         base.DebuffContainer = UICombat.debuffParents;
-
+        Stat.Radiance = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.DissimulationOriginal = Stat.Dissimulation;
         Stat.ResilienceOriginal = Stat.Resilience;
@@ -83,6 +103,19 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             Stat.Buff = Instantiate(Stat.Buff);
         if (Stat.Debuff != null)
             Stat.Debuff = Instantiate(Stat.Debuff);
+
+        PassiveList = new List<AbstractPassive>();
+        for (int i = 0; i < _stat.PassiveList.Count; i++)
+        {
+            PassiveList.Add(Instantiate(_stat.PassiveList[i]));
+        }
+        foreach (var item in PassiveList)
+        {
+            if (item is IUpdateStatPassive passive)
+                passive.InitPassif(_stat);
+        }
+
+        RefreshPassiveDescription();
     }
 
     public override void ResetStat()
@@ -100,10 +133,13 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     public void StartTurn(bool isFirstTurn = false)
     {
         IsTurn = true;
-        if (_refBattleMan.PassifManager != null)
+        foreach (var passif in PassiveList)
         {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.DebutTour;
-            _refBattleMan.PassifManager.ResolvePassifs();
+            if (passif is IStartTurnPassive)
+            {
+                IStartTurnPassive startTurnpassif = passif as IStartTurnPassive;
+                startTurnpassif.Apply(Stat);
+            }
         }
 
         DecompteDebuffEnnemi(Decompte.tour, TimerApplication.DebutTour);
@@ -117,6 +153,11 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             gainedTension = false;
         }
 
+        if (!skip && !Stat.isStun)
+        {
+            DoAction();
+        }
+
         if (Stat.isStun)
         {
             Debug.Log("is stuned");
@@ -124,20 +165,11 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             EndTurn();
         }
 
-        if (!skip && !Stat.isStun)
-        {
-            DoAction();
-        }
     }
 
     public void EndTurn()
     {
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinTour;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
-
+       
         IsTurn = false;
         if (!skip)
             EndAnimBool();
@@ -150,10 +182,12 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     {
         if (IsDead) return;
         IsDead = true;
-        if (_refBattleMan.PassifManager != null)
+        
+
+        foreach (var item in PassiveList)
         {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.Death;
-            _refBattleMan.PassifManager.ResolvePassifs();
+            if (item is IDeathEffectPassive passive)
+                passive.OnDeathAction();
         }
 
         /*
@@ -204,7 +238,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         UpdateUI();
     }
 
-    private void UpdateUI()
+    protected virtual void UpdateUI()
     {
         if (Stat == null)
             return;
@@ -336,7 +370,10 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     {
         //Debug.Log("commencement des degats");
         //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
-        _refBattleMan.LaunchSpellEnnemi(nextAction);
+        if (!Stat.isStun)
+        {
+            _refBattleMan.LaunchSpellEnnemi(nextAction);
+        }
     }
 
     public void CreateSpellList()
@@ -361,9 +398,21 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     #endregion Spell
 
+    #region Passif
+
+    public void RefreshPassiveDescription()
+    {
+        EnemyPassiveDescription passDesc = GetComponentInChildren<EnemyPassiveDescription>(true);
+        if (passDesc != null && PassiveList.Count > 0)
+        {
+            passDesc.InitTooltip(PassiveList[0].IdTradDesc, PassiveList[0].DefaultDescription);
+        }
+    }
+#endregion
+
     #region BuffDebuff
 
-    public void AddDebuff(BuffDebuff toAdd, Decompte Decompte, TimerApplication Timer)
+    public void AddDebuff(BuffDebuff toAdd, TimerApplication Timer)
     {
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
@@ -399,7 +448,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
         foreach (var item in tempAddList)
         {
-            AddDebuff(item, Decompte.none, TimerApplication.Persistant);
+            AddDebuff(item, TimerApplication.Persistant);
         }
 
         Stat.ListBuffDebuff = base.UpdateBuffDebuffGameObject(Stat.ListBuffDebuff, this.Stat);
@@ -498,6 +547,15 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             ModifStat.Radiance += ModifStat.RadianceMax;
         }
         GameManager.Instance.BattleMan.LogRadianceChange(this.Name,  GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster), ModifStat.Radiance);
+        if (ModifStat.Radiance < 0)
+        {
+            Debug.Log($"{Name} take {ModifStat.Radiance * -1} damage.");
+            foreach (var item in PassiveList)
+            {
+                if (item is IOnDamagePassive passive)
+                    passive.Apply(_stat);
+            }
+        }
         Stat.ModifStateAll(ModifStat);
         Stat.RectificationStat();
 
@@ -533,11 +591,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
 
-        if (_refBattleMan.PassifManager != null)
-        {
-            _refBattleMan.PassifManager.CurrentEvent = TimerPassif.FinAction;
-            _refBattleMan.PassifManager.ResolvePassifs();
-        }
+        
 
         UpdateUI();
 

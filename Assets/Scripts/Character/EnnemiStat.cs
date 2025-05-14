@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 [System.Serializable]
 [CreateAssetMenu(fileName = "New Stat Ennemi", menuName = "Character/Create New Ennemi", order = 11)]
 public class EnnemiStat : CharacterStat
 {
-    [Space]
-    public Sprite Icon;
+    public event Action OnCustomStatModification;
+
     public string IdTradName;
     public string Nom;
     public int Dissimulation;
@@ -17,5 +18,17 @@ public class EnnemiStat : CharacterStat
     public EnnemiSpell Buff;
     public EnnemiSpell Debuff;
     //Uniquement pour Jeanne
-    public int Divin;
+    private int _customStat;
+    public int CustomStat
+    {
+        get => _customStat;
+        set
+        {
+            if (value != _customStat)
+            {
+                _customStat = value;
+                OnCustomStatModification?.Invoke();
+            }
+        }
+    }
 }

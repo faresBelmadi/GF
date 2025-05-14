@@ -55,7 +55,6 @@ public class GameManager : MonoBehaviour
 
     public int ClassIDSelected;
 
-    public PassifRules passifRules;
     [Header("Data")] [SerializeField] private SpriteData _spriteData;
     public GameData loadedData;
     public SkillTreePrinter SkillTreeUI;
@@ -208,7 +207,7 @@ public class GameManager : MonoBehaviour
 
                 playerStat.ListSouvenir = new List<Souvenir>();
                 playerStat.ListSpell = new List<Spell>();
-                playerStat.ListPassif = new List<Passif>();
+                playerStat.PassiveList = new List<AbstractPassive>();
                 //TODO : a decommenter quand le systeme de save sera mis en ligne
                 //       cette boucle load les spells acheté dans les runs d'avant.
                 /*foreach (var item in loadedData.CurrentRun.player.BoughtSpellID)
@@ -229,9 +228,9 @@ public class GameManager : MonoBehaviour
                     playerStat.ListSpell.Add(item);
                 }
 
-                foreach (var item in classSO.PlayerStat.ListPassif)
+                foreach (var item in classSO.PlayerStat.PassiveList)
                 {
-                    playerStat.ListPassif.Add(item);
+                    playerStat.PassiveList.Add(item);
                 }
             }
         }
@@ -258,7 +257,8 @@ public class GameManager : MonoBehaviour
 
         data.CurrentRun.player = new PlayerData()
         {
-            Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
+            //Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Radiance,
+            Radiance = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.RadianceMax, // On set les pv sur radiance max
             RadianceMax = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.RadianceMax,
             Conscience = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.Conscience,
             ForceAme = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ForceAme,
@@ -380,19 +380,19 @@ public class GameManager : MonoBehaviour
         {
             case TypeRoom.ENCOUNTER:
                 return UnityEngine.Random.Range(0, EncounterSet.EncounterNeutralList.Count);
-                break;
+
             case TypeRoom.CLASS_ENCOUNTER:
                 return UnityEngine.Random.Range(0, EncounterSet.EncounterClassList.Count);
-                break;
+
             case TypeRoom.ELITE:
                 return UnityEngine.Random.Range(0, EncounterSet.EncounterEliteList.Count);
-                break;
+
             case TypeRoom.CLASS_ELITE:
                 return UnityEngine.Random.Range(0, EncounterSet.EncounterClassEliteList.Count);
-                break;
+
             case TypeRoom.BOSS:
                 return UnityEngine.Random.Range(0, EncounterSet.EncounterBossList.Count);
-                break;
+
             default: return 0;
         }
     }

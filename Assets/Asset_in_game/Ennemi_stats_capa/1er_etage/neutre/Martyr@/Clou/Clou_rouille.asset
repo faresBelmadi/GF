@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dd4f7d6642da7c46884bf7f51860f2b, type: 3}
   m_Name: Clou_rouille
   m_EditorClassIdentifier: 
-  Radiance: 200
   RadianceMax: 200
   RadianceMaxOriginal: 200
   _forceAme: 20
@@ -35,6 +34,7 @@ MonoBehaviour:
   MultiplSoin: 1
   MultiplDegat: 1
   MultipleBuffDebuff: 1
+  MultipleTension: 1
   ListBuffDebuff: []
   TensionAttaque: 0
   TensionDebuff: 0
@@ -46,12 +46,18 @@ MonoBehaviour:
   NbPalier: 3
   PalierChangement: 0
   nbAttaqueRecu: 0
-  ListPassif: []
-  isStun: 1
+  PassiveList:
+  - {fileID: 11400000, guid: 9412180cb1f74f54a8b0597b5936a55b, type: 2}
+  isStun: 0
+  _deathSFX: {fileID: 0}
+  _tensionSFX: {fileID: 0}
+  _damageSFX: {fileID: 0}
+  Icon: {fileID: 21300000, guid: edbc5fa301f81d34fb0bca98fd8a3d6b, type: 3}
+  IdTradName: 
   Nom: "Clou rouill\xE9"
   Dissimulation: 0
   DissimulationOriginal: 0
-  NoTension: 0
+  NoTension: 1
   Spawnable: {fileID: 1043661544690065412, guid: c94d9ebd0fdd0d74bb3c651e1ed87ab4, type: 3}
   Att1: {fileID: 11400000, guid: 7b273f9891e155a4b8ab15dfc0048bc7, type: 2}
   Att2: {fileID: 0}

@@ -25,7 +25,6 @@ public class BattleManager : MonoBehaviour
     public GameObject buttonEndCombat;
     [SerializeField] private string _idLabelForEssenceButton;
     const string Target = "Targeting";
-    public PassifRules passifRules;
 
     [Header("CrystalSoul Manager")]
     [Tooltip("Put three Essence Prefab, from the smallest, to the greatest")]
@@ -58,7 +57,7 @@ public class BattleManager : MonoBehaviour
     public int CurrentPhaseDamage;
 
     // [SerializeField] private DialogueManager DialogueManager;
-    public PassifManager PassifManager;
+
 
     public bool IsLoot;
     public bool ConsumedEssence;
@@ -294,8 +293,7 @@ public class BattleManager : MonoBehaviour
     void DialogueEnableSetup()
     {
         player.InitRefBattleMan(this);
-        if (GameManager.Instance != null)
-            PassifManager = new PassifManager(new List<JoueurBehavior> { player }, EnemyScripts);
+       
         GameManager.Instance.DialManager.SetupDialogue(_encounter);
     }
 
@@ -423,10 +421,10 @@ public class BattleManager : MonoBehaviour
         }
 
         var tempCombatScript = temp.GetComponent<EnnemyBehavior>();
-        GameManager.Instance.DialManager.AddSpeakers(ennemyId, tempCombatScript);
         //instantiate tout les so modifiable
         if (tempCombatScript != null)
         {
+            GameManager.Instance.DialManager.AddSpeakers(ennemyId, tempCombatScript);
             tempCombatScript.Stat = Instantiate(EnnemyStats);
             tempCombatScript.SetUp();
             tempCombatScript.EndTurnBM = EndTurn;
@@ -468,18 +466,33 @@ public class BattleManager : MonoBehaviour
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
+
+        //Launch Passive effect for players
+        foreach (var item in player.PassiveList)
+        {
+            if (item is IStartCombatPassive passive)
+                passive.ApplyEffectOnStartCombat();
+        }
+        //Launch passive effect for ennemies
+        for (int i=0;i<EnemyScripts.Count;i++)
+        {
+            foreach (var item in EnemyScripts[i].PassiveList)
+            {
+                if (item is IStartCombatPassive passive)
+                    passive.ApplyEffectOnStartCombat();
+                if (item is IDecoyPassive)
+                    EnemyScripts[i].MakeTangible(); //On rend le decoy tangible
+                if (item is IUpdateEnnemyBehaviorPassive updatePassive)
+                    updatePassive.InitPassif(EnemyScripts[i]);
+            }
+        }
         StartPhase();
     }
 
     private void EndBattle()
     {
         IsCombatOn = false;
-        if (!GameManager.Instance.IsTuto)
-        {
-            PassifManager.CurrentEvent = TimerPassif.FinCombat;
-            PassifManager.ResolvePassifs();
-        }
-
+       
         Loot();
         player.ResetStat();
         //player.Stat.ListBuffDebuff.Clear();
@@ -514,11 +527,6 @@ public class BattleManager : MonoBehaviour
     {
         //Play start phase sound
         AudioManager.instance.SFX.PlaySFXClip(SFXType.StartPhaseSFX);
-        if (PassifManager != null)
-        {
-            PassifManager.CurrentEvent = TimerPassif.DebutPhase;
-            PassifManager.ResolvePassifs();
-        }
 
         LastPhaseDamage = CurrentPhaseDamage;
         CurrentPhaseDamage = 0;
@@ -587,12 +595,6 @@ public class BattleManager : MonoBehaviour
         nbTurn++;
         if (nbTurn >= IdOrder.Count)
         {
-            if (!IsTuto)
-            {
-                PassifManager.CurrentEvent = TimerPassif.FinPhase;
-                PassifManager.ResolvePassifs();
-            }
-
             StartPhase();
         }
         else
@@ -692,7 +694,7 @@ public class BattleManager : MonoBehaviour
 
         GiveBuffDebuff(afterEffect, idTarget);
     }
-
+ 
     public void GiveBuffDebuff(List<BuffDebuff> BuffDebuff, int target = -1)
     {
         int origine = currentIdTurn;
@@ -704,12 +706,12 @@ public class BattleManager : MonoBehaviour
             switch (item.CibleApplication)
             {
                 case Cible.joueur:
-                    player.AddDebuff(item, Decompte, Timer);
+                    player.AddDebuff(item, Timer);
                     break;
                 case Cible.ennemi:
                     if (target != -1)
                         if (EnemyScripts.FirstOrDefault(c => c.combatID == target) != null)
-                            EnemyScripts.First(c => c.combatID == target).AddDebuff(item, Decompte, Timer);
+                            EnemyScripts.First(c => c.combatID == target).AddDebuff(item, Timer);
                         else
                         {
                             int index;
@@ -721,9 +723,9 @@ public class BattleManager : MonoBehaviour
 
                             var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == index);
                             if (ennemy != null)
-                                ennemy.AddDebuff(item, Decompte, Timer);
+                                ennemy.AddDebuff(item, Timer);
                             else
-                                EnemyScripts.First().AddDebuff(item, Decompte, Timer);
+                                EnemyScripts.First().AddDebuff(item, Timer);
                         }
 
                     break;
@@ -737,22 +739,22 @@ public class BattleManager : MonoBehaviour
 
                     var ennemyAlly = EnemyScripts.FirstOrDefault(c => c.combatID == indexAlly);
                     if (ennemyAlly != null)
-                        ennemyAlly.AddDebuff(item, Decompte, Timer);
+                        ennemyAlly.AddDebuff(item, Timer);
                     else
-                        EnemyScripts.First().AddDebuff(item, Decompte, Timer);
+                        EnemyScripts.First().AddDebuff(item, Timer);
                     break;
                 case Cible.Martyr:
                     var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.Nom == "Martyr");
                     if (martyr != null)
                     {
-                        martyr.AddDebuff(item, Decompte, Timer);
+                        martyr.AddDebuff(item, Timer);
                     }
 
                     break;
                 case Cible.allEnnemi:
                     foreach (var ennemie in EnemyScripts)
                     {
-                        ennemie.AddDebuff(item, Decompte, Timer);
+                        ennemie.AddDebuff(item, Timer);
                     }
 
                     break;
@@ -761,22 +763,22 @@ public class BattleManager : MonoBehaviour
                     {
                         var ennemie = EnemyScripts[x];
                         if (ennemie != null && ennemie.combatID != origine)
-                            ennemie.AddDebuff(item, Decompte, Timer);
+                            ennemie.AddDebuff(item, Timer);
                     }
 
                     break;
                 case Cible.All:
-                    player.AddDebuff(item, Decompte, Timer);
+                    player.AddDebuff(item, Timer);
                     foreach (var ennemie in EnemyScripts)
                     {
-                        ennemie.AddDebuff(item, Decompte, Timer);
+                        ennemie.AddDebuff(item, Timer);
                     }
 
                     break;
                 case Cible.Self:
                     var self = EnemyScripts.FirstOrDefault(c => c.combatID == origine);
                     if (self != null)
-                        self.AddDebuff(item, Decompte, Timer);
+                        self.AddDebuff(item, Timer);
                     break;
 
             }
@@ -785,12 +787,38 @@ public class BattleManager : MonoBehaviour
 
     public void PassageEffet(Effet effet, int Caster, int target = -1, SourceEffet source = SourceEffet.Spell)
     {
+        bool isDecoy = false;
+        EnnemyBehavior decoy = null;
+        foreach (var ennemy in EnemyScripts)
+        {
+            foreach (var item in ennemy.PassiveList)
+            {
+                if (item is IDecoyPassive passive)
+                {
+                    isDecoy = true;
+                    decoy = ennemy;
+                }
+            }
+        }
         switch (effet.Cible)
         {
             case Cible.joueur:
                 if (Caster == idPlayer)
                 {
                     player.ApplicationEffet(effet, null, source);
+                }
+                else if (isDecoy)
+                {
+                    if (EnemyScripts.FirstOrDefault(c => c.combatID == Caster) == null)
+                    {
+                        decoy.ApplicationEffet(effet, null, source,
+                            Caster);
+                    }
+                    else
+                    {
+                        decoy.ApplicationEffet(effet, null, source,
+                            Caster);
+                    }
                 }
                 else
                 {
@@ -863,6 +891,11 @@ public class BattleManager : MonoBehaviour
 
                 break;
             case Cible.allEnnemi:
+                if (isDecoy)
+                {
+                    decoy.ApplicationEffet(effet, null, source, Caster);
+                    break;
+                }
                 var nbEnemies = EnemyScripts.Count;
                 for (int x = EnemyScripts.Count - 1; x >= 0; x--)
                 {
@@ -1031,12 +1064,28 @@ public class BattleManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
 
         ListEssence.Clear();
+       
         var temp = Instantiate(GetPrefabEssence(amount), spawnPos[3]); //we put it in the closest position of the player
         //temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
-        temp.GetComponent<CrystalSoul>().AddAmountOfEssence(amount, true);
         //temp.transform.localScale = new Vector3(1.5f, 1.5f, 0);
+        temp.GetComponent<CrystalSoul>().AddAmountOfEssence(amount, true);
 
         ListEssence.Add(temp);
+        foreach (var passif in player.PassiveList)
+        {
+            if (passif is ILootEssencePassive)
+            {
+                ILootEssencePassive lootPassif  = passif as ILootEssencePassive;
+                lootPassif.Apply(player.Stat);
+                if (lootPassif.Value != 0)
+                {
+                    amount += lootPassif.Value;
+                    temp.GetComponent<CrystalSoul>().AddAmountOfEssence(amount, true);
+                }
+                
+            }
+        }
+        amount = temp.GetComponent<CrystalSoul>().Amount;
         buttonEndCombat.SetActive(true);
         buttonEndCombat.GetComponentInChildren<TMP_Text>().text =
             $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount})";
@@ -1174,7 +1223,7 @@ public class BattleManager : MonoBehaviour
 
         foreach (var item in EnemyScripts)
         {
-            item.EndTargetingMode();
+             item.EndTargetingMode();
         }
 
         player.SendSpell(true, IdSpell);

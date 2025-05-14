@@ -266,7 +266,7 @@ public class Analyzer : MonoBehaviour
                 case AnalexState.AttributeState:
                     Debug.Log("perdu");
                     return string.Empty;
-                    break;
+                    
                 case AnalexState.ValueState:
                     currentAttribute.Value = ReadValue(stringTab[currentIndex]);
                     currenAtttributes.Add(currentAttribute);
@@ -295,7 +295,7 @@ public class Analyzer : MonoBehaviour
             case TradTag.passif:
                 if (attributes[TradAttribute.type].Equals("DIV", System.StringComparison.InvariantCultureIgnoreCase))
                 {
-                    int divPoint = GameManager.Instance.BattleMan.EnemyScripts[0].Stat.Divin;
+                    int divPoint = GameManager.Instance.BattleMan.EnemyScripts[0].Stat.CustomStat;
                     strb.Append(divPoint);
                 }
                 break;
