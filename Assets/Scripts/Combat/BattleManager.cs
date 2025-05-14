@@ -706,12 +706,12 @@ public class BattleManager : MonoBehaviour
             switch (item.CibleApplication)
             {
                 case Cible.joueur:
-                    player.AddDebuff(item, Decompte, Timer);
+                    player.AddDebuff(item, Timer);
                     break;
                 case Cible.ennemi:
                     if (target != -1)
                         if (EnemyScripts.FirstOrDefault(c => c.combatID == target) != null)
-                            EnemyScripts.First(c => c.combatID == target).AddDebuff(item, Decompte, Timer);
+                            EnemyScripts.First(c => c.combatID == target).AddDebuff(item, Timer);
                         else
                         {
                             int index;
@@ -723,9 +723,9 @@ public class BattleManager : MonoBehaviour
 
                             var ennemy = EnemyScripts.FirstOrDefault(c => c.combatID == index);
                             if (ennemy != null)
-                                ennemy.AddDebuff(item, Decompte, Timer);
+                                ennemy.AddDebuff(item, Timer);
                             else
-                                EnemyScripts.First().AddDebuff(item, Decompte, Timer);
+                                EnemyScripts.First().AddDebuff(item, Timer);
                         }
 
                     break;
@@ -739,22 +739,22 @@ public class BattleManager : MonoBehaviour
 
                     var ennemyAlly = EnemyScripts.FirstOrDefault(c => c.combatID == indexAlly);
                     if (ennemyAlly != null)
-                        ennemyAlly.AddDebuff(item, Decompte, Timer);
+                        ennemyAlly.AddDebuff(item, Timer);
                     else
-                        EnemyScripts.First().AddDebuff(item, Decompte, Timer);
+                        EnemyScripts.First().AddDebuff(item, Timer);
                     break;
                 case Cible.Martyr:
                     var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.Nom == "Martyr");
                     if (martyr != null)
                     {
-                        martyr.AddDebuff(item, Decompte, Timer);
+                        martyr.AddDebuff(item, Timer);
                     }
 
                     break;
                 case Cible.allEnnemi:
                     foreach (var ennemie in EnemyScripts)
                     {
-                        ennemie.AddDebuff(item, Decompte, Timer);
+                        ennemie.AddDebuff(item, Timer);
                     }
 
                     break;
@@ -763,22 +763,22 @@ public class BattleManager : MonoBehaviour
                     {
                         var ennemie = EnemyScripts[x];
                         if (ennemie != null && ennemie.combatID != origine)
-                            ennemie.AddDebuff(item, Decompte, Timer);
+                            ennemie.AddDebuff(item, Timer);
                     }
 
                     break;
                 case Cible.All:
-                    player.AddDebuff(item, Decompte, Timer);
+                    player.AddDebuff(item, Timer);
                     foreach (var ennemie in EnemyScripts)
                     {
-                        ennemie.AddDebuff(item, Decompte, Timer);
+                        ennemie.AddDebuff(item, Timer);
                     }
 
                     break;
                 case Cible.Self:
                     var self = EnemyScripts.FirstOrDefault(c => c.combatID == origine);
                     if (self != null)
-                        self.AddDebuff(item, Decompte, Timer);
+                        self.AddDebuff(item, Timer);
                     break;
 
             }

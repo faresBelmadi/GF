@@ -11,7 +11,8 @@ public enum TimerApplication
     DebutPhase,
     DebutTour,
     Attaque,
-    Persistant
+    Persistant,
+    Dialogue
 }
 public enum TimerPassif
 {
@@ -41,6 +42,7 @@ public enum Cible
     LessRadiance = 12,
     HasAmantLessRadiance = 13,
     Martyr = 14,
+    Speaker = 15
 }
 
 public enum CibleDialogue
@@ -57,6 +59,7 @@ public enum CibleDialogue
     AllExceptSelf = 9,
     AllAllyExceptSelf = 10,
     Self = 11,
+    Speaker = 12,
 }
 
 public enum SpellStatus

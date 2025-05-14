@@ -413,7 +413,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     #region BuffDebuff
 
-    public void AddDebuff(BuffDebuff toAdd, Decompte Decompte, TimerApplication Timer)
+    public void AddDebuff(BuffDebuff toAdd, TimerApplication Timer)
     {
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
@@ -451,7 +451,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
         foreach (var item in tempAddList)
         {
-            AddDebuff(item, Decompte.none, TimerApplication.Persistant);
+            AddDebuff(item, TimerApplication.Persistant);
         }
 
         Stat.ListBuffDebuff = base.UpdateBuffDebuffGameObject(Stat.ListBuffDebuff, this.Stat);

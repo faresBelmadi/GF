@@ -19,7 +19,6 @@ public class StatPerConsciencePassive : AbstractPassive, IPassiveEffect
     private List<StatToModif> _statToModif;
     private JoueurStat _joueurStat;
     private int modificator = 1;
-    private bool _isInit = false;
 
     private int GetMainStatValue(CharacterStat charStat) => _mainStat switch
     {
@@ -32,7 +31,6 @@ public class StatPerConsciencePassive : AbstractPassive, IPassiveEffect
         _joueurStat = stat;
         stat.OnConscienceIncrease += Apply;
         stat.OnConscienceDecrease += Apply;
-        _isInit = true;
     }
     private void OnDestroy()
     {

@@ -11,7 +11,6 @@ public class GeneralPopUp : MonoBehaviour
 {
     private static GeneralPopUp instance = null;
     public static GeneralPopUp Instance = instance;
-    private Canvas activeCanvas = null;
     [Header("PopUp Window")]
     [SerializeField] private GameObject pupUpWindowPrefab;
     [SerializeField] private AnimationCurve movmentCurve;
