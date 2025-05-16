@@ -9,8 +9,11 @@ public class EffectTests
 {
     private static string[] TestedJoueurStatFieldNames =
         {
-            "Radiance",
+            "Clairvoyance",
             "Conscience",
+            "ConscienceMax",
+            "Volonter",
+            "VolonterMax",
         };
 
     private MemberInfo[] TestedJoueurStatMembers =>
@@ -254,7 +257,7 @@ public class EffectTests
     }
 
     private Effet CreateEffet(TypeEffet typeEffet,
-        int valeurBrute = 0, int nbAttaques = 0)
+        int valeurBrute, int nbAttaques)
     {
         var effet = ScriptableObject.CreateInstance("Effet") as Effet;
         effet.TypeEffet = typeEffet;
