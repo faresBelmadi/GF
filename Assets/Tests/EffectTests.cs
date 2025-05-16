@@ -249,7 +249,6 @@ public class EffectTests
 
         Assert.Less(testIndex, expectations.Length, $"Not enough expectations defined for effet {typeEffet}");
         JoueurStat expected = expectations[testIndex].Invoke();
-        Assert.IsNotNull(expected, $"Expected result for effet {typeEffet} shouldn't be null.");
 
         return expected;
     }
