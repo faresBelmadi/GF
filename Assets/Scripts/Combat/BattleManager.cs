@@ -1238,6 +1238,14 @@ public class BattleManager : MonoBehaviour
         StopCoroutine(Target);
         StartCoroutine(Target, IdSpell);
     }
+    public void StopTargeting()
+    {
+        StopCoroutine(Target);
+        foreach (var item in EnemyScripts)
+        {
+            item.EndTargetingMode();
+        }
+    }
 
     private IEnumerator Targeting(int IdSpell)
     {
