@@ -328,6 +328,8 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         IsTurn = false;
         DesactivateSpells();
+        SelectedSpell = null;
+        _refBattleMan.StopTargeting();
         _playedTurn++;
         EndTurnBM();
     }
@@ -420,7 +422,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         }
         
         if (needCible)
-        TakeTarget(SelectedSpell.IDSpell);
+            TakeTarget(SelectedSpell.IDSpell);
         else
         {
             _refBattleMan.idTarget = 0;
@@ -439,7 +441,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         {
             spell.GetComponent<SpellCombat>().selectedSpell.SetActive(false);
         }
-
         EndTurnButton.interactable = false;
         _highlightComponant.DisableHighlightingBetweenTarget();
     }

@@ -8,8 +8,8 @@ public class WaitEndAttack : StateMachineBehaviour
     {
         //After animation, reactivate spells.
         if (GameManager.Instance != null)
-            GameManager.Instance.BattleMan.player.ActivateSpells();
+            GameManager.Instance.BattleMan.ActivatePlayer();
         else
-            TutoManager.Instance.BattleManager.player.ActivateSpells();
+            TutoManager.Instance.BattleManager.ActivatePlayer();
     }
 }
