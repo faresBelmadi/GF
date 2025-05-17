@@ -70,7 +70,7 @@ B19N;Divin;Divine;神圣;;;
 B20N;Téméraire;Reckless;鲁莽;;;
 B21N;Inébranlable;Unshakeable;不可动摇;;;
 B22N;Perspicace;Insightful;洞察力;;;
-B23N;Empatie;Empathy;感同身受;B23D et B33D;;
+B23N;Empathie;Empathy;感同身受;B23D et B33D;;
 B24N;Confiant;Confident;自信;;;
 B25N;Fureur;Fury;;;;
 B26N;Respect;Respect;;;;
@@ -275,11 +275,11 @@ SN2D;{stat value=RAM} +10%;{stat value=RAM} +10%;;;;
 SN3D;{stat value=FA} +10%;{stat value=FA} +10 %;;;;
 SN4D;{stat value=CL} +2;{stat value=CL} +2;;;;
 SN5D;{stat value=CL} +4 {stat value=VIT} -3;{stat value=CL} +4 {stat value=VIT} -3;;;;
-SN6D;{stat value=CONV} +2 Calme +2;{stat value=CONV} +2 Calm +2;;;;
+SN6D;{stat value=CONV} +2 {stat value=CAL} +2;{stat value=CONV} +2 Calm +2;;;;
 SN7D;{stat value=FA} +10 % {stat value=RAM} -5%;{stat value=FA} +10 % {stat value=RAM} -5%;;;;
 SN8D;Conscience max +1 {stat value=CONV} -2;Max Conscience  +1 {stat value=CONV} -2;;;;
 SN9D;{stat value=RAM} +20% {stat value=CONV} +3 {stat value=CL} -4;{stat value=RAM} +20% {stat value=CONV} +3 {stat value=CL} -4;;;;
-SN10D;{stat value=VIT} +5 Calme -5 {stat value=RES} -3;{stat value=VIT} +5  Calm -5 {stat value=RES} -3;;;;
+SN10D;{stat value=VIT} +5 {stat value=CAL} -5 {stat value=RES} -3;{stat value=VIT} +5  {stat value=CAL} -5 {stat value=RES} -3;;;;
 SN11D;"Volonté max +1
 {stat value=FA} +30%
 {stat value=VIT} +3
@@ -318,9 +318,7 @@ Combat basics buff gain a bonus of 5%";;;;
 SC4D;"{stat value=FA} +10% 
 +15 % de dégats en plus sur la capacité base du combat";"{stat value=FA} +10%, 
 Combat basis deal 15 % more damage";;;;
-SC5D;"{stat value=CL} +6
-Calme +3   
-""Trone d'or"" ponctionne 5% de plus et n'applique plus ""colère""";"{stat value=CL} +6 calm +3  
+SC5D;{stat value=CONV} +2 {stat value=CAL} +2;"{stat value=CL} +6 calm +3  
 ""Golden throne"" Gain +5% punction, it does not apply ""anger"" anymore";;;;
 SC6D;"Force d’ame +30 %
 {stat value=RAM} -10 %
@@ -334,9 +332,9 @@ SC8D;"{stat value=RAM} +20 %
 Dueliste expérimenté applique 2 buff coup pour coup";"{stat value=RAM}  +20 %
 {stat value=RES} -3
 Experimented duelist now apply 2 buff blow for blow";;;;
-SC9D;"Calme -3
+SC9D;"{stat value=CAL} -3
 {stat value=FA} -15%
-Savoir primordiale augmente le bonus de vitesse de +2";"Calm -3 {stat value=FA} -15% 
+Savoir primordiale augmente le bonus de vitesse de +2";"{stat value=CAL} -3 {stat value=FA} -15% 
 Primordial knowledge speed boost is increased by +2";;;;
 SC10D;"{stat value=CL} +3
 {stat value=RAM} -10%
@@ -345,12 +343,12 @@ Coup bas inflige {damage type=percent value=20 stat=FA} en plus
 SC11D;"{stat value=FA} +30%
 Conscience max -1,  Augmente les dégats d'""opprimer les faibles"" de 22 % par débuff";"{stat value=FA} +30%, Max conscience -1.
 Increase the damage of ""opress the weak"" by 22% per debuff";;;;
-SC12D;"Calme -5
+SC12D;"{stat value=CAL} -5
 {stat value=CL} -3
 Seul contre tous inflige +40% de dégâts";"Calm -5, {stat value=CL}-3
 Alone against the world inflict +40% Damage";;;;
 SC13D;"Conscience max +1
-Calme +4
+{stat value=CAL} +4
 Savoir primordiale augmente le bonus de {stat value=CL} de +2";"Max conscience +1, Calm +4 
 Primordial knowledge {stat value=CL} boost is increased by +2";;;;
 SC14D;"{stat value=CONV} +2
@@ -365,9 +363,9 @@ SC16D;"{stat value=RAM} +30%
 {stat value=VIT} +6
 Appliquer soif de vengeance, vous donne aussi un buff de {stat value=CONV} de +5     ""Soif de vengeance"" : Augmente de 5 points la {stat value=FA} pour chaque pourcentage de {stat value=RAD} manquant";{stat value=RAM} +30%,  {stat value=VIT} +6, {stat value=RES} -4, thirst for vengence also give you a buff of +5 {stat value=CONV};;;;
 SC17D;"{stat value=FA} +30%
-Calme -5
+{stat value=CAL} -5
 {stat value=CL} -8   
-Hémmoragie passe la {stat value=CONV} du porteur à -20";"{stat value=FA} +30% Calm -5, {stat value=CL} -8 
+Hémmoragie passe la {stat value=CONV} du porteur à -20";"{stat value=FA} +30% {stat value=CAL} -5, {stat value=CL} -8 
 Hemorrhage make the opponent {stat value=CONV} pass to -20";;;;
 SC18D;"{stat value=RAM} +15%, {stat value=CL} +8, Calm +6
 Remord gagne 5% de réduction de dégats";"{stat value=RAM} +15%, {stat value=CL} +8, Calm +6, 
@@ -378,10 +376,10 @@ SC19D;"{stat value=RAM} +15%
 Protection rapprochée dure une phase de plus";"{stat value=RAM} +15%, {stat value=RES} +4, {stat value=VIT}-10,
 Close protection stay one more phase";;;;
 SC20D;"{stat value=FA} +40%
-Calme -6
+{stat value=CAL} -6
 Conscience max -3    
 Si mise a mort tue sa cible. Etourdis dure 2 tour.
-""étourdi"" Ne peut pas effectuer d'action durant son Tour.";"{stat value=FA} +40%, Calm -6, Max Conscience  -3
+""étourdi"" Ne peut pas effectuer d'action durant son Tour.";"{stat value=FA} +40%, {stat value=CAL} -6, Max Conscience  -3
 If execution kill the tarder, ""stun"" will last for 2 turn
 ""Stun"" Can't do any action during their turn";;;;
 SC21D;"{stat value=RAM} +35 %
