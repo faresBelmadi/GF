@@ -77,7 +77,7 @@ public class GgsToCsvImporterWindow : EditorWindow
                 }
 
                 SaveMacroLinks();
-                Import();
+                ImportAll();
                 Close();
             }
             EditorGUI.EndDisabledGroup();
@@ -112,42 +112,49 @@ public class GgsToCsvImporterWindow : EditorWindow
         File.WriteAllText(SettingsFilePath, settings);
     }
 
-    private void Import()
+    private void ImportAll()
     {
         if (!Directory.Exists(LocaSaveFolder))
         {
             Directory.CreateDirectory(LocaSaveFolder);
         }
 
+        Import(ImportGameLocaMacroLink, GameLocaSaveFile, "Game");
+        Import(ImportCapaLocaMacroLink, CapaLocaSaveFile, "Capa");
+        Import(ImportMiscLocaMacroLink, MiscLocaSaveFile, "Misc");
+
+        AssetDatabase.Refresh();
+    }
+
+    private void Import(string macroLink, string fileName, string logInfo)
+    {
         string content = string.Empty;
         try
         {
             using (WebClient client = new WebClient())
             {
-                content = client.DownloadString(ImportGameLocaMacroLink);
+                content = client.DownloadString(macroLink);
             }
         }
         catch (Exception ex)
         {
-            Debug.LogError("Failed to download from Web App: " + ex.Message);
+            Debug.LogError($"Failed to download {logInfo} from Web App: {ex.Message}");
             return;
         }
 
         if (string.IsNullOrEmpty(content))
         {
-            Debug.LogError("Web App provided empty content!");
+            Debug.LogError($"Web App provided empty content for {logInfo}!");
             return;
         }
         else if (content.StartsWith("Error:"))
         {
-            Debug.LogError(content);
+            Debug.LogError($"Web App returned for {logInfo}: {content}");
             return;
         }
 
-        var fullSavePath = Path.Combine(LocaSaveFolder, GameLocaSaveFile);
+        var fullSavePath = Path.Combine(LocaSaveFolder, fileName);
         File.WriteAllText(fullSavePath, content);
-
-        AssetDatabase.Refresh();
-        Debug.Log("CSV downloaded to " + fullSavePath);
+        Debug.Log($"Downloaded CSV for {logInfo}.", AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(fullSavePath));
     }
 }
