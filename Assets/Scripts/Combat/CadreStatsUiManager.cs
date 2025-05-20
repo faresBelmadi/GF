@@ -3,21 +3,19 @@ using UnityEngine;
 
 public class CadreStatsUiManager : MonoBehaviour
 {
-    
-    [SerializeField]
-    private GameObject _contentHolder;
-    public TextMeshProUGUI StatConviction;
-    public TextMeshProUGUI StatResilience;
-    public TextMeshProUGUI StatForceAme;
-    public TextMeshProUGUI StatConvictionValue;
-    public TextMeshProUGUI StatResilienceValue;
-    public TextMeshProUGUI StatForceAmeValue;
+
+    [SerializeField] private TextMeshProUGUI StatConviction;
+    [SerializeField] private TextMeshProUGUI StatResilience;
+    [SerializeField] private TextMeshProUGUI StatForceAme;
+    [SerializeField] private TextMeshProUGUI StatConvictionValue;
+    [SerializeField] private TextMeshProUGUI StatResilienceValue;
+    [SerializeField] private TextMeshProUGUI StatForceAmeValue;
 
     public void ShowStats(EnnemiStat stats)
     {
-        var ConvictionTrad = TradManager.instance.GetTranslation("G3N", "Conviction");
-        var FATrad = TradManager.instance.GetTranslation("G6N", "Force d'Ame");
-        var ResilienceTrad = TradManager.instance.GetTranslation("G4N", "Resilience");
+        var ConvictionTrad = GameManager.Instance.CommonNameData.Conviction;
+        var FATrad = GameManager.Instance.CommonNameData.ForceDame;
+        var ResilienceTrad = GameManager.Instance.CommonNameData.Resilience;
         StatConviction.text = $"{ConvictionTrad}";
         StatConvictionValue.text = $" {stats.Conviction}";
         StatForceAme.text = $"{FATrad}";
