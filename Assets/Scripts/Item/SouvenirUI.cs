@@ -13,12 +13,12 @@ public class SouvenirUI : MonoBehaviour
     private GameObject _descriptionGO;
     public TextMeshProUGUI TexteDescription;
     [SerializeField]
-    private SpriteRenderer _souvenirImageRenderer;
+    private Image _souvenirImage;
     [Tooltip("Set the rarity border, starting with 0 = most common")]
     [SerializeField]
     private List<Sprite> _rarityBorders;
     [SerializeField]
-    private SpriteRenderer _rarityBordersRenderer;
+    private Image _rarityBordersImage;
 
     private const string EMOTIONID      = "Souv1Desc1";
     private const string SLOTID         = "Souv1Desc2";
@@ -34,7 +34,7 @@ public class SouvenirUI : MonoBehaviour
     private DescriptionHoverVisibility rectVisibility = new DescriptionHoverVisibility();
     public void StartUp()
     {
-        _souvenirImageRenderer.sprite = LeSouvenir.Icon;
+        _souvenirImage.sprite = LeSouvenir.Icon;
         //TODO: Ajouter émotions le moment venu
         TexteDescription.text = LeSouvenir.SouvenirName + "\n" + /*DescriptionEmotion() + "\n" +*/ TradManager.instance.GetTranslation("Souv1Desc2", "Slots") + " : " + LeSouvenir.Slots.ToString() + "\n" + LeSouvenir.SouvenirDesc;
         SetRarityBorder(LeSouvenir.Rarete);
@@ -43,7 +43,7 @@ public class SouvenirUI : MonoBehaviour
 
     private void SetRarityBorder(Rarity rarity)
     {
-        _rarityBordersRenderer.sprite = _rarityBorders[(int)LeSouvenir.Rarete];
+        _rarityBordersImage.sprite = _rarityBorders[(int)LeSouvenir.Rarete];
     }
 
     private string DescriptionEmotion()
@@ -83,6 +83,12 @@ public class SouvenirUI : MonoBehaviour
         _descriptionGO.SetActive(true);
        
         rectVisibility.CheckVisibilityAndAdjustPosition(_descriptionGO.GetComponent<RectTransform>(), FindAnyObjectByType<Camera>());
+        GameObject posGO = GameObject.FindGameObjectsWithTag("MemoryTooltipPosition")[0];
+        if (posGO != null)
+        {
+            _descriptionGO.transform.position = posGO.transform.position;
+            
+        }
     }
     public void HideDescription()
     {

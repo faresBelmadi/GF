@@ -579,6 +579,13 @@ public class BattleManager : MonoBehaviour
         //turnOrderUIManager.GenerateTurnItems(IdOrder);
     }
 
+    public void ActivatePlayer()
+    {
+        var i = EnemyScripts.Where(x=>x.Stat.Radiance > 0).Count();
+        if (i > 0)
+            player.ActivateSpells();
+    }
+
     #endregion Phase
 
     #region Turn
@@ -1195,6 +1202,7 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
+                    player.DesactivateSpells();
                     StartCoroutine("GatherEssence");
                 }
 
@@ -1229,6 +1237,14 @@ public class BattleManager : MonoBehaviour
     {
         StopCoroutine(Target);
         StartCoroutine(Target, IdSpell);
+    }
+    public void StopTargeting()
+    {
+        StopCoroutine(Target);
+        foreach (var item in EnemyScripts)
+        {
+            item.EndTargetingMode();
+        }
     }
 
     private IEnumerator Targeting(int IdSpell)

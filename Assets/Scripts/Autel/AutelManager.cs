@@ -594,77 +594,41 @@ public class AutelManager : MonoBehaviour
     {
         SouvenirChoix3 = Instantiate(SouvenirPrefab, SpawnSouvenirChoix3.transform);
         listAllSouvenir = listAllSouvenir.OrderBy(a => UnityEngine.Random.value).ToList();
-        switch (Etage)
+        List<Souvenir> souvList = Etage switch
         {
-            case 1:
-                if(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare) == null)
-                {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique));
-                }
-                else
-                {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare));
-                }
-                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
-                break;
-            case 2:
-                if (listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique) == null)
-                {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare));
-                }
-                else
-                {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique));
-                }
-                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
-                break;
-            case 3:
-                if (listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Legendaire) == null)
-                {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique));
-                }
-                else
-                {
-                    SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Legendaire));
-                }
-                SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
-                break;
-        }
+            3 => GameManager.Instance.CopyAllSouvenir.Where(c => c.Rarete >= Rarity.Legendaire && c.IsClass).ToList(),
+            2 => GameManager.Instance.CopyAllSouvenir.Where(c => c.Rarete >= Rarity.Mythique && c.IsClass).ToList(),
+            1 => GameManager.Instance.CopyAllSouvenir.Where(c => c.Rarete >= Rarity.Rare && c.IsClass).ToList(),
+            _ => GameManager.Instance.CopyAllSouvenir
+        };
+
+        int ind = Random.Range(0, souvList.Count);
+        SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(souvList[ind]);
+        SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
+
         TextDescriptionChoix3.text =$"{TradManager.instance.GetTranslation(_idTradChoix3)} : {SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir.SouvenirDesc}";
     }
 
     public void UpdateCoutChoix()
     {
-        switch (Etage)
-        {
-            case 1:
-                //TextCoutChoix1.text = "Cout : " + CoutChoix1[0].ToString() + " essence";
-                //TextCoutChoix2.text = "Cout : " + CoutChoix2[0].ToString() + " essence";
-                //TextCoutChoix3.text = "Cout : " + CoutChoix3[0].ToString() + " essence\n" + CoutStatChoix3[0].ToString() + " point de Calme";
-                TextCoutChoix3.text = $"{CoutChoix3[Etage - 1]} {GameManager.Instance.StatIcons.EssenceSpriteTMP}\n" +
-                    $"{CoutStatChoix3[0]} {GameManager.Instance.StatIcons.StatCalmeSpriteTMP}";
-                break;
-            case 2:
-                //TextCoutChoix1.text = "Cout : " + CoutChoix1[1].ToString() + " essence";
-                //TextCoutChoix2.text = "Cout : " + CoutChoix2[1].ToString() + " essence";
-                //TextCoutChoix3.text = "Cout : " + CoutChoix3[1].ToString() + " essence\n" + CoutStatChoix3[1].ToString() + " point de Radiance";
-                TextCoutChoix3.text = $"{CoutChoix3[Etage - 1]} {GameManager.Instance.StatIcons.EssenceSpriteTMP}\n" +
-                    $"{CoutStatChoix3[1]} {GameManager.Instance.StatIcons.StatRadianceSpriteTMP}";
-                break;
-            case 3:
-                //TextCoutChoix1.text = "Cout : " + CoutChoix1[2].ToString() + " essence";
-                //TextCoutChoix2.text = "Cout : " + CoutChoix2[2].ToString() + " essence";
-                //TextCoutChoix3.text = "Cout : " + CoutChoix3[2].ToString() + " essence\n" + CoutStatChoix3[2].ToString() + " point de Clairvoyance";
-                TextCoutChoix3.text = $"{CoutChoix3[Etage - 1]}   {GameManager.Instance.StatIcons.EssenceSpriteTMP}\n" +
-                    $"{CoutStatChoix3[2]} {GameManager.Instance.StatIcons.StatClairvoyanceSpriteTMP}";
-                break;
-        }
         if (Etage <= 0 || Etage > CoutChoix1.Count || Etage > CoutChoix2.Count || Etage > CoutChoix3.Count)
         {
             Debug.LogError("Nombre d'étage trop faible ou trop important");
         }
+        
         TextCoutChoix1.text = $"{CoutChoix1[Etage - 1]} {GameManager.Instance.StatIcons.EssenceSpriteTMP}";
         TextCoutChoix2.text = $"{CoutChoix2[Etage - 1]} {GameManager.Instance.StatIcons.EssenceSpriteTMP}";
+        
+        string spriteTMPEtage = Etage switch
+        {
+            3 => GameManager.Instance.StatIcons.StatClairvoyanceSpriteTMP,
+            2 => GameManager.Instance.StatIcons.StatRadianceSpriteTMP,
+            _ => GameManager.Instance.StatIcons.StatCalmeSpriteTMP,
+        };
+
+        TextCoutChoix3.text = $"{CoutChoix3[Etage - 1]} {GameManager.Instance.StatIcons.EssenceSpriteTMP}\n" +
+                    $"{CoutStatChoix3[Etage - 1]} {spriteTMPEtage}";
+
     }
 
     public void Choix1()
@@ -692,7 +656,6 @@ public class AutelManager : MonoBehaviour
             {
                 string NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter).SouvenirName;
                 stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
-                //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
                 Loot = true;
                 RetourMap();
                 return;
@@ -710,51 +673,19 @@ public class AutelManager : MonoBehaviour
         CoutChoix(2);
         stats.Conscience += 3;
         string NameLoot;
-        switch (Etage)
+
+        List<Souvenir> souvList = Etage switch
         {
-            case 1:
-                if (listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare) == null)
-                {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).SouvenirName;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
-                    //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                else
-                {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare).SouvenirName;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
-                    //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                break;
-            case 2:
-                if (listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare) == null)
-                {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).SouvenirName;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
-                    //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                else
-                {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Rare).SouvenirName;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
-                    //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                break;
-            case 3:
-                if (listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique) == null)
-                {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Legendaire).SouvenirName;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
-                    //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                else
-                {
-                    NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == Rarity.Mythique).SouvenirName;
-                    stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
-                    //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == NameLoot));
-                }
-                break;
-        }
+            3 => GameManager.Instance.CopyAllSouvenir.Where(c => c.Rarete >= Rarity.Legendaire && c.IsClass).ToList(),
+            2 => GameManager.Instance.CopyAllSouvenir.Where(c => c.Rarete >= Rarity.Mythique && c.IsClass).ToList(),
+            1 => GameManager.Instance.CopyAllSouvenir.Where(c => c.Rarete >= Rarity.Rare && c.IsClass).ToList(),
+            _ => GameManager.Instance.CopyAllSouvenir
+        };
+
+        int ind = Random.Range(0, souvList.Count);
+        NameLoot = souvList[ind].SouvenirName;
+        stats.ListSouvenir.Add(Instantiate(souvList[ind]));
+     
         Loot = true;
         RetourMap();
     }
@@ -764,7 +695,6 @@ public class AutelManager : MonoBehaviour
         CoutChoix(3);
         stats.Conscience += 3;
         stats.ListSouvenir.Add(SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir);
-        //listAllSouvenir.Remove(listAllSouvenir.FirstOrDefault(c => c.Nom == SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir.Nom));
         Loot = true;
         RetourMap();
     }
