@@ -70,10 +70,9 @@ public class UIEnnemi : MonoBehaviour
 
         if (CadreStatsUiManager == null)
         {
-            var CadreStatsObj = GameObject.Find("CadreStatsMobs");
-            CadreStatsUiManager = CadreStatsObj?.GetComponent<CadreStatsUiManager>();
+            CadreStatsUiManager = GameManager.Instance.BattleMan.EnemyCadreStat.GetComponent<CadreStatsUiManager>();
         }
-        CadreStatsUiManager?.ShowStats(gameObject.GetComponent<EnnemyBehavior>().Stat);
+        CadreStatsUiManager.ShowStats(gameObject.GetComponent<EnnemyBehavior>().Stat);
         //if (debuffParents.childCount > 0 || buffParents.childCount > 0)
         //    GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("ShowDescription");
     }

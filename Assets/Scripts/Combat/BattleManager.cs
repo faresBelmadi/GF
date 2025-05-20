@@ -14,7 +14,9 @@ public class BattleManager : MonoBehaviour
     [Header("BattleLogger")]
     [SerializeField]
     private BattleLog _battleLogger;
-
+    [field:Space]
+    [field: Header("Cadre Enemy Stat")]
+    [field: SerializeField] public GameObject EnemyCadreStat { get; private set; }
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
@@ -306,6 +308,7 @@ public class BattleManager : MonoBehaviour
     {
         //CombatEnableSetup();
         GameManager.OnStartDialog += CombatEnableSetup; // We need to instantiate character for the dialog
+
     }
 
     private void OnDisable()
