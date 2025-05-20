@@ -18,11 +18,11 @@ public class CadreStatsUiManager : MonoBehaviour
         var ConvictionTrad = TradManager.instance.GetTranslation("G3N", "Conviction");
         var FATrad = TradManager.instance.GetTranslation("G6N", "Force d'Ame");
         var ResilienceTrad = TradManager.instance.GetTranslation("G4N", "Resilience");
-        StatConviction.text = $"{ConvictionTrad} :";
+        StatConviction.text = $"{ConvictionTrad}";
         StatConvictionValue.text = $" {stats.Conviction}";
-        StatForceAme.text = $"{FATrad} :";
+        StatForceAme.text = $"{FATrad}";
         StatForceAmeValue.text = $" {stats.ForceAme}";
-        StatResilience.text = $"{ResilienceTrad} :";
+        StatResilience.text = $"{ResilienceTrad}";
         StatResilienceValue.text = $" {stats.Resilience}";
     }
 
