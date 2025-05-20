@@ -12,11 +12,11 @@ public class GgsToCsvImporterWindow : EditorWindow
     private string SettingsFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GFTools", "SheetToCsvImporter.settings");
 
     private string ImportGameLocaMacroLink = string.Empty;
-    private string GameLocaSaveFile = "NonoGameSheet.csv";
+    private string GameLocaSaveFile = "GameTraductionFile.csv";
     private string ImportCapaLocaMacroLink = string.Empty;
-    private string CapaLocaSaveFile = "NonoCapaSheet.csv";
+    private string CapaLocaSaveFile = "CapaTraductionFile.csv";
     private string ImportMiscLocaMacroLink = string.Empty;
-    private string MiscLocaSaveFile = "NonoMiscSheet.csv";
+    private string MiscLocaSaveFile = "MiscTraductionFile.csv";
 
     public static void ShowWindow()
     {
@@ -114,25 +114,40 @@ public class GgsToCsvImporterWindow : EditorWindow
 
     private void Import()
     {
-        var fullSavePath = Path.Combine(LocaSaveFolder, GameLocaSaveFile);
         if (!Directory.Exists(LocaSaveFolder))
         {
             Directory.CreateDirectory(LocaSaveFolder);
         }
 
+        string content = string.Empty;
         try
         {
             using (WebClient client = new WebClient())
             {
-                client.DownloadFile(ImportGameLocaMacroLink, fullSavePath);
+                content = client.DownloadString(ImportGameLocaMacroLink);
             }
-
-            AssetDatabase.Refresh();
-            Debug.Log("CSV downloaded to " + fullSavePath);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
-            Debug.LogError("Failed to download CSV: " + ex.Message);
+            Debug.LogError("Failed to download from Web App: " + ex.Message);
+            return;
         }
+
+        if (string.IsNullOrEmpty(content))
+        {
+            Debug.LogError("Web App provided empty content!");
+            return;
+        }
+        else if (content.StartsWith("Error:"))
+        {
+            Debug.LogError(content);
+            return;
+        }
+
+        var fullSavePath = Path.Combine(LocaSaveFolder, GameLocaSaveFile);
+        File.WriteAllText(fullSavePath, content);
+
+        AssetDatabase.Refresh();
+        Debug.Log("CSV downloaded to " + fullSavePath);
     }
 }
