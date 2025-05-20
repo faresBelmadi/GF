@@ -1,18 +1,22 @@
+using System;
+using System.IO;
+using System.Net;
 using UnityEditor;
 using UnityEngine;
-using System.Net;
 
 public class GgsToCsvImporterWindow : EditorWindow
 {
     private const string WindowTitle = "GoogleSheet to CSV";
 
-    // temp links, this will be obsolete very very soon :3
-    private string ImportGameLocaMacroLink = @"https://script.google.com/macros/s/AKfycbzoAHGegv6U88mpjGT7bWesvIQoCC4dEBSHLgaDFfJNHShKFmMKKBekcg_g9Pe6HDkvLA/exec";
-    private string GameLocaSavePath = "Assets/NonoGameSheet.csv";
+    private const string LocaSaveFolder = "Assets/StreamingAssets/Traduction";
+    private string SettingsFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GFTools", "SheetToCsvImporter.settings");
+
+    private string ImportGameLocaMacroLink = string.Empty;
+    private string GameLocaSaveFile = "NonoGameSheet.csv";
     private string ImportCapaLocaMacroLink = string.Empty;
-    private string CapaLocaSavePath = "Assets/NonoCapaSheet.csv";
+    private string CapaLocaSaveFile = "NonoCapaSheet.csv";
     private string ImportMiscLocaMacroLink = string.Empty;
-    private string MiscLocaSavePath = "Assets/NonoMiscSheet.csv";
+    private string MiscLocaSaveFile = "NonoMiscSheet.csv";
 
     public static void ShowWindow()
     {
@@ -83,25 +87,48 @@ public class GgsToCsvImporterWindow : EditorWindow
 
     private void LoadMacroLinks()
     {
+        if (!File.Exists(SettingsFilePath))
+            return;
 
+        var settings = File.ReadAllText(SettingsFilePath);
+        var macros = settings.Split('\n');
+        if (macros.Length >= 0)
+            ImportGameLocaMacroLink = macros[0];
+        if (macros.Length >= 1)
+            ImportCapaLocaMacroLink = macros[1];
+        if (macros.Length >= 2)
+            ImportMiscLocaMacroLink = macros[2];
     }
 
     private void SaveMacroLinks()
     {
+        var settingsFolder = Path.GetDirectoryName(SettingsFilePath);
+        if (!Directory.Exists(settingsFolder))
+        {
+            Directory.CreateDirectory(settingsFolder);
+        }
 
+        var settings = $"{ImportGameLocaMacroLink}\n{ImportCapaLocaMacroLink}\n{ImportMiscLocaMacroLink}";
+        File.WriteAllText(SettingsFilePath, settings);
     }
 
     private void Import()
     {
+        var fullSavePath = Path.Combine(LocaSaveFolder, GameLocaSaveFile);
+        if (!Directory.Exists(LocaSaveFolder))
+        {
+            Directory.CreateDirectory(LocaSaveFolder);
+        }
+
         try
         {
             using (WebClient client = new WebClient())
             {
-                client.DownloadFile(ImportGameLocaMacroLink, GameLocaSavePath);
+                client.DownloadFile(ImportGameLocaMacroLink, fullSavePath);
             }
 
             AssetDatabase.Refresh();
-            Debug.Log("CSV downloaded to " + GameLocaSavePath);
+            Debug.Log("CSV downloaded to " + fullSavePath);
         }
         catch (System.Exception ex)
         {
