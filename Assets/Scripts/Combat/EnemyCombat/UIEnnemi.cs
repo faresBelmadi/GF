@@ -32,6 +32,10 @@ public class UIEnnemi : MonoBehaviour
 
     public CadreStatsUiManager CadreStatsUiManager;
 
+    private void OnDestroy()
+    {
+        GameManager.Instance.BattleMan.EnemyCadreStat.SetActive(false);
+    }
     public void UpdateHp(int newHp, int newMaxHp)
     {
         if (!HPBarManager) return;
@@ -73,6 +77,7 @@ public class UIEnnemi : MonoBehaviour
             CadreStatsUiManager = GameManager.Instance.BattleMan.EnemyCadreStat.GetComponent<CadreStatsUiManager>();
         }
         CadreStatsUiManager.ShowStats(gameObject.GetComponent<EnnemyBehavior>().Stat);
+        GameManager.Instance.BattleMan.EnemyCadreStat.SetActive(true);
         //if (debuffParents.childCount > 0 || buffParents.childCount > 0)
         //    GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("ShowDescription");
     }
@@ -89,6 +94,7 @@ public class UIEnnemi : MonoBehaviour
             OnStopPreviewDamage?.Invoke();
         } 
         CadreStatsUiManager?.HideStats();
+        GameManager.Instance.BattleMan.EnemyCadreStat.SetActive(false);
         //if (debuffParents.childCount > 0 || buffParents.childCount > 0)
         //    GetComponentInChildren<DescriptionHoverTrigger>().SendMessage("HideDescription");
     }

@@ -308,7 +308,7 @@ public class BattleManager : MonoBehaviour
     {
         //CombatEnableSetup();
         GameManager.OnStartDialog += CombatEnableSetup; // We need to instantiate character for the dialog
-
+        EnemyCadreStat.SetActive(false);
     }
 
     private void OnDisable()
