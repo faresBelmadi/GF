@@ -14,7 +14,9 @@ public class BattleManager : MonoBehaviour
     [Header("BattleLogger")]
     [SerializeField]
     private BattleLog _battleLogger;
-
+    [field:Space]
+    [field: Header("Cadre Enemy Stat")]
+    [field: SerializeField] public GameObject EnemyCadreStat { get; private set; }
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
@@ -23,7 +25,12 @@ public class BattleManager : MonoBehaviour
     public Encounter _encounter;
 
     public GameObject buttonEndCombat;
+    [SerializeField]
+    private GameObject _buttonEndCombatConsume;
     [SerializeField] private string _idLabelForEssenceButton;
+    [SerializeField] private string _idLabelForConsumeEssenceButton;
+    [SerializeField] private string _idLabelForHealButton;
+    [SerializeField] private string _idLabelForXPButton;
     const string Target = "Targeting";
 
     [Header("CrystalSoul Manager")]
@@ -301,6 +308,7 @@ public class BattleManager : MonoBehaviour
     {
         //CombatEnableSetup();
         GameManager.OnStartDialog += CombatEnableSetup; // We need to instantiate character for the dialog
+        EnemyCadreStat.SetActive(false);
     }
 
     private void OnDisable()
@@ -537,6 +545,7 @@ public class BattleManager : MonoBehaviour
             GameManager.Instance.playerStat = player.Stat;
 
         buttonEndCombat.SetActive(false);
+        _buttonEndCombatConsume.SetActive(false);
         StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
         ClearListEssence();
     }
@@ -1117,7 +1126,10 @@ public class BattleManager : MonoBehaviour
         amount = temp.GetComponent<CrystalSoul>().Amount;
         buttonEndCombat.SetActive(true);
         buttonEndCombat.GetComponentInChildren<TMP_Text>().text =
-            $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount})";
+            $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount} {TradManager.instance.GetTranslation(_idLabelForXPButton)}.)";
+        _buttonEndCombatConsume.SetActive(true);
+        _buttonEndCombatConsume.GetComponentInChildren<TMP_Text>().text =
+            $"{TradManager.instance.GetTranslation(_idLabelForConsumeEssenceButton)}\n({TradManager.instance.GetTranslation(_idLabelForHealButton)} {amount})";
         endBattle = true;
     }
 
@@ -1133,6 +1145,7 @@ public class BattleManager : MonoBehaviour
         if (GameManager.Instance.IsTuto)
         {
             buttonEndCombat.SetActive(false);
+            _buttonEndCombatConsume.SetActive(false);
             TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>().EndCombat();
             for (int i = 0; i < ListEssence.Count; i++)
             {
@@ -1142,6 +1155,17 @@ public class BattleManager : MonoBehaviour
             ListEssence.Clear();
         }
         EndBattle();
+
+    }
+    public void ConsumeEndEssence()
+    {
+        int amount = 0;
+        foreach (var item in ListEssence)
+        {
+            amount += item.GetComponent<CrystalSoul>().Amount;
+        }
+        Debug.Log("End heal : " + amount);
+        ConsumeEndBattle(amount);
 
     }
 

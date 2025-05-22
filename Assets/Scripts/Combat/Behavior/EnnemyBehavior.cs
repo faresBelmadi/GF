@@ -648,7 +648,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         {
             if (damageList[ennemy.combatID - 1] < 0)
             {
-                var toRemove = Mathf.FloorToInt(damageList[combatID - 1] / ennemy.Stat.MultiplDef);
+                var toRemove = Mathf.FloorToInt(damageList[ennemy.combatID - 1] / ennemy.Stat.MultiplDef);
                 toRemove -= Mathf.FloorToInt(((ennemy.Stat.Resilience * 3) / 100f) * toRemove);
                 ennemy.UICombat.PreviewDmg(ennemy.Stat.Radiance + toRemove, ennemy.Stat.RadianceMax);
             }

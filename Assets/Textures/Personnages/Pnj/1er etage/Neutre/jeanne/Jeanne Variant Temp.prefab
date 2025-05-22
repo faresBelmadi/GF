@@ -3329,7 +3329,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -6308427592512999096, guid: e0b6c6d4159a9b244ad20dfaa4627d8c, type: 3}
       propertyPath: m_Name
-      value: Jeanne Variant
+      value: Jeanne Variant Temp
       objectReference: {fileID: 0}
     - target: {fileID: -6267677943304494437, guid: e0b6c6d4159a9b244ad20dfaa4627d8c, type: 3}
       propertyPath: m_SortingLayer
@@ -20412,15 +20412,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fec9b970d31eee5479309846a749daf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stat: {fileID: 0}
+  _stat: {fileID: 0}
   ListBuffDebuffGO: []
   BuffPrefab: {fileID: 8673195161482103611, guid: b0d011bbc909fee4aa8d4f0cbec06220, type: 3}
   BuffContainer: {fileID: 9027533893136156029}
   DebuffContainer: {fileID: 4308265935670208986}
   _debuffTextColor: {r: 1, g: 0, b: 0, a: 1}
   _buffTextColor: {r: 0, g: 1, b: 0, a: 1}
+  _passiveTooltips: []
   LastDamageTaken: 0
   gainedTension: 0
+  <IsIntangible>k__BackingField: 0
   UICombat: {fileID: 7717020776074197856}
   TensionUI: 0
   characterMaterial: {fileID: 0}
@@ -20441,15 +20443,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4eb3e26ed2a97e47b8749c6a9d7ea42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stat: {fileID: 0}
+  _stat: {fileID: 0}
   ListBuffDebuffGO: []
   BuffPrefab: {fileID: 8673195161482103611, guid: b0d011bbc909fee4aa8d4f0cbec06220, type: 3}
   BuffContainer: {fileID: 9027533893136156029}
   DebuffContainer: {fileID: 4308265935670208986}
   _debuffTextColor: {r: 1, g: 0, b: 0, a: 1}
   _buffTextColor: {r: 0, g: 1, b: 0, a: 1}
+  _passiveTooltips: []
   LastDamageTaken: 0
   gainedTension: 0
+  <IsIntangible>k__BackingField: 0
   UICombat: {fileID: 7717020776074197856}
   TensionUI: 0
   characterMaterial: {fileID: 0}
@@ -20458,6 +20462,7 @@ MonoBehaviour:
   nextAction: {fileID: 0}
   IsTurn: 0
   isMainEnemy: 0
+  _currentDivinBuff: {fileID: 0}
 --- !u!114 &7717020776074197856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20487,6 +20492,7 @@ MonoBehaviour:
   soinPrefab: {fileID: 369757569958449724, guid: 27af5be5d6aa1cb4bab7c465b4dfdeae, type: 3}
   degatPrefab: {fileID: 6455525814061643745, guid: 9a2387407ca1b4e439ff7a03898d83b4, type: 3}
   DebuffSpawned: []
+  CadreStatsUiManager: {fileID: 0}
 --- !u!114 &8484463829279072370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20998,7 +21004,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2986884338789424109, guid: 3e2be98b734eb2e4bb97e3495f2f5b1f, type: 3}
       propertyPath: m_Type
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2986884338789424109, guid: 3e2be98b734eb2e4bb97e3495f2f5b1f, type: 3}
       propertyPath: m_PixelsPerUnitMultiplier
@@ -21010,7 +21016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5253109563632732045, guid: 3e2be98b734eb2e4bb97e3495f2f5b1f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8961076234725640918, guid: 3e2be98b734eb2e4bb97e3495f2f5b1f, type: 3}
       propertyPath: m_SizeDelta.x
