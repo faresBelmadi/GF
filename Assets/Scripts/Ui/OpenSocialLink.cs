@@ -16,4 +16,8 @@ public class OpenSocialLink : MonoBehaviour
     {
         Application.OpenURL("https://linktr.ee/sleeplessparadise");
     }
+    public void OpenKickstarterPage()
+    {
+        Application.OpenURL("https://www.kickstarter.com/projects/sleeplessparadise/eternals-path");
+    }
 }
