@@ -35,6 +35,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     [SerializeField] private TextMeshProUGUI HpText;
     [SerializeField] private TextMeshProUGUI HpTextReduced;
     [SerializeField] private TextMeshProUGUI HpToolTipText;
+    [SerializeField] private string _radianceTextIdTrad;
     [SerializeField] private TextMeshProUGUI VolonteText;
     [SerializeField] private TextMeshProUGUI ConscienceText;
     [SerializeField] private TextMeshProUGUI StatForceAmeText;
@@ -217,7 +218,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         HpText.text = $"{Stat.Radiance.ToString()}/{Stat.RadianceMax}";
         HpTextReduced.text = Stat.Radiance.ToString();
-        HpToolTipText.text = $"Radiance : vos points de vie\nMax: {Stat.RadianceMax.ToString()}";
+        HpToolTipText.text = $"{TradManager.instance.GetTranslation(_radianceTextIdTrad)}\nMax: {Stat.RadianceMax.ToString()}";
         ConscienceText.text = Stat.Conscience + "/" + Stat.ConscienceMax;
 
         StatClairvoyanceText.text = Stat.Clairvoyance + "";
