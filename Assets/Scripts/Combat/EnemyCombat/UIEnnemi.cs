@@ -69,6 +69,7 @@ public class UIEnnemi : MonoBehaviour
         if (TargetingMode)
         {
             ShowTargeting();
+            GameManager.Instance.BattleMan.idPreviewTarget = gameObject.GetComponent<EnnemyBehavior>().combatID;
             OnPreviewDamage?.Invoke();
         }
 

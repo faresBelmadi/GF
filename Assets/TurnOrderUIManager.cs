@@ -106,9 +106,12 @@ public class TurnOrderUIManager : MonoBehaviour
                 {
                     time += Time.deltaTime;
                     turnItemHolder.localPosition = defaultPos + Vector3.left * itemLength * (time / switchTurnDelay);
-                    turnTuple[1].Item2.transform.localScale = Vector3.one *
-                                                              (turItemBaseScale + (1f - turItemBaseScale) *
-                                                                  (time / switchTurnDelay));
+                    if (turnTuple.Count > 1)
+                    {
+                        turnTuple[1].Item2.transform.localScale = Vector3.one *
+                                                                  (turItemBaseScale + (1f - turItemBaseScale) *
+                                                                      (time / switchTurnDelay));
+                    }
                     yield return null;
                 }
                 /*
