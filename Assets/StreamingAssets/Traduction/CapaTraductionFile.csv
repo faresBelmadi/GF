@@ -18,7 +18,7 @@ P1C14N;Mise à Mort;Execution;处决;;;
 P1C15N;Opprimer les Faibles;Oppress the Weak;压迫弱者;;;
 P1C16N;Roi Sans Couronne;Crownless King;无冕之王;;;
 P1C17N;Seul Contre Tous;Alone against the World;独自对抗世界;;;
-P1C1D;Inflige {damage type=percent value=60 stat=FA} et gagne un bonus de {percent value=10 target=DEF} de resistance aux dégats pour 1 tour;Inflict {damage type=percent value=60 stat=FA} to target opponent, gain a bonus of 10 % to damage resistance for 1 turn;对目标对手造成 60 % 的坚韧伤害，获得 10 % 的伤害抗性加成，持续 1 个回合;;;
+P1C1D;Inflige {damage type=percent value=60 stat=FA} et gagne un bonus de 10% de resistance aux dégats {stat value=DEF} pour 1 tour;Inflict {damage type=percent value=60 stat=FA} to target opponent, gain a bonus of 10 % to damage resistance {stat value=DEF} for 1 turn;对目标对手造成 60 % 的坚韧伤害，获得 10 % 的伤害抗性加成，持续 1 个回合;;;
 P1C2D;"Gagne {percent value=20 target=FA}. 
 Dure 2 phases.";Gain {percent value=20 target=FA}, for 2 phases;获得 10 % 的最大光芒值和 10 % 的坚韧值，持续 2 个阶段;;;
 P1C3D;"Applique a tout les adversaires le débuff  Febrile.
@@ -377,11 +377,11 @@ Protection rapprochée dure une phase de plus";"{stat value=RAM} +15%, {stat val
 Close protection stay one more phase";;;;
 SC20D;"{stat value=FA} +40%
 {stat value=CAL} -6
-Conscience max -3    
+{stat value=CONS} max -3 
 Si mise a mort tue sa cible. Etourdis dure 2 tour.
-""étourdi"" Ne peut pas effectuer d'action durant son Tour.";"{stat value=FA} +40%, {stat value=CAL} -6, Max Conscience  -3
-If execution kill the tarder, ""stun"" will last for 2 turn
-""Stun"" Can't do any action during their turn";;;;
+""étourdi"" Ne peut pas effectuer d'action durant son Tour.";"{stat value=FA} +40%, {stat value=CAL} -6, {stat value=CONS} max  -3
+If ""Execution"" kills the target, ""Stun"" will lasts for 2 turns instead of 1.
+""Stun"": target can't do any action during their turn.";;;;
 SC21D;"{stat value=RAM} +35 %
 {stat value=CONV} +6 {stat value=VIT} -12
 Garde royale applique colère au lieu de doute
@@ -533,13 +533,13 @@ CE41;Don de soi;Self sacrifice;;;;
 CE42;Loi du talion;lex talionis;;;;
 CE43;Parangon de vertue;A paragon of virtue;;;;
 CE44;Entrainement;Training;;;;
-CE45;Maitrise;Maitrise;;;;
+CE45;Maitrise;Mastery;;;;
 CE46;Vrai guerrier;True warrior;;;;
 CE47;;;;;;
 CE48;;;;;;
 E1P1;Toute les trois sources de dégats recu, gagne +1 conviction et resilience pour le combat;Every three source of damage received, gain +1 conviction and resilience for the fight;;;;
 E1P2;Quand meurt, fait gagner un palier de tension au martyr;When dead, martyr will gain one level of tension;;;;
-E1P3;"Chaque palier de tension gagné, gagne un buff ""zealote""";"When gain a level of tension, gain a buff ""zealot""";;;;
+E1P3;"Chaque palier de tension gagné, gagne un buff ""zealote"" {stat value=FA} +15 % et {stat value=CONV} +2";"When gain a level of tension, gain a buff ""zealot""  {stat value=FA} +15 % and {stat value=CONV} +2";;;;
 E1P4;Applique un buff de +4 conviction sur tout les allié tant qu'il est a plus de 75% de radiance ;Allies receive a +4 Conviction buff, as long as he remains above 75% Radiance. ;;;;
 E1P5;Applique un buff de +1 conviction sur tout les allié tant qu'il est entre 75 et 50% de radiance ;Allies receive a +1 Conviction buff, as long as he remains between 75% and 50% Radiance.;;;;
 E1P6;Applique un debuff de -1 conviction sur tout les allié tant qu'il est entre 50 et 25% de radiance ;Allies receive a -1 Conviction debuff, as long as he remains between 50% and 25% Radiance. ;;;;

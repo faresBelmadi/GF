@@ -81,18 +81,26 @@ public class SouvenirUI : MonoBehaviour
     public void ShowDescription()
     {
         _descriptionGO.SetActive(true);
-       
         rectVisibility.CheckVisibilityAndAdjustPosition(_descriptionGO.GetComponent<RectTransform>(), FindAnyObjectByType<Camera>());
-        GameObject posGO = GameObject.FindGameObjectsWithTag("MemoryTooltipPosition")[0];
-        if (posGO != null)
+        var pos = GameObject.FindGameObjectsWithTag("MemoryTooltipPosition");
+        if (pos != null & pos.Length > 0)
         {
-            _descriptionGO.transform.position = posGO.transform.position;
-            
+            GameObject posGO = pos[0];
+            if (posGO != null)
+            {
+                _descriptionGO.transform.SetParent(posGO.transform);
+                _descriptionGO.transform.localPosition = Vector3.zero;
+
+            }
         }
     }
     public void HideDescription()
     {
+        
+            _descriptionGO.transform.SetParent(transform);
         _descriptionGO.SetActive(false);
+
+
     }
 
     private void OnMouseEnter()
