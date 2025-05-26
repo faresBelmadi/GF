@@ -56,6 +56,8 @@ public class BattleManager : MonoBehaviour
     public int currentIdTurn;
     public int nbTurn;
     public int idTarget = -1;
+    [HideInInspector]
+    public int idPreviewTarget = -1;
     public bool endBattle;
     BattleUI battleUI;
     public int MostDamage, MostDamageID;
@@ -940,6 +942,20 @@ public class BattleManager : MonoBehaviour
                     var ennemie = EnemyScripts[x];
                     if (ennemie != null)
                         ennemie.ApplicationEffet(effet, null, source, Caster, nbEnemies);
+                }
+
+                break;
+            case Cible.AllEnemyExceptTarget:
+                if (isDecoy)
+                {
+                    decoy.ApplicationEffet(effet, null, source, Caster);
+                    break;
+                }
+                for (int x = EnemyScripts.Count - 1; x >= 0; x--)
+                {
+                    var enemy = EnemyScripts[x];
+                    if (enemy != null && enemy.combatID != target)
+                        enemy.ApplicationEffet(effet, null, source, Caster);
                 }
 
                 break;
