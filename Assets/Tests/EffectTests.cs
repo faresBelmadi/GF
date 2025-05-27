@@ -154,7 +154,7 @@ public class EffectTests
     /// 
     /// If you add a test variation, edit TestVariationCount accordingly!
     /// </summary>
-    private static Dictionary<TypeEffet, Func<JoueurStat>[]> ExpectedResultsByEffect = new Dictionary<TypeEffet, Func<JoueurStat>[]>
+    private static Dictionary<TypeEffet, Func<object>[]> ExpectedResultsByEffect = new Dictionary<TypeEffet, Func<object>[]>
         {
             {
                 TypeEffet.Clairvoyance, // Clairvoyance +=  ValeurBrut * NbAttaque
@@ -651,13 +651,13 @@ public class EffectTests
         TestResultEffet(effet, CreateMediumCaster(), expected);
     }
 
-    private JoueurStat FindExpectedResult(TypeEffet typeEffet, int testIndex)
+    private object FindExpectedResult(TypeEffet typeEffet, int testIndex)
     {
         bool hasExpectaton = ExpectedResultsByEffect.TryGetValue(typeEffet, out var expectations);
         Assert.IsTrue(hasExpectaton, $"Expectations for effet {typeEffet} are not defined.");
 
         Assert.Less(testIndex, expectations.Length, $"Not enough expectations defined for effet {typeEffet}");
-        JoueurStat expected = expectations[testIndex].Invoke();
+        object expected = expectations[testIndex].Invoke();
 
         return expected;
     }
@@ -673,9 +673,16 @@ public class EffectTests
         return effet;
     }
 
-    private void TestResultEffet(Effet effet, JoueurStat caster, JoueurStat expected)
+    private void TestResultEffet(Effet effet, JoueurStat caster, object expected)
+    {
+        if (expected is Exception expectedException)
+        {
+            Assert.Throws(expectedException.GetType(), () => effet.ResultEffet(caster));
+        }
+        else if (expected is JoueurStat expectedStat)
     {
         var result = effet.ResultEffet(caster);
-        Assert.IsTrue(AreIdentical(expected, result, out string error), error);
+            Assert.IsTrue(AreIdentical(expectedStat, result, out string error), error);
+        }
     }
 }
