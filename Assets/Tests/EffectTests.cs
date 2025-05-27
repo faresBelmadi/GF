@@ -120,7 +120,22 @@ public class EffectTests
         Assert.IsTrue(AreIdentical(ExpectedDefaultJoueurStat, newJoueurStat, out string error), error);
     }
 
-    private static int TestVariationCount = 3;
+    private JoueurStat CreateSmallCaster()
+    {
+        var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        caster._forceAme = 1;
+        caster.MultiplDegat = 1.5f;
+        return caster;
+    }
+
+    private JoueurStat CreateMediumCaster()
+    {
+        var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        caster._forceAme = 5;
+        caster.MultiplDegat = 2f;
+        return caster;
+    }
+
 
     /// <summary>
     /// Expected results are for:
