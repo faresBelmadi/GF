@@ -13,6 +13,7 @@ public class EffectTests
             nameof(JoueurStat.Conscience),
             nameof(JoueurStat.ConscienceMax),
             nameof(JoueurStat.Conviction),
+            nameof(JoueurStat._forceAme),
             nameof(JoueurStat.Radiance),
             nameof(JoueurStat.Volonter),
             nameof(JoueurStat.VolonterMax),
@@ -553,6 +554,120 @@ public class EffectTests
                     },
                 }
             },
+            {
+                TypeEffet.AugmentationPourcentageFACaster, // ForceAme += Pourcentage/100 * NbAttaque * caster.ForceAme
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 1;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 2;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 10;
+                        return js;
+                    },
+                }
+            },
+            {
+                TypeEffet.AugmentationPourcentageFACible, // ForceAme += Pourcentage/100 * NbAttaque * cible.ForceAme
+                new Func<object>[] {
+                    () => new NullReferenceException(),
+                    () => new NullReferenceException(),
+                    () => new NullReferenceException(),
+                    () => new NullReferenceException(),
+                    () => new NullReferenceException(),
+                    () => new NullReferenceException(),
+                    () => new NullReferenceException(),
+                    () => new NullReferenceException(),
+                    () => new NullReferenceException(),
+                }
+            },
+            {
+                TypeEffet.AugmentationBrutFA, // ForceAme += ValeurBrut * NbAttaque
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._forceAme = 10;
+                        return js;
+                    },
+                }
+            },
         };
 
     [Test]
@@ -565,10 +680,10 @@ public class EffectTests
     }
 
 
-    private static TypeEffet[] GetValidateEffetSource() => Enum.GetValues(typeof(TypeEffet)).Cast<TypeEffet>().ToArray();
+    private static TypeEffet[] GetValidateEffetSource() => Enum.GetValues(typeof(TypeEffet)).Cast<TypeEffet>().OrderBy(x => x.ToString()).ToArray();
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    [Tooltip("Pourcentage = 100")]
+    [Tooltip("Pourcentage = 100, Cible = null")]
     public void ResultEffet_CasterDefault_ValeurBrut0_NbAttaque0(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 0);
@@ -578,7 +693,7 @@ public class EffectTests
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    [Tooltip("Pourcentage = 100")]
+    [Tooltip("Pourcentage = 100, Cible = null")]
     public void ResultEffet_CasterDefault_ValeurBrut5_NbAttaque1(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 1);
@@ -588,7 +703,7 @@ public class EffectTests
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    [Tooltip("Pourcentage = 100")]
+    [Tooltip("Pourcentage = 100, Cible = null")]
     public void ResultEffet_CasterDefault_ValeurBrut5_NbAttaque2(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 2);
@@ -598,7 +713,7 @@ public class EffectTests
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    [Tooltip("Pourcentage = 100")]
+    [Tooltip("Pourcentage = 100, Cible = null")]
     public void ResultEffet_CasterSmall_ValeurBrut0_NbAttaque0(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 3);
@@ -607,7 +722,7 @@ public class EffectTests
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    [Tooltip("Pourcentage = 100")]
+    [Tooltip("Pourcentage = 100, Cible = null")]
     public void ResultEffet_CasterSmall_ValeurBrut5_NbAttaque1(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 4);
@@ -616,7 +731,7 @@ public class EffectTests
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    [Tooltip("Pourcentage = 100")]
+    [Tooltip("Pourcentage = 100, Cible = null")]
     public void ResultEffet_CasterSmall_ValeurBrut5_NbAttaque2(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 5);
@@ -625,7 +740,7 @@ public class EffectTests
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    [Tooltip("Pourcentage = 100")]
+    [Tooltip("Pourcentage = 100, Cible = null")]
     public void ResultEffet_CasterMedium_ValeurBrut0_NbAttaque0(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 6);
@@ -634,7 +749,7 @@ public class EffectTests
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    [Tooltip("Pourcentage = 100")]
+    [Tooltip("Pourcentage = 100, Cible = null")]
     public void ResultEffet_CasterMedium_ValeurBrut5_NbAttaque1(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 7);
@@ -643,7 +758,7 @@ public class EffectTests
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    [Tooltip("Pourcentage = 100")]
+    [Tooltip("Pourcentage = 100, Cible = null")]
     public void ResultEffet_CasterMedium_ValeurBrut5_NbAttaque2(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 8);
@@ -680,8 +795,8 @@ public class EffectTests
             Assert.Throws(expectedException.GetType(), () => effet.ResultEffet(caster));
         }
         else if (expected is JoueurStat expectedStat)
-    {
-        var result = effet.ResultEffet(caster);
+        {
+            var result = effet.ResultEffet(caster);
             Assert.IsTrue(AreIdentical(expectedStat, result, out string error), error);
         }
     }
