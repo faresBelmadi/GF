@@ -42,7 +42,8 @@ public enum Cible
     LessRadiance = 12,
     HasAmantLessRadiance = 13,
     Martyr = 14,
-    Speaker = 15
+    Speaker = 15,
+    AllEnemyExceptTarget = 16
 }
 
 public enum CibleDialogue

@@ -634,8 +634,18 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             effet.VisualizeAttack(_refBattleMan.player.Stat, Stat, out int dmg, out int rDmg,_refBattleMan.EnemyScripts.Count);
             if (effet.Cible == Cible.allEnnemi)
             {
-
-                damageList = damageList.Select(x => x + dmg).ToArray();
+                for (int i = 0; i < damageList.Length; i++)
+                {
+                        damageList[i] += dmg;
+                }
+            }
+            else if (effet.Cible == Cible.AllEnemyExceptTarget)
+            {
+                for (int i = 0; i < damageList.Length;i++)
+                {
+                    if (i + 1 != GameManager.Instance.BattleMan.idPreviewTarget)
+                        damageList[i] += dmg;
+                }
             }
             else
             {
@@ -648,7 +658,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         {
             if (damageList[ennemy.combatID - 1] < 0)
             {
-                var toRemove = Mathf.FloorToInt(damageList[combatID - 1] / ennemy.Stat.MultiplDef);
+                var toRemove = Mathf.FloorToInt(damageList[ennemy.combatID - 1] / ennemy.Stat.MultiplDef);
                 toRemove -= Mathf.FloorToInt(((ennemy.Stat.Resilience * 3) / 100f) * toRemove);
                 ennemy.UICombat.PreviewDmg(ennemy.Stat.Radiance + toRemove, ennemy.Stat.RadianceMax);
             }

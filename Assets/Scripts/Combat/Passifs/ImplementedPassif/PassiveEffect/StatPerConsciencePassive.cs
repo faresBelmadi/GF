@@ -31,6 +31,7 @@ public class StatPerConsciencePassive : AbstractPassive, IPassiveEffect
         _joueurStat = stat;
         stat.OnConscienceIncrease += Apply;
         stat.OnConscienceDecrease += Apply;
+        Apply(stat);
     }
     private void OnDestroy()
     {
