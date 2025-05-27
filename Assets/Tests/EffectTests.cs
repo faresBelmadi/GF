@@ -9,11 +9,11 @@ public class EffectTests
 {
     private static string[] TestedJoueurStatFieldNames =
         {
-            "Clairvoyance",
-            "Conscience",
-            "ConscienceMax",
-            "Volonter",
-            "VolonterMax",
+            nameof(JoueurStat.Clairvoyance),
+            nameof(JoueurStat.Conscience),
+            nameof(JoueurStat.ConscienceMax),
+            nameof(JoueurStat.Volonter),
+            nameof(JoueurStat.VolonterMax),
         };
 
     private MemberInfo[] TestedJoueurStatMembers =>
