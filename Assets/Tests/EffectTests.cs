@@ -12,6 +12,7 @@ public class EffectTests
             nameof(JoueurStat.Clairvoyance),
             nameof(JoueurStat.Conscience),
             nameof(JoueurStat.ConscienceMax),
+            nameof(JoueurStat.Conviction),
             nameof(JoueurStat.Radiance),
             nameof(JoueurStat.Volonter),
             nameof(JoueurStat.VolonterMax),
@@ -498,6 +499,56 @@ public class EffectTests
                     () => {
                         var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
                         js.Radiance = 20;
+                        return js;
+                    },
+                }
+            },
+            {
+                TypeEffet.Conviction, // Conviction += ValeurBrut * NbAttaque
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conviction = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conviction = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conviction = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conviction = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conviction = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conviction = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conviction = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conviction = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conviction = 10;
                         return js;
                     },
                 }
