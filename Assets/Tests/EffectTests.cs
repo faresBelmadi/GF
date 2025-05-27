@@ -12,6 +12,7 @@ public class EffectTests
             nameof(JoueurStat.Clairvoyance),
             nameof(JoueurStat.Conscience),
             nameof(JoueurStat.ConscienceMax),
+            nameof(JoueurStat.Radiance),
             nameof(JoueurStat.Volonter),
             nameof(JoueurStat.VolonterMax),
         };
@@ -136,20 +137,57 @@ public class EffectTests
         return caster;
     }
 
+    private static int TestVariationCount = 9;
 
     /// <summary>
     /// Expected results are for:
-    /// * ValeurBrut = 0, NbAttaque = 0
-    /// * ValeurBrut = 5, NbAttaque = 1
-    /// * ValeurBrut = 5, NbAttaque = 2
+    /// * Caster = default, ValeurBrut = 0, NbAttaque = 0, Pourcentage = 100
+    /// * Caster = default, ValeurBrut = 5, NbAttaque = 1, Pourcentage = 100
+    /// * Caster = default, ValeurBrut = 5, NbAttaque = 2, Pourcentage = 100
+    /// * Caster = small,   ValeurBrut = 0, NbAttaque = 0, Pourcentage = 100
+    /// * Caster = small,   ValeurBrut = 5, NbAttaque = 1, Pourcentage = 100
+    /// * Caster = small,   ValeurBrut = 5, NbAttaque = 2, Pourcentage = 100
+    /// * Caster = medium,  ValeurBrut = 0, NbAttaque = 0, Pourcentage = 100
+    /// * Caster = medium,  ValeurBrut = 5, NbAttaque = 1, Pourcentage = 100
+    /// * Caster = medium,  ValeurBrut = 5, NbAttaque = 2, Pourcentage = 100
     /// 
     /// If you add a test variation, edit TestVariationCount accordingly!
     /// </summary>
     private static Dictionary<TypeEffet, Func<JoueurStat>[]> ExpectedResultsByEffect = new Dictionary<TypeEffet, Func<JoueurStat>[]>
         {
             {
-                TypeEffet.Clairvoyance,
+                TypeEffet.Clairvoyance, // Clairvoyance +=  ValeurBrut * NbAttaque
                 new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Clairvoyance = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Clairvoyance = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Clairvoyance = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Clairvoyance = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Clairvoyance = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Clairvoyance = 10;
+                        return js;
+                    },
                     () => {
                         var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
                         js.Clairvoyance = 0;
@@ -168,8 +206,38 @@ public class EffectTests
                 }
             },
             {
-                TypeEffet.Volonte,
+                TypeEffet.Volonte, // Volonte +=  ValeurBrut * NbAttaque
                 new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Volonter = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Volonter = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Volonter = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Volonter = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Volonter = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Volonter = 10;
+                        return js;
+                    },
                     () => {
                         var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
                         js.Volonter = 0;
@@ -188,8 +256,38 @@ public class EffectTests
                 }
             },
             {
-                TypeEffet.VolonteMax,
+                TypeEffet.VolonteMax, // VolonteMax +=  ValeurBrut * NbAttaque
                 new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.VolonterMax = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.VolonterMax = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.VolonterMax = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.VolonterMax = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.VolonterMax = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.VolonterMax = 10;
+                        return js;
+                    },
                     () => {
                         var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
                         js.VolonterMax = 0;
@@ -208,8 +306,38 @@ public class EffectTests
                 }
             },
             {
-                TypeEffet.Conscience,
+                TypeEffet.Conscience, // Conscience +=  ValeurBrut * NbAttaque
                 new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conscience = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conscience = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conscience = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conscience = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conscience = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Conscience = 10;
+                        return js;
+                    },
                     () => {
                         var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
                         js.Conscience = 0;
@@ -228,7 +356,7 @@ public class EffectTests
                 }
             },
             {
-                TypeEffet.ConscienceMax,
+                TypeEffet.ConscienceMax, // ConscienceMax +=  ValeurBrut * NbAttaque
                 new Func<JoueurStat>[] {
                     () => {
                         var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
@@ -243,6 +371,133 @@ public class EffectTests
                     () => {
                         var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
                         js.ConscienceMax = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.ConscienceMax = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.ConscienceMax = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.ConscienceMax = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.ConscienceMax = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.ConscienceMax = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.ConscienceMax = 10;
+                        return js;
+                    },
+                }
+            },
+            {
+                TypeEffet.DegatsForceAme, // Radiance += Pourcentage/100 * NbAttaque * caster.ForceAme * caster.MultiDegat
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 1;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 3;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 20;
+                        return js;
+                    },
+                }
+            },
+            {
+                TypeEffet.DegatsBrut, // Radiance += ValeurBrut * NbAttaque * caster.MultiDegat
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 7;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 15;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 20;
                         return js;
                     },
                 }
@@ -262,27 +517,87 @@ public class EffectTests
     private static TypeEffet[] GetValidateEffetSource() => Enum.GetValues(typeof(TypeEffet)).Cast<TypeEffet>().ToArray();
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    public void ResultEffet_ValeurBrut0_NbAttaque0(TypeEffet typeEffet)
+    [Tooltip("Pourcentage = 100")]
+    public void ResultEffet_CasterDefault_ValeurBrut0_NbAttaque0(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 0);
-        var effet = CreateEffet(typeEffet, valeurBrute: 0, nbAttaques: 0);
-        TestResultEffet(effet, expected);
+        var effet = CreateEffet(typeEffet, valeurBrute: 0, nbAttaques: 0, pourcentage: 100);
+        var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        TestResultEffet(effet, caster, expected);
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    public void ResultEffet_ValeurBrut5_NbAttaque1(TypeEffet typeEffet)
+    [Tooltip("Pourcentage = 100")]
+    public void ResultEffet_CasterDefault_ValeurBrut5_NbAttaque1(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 1);
-        var effet = CreateEffet(typeEffet, valeurBrute: 5, nbAttaques: 1);
-        TestResultEffet(effet, expected);
+        var effet = CreateEffet(typeEffet, valeurBrute: 5, nbAttaques: 1, pourcentage: 100);
+        var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        TestResultEffet(effet, caster, expected);
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
-    public void ResultEffet_ValeurBrut5_NbAttaque2(TypeEffet typeEffet)
+    [Tooltip("Pourcentage = 100")]
+    public void ResultEffet_CasterDefault_ValeurBrut5_NbAttaque2(TypeEffet typeEffet)
     {
         var expected = FindExpectedResult(typeEffet, 2);
-        var effet = CreateEffet(typeEffet, valeurBrute: 5, nbAttaques: 2);
-        TestResultEffet(effet, expected);
+        var effet = CreateEffet(typeEffet, valeurBrute: 5, nbAttaques: 2, pourcentage: 100);
+        var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+        TestResultEffet(effet, caster, expected);
+    }
+
+    [Test, TestCaseSource("GetValidateEffetSource")]
+    [Tooltip("Pourcentage = 100")]
+    public void ResultEffet_CasterSmall_ValeurBrut0_NbAttaque0(TypeEffet typeEffet)
+    {
+        var expected = FindExpectedResult(typeEffet, 3);
+        var effet = CreateEffet(typeEffet, valeurBrute: 0, nbAttaques: 0, pourcentage: 100);
+        TestResultEffet(effet, CreateSmallCaster(), expected);
+    }
+
+    [Test, TestCaseSource("GetValidateEffetSource")]
+    [Tooltip("Pourcentage = 100")]
+    public void ResultEffet_CasterSmall_ValeurBrut5_NbAttaque1(TypeEffet typeEffet)
+    {
+        var expected = FindExpectedResult(typeEffet, 4);
+        var effet = CreateEffet(typeEffet, valeurBrute: 5, nbAttaques: 1, pourcentage: 100);
+        TestResultEffet(effet, CreateSmallCaster(), expected);
+    }
+
+    [Test, TestCaseSource("GetValidateEffetSource")]
+    [Tooltip("Pourcentage = 100")]
+    public void ResultEffet_CasterSmall_ValeurBrut5_NbAttaque2(TypeEffet typeEffet)
+    {
+        var expected = FindExpectedResult(typeEffet, 5);
+        var effet = CreateEffet(typeEffet, valeurBrute: 5, nbAttaques: 2, pourcentage: 100);
+        TestResultEffet(effet, CreateSmallCaster(), expected);
+    }
+
+    [Test, TestCaseSource("GetValidateEffetSource")]
+    [Tooltip("Pourcentage = 100")]
+    public void ResultEffet_CasterMedium_ValeurBrut0_NbAttaque0(TypeEffet typeEffet)
+    {
+        var expected = FindExpectedResult(typeEffet, 6);
+        var effet = CreateEffet(typeEffet, valeurBrute: 0, nbAttaques: 0, pourcentage: 100);
+        TestResultEffet(effet, CreateMediumCaster(), expected);
+    }
+
+    [Test, TestCaseSource("GetValidateEffetSource")]
+    [Tooltip("Pourcentage = 100")]
+    public void ResultEffet_CasterMedium_ValeurBrut5_NbAttaque1(TypeEffet typeEffet)
+    {
+        var expected = FindExpectedResult(typeEffet, 7);
+        var effet = CreateEffet(typeEffet, valeurBrute: 5, nbAttaques: 1, pourcentage: 100);
+        TestResultEffet(effet, CreateMediumCaster(), expected);
+    }
+
+    [Test, TestCaseSource("GetValidateEffetSource")]
+    [Tooltip("Pourcentage = 100")]
+    public void ResultEffet_CasterMedium_ValeurBrut5_NbAttaque2(TypeEffet typeEffet)
+    {
+        var expected = FindExpectedResult(typeEffet, 8);
+        var effet = CreateEffet(typeEffet, valeurBrute: 5, nbAttaques: 2, pourcentage: 100);
+        TestResultEffet(effet, CreateMediumCaster(), expected);
     }
 
     private JoueurStat FindExpectedResult(TypeEffet typeEffet, int testIndex)
@@ -297,18 +612,18 @@ public class EffectTests
     }
 
     private Effet CreateEffet(TypeEffet typeEffet,
-        int valeurBrute, int nbAttaques)
+        int valeurBrute, int nbAttaques, int pourcentage)
     {
         var effet = ScriptableObject.CreateInstance("Effet") as Effet;
         effet.TypeEffet = typeEffet;
         effet.ValeurBrut = valeurBrute;
         effet.NbAttaque = nbAttaques;
+        effet.Pourcentage = pourcentage;
         return effet;
     }
 
-    private void TestResultEffet(Effet effet, JoueurStat expected)
+    private void TestResultEffet(Effet effet, JoueurStat caster, JoueurStat expected)
     {
-        var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         var result = effet.ResultEffet(caster);
         Assert.IsTrue(AreIdentical(expected, result, out string error), error);
     }
