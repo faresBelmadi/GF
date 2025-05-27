@@ -13,8 +13,16 @@ public partial class EffectTests
             nameof(JoueurStat.ConscienceMax),
             nameof(JoueurStat.Conviction),
             nameof(JoueurStat._forceAme),
+            nameof(JoueurStat.PalierChangement),
             nameof(JoueurStat.Radiance),
             nameof(JoueurStat.RadianceMax),
+            nameof(JoueurStat._resilience),
+            nameof(JoueurStat.Tension),
+            nameof(JoueurStat.TensionAttaque),
+            nameof(JoueurStat.TensionDebuff),
+            nameof(JoueurStat.TensionDot),
+            nameof(JoueurStat.TensionSoin),
+            nameof(JoueurStat.Vitesse),
             nameof(JoueurStat.Volonter),
             nameof(JoueurStat.VolonterMax),
         };
@@ -65,6 +73,11 @@ public partial class EffectTests
             defaultJoueurStat.ResilienceMax = 10;
             defaultJoueurStat.ResilienceOriginal = 0;
             defaultJoueurStat.SlotsSouvenir = 0;
+            defaultJoueurStat.Tension = 0;
+            defaultJoueurStat.TensionAttaque = 4;
+            defaultJoueurStat.TensionDebuff = 3;
+            defaultJoueurStat.TensionDot = 1;
+            defaultJoueurStat.TensionSoin = -1;
             defaultJoueurStat.Vitesse = 0;
             defaultJoueurStat.VitesseOriginal = 0;
             defaultJoueurStat.Volonter = 0;

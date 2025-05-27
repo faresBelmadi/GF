@@ -230,6 +230,356 @@ public partial class EffectTests
                 }
             },
             {
+                TypeEffet.Resilience, // Resilience +=  ValeurBrut * NbAttaque
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._resilience = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._resilience = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._resilience = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._resilience = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._resilience = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._resilience = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._resilience = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._resilience = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js._resilience = 10;
+                        return js;
+                    },
+                }
+            },
+            {
+                TypeEffet.TensionGainAttaqueValue, // TensionAttaque +=  ValeurBrut * NbAttaque
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionAttaque = 4;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionAttaque = 9;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionAttaque = 14;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionAttaque = 4;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionAttaque = 9;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionAttaque = 14;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionAttaque = 4;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionAttaque = 9;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionAttaque = 14;
+                        return js;
+                    },
+                }
+            },
+            {
+                TypeEffet.TensionGainDebuffValue, // TensionDebuff +=  ValeurBrut * NbAttaque
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDebuff = 3;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDebuff = 8;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDebuff = 13;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDebuff = 3;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDebuff = 8;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDebuff = 13;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDebuff = 3;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDebuff = 8;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDebuff = 13;
+                        return js;
+                    },
+                }
+            },
+            {
+                TypeEffet.TensionGainDotValue, // TensionDot +=  ValeurBrut * NbAttaque
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDot = 1;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDot = 6;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDot = 11;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDot = 1;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDot = 6;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDot = 11;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDot = 1;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDot = 6;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionDot = 11;
+                        return js;
+                    },
+                }
+            },
+            {
+                TypeEffet.TensionGainSoinValue, // TensionSoin +=  ValeurBrut * NbAttaque
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionSoin = -1;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionSoin = 4;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionSoin = 9;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionSoin = -1;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionSoin = 4;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionSoin = 9;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionSoin = -1;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionSoin = 4;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.TensionSoin = 9;
+                        return js;
+                    },
+                }
+            },
+            {
+                TypeEffet.TensionStep, // PalierChangement +=  ValeurBrut * NbAttaque
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.PalierChangement = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.PalierChangement = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.PalierChangement = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.PalierChangement = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.PalierChangement = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.PalierChangement = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.PalierChangement = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.PalierChangement = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.PalierChangement = 10;
+                        return js;
+                    },
+                }
+            },
+            {
+                TypeEffet.TensionValue, // Tension +=  ValeurBrut * NbAttaque
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Tension = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Tension = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Tension = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Tension = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Tension = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Tension = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Tension = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Tension = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Tension = 10;
+                        return js;
+                    },
+                }
+            },
+            {
                 TypeEffet.Volonte, // Volonte +=  ValeurBrut * NbAttaque
                 new Func<JoueurStat>[] {
                     () => {
@@ -329,11 +679,102 @@ public partial class EffectTests
                     },
                 }
             },
+            {
+                TypeEffet.Vitesse, // Vitesse +=  ValeurBrut * NbAttaque
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Vitesse = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Vitesse = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Vitesse = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Vitesse = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Vitesse = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Vitesse = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Vitesse = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Vitesse = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Vitesse = 10;
+                        return js;
+                    },
+                }
+            },
 
 #endregion
 
-#region With Floor rounding
+#region Percentage with Floor rounding
 
+            {
+                TypeEffet.AugmentFADernierDegatsSubi, // ForceAme += Pourcentage/100 * LastDamageTaken
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        return js;
+                    },
+                }
+            },
             {
                 TypeEffet.DegatsForceAme, // Radiance += Pourcentage/100 * NbAttaque * caster.ForceAme * caster.MultiDegat
                 new Func<JoueurStat>[] {
