@@ -448,6 +448,76 @@ public partial class EffectTests
 
 #endregion
 
+#region Different with or without cible
+
+            {
+                // With Cible:
+                // Radiance += cible.RadianceMax * Pourcentage/100
+                // RadianceMax += cible.RadianceMax * Pourcentage/100
+                // Without Cible:
+                // Radiance += caster.RadianceMax * Pourcentage/100
+                // RadianceMax += caster.RadianceMax * Pourcentage/100
+                TypeEffet.RadianceMax,
+                new Func<JoueurStat>[] {
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 0;
+                        js.RadianceMax = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 0;
+                        js.RadianceMax = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 0;
+                        js.RadianceMax = 0;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 5;
+                        js.RadianceMax = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 5;
+                        js.RadianceMax = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 5;
+                        js.RadianceMax = 5;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 10;
+                        js.RadianceMax = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 10;
+                        js.RadianceMax = 10;
+                        return js;
+                    },
+                    () => {
+                        var js = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
+                        js.Radiance = 10;
+                        js.RadianceMax = 10;
+                        return js;
+                    },
+                }
+            },
+
+#endregion
+
 #region Others
 
             {

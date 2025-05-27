@@ -14,6 +14,7 @@ public partial class EffectTests
             nameof(JoueurStat.Conviction),
             nameof(JoueurStat._forceAme),
             nameof(JoueurStat.Radiance),
+            nameof(JoueurStat.RadianceMax),
             nameof(JoueurStat.Volonter),
             nameof(JoueurStat.VolonterMax),
         };

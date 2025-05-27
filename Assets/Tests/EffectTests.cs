@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
@@ -11,6 +10,7 @@ public partial class EffectTests
         var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         caster._forceAme = 1;
         caster.MultiplDegat = 1.5f;
+        caster.RadianceMax = 5;
         return caster;
     }
 
@@ -19,6 +19,7 @@ public partial class EffectTests
         var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         caster._forceAme = 5;
         caster.MultiplDegat = 2f;
+        caster.RadianceMax = 10;
         return caster;
     }
 
