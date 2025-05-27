@@ -35,12 +35,37 @@ public class EffectTests
         {
             JoueurStat defaultJoueurStat = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
             defaultJoueurStat.Lvl = 0;
-            defaultJoueurStat.Volonter = 0;
-            defaultJoueurStat.VolonterMax = 0;
-            defaultJoueurStat.Conscience = 0;
+            defaultJoueurStat.Calme = 0;
             defaultJoueurStat.Clairvoyance = 0;
             defaultJoueurStat.ClairvoyanceOriginal = 0;
+            defaultJoueurStat.Conscience = 0;
+            defaultJoueurStat.ConscienceMax = 0;
+            defaultJoueurStat.Conviction = 0;
+            defaultJoueurStat.ConvictionMin = -10;
+            defaultJoueurStat.ConvictionMax = 10;
+            defaultJoueurStat.ConvictionOriginal = 0;
+            defaultJoueurStat.Essence = 0;
+            defaultJoueurStat._forceAme = 0;
+            defaultJoueurStat.ForceAmeBonus = 0;
+            defaultJoueurStat.ForceAmeOriginal = 0;
+            defaultJoueurStat.MultiplDef = 1;
+            defaultJoueurStat.MultiplSoin = 1;
+            defaultJoueurStat.MultiplDegat = 1;
+            defaultJoueurStat.MultipleBuffDebuff = 1;
+            defaultJoueurStat.MultipleTension = 1;
+            defaultJoueurStat.Radiance = 0;
+            defaultJoueurStat.RadianceMax = 0;
+            defaultJoueurStat.RadianceMaxOriginal = 0;
+            defaultJoueurStat.Resilience = 0;
+            defaultJoueurStat.ResiliencePassif = 0;
+            defaultJoueurStat.ResilienceMin = -10;
+            defaultJoueurStat.ResilienceMax = 10;
+            defaultJoueurStat.ResilienceOriginal = 0;
             defaultJoueurStat.SlotsSouvenir = 0;
+            defaultJoueurStat.Vitesse = 0;
+            defaultJoueurStat.VitesseOriginal = 0;
+            defaultJoueurStat.Volonter = 0;
+            defaultJoueurStat.VolonterMax = 0;
             return defaultJoueurStat;
         }
     }
