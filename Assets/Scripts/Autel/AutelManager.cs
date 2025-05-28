@@ -75,6 +75,8 @@ public class AutelManager : MonoBehaviour
     public TextMeshProUGUI TextCoutChoix1, TextCoutChoix2, TextCoutChoix3;
     [SerializeField]
     private string _idTradChoix3;
+    [SerializeField]
+    private float _indentChoice3;
     public TextMeshProUGUI TextDescriptionChoix3;
     public List<int> CoutChoix1, CoutChoix2, CoutChoix3, CoutStatChoix3;
     public List<LootRarity> LootRarityForChoix1;
@@ -96,10 +98,12 @@ public class AutelManager : MonoBehaviour
     {
         ResetPositionBalance();
         GameManager.OnStartAutel += InitAutel;
+        TradManager.OnRefreshTranslation += RefreshTextChoice3;
     }
     private void OnDisable()
     {
         GameManager.OnStartAutel -= InitAutel;
+        TradManager.OnRefreshTranslation -= RefreshTextChoice3;
     }
 
     void FixedUpdate()
@@ -606,9 +610,13 @@ public class AutelManager : MonoBehaviour
         SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir = Instantiate(souvList[ind]);
         SouvenirChoix3.GetComponent<SouvenirUI>().StartUp();
 
-        TextDescriptionChoix3.text =$"{TradManager.instance.GetTranslation(_idTradChoix3)} : {SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir.SouvenirDesc}";
+        RefreshTextChoice3();
     }
 
+    private void RefreshTextChoice3()
+    {
+        TextDescriptionChoix3.text =$"<line-indent={_indentChoice3}%>{TradManager.instance.GetTranslation(_idTradChoix3)} : {SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir.SouvenirDesc}";
+    }
     public void UpdateCoutChoix()
     {
         if (Etage <= 0 || Etage > CoutChoix1.Count || Etage > CoutChoix2.Count || Etage > CoutChoix3.Count)

@@ -40,14 +40,13 @@ public class TextComponent : MonoBehaviour
     }
     public void RefreshText()
     {
-        string text = $"<line-indent={_lineIndent}%>{TradManager.instance.GetTranslation(_idLabel, _defaultText)}";
         if (_textTMPObject != null)
         {
-            _textTMPObject.text = text;
+            _textTMPObject.text = $"<line-indent={_lineIndent}%>{TradManager.instance.GetTranslation(_idLabel, _defaultText)}";
         }
         if (_textObject != null)
         {
-            _textObject.text = text;
+            _textObject.text = $"{TradManager.instance.GetTranslation(_idLabel, _defaultText)}";
         }
     }
 
