@@ -60,6 +60,8 @@ public class BattleManager : MonoBehaviour
     public int idPreviewTarget = -1;
     public bool endBattle;
     BattleUI battleUI;
+    //[SerializeField]
+    //private DamageEffectOnScreen _damageEffectComponant;
     public int MostDamage, MostDamageID;
     public int LastPhaseDamage;
 
@@ -353,6 +355,7 @@ public class BattleManager : MonoBehaviour
         };
         idPlayer = idIndexer;
         idIndexer++;
+        //_damageEffectComponant.Init(player.Stat);
     }
 
     public void LoadEnemy(Encounter ToSpawn)
