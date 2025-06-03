@@ -695,8 +695,9 @@ public class BattleManager : MonoBehaviour
 
     public void LaunchSpellEnnemi(EnnemiSpell Spell)
     {
-        var playing = EnemyScripts.First(c => c.combatID == currentIdTurn);
-        LogLaunchedSpell(playing.Name, Spell);
+        var playing = EnemyScripts.FirstOrDefault(c => c.combatID == currentIdTurn);
+        if (playing != null)
+            LogLaunchedSpell(playing.Name, Spell);
         foreach (var effet in Spell.Effet)
         {
             PassageEffet(effet, currentIdTurn, -1, SourceEffet.Spell);
