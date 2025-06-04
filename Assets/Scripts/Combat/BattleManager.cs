@@ -14,7 +14,9 @@ public class BattleManager : MonoBehaviour
     [Header("BattleLogger")]
     [SerializeField]
     private BattleLog _battleLogger;
-
+    [field:Space]
+    [field: Header("Cadre Enemy Stat")]
+    [field: SerializeField] public GameObject EnemyCadreStat { get; private set; }
     [Header("Prefab CombatNormal")] public JoueurBehavior player;
     public List<GameObject> SpawnedEnemy;
     public List<EnnemyBehavior> EnemyScripts;
@@ -23,7 +25,12 @@ public class BattleManager : MonoBehaviour
     public Encounter _encounter;
 
     public GameObject buttonEndCombat;
+    [SerializeField]
+    private GameObject _buttonEndCombatConsume;
     [SerializeField] private string _idLabelForEssenceButton;
+    [SerializeField] private string _idLabelForConsumeEssenceButton;
+    [SerializeField] private string _idLabelForHealButton;
+    [SerializeField] private string _idLabelForXPButton;
     const string Target = "Targeting";
 
     [Header("CrystalSoul Manager")]
@@ -49,6 +56,8 @@ public class BattleManager : MonoBehaviour
     public int currentIdTurn;
     public int nbTurn;
     public int idTarget = -1;
+    [HideInInspector]
+    public int idPreviewTarget = -1;
     public bool endBattle;
     BattleUI battleUI;
     public int MostDamage, MostDamageID;
@@ -82,6 +91,25 @@ public class BattleManager : MonoBehaviour
     {
         get => _isTuto;
     }
+    [SerializeField]
+    public float _animationSpeedMultiplier = 2;
+    public bool IsAnimationSpeedUp { get; private set; } = false;
+    public float AnimationSpeedMultiplier
+    {
+        get
+        {
+            if (IsAnimationSpeedUp)
+            {
+                Debug.Log("Animation speed up : " + _animationSpeedMultiplier);
+                return _animationSpeedMultiplier == 0 ? 1 : _animationSpeedMultiplier;
+            }
+            else
+            {
+                Debug.Log("Animation speed up : " + 1);
+                return 1f;
+            }
+        }
+    }
 
     public static Action<Transform> OnGatherEssence;
 
@@ -108,7 +136,10 @@ public class BattleManager : MonoBehaviour
     }
 
     #endregion
-
+    private void Start()
+    {
+        IsAnimationSpeedUp = PlayerPrefs.GetInt("AnimationSpeedUp") == 1;
+    }
     #region Loot
 
     public void Loot()
@@ -279,6 +310,7 @@ public class BattleManager : MonoBehaviour
     {
         //CombatEnableSetup();
         GameManager.OnStartDialog += CombatEnableSetup; // We need to instantiate character for the dialog
+        EnemyCadreStat.SetActive(false);
     }
 
     private void OnDisable()
@@ -515,6 +547,7 @@ public class BattleManager : MonoBehaviour
             GameManager.Instance.playerStat = player.Stat;
 
         buttonEndCombat.SetActive(false);
+        _buttonEndCombatConsume.SetActive(false);
         StartCoroutine(GameManager.Instance.pmm.EndBattle(IsLoot));
         ClearListEssence();
     }
@@ -555,6 +588,13 @@ public class BattleManager : MonoBehaviour
                 IdOrder.Add(new CombatOrder() { id = item.Key, Played = false });
         }
         //turnOrderUIManager.GenerateTurnItems(IdOrder);
+    }
+
+    public void ActivatePlayer()
+    {
+        var i = EnemyScripts.Where(x=>x.Stat.Radiance > 0).Count();
+        if (i > 0)
+            player.ActivateSpells();
     }
 
     #endregion Phase
@@ -905,6 +945,20 @@ public class BattleManager : MonoBehaviour
                 }
 
                 break;
+            case Cible.AllEnemyExceptTarget:
+                if (isDecoy)
+                {
+                    decoy.ApplicationEffet(effet, null, source, Caster);
+                    break;
+                }
+                for (int x = EnemyScripts.Count - 1; x >= 0; x--)
+                {
+                    var enemy = EnemyScripts[x];
+                    if (enemy != null && enemy.combatID != target)
+                        enemy.ApplicationEffet(effet, null, source, Caster);
+                }
+
+                break;
             case Cible.AllExceptSelf:
                 for (int x = EnemyScripts.Count - 1; x >= 0; x--)
                 {
@@ -1088,7 +1142,10 @@ public class BattleManager : MonoBehaviour
         amount = temp.GetComponent<CrystalSoul>().Amount;
         buttonEndCombat.SetActive(true);
         buttonEndCombat.GetComponentInChildren<TMP_Text>().text =
-            $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount})";
+            $"{TradManager.instance.GetTranslation(_idLabelForEssenceButton)}\n({amount} {TradManager.instance.GetTranslation(_idLabelForXPButton)}.)";
+        _buttonEndCombatConsume.SetActive(true);
+        _buttonEndCombatConsume.GetComponentInChildren<TMP_Text>().text =
+            $"{TradManager.instance.GetTranslation(_idLabelForConsumeEssenceButton)}\n({TradManager.instance.GetTranslation(_idLabelForHealButton)} {amount})";
         endBattle = true;
     }
 
@@ -1104,6 +1161,7 @@ public class BattleManager : MonoBehaviour
         if (GameManager.Instance.IsTuto)
         {
             buttonEndCombat.SetActive(false);
+            _buttonEndCombatConsume.SetActive(false);
             TutoManager.Instance.TutoPanel.GetComponent<TutoPanel>().EndCombat();
             for (int i = 0; i < ListEssence.Count; i++)
             {
@@ -1113,6 +1171,17 @@ public class BattleManager : MonoBehaviour
             ListEssence.Clear();
         }
         EndBattle();
+
+    }
+    public void ConsumeEndEssence()
+    {
+        int amount = 0;
+        foreach (var item in ListEssence)
+        {
+            amount += item.GetComponent<CrystalSoul>().Amount;
+        }
+        Debug.Log("End heal : " + amount);
+        ConsumeEndBattle(amount);
 
     }
 
@@ -1173,6 +1242,7 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
+                    player.DesactivateSpells();
                     StartCoroutine("GatherEssence");
                 }
 
@@ -1208,6 +1278,14 @@ public class BattleManager : MonoBehaviour
         StopCoroutine(Target);
         StartCoroutine(Target, IdSpell);
     }
+    public void StopTargeting()
+    {
+        StopCoroutine(Target);
+        foreach (var item in EnemyScripts)
+        {
+            item.EndTargetingMode();
+        }
+    }
 
     private IEnumerator Targeting(int IdSpell)
     {
@@ -1233,6 +1311,11 @@ public class BattleManager : MonoBehaviour
 
     #region Animation
 
+    public void SetAnimationSpeedMultiplier(bool isSpeedup)
+    {
+        PlayerPrefs.SetInt("AnimationSpeedUp", isSpeedup ? 1 : 0);
+        IsAnimationSpeedUp = isSpeedup;
+    }
     public void LaunchAnimAttacked()
     {
         var tempEnemy = EnemyScripts.FirstOrDefault(c => c.combatID == idTarget);

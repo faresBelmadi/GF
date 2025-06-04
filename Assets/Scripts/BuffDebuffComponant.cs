@@ -24,10 +24,12 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     private void OnEnable()
     {
         CombatBehavior<CharacterStat>.OnUpdateUI += UpdateUI;
+        TradManager.OnRefreshTranslation += SetNameAndDescription;
     }
     private void OnDisable()
     {
         CombatBehavior<CharacterStat>.OnUpdateUI -= UpdateUI;
+        TradManager.OnRefreshTranslation -= SetNameAndDescription;
     }
 
     public void InitBuffDebuff (BuffDebuff buffDebuff, float convictionBonus)
@@ -48,6 +50,15 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
         }
         buffDescriptionLabel.text = TradManager.instance.GetTranslation(buffDebuff.idTradDescription, buffDebuff.Description, variableValues);
        
+    }
+    private void SetNameAndDescription()
+    {
+        if (BuffDebuffs.Count > 0)
+        {
+            buffName = TradManager.instance.GetTranslation(BuffDebuffs[0].idTradName, BuffDebuffs[0].Nom);
+            buffNameLabel.text = TradManager.instance.GetTranslation(BuffDebuffs[0].idTradName, BuffDebuffs[0].Nom);
+            buffDescriptionLabel.text = TradManager.instance.GetTranslation(BuffDebuffs[0].idTradDescription, BuffDebuffs[0].Description);
+        }
     }
     public void AddStack(BuffDebuff buffDebuff)
     {

@@ -35,6 +35,8 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     [SerializeField] private TextMeshProUGUI HpText;
     [SerializeField] private TextMeshProUGUI HpTextReduced;
     [SerializeField] private TextMeshProUGUI HpToolTipText;
+    [SerializeField] private string _radianceTextIdTrad;
+    [SerializeField] private TextMeshProUGUI VolonteText;
     [SerializeField] private TextMeshProUGUI ConscienceText;
     [SerializeField] private TextMeshProUGUI StatForceAmeText;
     [SerializeField] private TextMeshProUGUI StatSpeedText;
@@ -216,7 +218,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         HpText.text = $"{Stat.Radiance.ToString()}/{Stat.RadianceMax}";
         HpTextReduced.text = Stat.Radiance.ToString();
-        HpToolTipText.text = $"Radiance : vos points de vie\nMax: {Stat.RadianceMax.ToString()}";
+        HpToolTipText.text = $"{TradManager.instance.GetTranslation(_radianceTextIdTrad)}\nMax: {Stat.RadianceMax.ToString()}";
         ConscienceText.text = Stat.Conscience + "/" + Stat.ConscienceMax;
 
         StatClairvoyanceText.text = Stat.Clairvoyance + "";
@@ -328,6 +330,8 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         IsTurn = false;
         DesactivateSpells();
+        SelectedSpell = null;
+        _refBattleMan.StopTargeting();
         _playedTurn++;
         EndTurnBM();
     }
@@ -420,7 +424,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         }
         
         if (needCible)
-        TakeTarget(SelectedSpell.IDSpell);
+            TakeTarget(SelectedSpell.IDSpell);
         else
         {
             _refBattleMan.idTarget = 0;
@@ -439,7 +443,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         {
             spell.GetComponent<SpellCombat>().selectedSpell.SetActive(false);
         }
-
         EndTurnButton.interactable = false;
         _highlightComponant.DisableHighlightingBetweenTarget();
     }

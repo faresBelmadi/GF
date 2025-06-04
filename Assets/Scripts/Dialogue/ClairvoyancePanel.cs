@@ -7,6 +7,12 @@ public class ClairvoyancePanel : MonoBehaviour
 {
     [SerializeField]
     private GameObject _contentHolder;
+    [SerializeField]
+    private string _idTradClairvoyanceHint;
+    [SerializeField]
+    private string _idTradBonus;
+    [SerializeField]
+    private string _idTradMalus;
 
     private List<(Effet, bool)> _effectList = new List<(Effet, bool)>();
     
@@ -27,11 +33,20 @@ public class ClairvoyancePanel : MonoBehaviour
     public string PrintListOfEffect()
     {
         StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.AppendLine("Your Clairyoyance tells you that this answer grants you : ");
+        
+        stringBuilder.AppendLine(TradManager.instance.GetTranslation(_idTradClairvoyanceHint, "Your Clairyoyance tells you that this answer grants you : "));
         for (int i = 0; i < _effectList.Count; i++)
         {
-            stringBuilder.AppendLine($"One {(_effectList[i].Item2 ? "bonus" : "malus")} on {_effectList[i].Item1.GetTargetStat()}");
+            if (_effectList[i].Item2)
+            {
+                stringBuilder.Append(TradManager.instance.GetTranslation(_idTradBonus, "Bonus"));
+            }
+            else 
+            {
+                stringBuilder.Append(TradManager.instance.GetTranslation(_idTradMalus, "Malus"));
+            }
+            stringBuilder.Append($" {_effectList[i].Item1.GetTargetStat()}");
+            stringBuilder.AppendLine();
         }
 
         return stringBuilder.ToString();

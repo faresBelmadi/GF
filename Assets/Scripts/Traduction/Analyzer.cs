@@ -349,6 +349,8 @@ public class Analyzer : MonoBehaviour
                     strb.Append((_clairvoyanceIconData.Damage == null) ? "DMG" : _clairvoyanceIconData.Damage.name);
                 else if (attributes[TradAttribute.value].Equals("ATKM", System.StringComparison.InvariantCultureIgnoreCase))
                     strb.Append((_clairvoyanceIconData.DecreaseAtk == null) ? "ATKM" : _clairvoyanceIconData.DecreaseAtk.name);
+                else if (attributes[TradAttribute.value].Equals("DEF", System.StringComparison.InvariantCultureIgnoreCase))
+                    strb.Append((_clairvoyanceIconData.IncreaseDef == null) ? "ATKM" : _clairvoyanceIconData.IncreaseDef.name);
                 else
                     strb.Append(attributes[TradAttribute.value]);
                 strb.Append("\">");

@@ -182,7 +182,7 @@ public class TutoManager : MonoBehaviour
     {
         ClearPos();
         GameManager.Instance.EndTuto();
-
+        _dialogueManager.HideBullSpeakers();
         OnEndTuto?.Invoke();
 
         Destroy(gameObject);

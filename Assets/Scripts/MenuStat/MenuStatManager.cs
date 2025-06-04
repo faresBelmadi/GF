@@ -63,6 +63,7 @@ public class MenuStatManager : MonoBehaviour
         else
             Stat = TutoManager.Instance.JoueurStat;
         StatTemp = Instantiate(Stat);
+        StatTemp.Radiance = Stat.Radiance;
         SouvenirSpawnEquiped.GetComponent<Cristopher>().InitCristopher();
         ListSouvenirUIEquipped.Clear();
         foreach (var item in StatTemp.ListSouvenir)
@@ -197,15 +198,56 @@ public class MenuStatManager : MonoBehaviour
         ValeurConscience.text = StatTemp.Conscience.ToString() + "/" + StatTemp.ConscienceMax.ToString();
         ValeurClairvoyance.text = StatTemp.Clairvoyance.ToString();
 
-        ModifTempsReel(Stat.RadianceMax, StatTemp.RadianceMax, ModifRadiance);
-        ModifTempsReel(Stat.ForceAme, StatTemp.ForceAme, ModifFA);
-        ModifTempsReel(Stat.Vitesse, StatTemp.Vitesse, ModifVitesse);
-        ModifTempsReel(Stat.Conviction, StatTemp.Conviction, ModifConviction);
-        ModifTempsReel(Stat.Resilience, StatTemp.Resilience, ModifResilience);
-        ModifTempsReel(Stat.Calme, StatTemp.Calme, ModifCalme);
-        ModifTempsReel(Stat.VolonterMax, StatTemp.VolonterMax, ModifVolonter);
-        ModifTempsReel(Stat.ConscienceMax, StatTemp.ConscienceMax, ModifConscience);
-        ModifTempsReel(Stat.Clairvoyance, StatTemp.Clairvoyance, ModifClairvoyance);
+        int radiance = 0, forcedame = 0, conviction = 0, vitesse = 0, resilience = 0, calme = 0, conscience = 0, volonte = 0, clairvoyance = 0;
+        
+        foreach (Souvenir memory in StatTemp.ListSouvenir)
+        {
+            if (memory.Equiped == false)
+                continue;
+            foreach (var item in memory.ModificationStat)
+            {
+                switch (item.StatModif)
+                {
+                    case StatModif.RadianceMax:
+                        radiance += item.ParametreModifStat.ValeurModifier;
+                        break;
+                    case StatModif.ForceAme:
+                        forcedame += item.ParametreModifStat.ValeurModifier;
+                        break;
+                    case StatModif.Vitesse:
+                        vitesse += item.ParametreModifStat.ValeurModifier;
+                        break;
+                    case StatModif.Resilience:
+                        resilience += item.ParametreModifStat.ValeurModifier;
+                        break;
+                    case StatModif.Conviction:
+                        conviction += item.ParametreModifStat.ValeurModifier;
+                        break;
+                    case StatModif.ConscienceMax:
+                        conscience += item.ParametreModifStat.ValeurModifier;
+                        break;
+                    case StatModif.Clairvoyance:
+                        clairvoyance += item.ParametreModifStat.ValeurModifier;
+                        break;
+                    case StatModif.Calme:
+                        calme += item.ParametreModifStat.ValeurModifier;
+                        break;
+                    case StatModif.VolonterMax:
+                        volonte += item.ParametreModifStat.ValeurModifier;
+                        break;
+                }
+            }
+        }
+
+        ModifTempsReel(radiance, ModifRadiance);
+        ModifTempsReel(forcedame, ModifFA);
+        ModifTempsReel(vitesse, ModifVitesse);
+        ModifTempsReel(conviction, ModifConviction);
+        ModifTempsReel(resilience, ModifResilience);
+        ModifTempsReel(calme, ModifCalme);
+        ModifTempsReel(volonte, ModifVolonter);
+        ModifTempsReel(conscience, ModifConscience);
+        ModifTempsReel(clairvoyance, ModifClairvoyance);
 
         NbSlots.text = NbSlotsEquiped + "/" + StatTemp.SlotsSouvenir;
         _slotEquiped.fillAmount = (NbSlotsEquiped * StatTemp.SlotsSouvenir) / 100f;
@@ -216,27 +258,26 @@ public class MenuStatManager : MonoBehaviour
         else
             _overPoweredSlot.fillAmount = 0;
     }
-
-    public void ModifTempsReel(int original, int nouveau, TextMeshProUGUI Text)
+    public void ModifTempsReel(int modifValue, TextMeshProUGUI Text)
     {
-        if (nouveau < original)
+        if (modifValue < 0)
         {
             Text.color = Color.red;
             Text.text = "(";
         }
-        else if (nouveau > original)
+        else if (modifValue > 0)
         {
             Text.color = Color.green;
             Text.text = "(+";
         }
-        else if (nouveau == original)
+        else 
         {
             Text.color = Color.grey;
             //Text.text = "(";
             Text.text = "";
             return;         // we display nothing when there are no modifications
         }
-        Text.text += (nouveau - original).ToString() + ")";
+        Text.text += (modifValue).ToString() + ")";
     }
 
     #endregion Update
