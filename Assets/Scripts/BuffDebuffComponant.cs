@@ -15,6 +15,7 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] public GameObject popUpPanel;
     [SerializeField] public TextMeshProUGUI buffNameLabel;
     [SerializeField] public TextMeshProUGUI buffDescriptionLabel;
+    [SerializeField] private float ConvictionBonus;
     public string buffName;
 
     public List<BuffDebuff> BuffDebuffs { get; private set; } = new List<BuffDebuff>();
@@ -29,7 +30,7 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
         CombatBehavior<CharacterStat>.OnUpdateUI -= UpdateUI;
     }
 
-    public void InitBuffDebuff (BuffDebuff buffDebuff)
+    public void InitBuffDebuff (BuffDebuff buffDebuff, float convictionBonus)
     {
         AddStack(buffDebuff);
 
