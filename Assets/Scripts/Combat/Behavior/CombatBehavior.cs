@@ -525,7 +525,10 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     public virtual bool CanHaveAnotherTurn()
     {
-        return Stat.Tension >= Stat.ValeurPalier * commonStats.NbPalier;
+        Debug.Log($"{gameObject.name} => Tension : {Stat.Tension} / TensionMax : {Stat.TensionMax}", gameObject);
+        Debug.Log($"Another turn : {Stat.Tension >= Stat.TensionMax}", gameObject);
+
+        return Stat.Tension >= Stat.TensionMax;
     }
     public virtual void ResetStat()
     {
