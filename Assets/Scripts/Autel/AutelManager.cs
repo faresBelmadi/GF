@@ -35,6 +35,8 @@ public class AutelManager : MonoBehaviour
 
     public List<GameObject> AllSpellsIcon;
     public List<GameObject> AllLink;
+    [SerializeField]
+    private Color _selectedColor = Color.green;
 
     public Button BuyButton;
 
@@ -287,7 +289,7 @@ public class AutelManager : MonoBehaviour
             //    AllSpellsIcon[capa.Spell.IDSpell].GetComponent<Image>().color = Color.gray;
 
         }
-
+        ClearButtonColor();
     }
 
     public void SetUpStatsDescription()
@@ -309,7 +311,6 @@ public class AutelManager : MonoBehaviour
 
     public void SelectSpell(int Id)
     {
-        Debug.Log("start select spell");
         BuyButton.onClick.RemoveAllListeners();
         var listOfCompetences = GameManager.Instance.classSO.Competences;
 
@@ -321,6 +322,8 @@ public class AutelManager : MonoBehaviour
                 string description = TradManager.instance.GetTranslation(capa.Spell.idTradDescription, capa.Spell.Description);
                 DescriptionSpellText.text = $"<allcaps><b> {name} </b></allcaps> \n{ description}";
                 CostCapaText.text = "cout : " + capa.EssenceCost;
+                ClearButtonColor();
+                AllSpellsIcon[Id].GetComponent<Image>().color = _selectedColor;
                 ModifStatCapa(capa);
                 if (capa.EssenceCost <= GameManager.Instance.playerStat.Essence && !capa.Bought && capa.isBuyable)
                 {
@@ -333,6 +336,13 @@ public class AutelManager : MonoBehaviour
                     BuyButton.GetComponent<Image>().color = Color.gray;
                 }
             }
+        }
+    }
+    private void ClearButtonColor()
+    {
+        foreach (var icon in AllSpellsIcon)
+        {
+            icon.GetComponent<Image>().color = Color.white;
         }
     }
 
