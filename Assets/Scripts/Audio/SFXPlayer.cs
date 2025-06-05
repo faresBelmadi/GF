@@ -70,13 +70,39 @@ public class SFXPlayer : MonoBehaviour
                 return null;
         }
     }
+
+    private float GetVolumeMultiplier(SFXType type) => type switch
+    {
+        SFXType.StartPhaseSFX                   => _sfxData.StartPhaseVolume,
+        SFXType.StartTurnSFX                    => _sfxData.StartTurnVolume,
+        SFXType.StartEnnymaAnimalTurnDefaultSFX => _sfxData.StartAnimalTurnVolume,
+        SFXType.EnnemyFullTensionSFX            => _sfxData.EnnemyTensionFullVolume,
+        SFXType.PlayerFullTensionSFX            => _sfxData.PlayerTensionFullVolume,
+        SFXType.PlayerDamageTakenSFX            => _sfxData.DamageTakenVolume,
+        SFXType.EnnemyDamageTakenSFX            => _sfxData.DamageTakenVolume,
+        SFXType.PlayerDeathSFX                  => _sfxData.DeathDefaultVolume,
+        SFXType.EnnemyDeathSFX                  => _sfxData.DeathDefaultVolume,
+        SFXType.EssenceConsuptionSFX            => _sfxData.EssenceComsumptionVolume,
+        SFXType.PlayerSpellSFX                  => _sfxData.PlayerSpellVolume,
+        SFXType.EnnemySpellSFX                  => _sfxData.EnemySpellVolume,
+        SFXType.BuffTriggerSFX                  => _sfxData.BuffTriggerVolume,
+        SFXType.BuffDisapearSFX                 => _sfxData.BuffDisappearVolume,
+        SFXType.ClicButtonSFX                   => _sfxData.ButtonCLicVolume,
+        SFXType.DialogueButtonSFX               => _sfxData.ButtonDialogueVolume,
+        SFXType.DialogueSFX                     => _sfxData.DialogueVoiceVolume,
+        SFXType.MapAutelSFX                     => _sfxData.MapAutelVolume,
+        SFXType.MapBattleSFX                    => _sfxData.MapBattleVolume,
+        SFXType.MapSFX                          => _sfxData.MapAleaVolume,
+        _                                       => 1,
+    };
     public void PlaySFXClip(SFXType type, float volume = 1)
     {
+        
         if (_debugMode)
         {
             Debug.Log($"Playing SFX (type : {type})");
         }
-        PlayClip(GetClip(type), volume);
+        PlayClip(GetClip(type), volume * GetVolumeMultiplier(type));
     }
     public void PlaySFXClip(SFXType type, AudioClip clipToPlay, float volume = 1)
     {
