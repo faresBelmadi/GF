@@ -864,7 +864,7 @@ public class BattleManager : MonoBehaviour
                             Caster);
                     }
                 }
-                else
+                else if(Caster != -1)
                 {
                     if (EnemyScripts.FirstOrDefault(c => c.combatID == Caster) == null)
                     {
@@ -877,6 +877,10 @@ public class BattleManager : MonoBehaviour
                             Caster);
                     }
                 }
+                else
+                {
+                    player.ApplicationEffet(effet, EnemyScripts.First().Stat, source, EnemyScripts.First().combatID);
+                }
 
                 break;
             case Cible.ennemi:
@@ -885,7 +889,7 @@ public class BattleManager : MonoBehaviour
                 {
                     EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
                 }
-                else
+                else if (Caster != -1)
                 {
                     if (target != -1)
                     {
@@ -908,10 +912,14 @@ public class BattleManager : MonoBehaviour
                             EnemyScripts.First().ApplicationEffet(effet, null, source, Caster);
                     }
                 }
+                else
+                {
+                    EnemyScripts.First().ApplicationEffet(effet, player.Stat, source, idPlayer);
+                }
 
                 break;
             case Cible.Self:
-                if (Caster == idPlayer)
+                if (Caster == idPlayer || Caster == -1)
                 {
                     player.ApplicationEffet(effet, null, source);
                 }
@@ -986,7 +994,7 @@ public class BattleManager : MonoBehaviour
                         ennemie.ApplicationEffet(effet, null, source, Caster);
                 }
 
-                if (Caster == idPlayer)
+                if (Caster == idPlayer || Caster == -1)
                 {
                     player.ApplicationEffet(effet, null, source);
                 }
@@ -1024,11 +1032,11 @@ public class BattleManager : MonoBehaviour
                 {
                     if (Caster == target)
                     {
-                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
+                        EnemyScripts.First(c => c.combatID == MostDamageID).ApplicationEffet(effet, null, source, Caster);
                     }
                     else
                     {
-                        EnemyScripts.First(c => c.combatID == target)
+                        EnemyScripts.First(c => c.combatID == MostDamageID)
                             .ApplicationEffet(effet, null, source, Caster);
                     }
                 }

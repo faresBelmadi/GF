@@ -23,6 +23,8 @@ public class PulseBloom_System : MonoBehaviour
     [SerializeField]
     private Gradient bloomGradient;
 
+    public Gradient BloomGradient { set { bloomGradient = value; } }
+
     [SerializeField]
     public Material bloomMaterial;
     private Coroutine bloomRoutine = null;

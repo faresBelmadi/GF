@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -26,6 +27,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     [SerializeField] private ProgressBarManager tensionBarManager;
     [SerializeField] private ProgressBarManager conscienceBarManager;
 
+    [SerializeField] private ConvictionManager _convictionManager;
     [SerializeField] private VolonteManager _volonteManager;
     [SerializeField] private HighlightCost _highlightComponant;
 
@@ -53,6 +55,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     [SerializeField] private AnimationControllerAttack AnimationController;
     [SerializeField] private GameObject _ciblage;
+
+
+    public static event Action OnConvictionFull;
+    public static event Action OnConvictionEmpty;
 
     private BattleManager _refBattleMan => GameManager.Instance.BattleMan;
     [SerializeField] private bool IsTurn;
@@ -213,7 +219,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
 
         _volonteManager.UpdateMaxVolonte(Stat.VolonterMax);
-        _volonteManager.UpdateVolonte(Stat.Volonter);
+        _volonteManager.UpdatePoint(Stat.Volonter);
 
 
         HpText.text = $"{Stat.Radiance.ToString()}/{Stat.RadianceMax}";
@@ -273,7 +279,17 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             spell.GetComponent<SpellCombat>().UpdateDescription();
         }
 
-        ConvictionNbBuffText.text = nbBuffDebuffApplied + "/" + commonStats.ConvictionNbBuffTrigger;
+        //  ConvictionNbBuffText.text = nbBuffDebuffApplied + "/" + commonStats.ConvictionNbBuffTrigger;
+        if (Stat.Conviction != 0)
+        {
+            _convictionManager.UpdateMaxConviction(commonStats.ConvictionNbBuffTrigger);
+        }
+        else
+            _convictionManager.UpdateMaxConviction(0);
+        _convictionManager.Positive = Stat.Conviction > 0;
+        _convictionManager.UpdatePoint(nbBuffDebuffApplied);
+
+
         _highlightComponant.DisableHighlighting();
         OnUpdate();
     }
@@ -648,7 +664,18 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         {
             if((toAdd.IDCombatOrigine == _refBattleMan.idPlayer && Stat.Conviction > 0 && !toAdd.IsDebuff) 
                 || (toAdd.IDCombatOrigine !=  _refBattleMan.idPlayer && Stat.Conviction<0 && toAdd.IsDebuff))
+            {
+
                 nbBuffDebuffApplied++;
+                if(nbBuffDebuffApplied == commonStats.ConvictionNbBuffTrigger) 
+                {
+                    OnConvictionFull?.Invoke();
+                }
+                else
+                {
+                    OnConvictionEmpty?.Invoke();
+                }
+            }
 
             if (toAdd.IsDebuff)
             {
