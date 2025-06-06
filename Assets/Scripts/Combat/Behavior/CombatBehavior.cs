@@ -156,7 +156,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
             buffComp.buffDescriptionLabel.text = buffDebuffDescription;
             buffComp.buffDescriptionLabel.color = toAdd.IsDebuff ? _debuffTextColor : _buffTextColor;
             buffComp.buffCntHolder.GetComponent<EnflateSystem>().TriggerInflation();
-            //buffComp.InitBuffDebuff(toAdd);
+            buffComp.InitBuffDebuff(toAdd);
             ListBuffDebuffGO.Add(buffObject);
         }
         //buffObject.GetComponent<EnflateSystem>().TriggerInflation();

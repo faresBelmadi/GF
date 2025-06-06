@@ -32,7 +32,7 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
         TradManager.OnRefreshTranslation -= SetNameAndDescription;
     }
 
-    public void InitBuffDebuff (BuffDebuff buffDebuff, float convictionBonus)
+    public void InitBuffDebuff (BuffDebuff buffDebuff)
     {
         AddStack(buffDebuff);
 
