@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Text.RegularExpressions;
 using UnityEditor;
 using UnityEngine;
 
@@ -35,8 +36,15 @@ namespace GF.GgsToCsv
                 return;
             }
 
+            content = CleanupContent(content);
+
             File.WriteAllText(outputPath, content);
             Debug.Log($"Downloaded CSV for {logInfo}.", AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(outputPath));
+        }
+
+        private string CleanupContent(string content)
+        {
+            return Regex.Replace(content, @" (?=[!?:])", "\u00A0"); // non-breakable space
         }
     }
 }
