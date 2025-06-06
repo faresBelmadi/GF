@@ -50,6 +50,11 @@ public class ConvictionPoint : Point
         _convictionSprite.sprite = _convictionEmpty;
     }
 
+    public new void StopHighlight()
+    {
+        _bloomVolonteComponent.StopBloom();
+    }
+
     public override void Full()
     {
     }

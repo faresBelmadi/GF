@@ -52,6 +52,14 @@ public class PulseBloom_System : MonoBehaviour
         //Debug.Log($"StartRoutine");
         bloomRoutine = StartCoroutine(BloomingRoutine());
     }
+
+    public void StopBloom()
+    {
+        if (bloomRoutine != null)
+        {
+            StopCoroutine(bloomRoutine);
+        }
+    }
     private IEnumerator BloomingRoutine()
     {
         float timePassed = 0f;

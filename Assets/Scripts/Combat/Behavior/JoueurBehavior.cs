@@ -667,7 +667,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             {
 
                 nbBuffDebuffApplied++;
-                if(nbBuffDebuffApplied == commonStats.ConvictionNbBuffTrigger) 
+                if(nbBuffDebuffApplied == commonStats.ConvictionNbBuffTrigger-1) 
                 {
                     OnConvictionFull?.Invoke();
                 }
