@@ -32,10 +32,6 @@ public class UIEnnemi : MonoBehaviour
 
     public CadreStatsUiManager CadreStatsUiManager;
 
-    private void OnDestroy()
-    {
-        GameManager.Instance.BattleMan.EnemyCadreStat.SetActive(false);
-    }
     public void UpdateHp(int newHp, int newMaxHp)
     {
         if (!HPBarManager) return;

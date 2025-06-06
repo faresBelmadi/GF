@@ -12,6 +12,9 @@ public class TextComponent : MonoBehaviour
     private TMP_Text _textTMPObject;
     [SerializeField]
     private Text _textObject;
+    [Tooltip("Line indent, in percent")]
+    [SerializeField]
+    private float _lineIndent = 0;
 
     public string IDLabel { get => _idLabel; }
 
@@ -39,11 +42,11 @@ public class TextComponent : MonoBehaviour
     {
         if (_textTMPObject != null)
         {
-            _textTMPObject.text = TradManager.instance.GetTranslation(_idLabel, _defaultText);
+            _textTMPObject.text = $"<line-indent={_lineIndent}%>{TradManager.instance.GetTranslation(_idLabel, _defaultText)}";
         }
         if (_textObject != null)
         {
-            _textObject.text = TradManager.instance.GetTranslation(_idLabel, _defaultText);
+            _textObject.text = $"{TradManager.instance.GetTranslation(_idLabel, _defaultText)}";
         }
     }
 
