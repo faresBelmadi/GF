@@ -22,13 +22,8 @@ public class GamePanelManager : MonoBehaviour
     [SerializeField]
     private GameObject _canvaMap;
 
-    //Todo : a modifier, image end Game
     [SerializeField]
-    private GameObject _endGameImage;
-    [SerializeField]
-    private Sprite _endFrGameImage;
-    [SerializeField]
-    private Sprite _endEnGameImage;
+    private EndGameScreen _endGameScreen;
 
     private void OnEnable()
     {
@@ -157,9 +152,6 @@ public class GamePanelManager : MonoBehaviour
 
     private void EndGame()
     {
-        _endGameImage.GetComponent<Image>().sprite = TradManager.instance.Language == TradManager.SUPPORTEDLANGUAGES.EN
-            ? _endEnGameImage
-            : _endFrGameImage;
-        _endGameImage.gameObject.SetActive(true);
+        _endGameScreen.gameObject.SetActive(true);
     }
 }
