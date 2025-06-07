@@ -24,41 +24,7 @@ public class SpellCombat : MonoBehaviour
         button.GetComponent<Image>().sprite = Action.Sprite;
         button.onClick.AddListener(ClickAction);
         //texte.text = Action.Nom;
-        string buffDebuffName;
-        string buffDebuffDescription;
-        if (!string.IsNullOrEmpty(Action.idTradName) && !string.IsNullOrEmpty(Action.idTradDescription))
-        {
-
-            buffDebuffName = TradManager.instance.GetTranslation(Action.idTradName, Action.name);
-            buffDebuffDescription = TradManager.instance.GetTranslation(Action.idTradDescription, Action.Description);
-        }
-        else
-        {
-            if (string.IsNullOrEmpty(Action.idTradName))
-                Debug.Log("IdTradName est null/empty pour " + Action.name);
-            if (string.IsNullOrEmpty(Action.idTradDescription))
-                Debug.Log("idTradDescription est null/empty pour " + Action.name);
-            buffDebuffName = Action.name;
-            buffDebuffDescription = Action.Description;
-        }
-
-        TexteDescription.text = "<color=white><size=150%>" + buffDebuffName + "</size></color>\n<u>Cout :</u> ";
-        foreach (var item in Action.Costs)
-        {
-            if (item.typeCost == TypeCostSpell.volonte)
-                TexteDescription.text += item.Value + "<sprite name=\"" +
-                    ((GameManager.Instance!=null)?GameManager.Instance.StatIcons.StatVolonte.name : TutoManager.Instance.StatIcons.StatVolonte.name) + "\">";
-            if (item.typeCost == TypeCostSpell.radiance)
-                TexteDescription.text += item.Value + "<sprite name=\"" +
-                    ((GameManager.Instance != null) ? GameManager.Instance.StatIcons.StatRadiance.name : TutoManager.Instance.StatIcons.StatRadiance.name) + "\">";
-            if (item.typeCost == TypeCostSpell.conscience)
-                TexteDescription.text += item.Value + "<sprite name=\"" +
-                    ((GameManager.Instance != null) ? GameManager.Instance.StatIcons.StatConscience.name : TutoManager.Instance.StatIcons.StatConscience.name) + "\">";
-        }
-
-        TexteDescription.text += "\n";
-
-        TexteDescription.text += buffDebuffDescription;
+        UpdateDescription();
     }
 
     //private void Update()
@@ -124,12 +90,32 @@ public class SpellCombat : MonoBehaviour
 
     public void UpdateDescription()
     {
-        string buffDebuffName;
-        string buffDebuffDescription;
+        string spellName;
+        string spellDescription;
         if (!string.IsNullOrEmpty(Action.idTradName) && !string.IsNullOrEmpty(Action.idTradDescription))
         {
-            buffDebuffName = TradManager.instance.GetTranslation(Action.idTradName, Action.name);
-            buffDebuffDescription = TradManager.instance.GetTranslation(Action.idTradDescription, Action.Description);
+            List<float> variableValues = new List<float>();
+
+            foreach (Effet e in Action.ActionEffet)
+            {
+                if (e.ValeurBrut != 0)
+                    variableValues.Add(Mathf.Abs(e.ValeurBrut));
+                if (e.Pourcentage != 0)
+                    variableValues.Add(Mathf.Abs((float)e.Pourcentage));
+            }
+
+            foreach (BuffDebuff b in Action.ActionBuffDebuff)
+            {
+                foreach (Effet e in b.Effet)
+                {
+                    if (e.ValeurBrut != 0)
+                        variableValues.Add(Mathf.Abs(e.ValeurBrut));
+                    if (e.Pourcentage != 0)
+                        variableValues.Add(Mathf.Abs((float)e.Pourcentage));
+                }
+            }
+            spellName = TradManager.instance.GetTranslation(Action.idTradName, Action.name);
+            spellDescription = TradManager.instance.GetTranslation(Action.idTradDescription, Action.Description);
         }
         else
         {
@@ -137,11 +123,11 @@ public class SpellCombat : MonoBehaviour
                 Debug.Log("IdTradName est null/empty pour " + Action.name);
             if (string.IsNullOrEmpty(Action.idTradDescription))
                 Debug.Log("idTradDescription est null/empty pour " + Action.name);
-            buffDebuffName = Action.name;
-            buffDebuffDescription = Action.Description;
+            spellName = Action.name;
+            spellDescription = Action.Description;
         }
 
-        TexteDescription.text = "<color=white><size=150%>" + buffDebuffName + "</size></color>\n<u>Cout :</u> ";
+        TexteDescription.text = "<color=white><size=150%>" + spellName + "</size></color>\n<u>Cout :</u> ";
         foreach (var item in Action.Costs)
         {
             if (item.typeCost == TypeCostSpell.volonte)
@@ -157,6 +143,6 @@ public class SpellCombat : MonoBehaviour
 
         TexteDescription.text += "\n";
 
-        TexteDescription.text += buffDebuffDescription;
+        TexteDescription.text += spellDescription;
     }
 }

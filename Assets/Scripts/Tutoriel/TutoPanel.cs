@@ -52,7 +52,7 @@ public class TutoPanel : MonoBehaviour
             case 6: //Explication tension
             case 7: //Explication tension2
                 break;
-            case 11: //Déroulement narmol du combat
+            case 12: //Déroulement narmol du combat
                 GameManager.Instance.BattleMan.player.ActivateSpells();
 
                 StartCombat();
@@ -60,16 +60,16 @@ public class TutoPanel : MonoBehaviour
         }
 
         Debug.Log(IndexExplication);
-        if (IndexExplication == 13) //13
+        if (IndexExplication == 14) //13
             GatherEssence();
-        else if (IndexExplication == 14) //14
+        else if (IndexExplication == 15) //14
         {
             this.transform.parent = StatTransform;
             this.transform.Translate(new Vector3(0, 1, 0), Space.Self);
             TutoManager.Instance.ShowSoulConsumation = false;
             this.transform.GetChild(0).gameObject.SetActive(true);
         }
-        else if (IndexExplication == 17)
+        else if (IndexExplication == 18)
         {
             var menuStatManager = StatTransform.GetComponentInChildren<MenuStatManager>();
             foreach (var souvenirGo in menuStatManager.Souvenir)
@@ -79,7 +79,7 @@ public class TutoPanel : MonoBehaviour
 
             StatTransform.GetComponentInChildren<MenuStatManager>().EquipedSouvenir.Clear();
         }
-        else if (IndexExplication == 16) //16
+        else if (IndexExplication == 17) //16
         {
 
             StatTransform.GetComponentInChildren<MenuStatManager>().End();
