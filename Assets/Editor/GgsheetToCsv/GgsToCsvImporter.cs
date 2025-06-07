@@ -44,7 +44,12 @@ namespace GF.GgsToCsv
 
         private string CleanupContent(string content)
         {
-            return Regex.Replace(content, @" (?=[!?:])", "\u00A0"); // non-breakable space
+            var result = content;
+
+            result = Regex.Replace(result, @" (?=[!?:])", "\u00A0"); // non-breakable space before punctuations
+            result = Regex.Replace(result, @"\n(?=;)", ""); // remove unwanted \n
+
+            return result;
         }
     }
 }
