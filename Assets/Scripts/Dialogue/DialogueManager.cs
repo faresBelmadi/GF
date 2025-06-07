@@ -387,15 +387,21 @@ public class DialogueManager : MonoBehaviour
 
         if (/*ManagerBattle == null && _CurrentEncounterAlea != null*/ ManagerAlea.IsAlea)
         {
-            return "<allcaps><u><b><color=#" + colorCode + ">" + _CurrentEncounterAlea.NamePnj +
+            string encounteurName = TradManager.instance.GetTranslation(_CurrentEncounterAlea.IdTradName, _CurrentEncounterAlea.NamePnj);
+            return "<allcaps><u><b><color=#" + colorCode + ">" + encounteurName +
                    ": </color></b></u></allcaps> " + dialogueTrad;
         }
         else
         {
+            
             string encounteurName = TradManager.instance.GetTranslation(
                 _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker]
                     .IdTradName,
                 _CurrentEncounterBattle.ToFight[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].Nom);
+            if (GameManager.Instance.IsTuto)
+            {
+                encounteurName = TradManager.instance.GetTranslation("TutoPerso1") + "(s)";
+            }
             return "<allcaps><u><b><color=#" + colorCode + ">" + encounteurName + ": </color></b></u></allcaps>" +
                    dialogueTrad;
         }
