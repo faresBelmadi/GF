@@ -74,6 +74,7 @@ public class BattleManager : MonoBehaviour
     public bool ConsumedEssence;
     public int EssenceGained;
 
+    [SerializeField]
     public bool IsCombatOn { get; private set; }
 
     [SerializeField] private Material characterMaterial;
@@ -847,7 +848,7 @@ public class BattleManager : MonoBehaviour
         switch (effet.Cible)
         {
             case Cible.joueur:
-                if (Caster == idPlayer)
+                if (Caster == idPlayer || !IsCombatOn)
                 {
                     player.ApplicationEffet(effet, null, source);
                 }
