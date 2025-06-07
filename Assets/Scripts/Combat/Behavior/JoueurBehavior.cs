@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -55,6 +56,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     [SerializeField] private AnimationControllerAttack AnimationController;
     [SerializeField] private GameObject _ciblage;
+    [SerializeField] private Animator _deathAnimator;
 
 
     public static event Action OnConvictionFull;
@@ -66,6 +68,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     public Spell SelectSpell => SelectedSpell;
 
     public override string Name { get => GameManager.Instance.classSO.NameClass; }
+    public bool IsDead { get; private set; }
 
     #region Divers start & fin
 
@@ -74,6 +77,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     private int currentCons = -1;
     private bool _isHurt;
     private int _playedTurn = 0;
+    private Coroutine deathRoutine = null;
 
     public void InitRefBattleMan(BattleManager battleManager)
     {
@@ -88,6 +92,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     public void StartUp()
     {
         commonStats = GameManager.Instance.CommonStatsData;
+        
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.ClairvoyanceOriginal = Stat.Clairvoyance;
@@ -144,6 +149,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             if (item is StatPerConsciencePassive passive)
                 passive.InitPassif(_stat);
         }
+        IsDead = false;
         InitUI();
     }
 
@@ -363,9 +369,32 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     void Dead()
     {
+        if (IsDead) return;
+        IsDead = true;
         AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerDeathSFX, Stat.DeathSFX);
         ResetStat();
         _refBattleMan.DeadPlayer();
+    }
+    public void DieEffect()
+    {
+        StartCoroutine(DeathCoroutine());
+    }
+    IEnumerator DeathCoroutine()
+    {
+        _deathAnimator.SetTrigger("Die");
+        GetComponent<Animator>().enabled = false ;
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDeathSFX, Stat.DeathSFX);
+        float time = 0f;
+        while (time < deathDisolveTime)
+        {
+            //if (time * 2 >= deathDisolveTime)
+            //{
+            //}
+            time += Time.deltaTime;
+            characterMaterial.SetFloat("_DisolveHeight", time / deathDisolveTime);
+            yield return null;
+        }
+        deathRoutine = null;
     }
 
     public void FinCombat()
