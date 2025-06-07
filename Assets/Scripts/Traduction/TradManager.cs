@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 using yutokun;
@@ -50,9 +51,6 @@ public class TradManager : MonoBehaviour
     private Dictionary<string, List<string>> _dialogueDictionary = new Dictionary<string, List<string>>();
     private Dictionary<string, List<string>> _capaDictionary = new Dictionary<string, List<string>>();
     private Dictionary<string, List<string>> _miscDictionary = new Dictionary<string, List<string>>();
-
-    // Pour la v�rification de l'unicit� des ID de traductions
-    private HashSet<string> _idList = new HashSet<string>();
 
     private Analyzer _analyzer;
 
@@ -112,110 +110,61 @@ public class TradManager : MonoBehaviour
     #endregion
 
     #region FILELOADER
-    public void LoadTrad()
-    {
-        LoadTradDialogue();
-        LoadTradCapa();
-        LoadTradMisc();
-    }
-    private void LoadTradDialogue()
-    {
+
 #if UNITY_EDITOR
-        string path = "Assets/StreamingAssets/Traduction/GameTraductionFile.csv";
+    private const string _gamePath = "Assets/StreamingAssets/Traduction/GameTraductionFile.csv";
+    private const string _capaPath = "Assets/StreamingAssets/Traduction/CapaTraductionFile.csv";
+    private const string _miscPath = "Assets/StreamingAssets/Traduction/MiscTraductionFile.csv";
 #else
-                        string path = Application.dataPath + "/StreamingAssets/Traduction/GameTraductionFile.csv";
+    private readonly string _gamePath = Application.dataPath + "/StreamingAssets/Traduction/GameTraductionFile.csv";
+    private readonly string _capaPath = Application.dataPath + "/StreamingAssets/Traduction/CapaTraductionFile.csv";
+    private readonly string _miscPath = Application.dataPath + "/StreamingAssets/Traduction/MiscTraductionFile.csv";
 #endif
 
+    private static readonly int _languageCount = Enum.GetValues(typeof(SUPPORTEDLANGUAGES)).Length;
+
+    public bool LoadTrad()
+    {
+        var success = true;
+        success &= LoadFromFile(_gamePath, _dialogueDictionary);
+        success &= LoadFromFile(_capaPath, _capaDictionary);
+        success &= LoadFromFile(_miscPath, _miscDictionary);
+        return success;
+    }
+
+    private bool LoadFromFile(string path, Dictionary<string, List<string>> tradDico)
+    {
+        bool success = true;
+
         var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
-        foreach (var row in sheet)
+        foreach (var row in sheet.Skip(1))
         {
-            row.RemoveAll(c => c == "");
-            if (row.Count > 0)
+            var id = row[0];
+            if (string.IsNullOrEmpty(id))
             {
-                List<string> templist = new List<string>();
-                templist.AddRange(row);
-                templist.RemoveAt(0);
-                if (!_dialogueDictionary.TryAdd(row[0], templist))
-                {
-                    Debug.LogError("Error when adding key " + row[0] + " to dialogue dictionnary, key already added");
-                }
-                if (!row[0].ToLower().Equals("id") && !_idList.Add(row[0]))
-                {
-                    Debug.LogError("Duplicate Key : " + (row[0]));
-                }
+                Debug.LogError($"Found an empty Id reading from {path}! (previous was {(tradDico.Count == 0 ? "none" : tradDico.Last().Key)})");
+                success = false;
+                continue;
+            }
+
+            var trads = row.Skip(1).Take(_languageCount).ToList();
+
+            if (trads.Any(t => string.IsNullOrEmpty(t)))
+            {
+                Debug.LogWarning($"Line {id} is missing translations!");
+                success = false;
+            }
+
+            if (!tradDico.TryAdd(id, trads))
+            {
+                Debug.LogError($"Line {id} is duplicated!");
+                success = false;
             }
         }
 
-        //foreach (var item in DialogueDictionary)
-        //{
-        //    Debug.Log(item.Key + " | " + item.Value.Count);
-        //}
+        return success;
     }
 
-    private void LoadTradCapa()
-    {
-#if UNITY_EDITOR
-        string path = "Assets/StreamingAssets/Traduction/CapaTraductionFile.csv";
-#else
-                        string path = Application.dataPath + "/StreamingAssets/Traduction/CapaTraductionFile.csv";
-#endif
-
-        var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
-        foreach (var row in sheet)
-        {
-            row.RemoveAll(c => c == "");
-            if (row.Count > 0)
-            {
-                List<string> templist = new List<string>();
-                templist.AddRange(row);
-                templist.RemoveAt(0);
-                _capaDictionary.Add(row[0], templist);
-
-                if (!row[0].ToLower().Equals("id") && !_idList.Add(row[0]))
-                {
-                    Debug.LogError("Duplicate Key : " + (row[0]));
-                }
-            }
-
-        }
-
-        //foreach (var item in CapaDictionary)
-        //{
-        //    Debug.Log(item.Key + " | " + item.Value.Count);
-        //}
-    }
-
-    private void LoadTradMisc()
-    {
-#if UNITY_EDITOR
-        string path = "Assets/StreamingAssets/Traduction/MiscTraductionFile.csv";
-#else
-                        string path = Application.dataPath + "/StreamingAssets/Traduction/MiscTraductionFile.csv";
-#endif
-
-        var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
-        foreach (var row in sheet)
-        {
-            row.RemoveAll(c => c == "");
-            if (row.Count > 0)
-            {
-                List<string> templist = new List<string>();
-                templist.AddRange(row);
-                templist.RemoveAt(0);
-                _miscDictionary.Add(row[0], templist);
-
-                if (!row[0].ToLower().Equals("id") && !_idList.Add(row[0]))
-                {
-                    Debug.LogError("Duplicate Key : " + (row[0]));
-                }
-            }
-        }
-
-        //foreach (var item in _miscDictionary)
-        //{
-        //    Debug.Log(item.Key + " | " + item.Value.Count);
-        //}
-    }
     #endregion
 
     #region GETTERS
@@ -301,4 +250,13 @@ public class TradManager : MonoBehaviour
         }
     }
     #endregion
+
+
+#if UNITY_EDITOR
+    #region EDITOR GETTERS
+    public string[] DialogueIds => _dialogueDictionary.Keys.ToArray();
+    public string[] CapaIds => _capaDictionary.Keys.ToArray();
+    public string[] MiscIds => _miscDictionary.Keys.ToArray();
+    #endregion
+#endif
 }
