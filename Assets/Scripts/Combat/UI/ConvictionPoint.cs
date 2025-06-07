@@ -48,6 +48,7 @@ public class ConvictionPoint : Point
     public override void Empty()
     {
         _convictionSprite.sprite = _convictionEmpty;
+        _convictionSprite.material = null;
     }
 
     public new void StopHighlight()
