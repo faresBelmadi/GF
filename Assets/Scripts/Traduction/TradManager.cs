@@ -243,19 +243,19 @@ public class TradManager : MonoBehaviour
     //     return defaultTranslation;
     // }    
     
-    public string GetTranslation(string key, string defaultTranslation = "missing translation", List<float> variableValues = null)
+    public string GetTranslation(string key, string defaultTranslation = "missing translation")
     {
         if (_dialogueDictionary.ContainsKey(key) && _dialogueDictionary[key].Count > IdLanguage)
         {
-            return _analyzer.Execute(_dialogueDictionary[key][IdLanguage], variableValues);
+            return _analyzer.Execute(_dialogueDictionary[key][IdLanguage]);
         }
         else if (_capaDictionary.ContainsKey(key) && _capaDictionary[key].Count > IdLanguage)
         {
-            return _analyzer.Execute(_capaDictionary[key][IdLanguage], variableValues);
+            return _analyzer.Execute(_capaDictionary[key][IdLanguage]);
         }
         else if (_miscDictionary.ContainsKey(key) && _miscDictionary[key].Count > IdLanguage)
         {
-            return _analyzer.Execute(_miscDictionary[key][IdLanguage], variableValues);
+            return _analyzer.Execute(_miscDictionary[key][IdLanguage]);
         }
         LogError(key);
         return defaultTranslation;

@@ -227,7 +227,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
             }
             
             buffDebuffName = TradManager.instance.GetTranslation(buff.idTradName, buff.Nom);
-            buffDebuffDescription = TradManager.instance.GetTranslation(buff.idTradDescription, buff.Description,variableValues);
+            buffDebuffDescription = TradManager.instance.GetTranslation(buff.idTradDescription, buff.Description);
 
         }
         else

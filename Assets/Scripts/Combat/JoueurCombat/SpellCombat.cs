@@ -115,7 +115,7 @@ public class SpellCombat : MonoBehaviour
                 }
             }
             spellName = TradManager.instance.GetTranslation(Action.idTradName, Action.name);
-            spellDescription = TradManager.instance.GetTranslation(Action.idTradDescription, Action.Description, variableValues);
+            spellDescription = TradManager.instance.GetTranslation(Action.idTradDescription, Action.Description);
         }
         else
         {

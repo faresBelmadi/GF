@@ -48,7 +48,7 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
             if (e.Pourcentage != 0)
                 variableValues.Add(Mathf.Abs((float)e.Pourcentage));
         }
-        buffDescriptionLabel.text = TradManager.instance.GetTranslation(buffDebuff.idTradDescription, buffDebuff.Description, variableValues);
+        buffDescriptionLabel.text = TradManager.instance.GetTranslation(buffDebuff.idTradDescription, buffDebuff.Description);
        
     }
     private void SetNameAndDescription()
@@ -147,7 +147,7 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
                 if (e.Pourcentage != 0)
                     variableValues.Add(Mathf.Abs((float)e.Pourcentage));
             }
-            buffDescriptionLabel.text = TradManager.instance.GetTranslation(currentBuffDebuffs.idTradDescription, currentBuffDebuffs.Description, variableValues)
+            buffDescriptionLabel.text = TradManager.instance.GetTranslation(currentBuffDebuffs.idTradDescription, currentBuffDebuffs.Description)
             + (timeLeft != -1 ? "\n(Time left : " + timeLeft + ")" : "");
         }
     }

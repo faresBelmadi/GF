@@ -79,7 +79,7 @@ public class Analyzer : MonoBehaviour
     }
 
     #region Regex
-    public string Execute(string stringToRead, List<float> variableValues = null)
+    public string Execute(string stringToRead)
     {
 
         //Regex PERCENTPATTERN match
@@ -89,7 +89,7 @@ public class Analyzer : MonoBehaviour
         {
             Dictionary<TradAttribute, string> attributes = new Dictionary<TradAttribute, string>
             {
-                { TradAttribute.value, variableValues!=null ? ""+variableValues[variableValueIndex++]:currentMatchPercent.Groups["value"].Captures[0].ToString() },
+                { TradAttribute.value, currentMatchPercent.Groups["value"].Captures[0].ToString() },
                 { TradAttribute.target, currentMatchPercent.Groups["target"].Captures[0].ToString() }
             };
             string replacement = ApplyTag(TradTag.percent, attributes);
@@ -116,7 +116,7 @@ public class Analyzer : MonoBehaviour
         {
             Dictionary<TradAttribute, string> attributes = new Dictionary<TradAttribute, string>
             {
-                { TradAttribute.value, variableValues!=null ? ""+variableValues[variableValueIndex++]:currentMatchDamage.Groups["value"].Captures[0].ToString() },
+                { TradAttribute.value, currentMatchDamage.Groups["value"].Captures[0].ToString() },
                 { TradAttribute.type, currentMatchDamage.Groups["type"].Captures[0].ToString() }
             };
             if (currentMatchDamage.Groups["stat"].Success)
@@ -147,7 +147,7 @@ public class Analyzer : MonoBehaviour
         {
             Dictionary<TradAttribute, string> attributes = new Dictionary<TradAttribute, string>
             {
-                { TradAttribute.value, variableValues!=null ? ""+variableValues[variableValueIndex++]:currentMatchVariable.Groups["value"].Captures[0].ToString() }
+                { TradAttribute.value, currentMatchVariable.Groups["value"].Captures[0].ToString() }
             };
             string replacement = ApplyTag(TradTag.variable, attributes);
             stringToRead = stringToRead.Replace(currentMatchVariable.Groups[0].ToString(), replacement);
