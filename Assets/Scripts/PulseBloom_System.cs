@@ -23,6 +23,8 @@ public class PulseBloom_System : MonoBehaviour
     [SerializeField]
     private Gradient bloomGradient;
 
+    public Gradient BloomGradient { set { bloomGradient = value; } }
+
     [SerializeField]
     public Material bloomMaterial;
     private Coroutine bloomRoutine = null;
@@ -49,6 +51,14 @@ public class PulseBloom_System : MonoBehaviour
         }
         //Debug.Log($"StartRoutine");
         bloomRoutine = StartCoroutine(BloomingRoutine());
+    }
+
+    public void StopBloom()
+    {
+        if (bloomRoutine != null)
+        {
+            StopCoroutine(bloomRoutine);
+        }
     }
     private IEnumerator BloomingRoutine()
     {

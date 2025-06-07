@@ -24,7 +24,7 @@ public class BuffDebuff : ScriptableObject
     public List<BuffDebuff> Consomation;
     public bool IsDebuff;
     public Cible CibleApplication;
-    public int IDCombatOrigine;
+    public int IDCombatOrigine =-1;
     public Decompte Decompte;
     public TimerApplication timerApplication;
     public int Temps;

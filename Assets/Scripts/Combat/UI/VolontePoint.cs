@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class VolontePoint : MonoBehaviour
+public class VolontePoint : Point
 {
     [SerializeField]
     private Image _volonteSprite;
@@ -11,10 +11,7 @@ public class VolontePoint : MonoBehaviour
     private Sprite _volonteFull;
     [SerializeField]
     private Sprite _volonteEmpty;
-    [SerializeField]
-    private GameObject _highlightPoint;
-    [SerializeField]
-    private PulseBloom_System _bloomVolonteComponent;
+    
 
 
 
@@ -24,21 +21,13 @@ public class VolontePoint : MonoBehaviour
         _volonteSprite.sprite = _volonteFull;
     }
 
-    public void Full()
+    public override void Full()
     {
         _volonteSprite.sprite = _volonteFull;
     }
-    public void Empty()
+    public override void Empty()
     {
         _volonteSprite.sprite = _volonteEmpty;
     }
-    public void Highlight()
-    {
-        _highlightPoint.SetActive(true);
-        _bloomVolonteComponent.TriggerBloom(true);
-    }
-    public void StopHighlight()
-    {
-        _highlightPoint.SetActive(false);
-    }
+    
 }

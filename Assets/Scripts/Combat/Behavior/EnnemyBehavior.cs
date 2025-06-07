@@ -79,6 +79,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             _refBattleMan = TutoManager.Instance.BattleManager;
         else
         {
+            commonStats = GameManager.Instance.CommonStatsData;
             _refBattleMan = GameManager.Instance.BattleMan;
             clairvoyanceIconData = GameManager.Instance.StatIcons;
         }
@@ -245,8 +246,8 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         if (currentHp != Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
         currentHp = Stat.Radiance;
 
-        TensionUI = Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax);
-        if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, Stat.NbPalier);
+        TensionUI = Mathf.FloorToInt((Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax);
+        if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, GameManager.Instance.CommonStatsData.NbPalier);
         currentTension = TensionUI;
 
         string[] t = Stat.Nom.Split('(');
@@ -416,6 +417,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     {
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
+            nbBuffDebuffApplied++;
             if (toAdd.IsDebuff && !Stat.NoTension)
             {
                 ReceiveTension(Source.Buff);
@@ -428,10 +430,11 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
                 buff.Effet.Add(Instantiate(item));
             }
 
-            Stat.ListBuffDebuff.Add(buff);
-            base.AddBuffDebuff(toAdd, Stat);
+            var modifiedBuff = ApplyConviction(buff, ValueConviction());
+            Stat.ListBuffDebuff.Add(modifiedBuff);
+            base.AddBuffDebuff(modifiedBuff, Stat);
 
-            ApplicationBuffDebuff(Timer, buff);
+            ApplicationBuffDebuff(Timer, modifiedBuff);
         }
 
         UpdateUI();

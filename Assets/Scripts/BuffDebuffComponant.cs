@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -14,6 +15,7 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] public GameObject popUpPanel;
     [SerializeField] public TextMeshProUGUI buffNameLabel;
     [SerializeField] public TextMeshProUGUI buffDescriptionLabel;
+    [SerializeField] private float ConvictionBonus;
     public string buffName;
 
     public List<BuffDebuff> BuffDebuffs { get; private set; } = new List<BuffDebuff>();
@@ -35,7 +37,17 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
         AddStack(buffDebuff);
 
         buffName = TradManager.instance.GetTranslation(buffDebuff.idTradName, buffDebuff.Nom);
-        buffNameLabel.text = TradManager.instance.GetTranslation(buffDebuff.idTradName, buffDebuff.Nom);
+        buffNameLabel.text = TradManager.instance.GetTranslation(buffDebuff.idTradName, buffDebuff.Nom); 
+        List<float> variableValues = new List<float>();
+
+
+        foreach (Effet e in buffDebuff.Effet)
+        {
+            if (e.ValeurBrut != 0)
+                variableValues.Add(Mathf.Abs(e.ValeurBrut));
+            if (e.Pourcentage != 0)
+                variableValues.Add(Mathf.Abs((float)e.Pourcentage));
+        }
         buffDescriptionLabel.text = TradManager.instance.GetTranslation(buffDebuff.idTradDescription, buffDebuff.Description);
        
     }
@@ -73,7 +85,7 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
         //Debug.Log("enter");
         popUpPanel.SetActive(true);
         UpdateUI();
-        //TODO temporary fix, on place la tooltip a une position définit, plutot que la scroll indefinitivement sur la droite, ce qui amene a une boucle infini si on place les buff autre part
+        //TODO temporary fix, on place la tooltip a une position dï¿½finit, plutot que la scroll indefinitivement sur la droite, ce qui amene a une boucle infini si on place les buff autre part
         GameObject posGO = GameObject.FindGameObjectsWithTag("TooltipPosition")[0];
         if (posGO != null)
         {
@@ -124,7 +136,18 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
         }
         if (BuffDebuffs.Count > 0)
         {
-            buffDescriptionLabel.text = TradManager.instance.GetTranslation(BuffDebuffs[0].idTradDescription, BuffDebuffs[0].Description)
+            var currentBuffDebuffs = BuffDebuffs.First();
+            List<float> variableValues = new List<float>();
+
+
+            foreach (Effet e in currentBuffDebuffs.Effet)
+            {
+                if (e.ValeurBrut != 0)
+                    variableValues.Add(Mathf.Abs(e.ValeurBrut));
+                if (e.Pourcentage != 0)
+                    variableValues.Add(Mathf.Abs((float)e.Pourcentage));
+            }
+            buffDescriptionLabel.text = TradManager.instance.GetTranslation(currentBuffDebuffs.idTradDescription, currentBuffDebuffs.Description)
             + (timeLeft != -1 ? "\n(Time left : " + timeLeft + ")" : "");
         }
     }
