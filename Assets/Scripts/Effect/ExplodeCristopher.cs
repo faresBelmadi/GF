@@ -47,6 +47,7 @@ public class ExplodeCristopher : MonoBehaviour
 
     private void Explode()
     {
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EssenceConsuptionSFX);
         foreach (var part in _parts)
         {
             part.simulated = true;
