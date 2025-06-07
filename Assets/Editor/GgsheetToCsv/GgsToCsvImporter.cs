@@ -47,7 +47,7 @@ namespace GF.GgsToCsv
             var result = content;
 
             result = Regex.Replace(result, @" (?=[!?:])", "\u00A0"); // non-breakable space before punctuations
-            result = Regex.Replace(result, @"\n(?=;)", ""); // remove unwanted \n
+            result = Regex.Replace(result, @"[\r\n\u0085\u2028\u2029]+(?=\""?;)", ""); // remove unwanted line jumps
 
             return result;
         }
