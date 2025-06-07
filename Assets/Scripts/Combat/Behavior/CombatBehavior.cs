@@ -15,6 +15,8 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         set { _stat = value; }
     }
     public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
+    public Material characterMaterial;
+    public float deathDisolveTime = 2f;
     public GameObject BuffPrefab;
     public Transform BuffContainer;
     public Transform DebuffContainer;
@@ -60,7 +62,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         ListBuffDebuffGO.Clear();
     }
 
-    protected float ValueConviction()
+    public float ValueConviction()
     {
         float value = 0f;
         

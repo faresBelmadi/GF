@@ -607,6 +607,11 @@ public class BattleManager : MonoBehaviour
 
     public void StartNextTurn()
     {
+        if (player.IsDead)
+        {
+            Debug.Log($"Player is dead");
+            return;
+        }
         Debug.Log($"Start Nex Turn, PhaseNb: {nbPhase}");
         int key = IdOrder.First(c => c.Played == false).id;
         currentIdTurn = key;
@@ -1280,6 +1285,21 @@ public class BattleManager : MonoBehaviour
     public void DeadPlayer()
     {
         GameManager.Instance.DeadPlayer();
+
+
+        //Material dissolvMaterial = new Material(GameManager.Instance.BattleMan.characterMaterial);
+        //var rdrs = player.GetComponentsInChildren<SpriteRenderer>(true);
+        //foreach (SpriteRenderer renderer in player.GetComponentsInChildren<SpriteRenderer>(true))
+        //{
+        //    renderer.material = dissolvMaterial;
+        //}
+
+        //player.characterMaterial = dissolvMaterial;
+        //player.DieEffect();
+
+
+        //mettre ça autre part
+        //GameManager.Instance.DeadPlayer();
     }
 
     #endregion Death

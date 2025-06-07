@@ -18,8 +18,8 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     }
     public UIEnnemi UICombat;
     public int TensionUI;
-    public Material characterMaterial;
-    public float deathDisolveTime = 2f;
+    
+    
     public int combatID;
     public EnnemiSpell nextAction;
     //public GameObject EssencePrefab;
