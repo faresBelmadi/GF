@@ -363,8 +363,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
         Stat.Radiance = Mathf.RoundToInt((Stat.Radiance / (Stat.RadianceMax * 1f)) * Stat.RadianceMaxOriginal);
-
-        base.ResetStat();
+        nbBuffDebuffApplied = 0;
+        _convictionManager.UpdatePoint(0);
+        _convictionManager.UpdateMaxConviction(0);
+            base.ResetStat();
     }
 
     void Dead()

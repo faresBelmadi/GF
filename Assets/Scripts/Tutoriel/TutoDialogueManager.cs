@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,6 +15,8 @@ public class TutoDialogueManager : DialogueManager
     public Image ConscienceFill;
 
     [SerializeField] private ProgressBarManager _hpBarManager;
+    [SerializeField]
+    public GameObject TutoDamageCalque;
 
     public void EndDialogueTuto()
     {
@@ -50,7 +54,7 @@ public class TutoDialogueManager : DialogueManager
             if (DialogueIndex == 4 && TutoManager.Instance.IndexEncounter == 0)
             {
                 //Hpfill.fillAmount = 1f;
-
+                StartCoroutine(FadeOut(1));
                 var joueurBehav = TutoManager.Instance.Player;
                 joueurBehav.Stat.Radiance = joueurBehav.Stat.RadianceMax;
                 //_hpBarManager.UpdatePBar(joueurBehav.Stat.Radiance, joueurBehav.Stat.RadianceMax);
@@ -108,6 +112,39 @@ public class TutoDialogueManager : DialogueManager
         {
             repGO.GetComponentInChildren<Button>(true).interactable = value;
         }
+        
     }
 
+    public void FadeTuto()
+    {
+        StartCoroutine(FadeIn(1));
+    }
+    private IEnumerator FadeIn(float duration)
+    {
+        TutoDamageCalque.SetActive(true);
+        float currentTime = 0;
+        while (currentTime < duration)
+        {
+            TutoDamageCalque.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(0, 1, currentTime / duration);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        TutoDamageCalque.GetComponent<CanvasGroup>().alpha = 1;
+    }
+    private IEnumerator FadeOut(float duration)
+    {
+        float currentTime = 0;
+        while (currentTime < duration)
+        {
+            TutoDamageCalque.GetComponent<CanvasGroup>().alpha = Mathf.Lerp(1,0, currentTime / duration);
+            currentTime += Time.deltaTime;
+            yield return null;
+        }
+        TutoDamageCalque.GetComponent<CanvasGroup>().alpha = 0;
+        TutoDamageCalque.SetActive(false);
+    }
+    public override void AddSpeakers(int id, EnnemyBehavior speaker)
+    {
+        
+    }
 }

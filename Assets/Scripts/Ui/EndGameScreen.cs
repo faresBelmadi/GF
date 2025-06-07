@@ -62,7 +62,14 @@ public class EndGameScreen : MonoBehaviour
                 break;
         }
         //StartCoroutine(FadeIn());
-        DissolveOffScreen();
+        if (GameManager.Instance.BattleMan.player.IsDead)
+        {
+            DissolveOffScreen();
+        }
+        else
+        {
+            StartCoroutine(FadeIn());
+        }
     }
 
     private IEnumerator FadeIn()

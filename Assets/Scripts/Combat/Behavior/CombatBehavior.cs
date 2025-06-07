@@ -62,7 +62,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         ListBuffDebuffGO.Clear();
     }
 
-    protected float ValueConviction()
+    public float ValueConviction()
     {
         float value = 0f;
         

@@ -91,7 +91,7 @@ public class DialogueManager : MonoBehaviour
     internal int DialogueIndex = 0;
     protected int NextDialogueIndex = 0;
     private Dictionary<ClairvoyanceIconStatEnum, bool> _displayedClairvoyanceStats;
-    private Dictionary<int, SpeakComponent> _listSpeakers = new Dictionary<int, SpeakComponent>();
+    protected Dictionary<int, SpeakComponent> _listSpeakers = new Dictionary<int, SpeakComponent>();
 
     #endregion Dialogue Property
 
@@ -151,7 +151,7 @@ public class DialogueManager : MonoBehaviour
         startDialogue();
     }
 
-    public void AddSpeakers(int id, EnnemyBehavior speaker)
+    public virtual void AddSpeakers(int id, EnnemyBehavior speaker)
     {
         _listSpeakers.Add(id, speaker.gameObject.GetComponentInChildren<SpeakComponent>());
     }
