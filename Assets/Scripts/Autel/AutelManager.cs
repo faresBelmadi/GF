@@ -625,6 +625,7 @@ public class AutelManager : MonoBehaviour
 
     private void RefreshTextChoice3()
     {
+        if (SouvenirChoix3 == null) return;
         TextDescriptionChoix3.text =$"<line-indent={_indentChoice3}%>{TradManager.instance.GetTranslation(_idTradChoix3)} : {SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir.SouvenirDesc}";
     }
     public void UpdateCoutChoix()

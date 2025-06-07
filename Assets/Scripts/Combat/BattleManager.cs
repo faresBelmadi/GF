@@ -74,6 +74,7 @@ public class BattleManager : MonoBehaviour
     public bool ConsumedEssence;
     public int EssenceGained;
 
+    [SerializeField]
     public bool IsCombatOn { get; private set; }
 
     [SerializeField] private Material characterMaterial;
@@ -194,7 +195,7 @@ public class BattleManager : MonoBehaviour
     private void CalcTensionJoueur()
     {
         player.Stat.TensionMax = (CalmeMoyenAdversaire / CalmeMoyen) * player.Stat.Calme;
-        player.Stat.ValeurPalier = player.Stat.TensionMax / player.Stat.NbPalier;
+        player.Stat.ValeurPalier = player.Stat.TensionMax / GameManager.Instance.CommonStatsData.NbPalier;
         if (player.Stat.PalierChangement > 0)
         {
             player.Stat.Tension = player.Stat.ValeurPalier * player.Stat.PalierChangement;
@@ -212,7 +213,7 @@ public class BattleManager : MonoBehaviour
             if (!item.Stat.NoTension)
             {
                 item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.Calme;
-                item.Stat.ValeurPalier = (item.Stat.TensionMax) / item.Stat.NbPalier;
+                item.Stat.ValeurPalier = (item.Stat.TensionMax) / GameManager.Instance.CommonStatsData.NbPalier;
                 if (item.Stat.PalierChangement > 0)
                 {
                     item.Stat.Tension = item.Stat.ValeurPalier * item.Stat.PalierChangement;
@@ -606,6 +607,11 @@ public class BattleManager : MonoBehaviour
 
     public void StartNextTurn()
     {
+        if (player.IsDead)
+        {
+            Debug.Log($"Player is dead");
+            return;
+        }
         Debug.Log($"Start Nex Turn, PhaseNb: {nbPhase}");
         int key = IdOrder.First(c => c.Played == false).id;
         currentIdTurn = key;
@@ -741,7 +747,7 @@ public class BattleManager : MonoBehaviour
  
     public void GiveBuffDebuff(List<BuffDebuff> BuffDebuff, int target = -1)
     {
-        int origine = currentIdTurn;
+        int origine = IsCombatOn ? currentIdTurn : -1;
         Decompte Decompte = Decompte.none;
         TimerApplication Timer = TimerApplication.Attaque;
         foreach (var item in BuffDebuff)
@@ -847,7 +853,7 @@ public class BattleManager : MonoBehaviour
         switch (effet.Cible)
         {
             case Cible.joueur:
-                if (Caster == idPlayer)
+                if (Caster == idPlayer || !IsCombatOn)
                 {
                     player.ApplicationEffet(effet, null, source);
                 }
@@ -864,7 +870,7 @@ public class BattleManager : MonoBehaviour
                             Caster);
                     }
                 }
-                else
+                else if(Caster != -1)
                 {
                     if (EnemyScripts.FirstOrDefault(c => c.combatID == Caster) == null)
                     {
@@ -877,6 +883,10 @@ public class BattleManager : MonoBehaviour
                             Caster);
                     }
                 }
+                else
+                {
+                    player.ApplicationEffet(effet, EnemyScripts.First().Stat, source, EnemyScripts.First().combatID);
+                }
 
                 break;
             case Cible.ennemi:
@@ -885,7 +895,7 @@ public class BattleManager : MonoBehaviour
                 {
                     EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
                 }
-                else
+                else if (Caster != -1)
                 {
                     if (target != -1)
                     {
@@ -908,10 +918,14 @@ public class BattleManager : MonoBehaviour
                             EnemyScripts.First().ApplicationEffet(effet, null, source, Caster);
                     }
                 }
+                else
+                {
+                    EnemyScripts.First().ApplicationEffet(effet, player.Stat, source, idPlayer);
+                }
 
                 break;
             case Cible.Self:
-                if (Caster == idPlayer)
+                if (Caster == idPlayer || Caster == -1)
                 {
                     player.ApplicationEffet(effet, null, source);
                 }
@@ -986,7 +1000,7 @@ public class BattleManager : MonoBehaviour
                         ennemie.ApplicationEffet(effet, null, source, Caster);
                 }
 
-                if (Caster == idPlayer)
+                if (Caster == idPlayer || Caster == -1)
                 {
                     player.ApplicationEffet(effet, null, source);
                 }
@@ -1024,11 +1038,11 @@ public class BattleManager : MonoBehaviour
                 {
                     if (Caster == target)
                     {
-                        EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
+                        EnemyScripts.First(c => c.combatID == MostDamageID).ApplicationEffet(effet, null, source, Caster);
                     }
                     else
                     {
-                        EnemyScripts.First(c => c.combatID == target)
+                        EnemyScripts.First(c => c.combatID == MostDamageID)
                             .ApplicationEffet(effet, null, source, Caster);
                     }
                 }
@@ -1271,6 +1285,21 @@ public class BattleManager : MonoBehaviour
     public void DeadPlayer()
     {
         GameManager.Instance.DeadPlayer();
+
+
+        //Material dissolvMaterial = new Material(GameManager.Instance.BattleMan.characterMaterial);
+        //var rdrs = player.GetComponentsInChildren<SpriteRenderer>(true);
+        //foreach (SpriteRenderer renderer in player.GetComponentsInChildren<SpriteRenderer>(true))
+        //{
+        //    renderer.material = dissolvMaterial;
+        //}
+
+        //player.characterMaterial = dissolvMaterial;
+        //player.DieEffect();
+
+
+        //mettre ça autre part
+        //GameManager.Instance.DeadPlayer();
     }
 
     #endregion Death

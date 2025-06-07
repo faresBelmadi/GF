@@ -29,6 +29,7 @@ public class TutoManager : MonoBehaviour
     [Header("Datas")] [SerializeField] private ClairvoyanceIconData _clairvoyanceIconData;
     [SerializeField] private Souvenir _souvenirToLoot;
     [field:SerializeField] public Transform SouvenirPosTuto { get; private set; }
+    
 
     public ClairvoyanceIconData StatIcons
     {
@@ -70,6 +71,7 @@ public class TutoManager : MonoBehaviour
             JoueurStat = GameManager.Instance.playerStat;
             JoueurStat.ListSouvenir.Add(_souvenirToLoot);
 
+           _dialogueManager.FadeTuto();
         }
         else
         {

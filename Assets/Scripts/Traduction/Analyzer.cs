@@ -12,7 +12,8 @@ public enum TradTag
     stat,
     percent,
     passif,
-    damage
+    damage,
+    variable
 }
 public enum TradAttribute
 {
@@ -54,6 +55,7 @@ public class Analyzer : MonoBehaviour
     const string STATPATTERN = "{stat value=(?<value>[A-Za-z]+)}";
     const string DAMAGEPATTERN = "{damage type=(?<type>(direct|percent)) value=(?<value>[0-9]+)( stat=(?<stat>[A-Za-z]+))?}";
     const string PASSIVESPATTERN = "{passif type=(?<type>[A-Za-z]+)}";
+    const string VARIABLEPATTERN = "{variable value=(?<value>[0-9]+)}";
 
     [SerializeField]
     private ClairvoyanceIconData _clairvoyanceIconData;
@@ -63,6 +65,7 @@ public class Analyzer : MonoBehaviour
     private Regex statRegex = new Regex(STATPATTERN, RegexOptions.IgnoreCase);
     private Regex damageRegex = new Regex(DAMAGEPATTERN, RegexOptions.IgnoreCase);
     private Regex passifRegex = new Regex(PASSIVESPATTERN, RegexOptions.IgnoreCase);
+    private Regex variableRegex = new Regex(VARIABLEPATTERN, RegexOptions.IgnoreCase);
     //Exemple de balise
     // {stat value=FA}
     // {percent value=60 target=FA}
@@ -79,7 +82,9 @@ public class Analyzer : MonoBehaviour
     public string Execute(string stringToRead)
     {
 
+        //Regex PERCENTPATTERN match
         Match currentMatchPercent = percentRegex.Match(stringToRead);
+        int variableValueIndex = 0;
         while (currentMatchPercent.Success)
         {
             Dictionary<TradAttribute, string> attributes = new Dictionary<TradAttribute, string>
@@ -92,6 +97,7 @@ public class Analyzer : MonoBehaviour
             currentMatchPercent = currentMatchPercent.NextMatch();
         }
 
+        //Regex STATPATTERN match
         Match currentMatchStat = statRegex.Match(stringToRead);
         while (currentMatchStat.Success)
         {
@@ -104,6 +110,7 @@ public class Analyzer : MonoBehaviour
             currentMatchStat = currentMatchStat.NextMatch();
         }
 
+        //Regex STATPATTERN match
         Match currentMatchDamage = damageRegex.Match(stringToRead);
         while (currentMatchDamage.Success)
         {
@@ -121,6 +128,7 @@ public class Analyzer : MonoBehaviour
             currentMatchDamage = currentMatchDamage.NextMatch();
         }
 
+        //Regex PASSIFPATTERN match
         Match currentMatchPassif = passifRegex.Match(stringToRead);
         while (currentMatchPassif.Success)
         {
@@ -131,6 +139,19 @@ public class Analyzer : MonoBehaviour
             string replacement = ApplyTag(TradTag.passif, attributes);
             stringToRead = stringToRead.Replace(currentMatchPassif.Groups[0].ToString(), replacement);
             currentMatchPassif = currentMatchPassif.NextMatch();
+        }
+        
+        //Regex VARIABLEPATTERN match
+        Match currentMatchVariable = variableRegex.Match(stringToRead);
+        while (currentMatchVariable.Success)
+        {
+            Dictionary<TradAttribute, string> attributes = new Dictionary<TradAttribute, string>
+            {
+                { TradAttribute.value, currentMatchVariable.Groups["value"].Captures[0].ToString() }
+            };
+            string replacement = ApplyTag(TradTag.variable, attributes);
+            stringToRead = stringToRead.Replace(currentMatchVariable.Groups[0].ToString(), replacement);
+            currentMatchVariable = currentMatchVariable.NextMatch();
         }
 
 
@@ -419,6 +440,9 @@ public class Analyzer : MonoBehaviour
                 strb.Append(" <sprite name=\"");
                 strb.Append(spriteName);
                 strb.Append("\">");
+                break;
+            case TradTag.variable:
+                strb.Append(int.Parse(attributes[TradAttribute.value]));
                 break;
 
         }

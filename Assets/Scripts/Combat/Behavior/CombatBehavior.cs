@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
@@ -14,6 +15,8 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         set { _stat = value; }
     }
     public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
+    public Material characterMaterial;
+    public float deathDisolveTime = 2f;
     public GameObject BuffPrefab;
     public Transform BuffContainer;
     public Transform DebuffContainer;
@@ -33,6 +36,10 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     private Vector3 _startingPos;
     [field: SerializeField] public bool IsIntangible { get; protected set; } = false;
+
+    [SerializeField] protected int nbBuffDebuffApplied;
+
+    protected CommonStats commonStats;
     #region Events
     public event Action OnGainTensionLevel;
     public event Action OnTakeDamage;
@@ -44,9 +51,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     private void Start()
     {
-
         _startingPos = transform.parent.position;
-
     }
     public void ClearBuffBar()
     {
@@ -56,8 +61,62 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         }
         ListBuffDebuffGO.Clear();
     }
-   
-  
+
+    public float ValueConviction()
+    {
+        float value = 0f;
+        
+        switch(Stat.Conviction)
+        {
+            case 10:
+                value = (Stat.Conviction + commonStats.MaxConvictionBonusValue) * commonStats.ConvictionValue / 100f;
+
+                break;
+            case -10:
+                value = (Stat.Conviction - commonStats.MaxConvictionBonusValue) * commonStats.ConvictionValue / 100f;
+
+                break;
+            default:
+                value = Stat.Conviction * commonStats.ConvictionValue / 100f;
+                break;
+        }
+        return value;
+    }
+    protected BuffDebuff ApplyConviction(BuffDebuff toModify, float valueToApply)
+    {
+        BuffDebuff buff = toModify;
+
+        if(nbBuffDebuffApplied >= commonStats.ConvictionNbBuffTrigger)
+        {
+            int positif = buff.IsDebuff ? -1 : 1;
+            if (buff.IsDebuff && valueToApply < 0)
+            {
+                foreach (var effet in buff.Effet)
+                {
+                    int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
+                    int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
+                    effet.Pourcentage += Mathf.FloorToInt(Mathf.Abs(effet.Pourcentage * valueToApply) *  percentPositif);
+
+                    effet.ValeurBrut += Mathf.FloorToInt(Mathf.Abs(effet.ValeurBrut * valueToApply) *  valuePositif);
+                }
+            }
+            else if (!buff.IsDebuff && valueToApply > 0)
+            {
+                foreach (var effet in buff.Effet)
+                {
+                    int percentPositif = effet.Pourcentage > 0 ? 1 : -1;
+                    int valuePositif = effet.ValeurBrut > 0 ? 1 : -1;
+                    effet.Pourcentage += Mathf.FloorToInt(Mathf.Abs(effet.Pourcentage * valueToApply) * percentPositif);
+
+                    effet.ValeurBrut += Mathf.FloorToInt(Mathf.Abs(effet.ValeurBrut * valueToApply)  * valuePositif);
+                }
+            }
+            nbBuffDebuffApplied %= commonStats.ConvictionNbBuffTrigger;
+        }
+
+        return buff;
+    }
+
     public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);
@@ -158,6 +217,17 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
             //    buffDebuffName = buff.name;
             //    buffDebuffDescription = buff.Description;
             //}
+            List<float> variableValues = new List<float>();
+
+
+            foreach (Effet e in buff.Effet)
+            {
+                if (e.ValeurBrut != 0)
+                    variableValues.Add(Mathf.Abs(e.ValeurBrut));
+                if (e.Pourcentage != 0)
+                    variableValues.Add(Mathf.Abs((float)e.Pourcentage));
+            }
+            
             buffDebuffName = TradManager.instance.GetTranslation(buff.idTradName, buff.Nom);
             buffDebuffDescription = TradManager.instance.GetTranslation(buff.idTradDescription, buff.Description);
 
@@ -215,6 +285,33 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     {
         OnUpdateUI?.Invoke();
     }
+
+    private void RemoveAllBuffDebuff()
+    {
+        foreach (var buff in Stat.ListBuffDebuff)
+        {
+
+            foreach (var effet in buff.Effet)
+            {
+                if (effet.TypeEffet != TypeEffet.RadianceMax)
+                    Stat.removeStat(effet.modifstateOutput);
+                else
+                {
+                    effet.modifstateOutput.Radiance =
+                        Mathf.FloorToInt((effet.Pourcentage / 100f) * Stat.Radiance);
+                    Stat.removeStat(effet.modifstateOutput);
+                }
+            }
+        }
+        for (int i = ListBuffDebuffGO.Count-1; i > -1 ; i--)
+        {
+            Destroy(ListBuffDebuffGO[i].gameObject);
+        }
+        ListBuffDebuffGO.Clear();
+        Stat.ListBuffDebuff.Clear();
+
+    }
+
 
     //TODO: a voir mieux
     public void RemoveBuffByIdTradName(string idTradName)
@@ -374,9 +471,9 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
     public void EnervementTension()
     {
-        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
-        if (t >= Stat.NbPalier)
-            t = Stat.NbPalier;
+        var t = (int)((Stat.Tension / (commonStats.NbPalier * Stat.ValeurPalier)) * commonStats.NbPalier);
+        if (t >= commonStats.NbPalier)
+            t = commonStats.NbPalier;
         else
             t++;
 
@@ -386,7 +483,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     public void ApaisementTension()
     {
 
-        var t = (int)((Stat.Tension / (Stat.NbPalier * Stat.ValeurPalier)) * Stat.NbPalier);
+        var t = (int)((Stat.Tension / (commonStats.NbPalier * Stat.ValeurPalier)) * commonStats.NbPalier);
         if (t <= 0)
             t = 0;
         else
@@ -401,28 +498,28 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         switch (sourceDamage)
         {
             case Source.Attaque:
-                Stat.Tension += Stat.TensionAttaque;
+                Stat.Tension += commonStats.GainTensionAttaque;
                 gainedTension = true;
                 break;
             case Source.Dot:
-                Stat.Tension += Stat.TensionDot;
+                Stat.Tension += commonStats.GainTensionDot;
                 gainedTension = true;
                 break;
             case Source.Buff:
-                Stat.Tension += Stat.TensionDebuff;
+                Stat.Tension += commonStats.GainTensionDebuff;
                 gainedTension = true;
                 break;
             case Source.Soin:
-                Stat.Tension += Stat.TensionSoin;
+                Stat.Tension += commonStats.GainTensionSoin;
                 gainedTension = true;
                 break;
         }
         int newPalier = (int)(_stat.Tension / _stat.ValeurPalier);
         if (oldPalier < newPalier)
             OnGainTensionLevel?.Invoke();                               // On gagne un palier de tension
-        if (Stat.Tension >= Stat.ValeurPalier * Stat.NbPalier)
+        if (Stat.Tension >= Stat.ValeurPalier * commonStats.NbPalier)
         {
-            Stat.Tension = Stat.ValeurPalier * Stat.NbPalier;
+            Stat.Tension = Stat.ValeurPalier * commonStats.NbPalier;
         }
         if (Stat.Tension < 0)
             Stat.Tension = 0;

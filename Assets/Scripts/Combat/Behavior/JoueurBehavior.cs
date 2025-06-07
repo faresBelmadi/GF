@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
@@ -26,12 +28,13 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     [SerializeField] private ProgressBarManager tensionBarManager;
     [SerializeField] private ProgressBarManager conscienceBarManager;
 
+    [SerializeField] private ConvictionManager _convictionManager;
     [SerializeField] private VolonteManager _volonteManager;
     [SerializeField] private HighlightCost _highlightComponant;
 
     [SerializeField] private Color green = new Color(0.58f, 0.98f, 0.65f);
     [SerializeField] private Color red = new Color(0.996f, 0.47f, 0.40f);
-    [SerializeField] private TextMeshProUGUI TensionText;
+    [SerializeField] private TextMeshProUGUI ConvictionNbBuffText;
     [SerializeField] private TextMeshProUGUI HpText;
     [SerializeField] private TextMeshProUGUI HpTextReduced;
     [SerializeField] private TextMeshProUGUI HpToolTipText;
@@ -53,6 +56,11 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     [SerializeField] private AnimationControllerAttack AnimationController;
     [SerializeField] private GameObject _ciblage;
+    [SerializeField] private Animator _deathAnimator;
+
+
+    public static event Action OnConvictionFull;
+    public static event Action OnConvictionEmpty;
 
     private BattleManager _refBattleMan => GameManager.Instance.BattleMan;
     [SerializeField] private bool IsTurn;
@@ -60,6 +68,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     public Spell SelectSpell => SelectedSpell;
 
     public override string Name { get => GameManager.Instance.classSO.NameClass; }
+    public bool IsDead { get; private set; }
 
     #region Divers start & fin
 
@@ -68,6 +77,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     private int currentCons = -1;
     private bool _isHurt;
     private int _playedTurn = 0;
+    private Coroutine deathRoutine = null;
 
     public void InitRefBattleMan(BattleManager battleManager)
     {
@@ -81,7 +91,8 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     public void StartUp()
     {
-
+        commonStats = GameManager.Instance.CommonStatsData;
+        
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.ClairvoyanceOriginal = Stat.Clairvoyance;
@@ -138,6 +149,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             if (item is StatPerConsciencePassive passive)
                 passive.InitPassif(_stat);
         }
+        IsDead = false;
         InitUI();
     }
 
@@ -171,7 +183,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     private void InitUI()
     {
         hPBarManager.InitPBar(Stat.Radiance, Stat.RadianceMax);
-        tensionBarManager.InitPBar(0, Stat.NbPalier);
+        tensionBarManager.InitPBar(0, commonStats.NbPalier);
         conscienceBarManager.InitPBar(Stat.Conscience, Stat.ConscienceMax);
 
         for (int i = 0; i < _passiveTooltips.Count && i < PassiveList.Count; i++)
@@ -194,10 +206,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         if (Stat.Tension != currentTens)
         {
-            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * Stat.NbPalier) / Stat.TensionMax),
-                Stat.NbPalier);
+            tensionBarManager.UpdatePBar(Mathf.FloorToInt((Stat.Tension * commonStats.NbPalier) / Stat.TensionMax),
+                commonStats.NbPalier);
 
-            tensionBarManager.ToggleBloomPulses(((Stat.Tension * Stat.NbPalier) / Stat.TensionMax) >= Stat.NbPalier);
+            tensionBarManager.ToggleBloomPulses(((Stat.Tension * commonStats.NbPalier) / Stat.TensionMax) >= commonStats.NbPalier);
 
         }
 
@@ -213,7 +225,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
 
         _volonteManager.UpdateMaxVolonte(Stat.VolonterMax);
-        _volonteManager.UpdateVolonte(Stat.Volonter);
+        _volonteManager.UpdatePoint(Stat.Volonter);
 
 
         HpText.text = $"{Stat.Radiance.ToString()}/{Stat.RadianceMax}";
@@ -272,6 +284,17 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         {
             spell.GetComponent<SpellCombat>().UpdateDescription();
         }
+
+        //  ConvictionNbBuffText.text = nbBuffDebuffApplied + "/" + commonStats.ConvictionNbBuffTrigger;
+        if (Stat.Conviction != 0)
+        {
+            _convictionManager.UpdateMaxConviction(commonStats.ConvictionNbBuffTrigger);
+        }
+        else
+            _convictionManager.UpdateMaxConviction(0);
+        _convictionManager.Positive = Stat.Conviction > 0;
+        _convictionManager.UpdatePoint(nbBuffDebuffApplied);
+
 
         _highlightComponant.DisableHighlighting();
         OnUpdate();
@@ -340,15 +363,40 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
         Stat.Radiance = Mathf.RoundToInt((Stat.Radiance / (Stat.RadianceMax * 1f)) * Stat.RadianceMaxOriginal);
-
-        base.ResetStat();
+        nbBuffDebuffApplied = 0;
+        _convictionManager.UpdatePoint(0);
+        _convictionManager.UpdateMaxConviction(0);
+            base.ResetStat();
     }
 
     void Dead()
     {
+        if (IsDead) return;
+        IsDead = true;
         AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerDeathSFX, Stat.DeathSFX);
         ResetStat();
         _refBattleMan.DeadPlayer();
+    }
+    public void DieEffect()
+    {
+        StartCoroutine(DeathCoroutine());
+    }
+    IEnumerator DeathCoroutine()
+    {
+        _deathAnimator.SetTrigger("Die");
+        GetComponent<Animator>().enabled = false ;
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDeathSFX, Stat.DeathSFX);
+        float time = 0f;
+        while (time < deathDisolveTime)
+        {
+            //if (time * 2 >= deathDisolveTime)
+            //{
+            //}
+            time += Time.deltaTime;
+            characterMaterial.SetFloat("_DisolveHeight", time / deathDisolveTime);
+            yield return null;
+        }
+        deathRoutine = null;
     }
 
     public void FinCombat()
@@ -369,7 +417,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     public void PreviewTensionBarUpddate()
     {
         tensionBarManager.PreviewBar(
-            Mathf.FloorToInt(((Stat.Tension + Stat.TensionSoin) * Stat.NbPalier) / Stat.TensionMax), Stat.NbPalier);
+            Mathf.FloorToInt(((Stat.Tension + commonStats.GainTensionSoin) * commonStats.NbPalier) / Stat.TensionMax), commonStats.NbPalier);
     }
 
     public void StopPreviewTensionBar()
@@ -645,6 +693,21 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
+            if(((toAdd.IDCombatOrigine == _refBattleMan.idPlayer && Stat.Conviction > 0 && !toAdd.IsDebuff) 
+                || (toAdd.IDCombatOrigine !=  _refBattleMan.idPlayer && Stat.Conviction<0 && toAdd.IsDebuff)) && _refBattleMan.IsCombatOn)
+            {
+
+                nbBuffDebuffApplied++;
+                if(nbBuffDebuffApplied == commonStats.ConvictionNbBuffTrigger-1) 
+                {
+                    OnConvictionFull?.Invoke();
+                }
+                else
+                {
+                    OnConvictionEmpty?.Invoke();
+                }
+            }
+
             if (toAdd.IsDebuff)
             {
                 ReceiveTension(Source.Buff);
@@ -656,11 +719,11 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             {
                 buff.Effet.Add(Instantiate(item));
             }
-
-            Stat.ListBuffDebuff.Add(buff);
-            base.AddBuffDebuff(buff, Stat);
+            var modifiedBuff = ApplyConviction(buff,ValueConviction());
+            Stat.ListBuffDebuff.Add(modifiedBuff);
+            base.AddBuffDebuff(modifiedBuff, Stat);
             if (toAdd.timerApplication != TimerApplication.Attaque)
-                ApplicationBuffDebuff(Timer, buff);
+                ApplicationBuffDebuff(Timer, modifiedBuff);
         }
 
 
