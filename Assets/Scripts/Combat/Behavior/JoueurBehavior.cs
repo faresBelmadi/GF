@@ -662,8 +662,8 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
         {
-            if((toAdd.IDCombatOrigine == _refBattleMan.idPlayer && Stat.Conviction > 0 && !toAdd.IsDebuff) 
-                || (toAdd.IDCombatOrigine !=  _refBattleMan.idPlayer && Stat.Conviction<0 && toAdd.IsDebuff))
+            if(((toAdd.IDCombatOrigine == _refBattleMan.idPlayer && Stat.Conviction > 0 && !toAdd.IsDebuff) 
+                || (toAdd.IDCombatOrigine !=  _refBattleMan.idPlayer && Stat.Conviction<0 && toAdd.IsDebuff)) && _refBattleMan.IsCombatOn)
             {
 
                 nbBuffDebuffApplied++;
