@@ -20,6 +20,7 @@ namespace GF.GgsToCsv
         private string MiscLocaSaveFile = "MiscTraductionFile.csv";
 
         private readonly GgsToCsvImporter _importer = new GgsToCsvImporter();
+        private readonly GgsToCsvValidator _validator = new GgsToCsvValidator();
 
         public static void ShowWindow()
         {
@@ -81,6 +82,7 @@ namespace GF.GgsToCsv
 
                     SaveMacroLinks();
                     ImportAll();
+                    _validator.Validate();
                     Close();
                 }
                 EditorGUI.EndDisabledGroup();
