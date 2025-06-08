@@ -853,7 +853,7 @@ public class BattleManager : MonoBehaviour
         switch (effet.Cible)
         {
             case Cible.joueur:
-                if (Caster == idPlayer || !IsCombatOn)
+                if (Caster == idPlayer || !IsCombatOn || effet.TypeEffet == TypeEffet.Volonte)  //TODO: ALED
                 {
                     player.ApplicationEffet(effet, null, source);
                 }
