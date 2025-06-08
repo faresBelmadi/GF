@@ -153,7 +153,7 @@ public class DialogueManager : MonoBehaviour
 
     public virtual void AddSpeakers(int id, EnnemyBehavior speaker)
     {
-        _listSpeakers.Add(id, speaker.gameObject.GetComponentInChildren<SpeakComponent>());
+        _listSpeakers.Add(id, speaker.gameObject.GetComponentInChildren<SpeakComponent>(true));
     }
     public void AddSpeakers(int id, SpeakComponent speaker)
     {
