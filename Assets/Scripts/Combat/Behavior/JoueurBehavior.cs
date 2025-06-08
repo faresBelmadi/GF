@@ -133,6 +133,8 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
                 _highlightComponant.DisableHighlighting, volonteCost, radCost, conscCost);
 
             Spells.Add(temp);
+
+            Stat.OnConvictionChanged += ConvictionChanged;
         }
 
         //On instancie les passifs
@@ -300,6 +302,22 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         OnUpdate();
     }
 
+
+    protected void ConvictionChanged()
+    {
+
+        nbBuffDebuffApplied = 0;
+        _convictionManager.UpdatePoint(0);
+        _convictionManager.UpdateMaxConviction(0); 
+        if (Stat.Conviction != 0)
+        {
+            _convictionManager.UpdateMaxConviction(commonStats.ConvictionNbBuffTrigger);
+        }
+        _convictionManager.UpdatePoint(nbBuffDebuffApplied);
+    }
+
+
+
     public void StartCombat()
     {
         _playedTurn = 0;
@@ -366,7 +384,8 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         nbBuffDebuffApplied = 0;
         _convictionManager.UpdatePoint(0);
         _convictionManager.UpdateMaxConviction(0);
-            base.ResetStat();
+        Stat.OnConvictionChanged -= ConvictionChanged;
+        base.ResetStat();
     }
 
     void Dead()
