@@ -909,6 +909,11 @@ public class DialogueManager : MonoBehaviour
                 }
 
                 break;
+            case TypeEffet.Soin:
+            case TypeEffet.SoinFA:
+            case TypeEffet.SoinFANbEnnemi:
+            case TypeEffet.SoinRadianceMax:
+            case TypeEffet.SoinRadianceActuelle:
             case TypeEffet.MultiplSoin:
                 if ((effet.Cible == Cible.joueur && effet.Pourcentage < 0)
                   || (effet.Cible != Cible.joueur && effet.Pourcentage > 0))
@@ -967,11 +972,6 @@ public class DialogueManager : MonoBehaviour
             case TypeEffet.DegatsBrut:
             case TypeEffet.AugmentFADernierDegatsSubi:
             case TypeEffet.ConscienceMax:
-            case TypeEffet.Soin:
-            case TypeEffet.SoinFA:
-            case TypeEffet.SoinFANbEnnemi:
-            case TypeEffet.SoinRadianceMax:
-            case TypeEffet.SoinRadianceActuelle:
             case TypeEffet.RandomAttaque:
             case TypeEffet.AugmentationFaRadianceActuelle:
             case TypeEffet.ConsommeTensionAugmentationFA:
