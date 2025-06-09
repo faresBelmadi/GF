@@ -84,7 +84,6 @@ public class Analyzer : MonoBehaviour
 
         //Regex PERCENTPATTERN match
         Match currentMatchPercent = percentRegex.Match(stringToRead);
-        int variableValueIndex = 0;
         while (currentMatchPercent.Success)
         {
             Dictionary<TradAttribute, string> attributes = new Dictionary<TradAttribute, string>
