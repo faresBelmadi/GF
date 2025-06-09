@@ -46,8 +46,10 @@ namespace BPS
 
 			Serializer.Init (window.GetSavePath ());
 			window.InitScriptData ();
-			window.antiAlias = 4;
-			window.minSize = new Vector2 (600, 450);
+#pragma warning disable CS0618 // Warning obsolete (don't want to actually remove it since it's imported code)
+            window.antiAlias = 4;
+#pragma warning restore CS0618 // Warning obsolete (don't want to actually remove it since it's imported code)
+            window.minSize = new Vector2 (600, 450);
 			window.weaveStartTime = Time.realtimeSinceStartup;
 			skin = Resources.Load ("GUISKin")as GUISkin;
 
