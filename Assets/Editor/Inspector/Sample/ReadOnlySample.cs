@@ -5,6 +5,7 @@ namespace GF.Editor.Sample
     [CreateAssetMenu(fileName = "Sample", menuName = "Samples/ReadOnly", order = 500)]
     public class ReadOnlySample : ScriptableObject
     {
+#pragma warning disable CS0414 // Warning for unused property
         [Tooltip("Public field")]
         public string PublicField = "visible, editable, saved";
         [Tooltip("Private field")]
@@ -24,5 +25,6 @@ namespace GF.Editor.Sample
         public string PublicSerializedReadOnlyInInspector = "visible, non-editable, saved";
         [SerializeField, ReadOnlyInInspector, Tooltip("Private field with SerializeField and ReadOnlyInInspector attribute")]
         private string PrivateSerializedReadOnlyInInspector = "visible, non-editable, saved";
+#pragma warning restore CS0414 // Warning for unused property
     }
 }
