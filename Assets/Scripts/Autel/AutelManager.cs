@@ -338,7 +338,7 @@ public class AutelManager : MonoBehaviour
                 _descriptionPanel.SetActive(true);
                 _costPanel.SetActive(true);
                 DescriptionSpellText.text = $"<allcaps><b> {name} </b></allcaps> \n{ description}";
-                CostCapaText.text = "cout : " + capa.EssenceCost;
+                CostCapaText.text = TradManager.instance.GetTranslation(_idTradCout, "Cout") + " : " + capa.EssenceCost;
                 ClearButtonColor();
                 AllSpellsIcon[Id].GetComponent<Image>().color = _selectedColor;
                 ModifStatCapa(capa);
