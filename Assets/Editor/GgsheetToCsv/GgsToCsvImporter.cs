@@ -9,8 +9,70 @@ namespace GF.GgsToCsv
 {
     public class GgsToCsvImporter
     {
-        public void Import(string macroLink, string outputPath, string logInfo)
+        public GgsToCsvImporter()
         {
+            LoadMacroLinks();
+        }
+
+        private const string LocaSaveFolder = "Assets/StreamingAssets/Traduction";
+        private string SettingsFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "GFTools", "SheetToCsvImporter.settings");
+
+        public string ImportGameLocaMacroLink { get; set; } = string.Empty;
+        private string GameLocaSaveFile = "GameTraductionFile.csv";
+        public string ImportCapaLocaMacroLink { get; set; } = string.Empty;
+        private string CapaLocaSaveFile = "CapaTraductionFile.csv";
+        public string ImportMiscLocaMacroLink { get; set; } = string.Empty;
+        private string MiscLocaSaveFile = "MiscTraductionFile.csv";
+
+        private void LoadMacroLinks()
+        {
+            if (!File.Exists(SettingsFilePath))
+                return;
+
+            var settings = File.ReadAllText(SettingsFilePath);
+            var macros = settings.Split('\n');
+            if (macros.Length >= 0)
+                ImportGameLocaMacroLink = macros[0];
+            if (macros.Length >= 1)
+                ImportCapaLocaMacroLink = macros[1];
+            if (macros.Length >= 2)
+                ImportMiscLocaMacroLink = macros[2];
+        }
+
+        public void SaveMacroLinks()
+        {
+            var settingsFolder = Path.GetDirectoryName(SettingsFilePath);
+            if (!Directory.Exists(settingsFolder))
+            {
+                Directory.CreateDirectory(settingsFolder);
+            }
+
+            var settings = $"{ImportGameLocaMacroLink}\n{ImportCapaLocaMacroLink}\n{ImportMiscLocaMacroLink}";
+            File.WriteAllText(SettingsFilePath, settings);
+        }
+
+        public void ImportAll()
+        {
+            if (!Directory.Exists(LocaSaveFolder))
+            {
+                Directory.CreateDirectory(LocaSaveFolder);
+            }
+
+            Import(ImportGameLocaMacroLink, Path.Combine(LocaSaveFolder, GameLocaSaveFile), "Game");
+            Import(ImportCapaLocaMacroLink, Path.Combine(LocaSaveFolder, CapaLocaSaveFile), "Capa");
+            Import(ImportMiscLocaMacroLink, Path.Combine(LocaSaveFolder, MiscLocaSaveFile), "Misc");
+
+            AssetDatabase.Refresh();
+        }
+
+        private void Import(string macroLink, string outputPath, string logInfo)
+        {
+            if (string.IsNullOrEmpty(macroLink))
+            {
+                Debug.LogError($"No macro link provided for {logInfo}!");
+                return;
+            }
+
             string content = string.Empty;
             try
             {

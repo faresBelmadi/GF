@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-//using static UnityEditor.Progress;
 
 [System.Serializable]
 public class BattleManager : MonoBehaviour
@@ -748,7 +747,6 @@ public class BattleManager : MonoBehaviour
     public void GiveBuffDebuff(List<BuffDebuff> BuffDebuff, int target = -1)
     {
         int origine = IsCombatOn ? currentIdTurn : -1;
-        Decompte Decompte = Decompte.none;
         TimerApplication Timer = TimerApplication.Attaque;
         foreach (var item in BuffDebuff)
         {
