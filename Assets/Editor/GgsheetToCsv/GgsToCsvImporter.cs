@@ -67,6 +67,12 @@ namespace GF.GgsToCsv
 
         private void Import(string macroLink, string outputPath, string logInfo)
         {
+            if (string.IsNullOrEmpty(macroLink))
+            {
+                Debug.LogError($"No macro link provided for {logInfo}!");
+                return;
+            }
+
             string content = string.Empty;
             try
             {
