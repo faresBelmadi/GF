@@ -17,6 +17,8 @@ public class TradManager : MonoBehaviour
         None = 100
     }
 
+    private const string _playerPrefsLangKey = "Lang";
+
     public SUPPORTEDLANGUAGES DefaultLanguage = SUPPORTEDLANGUAGES.EN;
 
     [SerializeField, ReadOnly]
@@ -55,15 +57,15 @@ public class TradManager : MonoBehaviour
             DontDestroyOnLoad(this);
         }
 
-        if (!PlayerPrefs.HasKey("Lang"))
+        if (!PlayerPrefs.HasKey(_playerPrefsLangKey))
         {
             _gameLanguage = DefaultLanguage;
-            PlayerPrefs.SetInt("Lang", 1);
+            PlayerPrefs.SetInt(_playerPrefsLangKey, (int)DefaultLanguage);
             PlayerPrefs.Save();
         }
         else
         {
-            var langId = PlayerPrefs.GetInt("Lang", -1000);
+            var langId = PlayerPrefs.GetInt(_playerPrefsLangKey, -1000);
             _gameLanguage = Enum.IsDefined(typeof(SUPPORTEDLANGUAGES), langId) ? (SUPPORTEDLANGUAGES)langId : DefaultLanguage;
         }
 
@@ -71,9 +73,9 @@ public class TradManager : MonoBehaviour
         _analyzer = GetComponent<Analyzer>();
     }
 
-    public void SetLanguage(SUPPORTEDLANGUAGES idLanguage)
+    public void SetLanguage(SUPPORTEDLANGUAGES language)
     {
-        PlayerPrefs.SetInt("Lang", (int)idLanguage);
+        PlayerPrefs.SetInt(_playerPrefsLangKey, (int)language);
         RefreshTranslation();
     }
 
