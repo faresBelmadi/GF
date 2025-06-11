@@ -39,9 +39,7 @@ public class TradManager : MonoBehaviour
 
     public static TradManager instance;
 
-    private Dictionary<string, List<string>> _dialogueDictionary = new Dictionary<string, List<string>>();
-    private Dictionary<string, List<string>> _capaDictionary = new Dictionary<string, List<string>>();
-    private Dictionary<string, List<string>> _miscDictionary = new Dictionary<string, List<string>>();
+    private Dictionary<string, List<string>> _localizations = new Dictionary<string, List<string>>();
 
     private Analyzer _analyzer;
 
@@ -90,16 +88,13 @@ public class TradManager : MonoBehaviour
         StringBuilder strb = new StringBuilder();
         strb.AppendLine($"Error when trying to get translation for this key [{key}].");
 
-        if ((_dialogueDictionary.ContainsKey(key) && _dialogueDictionary[key].Count <= IdLanguage)
-            || (_capaDictionary.ContainsKey(key) && _capaDictionary[key].Count <= IdLanguage)
-            || (_miscDictionary.ContainsKey(key) && _miscDictionary[key].Count <= IdLanguage))
-        {
-
-            strb.AppendLine($"Missing language : language {IdLanguage.ToString()} with ID ({IdLanguage}) not present in dictionnary.");
-        }
-        else if (!_dialogueDictionary.ContainsKey(key) && !_capaDictionary.ContainsKey(key) && !_miscDictionary.ContainsKey(key))
+        if (!_localizations.ContainsKey(key))
         {
             strb.AppendLine($"Missing translation with key : {key}.");
+        }
+        else if (_localizations[key].Count <= IdLanguage)
+        {
+            strb.AppendLine($"Missing language : language {IdLanguage.ToString()} with ID ({IdLanguage}) not present in dictionnary.");
         }
 
         Debug.LogError(strb.ToString());
@@ -123,9 +118,9 @@ public class TradManager : MonoBehaviour
     public bool LoadTrad()
     {
         var success = true;
-        success &= LoadFromFile(_gamePath, _dialogueDictionary);
-        success &= LoadFromFile(_capaPath, _capaDictionary);
-        success &= LoadFromFile(_miscPath, _miscDictionary);
+        success &= LoadFromFile(_gamePath, _localizations);
+        success &= LoadFromFile(_capaPath, _localizations);
+        success &= LoadFromFile(_miscPath, _localizations);
         return success;
     }
 
@@ -168,30 +163,14 @@ public class TradManager : MonoBehaviour
     
     public string GetTranslation(string key, string defaultTranslation = "missing translation")
     {
-        if (_dialogueDictionary.ContainsKey(key) && _dialogueDictionary[key].Count > IdLanguage)
+        if (_localizations.TryGetValue(key, out var trads) && IdLanguage <= trads.Count)
         {
-            return _analyzer.Execute(_dialogueDictionary[key][IdLanguage]);
+            return _analyzer.Execute(trads[IdLanguage]);
         }
-        else if (_capaDictionary.ContainsKey(key) && _capaDictionary[key].Count > IdLanguage)
-        {
-            return _analyzer.Execute(_capaDictionary[key][IdLanguage]);
-        }
-        else if (_miscDictionary.ContainsKey(key) && _miscDictionary[key].Count > IdLanguage)
-        {
-            return _analyzer.Execute(_miscDictionary[key][IdLanguage]);
-        }
+
         LogError(key);
         return defaultTranslation;
     }
 
     #endregion
-
-
-#if UNITY_EDITOR
-    #region EDITOR GETTERS
-    public string[] DialogueIds => _dialogueDictionary.Keys.ToArray();
-    public string[] CapaIds => _capaDictionary.Keys.ToArray();
-    public string[] MiscIds => _miscDictionary.Keys.ToArray();
-    #endregion
-#endif
 }
