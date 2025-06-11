@@ -3,50 +3,39 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 using yutokun;
 
 public class TradManager : MonoBehaviour
 {
     public enum SUPPORTEDLANGUAGES
     {
-        FR,
-        EN,
-        ZH
+        FR = 0,
+        EN = 1,
+        ZH = 2,
+
+        None = 100
     }
 
+    public SUPPORTEDLANGUAGES DefaultLanguage = SUPPORTEDLANGUAGES.EN;
+
+    [SerializeField, ReadOnly]
+    private SUPPORTEDLANGUAGES _gameLanguage = SUPPORTEDLANGUAGES.None;
+    public SUPPORTEDLANGUAGES Language
+    {
+        get => _debugMode ? _debugLanguage : _gameLanguage;
+        set => _gameLanguage = value;
+    }
+
+    public int IdLanguage => (int)Language;
+
+    [Header("Debug")]
     [SerializeField]
     private bool _debugMode;
     [SerializeField]
     private SUPPORTEDLANGUAGES _debugLanguage;
 
     public static TradManager instance;
-
-    //0 = fr, 1 = en, 2 = zh, etc
-    public int IdLanguage
-    {
-        get
-        {
-            var value = (_debugMode)? (int)_debugLanguage:PlayerPrefs.GetInt("Lang", -1000);
-            return value;
-        }
-    }
-    public SUPPORTEDLANGUAGES Language
-    {
-        get
-        {
-            switch (IdLanguage)
-            {
-                case 0:
-                    return SUPPORTEDLANGUAGES.FR;
-                case 1:
-                    return SUPPORTEDLANGUAGES.EN;
-                case 2:
-                    return SUPPORTEDLANGUAGES.ZH;
-                default:
-                    return SUPPORTEDLANGUAGES.FR;
-            }
-        }
-    }
 
     private Dictionary<string, List<string>> _dialogueDictionary = new Dictionary<string, List<string>>();
     private Dictionary<string, List<string>> _capaDictionary = new Dictionary<string, List<string>>();
@@ -68,8 +57,14 @@ public class TradManager : MonoBehaviour
 
         if (!PlayerPrefs.HasKey("Lang"))
         {
+            _gameLanguage = DefaultLanguage;
             PlayerPrefs.SetInt("Lang", 1);
             PlayerPrefs.Save();
+        }
+        else
+        {
+            var langId = PlayerPrefs.GetInt("Lang", -1000);
+            _gameLanguage = Enum.IsDefined(typeof(SUPPORTEDLANGUAGES), langId) ? (SUPPORTEDLANGUAGES)langId : DefaultLanguage;
         }
 
         LoadTrad();
@@ -167,30 +162,7 @@ public class TradManager : MonoBehaviour
 
     #endregion
 
-    #region GETTERS
-    /// <summary>
-    /// Get translation of text with the given Key. The text will be in the loaded language.
-    /// </summary>
-    /// <param name="key">The key of the translated Text</param>
-    /// <param name="defaultTranslation">The default translation wanted if the key or language doesn't exist</param>
-    /// <returns>Translated text</returns>
-    // public string GetTranslation(string key, string defaultTranslation = "missing translation")
-    // {
-    //     if (_dialogueDictionary.ContainsKey(key) && _dialogueDictionary[key].Count > IdLanguage)
-    //     {
-    //         return _analyzer.Execute(_dialogueDictionary[key][IdLanguage]);
-    //     }
-    //     else if (_capaDictionary.ContainsKey(key) && _capaDictionary[key].Count > IdLanguage)
-    //     {
-    //         return _analyzer.Execute(_capaDictionary[key][IdLanguage]);
-    //     }
-    //     else if (_miscDictionary.ContainsKey(key) && _miscDictionary[key].Count > IdLanguage)
-    //     {
-    //         return _analyzer.Execute(_miscDictionary[key][IdLanguage]);
-    //     }
-    //     LogError(key);
-    //     return defaultTranslation;
-    // }    
+    #region GETTERS 
     
     public string GetTranslation(string key, string defaultTranslation = "missing translation")
     {
@@ -209,46 +181,7 @@ public class TradManager : MonoBehaviour
         LogError(key);
         return defaultTranslation;
     }
-    [Obsolete]
-    private string GetTranslatedDialogue(string key)
-    {
-        if (_dialogueDictionary.ContainsKey(key))
-        {
 
-            return _analyzer.Analyze(_dialogueDictionary[key][IdLanguage]);
-        }
-        else
-        {
-            Debug.LogError($"Missing dialogue with key : {key}");
-            return string.Empty;
-        }
-    }
-    [Obsolete]
-    public string GetTranslatedCapa(string key)
-    {
-        if (_capaDictionary.ContainsKey(key))
-        {
-            return _analyzer.Execute(_capaDictionary[key][IdLanguage]);
-        }
-        else
-        {
-            Debug.LogError($"Missing capa with key : {key}");
-            return string.Empty;
-        }
-    }
-    [Obsolete]
-    private string GetTranslatedMisc(string key)
-    {
-        if (_miscDictionary.ContainsKey(key))
-        {
-            return _analyzer.Analyze(_miscDictionary[key][IdLanguage]);
-        }
-        else
-        {
-            Debug.LogError($"Missing capa with key : {key}");
-            return string.Empty;
-        }
-    }
     #endregion
 
 
