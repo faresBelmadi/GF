@@ -271,7 +271,7 @@ public class TradManager : MonoBehaviour
 
         var sb = new StringBuilder();
         sb.AppendLine($"Language {lang} is missing {missingTrads.Count} translations!");
-        sb.AppendLine(string.Join("\n", missingTrads));
+        sb.AppendLine(string.Join("\n", missingTrads.Select(t => $"[{_idsFoundInFiles[t][0]}] {t}")));
 
         if (severity == LanguageErrorSeverity.Error)
         {
