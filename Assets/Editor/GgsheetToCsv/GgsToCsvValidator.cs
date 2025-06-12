@@ -12,7 +12,7 @@ namespace GF.GgsToCsv
             tradGO.hideFlags = HideFlags.HideAndDontSave;
             var tradMgr = tradGO.AddComponent<TradManager>();
 
-            if (tradMgr.LoadTrad())
+            if (tradMgr.LoadTrad(logAllErrors:true))
             {
                 Debug.Log("Validation says trad files are all good!");
             }

@@ -17,33 +17,69 @@ public class TradManager : MonoBehaviour
         None = 100
     }
 
-    private const string _playerPrefsLangKey = "Lang";
+    #region INSPECTABLE PROPERTIES
 
     public SUPPORTEDLANGUAGES DefaultLanguage = SUPPORTEDLANGUAGES.EN;
-
     [SerializeField, ReadOnly]
     private SUPPORTEDLANGUAGES _gameLanguage = SUPPORTEDLANGUAGES.None;
-    public SUPPORTEDLANGUAGES Language
-    {
-        get => _debugMode ? _debugLanguage : _gameLanguage;
-        set => _gameLanguage = value;
-    }
 
-    public int IdLanguage => (int)Language;
-
+#if UNITY_EDITOR
     [Header("Debug")]
     [SerializeField]
     private bool _debugMode;
     [SerializeField]
     private SUPPORTEDLANGUAGES _debugLanguage;
 
+    public enum LanguageErrorSeverity
+    {
+        Ignore,
+        Info,
+        Warning,
+        Error,
+    }
+
+    [Header("Language error severity")]
+    public LanguageErrorSeverity DefaultSeverity = LanguageErrorSeverity.Ignore;
+    public Dictionary<SUPPORTEDLANGUAGES, LanguageErrorSeverity> SpecificSeverity = new Dictionary<SUPPORTEDLANGUAGES, LanguageErrorSeverity>();
+    private LanguageErrorSeverity GetSeverityForLanguage(SUPPORTEDLANGUAGES lang) => SpecificSeverity.ContainsKey(lang) ? SpecificSeverity[lang] : DefaultSeverity;
+#endif
+
+    #endregion
+
     public static TradManager instance;
 
-    private Dictionary<string, List<string>> _localizations = new Dictionary<string, List<string>>();
+    private const string _playerPrefsLangKey = "Lang";
 
     private Analyzer _analyzer;
 
     public static event Action OnRefreshTranslation;
+
+    public SUPPORTEDLANGUAGES Language
+    {
+#if UNITY_EDITOR
+        get => _debugMode ? _debugLanguage : _gameLanguage;
+#else
+        get => _gameLanguage;
+#endif
+        set => _gameLanguage = value;
+    }
+
+    private Dictionary<string, List<string>> _localizations = new Dictionary<string, List<string>>();
+#if UNITY_EDITOR
+    private Dictionary<string, List<string>> _idsFoundInFiles = new Dictionary<string, List<string>>();
+    private List<string>[] _missingTranslationsByLanguage = null;
+#endif
+
+#if UNITY_EDITOR
+    TradManager()
+    {
+        _missingTranslationsByLanguage = new List<string>[LanguageCount];
+        for (int i = 0; i < LanguageCount; i++)
+            _missingTranslationsByLanguage[i] = new List<string>();
+    }
+#endif
+
+    #region MONOBEHAVIOUR
 
     private void Awake()
     {
@@ -71,34 +107,6 @@ public class TradManager : MonoBehaviour
         _analyzer = GetComponent<Analyzer>();
     }
 
-    public void SetLanguage(SUPPORTEDLANGUAGES language)
-    {
-        PlayerPrefs.SetInt(_playerPrefsLangKey, (int)language);
-        RefreshTranslation();
-    }
-
-    public void RefreshTranslation()
-    {
-        OnRefreshTranslation?.Invoke();
-    }
-
-    #region LOGGER
-    private void LogError(string key)
-    {
-        StringBuilder strb = new StringBuilder();
-        strb.AppendLine($"Error when trying to get translation for this key [{key}].");
-
-        if (!_localizations.ContainsKey(key))
-        {
-            strb.AppendLine($"Missing translation with key : {key}.");
-        }
-        else if (_localizations[key].Count <= IdLanguage)
-        {
-            strb.AppendLine($"Missing language : language {IdLanguage.ToString()} with ID ({IdLanguage}) not present in dictionnary.");
-        }
-
-        Debug.LogError(strb.ToString());
-    }
     #endregion
 
     #region FILELOADER
@@ -113,64 +121,169 @@ public class TradManager : MonoBehaviour
     private readonly string _miscPath = Application.dataPath + "/StreamingAssets/Traduction/MiscTraductionFile.csv";
 #endif
 
-    private static readonly int _languageCount = Enum.GetValues(typeof(SUPPORTEDLANGUAGES)).Length;
-
-    public bool LoadTrad()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="logAllErrors">Force error logs as Error severity.</param>
+    public bool LoadTrad(bool logAllErrors = false)
     {
-        var success = true;
-        success &= LoadFromFile(_gamePath, _localizations);
-        success &= LoadFromFile(_capaPath, _localizations);
-        success &= LoadFromFile(_miscPath, _localizations);
-        return success;
+#if UNITY_EDITOR
+        LoadFromFile(_gamePath, "Game");
+        LoadFromFile(_capaPath, "Capa");
+        LoadFromFile(_miscPath, "Misc");
+        return LogErrors(logAllErrors);
+#else
+        LoadFromFile(_gamePath);
+        LoadFromFile(_capaPath);
+        LoadFromFile(_miscPath);
+        return true;
+#endif
     }
 
-    private bool LoadFromFile(string path, Dictionary<string, List<string>> tradDico)
+#if UNITY_EDITOR
+    private void LoadFromFile(string path, string provenanceStr)
+#else
+    private void LoadFromFile(string path)
+#endif
     {
-        bool success = true;
-
         var sheet = CSVParser.LoadFromPath(path, Delimiter.Semicolon, Encoding.UTF8);
         foreach (var row in sheet.Skip(1))
         {
             var id = row[0];
             if (string.IsNullOrEmpty(id))
             {
-                Debug.LogError($"Found an empty Id reading from {path}! (previous was {(tradDico.Count == 0 ? "none" : tradDico.Last().Key)})");
-                success = false;
+                Debug.LogError($"Found an empty Id reading from {path}! (previous was {(_localizations.Count == 0 ? "none" : _localizations.Last().Key)})");
                 continue;
             }
 
-            var trads = row.Skip(1).Take(_languageCount).ToList();
+#if UNITY_EDITOR
+            AddIdProvenance(id, provenanceStr);
+#endif
 
-            if (trads.Any(t => string.IsNullOrEmpty(t)))
-            {
-                Debug.LogWarning($"Line {id} is missing translations!");
-                success = false;
-            }
+            var trads = row.Skip(1).Take(LanguageCount).ToList();
+            _localizations.TryAdd(id, trads);
 
-            if (!tradDico.TryAdd(id, trads))
-            {
-                Debug.LogError($"Line {id} is duplicated!");
-                success = false;
-            }
+#if UNITY_EDITOR
+            CheckAndAddMissingTranslations(id, trads);
+#endif
         }
-
-        return success;
     }
 
     #endregion
 
     #region GETTERS 
-    
+
+    public int IdLanguage => (int)Language;
+
+    public int LanguageCount => Enum.GetValues(typeof(SUPPORTEDLANGUAGES)).Length - 1;
+
     public string GetTranslation(string key, string defaultTranslation = "missing translation")
     {
-        if (_localizations.TryGetValue(key, out var trads) && IdLanguage <= trads.Count)
+        if (!_localizations.TryGetValue(key, out var trads))
         {
-            return _analyzer.Execute(trads[IdLanguage]);
+            Debug.LogError($"Missing translation for {key} in {Language.ToString()}.");
+            return defaultTranslation;
         }
 
-        LogError(key);
-        return defaultTranslation;
+        return _analyzer.Execute(trads[IdLanguage]);
     }
 
     #endregion
+
+    public void SetLanguage(SUPPORTEDLANGUAGES language)
+    {
+        PlayerPrefs.SetInt(_playerPrefsLangKey, (int)language);
+        RefreshTranslation();
+    }
+
+    public void RefreshTranslation()
+    {
+        OnRefreshTranslation?.Invoke();
+    }
+
+#if UNITY_EDITOR
+    #region EDITOR
+
+    private void AddIdProvenance(string id, string provenanceStr)
+    {
+        if (!_idsFoundInFiles.ContainsKey(id))
+            _idsFoundInFiles.Add(id, new List<string>());
+        _idsFoundInFiles[id].Add(provenanceStr);
+    }
+
+    private void CheckAndAddMissingTranslations(string id, List<string> trads)
+    {
+        for (int lang = 0; lang < trads.Count; lang++)
+        {
+            string trad = trads[lang];
+            if (string.IsNullOrWhiteSpace(trad))
+            {
+                _missingTranslationsByLanguage[lang].Add(id);
+            }
+        }
+    }
+
+    private bool LogErrors(bool logAllMissingTranslationsAsErrors)
+    {
+        bool hasErrors = false;
+        hasErrors &= FindAndLogDuplications();
+        hasErrors &= FindAndLogMissingTranslations(logAllMissingTranslationsAsErrors);
+        return hasErrors;
+    }
+
+    private bool FindAndLogDuplications()
+    {
+        var duplicatedIds = _idsFoundInFiles.Where(x => x.Value.Count > 1).ToDictionary(x => x.Key, x => x.Value);
+        if (!duplicatedIds.Any())
+        {
+            return false;
+        }
+
+        var sb = new StringBuilder();
+        sb.AppendLine($"Found {duplicatedIds.Count} duplicated Ids!");
+        sb.AppendLine(string.Join("\n", duplicatedIds.Select(x => $"{x.Key} in {string.Join(" and ", x.Value)}.")));
+        Debug.LogError(sb.ToString());
+        return true;
+    }
+
+    private bool FindAndLogMissingTranslations(bool logAllMissingTranslationsAsErrors)
+    {
+        bool hasErrors = false;
+        for (int langId = 0; langId < _missingTranslationsByLanguage.Length; langId++)
+        {
+            var lang = (SUPPORTEDLANGUAGES)langId;
+            var severity = logAllMissingTranslationsAsErrors ? LanguageErrorSeverity.Error : GetSeverityForLanguage(lang);
+
+            var missingTrads = _missingTranslationsByLanguage[langId];
+            if (missingTrads.Any())
+            {
+                hasErrors = true;
+                LogMissingTranslations(lang, missingTrads, severity);
+            }
+        }
+        return hasErrors;
+    }
+
+    private void LogMissingTranslations(SUPPORTEDLANGUAGES lang, List<string> missingTrads, LanguageErrorSeverity severity)
+    {
+        if (severity == LanguageErrorSeverity.Ignore)
+            return;
+
+        var sb = new StringBuilder();
+        sb.AppendLine($"Language {lang} is missing {missingTrads.Count} translations!");
+        sb.AppendLine(string.Join("\n", missingTrads));
+
+        if (severity == LanguageErrorSeverity.Error)
+        {
+            Debug.LogError(sb.ToString());
+        }
+        else if (severity == LanguageErrorSeverity.Warning)
+        {
+            Debug.LogWarning(sb.ToString());
+        }
+        else Debug.Log(sb.ToString());
+    }
+
+    #endregion
+#endif
 }
