@@ -38,10 +38,20 @@ public class TradManager : MonoBehaviour
         Error,
     }
 
+    [Serializable]
+    public class SeverityForLanguage
+    {
+        public SUPPORTEDLANGUAGES Language;
+        public LanguageErrorSeverity Severity;
+    }
+
     [Header("Language error severity")]
     public LanguageErrorSeverity DefaultSeverity = LanguageErrorSeverity.Ignore;
-    public Dictionary<SUPPORTEDLANGUAGES, LanguageErrorSeverity> SpecificSeverity = new Dictionary<SUPPORTEDLANGUAGES, LanguageErrorSeverity>();
-    private LanguageErrorSeverity GetSeverityForLanguage(SUPPORTEDLANGUAGES lang) => SpecificSeverity.ContainsKey(lang) ? SpecificSeverity[lang] : DefaultSeverity;
+    public SeverityForLanguage[] SpecificSeverity = new[]
+    {
+        new SeverityForLanguage { Language = SUPPORTEDLANGUAGES.FR, Severity = LanguageErrorSeverity.Warning },
+        new SeverityForLanguage { Language = SUPPORTEDLANGUAGES.EN, Severity = LanguageErrorSeverity.Warning },
+    };
 #endif
 
     #endregion
@@ -282,6 +292,12 @@ public class TradManager : MonoBehaviour
             Debug.LogWarning(sb.ToString());
         }
         else Debug.Log(sb.ToString());
+    }
+
+    private LanguageErrorSeverity GetSeverityForLanguage(SUPPORTEDLANGUAGES lang)
+    {
+        var severityForLang = SpecificSeverity.FirstOrDefault(s => s.Language == lang);
+        return severityForLang == null ? DefaultSeverity : severityForLang.Severity;
     }
 
     #endregion
