@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 
 public class MainMenu : MonoBehaviour
 {
     [SerializeField]
-    private Animator _animator;
+    private Animator _cameraAnimator;
+    [SerializeField]
+    private Animator _canvaAnimator;
 
     [SerializeField]
     private GameObject _welcomeText;
@@ -15,7 +18,7 @@ public class MainMenu : MonoBehaviour
     private GameObject _optionMenu;
     [SerializeField]
     private CharacterSelect _characterSelect;
-
+   
     private bool _anyKeyPushed = false;
 
 
@@ -46,11 +49,14 @@ public class MainMenu : MonoBehaviour
     public void ShowCharacterSelect()
     {
         _characterSelect.Init();
-        _animator.SetTrigger("CharacterSelect");
+        _mainMenu.SetActive(false);
+        _cameraAnimator.SetTrigger("CharacterSelect");
+        _canvaAnimator.SetTrigger("CharacterSelect");
     }
     public void CharacterSelectBack()
     {
-        _animator.SetTrigger("CharacterBack");
+        _cameraAnimator.SetTrigger("CharacterBack");
+        _canvaAnimator.SetTrigger("CharacterBack");
         ShowMainMenu();
     }
   
