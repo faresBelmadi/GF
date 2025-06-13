@@ -1,7 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Runtime.InteropServices;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New ApplyBuff passiv", menuName = "PassiveEffect/New ApplyBuff passiv")]
@@ -37,11 +34,15 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemy
                     ApplyBuff();
                 }
                 break;
+            case BaseStats.PalierTension:
+                //This case is handled in real time.
+                break;
             default:
                 Debug.LogError("Case not supported in ApplyBuffPassif - " + name);
                 break;
         }
     }
+  
 
     public void Clear()
     {
@@ -73,6 +74,5 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemy
     {
         int ind = Random.Range(0, _listBuffToApply.Count);
         GameManager.Instance.BattleMan.GiveBuffDebuff(new List<BuffDebuff>{ _listBuffToApply[ind]}, _behavior.combatID);
-       //GameManager.Instance.BattleMan.player.AddDebuff(_listBuffToApply[ind], _listBuffToApply[ind].Decompte, _listBuffToApply[ind].timerApplication);
     }
 }
