@@ -888,7 +888,6 @@ public class BattleManager : MonoBehaviour
 
                 break;
             case Cible.ennemi:
-
                 if (Caster == target)
                 {
                     EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
@@ -918,7 +917,10 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    EnemyScripts.First().ApplicationEffet(effet, player.Stat, source, idPlayer);
+                    if (EnemyScripts.Count != 0)
+                    {
+                        EnemyScripts.First().ApplicationEffet(effet, player.Stat, source, idPlayer);
+                    }
                 }
 
                 break;
