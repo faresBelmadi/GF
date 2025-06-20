@@ -1,14 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
 public class MainMenu : MonoBehaviour
 {
+
+    private const string _CHARACTERSELECTTRIGGER = "CharacterSelect";
+    private const string _CHARACTERBACKTRIGGER = "CharacterBack";
+
     [SerializeField]
     private Animator _cameraAnimator;
     [SerializeField]
     private Animator _canvaAnimator;
+    [SerializeField]
+    private Animator _crystalAnimator;
 
     [SerializeField]
     private GameObject _welcomeText;
@@ -50,13 +57,14 @@ public class MainMenu : MonoBehaviour
     {
         _characterSelect.Init();
         _mainMenu.SetActive(false);
-        _cameraAnimator.SetTrigger("CharacterSelect");
-        _canvaAnimator.SetTrigger("CharacterSelect");
+        _cameraAnimator.SetTrigger(_CHARACTERSELECTTRIGGER);
+        _canvaAnimator.SetTrigger(_CHARACTERSELECTTRIGGER);
+        _crystalAnimator.SetTrigger(_CHARACTERSELECTTRIGGER);
     }
     public void CharacterSelectBack()
     {
-        _cameraAnimator.SetTrigger("CharacterBack");
-        _canvaAnimator.SetTrigger("CharacterBack");
+        _cameraAnimator.SetTrigger(_CHARACTERBACKTRIGGER);
+        _canvaAnimator.SetTrigger(_CHARACTERBACKTRIGGER);
         ShowMainMenu();
     }
   
