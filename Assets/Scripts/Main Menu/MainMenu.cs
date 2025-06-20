@@ -20,6 +20,8 @@ public class MainMenu : MonoBehaviour
     [SerializeField]
     private GameObject _welcomeText;
     [SerializeField]
+    private GameObject _wipText;
+    [SerializeField]
     private GameObject _mainMenu;
     [SerializeField]
     private GameObject _optionMenu;
@@ -35,6 +37,7 @@ public class MainMenu : MonoBehaviour
         //on réinitialise l'animator
 
         _welcomeText.SetActive(true);
+        _wipText.SetActive(false);
         _mainMenu.SetActive(false);
        // _optionMenu.SetActive(false);
     }
@@ -45,11 +48,17 @@ public class MainMenu : MonoBehaviour
         if (_anyKeyPushed == false && Input.anyKeyDown == true)
         {
             _anyKeyPushed = true;
-            ShowMainMenu();
+            ShowWIPText();
         }
+    }
+    private void ShowWIPText()
+    {
+        _welcomeText.SetActive(false);
+        _wipText.SetActive(true);
     }
     public void ShowMainMenu()
     {
+        _wipText.SetActive(false);
         _welcomeText.SetActive(false);
         _mainMenu.SetActive(true);
     }
