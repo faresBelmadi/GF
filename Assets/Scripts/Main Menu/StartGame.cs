@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class StartGame : MonoBehaviour
 {
-    public Toggle DoTutoCheck;
-
     public GameObject MainMenuGO;
     public GameObject OptionMenuGO;
 
