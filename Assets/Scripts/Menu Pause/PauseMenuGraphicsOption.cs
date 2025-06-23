@@ -14,9 +14,10 @@ public class PauseMenuGraphicsOption : MonoBehaviour
     private void OnEnable()
     {
         //TODO: Temporary FIX
-        var option = _resolutionDropdown.options[0];
-        _resolutionDropdown.ClearOptions();
-        _resolutionDropdown.options.Add(option);
+        //var option = _resolutionDropdown.options[0];
+        
+        //_resolutionDropdown.ClearOptions();
+        //_resolutionDropdown.options.Add(option);
     }
     public void ApplyResolution()
     {
