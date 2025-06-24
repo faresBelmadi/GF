@@ -10,14 +10,24 @@ public class PauseMenuGraphicsOption : MonoBehaviour
     private TMP_Dropdown _resolutionDropdown;
     [SerializeField]
     private Toggle _fullscreenToggle;
+    [SerializeField]
+    private Toggle _vsyncToggle;
 
     private void OnEnable()
     {
         //TODO: Temporary FIX
         //var option = _resolutionDropdown.options[0];
-        
+
         //_resolutionDropdown.ClearOptions();
         //_resolutionDropdown.options.Add(option);
+       if (QualitySettings.vSyncCount == 0)
+        {
+            _vsyncToggle.isOn = false;
+        }
+       else
+        {
+            _vsyncToggle.isOn = true;
+        }
     }
     public void ApplyResolution()
     {
@@ -39,5 +49,6 @@ public class PauseMenuGraphicsOption : MonoBehaviour
         }
         Debug.Log("Set resolution to" + width + " x " + height + " in " + (_fullscreenToggle.isOn ? "fullscreen" : "windowed"));
         Screen.SetResolution(width, height, _fullscreenToggle.isOn);
+        QualitySettings.vSyncCount = _vsyncToggle.isOn ? 1 : 0;
     }
 }
