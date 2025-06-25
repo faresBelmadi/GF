@@ -16,8 +16,16 @@ public class StartGame : MonoBehaviour
 
     private void Awake()
     {
-        //TODO: Temporary FIX
-        Screen.SetResolution(1920, 1080, true);
+        int height = PlayerPrefs.GetInt("ScreenHeight", 1080);
+        int width = PlayerPrefs.GetInt("ScreenWidth", 1920);
+        bool fullscreen = PlayerPrefs.GetInt("Fullscreen", 1) == 1;
+        bool vsync = PlayerPrefs.GetInt("Vsync", 0) == 1;
+
+        Screen.SetResolution(width, height, fullscreen);
+        QualitySettings.vSyncCount = vsync ? 1 : 0;
+        Debug.Log("Starting graphic options :");
+        Debug.Log($"Screen : {width}X{height}, fullscreen mode : {fullscreen}, Vsync : {vsync}");
+
     }
     public void StartWithTuto(int classe) => Button_StartGame(classe, true);
     
