@@ -72,9 +72,9 @@ public class MainMenu : MonoBehaviour
     }
     public void CharacterSelectBack()
     {
+        _mainMenu.SetActive(true);
         _cameraAnimator.SetTrigger(_CHARACTERBACKTRIGGER);
         _canvaAnimator.SetTrigger(_CHARACTERBACKTRIGGER);
-        ShowMainMenu();
     }
   
 }
