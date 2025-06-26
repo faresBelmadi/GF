@@ -214,12 +214,12 @@ public class TradManager : MonoBehaviour
     }
 #endif
 
-    public string GetTranslation(string key, string defaultTranslation = "missing translation")
+    public string GetTranslation(string key, string defaultTranslation = "")
     {
         if (!_localizations.TryGetValue(key, out var trads))
         {
             Debug.LogError($"Missing translation for {key} in {Language.ToString()}.");
-            return defaultTranslation;
+            return string.IsNullOrEmpty(defaultTranslation) ? "<missing translation>" : defaultTranslation;
         }
 
         return _analyzer.Execute(trads[IdLanguage]);
