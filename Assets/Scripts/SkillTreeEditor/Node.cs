@@ -93,7 +93,7 @@ public class Node {
         newID = SpellNode.IDSpell.ToString();
         // Create string with ID info
         nodeTitle = new StringBuilder();
-        nodeTitle.Append(SpellNode.Nom);
+        nodeTitle.Append(SpellNode.TitleId.Text);
     }
 
     public void Drag(Vector2 delta)

@@ -90,42 +90,29 @@ public class SpellCombat : MonoBehaviour
 
     public void UpdateDescription()
     {
-        string spellName;
-        string spellDescription;
-        if (!string.IsNullOrEmpty(Action.idTradName) && !string.IsNullOrEmpty(Action.idTradDescription))
-        {
-            List<float> variableValues = new List<float>();
+        List<float> variableValues = new List<float>();
 
-            foreach (Effet e in Action.ActionEffet)
+        foreach (Effet e in Action.ActionEffet)
+        {
+            if (e.ValeurBrut != 0)
+                variableValues.Add(Mathf.Abs(e.ValeurBrut));
+            if (e.Pourcentage != 0)
+                variableValues.Add(Mathf.Abs((float)e.Pourcentage));
+        }
+
+        foreach (BuffDebuff b in Action.ActionBuffDebuff)
+        {
+            foreach (Effet e in b.Effet)
             {
                 if (e.ValeurBrut != 0)
                     variableValues.Add(Mathf.Abs(e.ValeurBrut));
                 if (e.Pourcentage != 0)
                     variableValues.Add(Mathf.Abs((float)e.Pourcentage));
             }
+        }
 
-            foreach (BuffDebuff b in Action.ActionBuffDebuff)
-            {
-                foreach (Effet e in b.Effet)
-                {
-                    if (e.ValeurBrut != 0)
-                        variableValues.Add(Mathf.Abs(e.ValeurBrut));
-                    if (e.Pourcentage != 0)
-                        variableValues.Add(Mathf.Abs((float)e.Pourcentage));
-                }
-            }
-            spellName = TradManager.instance.GetTranslation(Action.idTradName, Action.name);
-            spellDescription = TradManager.instance.GetTranslation(Action.idTradDescription, Action.Description);
-        }
-        else
-        {
-            if (string.IsNullOrEmpty(Action.idTradName))
-                Debug.Log("IdTradName est null/empty pour " + Action.name);
-            if (string.IsNullOrEmpty(Action.idTradDescription))
-                Debug.Log("idTradDescription est null/empty pour " + Action.name);
-            spellName = Action.name;
-            spellDescription = Action.Description;
-        }
+        string spellName = Action.TitleId.Text;
+        string spellDescription = Action.DescriptionId.Text;
 
         TexteDescription.text = "<color=white><size=150%>" + spellName + "</size></color>\n<u>Cout :</u> ";
         foreach (var item in Action.Costs)

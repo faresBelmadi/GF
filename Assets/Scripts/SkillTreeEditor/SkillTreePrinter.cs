@@ -106,7 +106,7 @@ public class SkillTreePrinter : MonoBehaviour
 
     public void ShowInspectorOver(Spell toShow)
     {
-        SpellTitle.text = toShow.Nom;
+        SpellTitle.text = toShow.TitleId.Text;
         SpellCost.text = "Price : " + toShow.CostUnlock;
         InspectorContainer.SetActive(true);
     }
