@@ -30,10 +30,7 @@ public class PauseMenuGraphicsOption : MonoBehaviour
     {
         if (width == 1280)
         {
-            if (height == 720)
-                return 1;           // 1280 x 720
-            else
-                return 3;           // 1280 x 800
+            return 1;           // 1280 x 720
         }
         else if (width ==1366)
         {
@@ -41,11 +38,11 @@ public class PauseMenuGraphicsOption : MonoBehaviour
         }
         else if (width == 1440)
         {
-            return 4;               // 1440 x 960
+            return 3;               // 1440 x 960
         }
         else if (width == 2560)
         {
-            return 5;               // 2560 x 1440
+            return 4;               // 2560 x 1440
         }
         else
         {
@@ -69,15 +66,11 @@ public class PauseMenuGraphicsOption : MonoBehaviour
                 width = 1366;
                 height = 768;
                 break;
-            case 3: // 1280 x 800
-                width = 1280;
-                height = 800;
-                break;
-            case 4: // 1440 x 960
+            case 3: // 1440 x 960
                 width = 1440;
                 height = 960;
                 break;
-            case 5: // 2560 x 1440
+            case 4: // 2560 x 1440
                 width = 2560;
                 height = 1440;
                 break;
