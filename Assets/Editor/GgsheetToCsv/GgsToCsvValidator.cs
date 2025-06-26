@@ -8,10 +8,7 @@ namespace GF.GgsToCsv
     {
         public void Validate()
         {
-            var tradGO = new GameObject("EDITOR_TRADMANAGER");
-            tradGO.hideFlags = HideFlags.HideAndDontSave;
-            var tradMgr = tradGO.AddComponent<TradManager>();
-
+            var tradMgr = TradManager.CreateEditorInstance();
             if (tradMgr.LoadTrad(logAllErrors:true))
             {
                 Debug.Log("Validation says trad files are all good!");

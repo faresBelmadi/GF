@@ -81,6 +81,13 @@ public class TradManager : MonoBehaviour
 #endif
 
 #if UNITY_EDITOR
+    public static TradManager CreateEditorInstance()
+    {
+        var tradGO = new GameObject("EDITOR_TRADMANAGER");
+        tradGO.hideFlags = HideFlags.HideAndDontSave;
+        return tradGO.AddComponent<TradManager>();
+    }
+
     TradManager()
     {
         _missingTranslationsByLanguage = new List<string>[LanguageCount];
