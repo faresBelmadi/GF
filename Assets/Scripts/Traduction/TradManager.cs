@@ -194,6 +194,26 @@ public class TradManager : MonoBehaviour
 
     public int LanguageCount => Enum.GetValues(typeof(SUPPORTEDLANGUAGES)).Length - 1;
 
+#if UNITY_EDITOR
+    public List<string> AllIds => _localizations.Keys.ToList();
+
+    public string GetRawTranslations(string key, out bool idIsUnknown)
+    {
+        if (_localizations.TryGetValue(key, out var trads))
+        {
+            var sb = new StringBuilder();
+            for (int idx = 0; idx < trads.Count; idx++)
+            {
+                sb.AppendLine($"[{(SUPPORTEDLANGUAGES)idx}] {trads[idx]}");
+            }
+            idIsUnknown = false;
+            return sb.ToString();
+        }
+        idIsUnknown = true;
+        return "<unknown id>";
+    }
+#endif
+
     public string GetTranslation(string key, string defaultTranslation = "missing translation")
     {
         if (!_localizations.TryGetValue(key, out var trads))
