@@ -34,12 +34,9 @@ public class MainMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //on réinitialise l'animator
-
         _welcomeText.SetActive(true);
         _wipText.SetActive(false);
         _mainMenu.SetActive(false);
-       // _optionMenu.SetActive(false);
     }
 
     // Update is called once per frame
