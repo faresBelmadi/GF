@@ -23,6 +23,8 @@ namespace GF.GgsToCsv
         private string CapaLocaSaveFile = "CapaTraductionFile.csv";
         public string ImportMiscLocaMacroLink { get; set; } = string.Empty;
         private string MiscLocaSaveFile = "MiscTraductionFile.csv";
+        public string ImportSkillLocaMacroLink { get; set; } = string.Empty;
+        private string SkillLocaSaveFile = "SkillTraductionFile.csv";
 
         private void LoadMacroLinks()
         {
@@ -31,12 +33,14 @@ namespace GF.GgsToCsv
 
             var settings = File.ReadAllText(SettingsFilePath);
             var macros = settings.Split('\n');
-            if (macros.Length >= 0)
+            if (macros.Length > 0)
                 ImportGameLocaMacroLink = macros[0];
-            if (macros.Length >= 1)
+            if (macros.Length > 1)
                 ImportCapaLocaMacroLink = macros[1];
-            if (macros.Length >= 2)
+            if (macros.Length > 2)
                 ImportMiscLocaMacroLink = macros[2];
+            if (macros.Length > 3)
+                ImportSkillLocaMacroLink = macros[3];
         }
 
         public void SaveMacroLinks()
@@ -47,7 +51,7 @@ namespace GF.GgsToCsv
                 Directory.CreateDirectory(settingsFolder);
             }
 
-            var settings = $"{ImportGameLocaMacroLink}\n{ImportCapaLocaMacroLink}\n{ImportMiscLocaMacroLink}";
+            var settings = $"{ImportGameLocaMacroLink}\n{ImportCapaLocaMacroLink}\n{ImportMiscLocaMacroLink}\n{ImportSkillLocaMacroLink}";
             File.WriteAllText(SettingsFilePath, settings);
         }
 
@@ -61,6 +65,7 @@ namespace GF.GgsToCsv
             Import(ImportGameLocaMacroLink, Path.Combine(LocaSaveFolder, GameLocaSaveFile), "Game");
             Import(ImportCapaLocaMacroLink, Path.Combine(LocaSaveFolder, CapaLocaSaveFile), "Capa");
             Import(ImportMiscLocaMacroLink, Path.Combine(LocaSaveFolder, MiscLocaSaveFile), "Misc");
+            Import(ImportSkillLocaMacroLink, Path.Combine(LocaSaveFolder, SkillLocaSaveFile), "Skill");
 
             AssetDatabase.Refresh();
         }

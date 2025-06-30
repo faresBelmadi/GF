@@ -13,7 +13,7 @@ namespace GF.GgsToCsv
         public static void ShowWindow()
         {
             GgsToCsvImporterWindow window = GetWindow<GgsToCsvImporterWindow>(true, WindowTitle, true);
-            window.position = new Rect(Screen.width / 2, Screen.height / 2, 900, 200);
+            window.position = new Rect(Screen.width / 2, Screen.height / 2, 900, 220);
             window.ShowPopup();
         }
 
@@ -42,13 +42,21 @@ namespace GF.GgsToCsv
             }
             EditorGUILayout.EndHorizontal();
 
+            EditorGUILayout.BeginHorizontal();
+            {
+                GUILayout.Label("Skill:", GUILayout.Width(80));
+                _importer.ImportSkillLocaMacroLink = EditorGUILayout.TextField(_importer.ImportSkillLocaMacroLink);
+            }
+            EditorGUILayout.EndHorizontal();
+
             EditorGUILayout.Space(10);
             var isALinkMissing = string.IsNullOrEmpty(_importer.ImportGameLocaMacroLink) 
                         || string.IsNullOrEmpty(_importer.ImportCapaLocaMacroLink)
-                        || string.IsNullOrEmpty(_importer.ImportMiscLocaMacroLink);
+                        || string.IsNullOrEmpty(_importer.ImportMiscLocaMacroLink)
+                        || string.IsNullOrEmpty(_importer.ImportSkillLocaMacroLink);
             if (isALinkMissing)
             {
-                EditorGUILayout.HelpBox("All three macro links must be provided.", MessageType.Error);
+                EditorGUILayout.HelpBox("All four macro links must be provided.", MessageType.Error);
             }
             else
             {
