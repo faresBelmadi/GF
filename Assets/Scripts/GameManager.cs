@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
     public BattleManager BattleMan;
     public TutoManager TutoManager;
     public AleaManager AleaMan;
-    public OldAutelManager OldAutelMan;
     public MenuStatManager StatMan;
     public UiMondeManager UiMondeMan;
     [SerializeField] private DialogueManager _dialogueManager;

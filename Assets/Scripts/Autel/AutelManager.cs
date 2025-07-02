@@ -333,8 +333,8 @@ public class AutelManager : MonoBehaviour
         {
             if (capa.Spell?.IDSpell == Id)
             {
-                string name = TradManager.instance.GetTranslation(capa.Spell.idTradName, capa.Spell.name);
-                string description = TradManager.instance.GetTranslation(capa.Spell.idTradDescription, capa.Spell.Description);
+                string name = capa.Spell.TitleId.Text;
+                string description = capa.Spell.DescriptionId.Text;
                 _descriptionPanel.SetActive(true);
                 _costPanel.SetActive(true);
                 DescriptionSpellText.text = $"<allcaps><b> {name} </b></allcaps> \n{ description}";

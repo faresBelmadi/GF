@@ -19,7 +19,7 @@ public class SpellUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
         ResetLine();
         UpdateButton();
 
-        buttonText.text = LinkedSpell.Nom;
+        buttonText.text = LinkedSpell.TitleId.Text;
     }
 
     public void UpdateVisual() {

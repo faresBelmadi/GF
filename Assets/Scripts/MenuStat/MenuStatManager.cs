@@ -573,22 +573,4 @@ public class MenuStatManager : MonoBehaviour
     }
 
     #endregion End
-
-    #region Arbre de Competence
-
-    public void afficherArbre()
-    {
-        Menu.SetActive(false);
-        ArbreCompetence = Instantiate(ArbreCompetencePrefab, Canvas.transform);
-        ArbreCompetence.GetComponentInChildren<RetourArbre>().gameObject.GetComponent<Button>().onClick.AddListener(NonAfficherArbre);
-        ArbreCompetence.GetComponent<ArbreManager>().StartArbreMenuStat(StatTemp);
-    }
-
-    public void NonAfficherArbre()
-    {
-        Menu.SetActive(true);
-        Destroy(ArbreCompetence);
-    }
-
-    #endregion Arbre de Competence
 }
