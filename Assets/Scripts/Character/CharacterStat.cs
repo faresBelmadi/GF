@@ -132,9 +132,9 @@ public class CharacterStat : ScriptableObject
             this.MultipleBuffDebuff = ModifState.MultipleBuffDebuff;
 
         this.RadianceMax += ModifState.RadianceMax;
-        this.ForceAme += ModifState.ForceAme;
+        this._forceAme += ModifState._forceAme;
         this.Vitesse += ModifState.Vitesse;
-        if (ModifState.Conviction != 0)
+        if ((this.Conviction > 0 && this.Conviction + ModifState.Conviction <= 0) && (this.Conviction < 0 && this.Conviction + ModifState.Conviction >= 0))
             OnConvictionChanged?.Invoke();
         this.Conviction += ModifState.Conviction;
         this._resilience += ModifState._resilience;

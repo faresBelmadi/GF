@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-//using static UnityEditor.Progress;
 
 [System.Serializable]
 public class BattleManager : MonoBehaviour
@@ -748,7 +747,6 @@ public class BattleManager : MonoBehaviour
     public void GiveBuffDebuff(List<BuffDebuff> BuffDebuff, int target = -1)
     {
         int origine = IsCombatOn ? currentIdTurn : -1;
-        Decompte Decompte = Decompte.none;
         TimerApplication Timer = TimerApplication.Attaque;
         foreach (var item in BuffDebuff)
         {
@@ -853,7 +851,7 @@ public class BattleManager : MonoBehaviour
         switch (effet.Cible)
         {
             case Cible.joueur:
-                if (Caster == idPlayer || !IsCombatOn)
+                if (Caster == idPlayer || !IsCombatOn || effet.TypeEffet == TypeEffet.Volonte)  //TODO: ALED
                 {
                     player.ApplicationEffet(effet, null, source);
                 }
@@ -890,7 +888,6 @@ public class BattleManager : MonoBehaviour
 
                 break;
             case Cible.ennemi:
-
                 if (Caster == target)
                 {
                     EnemyScripts.First(c => c.combatID == target).ApplicationEffet(effet, null, source, Caster);
@@ -920,7 +917,10 @@ public class BattleManager : MonoBehaviour
                 }
                 else
                 {
-                    EnemyScripts.First().ApplicationEffet(effet, player.Stat, source, idPlayer);
+                    if (EnemyScripts.Count != 0)
+                    {
+                        EnemyScripts.First().ApplicationEffet(effet, player.Stat, source, idPlayer);
+                    }
                 }
 
                 break;

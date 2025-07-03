@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class StartGame : MonoBehaviour
 {
-    public Toggle DoTutoCheck;
-
     public GameObject MainMenuGO;
     public GameObject OptionMenuGO;
 
@@ -13,23 +11,38 @@ public class StartGame : MonoBehaviour
     public CharacterSelect _characterSelect;
     [SerializeField]
     private LevelLoader _levelLoader;
+    [SerializeField]
+    private GameObject _tutoPrompt;
 
     private void Awake()
     {
-        //TODO: Temporary FIX
-        Screen.SetResolution(1920, 1080, true);
+        int height = PlayerPrefs.GetInt("ScreenHeight", 1080);
+        int width = PlayerPrefs.GetInt("ScreenWidth", 1920);
+        bool fullscreen = PlayerPrefs.GetInt("Fullscreen", 1) == 1;
+        bool vsync = PlayerPrefs.GetInt("Vsync", 0) == 1;
+
+        Screen.SetResolution(width, height, fullscreen);
+        QualitySettings.vSyncCount = vsync ? 1 : 0;
+        Debug.Log("Starting graphic options :");
+        Debug.Log($"Screen : {width}X{height}, fullscreen mode : {fullscreen}, Vsync : {vsync}");
+
     }
-    public void Button_StartGame(int classe)
+    public void StartWithTuto(int classe) => Button_StartGame(classe, true);
+    
+    public void StartWithoutTuto(int classe) => Button_StartGame(classe, false);
+    
+
+    public void ShowPrompt()
+    {
+        _tutoPrompt.SetActive(true);
+    }
+    public void Button_StartGame(int classe, bool tuto)
     {
         PlayerPrefs.SetInt("ClassSelected", classe);
         if (TutoManager.Instance != null)
             Destroy(TutoManager.Instance.gameObject);
-        PlayerPrefs.SetInt("DoTutorial", DoTutoCheck.isOn ? 1:0);
-
-        /*if (DoTutoCheck.isOn)
-            SceneManager.LoadScene("TutoMonde");
-        else
-            SceneManager.LoadSceneAsync("GameScene");*/
+        PlayerPrefs.SetInt("DoTutorial", tuto ? 1:0);
+        
         _levelLoader.LoadGameScene();
     }
 

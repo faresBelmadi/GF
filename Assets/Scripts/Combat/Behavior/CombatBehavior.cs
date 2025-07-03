@@ -53,6 +53,9 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     {
         _startingPos = transform.parent.position;
     }
+
+
+
     public void ClearBuffBar()
     {
         foreach (var buff in ListBuffDebuffGO)
@@ -61,6 +64,9 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         }
         ListBuffDebuffGO.Clear();
     }
+
+
+
 
     public float ValueConviction()
     {

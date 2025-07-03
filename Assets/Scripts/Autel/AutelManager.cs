@@ -30,8 +30,16 @@ public class AutelManager : MonoBehaviour
     public TextMeshProUGUI EssenceText;
     [SerializeField]
     private string _idTradEssence;
+    [SerializeField]
+    private GameObject _descriptionPanel;
     public TextMeshProUGUI DescriptionSpellText;
+    [SerializeField]
+    private GameObject _costPanel;
     public TextMeshProUGUI CostCapaText;
+    [SerializeField]
+    private GameObject _nbSpellPanel;
+    [SerializeField]
+    private TMP_Text _nbSpellText;
 
     public List<GameObject> AllSpellsIcon;
     public List<GameObject> AllLink;
@@ -99,6 +107,7 @@ public class AutelManager : MonoBehaviour
     private void OnEnable()
     {
         ResetPositionBalance();
+        
         GameManager.OnStartAutel += InitAutel;
         TradManager.OnRefreshTranslation += RefreshTextChoice3;
     }
@@ -152,6 +161,7 @@ public class AutelManager : MonoBehaviour
             }
 
         }
+        _nbSpellText.text = $"Spells {GameManager.Instance.playerStat.ListSpell.Count}/12";
     }
 
     public void InitAutel()
@@ -160,7 +170,9 @@ public class AutelManager : MonoBehaviour
         RetourButton.onClick.RemoveAllListeners();
         //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
         RetourButton.onClick.AddListener(delegate { ShowMenuUiPanel(); });
-
+        _descriptionPanel.SetActive(false);
+        _costPanel.SetActive(false);
+        _nbSpellPanel.SetActive(false);
         SetUpStatsDescription();
         ShowMenuUiPanel();
         isOn = true;
@@ -208,7 +220,9 @@ public class AutelManager : MonoBehaviour
         LevelUpUiPanel.SetActive(false);
         MenuUiPanel.SetActive(true);
         _backgroundSky.SetActive(false);
-
+        _descriptionPanel.SetActive(false);
+        _costPanel.SetActive(false);
+        _nbSpellPanel.SetActive(false);
     }
     private void ResetPositionBalance()
     {
@@ -248,6 +262,7 @@ public class AutelManager : MonoBehaviour
             HideExplicationLevelUpPanel();
         }
         //EssenceText.color = Color.white;
+        _nbSpellPanel.SetActive(true);
         BackHover();
         ResetPositionBalance();
         LevelUpUiPanel.SetActive(true);
@@ -318,10 +333,12 @@ public class AutelManager : MonoBehaviour
         {
             if (capa.Spell?.IDSpell == Id)
             {
-                string name = TradManager.instance.GetTranslation(capa.Spell.idTradName, capa.Spell.name);
-                string description = TradManager.instance.GetTranslation(capa.Spell.idTradDescription, capa.Spell.Description);
+                string name = capa.Spell.TitleId.Text;
+                string description = capa.Spell.DescriptionId.Text;
+                _descriptionPanel.SetActive(true);
+                _costPanel.SetActive(true);
                 DescriptionSpellText.text = $"<allcaps><b> {name} </b></allcaps> \n{ description}";
-                CostCapaText.text = "cout : " + capa.EssenceCost;
+                CostCapaText.text = TradManager.instance.GetTranslation(_idTradCout, "Cout") + " : " + capa.EssenceCost;
                 ClearButtonColor();
                 AllSpellsIcon[Id].GetComponent<Image>().color = _selectedColor;
                 ModifStatCapa(capa);
@@ -422,8 +439,13 @@ public class AutelManager : MonoBehaviour
         ModifVitesse.text = string.Empty;
     }
 
-        public void BuyCapa(Competence capa)
+    public void BuyCapa(Competence capa)
     {
+        if (GameManager.Instance.playerStat.ListSpell.Count > 11)
+        {
+            Debug.Log("Max capa buy");
+            return;
+        }
         Debug.Log("capa acheté");
 
         GameManager.Instance.playerStat.Essence -= capa.EssenceCost;
