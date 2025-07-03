@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Text;
 using UnityEngine;
 
@@ -789,53 +789,9 @@ public class Effet : ScriptableObject
             case TypeEffet.SoinRadianceMax:
             case TypeEffet.SoinRadianceActuelle:
                 return GameManager.Instance.StatIcons.IncreaseHeal;
-            case TypeEffet.AugmentFADernierDegatsSubi:
-            case TypeEffet.RandomAttaque:
-            case TypeEffet.AugmentationFaRadianceActuelle:
-            case TypeEffet.ConsommeTensionAugmentationFA:
-            case TypeEffet.RemoveDebuff:
-            case TypeEffet.AttaqueStackAmant:
-            case TypeEffet.GainResilienceIncrementale:
-            case TypeEffet.DamageLastPhase:
-            case TypeEffet.NoEssence:
-            case TypeEffet.DoubleBuffDebuff:
-            case TypeEffet.AugmentationRadianceMaxPourcentage:
-            case TypeEffet.BuffFaCoupRecu:
-            case TypeEffet.BuffResilienceCoupRecu:
-            case TypeEffet.ConsommeTensionDmgAllExceptCaster:
-            case TypeEffet.Provocation:
-            case TypeEffet.VolEssence:
-            case TypeEffet.RandomChanceCastSpellSelf:
-            case TypeEffet.SwapMostLeastBuffDebuff:
-            case TypeEffet.RadianceRepartition:
-            case TypeEffet.RandomAttaqueDebuff:
-            case TypeEffet.RedirectionDegatsOnCasteur:
-            case TypeEffet.CancelPourcentageDamage:
-            case TypeEffet.RedirectionCancel:
-            case TypeEffet.DispellBuffJoueurDamage:
-            case TypeEffet.DispellDebuffCasterDamage:
-            case TypeEffet.OnKillStunAll:
-            case TypeEffet.UntilDeath:
-            case TypeEffet.AugmentationFARadianceManquante:
-            case TypeEffet.RemoveAllTensionProcDamage:
-            case TypeEffet.RemoveAllTensionProcBuffDebuff:
-            case TypeEffet.RemoveAllDebuffProcBuffDebuf:
-            case TypeEffet.RemoveAllDebuffSelfProcBuffDebuf:
-            case TypeEffet.RemoveAllBuffProcBuffDebuf:
-            case TypeEffet.RemoveAllDebuffProcDamage:
-            case TypeEffet.RemoveAllDebuffSelfProcDamage:
-            case TypeEffet.RemoveAllBuffProcDamage:
-            case TypeEffet.NoCapaPossible:
-            case TypeEffet.ConsommeTensionReduitFa:
-            case TypeEffet.AugmentationDegatsHitJoueur:
-            case TypeEffet.GainFaBuffCible:
-            case TypeEffet.GainFaDebuffCible:
-            case TypeEffet.PremiereAttaqueJeanne:
-            case TypeEffet.DeuxiemeAttaqueJeanne:
-            case TypeEffet.SupportJeanne:
-            case TypeEffet.UltimeJeanne:
+            default:
                 Debug.Log($"Effet non géré : {TypeEffet})");
-                return null;
+                break;
         }
         return null;
     }
