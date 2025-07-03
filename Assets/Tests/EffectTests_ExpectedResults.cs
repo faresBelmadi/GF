@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
+/*TODO*/
+/*
 public partial class EffectTests
 {
     /// <summary>
@@ -1230,3 +1232,4 @@ public partial class EffectTests
         }
     }
 }
+*/

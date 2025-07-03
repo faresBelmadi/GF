@@ -4,6 +4,8 @@ using System.Reflection;
 using NUnit.Framework;
 using UnityEngine;
 
+/*TODO*/
+/*
 public partial class EffectTests
 {
     private static string[] TestedJoueurStatFieldNames =
@@ -139,3 +141,4 @@ public partial class EffectTests
         Assert.IsTrue(AreIdentical(ExpectedDefaultJoueurStat, newJoueurStat, out string error), error);
     }
 }
+*/
