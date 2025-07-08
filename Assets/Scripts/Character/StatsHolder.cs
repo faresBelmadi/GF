@@ -171,7 +171,7 @@ public class StatsHolder
             ForceAme = 0;
     }
 
-    internal void setZero()
+    internal void SetZero()
     {
         Calme = 0;
         Conviction = 0;
@@ -183,7 +183,7 @@ public class StatsHolder
         RadianceMax = 0;
     }
 
-    public void removeStat(CharacterStat charStatModifier)
+    public void RemoveStat(CharacterStat charStatModifier)
     {
         if (charStatModifier.MultiplDef != 1)
         {
