@@ -1,12 +1,8 @@
-using Codice.Client.BaseCommands.Differences;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StatsHolder
 {
-
     #region BASE STATS
     private readonly CharacterStat _baseStat;
 
@@ -44,6 +40,7 @@ public class StatsHolder
     #region EVENTS
     public event Action OnConvictionChanged;
     #endregion
+
 
     public StatsHolder(CharacterStat charStat)
     {
@@ -142,7 +139,7 @@ public class StatsHolder
     }
 
 
-    public void RectificationStat()
+    public virtual void RectificationStat()
     {
         if (Radiance > RadianceMax && RadianceMax > 0)
         {
@@ -171,7 +168,7 @@ public class StatsHolder
             ForceAme = 0;
     }
 
-    internal void SetZero()
+    public virtual void SetZero()
     {
         Calme = 0;
         Conviction = 0;
@@ -253,7 +250,7 @@ public class StatsHolder
             IsStun = !charStatModifier.isStun;
     }
 
-    public void ResetStat()
+    public virtual void ResetStat()
     {
         RadianceMax = BaseRadianceMax;
         Radiance = BaseRadianceMax;
@@ -276,5 +273,6 @@ public class StatsHolder
         /*this.nbAttaqueRecu = 0;
         this.ListBuffDebuff.Clear();*/
     }
+
 
 }
