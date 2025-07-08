@@ -2,7 +2,7 @@ using NUnit.Framework;
 using System;
 using UnityEngine;
 
-public class StatsTests
+public partial class StatsTests
 {
 
     public CharacterStat CreateStatSO(int initialValue)
@@ -168,7 +168,6 @@ public class StatsTests
         var statHolder = new StatsHolder(baseStat);
         statHolder.UpdateStat(modifStat);
         statHolder.ResetStat();
-
         Assert.That(statHolder.Calme, Is.EqualTo(baseValue));
         Assert.That(statHolder.Conviction, Is.EqualTo(baseValue));
         Assert.That(statHolder.Resilience, Is.EqualTo(baseValue));
