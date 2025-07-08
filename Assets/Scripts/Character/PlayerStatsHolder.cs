@@ -33,6 +33,8 @@ public class PlayerStatsHolder : StatsHolder
         Conscience = charStat.Conscience;
         ConscienceMax = charStat.ConscienceMax;
         Clairvoyance = charStat.Clairvoyance;
+
+        _baseStat = charStat;
     }
 
     public void UpdateStat(JoueurStat charStatModifier)
