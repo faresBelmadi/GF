@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class StatsHolder
 {
+
+    #region BASE STATS
     private readonly CharacterStat _baseStat;
 
     public int BaseRadianceMax => _baseStat.RadianceMax;
@@ -14,38 +16,60 @@ public class StatsHolder
     public int BaseConviction => _baseStat.ConvictionOriginal;
     public int BaseCalme => _baseStat.Calme;
     public int BaseResilience => _baseStat.ResilienceOriginal;
-    
+    #endregion
 
-    private int     _radiance;
-    private int     _radianceMax;
-    private int     _forceAme;
-    private int     _forceAmeBonus;
-    private int     _vitesse;
-    private int     _conviction;
-    private int     _calme;
-    private int     _resilience;
-    private int     _resiliencePassif;
-    private int     _essence;
-    private float   _multiplDef;
-    private float   _multiplSoin;
-    private float   _multiplDegat;
-    private float   _multiplBuffDebuff;
-    private float   _multiplTension;
-    private float   _tension;
-    private float   _tensionMax;
-    private int     _valeurPalier;
-    private int     _palierChangement;
-    private bool    _isStun;
+    #region PROPERTY STATS
+    public int     Radiance { get; private set; }
+    public int     RadianceMax { get; private set; }
+    public int     ForceAme { get; private set; }
+    public int     ForceAmeBonus { get; private set; }
+    public int     Vitesse { get; private set; }
+    public int     Conviction { get; private set; }
+    public int     Calme { get; private set; }
+    public int     Resilience { get; private set; }
+    public int     ResiliencePassif { get; private set; }
+    public int     Essence { get; private set; }
+    public float   MultiplDef { get; private set; }
+    public float   MultiplSoin { get; private set; }
+    public float   MultiplDegat { get; private set; }
+    public float   MultiplBuffDebuff { get; private set; }
+    public float   MultiplTension { get; private set; }
+    public float   Tension { get; private set; }
+    public float   TensionMax { get; private set; }
+    public float   ValeurPalier { get; private set; }
+    public int     PalierChangement { get; private set; }
+    public bool    IsStun { get; private set; }
+    #endregion
 
-
+    #region EVENTS
     public event Action OnConvictionChanged;
+    #endregion
 
     public StatsHolder(CharacterStat charStat)
     {
-        _forceAme   = charStat.ForceAme;
-        _vitesse    = charStat.Vitesse;
-        _conviction = charStat.Conviction;
-        _calme      = charStat.Calme;
+        Radiance               = charStat.Radiance;
+        RadianceMax            = charStat.RadianceMax;
+        ForceAme               = charStat.ForceAmeOriginal;
+        ForceAmeBonus          = charStat.ForceAmeBonus;
+        Vitesse                = charStat.Vitesse;
+        Conviction             = charStat.Conviction;
+        Calme                  = charStat.Calme;
+        Resilience             = charStat.ResilienceOriginal;
+        ResiliencePassif       = (int) charStat.ResiliencePassif;
+        Essence                = charStat.Essence;
+        MultiplDef             = charStat.MultiplDef;
+        MultiplSoin            = charStat.MultiplSoin;
+        MultiplDegat           = charStat.MultiplDegat;
+        MultiplBuffDebuff      = charStat.MultipleBuffDebuff;
+        MultiplTension         = charStat.MultipleTension;
+        Tension                = charStat.Tension;
+        TensionMax             = charStat.TensionMax;
+        ValeurPalier           = charStat.ValeurPalier;
+        PalierChangement       = charStat.PalierChangement;
+        IsStun                 = charStat.isStun;
+
+        _baseStat = charStat;
+
     }
 
     public void UpdateStat(CharacterStat charStatModifier)
@@ -55,13 +79,13 @@ public class StatsHolder
             if (charStatModifier.MultiplDef > 1)
             {
                 var multiplicateurDef = charStatModifier.MultiplDef % 1;
-                _multiplDef += multiplicateurDef;
+                MultiplDef += multiplicateurDef;
 
             }
             else
             {
                 var multiplicateurDef = charStatModifier.MultiplDef - 1;
-                _multiplDef += multiplicateurDef;
+                MultiplDef += multiplicateurDef;
             }
         }
         if (charStatModifier.MultiplSoin != 1)
@@ -69,12 +93,12 @@ public class StatsHolder
             if (charStatModifier.MultiplSoin > 1)
             {
                 var multiplicateurSoin = charStatModifier.MultiplSoin % 1;
-                _multiplSoin += multiplicateurSoin;
+                MultiplSoin += multiplicateurSoin;
             }
             else
             {
                 var multiplicateurSoin = charStatModifier.MultiplSoin - 1;
-                _multiplSoin += multiplicateurSoin;
+                MultiplSoin += multiplicateurSoin;
             }
         }
         if (charStatModifier.MultiplDegat != 1)
@@ -82,81 +106,81 @@ public class StatsHolder
             if (charStatModifier.MultiplDegat > 1)
             {
                 var multiplicateurDegat = charStatModifier.MultiplDegat % 1;
-                _multiplDegat += multiplicateurDegat;
+                MultiplDegat += multiplicateurDegat;
 
             }
             else
             {
                 var multiplicateurDegat = charStatModifier.MultiplDegat - 1;
-                _multiplDegat += multiplicateurDegat;
+                MultiplDegat += multiplicateurDegat;
             }
         }
         if (charStatModifier.MultipleBuffDebuff != 1)
-            _multiplBuffDebuff = charStatModifier.MultipleBuffDebuff;
+            MultiplBuffDebuff = charStatModifier.MultipleBuffDebuff;
 
-        _radianceMax += charStatModifier.RadianceMax;
-        _forceAme += charStatModifier._forceAme;
-        _vitesse += charStatModifier.Vitesse;
-        if ((_conviction > 0 && _conviction + charStatModifier.Conviction <= 0) && (_conviction < 0 && _conviction + charStatModifier.Conviction >= 0))
+        RadianceMax += charStatModifier.RadianceMax;
+        ForceAme += charStatModifier._forceAme;
+        Vitesse += charStatModifier.Vitesse;
+        if ((Conviction > 0 && Conviction + charStatModifier.Conviction <= 0) && (Conviction < 0 && Conviction + charStatModifier.Conviction >= 0))
             OnConvictionChanged?.Invoke();
-        _conviction += charStatModifier.Conviction;
-        this._resilience += charStatModifier._resilience;
-        _calme += charStatModifier.Calme;
-        _essence += charStatModifier.Essence;
-        _tension += charStatModifier.Tension * _multiplTension;
-        _palierChangement += charStatModifier.PalierChangement;
+        Conviction += charStatModifier.Conviction;
+        this.Resilience += charStatModifier._resilience;
+        Calme += charStatModifier.Calme;
+        Essence += charStatModifier.Essence;
+        Tension += charStatModifier.Tension * MultiplTension;
+        PalierChangement += charStatModifier.PalierChangement;
         if (charStatModifier.Radiance < 0)
         {
-            _radiance += Mathf.FloorToInt(charStatModifier.Radiance * _multiplDef);
+            Radiance += Mathf.FloorToInt(charStatModifier.Radiance * MultiplDef);
         }
         else
         {
-            _radiance += Mathf.FloorToInt(charStatModifier.Radiance * _multiplSoin);
+            Radiance += Mathf.FloorToInt(charStatModifier.Radiance * MultiplSoin);
         }
 
-        _isStun = charStatModifier.isStun;
+        IsStun = charStatModifier.isStun;
     }
 
 
     public void RectificationStat()
     {
-        if (_radiance > _radianceMax && _radianceMax > 0)
+        if (Radiance > RadianceMax && RadianceMax > 0)
         {
-            _radiance = _radianceMax;
+            Radiance = RadianceMax;
         }
 
-        if (_conviction > GameManager.Instance.CommonStatsData.ConvictionMax)
+        if (Conviction > GameManager.Instance.CommonStatsData.ConvictionMax)
         {
-            _conviction = GameManager.Instance.CommonStatsData.ConvictionMax;
+            Conviction = GameManager.Instance.CommonStatsData.ConvictionMax;
         }
-        else if (_conviction < GameManager.Instance.CommonStatsData.ConvictionMin)
+        else if (Conviction < GameManager.Instance.CommonStatsData.ConvictionMin)
         {
-            _conviction = GameManager.Instance.CommonStatsData.ConvictionMin;
-        }
-
-        if (_resilience > GameManager.Instance.CommonStatsData.ResilienceMax)
-        {
-            _resilience = GameManager.Instance.CommonStatsData.ResilienceMax - _resiliencePassif;
-        }
-        else if (_resilience < GameManager.Instance.CommonStatsData.ResilienceMin)
-        {
-            _resilience = GameManager.Instance.CommonStatsData.ResilienceMin + _resiliencePassif;
+            Conviction = GameManager.Instance.CommonStatsData.ConvictionMin;
         }
 
-        if (_forceAme < 0)
-            _forceAme = 0;
+        if (Resilience > GameManager.Instance.CommonStatsData.ResilienceMax)
+        {
+            Resilience = GameManager.Instance.CommonStatsData.ResilienceMax - ResiliencePassif;
+        }
+        else if (Resilience < GameManager.Instance.CommonStatsData.ResilienceMin)
+        {
+            Resilience = GameManager.Instance.CommonStatsData.ResilienceMin + ResiliencePassif;
+        }
+
+        if (ForceAme < 0)
+            ForceAme = 0;
     }
 
     internal void setZero()
     {
-        _calme = 0;
-        _conviction = 0;
-        _resilience = 0;
-        _essence = 0;
-        _forceAme = 0;
-        _radiance = 0;
-        _resiliencePassif = 0;
-        _radianceMax = 0;
+        Calme = 0;
+        Conviction = 0;
+        Resilience = 0;
+        Essence = 0;
+        ForceAme = 0;
+        Radiance = 0;
+        ResiliencePassif = 0;
+        RadianceMax = 0;
     }
 
     public void removeStat(CharacterStat charStatModifier)
@@ -166,13 +190,13 @@ public class StatsHolder
             if (charStatModifier.MultiplDef > 1)
             {
                 var multiplicateurDef = charStatModifier.MultiplDef % 1;
-                _multiplDef -= multiplicateurDef;
+                MultiplDef -= multiplicateurDef;
 
             }
             else
             {
                 var multiplicateurDef = charStatModifier.MultiplDef - 1;
-                _multiplDef -= multiplicateurDef;
+                MultiplDef -= multiplicateurDef;
             }
         }
 
@@ -181,13 +205,13 @@ public class StatsHolder
             if (charStatModifier.MultiplSoin > 1)
             {
                 var multiplicateurSoin = charStatModifier.MultiplSoin % 1;
-                _multiplSoin -= multiplicateurSoin;
+                MultiplSoin -= multiplicateurSoin;
 
             }
             else
             {
                 var multiplicateurSoin = charStatModifier.MultiplSoin - 1;
-                _multiplSoin -= multiplicateurSoin;
+                MultiplSoin -= multiplicateurSoin;
             }
         }
         if (charStatModifier.MultiplDegat != 1)
@@ -195,58 +219,58 @@ public class StatsHolder
             if (charStatModifier.MultiplDegat > 1)
             {
                 var multiplicateurAtk = charStatModifier.MultiplDegat % 1;
-                _multiplDegat -= multiplicateurAtk;
+                MultiplDegat -= multiplicateurAtk;
 
             }
             else
             {
                 var multiplicateurAtk = charStatModifier.MultiplDegat - 1;
-                _multiplDegat -= multiplicateurAtk;
+                MultiplDegat -= multiplicateurAtk;
             }
         }
         if (charStatModifier.MultipleBuffDebuff != 1)
-            _multiplBuffDebuff = charStatModifier.MultipleBuffDebuff;
+            MultiplBuffDebuff = charStatModifier.MultipleBuffDebuff;
 
-        _radianceMax -= charStatModifier.RadianceMax;
-        _forceAme -= charStatModifier.ForceAme;
-        _vitesse -= charStatModifier.Vitesse;
-        _conviction -= charStatModifier.Conviction;
-        _resilience -= charStatModifier._resilience;
-        _calme -= charStatModifier.Calme;
-        _essence -= charStatModifier.Essence;
-        _tension -= charStatModifier.Tension;
+        RadianceMax -= charStatModifier.RadianceMax;
+        ForceAme -= charStatModifier.ForceAme;
+        Vitesse -= charStatModifier.Vitesse;
+        Conviction -= charStatModifier.Conviction;
+        Resilience -= charStatModifier._resilience;
+        Calme -= charStatModifier.Calme;
+        Essence -= charStatModifier.Essence;
+        Tension -= charStatModifier.Tension;
 
         if (charStatModifier.Radiance < 0)
         {
-            _radiance -= Mathf.FloorToInt(charStatModifier.Radiance * _multiplDef);
+            Radiance -= Mathf.FloorToInt(charStatModifier.Radiance * MultiplDef);
         }
         else
         {
-            _radiance -= Mathf.FloorToInt(charStatModifier.Radiance * _multiplSoin);
+            Radiance -= Mathf.FloorToInt(charStatModifier.Radiance * MultiplSoin);
         }
 
         if (charStatModifier.isStun)
-            _isStun = !charStatModifier.isStun;
+            IsStun = !charStatModifier.isStun;
     }
 
     public void ResetStat()
     {
-        _radianceMax = BaseRadianceMax;
-        _radiance = BaseRadianceMax;
-        _forceAme = BaseForceDame;
-        _vitesse = BaseVitesse;
-        _conviction = BaseConviction;
-        _resilience = BaseResilience;
-        _calme = 0;
-        _multiplDef = 1;
-        _multiplSoin = 1;
-        _multiplDegat = 1;
-        _multiplBuffDebuff = 1;
-        _tension = 0;
-        _tensionMax = 0;
-        _valeurPalier = 0;
-        _palierChangement = 0;
-        _isStun = false;
+        RadianceMax = BaseRadianceMax;
+        Radiance = BaseRadianceMax;
+        ForceAme = BaseForceDame;
+        Vitesse = BaseVitesse;
+        Conviction = BaseConviction;
+        Resilience = BaseResilience;
+        Calme = 0;
+        MultiplDef = 1;
+        MultiplSoin = 1;
+        MultiplDegat = 1;
+        MultiplBuffDebuff = 1;
+        Tension = 0;
+        TensionMax = 0;
+        ValeurPalier = 0;
+        PalierChangement = 0;
+        IsStun = false;
 
         // TODO
         /*this.nbAttaqueRecu = 0;
