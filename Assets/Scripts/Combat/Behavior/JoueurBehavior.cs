@@ -77,7 +77,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     private int currentCons = -1;
     private bool _isHurt;
     private int _playedTurn = 0;
-    private Coroutine deathRoutine = null;
 
     public void InitRefBattleMan(BattleManager battleManager)
     {
@@ -415,7 +414,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             characterMaterial.SetFloat("_DisolveHeight", time / deathDisolveTime);
             yield return null;
         }
-        deathRoutine = null;
     }
 
     public void FinCombat()

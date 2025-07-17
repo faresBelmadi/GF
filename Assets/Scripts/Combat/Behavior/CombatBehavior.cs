@@ -42,7 +42,6 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
     protected CommonStats commonStats;
     #region Events
     public event Action OnGainTensionLevel;
-    public event Action OnTakeDamage;
 
     public List<AbstractPassive> PassiveList { get; protected set; }
     #endregion
