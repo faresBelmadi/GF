@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance;
 
+    [Header("Seed Random")] 
+    public int seed = 42;
     
     [Header("Debug")]
     [SerializeField]
@@ -132,7 +134,8 @@ public class GameManager : MonoBehaviour
             DontDestroyOnLoad(this);
         }
 
-        UnityEngine.Random.InitState((int) DateTime.Now.Ticks);
+        seed = (int) DateTime.Now.Ticks;
+        UnityEngine.Random.InitState(seed);
         //LoadSave();
         ClassIDSelected = PlayerPrefs.GetInt("ClassSelected");
 
@@ -171,6 +174,7 @@ public class GameManager : MonoBehaviour
     {
         MapGenerator.GenerateNewMap();
     }
+
     private void LoadSave()
     {
 
@@ -189,6 +193,7 @@ public class GameManager : MonoBehaviour
             loadedData = JsonUtility.FromJson<GameData>(dataAsJson);
             if (!loadedData.CurrentRun.Ended)
             {
+                UnityEngine.Random.InitState(loadedData.CurrentRunSeed);
                 GetClassRun();
 
                 playerStat = Instantiate(AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat);
@@ -255,6 +260,7 @@ public class GameManager : MonoBehaviour
     {
 
         GameData data = new GameData();
+        data.CurrentRunSeed = seed;
         data.CurrentRun = new RunData() {ClassID = ClassIDSelected};
         data.previousRuns = new List<RunData>();
         var spellsToAdd = AllClasses.First(c => c.ID == ClassIDSelected).PlayerStat.ListSpell

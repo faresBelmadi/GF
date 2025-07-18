@@ -49,5 +49,6 @@ public class GameData
 {
     public List<RunData> previousRuns;
     public RunData CurrentRun;
+    public int CurrentRunSeed;
 }
 
