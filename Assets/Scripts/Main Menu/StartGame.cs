@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static TradManager;
 
 public class StartGame : MonoBehaviour
 {
@@ -53,8 +55,7 @@ public class StartGame : MonoBehaviour
 
     public void SetLanguagePref(int idLanguage)
     {
-        PlayerPrefs.SetInt("Lang", idLanguage);
-        TradManager.instance.RefreshTranslation();
+        TradManager.instance.SetLanguage(Enum.IsDefined(typeof(SUPPORTEDLANGUAGES), idLanguage) ? (SUPPORTEDLANGUAGES)idLanguage : TradManager.instance.DefaultLanguage);
         OptionButtonEventClose();
     }
 

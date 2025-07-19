@@ -4,13 +4,11 @@ using UnityEngine.SceneManagement;
 public class UiMondeManager : MonoBehaviour
 {
     public GameObject UiMondeHolder;
-    public GameObject UiSkillTreeHolder;
     public GameObject UiStatHolder;
 
     public void EnableSkillTree()
     {
         UiMondeHolder.SetActive(false);
-        UiSkillTreeHolder.SetActive(true);
     }
 
     public void EnableStat()
@@ -22,7 +20,6 @@ public class UiMondeManager : MonoBehaviour
     public void EnableMonde()
     {
         UiMondeHolder.SetActive(true);
-        UiSkillTreeHolder.SetActive(false);
         UiStatHolder.SetActive(false);
     }
 

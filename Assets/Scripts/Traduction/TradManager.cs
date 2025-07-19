@@ -230,6 +230,7 @@ public class TradManager : MonoBehaviour
     public void SetLanguage(SUPPORTEDLANGUAGES language)
     {
         PlayerPrefs.SetInt(_playerPrefsLangKey, (int)language);
+        Language = language;
         RefreshTranslation();
     }
 
