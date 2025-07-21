@@ -1,24 +1,25 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 
 [Serializable]
 public class PlayerStatsHolder : StatsHolder
 {
     #region BASE STATS
-    protected readonly JoueurStat _baseStat;
+    private readonly JoueurStat _baseStat;
 
     public int BaseConscienceMax => _baseStat.ConscienceMax;
     public int BaseClairvoyance => _baseStat.ClairvoyanceOriginal;
     #endregion
 
     #region STATS PROPERTY
-    public int Lvl { get; private set; }
-    public int Volonte { get; private set; }
-    public int VolonteMax { get; private set; }
-    public int Conscience { get; private set; }
-    public int ConscienceMax { get; private set; }
-    public int Clairvoyance { get; private set; }
+    [field:SerializeField, ReadOnly] public int Lvl { get; private set; }
+    [field: SerializeField, ReadOnly] public int Volonte { get; private set; }
+    [field: SerializeField, ReadOnly] public int VolonteMax { get; private set; }
+    [field: SerializeField, ReadOnly] public int Conscience { get; private set; }
+    [field: SerializeField, ReadOnly] public int ConscienceMax { get; private set; }
+    [field: SerializeField, ReadOnly] public int Clairvoyance { get; private set; }
     #endregion
 
     #region EVENTS

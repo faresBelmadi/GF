@@ -1,6 +1,8 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI.Extensions;
 
+[Serializable]
 public class StatsHolder
 {
     #region BASE STATS
@@ -15,26 +17,26 @@ public class StatsHolder
     #endregion
 
     #region PROPERTY STATS
-    public int     Radiance { get; private set; }
-    public int     RadianceMax { get; private set; }
-    public int     ForceAme { get; private set; }
-    public int     ForceAmeBonus { get; private set; }
-    public int     Vitesse { get; private set; }
-    public int     Conviction { get; private set; }
-    public int     Calme { get; private set; }
-    public int     Resilience { get; private set; }
-    public int     ResiliencePassif { get; private set; }
-    public int     Essence { get; private set; }
-    public float   MultiplDef { get; private set; }
-    public float   MultiplSoin { get; private set; }
-    public float   MultiplDegat { get; private set; }
-    public float   MultiplBuffDebuff { get; private set; }
-    public float   MultiplTension { get; private set; }
-    public float   Tension { get; private set; }
-    public float   TensionMax { get; private set; }
-    public float   ValeurPalier { get; private set; }
-    public int     PalierChangement { get; private set; }
-    public bool    IsStun { get; private set; }
+    [field: SerializeField, ReadOnly] public int     Radiance { get; private set; }
+    [field:SerializeField, ReadOnly] public int     RadianceMax { get; private set; }
+    [field:SerializeField, ReadOnly] public int     ForceAme { get; private set; }
+    [field:SerializeField, ReadOnly] public int     ForceAmeBonus { get; private set; }
+    [field:SerializeField, ReadOnly] public int     Vitesse { get; private set; }
+    [field:SerializeField, ReadOnly] public int     Conviction { get; private set; }
+    [field:SerializeField, ReadOnly] public int     Calme { get; private set; }
+    [field:SerializeField, ReadOnly] public int     Resilience { get; private set; }
+    [field:SerializeField, ReadOnly] public int     ResiliencePassif { get; private set; }
+    [field:SerializeField, ReadOnly] public int     Essence { get; private set; }
+    [field:SerializeField, ReadOnly] public float   MultiplDef { get; private set; }
+    [field:SerializeField, ReadOnly] public float   MultiplSoin { get; private set; }
+    [field:SerializeField, ReadOnly] public float   MultiplDegat { get; private set; }
+    [field:SerializeField, ReadOnly] public float   MultiplBuffDebuff { get; private set; }
+    [field:SerializeField, ReadOnly] public float   MultiplTension { get; private set; }
+    [field:SerializeField, ReadOnly] public float   Tension { get; private set; }
+    [field:SerializeField, ReadOnly] public float   TensionMax { get; private set; }
+    [field:SerializeField, ReadOnly] public float   ValeurPalier { get; private set; }
+    [field:SerializeField, ReadOnly] public int     PalierChangement { get; private set; }
+    [field: SerializeField, ReadOnly] public bool    IsStun { get; private set; }
     #endregion
 
     #region EVENTS
