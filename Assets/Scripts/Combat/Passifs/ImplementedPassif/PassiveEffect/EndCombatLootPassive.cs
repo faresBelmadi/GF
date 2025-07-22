@@ -51,7 +51,6 @@ public class EndCombatLootPassive : AbstractPassive, ILootEssencePassive
                     var essenceAmount = battleM.ListEssence.First().GetComponent<CrystalSoul>().Amount;
                     Value = (int)Math.Round(essenceAmount * ((reward.value / 100f)));
                     battleM.ListEssence.First().GetComponent<CrystalSoul>().Amount = essenceAmount + Value;
-
                 }
                 else
                 {

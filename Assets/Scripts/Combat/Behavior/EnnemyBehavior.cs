@@ -16,6 +16,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
            
         }
     }
+    public EnemyStatsHolder EnemyStat;
     public UIEnnemi UICombat;
     public int TensionUI;
     
@@ -560,6 +561,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             }
         }
         Stat.ModifStateAll(ModifStat);
+        EnemyStat.UpdateStat(ModifStat);
         Stat.RectificationStat();
 
         if (ModifStat.PalierChangement > 0)

@@ -7,7 +7,7 @@ using UnityEngine.UI.Extensions;
 public class PlayerStatsHolder : StatsHolder
 {
     #region BASE STATS
-    private readonly JoueurStat _baseStat;
+    [SerializeField, ReadOnly] private JoueurStat _baseStat;
 
     public int BaseConscienceMax => _baseStat.ConscienceMax;
     public int BaseClairvoyance => _baseStat.ClairvoyanceOriginal;

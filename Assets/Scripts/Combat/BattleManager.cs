@@ -461,6 +461,7 @@ public class BattleManager : MonoBehaviour
         {
             GameManager.Instance.DialManager.AddSpeakers(ennemyId, tempCombatScript);
             tempCombatScript.Stat = Instantiate(EnnemyStats);
+            tempCombatScript.EnemyStat = new EnemyStatsHolder(EnnemyStats);
             tempCombatScript.SetUp();
             tempCombatScript.EndTurnBM = EndTurn;
             tempCombatScript.isMainEnemy = ennemyId == _encounter.idMainMob ? true : false;

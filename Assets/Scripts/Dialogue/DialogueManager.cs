@@ -1146,6 +1146,7 @@ public class DialogueManager : MonoBehaviour
                 if (/*ManagerBattle == null*/ ManagerAlea.IsAlea)
                 {
                     var cibleJoueur = effet.Cible == Cible.joueur ? ManagerBattle.player.Stat : null;
+                    ManagerBattle.player.PlayerStat.UpdateStat(effet.ResultEffet(ManagerAlea.Stat, Cible: cibleJoueur));
                     ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat, Cible: cibleJoueur));
                 }
                 else
@@ -1231,9 +1232,10 @@ public class DialogueManager : MonoBehaviour
         return null;
     }
 
-    private void ApplyEffectOnPlayer(Effet scriptableObject)
+    private void ApplyEffectOnPlayer(Effet effectToApply)
     {
-        ManagerBattle.player.Stat.ModifStateAll(scriptableObject.ResultEffet(ManagerBattle.player.Stat, Cible: ManagerBattle.player.Stat));
+        ManagerBattle.player.PlayerStat.UpdateStat(effectToApply.ResultEffet(ManagerBattle.player.Stat, Cible: ManagerBattle.player.Stat));
+        ManagerBattle.player.Stat.ModifStateAll(effectToApply.ResultEffet(ManagerBattle.player.Stat, Cible: ManagerBattle.player.Stat));
     }
 
     private void ApplyEffectOnEnemies(Effet scriptableObject)
@@ -1247,12 +1249,14 @@ public class DialogueManager : MonoBehaviour
                     if (passif is IAddStackPassive addStackPassiv)
                     {
                         enemyScript.Stat.ModifStateAll(addStackPassiv.GetStackModifStat(enemyScript.Stat, scriptableObject.ValeurBrut));
+                        enemyScript.EnemyStat.UpdateStat(addStackPassiv.GetStackModifStat(enemyScript.Stat, scriptableObject.ValeurBrut));
                     }
                 }
             }
             else
             {
                 enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat));
+                enemyScript.EnemyStat.UpdateStat(scriptableObject.ResultEffet(enemyScript.Stat));
             }
         }
     }
@@ -1261,12 +1265,14 @@ public class DialogueManager : MonoBehaviour
     {
         var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0, ManagerBattle.EnemyScripts.Count)];
         enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat, enemyScript.LastDamageTaken, enemyScript.Stat));
+        enemyScript.EnemyStat.UpdateStat(scriptableObject.ResultEffet(enemyScript.Stat, enemyScript.LastDamageTaken, enemyScript.Stat));
         return enemyScript;
     }
     private EnnemyBehavior ApplyEffectOnSpeaker(Effet scriptableObject)
     {
         var enemyScript = _listSpeakers[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].transform.parent.gameObject.GetComponent<EnnemyBehavior>();
         enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat, enemyScript.LastDamageTaken, enemyScript.Stat));
+        enemyScript.EnemyStat.UpdateStat(scriptableObject.ResultEffet(enemyScript.Stat, enemyScript.LastDamageTaken, enemyScript.Stat));
         return enemyScript;
     }
 

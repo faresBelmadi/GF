@@ -15,6 +15,9 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             _stat = value;
         }
     }
+
+
+    public PlayerStatsHolder PlayerStat;
     [SerializeField] private List<GameObject> Spells;
     [SerializeField] private Transform DamageSpawn;
     [SerializeField] private GameObject DamagePrefab;
@@ -91,7 +94,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     public void StartUp()
     {
         commonStats = GameManager.Instance.CommonStatsData;
-        
+        PlayerStat = new PlayerStatsHolder(Stat);
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.ClairvoyanceOriginal = Stat.Clairvoyance;
@@ -853,6 +856,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         //    ModifStat.Radiance += ModifStat.RadianceMax;
         //}
         GameManager.Instance.BattleMan.LogRadianceChange(this.Name, GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster), ModifStat.Radiance);
+        PlayerStat.UpdateStat(ModifStat);
         Stat.ModifStateAll(ModifStat);
         if (ModifStat.PalierChangement > 0)
             EnervementTension();
