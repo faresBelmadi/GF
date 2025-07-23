@@ -508,7 +508,6 @@ public class AutelManager : MonoBehaviour
             }
         }
         GameManager.Instance.BattleMan.player.PlayerStat.UpdateStat(modifJoueurStat);
-        GameManager.Instance.playerStat.ModifStateAll(modifJoueurStat);
     }
 
     public void CheckLinkCapa(Competence capa)

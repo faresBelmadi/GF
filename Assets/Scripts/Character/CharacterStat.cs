@@ -26,7 +26,6 @@ public class CharacterStat : ScriptableObject
     public int RadianceMax;
     public int RadianceMaxOriginal;
 
-    [Obsolete]
     public int ForceAme
     {
         get => _forceAme + ForceAmeBonus;

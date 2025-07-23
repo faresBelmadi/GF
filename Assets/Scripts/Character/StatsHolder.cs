@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
@@ -17,7 +18,7 @@ public class StatsHolder
     #endregion
 
     #region PROPERTY STATS
-    [field: SerializeField, ReadOnly] public int     Radiance { get; private set; }
+    [field:SerializeField, ReadOnly] public int     Radiance { get; private set; }
     [field:SerializeField, ReadOnly] public int     RadianceMax { get; private set; }
     [field:SerializeField, ReadOnly] public int     ForceAme { get; private set; }
     [field:SerializeField, ReadOnly] public int     ForceAmeBonus { get; private set; }
@@ -36,7 +37,9 @@ public class StatsHolder
     [field:SerializeField, ReadOnly] public float   TensionMax { get; private set; }
     [field:SerializeField, ReadOnly] public float   ValeurPalier { get; private set; }
     [field:SerializeField, ReadOnly] public int     PalierChangement { get; private set; }
-    [field: SerializeField, ReadOnly] public bool    IsStun { get; private set; }
+    [field:SerializeField, ReadOnly] public bool    IsStun { get; private set; }
+
+    [field: SerializeField, ReadOnly] public List<BuffDebuff> ListBuffDebuff { get; private set; }
     #endregion
 
     #region EVENTS
@@ -67,10 +70,28 @@ public class StatsHolder
         PalierChangement       = charStat.PalierChangement;
         IsStun                 = charStat.isStun;
 
+        ListBuffDebuff = new List<BuffDebuff>(charStat.ListBuffDebuff);
         _baseStat = charStat;
 
     }
-
+    public void ChangeTension(float modifier)
+    {
+        CharacterStat newValue = ScriptableObject.CreateInstance<CharacterStat>();
+        newValue.Tension = modifier;
+        UpdateStat(newValue);
+    }
+    public void ChangeRadiance(int modifier)
+    {
+        CharacterStat newValue = ScriptableObject.CreateInstance<CharacterStat>();
+        newValue.Radiance = modifier;
+        UpdateStat(newValue);
+    }
+    public void ChangeForceDame(int modifier)
+    {
+        CharacterStat newValue = ScriptableObject.CreateInstance<CharacterStat>();
+        newValue.ForceAme = modifier;
+        UpdateStat(newValue);
+    }
     public void UpdateStat(CharacterStat charStatModifier)
     {
         if (charStatModifier.MultiplDef != 1)
@@ -138,6 +159,7 @@ public class StatsHolder
         }
 
         IsStun = charStatModifier.isStun;
+        RectificationStat();
     }
 
 

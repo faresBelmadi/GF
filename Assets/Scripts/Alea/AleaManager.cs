@@ -8,11 +8,11 @@ public class AleaManager : MonoBehaviour
 
     private EncounterAlea Rencontre;
     private GameObject _pnj;
-    private JoueurStat _stat;
+    private PlayerStatsHolder _stat;
     private bool _isAlea = false;
     public bool IsAlea { get => _isAlea; }
 
-    public JoueurStat Stat => _stat;
+    public PlayerStatsHolder Stat => _stat;
 
     
 
@@ -21,7 +21,7 @@ public class AleaManager : MonoBehaviour
         Debug.Log("StartAlea");
         _isAlea = true;
         Rencontre = rencontre;
-        _stat = GameManager.Instance.playerStat;
+        _stat = GameManager.Instance.playerStatHolder;
         _pnj = Instantiate(Rencontre.Pnj, spawnPos.position, Quaternion.identity, spawnPos);
         GameManager.Instance.DialManager.AddSpeakers(0, _pnj.GetComponentInChildren<SpeakComponent>());
         Dialogue.SetupDialogue(Rencontre);
@@ -30,7 +30,7 @@ public class AleaManager : MonoBehaviour
     public void EndAlea()
     {
         _isAlea = false;
-        GameManager.Instance.playerStat = _stat;
+        GameManager.Instance.playerStatHolder = _stat;
         Destroy(_pnj);
         StartCoroutine(GameManager.Instance.pmm.EndAlea());
     }

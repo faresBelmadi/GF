@@ -515,16 +515,16 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             if (idCaster == 0)
             {
                 Caster = _refBattleMan.player.Stat;
-                ModifStat = effet.ResultEffet(Caster, LastDamageTaken, this.Stat, NbEnnemies);
+                ModifStat = effet.ResultEffet(_refBattleMan.player.PlayerStat, LastDamageTaken, EnemyStat, NbEnnemies);
             }
             else
             {
                 var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
                 if (caster != null)
-                    ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, this.Stat);
+                    ModifStat = effet.ResultEffet(caster.EnemyStat, LastDamageTaken, EnemyStat);
                 else
                 {
-                    ModifStat = effet.ResultEffet(Stat, LastDamageTaken, this.Stat, 1);
+                    ModifStat = effet.ResultEffet(EnemyStat, LastDamageTaken, EnemyStat, 1);
 
                 }
 
@@ -533,7 +533,15 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         }
         else
         {
-            ModifStat = effet.ResultEffet(Caster, LastDamageTaken, Stat);
+            var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
+            if  (caster == null)
+            {
+                ModifStat = effet.ResultEffet(_refBattleMan.player.PlayerStat, LastDamageTaken, EnemyStat);
+            }
+            else
+            {
+                ModifStat = effet.ResultEffet(caster.EnemyStat, LastDamageTaken, EnemyStat);
+            }
         }
 
         if (ModifStat.Radiance < 0)
@@ -560,7 +568,6 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
                     passive.Apply(_stat);
             }
         }
-        Stat.ModifStateAll(ModifStat);
         EnemyStat.UpdateStat(ModifStat);
         Stat.RectificationStat();
 
@@ -636,7 +643,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         //int damage = 0;
         foreach (Effet effet in _refBattleMan.player.SelectSpell.ActionEffet)
         {
-            effet.VisualizeAttack(_refBattleMan.player.Stat, Stat, out int dmg, out int rDmg,_refBattleMan.EnemyScripts.Count);
+            effet.VisualizeAttack(_refBattleMan.player.PlayerStat, EnemyStat, out int dmg, out int rDmg,_refBattleMan.EnemyScripts.Count);
             if (effet.Cible == Cible.allEnnemi)
             {
                 for (int i = 0; i < damageList.Length; i++)

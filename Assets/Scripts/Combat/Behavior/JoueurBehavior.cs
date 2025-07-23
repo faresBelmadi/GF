@@ -828,17 +828,17 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     {
         
         JoueurStat ModifStat;
+        var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
         if (Caster == null)
         {
-            var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
             if (caster != null)
-                ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, this.Stat);
+                ModifStat = effet.ResultEffet(caster.EnemyStat, LastDamageTaken, PlayerStat);
             else
-                ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Cible: Stat);
+                ModifStat = effet.ResultEffet(PlayerStat, LastDamageTaken, Cible: PlayerStat);
         }
         else
         {
-            ModifStat = effet.ResultEffet(Caster, LastDamageTaken, Stat);
+            ModifStat = effet.ResultEffet(caster.EnemyStat, LastDamageTaken, PlayerStat);
         }
 
         if (ModifStat.Radiance < 0)
@@ -857,7 +857,6 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         //}
         GameManager.Instance.BattleMan.LogRadianceChange(this.Name, GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster), ModifStat.Radiance);
         PlayerStat.UpdateStat(ModifStat);
-        Stat.ModifStateAll(ModifStat);
         if (ModifStat.PalierChangement > 0)
             EnervementTension();
         else if (ModifStat.PalierChangement < 0)
