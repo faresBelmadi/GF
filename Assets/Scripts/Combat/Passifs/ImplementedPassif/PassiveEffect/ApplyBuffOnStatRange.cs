@@ -27,7 +27,7 @@ public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartC
     private BaseStats _triggerStat;
     [SerializeField]
     private List<BuffByRangeStat> _buffs;
-    CharacterStat _stat;
+    StatsHolder _stat;
 
     private BuffByRangeStat _currentBuff;
     public override string IdTradDesc
@@ -38,7 +38,7 @@ public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartC
         }
     }
 
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHolder charStat)
     {
        
     }
@@ -53,7 +53,7 @@ public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartC
         }
     }
 
-    public void InitPassif(CharacterStat stat)
+    public void InitPassif(StatsHolder stat)
     {
         _stat = stat;
         switch (_triggerStat)

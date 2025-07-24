@@ -14,7 +14,7 @@ public class StatOnDamagePassive : AbstractPassive, IOnDamagePassive, IStartComb
     private int _numberOfDamageSourceNeeded;
 
     private int _currentSource;
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHolder charStat)
     {
         _currentSource++;
 
@@ -26,7 +26,7 @@ public class StatOnDamagePassive : AbstractPassive, IOnDamagePassive, IStartComb
                 ModifStat(statToModif, modifStat);
             }
             _currentSource = 0;
-            charStat.ModifStateAll(modifStat);
+            charStat.UpdateStat(modifStat);
         }
 
 
@@ -51,17 +51,17 @@ public class StatOnDamagePassive : AbstractPassive, IOnDamagePassive, IStartComb
         _currentSource = 0;
     }
 
-    public void AddStack(CharacterStat stat,int numberOfStackToAdd)
+    public void AddStack(StatsHolder stat,int numberOfStackToAdd)
     {
         CharacterStat modifStat = CreateInstance<CharacterStat>();
         foreach (var statToModif in _statsToModif)
         {
             ModifStat(statToModif, modifStat);
         }
-        stat.ModifStateAll(modifStat);
+        stat.UpdateStat(modifStat);
     }
 
-    public JoueurStat GetStackModifStat(CharacterStat stat, int numberOfStackToAdd)
+    public JoueurStat GetStackModifStat(StatsHolder stat, int numberOfStackToAdd)
     {
         JoueurStat modifStat = CreateInstance<JoueurStat>();
         foreach (var statToModif in _statsToModif)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IUpdateStatPassive : IEffect
 {
-    void InitPassif(CharacterStat stat);
+    void InitPassif(StatsHolder stat);
     void Clear();
     void UpdateStat ();
 }

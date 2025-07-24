@@ -114,7 +114,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         foreach (var item in PassiveList)
         {
             if (item is IUpdateStatPassive passive)
-                passive.InitPassif(_stat);
+                passive.InitPassif(EnemyStat);
         }
 
         RefreshPassiveDescription();
@@ -140,7 +140,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             if (passif is IStartTurnPassive)
             {
                 IStartTurnPassive startTurnpassif = passif as IStartTurnPassive;
-                startTurnpassif.Apply(Stat);
+                startTurnpassif.Apply(EnemyStat);
             }
         }
 
@@ -565,7 +565,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             foreach (var item in PassiveList)
             {
                 if (item is IOnDamagePassive passive)
-                    passive.Apply(_stat);
+                    passive.Apply(EnemyStat);
             }
         }
         EnemyStat.UpdateStat(ModifStat);

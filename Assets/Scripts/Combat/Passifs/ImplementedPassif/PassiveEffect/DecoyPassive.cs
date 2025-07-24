@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New DecoyPassive passiv", menuName = "PassiveEffect/New DecoyPassive passiv")]
 public class DecoyPassive : AbstractPassive, IDecoyPassive, IStartCombatPassive, IDeathEffectPassive
 {
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHolder charStat)
     {
         
     }

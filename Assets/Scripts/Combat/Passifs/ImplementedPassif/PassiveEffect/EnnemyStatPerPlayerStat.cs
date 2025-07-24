@@ -27,11 +27,11 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
     private ConditionComparaison _conditionComparaison;
     [SerializeField]
     private ConditionStat _statToModif;
-    private EnnemiStat _ennemiStat;
+    private EnemyStatsHolder _ennemiStat;
 
-    public void InitPassif(CharacterStat stat)
+    public void InitPassif(StatsHolder stat)
     {
-        _ennemiStat = stat as EnnemiStat;
+        _ennemiStat = stat as EnemyStatsHolder;
         _ennemiStat.OnRadianceChange += UpdateStat;
         GameManager.Instance.playerStat.OnRadianceChange += UpdateStat;
     }
@@ -41,7 +41,7 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
         GameManager.Instance.playerStat.OnRadianceChange -= UpdateStat;
     }
 
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHolder charStat)
     {
         //Nothing to do
     }
@@ -51,7 +51,8 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
         switch (_statToModif.StatToModif)
         {
             case BaseStats.ForceAme:
-                _ennemiStat.ForceAmeBonus = Mathf.FloorToInt(((modificator / 100f) * _ennemiStat._forceAme));
+                int newValue = Mathf.FloorToInt(((modificator / 100f) * _ennemiStat.ForceDameWithoutBonus));
+                _ennemiStat.SetForceDameBonus(newValue);
                 break;
         }
     }

@@ -151,7 +151,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         foreach (var item in PassiveList)
         {
             if (item is StatPerConsciencePassive passive)
-                passive.InitPassif(_stat);
+                passive.InitPassif(PlayerStat);
         }
         IsDead = false;
         InitUI();

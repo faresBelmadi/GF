@@ -10,7 +10,7 @@ public class OnDeathEffectOnEnnemyPassif : AbstractPassive, IDeathEffectPassive
     [SerializeField]
     private StatToModif _statToModif;
 
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHolder charStat)
     {
         //...
     }

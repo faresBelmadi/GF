@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IEffect
 {
-    public void Apply(CharacterStat charStat);
+    public void Apply(StatsHolder charStat);
 }

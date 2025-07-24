@@ -17,15 +17,15 @@ public class StatPerConsciencePassive : AbstractPassive, IPassiveEffect
     private StatModif _mainStat;
     [SerializeField]
     private List<StatToModif> _statToModif;
-    private JoueurStat _joueurStat;
+    private PlayerStatsHolder _joueurStat;
     private int modificator = 1;
 
-    private int GetMainStatValue(CharacterStat charStat) => _mainStat switch
+    private int GetMainStatValue(StatsHolder charStat) => _mainStat switch
     {
-        StatModif.ConscienceMax => (charStat as JoueurStat).Conscience,
+        StatModif.ConscienceMax => (charStat as PlayerStatsHolder).Conscience,
         _ => 0
     };
-    public void InitPassif(JoueurStat stat)
+    public void InitPassif(PlayerStatsHolder stat)
     {
      
         _joueurStat = stat;
@@ -43,7 +43,7 @@ public class StatPerConsciencePassive : AbstractPassive, IPassiveEffect
         Apply(_joueurStat);
     }
 
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHolder charStat)
     {
         int mainStat = GetMainStatValue(charStat);
         JoueurStat modifStat = CreateInstance<JoueurStat>();
@@ -52,7 +52,7 @@ public class StatPerConsciencePassive : AbstractPassive, IPassiveEffect
             switch (item.Stat)
             {
                 case BaseStats.Resilience:
-                    _joueurStat.ResiliencePassif = mainStat * item.Ratio * modificator;
+                    charStat.SetResiliencePassit(mainStat * item.Ratio * modificator);
                     break;
                 case BaseStats.Clairvoyance:
                     modifStat.Clairvoyance += mainStat * item.Ratio * modificator;
@@ -62,6 +62,6 @@ public class StatPerConsciencePassive : AbstractPassive, IPassiveEffect
                     break;
             }
         }
-        charStat.ModifStateAll(modifStat);
+        charStat.UpdateStat(modifStat);
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class StatPassive : AbstractPassive, IPassiveEffect
 {
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHolder charStat)
     {
         throw new System.NotImplementedException();
     }

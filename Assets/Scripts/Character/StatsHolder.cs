@@ -20,7 +20,18 @@ public class StatsHolder
     #region PROPERTY STATS
     [field:SerializeField, ReadOnly] public int     Radiance { get; private set; }
     [field:SerializeField, ReadOnly] public int     RadianceMax { get; private set; }
-    [field:SerializeField, ReadOnly] public int     ForceAme { get; private set; }
+    [field: SerializeField, ReadOnly] private int _forceDame;
+    public int ForceAme
+    {
+        get => _forceDame + ForceAmeBonus;
+        set => _forceDame = value;
+    }
+    
+    public int ForceDameWithoutBonus
+    {
+        get => _forceDame;
+    }
+
     [field:SerializeField, ReadOnly] public int     ForceAmeBonus { get; private set; }
     [field:SerializeField, ReadOnly] public int     Vitesse { get; private set; }
     [field:SerializeField, ReadOnly] public int     Conviction { get; private set; }
@@ -44,6 +55,7 @@ public class StatsHolder
 
     #region EVENTS
     public event Action OnConvictionChanged;
+    public event Action OnRadianceChange;
     #endregion
 
 
@@ -91,6 +103,14 @@ public class StatsHolder
         CharacterStat newValue = ScriptableObject.CreateInstance<CharacterStat>();
         newValue.ForceAme = modifier;
         UpdateStat(newValue);
+    }
+    public void SetForceDameBonus(int newValue)
+    {
+        ForceAmeBonus = newValue;
+    }
+    public void SetResiliencePassit(int newValue)
+    {
+        ResiliencePassif = newValue;
     }
     public void UpdateStat(CharacterStat charStatModifier)
     {
@@ -264,10 +284,12 @@ public class StatsHolder
         if (charStatModifier.Radiance < 0)
         {
             Radiance -= Mathf.FloorToInt(charStatModifier.Radiance * MultiplDef);
+            OnRadianceChange?.Invoke();
         }
-        else
+        else if (charStatModifier.Radiance > 0)
         {
             Radiance -= Mathf.FloorToInt(charStatModifier.Radiance * MultiplSoin);
+            OnRadianceChange?.Invoke();
         }
 
         if (charStatModifier.isStun)

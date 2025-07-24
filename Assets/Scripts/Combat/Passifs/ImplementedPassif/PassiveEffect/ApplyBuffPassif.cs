@@ -17,9 +17,9 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemy
     private List<BuffDebuff> _listBuffToApply;
     EnnemyBehavior _behavior;
 
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHolder charStat)
     {
-        charStat = charStat as EnnemiStat;
+        charStat = charStat as EnemyStatsHolder;
         switch (_triggerStat)
         {
             case BaseStats.None:
@@ -29,7 +29,8 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemy
                 {
                     if (_gainTension)
                     {
-                        charStat.Tension += charStat.ValeurPalier;
+                        charStat.ChangeTension(charStat.ValeurPalier);
+                        
                     }
                     ApplyBuff();
                 }

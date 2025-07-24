@@ -1247,7 +1247,7 @@ public class DialogueManager : MonoBehaviour
                 {
                     if (passif is IAddStackPassive addStackPassiv)
                     {
-                        enemyScript.EnemyStat.UpdateStat(addStackPassiv.GetStackModifStat(enemyScript.Stat, scriptableObject.ValeurBrut));
+                        enemyScript.EnemyStat.UpdateStat(addStackPassiv.GetStackModifStat(enemyScript.EnemyStat, scriptableObject.ValeurBrut));
                     }
                 }
             }
