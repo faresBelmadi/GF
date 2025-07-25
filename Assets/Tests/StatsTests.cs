@@ -106,13 +106,13 @@ public partial class StatsTests
         Assert.AreEqual(stat.RadianceMax, -0);
     }
     #endregion
-    #region TEST STATSHOLDER
+    #region TEST StatsHandler
     [Test]
-    public void ConstructorStatsHolder()
+    public void ConstructorStatsHandler()
     {
         var baseStat = CreateStatSO(0);
         
-        var statHolder = new StatsHolder(baseStat);
+        var statHolder = new StatsHandler(baseStat);
         
         Assert.That(statHolder.Calme, Is.EqualTo(baseStat.Calme));
         Assert.That(statHolder.Conviction, Is.EqualTo(baseStat.Conviction));
@@ -129,13 +129,13 @@ public partial class StatsTests
         Assert.That(statHolder.BaseRadianceMax, Is.EqualTo(baseStat.RadianceMax));
     }
     [Test]
-    public void UpdateStatsHolder()
+    public void UpdateStatsHandler()
     {
         int baseValue = 0;
         var baseStat = CreateStatSO(baseValue);
         var modifStat = CreateStatSO(10);
 
-        var statHolder = new StatsHolder(baseStat);
+        var statHolder = new StatsHandler(baseStat);
         statHolder.UpdateStat(modifStat);
 
         Assert.That(statHolder.Calme, Is.EqualTo(10));
@@ -165,7 +165,7 @@ public partial class StatsTests
         var baseStat = CreateStatSO(baseValue);
         var modifStat = CreateStatSO(10);
 
-        var statHolder = new StatsHolder(baseStat);
+        var statHolder = new StatsHandler(baseStat);
         statHolder.UpdateStat(modifStat);
         statHolder.ResetStat();
         Assert.That(statHolder.Calme, Is.EqualTo(baseValue));

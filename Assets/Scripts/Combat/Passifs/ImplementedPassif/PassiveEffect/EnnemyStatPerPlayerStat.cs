@@ -27,11 +27,11 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
     private ConditionComparaison _conditionComparaison;
     [SerializeField]
     private ConditionStat _statToModif;
-    private EnemyStatsHolder _ennemiStat;
+    private EnemyStatsHandler _ennemiStat;
 
-    public void InitPassif(StatsHolder stat)
+    public void InitPassif(StatsHandler stat)
     {
-        _ennemiStat = stat as EnemyStatsHolder;
+        _ennemiStat = stat as EnemyStatsHandler;
         _ennemiStat.OnRadianceChange += UpdateStat;
         GameManager.Instance.playerStat.OnRadianceChange += UpdateStat;
     }
@@ -41,7 +41,7 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
         GameManager.Instance.playerStat.OnRadianceChange -= UpdateStat;
     }
 
-    public void Apply(StatsHolder charStat)
+    public void Apply(StatsHandler charStat)
     {
         //Nothing to do
     }

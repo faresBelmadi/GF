@@ -23,12 +23,12 @@ public class BuffDebuffComponant : MonoBehaviour, IPointerEnterHandler, IPointer
     
     private void OnEnable()
     {
-        CombatBehavior<CharacterStat>.OnUpdateUI += UpdateUI;
+        CombatBehavior<StatsHandler>.OnUpdateUI += UpdateUI;
         TradManager.OnRefreshTranslation += SetNameAndDescription;
     }
     private void OnDisable()
     {
-        CombatBehavior<CharacterStat>.OnUpdateUI -= UpdateUI;
+        CombatBehavior<StatsHandler>.OnUpdateUI -= UpdateUI;
         TradManager.OnRefreshTranslation -= SetNameAndDescription;
     }
 

@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour
 
     public ClassPlayer classSO;
     /*[HideInInspector]*/ public JoueurStat playerStat;
-    public PlayerStatsHolder playerStatHolder;
+    public PlayerStatsHandler playerStatHolder;
 
     public int ClassIDSelected;
 

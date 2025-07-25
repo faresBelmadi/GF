@@ -28,11 +28,11 @@ public partial class StatsTests
         return stat;
     }
     [Test]
-    public void ConstructorPlayerStatsHolder()
+    public void ConstructorPlayerStatsHandler()
     {
         var baseStat = CreatePlayerStatSO(0, 3, 5);
 
-        var statHolder = new PlayerStatsHolder(baseStat);
+        var statHolder = new PlayerStatsHandler(baseStat);
 
         Assert.That(statHolder.Calme, Is.EqualTo(baseStat.Calme));
         Assert.That(statHolder.Conviction, Is.EqualTo(baseStat.Conviction));
@@ -60,13 +60,13 @@ public partial class StatsTests
     }
 
     [Test]
-    public void UpdatePlayerStatsHolder()
+    public void UpdatePlayerStatsHandler()
     {
         int baseValue = 0;
         var baseStat = CreatePlayerStatSO(baseValue, 3, 5);
         var modifStat = CreatePlayerStatSO(10, 0, 5);
 
-        var statHolder = new PlayerStatsHolder(baseStat);
+        var statHolder = new PlayerStatsHandler(baseStat);
         var obj = GameObject.FindObjectOfType<GameManager>();
         GameObject go = GameObject.Instantiate(obj.gameObject);
         GameManager gm = go.GetComponent<GameManager>();

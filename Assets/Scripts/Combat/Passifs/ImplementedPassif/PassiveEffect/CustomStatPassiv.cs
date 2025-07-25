@@ -26,8 +26,8 @@ public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnP
     [Tooltip("Chaque point de la custom stat donnera autant de points de stat que le ratio indique")]
     [SerializeField]
     private List<StatToModif> _conversionStat;
-    private EnemyStatsHolder _ennemiStat;
-    public void Apply(StatsHolder charStat)
+    private EnemyStatsHandler _ennemiStat;
+    public void Apply(StatsHandler charStat)
     {
         int indPalier = UnityEngine.Random.Range(0, _palierActions.Count);
 
@@ -35,19 +35,19 @@ public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnP
         {
             case CustomStatPalierAction.GainStat:
                 Debug.Log("Gain Stat : " + _palierActions[indPalier].Value);
-                ((EnemyStatsHolder)charStat).CustomStat += _palierActions[indPalier].Value;
+                ((EnemyStatsHandler)charStat).CustomStat += _palierActions[indPalier].Value;
                 break;
             case CustomStatPalierAction.ResetAndRefreshTension:
                 Debug.Log("Reset");
-                charStat.ChangeTension(Mathf.RoundToInt(((EnemyStatsHolder)charStat).CustomStat * _palierActions[indPalier].Value));
-                ((EnemyStatsHolder)charStat).CustomStat = 0;
+                charStat.ChangeTension(Mathf.RoundToInt(((EnemyStatsHandler)charStat).CustomStat * _palierActions[indPalier].Value));
+                ((EnemyStatsHandler)charStat).CustomStat = 0;
                 break;
         }
     }
 
-    public void InitPassif(StatsHolder stat)
+    public void InitPassif(StatsHandler stat)
     {
-        _ennemiStat = stat as EnemyStatsHolder;
+        _ennemiStat = (EnemyStatsHandler) stat;
         _ennemiStat.OnCustomStatModification += UpdateStat;
         
     }

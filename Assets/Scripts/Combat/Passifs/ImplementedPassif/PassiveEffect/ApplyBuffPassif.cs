@@ -17,9 +17,9 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemy
     private List<BuffDebuff> _listBuffToApply;
     EnnemyBehavior _behavior;
 
-    public void Apply(StatsHolder charStat)
+    public void Apply(StatsHandler charStat)
     {
-        charStat = charStat as EnemyStatsHolder;
+        //charStat = charStat as EnemyStatsHandler;
         switch (_triggerStat)
         {
             case BaseStats.None:

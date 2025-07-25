@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IUpdateBehaviorPassive : IEffect
 {
-    void InitPassif(CombatBehavior<CharacterStat> behavior);
+    void InitPassif(CombatBehavior<StatsHandler> behavior);
     void Clear();
     void UpdateStat();
 }

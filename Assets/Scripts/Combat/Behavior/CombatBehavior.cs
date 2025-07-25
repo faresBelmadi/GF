@@ -2,18 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
+public abstract class CombatBehavior<T> : MonoBehaviour where T : StatsHandler
 {
     [SerializeField]
     protected T _stat;
-    public virtual T Stat 
+    public virtual T Stat
     {
         get => _stat;
         set { _stat = value; }
     }
+    public virtual StatsHandler Stats { get; set; }
     public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
     public Material characterMaterial;
     public float deathDisolveTime = 2f;
@@ -122,7 +122,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         return buff;
     }
 
-    public void AddBuffDebuff(BuffDebuff toAdd, CharacterStat characterStat)
+    public void AddBuffDebuff(BuffDebuff toAdd, StatsHandler characterStat)
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);
        
@@ -249,7 +249,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         return new string[2] { buffDebuffName, buffDebuffDescription };
     }
     
-    public void DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte decompte, CharacterStat toChange)
+    public void DecompteDebuff(List<BuffDebuff> BuffDebuff, Decompte decompte)
     {
         //Debug.Log($"Decompte Buffs: {Timer.ToString()}");
         foreach (var item in BuffDebuff)
@@ -299,12 +299,12 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
             foreach (var effet in buff.Effet)
             {
                 if (effet.TypeEffet != TypeEffet.RadianceMax)
-                    Stat.removeStat(effet.modifstateOutput);
+                    Stat.RemoveStat(effet.modifstateOutput);
                 else
                 {
                     effet.modifstateOutput.Radiance =
                         Mathf.FloorToInt((effet.Pourcentage / 100f) * Stat.Radiance);
-                    Stat.removeStat(effet.modifstateOutput);
+                    Stat.RemoveStat(effet.modifstateOutput);
                 }
             }
         }
@@ -328,12 +328,12 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
             foreach (var effet in buff.Effet)
             {
                 if (effet.TypeEffet != TypeEffet.RadianceMax)
-                    Stat.removeStat(effet.modifstateOutput);
+                    Stat.RemoveStat(effet.modifstateOutput);
                 else
                 {
                     effet.modifstateOutput.Radiance =
                         Mathf.FloorToInt((effet.Pourcentage / 100f) * Stat.Radiance);
-                    Stat.removeStat(effet.modifstateOutput);
+                    Stat.RemoveStat(effet.modifstateOutput);
                 }
             }
             string buffDebuffName;
@@ -382,7 +382,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
         }
     }
-    public List<BuffDebuff> UpdateBuffDebuffGameObject(List<BuffDebuff> ListBuffDebuff, CharacterStat toChange)
+    public List<BuffDebuff> UpdateBuffDebuffGameObject(List<BuffDebuff> ListBuffDebuff, StatsHandler toChange)
     {
         foreach (var item in ListBuffDebuff)
         {
@@ -393,12 +393,12 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
                     foreach (var effet in item.Effet)
                     {
                         if (effet.TypeEffet != TypeEffet.RadianceMax)
-                            toChange.removeStat(effet.modifstateOutput);
+                            toChange.RemoveStat(effet.modifstateOutput);
                         else
                         {
                             effet.modifstateOutput.Radiance =
                                 Mathf.FloorToInt((effet.Pourcentage / 100f) * toChange.Radiance);
-                            toChange.removeStat(effet.modifstateOutput);
+                            toChange.RemoveStat(effet.modifstateOutput);
                         }
                     }
                 }
@@ -482,7 +482,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         else
             t++;
 
-        Stat.Tension = t * Stat.ValeurPalier;
+        Stat.SetTension(t * Stat.ValeurPalier);
     }
 
     public void ApaisementTension()
@@ -494,40 +494,42 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
         else
             t--;
 
-        Stat.Tension = t * Stat.ValeurPalier;
+        Stat.SetTension(t * Stat.ValeurPalier);
     }
 
     public void ReceiveTension(Source sourceDamage)
     {
         int oldPalier = (int)(_stat.Tension / _stat.ValeurPalier);
+        int tensionModifier = 0;
         switch (sourceDamage)
         {
             case Source.Attaque:
-                Stat.Tension += commonStats.GainTensionAttaque;
+                tensionModifier = commonStats.GainTensionAttaque;
                 gainedTension = true;
                 break;
             case Source.Dot:
-                Stat.Tension += commonStats.GainTensionDot;
+                tensionModifier = commonStats.GainTensionDot;
                 gainedTension = true;
                 break;
             case Source.Buff:
-                Stat.Tension += commonStats.GainTensionDebuff;
+                tensionModifier = commonStats.GainTensionDebuff;
                 gainedTension = true;
                 break;
             case Source.Soin:
-                Stat.Tension += commonStats.GainTensionSoin;
+                tensionModifier = commonStats.GainTensionSoin;
                 gainedTension = true;
                 break;
         }
+        Stat.ChangeTension(tensionModifier);
         int newPalier = (int)(_stat.Tension / _stat.ValeurPalier);
         if (oldPalier < newPalier)
             OnGainTensionLevel?.Invoke();                               // On gagne un palier de tension
         if (Stat.Tension >= Stat.ValeurPalier * commonStats.NbPalier)
         {
-            Stat.Tension = Stat.ValeurPalier * commonStats.NbPalier;
+            Stat.SetTension(Stat.ValeurPalier * commonStats.NbPalier);
         }
         if (Stat.Tension < 0)
-            Stat.Tension = 0;
+            Stat.SetTension(0);
     }
 
     public virtual bool CanHaveAnotherTurn()
@@ -537,18 +539,8 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : CharacterStat
 
         return Stat.Tension >= Stat.TensionMax;
     }
-    public virtual void ResetStat()
-    {
-        Stat.MultiplDegat = 1;
-        Stat.MultiplDef = 1;
-        Stat.MultiplSoin = 1;
-        Stat.MultipleBuffDebuff = 1;
-        Stat.RadianceMax = Stat.RadianceMaxOriginal;
-        Stat.Vitesse = Stat.VitesseOriginal;
-        Stat.Resilience = Stat.ResilienceOriginal;
-        Stat.ForceAme = Stat.ForceAmeOriginal;
-        Stat.Conviction = Stat.ConvictionOriginal;
-    }
+    public virtual void ResetStat() => Stat.ResetStat();
+   
     public void MakeIntangible()
     {
         IsIntangible = true;

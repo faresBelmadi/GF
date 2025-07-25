@@ -3,11 +3,11 @@ using UnityEngine;
 using UnityEngine.UI.Extensions;
 
 [Serializable]
-public class EnemyStatsHolder : StatsHolder
+public class EnemyStatsHandler : StatsHandler
 {
     #region BASE STATS
-    [SerializeField, ReadOnly] private readonly EnnemiStat _baseStat;
-
+    private EnnemiStat _baseStat;
+    public new EnnemiStat BaseStat { get { return _baseStat; } }
     public int BaseDissimulation => _baseStat.DissimulationOriginal;
     #endregion
 
@@ -33,12 +33,17 @@ public class EnemyStatsHolder : StatsHolder
     #region EVENTS
     public event Action OnCustomStatModification;
     #endregion
-    public EnemyStatsHolder(EnnemiStat charStat) : base(charStat)
+    public EnemyStatsHandler(EnnemiStat charStat) : base(charStat)
     {
         Dissimulation = charStat.Dissimulation;
         _customStat = charStat.CustomStat;
 
         _baseStat = charStat;
+    }
+    public override void ResetStat()
+    {
+        Dissimulation = BaseDissimulation;
+        base.ResetStat();
     }
 
 }

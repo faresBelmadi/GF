@@ -4,20 +4,21 @@ using UnityEngine;
 using UnityEngine.UI.Extensions;
 
 [Serializable]
-public class PlayerStatsHolder : StatsHolder
+public class PlayerStatsHandler : StatsHandler
 {
     #region BASE STATS
     [SerializeField, ReadOnly] private JoueurStat _baseStat;
-
+   
+    public new JoueurStat BaseStat { get { return _baseStat; } }
     public int BaseConscienceMax => _baseStat.ConscienceMax;
     public int BaseClairvoyance => _baseStat.ClairvoyanceOriginal;
     #endregion
 
     #region STATS PROPERTY
     [field:SerializeField, ReadOnly] public int Lvl { get; private set; }
-    [field: SerializeField, ReadOnly] public int Volonte { get; private set; }
-    [field: SerializeField, ReadOnly] public int VolonteMax { get; private set; }
-    [field: SerializeField, ReadOnly] public int Conscience { get; private set; }
+    [field: SerializeField, ReadOnly] public int Volonte { get; set; }
+    [field: SerializeField, ReadOnly] public int VolonteMax { get; set; }
+    [field: SerializeField, ReadOnly] public int Conscience { get; set; }
     [field: SerializeField, ReadOnly] public int ConscienceMax { get; private set; }
     [field: SerializeField, ReadOnly] public int Clairvoyance { get; private set; }
     #endregion
@@ -26,7 +27,7 @@ public class PlayerStatsHolder : StatsHolder
     public event Action OnConscienceIncrease;
     public event Action OnConscienceDecrease;
     #endregion
-    public PlayerStatsHolder(JoueurStat charStat) : base(charStat)
+    public PlayerStatsHandler(JoueurStat charStat) : base(charStat)
     {
         Lvl = charStat.Lvl;
         Volonte = charStat.Volonter;
@@ -89,5 +90,10 @@ public class PlayerStatsHolder : StatsHolder
         VolonteMax = 0;
 
         base.SetZero();
+    }
+    public override void ResetStat()
+    {
+        Clairvoyance = BaseClairvoyance;
+        base.ResetStat();
     }
 }

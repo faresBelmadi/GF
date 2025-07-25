@@ -4,11 +4,11 @@ using UnityEngine;
 using UnityEngine.UI.Extensions;
 
 [Serializable]
-public class StatsHolder
+public class StatsHandler
 {
     #region BASE STATS
-    private readonly CharacterStat _baseStat;
-
+    private CharacterStat _baseStat;
+    public CharacterStat BaseStat { get { return _baseStat; } }
     public int BaseRadianceMax => _baseStat.RadianceMax;
     public int BaseForceDame => _baseStat.ForceAmeOriginal;
     public int BaseVitesse => _baseStat.VitesseOriginal;
@@ -38,19 +38,19 @@ public class StatsHolder
     [field:SerializeField, ReadOnly] public int     Calme { get; private set; }
     [field:SerializeField, ReadOnly] public int     Resilience { get; private set; }
     [field:SerializeField, ReadOnly] public int     ResiliencePassif { get; private set; }
-    [field:SerializeField, ReadOnly] public int     Essence { get; private set; }
+    [field:SerializeField, ReadOnly] public int     Essence { get; set; }
     [field:SerializeField, ReadOnly] public float   MultiplDef { get; private set; }
     [field:SerializeField, ReadOnly] public float   MultiplSoin { get; private set; }
     [field:SerializeField, ReadOnly] public float   MultiplDegat { get; private set; }
     [field:SerializeField, ReadOnly] public float   MultiplBuffDebuff { get; private set; }
     [field:SerializeField, ReadOnly] public float   MultiplTension { get; private set; }
-    [field:SerializeField, ReadOnly] public float   Tension { get; private set; }
-    [field:SerializeField, ReadOnly] public float   TensionMax { get; private set; }
-    [field:SerializeField, ReadOnly] public float   ValeurPalier { get; private set; }
+    [field:SerializeField, ReadOnly] public float   Tension { get; set; }
+    [field:SerializeField, ReadOnly] public float   TensionMax { get; set; }
+    [field:SerializeField, ReadOnly] public float   ValeurPalier { get; set; }
     [field:SerializeField, ReadOnly] public int     PalierChangement { get; private set; }
-    [field:SerializeField, ReadOnly] public bool    IsStun { get; private set; }
+    [field:SerializeField, ReadOnly] public bool    IsStun { get; set; }
 
-    [field: SerializeField, ReadOnly] public List<BuffDebuff> ListBuffDebuff { get; private set; }
+    [field: SerializeField, ReadOnly] public List<BuffDebuff> ListBuffDebuff { get; set; }
     #endregion
 
     #region EVENTS
@@ -59,7 +59,7 @@ public class StatsHolder
     #endregion
 
 
-    public StatsHolder(CharacterStat charStat)
+    public StatsHandler(CharacterStat charStat)
     {
         Radiance               = charStat.Radiance;
         RadianceMax            = charStat.RadianceMax;
@@ -86,6 +86,10 @@ public class StatsHolder
         _baseStat = charStat;
 
     }
+    public void SetTension (float newValue)
+    {
+        ChangeTension(-Tension + newValue);
+    }
     public void ChangeTension(float modifier)
     {
         CharacterStat newValue = ScriptableObject.CreateInstance<CharacterStat>();
@@ -97,6 +101,18 @@ public class StatsHolder
         CharacterStat newValue = ScriptableObject.CreateInstance<CharacterStat>();
         newValue.Radiance = modifier;
         UpdateStat(newValue);
+    }
+    /// <summary>
+    /// Set Radiance without raise the OnRadianceChange Event
+    /// </summary>
+    /// <param name="newValue">the new value for Radiance</param>
+    public void SetRadiance(int newValue)
+    {
+        Radiance = newValue;
+    }
+    public void RemoveAmountRadiance(int amount)
+    {
+        Radiance -= amount;
     }
     public void ChangeForceDame(int modifier)
     {

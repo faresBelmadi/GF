@@ -55,13 +55,13 @@ public class TurnOrderUIManager : MonoBehaviour
             else
                 entityName = TutoManager.Instance.TutoClassSo.NameClass;
             GameObject cible = null;
-            Sprite icon = battleManager.player.Stat.Icon;
+            Sprite icon = battleManager.player.Stat.BaseStat.Icon;
             Material charMaterial = null;
             if (IdOrder[i].id != battleManager.idPlayer)
             {
                 entityName = ennemyBehavior.Name;
                 cible = ennemyBehavior.GetComponent<UIEnnemi>().Ciblage;
-                icon = ennemyBehavior.Stat.Icon;
+                icon = ennemyBehavior.Stat.BaseStat.Icon;
                 charMaterial = ennemyBehavior.characterMaterial;
             }
 

@@ -37,7 +37,7 @@ public class SpellCombat : MonoBehaviour
 
     public bool CheckPrice()
     {
-        JoueurStat stat;
+        PlayerStatsHandler stat;
         if (GameManager.Instance != null)
             stat = GameManager.Instance.BattleMan?.player.Stat;
         else
@@ -57,7 +57,7 @@ public class SpellCombat : MonoBehaviour
                             return false;
                         break;
                     case TypeCostSpell.volonte:
-                        if (stat.Volonter < price.Value)
+                        if (stat.Volonte < price.Value)
                             return false;
                         break;
                 }

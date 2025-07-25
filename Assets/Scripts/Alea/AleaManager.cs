@@ -8,11 +8,11 @@ public class AleaManager : MonoBehaviour
 
     private EncounterAlea Rencontre;
     private GameObject _pnj;
-    private PlayerStatsHolder _stat;
+    private PlayerStatsHandler _stat;
     private bool _isAlea = false;
     public bool IsAlea { get => _isAlea; }
 
-    public PlayerStatsHolder Stat => _stat;
+    public PlayerStatsHandler Stat => _stat;
 
     
 

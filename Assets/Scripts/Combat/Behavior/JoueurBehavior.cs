@@ -6,18 +6,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class JoueurBehavior : CombatBehavior<JoueurStat>
+public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
 {
-    public override JoueurStat Stat {
-        get => _stat;
-        set
-        {
-            _stat = value;
-        }
-    }
 
 
-    public PlayerStatsHolder PlayerStat;
+    public PlayerStatsHandler PlayerStat;
     [SerializeField] private List<GameObject> Spells;
     [SerializeField] private Transform DamageSpawn;
     [SerializeField] private GameObject DamagePrefab;
@@ -62,6 +55,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     [SerializeField] private Animator _deathAnimator;
 
 
+
     public static event Action OnConvictionFull;
     public static event Action OnConvictionEmpty;
 
@@ -94,16 +88,18 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     public void StartUp()
     {
         commonStats = GameManager.Instance.CommonStatsData;
-        PlayerStat = new PlayerStatsHolder(Stat);
+        PlayerStat = new PlayerStatsHandler(GameManager.Instance.playerStat);
+        /* utile ?
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.ClairvoyanceOriginal = Stat.Clairvoyance;
         Stat.ResilienceOriginal = Stat.Resilience - (int) Stat.ResiliencePassif;
         Stat.ConvictionOriginal = Stat.Conviction;
         Stat.ForceAmeOriginal = Stat.ForceAme;
+        */
         if (Spells != null && Spells.Count > 0)
             ClearSpells();
-        foreach (var item in Stat.ListSpell)
+        foreach (var item in Stat.BaseStat.ListSpell)
         {
             var temp = Instantiate(SpellPrefab, SpellsSpawn.transform);
             Spell SpelleToUse = CheckSouvenirSpell(item);
@@ -143,9 +139,9 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         if (_stat != null)
         {
             PassiveList = new List<AbstractPassive>();
-            for (int i = 0; i < _stat.PassiveList.Count; i++)
+            for (int i = 0; i < _stat.BaseStat.PassiveList.Count; i++)
             {
-                PassiveList.Add(Instantiate(_stat.PassiveList[i]));
+                PassiveList.Add(Instantiate(_stat.BaseStat.PassiveList[i]));
             }
         }
         foreach (var item in PassiveList)
@@ -168,9 +164,9 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     private Spell CheckSouvenirSpell(Spell item)
     {
-        if (Stat.ListSouvenir == null || Stat.ListSouvenir.Count == 0)
+        if (Stat.BaseStat.ListSouvenir == null || Stat.BaseStat.ListSouvenir.Count == 0)
             return item;
-        foreach (var souvenir in Stat.ListSouvenir)
+        foreach (var souvenir in Stat.BaseStat.ListSouvenir)
         {
             if (souvenir.SouvenirSpell != null && souvenir.Equiped)
             {
@@ -228,8 +224,8 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         currentCons = Stat.Conscience;
 
 
-        _volonteManager.UpdateMaxVolonte(Stat.VolonterMax);
-        _volonteManager.UpdatePoint(Stat.Volonter);
+        _volonteManager.UpdateMaxVolonte(Stat.VolonteMax);
+        _volonteManager.UpdatePoint(Stat.Volonte);
 
 
         HpText.text = $"{Stat.Radiance.ToString()}/{Stat.RadianceMax}";
@@ -240,9 +236,9 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         StatClairvoyanceText.text = Stat.Clairvoyance + "";
 
 
-        if (Stat.Clairvoyance > Stat.ClairvoyanceOriginal)
+        if (Stat.Clairvoyance > Stat.BaseClairvoyance)
             StatClairvoyanceBg.color = green;
-        else if (Stat.Clairvoyance < Stat.ClairvoyanceOriginal)
+        else if (Stat.Clairvoyance < Stat.BaseClairvoyance)
             StatClairvoyanceBg.color = red;
         else
             StatClairvoyanceBg.color = Color.white;
@@ -250,36 +246,36 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         StatForceAmeText.text = Stat.ForceAme + "";
 
-        if (Stat.ForceAme > Stat.ForceAmeOriginal)
+        if (Stat.ForceAme > Stat.BaseForceDame)
             StatForceAmeBg.color = new Color(147, 250, 165);
-        else if (Stat.ForceAme < Stat.ForceAmeOriginal)
+        else if (Stat.ForceAme < Stat.BaseForceDame)
             StatForceAmeBg.color = red;
         else
             StatForceAmeBg.color = Color.white;
 
         StatSpeedText.text = Stat.Vitesse + "";
 
-        if (Stat.Vitesse > Stat.VitesseOriginal)
+        if (Stat.Vitesse > Stat.BaseVitesse)
             StatSpeedBg.color = green;
-        else if (Stat.Vitesse < Stat.VitesseOriginal)
+        else if (Stat.Vitesse < Stat.BaseVitesse)
             StatSpeedBg.color = red;
         else
             StatSpeedBg.color = Color.white;
 
         StatConvictionText.text = Stat.Conviction + "";
 
-        if (Stat.Conviction > Stat.ConvictionOriginal)
+        if (Stat.Conviction > Stat.BaseConviction)
             StatConvictionBg.color = green;
-        else if (Stat.Conviction < Stat.ConvictionOriginal)
+        else if (Stat.Conviction < Stat.BaseConviction)
             StatConvictionBg.color = red;
         else
             StatConvictionBg.color = Color.white;
 
         StatResilienceText.text = Stat.Resilience + "";
 
-        if (Stat.Resilience > Stat.ResilienceOriginal)
+        if (Stat.Resilience > Stat.BaseResilience)
             StatResilienceBg.color = green;
-        else if (Stat.Resilience < Stat.ResilienceOriginal)
+        else if (Stat.Resilience < Stat.BaseResilience)
             StatResilienceBg.color = red;
         else
             StatResilienceBg.color = Color.white;
@@ -336,10 +332,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         //Play SFX for starting turn
         AudioManager.instance.SFX.PlaySFXClip(SFXType.StartTurnSFX);
         IsTurn = true;
-       
+
         /* Resplenish willpower */
-        if(_playedTurn >= 1)
-            Stat.Volonter = Stat.VolonterMax; 
+        if (_playedTurn >= 1)
+            Stat.Volonte = Stat.VolonteMax;
 
         DecompteDebuffJoueur(Decompte.tour, TimerApplication.DebutTour);
 
@@ -359,10 +355,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
         UpdateUI();
 
-        if (Stat.isStun)
+        if (Stat.IsStun)
         {
             Debug.Log("is stuned");
-            Stat.isStun = false;
+            Stat.IsStun = false;
             EndTurn();
         }
     }
@@ -380,9 +376,8 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     public override void ResetStat()
     {
-
-        Stat.Clairvoyance = Stat.ClairvoyanceOriginal;
-        Stat.Radiance = Mathf.RoundToInt((Stat.Radiance / (Stat.RadianceMax * 1f)) * Stat.RadianceMaxOriginal);
+        Stat.ResetStat();
+        //Stat.Radiance = Mathf.RoundToInt((Stat.Radiance / (Stat.RadianceMax * 1f)) * Stat.RadianceMaxOriginal);
         nbBuffDebuffApplied = 0;
         _convictionManager.UpdatePoint(0);
         _convictionManager.UpdateMaxConviction(0);
@@ -394,7 +389,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     {
         if (IsDead) return;
         IsDead = true;
-        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerDeathSFX, Stat.DeathSFX);
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerDeathSFX, Stat.BaseStat.DeathSFX);
         ResetStat();
         _refBattleMan.DeadPlayer();
     }
@@ -406,7 +401,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     {
         _deathAnimator.SetTrigger("Die");
         GetComponent<Animator>().enabled = false ;
-        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDeathSFX, Stat.DeathSFX);
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDeathSFX, Stat.BaseStat.DeathSFX);
         float time = 0f;
         while (time < deathDisolveTime)
         {
@@ -543,10 +538,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
                     Stat.Conscience -= price.Value;
                     break;
                 case TypeCostSpell.radiance:
-                    Stat.Radiance -= price.Value;
+                    Stat.RemoveAmountRadiance(price.Value);
                     break;
                 case TypeCostSpell.volonte:
-                    Stat.Volonter -= price.Value;
+                    Stat.Volonte -= price.Value;
                     break;
             }
         }
@@ -643,12 +638,12 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
             foreach (var effet in buff.Effet)
             {
                 if (effet.TypeEffet != TypeEffet.RadianceMax)
-                    Stat.removeStat(effet.modifstateOutput);
+                    Stat.RemoveStat(effet.modifstateOutput);
                 else
                 {
                     effet.modifstateOutput.Radiance =
                         Mathf.FloorToInt((effet.Pourcentage / 100f) * Stat.Radiance);
-                    Stat.removeStat(effet.modifstateOutput);
+                    Stat.RemoveStat(effet.modifstateOutput);
                 }
 
 
@@ -711,7 +706,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         }
         
 
-        for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
+        for (int i = 0; i < Stat.MultiplBuffDebuff; i++)
         {
             if(((toAdd.IDCombatOrigine == _refBattleMan.idPlayer && Stat.Conviction > 0 && !toAdd.IsDebuff) 
                 || (toAdd.IDCombatOrigine !=  _refBattleMan.idPlayer && Stat.Conviction<0 && toAdd.IsDebuff)) && _refBattleMan.IsCombatOn)
@@ -753,7 +748,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     private void DecompteDebuffJoueur(Decompte Decompte, TimerApplication Timer)
     {
       
-        DecompteDebuff(Stat.ListBuffDebuff, Decompte, this.Stat);
+        DecompteDebuff(Stat.ListBuffDebuff, Decompte);
         Stat.ListBuffDebuff = UpdateBuffDebuffGameObject(Stat.ListBuffDebuff, Stat);
 
         var tempListBuffDebuff = Stat.ListBuffDebuff;
@@ -823,7 +818,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     #region Effet
 
-    public void ApplicationEffet(Effet effet, EnnemiStat Caster = null, SourceEffet source = SourceEffet.Spell,
+    public void ApplicationEffet(Effet effet, EnemyStatsHandler Caster = null, SourceEffet source = SourceEffet.Spell,
         int idCaster = 0)
     {
         
@@ -855,7 +850,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
         //    effet.IsFirstApplication = false;
         //    ModifStat.Radiance += ModifStat.RadianceMax;
         //}
-        GameManager.Instance.BattleMan.LogRadianceChange(this.Name, GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster), ModifStat.Radiance);
+        GameManager.Instance.BattleMan.LogRadianceChange(this.Name, GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster.BaseStat), ModifStat.Radiance);
         PlayerStat.UpdateStat(ModifStat);
         if (ModifStat.PalierChangement > 0)
             EnervementTension();
@@ -917,9 +912,10 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
     public void UseEssence(int Essence, Source source)
     {
         Debug.Log("Player use essence to heal " + Essence + " radiance.");
-        Stat.Radiance += Essence;
-        if (Stat.Radiance > Stat.RadianceMax)
-            Stat.Radiance = Stat.RadianceMax;
+        Stat.ChangeRadiance(Essence);
+        
+        //if (Stat.Radiance > Stat.RadianceMax)
+        //    Stat.Radiance = Stat.RadianceMax;
         AudioManager.instance.SFX.PlaySFXClip(SFXType.EssenceConsuptionSFX);
         hPBarManager.UpdatePBar(Stat.Radiance, Stat.RadianceMax);
         ReceiveTension(source);
@@ -931,7 +927,7 @@ public class JoueurBehavior : CombatBehavior<JoueurStat>
 
     public void GetAttacked()
     {
-        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerDamageTakenSFX, Stat.DamageSFX);
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.PlayerDamageTakenSFX, Stat.BaseStat.DamageSFX);
         DecompteDebuffJoueur(Decompte.none, TimerApplication.Attaque);
         AnimationController.GetAttacked();
         _isHurt = true;

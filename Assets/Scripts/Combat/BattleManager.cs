@@ -126,11 +126,11 @@ public class BattleManager : MonoBehaviour
     {
         if (stat == null) return null;
 
-        if (player.Stat == stat)
+        if (player.Stat.BaseStat == stat)
             return player.Name;
         foreach (var ennemy in EnemyScripts)
         {
-            if (ennemy.Stat == stat)
+            if (ennemy.Stat.BaseStat == stat)
                 return ennemy.Name;
         }
 
@@ -174,7 +174,7 @@ public class BattleManager : MonoBehaviour
 
                 string NameLoot = allSouvenirRareter[randomSouvenir].SouvenirName;
                 var newSouvenir = GameManager.Instance.CopyAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot);
-                player.Stat.ListSouvenir.Add(Instantiate(newSouvenir));
+                player.Stat.BaseStat.ListSouvenir.Add(Instantiate(newSouvenir));
                 GameManager.Instance.CopyAllSouvenir.Remove(newSouvenir);
                 IsLoot = true;
                 return;
@@ -335,14 +335,12 @@ public class BattleManager : MonoBehaviour
     {
         idIndexer = 0;
         battleUI = GetComponent<BattleUI>();
-        //if (GameManager.Instance == null)
-        //    player.Stat = TutoManager.Instance.JoueurStat;
-        //else 
-        //    player.Stat = GameManager.Instance.playerStat;
+  /* utile ?
         if (GameManager.Instance.IsTuto)
             player.Stat = TutoManager.Instance.JoueurStat;
         else
             player.Stat = GameManager.Instance.playerStat;
+  */
         player.EndTurnBM = EndTurn;
         player.StartUp();
         SpawnedEnemy = new List<GameObject>();
@@ -460,8 +458,8 @@ public class BattleManager : MonoBehaviour
         if (tempCombatScript != null)
         {
             GameManager.Instance.DialManager.AddSpeakers(ennemyId, tempCombatScript);
-            tempCombatScript.Stat = Instantiate(EnnemyStats);
-            tempCombatScript.EnemyStat = new EnemyStatsHolder(EnnemyStats);
+            tempCombatScript.Stat = new EnemyStatsHandler(EnnemyStats); ;
+            tempCombatScript.EnemyStat = new EnemyStatsHandler(EnnemyStats);
             tempCombatScript.SetUp();
             tempCombatScript.EndTurnBM = EndTurn;
             tempCombatScript.isMainEnemy = ennemyId == _encounter.idMainMob ? true : false;
@@ -498,7 +496,7 @@ public class BattleManager : MonoBehaviour
     public void StartCombat()
     {
         IsCombatOn = true;
-        player.DecompteDebuff(player.Stat.ListBuffDebuff, Decompte.combat, player.Stat);
+        player.DecompteDebuff(player.Stat.ListBuffDebuff, Decompte.combat);
         CalcCalmeMoyen();
         CalcTensionEnemy();
         CalcTensionJoueur();
@@ -534,8 +532,8 @@ public class BattleManager : MonoBehaviour
         //player.Stat.ListBuffDebuff.Clear();
         //player.ClearBuffBar();
         player.ClearBuff();
-        player.Stat.Volonter = player.Stat.VolonterMax;
-        player.Stat.Tension = 0;
+        player.Stat.Volonte = player.Stat.VolonteMax;
+        player.Stat.SetTension(0);
         Debug.Log(IsLoot);
         if (GameManager.Instance.IsTuto)
         {
@@ -548,7 +546,7 @@ public class BattleManager : MonoBehaviour
             TutoManager.Instance.TutoPanel.transform.parent = TutoManager.Instance.CanvasMap.transform;
         }
         else
-            GameManager.Instance.playerStat = player.Stat;
+            GameManager.Instance.playerStat = player.Stat.BaseStat;
 
         buttonEndCombat.SetActive(false);
         _buttonEndCombatConsume.SetActive(false);
@@ -793,7 +791,7 @@ public class BattleManager : MonoBehaviour
                         EnemyScripts.First().AddDebuff(item, Timer);
                     break;
                 case Cible.Martyr:
-                    var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.Nom == "Martyr");
+                    var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.BaseStat.Nom == "Martyr");
                     if (martyr != null)
                     {
                         martyr.AddDebuff(item, Timer);
@@ -1074,7 +1072,7 @@ public class BattleManager : MonoBehaviour
                     EnemyScripts.First().ApplicationEffet(effet, null, source, Caster);
                 break;
             case Cible.Martyr:
-                var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.Nom == "Martyr");
+                var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.BaseStat.Nom == "Martyr");
                 if (martyr != null)
                 {
                     martyr.ApplicationEffet(effet, null, source, Caster);

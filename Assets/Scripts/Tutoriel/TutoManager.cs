@@ -140,7 +140,7 @@ public class TutoManager : MonoBehaviour
         _dialogueManager.InitDialogueStep();
         Debug.Log("encounter : " + Instance.IndexEncounter);
         GameManager.Instance.LoadCombat();
-        BattleManager.player.Stat.Volonter = 5;
+        BattleManager.player.Stat.Volonte = 5;
     }
 
     public void Loot()

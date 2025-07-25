@@ -1084,26 +1084,26 @@ public class DialogueManager : MonoBehaviour
         switch (target)
         {
             case CibleDialogue.joueur:
-                targets = new List<Sprite> { GameManager.Instance.BattleMan.player.Stat.Icon};
+                targets = new List<Sprite> { GameManager.Instance.BattleMan.player.Stat.BaseStat.Icon };
                 buffEffect.GetComponent<DialogBuffEffectComponent>().SetPlayer(ManagerBattle.player);
                 break;
             case CibleDialogue.allEnnemi:
                 targets = new List<Sprite>();
-                targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.Icon));
+                targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.BaseStat.Icon));
                 UIs = new List<UIEnnemi>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.UICombat));
                 
                 break;
             case CibleDialogue.All:
-                targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.Icon))
+                targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.BaseStat.Icon))
                 {
-                    GameManager.Instance.BattleMan.player.Stat.Icon
+                    GameManager.Instance.BattleMan.player.Stat.BaseStat.Icon
                 };
                 UIs = new List<UIEnnemi>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.UICombat));
                 buffEffect.GetComponent<DialogBuffEffectComponent>().SetPlayer(ManagerBattle.player);
                 break;
             case CibleDialogue.ennemi:
             case CibleDialogue.Speaker:
-                targets = new List<Sprite> { enemyTarget.Stat.Icon };
+                targets = new List<Sprite> { enemyTarget.Stat.BaseStat.Icon };
                 UIs = new List<UIEnnemi> { enemyTarget.UICombat };
                 break;
             default:
