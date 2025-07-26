@@ -9,7 +9,7 @@ public class PlayerStatsHandler : StatsHandler
     #region BASE STATS
     [SerializeField, ReadOnly] private JoueurStat _baseStat;
    
-    public new JoueurStat BaseStat { get { return _baseStat; } }
+    public JoueurStat BaseJoueurStat { get { return _baseStat; } }
     public int BaseConscienceMax => _baseStat.ConscienceMax;
     public int BaseClairvoyance => _baseStat.ClairvoyanceOriginal;
     #endregion

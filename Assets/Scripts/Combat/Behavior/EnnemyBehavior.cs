@@ -8,7 +8,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
 {
 
 
-    public EnemyStatsHandler EnemyStat;
+    public EnemyStatsHandler EnemyStat => Stat;
     public UIEnnemi UICombat;
     public int TensionUI;
     
@@ -31,7 +31,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
    
     public override string Name
     {
-        get { return TradManager.instance.GetTranslation(Stat.BaseStat.IdTradName, Stat.BaseStat.Nom); }
+        get { return TradManager.instance.GetTranslation(Stat.BaseEnemyStat.IdTradName, Stat.BaseEnemyStat.Nom); }
     }
 
     public bool IsDead { get; private set; } = false;
@@ -76,6 +76,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
             _refBattleMan = GameManager.Instance.BattleMan;
             clairvoyanceIconData = GameManager.Instance.StatIcons;
         }
+        Stat.ResetStat();
         IsDead = false;
         UICombat = this.GetComponent<UIEnnemi>();
         UpdateUI();
@@ -243,7 +244,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
         if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, GameManager.Instance.CommonStatsData.NbPalier);
         currentTension = TensionUI;
 
-        string[] t = Stat.BaseStat.Nom.Split('(');
+        string[] t = Stat.BaseEnemyStat.Nom.Split('(');
         UICombat.UpdateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
         UICombat.OnPreviewDamage = PreviewDamage;
@@ -306,17 +307,17 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
 
     protected void NextActionType()
     {
-        if (Stat.BaseStat.Att1 != null)
-            if (Stat.BaseStat.Att1 == nextAction)
+        if (Stat.BaseEnemyStat.Att1 != null)
+            if (Stat.BaseEnemyStat.Att1 == nextAction)
                 nextActionType = nextActionEnum.Attaque;
-        if (Stat.BaseStat.Att2 != null)
-            if (Stat.BaseStat.Att2 == nextAction)
+        if (Stat.BaseEnemyStat.Att2 != null)
+            if (Stat.BaseEnemyStat.Att2 == nextAction)
                 nextActionType = nextActionEnum.Attaque2;
-        if (Stat.BaseStat.Buff != null)
-            if (Stat.BaseStat.Buff == nextAction)
+        if (Stat.BaseEnemyStat.Buff != null)
+            if (Stat.BaseEnemyStat.Buff == nextAction)
                 nextActionType = nextActionEnum.Buff;
-        if (Stat.BaseStat.Debuff != null)
-            if (Stat.BaseStat.Debuff == nextAction)
+        if (Stat.BaseEnemyStat.Debuff != null)
+            if (Stat.BaseEnemyStat.Debuff == nextAction)
                 nextActionType = nextActionEnum.Debuff;
     }
 
@@ -374,14 +375,14 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
     {
         Spells = new List<EnnemiSpell>();
 
-        if (Stat.BaseStat.Att1 != null)
-            Spells.Add(Stat.BaseStat.Att1);
-        if (Stat.BaseStat.Att2 != null)
-            Spells.Add(Stat.BaseStat.Att2);
-        if (Stat.BaseStat.Buff != null)
-            Spells.Add(Stat.BaseStat.Buff);
-        if (Stat.BaseStat.Debuff != null)
-            Spells.Add(Stat.BaseStat.Debuff);
+        if (Stat.BaseEnemyStat.Att1 != null)
+            Spells.Add(Stat.BaseEnemyStat.Att1);
+        if (Stat.BaseEnemyStat.Att2 != null)
+            Spells.Add(Stat.BaseEnemyStat.Att2);
+        if (Stat.BaseEnemyStat.Buff != null)
+            Spells.Add(Stat.BaseEnemyStat.Buff);
+        if (Stat.BaseEnemyStat.Debuff != null)
+            Spells.Add(Stat.BaseEnemyStat.Debuff);
 
         UnityEngine.Random.InitState((int) DateTime.Now.Ticks);
         foreach (var item in Spells)

@@ -10,7 +10,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
 {
 
 
-    public PlayerStatsHandler PlayerStat;
+    public PlayerStatsHandler PlayerStat => Stat;
     [SerializeField] private List<GameObject> Spells;
     [SerializeField] private Transform DamageSpawn;
     [SerializeField] private GameObject DamagePrefab;
@@ -88,7 +88,8 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
     public void StartUp()
     {
         commonStats = GameManager.Instance.CommonStatsData;
-        PlayerStat = new PlayerStatsHandler(GameManager.Instance.playerStat);
+        Stat = new PlayerStatsHandler(GameManager.Instance.playerStat);
+        
         /* utile ?
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
@@ -99,7 +100,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         */
         if (Spells != null && Spells.Count > 0)
             ClearSpells();
-        foreach (var item in Stat.BaseStat.ListSpell)
+        foreach (var item in Stat.BaseJoueurStat.ListSpell)
         {
             var temp = Instantiate(SpellPrefab, SpellsSpawn.transform);
             Spell SpelleToUse = CheckSouvenirSpell(item);
@@ -164,9 +165,9 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
 
     private Spell CheckSouvenirSpell(Spell item)
     {
-        if (Stat.BaseStat.ListSouvenir == null || Stat.BaseStat.ListSouvenir.Count == 0)
+        if (Stat.BaseJoueurStat.ListSouvenir == null || Stat.BaseJoueurStat.ListSouvenir.Count == 0)
             return item;
-        foreach (var souvenir in Stat.BaseStat.ListSouvenir)
+        foreach (var souvenir in Stat.BaseJoueurStat.ListSouvenir)
         {
             if (souvenir.SouvenirSpell != null && souvenir.Equiped)
             {
@@ -850,7 +851,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         //    effet.IsFirstApplication = false;
         //    ModifStat.Radiance += ModifStat.RadianceMax;
         //}
-        GameManager.Instance.BattleMan.LogRadianceChange(this.Name, GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster.BaseStat), ModifStat.Radiance);
+        GameManager.Instance.BattleMan.LogRadianceChange(this.Name, GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster==null?null:Caster.BaseStat), ModifStat.Radiance);
         PlayerStat.UpdateStat(ModifStat);
         if (ModifStat.PalierChangement > 0)
             EnervementTension();

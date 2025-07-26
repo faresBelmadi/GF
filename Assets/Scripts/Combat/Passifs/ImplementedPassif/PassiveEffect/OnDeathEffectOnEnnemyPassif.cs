@@ -20,7 +20,7 @@ public class OnDeathEffectOnEnnemyPassif : AbstractPassive, IDeathEffectPassive
         EnnemyBehavior dependencyBehavior = null;
         foreach (var enemy in GameManager.Instance.BattleMan.EnemyScripts)
         {
-            if (enemy.Stat.BaseStat.IdTradName == _dependency.IdTradName)
+            if (enemy.Stat.BaseEnemyStat.IdTradName == _dependency.IdTradName)
             {
                 dependencyBehavior = enemy;
             }
