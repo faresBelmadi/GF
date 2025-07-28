@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
-[Serializable]
+
 public class StatsHandler
 {
     #region BASE STATS
@@ -320,7 +320,7 @@ public class StatsHandler
         Vitesse = BaseVitesse;
         Conviction = BaseConviction;
         Resilience = BaseResilience;
-        Calme = 0;
+        Calme = BaseCalme;
         MultiplDef = 1;
         MultiplSoin = 1;
         MultiplDegat = 1;
@@ -332,8 +332,8 @@ public class StatsHandler
         IsStun = false;
 
         // TODO
-        /*this.nbAttaqueRecu = 0;
-        this.ListBuffDebuff.Clear();*/
+        //this.nbAttaqueRecu = 0;
+        ListBuffDebuff.Clear();
     }
 
 

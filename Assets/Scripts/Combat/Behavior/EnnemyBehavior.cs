@@ -551,7 +551,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
             effet.IsFirstApplication = false;
             ModifStat.Radiance += ModifStat.RadianceMax;
         }
-        GameManager.Instance.BattleMan.LogRadianceChange(this.Name,  GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster.BaseStat), ModifStat.Radiance);
+        GameManager.Instance.BattleMan.LogRadianceChange(this.Name,  GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster == null ? null : Caster.BaseStat), ModifStat.Radiance);
         if (ModifStat.Radiance < 0)
         {
             Debug.Log($"{Name} take {ModifStat.Radiance * -1} damage.");
