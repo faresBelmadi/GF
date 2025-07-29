@@ -10,7 +10,6 @@ public class TutoManager : MonoBehaviour
     public GameObject TutoPanel;
 
     [Header("Battle")] public BattleManager BattleManager;
-    public JoueurStat JoueurStat;
     public ClassPlayer TutoClassSo;
     [SerializeField] private JoueurBehavior _playerHolder;
 
@@ -68,8 +67,7 @@ public class TutoManager : MonoBehaviour
             IndexEncounter = 0;
             ShowSoulConsumation = false;
             //JoueurStat.ListBuffDebuff.Clear();          //On clear les buff sinon pour le cas ou le tuto n'es pas complété et qui resterait des objet buff dans le SO
-            JoueurStat = GameManager.Instance.playerStat;
-            JoueurStat.ListSouvenir.Add(_souvenirToLoot);
+
 
            _dialogueManager.FadeTuto();
         }

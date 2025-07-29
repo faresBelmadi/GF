@@ -33,12 +33,12 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
     {
         _ennemiStat = stat as EnemyStatsHandler;
         _ennemiStat.OnRadianceChange += UpdateStat;
-        GameManager.Instance.playerStat.OnRadianceChange += UpdateStat;
+        GameManager.Instance.playerStatHandler.OnRadianceChange += UpdateStat;
     }
     public void Clear()
     {
         _ennemiStat.OnRadianceChange -= UpdateStat;
-        GameManager.Instance.playerStat.OnRadianceChange -= UpdateStat;
+        GameManager.Instance.playerStatHandler.OnRadianceChange -= UpdateStat;
     }
 
     public void Apply(StatsHandler charStat)
@@ -63,7 +63,7 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
             case ConditionComparaison.ComparePercentRadiance:
                 int modificator = 0;
                 float enemyPercent = ((float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMax) * 100f;
-                float playerPercent = ((float)GameManager.Instance.playerStat.Radiance / (float)GameManager.Instance.playerStat.RadianceMax) * 100f;
+                float playerPercent = ((float)GameManager.Instance.playerStatHandler.Radiance / (float)GameManager.Instance.playerStatHandler.RadianceMax) * 100f;
                 if (enemyPercent > playerPercent)
                     modificator = _statToModif.IfGreaterBonus;
                 if (enemyPercent < playerPercent)

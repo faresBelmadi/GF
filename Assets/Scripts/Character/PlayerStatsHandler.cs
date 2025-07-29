@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
@@ -7,7 +8,7 @@ using UnityEngine.UI.Extensions;
 public class PlayerStatsHandler : StatsHandler
 {
     #region BASE STATS
-    [SerializeField, ReadOnly] private JoueurStat _baseStat;
+    private JoueurStat _baseStat;
    
     public JoueurStat BaseJoueurStat { get { return _baseStat; } }
     public int BaseConscienceMax => _baseStat.ConscienceMax;
@@ -15,18 +16,34 @@ public class PlayerStatsHandler : StatsHandler
     #endregion
 
     #region STATS PROPERTY
-    [field:SerializeField, ReadOnly] public int Lvl { get; private set; }
+    [field: SerializeField, ReadOnly] public int Lvl { get; private set; }
     [field: SerializeField, ReadOnly] public int Volonte { get; set; }
     [field: SerializeField, ReadOnly] public int VolonteMax { get; set; }
     [field: SerializeField, ReadOnly] public int Conscience { get; set; }
     [field: SerializeField, ReadOnly] public int ConscienceMax { get; private set; }
     [field: SerializeField, ReadOnly] public int Clairvoyance { get; private set; }
+    [field: SerializeField, ReadOnly] public List<Spell> ListSpell { get; set; } = new List<Spell>();
+    [field: SerializeField, ReadOnly] public int SlotsSouvenir { get; set; }
+    [field: SerializeField, ReadOnly] public List<Souvenir> ListSouvenir { get; set; } = new List<Souvenir>();
     #endregion
 
     #region EVENTS
     public event Action OnConscienceIncrease;
     public event Action OnConscienceDecrease;
     #endregion
+    public PlayerStatsHandler(PlayerStatsHandler playerStat) : base(playerStat)
+    {
+        Lvl = playerStat.Lvl;
+        Volonte = playerStat.Volonte;
+        VolonteMax = playerStat.VolonteMax;
+        Conscience = playerStat.Conscience;
+        ConscienceMax = playerStat.ConscienceMax;
+        Clairvoyance = playerStat.Clairvoyance;
+
+        ListSpell = new List<Spell>(playerStat.ListSpell);
+
+        _baseStat = ScriptableObject.Instantiate<JoueurStat>(playerStat.BaseJoueurStat);
+    }
     public PlayerStatsHandler(JoueurStat charStat) : base(charStat)
     {
         Lvl = charStat.Lvl;
@@ -35,6 +52,8 @@ public class PlayerStatsHandler : StatsHandler
         Conscience = charStat.Conscience;
         ConscienceMax = charStat.ConscienceMax;
         Clairvoyance = charStat.Clairvoyance;
+
+        ListSpell = new List<Spell>(charStat.ListSpell);
 
         _baseStat = charStat;
     }

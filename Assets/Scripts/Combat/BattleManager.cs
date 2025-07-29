@@ -545,7 +545,9 @@ public class BattleManager : MonoBehaviour
             TutoManager.Instance.TutoPanel.transform.parent = TutoManager.Instance.CanvasMap.transform;
         }
         else
-            GameManager.Instance.playerStat = player.Stat.BaseJoueurStat;
+        {
+            GameManager.Instance.playerStatHandler = player.Stat;
+        }
 
         buttonEndCombat.SetActive(false);
         _buttonEndCombatConsume.SetActive(false);

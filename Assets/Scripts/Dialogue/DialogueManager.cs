@@ -170,7 +170,7 @@ public class DialogueManager : MonoBehaviour
 
     public void GetFullAnswer(int idReponse)
     {
-        if (GameManager.Instance.playerStat.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[idReponse].SeuilConscience)
+        if (GameManager.Instance.playerStatHandler.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[idReponse].SeuilConscience)
             return;
         _dialogPanelComponent.SwitchNumberOfAnswer(0);
         _dialogPanelComponent.MainText.text = ReponsePrincipal(idReponse);
@@ -309,9 +309,9 @@ public class DialogueManager : MonoBehaviour
             for (int i = 0; i < currentPossibleResponseList.Count; i++)
             {
                 _dialogPanelComponent.ClairvoyancePanels[i].SetPanel(currentPossibleResponseList.Count);
-                Debug.Log("Conscience requise = " + currentPossibleResponseList[i].SeuilConscience + "\n Conscience joueur : " + GameManager.Instance.playerStat.Conscience);
+                Debug.Log("Conscience requise = " + currentPossibleResponseList[i].SeuilConscience + "\n Conscience joueur : " + GameManager.Instance.playerStatHandler.Conscience);
                 string response = "";
-                if (GameManager.Instance.playerStat.Conscience >= currentPossibleResponseList[i].SeuilConscience)
+                if (GameManager.Instance.playerStatHandler.Conscience >= currentPossibleResponseList[i].SeuilConscience)
                 {
                     if (!string.IsNullOrEmpty(currentPossibleResponseList[i].IdStringReponse))
                     {
@@ -458,7 +458,7 @@ public class DialogueManager : MonoBehaviour
         HideBullSpeakers();
         if (GameManager.Instance.IsPaused)
             return;
-        if (GameManager.Instance.playerStat.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].SeuilConscience)
+        if (GameManager.Instance.playerStatHandler.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].SeuilConscience)
             return;
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat)
         {

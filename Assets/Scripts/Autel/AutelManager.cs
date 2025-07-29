@@ -14,7 +14,7 @@ public class AutelManager : MonoBehaviour
     [SerializeField]
     private GameObject _backgroundSky;
     public int Etage = 1;
-    public JoueurStat stats;
+    public PlayerStatsHandler stats;
     [SerializeField]
     private string _idTradCout;
     [SerializeField]
@@ -161,12 +161,12 @@ public class AutelManager : MonoBehaviour
             }
 
         }
-        _nbSpellText.text = $"Spells {GameManager.Instance.playerStat.ListSpell.Count}/12";
+        _nbSpellText.text = $"Spells {GameManager.Instance.playerStatHandler.ListSpell.Count}/12";
     }
 
     public void InitAutel()
     {
-        stats = GameManager.Instance.playerStat;
+        stats = GameManager.Instance.playerStatHandler;
         RetourButton.onClick.RemoveAllListeners();
         //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
         RetourButton.onClick.AddListener(delegate { ShowMenuUiPanel(); });
@@ -309,14 +309,14 @@ public class AutelManager : MonoBehaviour
 
     public void SetUpStatsDescription()
     {
-        stats = GameManager.Instance.playerStat;
+        stats = GameManager.Instance.playerStatHandler;
         ValeurRadiance.text = stats.RadianceMax.ToString();
         ValeurFA.text = stats.ForceAme.ToString();
         ValeurVitesse.text = stats.Vitesse.ToString();
         ValeurConviction.text = stats.Conviction.ToString();
         ValeurResilience.text = stats.Resilience.ToString();
         ValeurCalme.text = stats.Calme.ToString();
-        ValeurVolonter.text = stats.VolonterMax.ToString();
+        ValeurVolonter.text = stats.VolonteMax.ToString();
         ValeurConscience.text = stats.ConscienceMax.ToString();
         ValeurClairvoyance.text = stats.Clairvoyance.ToString();
 
@@ -342,7 +342,7 @@ public class AutelManager : MonoBehaviour
                 ClearButtonColor();
                 AllSpellsIcon[Id].GetComponent<Image>().color = _selectedColor;
                 ModifStatCapa(capa);
-                if (capa.EssenceCost <= GameManager.Instance.playerStat.Essence && !capa.Bought && capa.isBuyable)
+                if (capa.EssenceCost <= GameManager.Instance.playerStatHandler.Essence && !capa.Bought && capa.isBuyable)
                 {
                     BuyButton.onClick.AddListener(delegate { BuyCapa(capa); });
                     BuyButton.GetComponent<Image>().color = Color.white;
@@ -441,20 +441,20 @@ public class AutelManager : MonoBehaviour
 
     public void BuyCapa(Competence capa)
     {
-        if (GameManager.Instance.playerStat.ListSpell.Count > 11)
+        if (GameManager.Instance.playerStatHandler.ListSpell.Count > 11)
         {
             Debug.Log("Max capa buy");
             return;
         }
         Debug.Log("capa acheté");
 
-        GameManager.Instance.playerStat.Essence -= capa.EssenceCost;
+        GameManager.Instance.playerStatHandler.Essence -= capa.EssenceCost;
         var capaClassSO = GameManager.Instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == capa.IDLvl);
         capaClassSO.Bought = true;
         capaClassSO.Equiped = true;
         capa.Bought = true;
         capa.Equiped = true;
-        GameManager.Instance.playerStat.ListSpell.Add(capa.Spell);
+        GameManager.Instance.playerStatHandler.ListSpell.Add(capa.Spell);
         SetStatBougthCapa(capa);
         CheckLinkCapa(capa);
 
@@ -555,7 +555,7 @@ public class AutelManager : MonoBehaviour
     public void RetourMap()
     {
         if (Loot == true) GameManager.Instance.GamePanelMngr.HideAutel();
-        GameManager.Instance.playerStat.ListSouvenir = stats.ListSouvenir;
+        GameManager.Instance.playerStatHandler.ListSouvenir = stats.ListSouvenir;
         StartCoroutine(GameManager.Instance.pmm.EndAutel(Loot));
     }
 
@@ -575,20 +575,21 @@ public class AutelManager : MonoBehaviour
 
     public void CoutChoix(int Choix)
     {
+        JoueurStat modifStat = ScriptableObject.CreateInstance<JoueurStat>();
         switch (Etage)
         {
             case 1:
                 switch (Choix)
                 {
                     case 1:
-                        stats.Essence -= CoutChoix1[0];
+                        modifStat.Essence -= CoutChoix1[0];
                         break;
                     case 2:
-                        stats.Essence -= CoutChoix2[0];
+                        modifStat.Essence -= CoutChoix2[0];
                         break;
                     case 3:
-                        stats.Essence -= CoutChoix3[0];
-                        stats.Calme -= CoutStatChoix3[0];
+                        modifStat.Essence -= CoutChoix3[0];
+                        modifStat.Calme -= CoutStatChoix3[0];
                         break;
                 }
                 break;
@@ -596,14 +597,14 @@ public class AutelManager : MonoBehaviour
                 switch (Choix)
                 {
                     case 1:
-                        stats.Essence -= CoutChoix1[1];
+                        modifStat.Essence -= CoutChoix1[1];
                         break;
                     case 2:
-                        stats.Essence -= CoutChoix2[1];
+                        modifStat.Essence -= CoutChoix2[1];
                         break;
                     case 3:
-                        stats.Essence -= CoutChoix3[1];
-                        stats.RadianceMax -= CoutStatChoix3[1];
+                        modifStat.Essence -= CoutChoix3[1];
+                        modifStat.RadianceMax -= CoutStatChoix3[1];
                         break;
                 }
                 break;
@@ -611,18 +612,19 @@ public class AutelManager : MonoBehaviour
                 switch (Choix)
                 {
                     case 1:
-                        stats.Essence -= CoutChoix1[2];
+                        modifStat.Essence -= CoutChoix1[2];
                         break;
                     case 2:
-                        stats.Essence -= CoutChoix2[2];
+                        modifStat.Essence -= CoutChoix2[2];
                         break;
                     case 3:
-                        stats.Essence -= CoutChoix3[2];
-                        stats.Clairvoyance -= CoutStatChoix3[2];
+                        modifStat.Essence -= CoutChoix3[2];
+                        modifStat.Clairvoyance -= CoutStatChoix3[2];
                         break;
                 }
                 break;
         }
+        stats.UpdateStat(modifStat);
     }
 
     public void initChoix3()

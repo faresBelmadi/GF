@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
@@ -58,7 +59,32 @@ public class StatsHandler
     public event Action OnRadianceChange;
     #endregion
 
+    public StatsHandler(StatsHandler statsHandler)
+    {
+        Radiance = statsHandler.Radiance;
+        RadianceMax = statsHandler.RadianceMax;
+        ForceAme = statsHandler.ForceAme;
+        ForceAmeBonus = statsHandler.ForceAmeBonus;
+        Vitesse = statsHandler.Vitesse;
+        Conviction = statsHandler.Conviction;
+        Calme = statsHandler.Calme;
+        Resilience = statsHandler.Resilience;
+        ResiliencePassif = (int)statsHandler.ResiliencePassif;
+        Essence = statsHandler.Essence;
+        MultiplDef = statsHandler.MultiplDef;
+        MultiplSoin = statsHandler.MultiplSoin;
+        MultiplDegat = statsHandler.MultiplDegat;
+        MultiplBuffDebuff = statsHandler.MultiplBuffDebuff;
+        MultiplTension = statsHandler.MultiplTension;
+        Tension = statsHandler.Tension;
+        TensionMax = statsHandler.TensionMax;
+        ValeurPalier = statsHandler.ValeurPalier;
+        PalierChangement = statsHandler.PalierChangement;
+        IsStun = statsHandler.IsStun;
 
+        ListBuffDebuff = new List<BuffDebuff>(statsHandler.ListBuffDebuff);
+        _baseStat = ScriptableObject.Instantiate<CharacterStat>(statsHandler.BaseStat);
+    }
     public StatsHandler(CharacterStat charStat)
     {
         Radiance               = charStat.Radiance;

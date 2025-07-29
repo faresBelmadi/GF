@@ -10,7 +10,7 @@ using System;
 
 public class MenuStatManager : MonoBehaviour
 {
-    public JoueurStat Stat, StatTemp;
+    public PlayerStatsHandler  Stat, StatTemp;
     public GameObject SouvenirPrefab;
     [SerializeField]
     private GameObject SouvenirPrefab2;
@@ -59,11 +59,10 @@ public class MenuStatManager : MonoBehaviour
         }
 
         if (!GameManager.Instance.IsTuto)
-            Stat = GameManager.Instance.playerStat;
+            Stat = GameManager.Instance.playerStatHandler;
         else
-            Stat = TutoManager.Instance.JoueurStat;
-        StatTemp = Instantiate(Stat);
-        StatTemp.Radiance = Stat.Radiance;
+            Stat = null;
+        StatTemp = new PlayerStatsHandler(Stat);
         SouvenirSpawnEquiped.GetComponent<Cristopher>().InitCristopher();
         ListSouvenirUIEquipped.Clear();
         foreach (var item in StatTemp.ListSouvenir)
@@ -106,11 +105,11 @@ public class MenuStatManager : MonoBehaviour
     {
         var ind = UnityEngine.Random.Range(0, GameManager.Instance.CopyAllSouvenir.Count());
         var newSouvenir = GameManager.Instance.CopyAllSouvenir[ind];
-        GameManager.Instance.playerStat.ListSouvenir.Add(Instantiate(newSouvenir));
+        GameManager.Instance.playerStatHandler.ListSouvenir.Add(Instantiate(newSouvenir));
         GameManager.Instance.CopyAllSouvenir.Remove(newSouvenir);
 
-        Stat = GameManager.Instance.playerStat;
-        StatTemp = Instantiate(Stat);
+        Stat = GameManager.Instance.playerStatHandler;
+        StatTemp = new PlayerStatsHandler(Stat);
         SouvenirSpawnEquiped.GetComponent<Cristopher>().InitCristopher();
         ListSouvenirUIEquipped.Clear();
      
@@ -139,39 +138,42 @@ public class MenuStatManager : MonoBehaviour
     }
     public void ResetStatEnter(Souvenir LeSouvenir)
     {
+        JoueurStat modifStat = ScriptableObject.CreateInstance<JoueurStat>();
         foreach (var item in LeSouvenir.ModificationStat)
         {
             switch (item.StatModif)
             {
                 case StatModif.RadianceMax:
-                    Stat.RadianceMax -= item.ParametreModifStat.ValeurModifier;
+                    modifStat.RadianceMax -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.ForceAme:
-                    Stat.ForceAme -= item.ParametreModifStat.ValeurModifier;
+                    modifStat.ForceAme -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.Calme:
-                    Stat.Calme -= item.ParametreModifStat.ValeurModifier;
+                    modifStat.Calme -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.Clairvoyance:
-                    Stat.Clairvoyance -= item.ParametreModifStat.ValeurModifier;
+                    modifStat.Clairvoyance -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.ConscienceMax:
-                    Stat.ConscienceMax -= item.ParametreModifStat.ValeurModifier;
+                    modifStat.ConscienceMax -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.Conviction:
-                    Stat.Conviction -= item.ParametreModifStat.ValeurModifier;
+                    modifStat.Conviction -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.Resilience:
-                    Stat.Resilience -= item.ParametreModifStat.ValeurModifier;
+                    modifStat.Resilience -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.Vitesse:
-                    Stat.Vitesse -= item.ParametreModifStat.ValeurModifier;
+                    modifStat.Vitesse -= item.ParametreModifStat.ValeurModifier;
                     break;
                 case StatModif.VolonterMax:
-                    Stat.VolonterMax -= item.ParametreModifStat.ValeurModifier;
+                    modifStat.VolonterMax -= item.ParametreModifStat.ValeurModifier;
                     break;
             }
         }
+        Stat.UpdateStat(modifStat);
+        ScriptableObject.Destroy(modifStat);
     }
 
     #endregion Start
@@ -184,7 +186,7 @@ public class MenuStatManager : MonoBehaviour
     }
     public void ResetStat()
     {
-        Stat = GameManager.Instance.playerStat;
+        Stat = GameManager.Instance.playerStatHandler;
     }
     public void UpdateStatUI()
     {
@@ -194,7 +196,7 @@ public class MenuStatManager : MonoBehaviour
         ValeurConviction.text = StatTemp.Conviction.ToString();
         ValeurResilience.text = StatTemp.Resilience.ToString();
         ValeurCalme.text = StatTemp.Calme.ToString();
-        ValeurVolonter.text = StatTemp.Volonter.ToString() + "/" + StatTemp.VolonterMax.ToString();
+        ValeurVolonter.text = StatTemp.Volonte.ToString() + "/" + StatTemp.VolonteMax.ToString();
         ValeurConscience.text = StatTemp.Conscience.ToString() + "/" + StatTemp.ConscienceMax.ToString();
         ValeurClairvoyance.text = StatTemp.Clairvoyance.ToString();
 
@@ -286,6 +288,7 @@ public class MenuStatManager : MonoBehaviour
 
     public void ModifStat(Souvenir LeSouvenir, bool Equiped)
     {
+        JoueurStat modifStat = ScriptableObject.CreateInstance<JoueurStat>();
         foreach (var item in LeSouvenir.ModificationStat)
         {
             switch (item.StatModif)
@@ -302,14 +305,14 @@ public class MenuStatManager : MonoBehaviour
                         {
                             Temp = item.ParametreModifStat.Valeur;
                         }
-                        StatTemp.RadianceMax += Temp;
-                        StatTemp.Radiance += Temp;
+                        modifStat.RadianceMax += Temp;
+                        modifStat.Radiance += Temp;
                         item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
-                        StatTemp.RadianceMax -= item.ParametreModifStat.ValeurModifier;
-                        StatTemp.Radiance -= item.ParametreModifStat.ValeurModifier;
+                        modifStat.RadianceMax -= item.ParametreModifStat.ValeurModifier;
+                        modifStat.Radiance -= item.ParametreModifStat.ValeurModifier;
                     }
                     break;
                 case StatModif.ForceAme:
@@ -324,12 +327,12 @@ public class MenuStatManager : MonoBehaviour
                         {
                             Temp = item.ParametreModifStat.Valeur;
                         }
-                        StatTemp.ForceAme += Temp;
+                        modifStat.ForceAme += Temp;
                         item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
-                        StatTemp.ForceAme -= item.ParametreModifStat.ValeurModifier;
+                        modifStat.ForceAme -= item.ParametreModifStat.ValeurModifier;
                     }
                     break;
                 case StatModif.Calme:
@@ -344,12 +347,12 @@ public class MenuStatManager : MonoBehaviour
                         {
                             Temp = item.ParametreModifStat.Valeur;
                         }
-                        StatTemp.Calme += Temp;
+                        modifStat.Calme += Temp;
                         item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
-                        StatTemp.Calme -= item.ParametreModifStat.ValeurModifier;
+                        modifStat.Calme -= item.ParametreModifStat.ValeurModifier;
                     }
                     break;
                 case StatModif.Clairvoyance:
@@ -364,12 +367,12 @@ public class MenuStatManager : MonoBehaviour
                         {
                             Temp = item.ParametreModifStat.Valeur;
                         }
-                        StatTemp.Clairvoyance += Temp;
+                        modifStat.Clairvoyance += Temp;
                         item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
-                        StatTemp.Clairvoyance -= item.ParametreModifStat.ValeurModifier;
+                        modifStat.Clairvoyance -= item.ParametreModifStat.ValeurModifier;
                     }
                     break;
                 case StatModif.ConscienceMax:
@@ -384,12 +387,12 @@ public class MenuStatManager : MonoBehaviour
                         {
                             Temp = item.ParametreModifStat.Valeur;
                         }
-                        StatTemp.ConscienceMax += Temp;
+                        modifStat.ConscienceMax += Temp;
                         item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
-                        StatTemp.ConscienceMax -= item.ParametreModifStat.ValeurModifier;
+                        modifStat.ConscienceMax -= item.ParametreModifStat.ValeurModifier;
                     }
                     break;
                 case StatModif.Conviction:
@@ -404,12 +407,12 @@ public class MenuStatManager : MonoBehaviour
                         {
                             Temp = item.ParametreModifStat.Valeur;
                         }
-                        StatTemp.Conviction += Temp;
+                        modifStat.Conviction += Temp;
                         item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
-                        StatTemp.Conviction -= item.ParametreModifStat.ValeurModifier;
+                        modifStat   .Conviction -= item.ParametreModifStat.ValeurModifier;
                     }
                     break;
                 case StatModif.Resilience:
@@ -426,17 +429,17 @@ public class MenuStatManager : MonoBehaviour
                         }
 
                         var tempResiliencePassif = StatTemp.ResiliencePassif;
-                        StatTemp.ResiliencePassif = 0;
-                        StatTemp.Resilience += Temp;
-                        StatTemp.ResiliencePassif = tempResiliencePassif;
+                        modifStat.ResiliencePassif = 0;
+                        modifStat.Resilience += Temp;
+                        modifStat.ResiliencePassif = tempResiliencePassif;
                         item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
                         var tempResiliencePassif = StatTemp.ResiliencePassif;
-                        StatTemp.ResiliencePassif = 0;
-                        StatTemp.Resilience -= item.ParametreModifStat.ValeurModifier;
-                        StatTemp.ResiliencePassif = tempResiliencePassif;
+                        modifStat.ResiliencePassif = 0;
+                        modifStat.Resilience -= item.ParametreModifStat.ValeurModifier;
+                        modifStat.ResiliencePassif = tempResiliencePassif;
                     }
                     break;
                 case StatModif.Vitesse:
@@ -451,12 +454,12 @@ public class MenuStatManager : MonoBehaviour
                         {
                             Temp = item.ParametreModifStat.Valeur;
                         }
-                        StatTemp.Vitesse += Temp;
+                        modifStat.Vitesse += Temp;
                         item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
-                        StatTemp.Vitesse -= item.ParametreModifStat.ValeurModifier;
+                        modifStat.Vitesse -= item.ParametreModifStat.ValeurModifier;
                     }
                     break;
                 case StatModif.VolonterMax:
@@ -465,24 +468,26 @@ public class MenuStatManager : MonoBehaviour
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.VolonterMax);
+                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.VolonteMax);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
                             Temp = item.ParametreModifStat.Valeur;
                         }
-                        StatTemp.VolonterMax += Temp;
-                        StatTemp.Volonter += Temp;
+                        modifStat.VolonterMax += Temp;
+                        modifStat.Volonter += Temp;
                         item.ParametreModifStat.ValeurModifier = Temp;
                     }
                     else
                     {
-                        StatTemp.VolonterMax -= item.ParametreModifStat.ValeurModifier;
-                        StatTemp.Volonter -= item.ParametreModifStat.ValeurModifier;
+                        modifStat.VolonterMax -= item.ParametreModifStat.ValeurModifier;
+                        modifStat.Volonter -= item.ParametreModifStat.ValeurModifier;
                     }
                     break;
             }
         }
+        StatTemp.UpdateStat(modifStat);
+        ScriptableObject.Destroy(modifStat);
         StatTemp.RectificationStat();
     }
 
@@ -567,7 +572,7 @@ public class MenuStatManager : MonoBehaviour
         EquipedSouvenir.RemoveAll(c => !c.Equiped);
         StatTemp.ListSouvenir = EquipedSouvenir.ToList();
         NbSlotsEquiped = 0;
-        GameManager.Instance.playerStat = StatTemp;
+        GameManager.Instance.playerStatHandler = StatTemp;
         GameManager.Instance.pmm.EndMenuStat();
         EquipedSouvenir.Clear();
     }

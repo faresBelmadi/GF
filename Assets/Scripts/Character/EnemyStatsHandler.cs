@@ -6,7 +6,7 @@ using UnityEngine.UI.Extensions;
 public class EnemyStatsHandler : StatsHandler
 {
     #region BASE STATS
-    [SerializeField, ReadOnly] private EnnemiStat _baseStat;
+    private EnnemiStat _baseStat;
     public EnnemiStat BaseEnemyStat { get { return _baseStat; } }
     public int BaseDissimulation => _baseStat.DissimulationOriginal;
     #endregion

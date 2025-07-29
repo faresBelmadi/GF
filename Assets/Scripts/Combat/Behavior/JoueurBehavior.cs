@@ -53,8 +53,10 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
     [SerializeField] private AnimationControllerAttack AnimationController;
     [SerializeField] private GameObject _ciblage;
     [SerializeField] private Animator _deathAnimator;
-
-
+    
+    [HideInInspector] public List<Spell> ListSpell { get; set; }
+    [HideInInspector] public int SlotsSouvenir { get; set; }
+    [HideInInspector] public List<Souvenir> ListSouvenir { get; set; }
 
     public static event Action OnConvictionFull;
     public static event Action OnConvictionEmpty;
@@ -88,7 +90,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
     public void StartUp()
     {
         commonStats = GameManager.Instance.CommonStatsData;
-        Stat = new PlayerStatsHandler(GameManager.Instance.playerStat);
+        Stat = GameManager.Instance.playerStatHandler;
         
         /* utile ?
         Stat.RadianceMaxOriginal = Stat.RadianceMax;
@@ -100,7 +102,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         */
         if (Spells != null && Spells.Count > 0)
             ClearSpells();
-        foreach (var item in Stat.BaseJoueurStat.ListSpell)
+        foreach (var item in Stat.ListSpell)
         {
             var temp = Instantiate(SpellPrefab, SpellsSpawn.transform);
             Spell SpelleToUse = CheckSouvenirSpell(item);
