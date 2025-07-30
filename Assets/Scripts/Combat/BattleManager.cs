@@ -174,7 +174,7 @@ public class BattleManager : MonoBehaviour
 
                 string NameLoot = allSouvenirRareter[randomSouvenir].SouvenirName;
                 var newSouvenir = GameManager.Instance.CopyAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot);
-                player.Stat.BaseJoueurStat.ListSouvenir.Add(Instantiate(newSouvenir));
+                player.Stat.ListSouvenir.Add(Instantiate(newSouvenir));
                 GameManager.Instance.CopyAllSouvenir.Remove(newSouvenir);
                 IsLoot = true;
                 return;

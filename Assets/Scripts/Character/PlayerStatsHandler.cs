@@ -41,7 +41,8 @@ public class PlayerStatsHandler : StatsHandler
         Clairvoyance = playerStat.Clairvoyance;
 
         ListSpell = new List<Spell>(playerStat.ListSpell);
-
+        SlotsSouvenir = playerStat.SlotsSouvenir;
+        ListSouvenir = new List<Souvenir>(playerStat.ListSouvenir);
         _baseStat = ScriptableObject.Instantiate<JoueurStat>(playerStat.BaseJoueurStat);
     }
     public PlayerStatsHandler(JoueurStat charStat) : base(charStat)
@@ -54,6 +55,8 @@ public class PlayerStatsHandler : StatsHandler
         Clairvoyance = charStat.Clairvoyance;
 
         ListSpell = new List<Spell>(charStat.ListSpell);
+        SlotsSouvenir = charStat.SlotsSouvenir;
+        ListSouvenir = new List<Souvenir>(charStat.ListSouvenir);
 
         _baseStat = charStat;
     }
