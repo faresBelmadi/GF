@@ -100,7 +100,7 @@ public class MenuStatManager : MonoBehaviour
     {
         TutoManager.OnEndTuto -= ResetStat;
     }
-
+    //Bon Pour delete
     public void Loot()
     {
         var ind = UnityEngine.Random.Range(0, GameManager.Instance.CopyAllSouvenir.Count());

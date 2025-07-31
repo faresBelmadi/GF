@@ -1148,7 +1148,7 @@ public class BattleManager : MonoBehaviour
             if (passif is ILootEssencePassive)
             {
                 ILootEssencePassive lootPassif  = passif as ILootEssencePassive;
-                lootPassif.Apply(player.PlayerStat);
+                lootPassif.Apply(player.Stat);
                 if (lootPassif.Value != 0)
                 {
                     amount += lootPassif.Value;

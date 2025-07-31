@@ -384,7 +384,7 @@ public class Effet : ScriptableObject
                 var toAdd = AfterEffectToApply;
                 toAdd.Effet.First().NbAttaque = 1;
                 toAdd.Effet.First().Pourcentage = (int)Cible.Tension * ValeurBrut;
-                GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.EnemyStat == Cible).AddDebuff(toAdd,toAdd.timerApplication);
+                GameManager.Instance.BattleMan.EnemyScripts.Find(c => c.Stat == Cible).AddDebuff(toAdd,toAdd.timerApplication);
                 toAdd.Effet.First().Pourcentage = 0;
                 toAdd.Effet.First().NbAttaque = 0;
                 break;
