@@ -23,7 +23,7 @@ public class Effet : ScriptableObject
 
     [System.NonSerialized] public int nbProcAfterEffect;
 
-    public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTake = 0, JoueurStat Cible = null)
+    public JoueurStat ResultEffet(PlayerStatsHandler Caster, int LastDamageTake = 0, PlayerStatsHandler Cible = null)
     {
         //Debug.Log($"Trigger Effect: {this.TypeEffet} from {Caster} to {Cible}");
         int valueToChange = ValeurBrut * NbAttaque;
@@ -53,7 +53,7 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken = 0, JoueurStat Cible = null)
+    public JoueurStat ResultEffet(EnemyStatsHandler Caster, int LastDamageTaken = 0, PlayerStatsHandler Cible = null)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, Cible);
@@ -61,21 +61,21 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    public JoueurStat ResultEffet(JoueurStat Caster, int LastDamageTaken, EnnemiStat CibleEnnemi = null, int NbEnnemies = 1)
+    public JoueurStat ResultEffet(PlayerStatsHandler Caster, int LastDamageTaken, EnemyStatsHandler CibleEnnemi = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi, NbEnnemies);
         modifstateOutput = ModifState;
         return ModifState;
     }
-    public JoueurStat ResultEffet(EnnemiStat Caster, int LastDamageTaken, EnnemiStat CibleEnnemi = null, int NbEnnemies = 1)
+    public JoueurStat ResultEffet(EnemyStatsHandler Caster, int LastDamageTaken, EnemyStatsHandler CibleEnnemi = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = ResultEffetCommun(Caster, LastDamageTaken, CibleEnnemi, NbEnnemies);
         modifstateOutput = ModifState;
         return ModifState;
     }
-    private JoueurStat ResultEffetCommun(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
+    private JoueurStat ResultEffetCommun(AbstractStatsHandler Caster, int LastDamageTaken = 0, AbstractStatsHandler Cible = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken, Cible, NbEnnemies));
@@ -84,7 +84,7 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    public bool VisualizeAttack(CharacterStat caster, CharacterStat cible, out int damageAmount, out int returnedDamages, int NbEnnemies = 1)
+    public bool VisualizeAttack(AbstractStatsHandler caster, AbstractStatsHandler cible, out int damageAmount, out int returnedDamages, int NbEnnemies = 1)
     {
         int percent;
         int nbProcDamage;
@@ -219,7 +219,7 @@ public class Effet : ScriptableObject
                 damageAmount += -amountPonctionFA;
                 break;
             case TypeEffet.PremiereAttaqueJeanne:
-                var JeanneStat = (EnnemiStat)caster;
+                var JeanneStat = (EnemyStatsHandler)caster;
                 int percentageFa = 0;
                 if (JeanneStat.CustomStat <= 25)
                 {
@@ -242,18 +242,18 @@ public class Effet : ScriptableObject
                 //Application de Hérétique nb dépende du truc 
                 break;
             case TypeEffet.DeuxiemeAttaqueJeanne:
-                var JeanneStat2 = (EnnemiStat)caster;
+                var JeanneStat2 = (EnemyStatsHandler)caster;
                 var divin = JeanneStat2.CustomStat > 0 ? JeanneStat2.CustomStat : JeanneStat2.CustomStat * -1;
                 var TotalPercentage = -(divin + (Pourcentage * -1));
                 damageAmount += Mathf.FloorToInt(((TotalPercentage / 100f) * caster.ForceAme) * caster.MultiplDegat);
                 break;
             case TypeEffet.SupportJeanne:
-                var JeanneStat3 = (EnnemiStat)caster;
+                var JeanneStat3 = (EnemyStatsHandler)caster;
                 JeanneStat3.CustomStat -= 20;
                 damageAmount += Mathf.FloorToInt((Pourcentage / 100f) * caster.RadianceMax);
                 break;
             case TypeEffet.UltimeJeanne:
-                var JeanneStat4 = (EnnemiStat)caster;
+                var JeanneStat4 = (EnemyStatsHandler)caster;
                 damageAmount += Mathf.FloorToInt(-JeanneStat4.CustomStat / 100f * caster.ForceAme);
                 JeanneStat4.CustomStat = -30;
                 break;
@@ -264,7 +264,7 @@ public class Effet : ScriptableObject
 
     }
 
-    private CharacterStat ResultEffetBase(CharacterStat Caster, int LastDamageTaken = 0, CharacterStat Cible = null, int NbEnnemies = 1)
+    private CharacterStat ResultEffetBase(AbstractStatsHandler Caster, int LastDamageTaken = 0, AbstractStatsHandler Cible = null, int NbEnnemies = 1)
     {
         Debug.Log($"Trigger Effect Base: {this.name} - {this.TypeEffet} from {Caster} to {Cible}");
         int valueToChange = ValeurBrut * NbAttaque;
@@ -444,7 +444,8 @@ public class Effet : ScriptableObject
                 ModifState.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * Caster.MultiplDegat);
                 if (ModifState.Radiance + Cible.Radiance > 0)
                 {
-                    Caster.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);
+                    Caster.ChangeRadiance(Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef));
+                    /*Caster.Radiance += Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.ForceAme) * Cible.MultiplDegat * Caster.MultiplDef);*/
                 }
                 break;
             case TypeEffet.DegatsRetourSurAttaque:
@@ -478,7 +479,8 @@ public class Effet : ScriptableObject
             //    break;
             case TypeEffet.RemoveAllTensionProcBuffDebuff:
                 nbProcAfterEffect = Mathf.RoundToInt(Caster.Tension / Caster.ValeurPalier);
-                Caster.Tension = 0;
+                Caster.ChangeTension(-Caster.Tension);
+                /*Caster.Tension = 0;*/
                 break;
             case TypeEffet.RemoveAllDebuffProcBuffDebuf:
                 nbProcAfterEffect = RemoveBuffOrDebuffFromList(Caster, true);
@@ -504,21 +506,26 @@ public class Effet : ScriptableObject
                 break;
             case TypeEffet.GainFaBuffCible:
                 var nbBuffCible = Cible.ListBuffDebuff.Count(x => !x.IsDebuff);
-                Caster.ForceAme +=
-                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * nbBuffCible);
+                Caster.ChangeForceDame(Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * nbBuffCible));
+                /*Caster.ForceAme +=
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * nbBuffCible);*/
                 break;
             case TypeEffet.GainFaDebuffCible:
                 var nbDebuffCible = Cible.ListBuffDebuff.Count(x => x.IsDebuff);
-                Caster.ForceAme +=
-                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * nbDebuffCible);
+                Caster.ChangeForceDame(Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * nbDebuffCible));
+                /*Caster.ForceAme +=
+                    Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) * nbDebuffCible);*/
                 break;
             case TypeEffet.Ponction:
                 var amountPonction =
                     Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.Radiance) *
                                      Caster.MultiplDegat); //checker le multipl degat
-                Caster.Radiance += amountPonction;
+                Caster.ChangeRadiance(amountPonction);
+                /* old
+                 * Caster.Radiance += amountPonction;
                 if (Caster.Radiance > Caster.RadianceMax)
                     Caster.Radiance = Caster.RadianceMax;
+                */
                 ModifState.Radiance += -amountPonction;
                 break;
             case TypeEffet.DamageAllEvenly:
@@ -546,13 +553,16 @@ public class Effet : ScriptableObject
                 var amountPonctionFA =
                     Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) *
                                      Caster.MultiplDegat); //checker le multipl degat
+                Caster.ChangeRadiance(amountPonctionFA);
+               /*Old
                 Caster.Radiance += amountPonctionFA;
                 if (Caster.Radiance > Caster.RadianceMax)
                     Caster.Radiance = Caster.RadianceMax;
+                */
                 ModifState.Radiance += -amountPonctionFA;
                 break;
             case TypeEffet.PremiereAttaqueJeanne:
-                var JeanneStat = (EnnemiStat) Caster;
+                var JeanneStat = (EnemyStatsHandler) Caster;
                 int percentageFa = 0;
                 if (JeanneStat.CustomStat <= 25)
                 {
@@ -575,18 +585,18 @@ public class Effet : ScriptableObject
                 //Application de Hérétique nb dépende du truc 
                 break;
             case TypeEffet.DeuxiemeAttaqueJeanne:
-                var JeanneStat2 = (EnnemiStat)Caster;
+                var JeanneStat2 = (EnemyStatsHandler)Caster;
                 var divin = JeanneStat2.CustomStat > 0? JeanneStat2.CustomStat : JeanneStat2.CustomStat * -1;
                 var TotalPercentage = -(divin + (Pourcentage * -1));
                 ModifState.Radiance += Mathf.FloorToInt(((TotalPercentage / 100f) * Caster.ForceAme) * Caster.MultiplDegat);
                 break;
             case TypeEffet.SupportJeanne:
-                var JeanneStat3 = (EnnemiStat)Caster;
+                var JeanneStat3 = (EnemyStatsHandler)Caster;
                 JeanneStat3.CustomStat -= 20;
                 ModifState.Radiance += Mathf.FloorToInt((Pourcentage / 100f) * Caster.RadianceMax);
                 break;
             case TypeEffet.UltimeJeanne:
-                var JeanneStat4 = (EnnemiStat) Caster;
+                var JeanneStat4 = (EnemyStatsHandler) Caster;
                 ModifState.Radiance += Mathf.FloorToInt(((JeanneStat4.CustomStat * Pourcentage) / 100f * Caster.ForceAme) * Caster.MultiplDegat);
                 JeanneStat4.CustomStat = -30;
                 break;
@@ -601,7 +611,7 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    private int RemoveBuffOrDebuffFromList(CharacterStat Cible, bool isDebuff, bool removeBuff=true)
+    private int RemoveBuffOrDebuffFromList(AbstractStatsHandler Cible, bool isDebuff, bool removeBuff=true)
     {
         int nbBuffDebuffRemoved = 0;
         if (Cible.ListBuffDebuff != null)

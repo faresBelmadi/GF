@@ -20,6 +20,7 @@ public class JoueurStat : CharacterStat
     public event Action OnConscienceIncrease;
     public event Action OnConscienceDecrease;
 
+    [Obsolete]
     public void ModifStateAll(JoueurStat ModifState)
     {
         this.Volonter += ModifState.Volonter;

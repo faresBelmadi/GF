@@ -2,6 +2,6 @@
 
 public interface IAddStackPassive : IEffect
 {
-    void AddStack(CharacterStat stat, int numberOfStackToAdd);
-    JoueurStat GetStackModifStat(CharacterStat stat, int numberOfStackToAdd);
+    void AddStack(StatsHandler<CharacterStat> stat, int numberOfStackToAdd);
+    JoueurStat GetStackModifStat(AbstractStatsHandler stat, int numberOfStackToAdd);
 }

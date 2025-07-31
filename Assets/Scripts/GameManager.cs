@@ -50,7 +50,8 @@ public class GameManager : MonoBehaviour
     public List<Souvenir> CopyAllSouvenir;
 
     public ClassPlayer classSO;
-    /*[HideInInspector]*/ public JoueurStat playerStat;
+    /*[HideInInspector]*/ private JoueurStat playerStat;
+    public PlayerStatsHandler playerStatHandler;
 
     public int ClassIDSelected;
 
@@ -215,8 +216,8 @@ public class GameManager : MonoBehaviour
                 }
                
 
-                playerStat.ListSouvenir = new List<Souvenir>();
-                playerStat.ListSpell = new List<Spell>();
+                playerStatHandler.ListSouvenir = new List<Souvenir>();
+                playerStatHandler.ListSpell = new List<Spell>();
                 playerStat.PassiveList = new List<AbstractPassive>();
                 //TODO : a decommenter quand le systeme de save sera mis en ligne
                 //       cette boucle load les spells acheté dans les runs d'avant.
@@ -241,6 +242,12 @@ public class GameManager : MonoBehaviour
                 foreach (var item in classSO.PlayerStat.PassiveList)
                 {
                     playerStat.PassiveList.Add(item);
+                }
+                playerStatHandler = new PlayerStatsHandler(playerStat);
+                playerStatHandler.ListSpell = new List<Spell>();
+                foreach (var item in classSO.PlayerStat.ListSpell)
+                {
+                    playerStatHandler.ListSpell.Add(item);
                 }
             }
         }
@@ -580,7 +587,7 @@ public class GameManager : MonoBehaviour
         //StartCoroutine(Reload());
 
         //ResetJoueurStat ?0
-        GameManager.Instance.playerStat.ResetStat();
+        GameManager.Instance.playerStatHandler.ResetStat();
 
         //SceneManager.LoadScene("MainMenu");
         //Destroy(GameManager.Instance.gameObject);

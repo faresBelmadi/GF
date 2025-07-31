@@ -87,7 +87,7 @@ public class DebugMode : MonoBehaviour
             _dictionnarySpells.Add(item.Spell.TitleId.Text, item.Spell);
         }
 
-        foreach(var item in GameManager.Instance.playerStat.ListSpell)
+        foreach(var item in GameManager.Instance.playerStatHandler.ListSpell)
         {
             _equipedSpells.Add(item);
         }
@@ -196,14 +196,14 @@ public class DebugMode : MonoBehaviour
 
     public void EquipeSouvenir()
     {
-        // GameManager.Instance.StatMan.gameObject.SetActive(true);
         
-        GameManager.Instance.StatMan.Stat = GameManager.Instance.playerStat;
+        
+        GameManager.Instance.StatMan.Stat = GameManager.Instance.playerStatHandler;
 
-        GameManager.Instance.StatMan.StatTemp = Instantiate(GameManager.Instance.playerStat);
+        GameManager.Instance.StatMan.StatTemp = new PlayerStatsHandler(GameManager.Instance.playerStatHandler);
 
         _souv.Equiped = true;
-        GameManager.Instance.playerStat.ListSouvenir.Add(Instantiate(_souv));
+        GameManager.Instance.playerStatHandler.ListSouvenir.Add(Instantiate(_souv));
        GameManager.Instance.StatMan.ModifStat(_souv, true);
         if (GameManager.Instance.CopyAllSouvenir.Contains(_souv))
         {
@@ -214,20 +214,24 @@ public class DebugMode : MonoBehaviour
 
     public void LaunchGame()
     {
-        var stat = Instantiate(GameManager.Instance.playerStat);
-        stat.Radiance = _stats["Radiance"];
-        stat.ForceAmeOriginal = _stats["Force d'ame"];
-        stat.ForceAme = _stats["Force d'ame"];
-        stat.VitesseOriginal = _stats["Vitesse"];
-        stat.Vitesse = _stats["Vitesse"];
-        stat.ResilienceOriginal = _stats["Resilience"];
-        stat.Resilience = _stats["Resilience"];
-        stat.ClairvoyanceOriginal = _stats["Clairvoyance"];
-        stat.Clairvoyance = _stats["Clairvoyance"];
-        stat.ConvictionOriginal = _stats["Conviction"];
-        stat.Conviction = _stats["Conviction"];
-        stat.Calme = _stats["Calme"];
-        stat.Volonter = _stats["Volonte"];
+        var stat = new PlayerStatsHandler(GameManager.Instance.playerStatHandler);
+        JoueurStat modifStat = ScriptableObject.CreateInstance<JoueurStat>();
+        modifStat.Radiance = _stats["Radiance"];
+        modifStat.ForceAmeOriginal = _stats["Force d'ame"];
+        modifStat.ForceAme = _stats["Force d'ame"];
+        modifStat.VitesseOriginal = _stats["Vitesse"];
+        modifStat.Vitesse = _stats["Vitesse"];
+        modifStat.ResilienceOriginal = _stats["Resilience"];
+        modifStat.Resilience = _stats["Resilience"];
+        modifStat.ClairvoyanceOriginal = _stats["Clairvoyance"];
+        modifStat.Clairvoyance = _stats["Clairvoyance"];
+        modifStat.ConvictionOriginal = _stats["Conviction"];
+        modifStat.Conviction = _stats["Conviction"];
+        modifStat.Calme = _stats["Calme"];
+        modifStat.Volonter = _stats["Volonte"];
+
+        stat.UpdateStat(modifStat);
+        ScriptableObject.Destroy(modifStat);
 
         stat.ListSpell.Clear();
         for (int i=0; i< _spellContent.transform.childCount; i++)
@@ -240,7 +244,7 @@ public class DebugMode : MonoBehaviour
             }
         }
         
-        GameManager.Instance.playerStat = stat;
+        GameManager.Instance.playerStatHandler = stat;
 
         if (_souvenirDropdown.value != 0)
         {

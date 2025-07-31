@@ -29,7 +29,7 @@ public class SpellUI : MonoBehaviour,IPointerEnterHandler,IPointerExitHandler
 
     public void ButtonPressed()
     {
-        if(GameManager.Instance.playerStat.Essence >= LinkedSpell.CostUnlock)
+        if(GameManager.Instance.playerStatHandler.Essence >= LinkedSpell.CostUnlock)
         {
             LinkedSpell.SpellStatue = SpellStatus.bought;
             GameManager.Instance.SkillTreeUI.UpdateSkillTree(this);

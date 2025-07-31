@@ -4,22 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EnnemyBehavior : CombatBehavior<EnnemiStat>
+public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
 {
-
-    public override EnnemiStat Stat
-    {
-        get => _stat;
-        set
-        {
-            _stat = value;
-           
-        }
-    }
     public UIEnnemi UICombat;
     public int TensionUI;
-    
-    
+
     public int combatID;
     public EnnemiSpell nextAction;
     //public GameObject EssencePrefab;
@@ -38,7 +27,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
    
     public override string Name
     {
-        get { return TradManager.instance.GetTranslation(Stat.IdTradName, Stat.Nom); }
+        get { return TradManager.instance.GetTranslation(base.Stat.BaseStat.IdTradName, base.Stat.BaseStat.Nom); }
     }
 
     public bool IsDead { get; private set; } = false;
@@ -49,8 +38,8 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         {
             foreach (var item in PassiveList)
             {
-                if (item is IUpdateStatPassive)
-                    ((IUpdateStatPassive)item).Clear();
+                if (item is IDynamicEventPassive<EnemyStatsHandler> passive)
+                    passive.UnsubscribeEvents();
             }
         }
     }
@@ -58,7 +47,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     IEnumerator DeathCoroutine()
     {
-        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDeathSFX, Stat.DeathSFX);
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDeathSFX, base.Stat.BaseStat.DeathSFX);
         float time = 0f;
         while (time < deathDisolveTime)
         {
@@ -83,6 +72,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             _refBattleMan = GameManager.Instance.BattleMan;
             clairvoyanceIconData = GameManager.Instance.StatIcons;
         }
+        base.Stat.ResetStat();
         IsDead = false;
         UICombat = this.GetComponent<UIEnnemi>();
         UpdateUI();
@@ -90,6 +80,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         //assignation des container dans le parent
         base.BuffContainer = UICombat.buffParents;
         base.DebuffContainer = UICombat.debuffParents;
+        /* Maybe not necessary
         Stat.Radiance = Stat.RadianceMax;
         Stat.VitesseOriginal = Stat.Vitesse;
         Stat.DissimulationOriginal = Stat.Dissimulation;
@@ -104,16 +95,16 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             Stat.Buff = Instantiate(Stat.Buff);
         if (Stat.Debuff != null)
             Stat.Debuff = Instantiate(Stat.Debuff);
-
+        */
         PassiveList = new List<AbstractPassive>();
-        for (int i = 0; i < _stat.PassiveList.Count; i++)
+        for (int i = 0; i < _stat.BaseStat.PassiveList.Count; i++)
         {
-            PassiveList.Add(Instantiate(_stat.PassiveList[i]));
+            PassiveList.Add(Instantiate(_stat.BaseStat.PassiveList[i]));
         }
         foreach (var item in PassiveList)
         {
-            if (item is IUpdateStatPassive passive)
-                passive.InitPassif(_stat);
+            if ((item is IDynamicEventPassive<EnemyStatsHandler> passive))
+                passive.SubscribeEvents(_stat);
         }
 
         RefreshPassiveDescription();
@@ -121,9 +112,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     public override void ResetStat()
     {
-        Stat.Dissimulation = Stat.DissimulationOriginal;
-
-        base.ResetStat();
+        Stat.ResetStat();
     }
 
     public void StartPhase()
@@ -136,10 +125,9 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         IsTurn = true;
         foreach (var passif in PassiveList)
         {
-            if (passif is IStartTurnPassive)
+            if (passif is IStartTurnPassive<EnemyStatsHandler> passive)
             {
-                IStartTurnPassive startTurnpassif = passif as IStartTurnPassive;
-                startTurnpassif.Apply(Stat);
+                passive.ApplyOnTurnStart(Stat);
             }
         }
 
@@ -154,12 +142,12 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             gainedTension = false;
         }
 
-        if (!skip && !Stat.isStun)
+        if (!skip && !base.Stat.IsStun)
         {
             DoAction();
         }
 
-        if (Stat.isStun)
+        if (base.Stat.IsStun)
         {
             Debug.Log("is stuned");
             //Stat.isStun = false;
@@ -207,10 +195,10 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             }
         }
         */
-        if (Stat.Essence != 0)
+        if (base.Stat.Essence != 0)
         {
-            var t = Instantiate(GameManager.Instance.BattleMan.GetPrefabEssence(Stat.Essence), this.transform.parent);
-            t.GetComponent<CrystalSoul>().AddAmountOfEssence(Stat.Essence);
+            var t = Instantiate(GameManager.Instance.BattleMan.GetPrefabEssence(base.Stat.Essence), this.transform.parent);
+            t.GetComponent<CrystalSoul>().AddAmountOfEssence(base.Stat.Essence);
             if (GameManager.Instance.IsTuto)
             {
                 t.SetActive(false);
@@ -227,7 +215,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     public override bool CanHaveAnotherTurn()
     {
-        return base.CanHaveAnotherTurn() && !Stat.NoTension;
+        return base.CanHaveAnotherTurn() && !base.Stat.NoTension;
     }
 
     #endregion Tension
@@ -241,16 +229,16 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     protected virtual void UpdateUI()
     {
-        if (Stat == null)
+        if (base.Stat == null)
             return;
-        if (currentHp != Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
-        currentHp = Stat.Radiance;
+        if (currentHp != base.Stat.Radiance) UICombat.UpdateHp(base.Stat.Radiance, base.Stat.RadianceMax);
+        currentHp = base.Stat.Radiance;
 
-        TensionUI = Mathf.FloorToInt((Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax);
+        TensionUI = Mathf.FloorToInt((base.Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / base.Stat.TensionMax);
         if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, GameManager.Instance.CommonStatsData.NbPalier);
         currentTension = TensionUI;
 
-        string[] t = Stat.Nom.Split('(');
+        string[] t = base.Stat.BaseStat.Nom.Split('(');
         UICombat.UpdateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
         UICombat.OnPreviewDamage = PreviewDamage;
@@ -265,13 +253,13 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     public virtual void ChooseNextAction()
     {
         bool colere = false;
-        foreach (var item in Stat.ListBuffDebuff)
+        foreach (var item in base.Stat.ListBuffDebuff)
         {
             foreach (var effect in item.Effet)
             {
                 if (effect.TypeEffet == TypeEffet.Colere)
                 {
-                    UnityEngine.Random.InitState((int) DateTime.Now.Ticks);
+                    UnityEngine.Random.InitState((int)DateTime.Now.Ticks);
                     var temp = UnityEngine.Random.Range(0, 100);
                     if (temp <= effect.Pourcentage)
                         colere = true;
@@ -313,23 +301,23 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     protected void NextActionType()
     {
-        if (Stat.Att1 != null)
-            if (Stat.Att1 == nextAction)
+        if (base.Stat.BaseStat.Att1 != null)
+            if (base.Stat.BaseStat.Att1 == nextAction)
                 nextActionType = nextActionEnum.Attaque;
-        if (Stat.Att2 != null)
-            if (Stat.Att2 == nextAction)
+        if (base.Stat.BaseStat.Att2 != null)
+            if (base.Stat.BaseStat.Att2 == nextAction)
                 nextActionType = nextActionEnum.Attaque2;
-        if (Stat.Buff != null)
-            if (Stat.Buff == nextAction)
+        if (base.Stat.BaseStat.Buff != null)
+            if (base.Stat.BaseStat.Buff == nextAction)
                 nextActionType = nextActionEnum.Buff;
-        if (Stat.Debuff != null)
-            if (Stat.Debuff == nextAction)
+        if (base.Stat.BaseStat.Debuff != null)
+            if (base.Stat.BaseStat.Debuff == nextAction)
                 nextActionType = nextActionEnum.Debuff;
     }
 
     protected void UpdateIntention()
     {
-        if (GameManager.Instance.BattleMan.getJoueurClairvoyance() >= Stat.Dissimulation)
+        if (GameManager.Instance.BattleMan.getJoueurClairvoyance() >= base.Stat.Dissimulation)
         {
             switch (nextActionType)
             {
@@ -371,7 +359,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     {
         //Debug.Log("commencement des degats");
         //DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
-        if (!Stat.isStun)
+        if (!base.Stat.IsStun)
         {
             _refBattleMan.LaunchSpellEnnemi(nextAction);
         }
@@ -381,14 +369,14 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
     {
         Spells = new List<EnnemiSpell>();
 
-        if (Stat.Att1 != null)
-            Spells.Add(Stat.Att1);
-        if (Stat.Att2 != null)
-            Spells.Add(Stat.Att2);
-        if (Stat.Buff != null)
-            Spells.Add(Stat.Buff);
-        if (Stat.Debuff != null)
-            Spells.Add(Stat.Debuff);
+        if (base.Stat.BaseStat.Att1 != null)
+            Spells.Add(base.Stat.BaseStat.Att1);
+        if (base.Stat.BaseStat.Att2 != null)
+            Spells.Add(base.Stat.BaseStat.Att2);
+        if (base.Stat.BaseStat.Buff != null)
+            Spells.Add(base.Stat.BaseStat.Buff);
+        if (base.Stat.BaseStat.Debuff != null)
+            Spells.Add(base.Stat.BaseStat.Debuff);
 
         UnityEngine.Random.InitState((int) DateTime.Now.Ticks);
         foreach (var item in Spells)
@@ -415,10 +403,10 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     public void AddDebuff(BuffDebuff toAdd, TimerApplication Timer)
     {
-        for (int i = 0; i < Stat.MultipleBuffDebuff; i++)
+        for (int i = 0; i < base.Stat.MultiplBuffDebuff; i++)
         {
             nbBuffDebuffApplied++;
-            if (toAdd.IsDebuff && !Stat.NoTension)
+            if (toAdd.IsDebuff && !base.Stat.NoTension)
             {
                 ReceiveTension(Source.Buff);
             }
@@ -431,8 +419,8 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             }
 
             var modifiedBuff = ApplyConviction(buff, ValueConviction());
-            Stat.ListBuffDebuff.Add(modifiedBuff);
-            base.AddBuffDebuff(modifiedBuff, Stat);
+            base.Stat.ListBuffDebuff.Add(modifiedBuff);
+            base.AddBuffDebuff(modifiedBuff, base.Stat);
 
             ApplicationBuffDebuff(Timer, modifiedBuff);
         }
@@ -442,8 +430,8 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     private void DecompteDebuffEnnemi(Decompte Decompte, TimerApplication Timer)
     {
-        DecompteDebuff(Stat.ListBuffDebuff, Decompte, this.Stat);
-        foreach (var item in Stat.ListBuffDebuff)
+        DecompteDebuff(base.Stat.ListBuffDebuff, Decompte);
+        foreach (var item in base.Stat.ListBuffDebuff)
         {
             if (item.timerApplication == Timer)
                 ApplicationBuffDebuff(Timer, item);
@@ -505,7 +493,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     #region Effet
 
-    public void ApplicationEffet(Effet effet, JoueurStat Caster = null, SourceEffet source = SourceEffet.Spell,
+    public void ApplicationEffet(Effet effet, PlayerStatsHandler Caster = null, SourceEffet source = SourceEffet.Spell,
         int idCaster = 0, int NbEnnemies = 1)
     {
         JoueurStat ModifStat;
@@ -514,16 +502,16 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             if (idCaster == 0)
             {
                 Caster = _refBattleMan.player.Stat;
-                ModifStat = effet.ResultEffet(Caster, LastDamageTaken, this.Stat, NbEnnemies);
+                ModifStat = effet.ResultEffet(_refBattleMan.player.Stat, LastDamageTaken, Stat, NbEnnemies);
             }
             else
             {
                 var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
                 if (caster != null)
-                    ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, this.Stat);
+                    ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, Stat);
                 else
                 {
-                    ModifStat = effet.ResultEffet(Stat, LastDamageTaken, this.Stat, 1);
+                    ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Stat, 1);
 
                 }
 
@@ -532,13 +520,21 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
         }
         else
         {
-            ModifStat = effet.ResultEffet(Caster, LastDamageTaken, Stat);
+            var caster = _refBattleMan.EnemyScripts.Where(x => x.combatID == idCaster).FirstOrDefault();
+            if  (caster == null)
+            {
+                ModifStat = effet.ResultEffet(_refBattleMan.player.Stat, LastDamageTaken, Stat);
+            }
+            else
+            {
+                ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, Stat);
+            }
         }
 
         if (ModifStat.Radiance < 0)
         {
-            var toRemove = Mathf.FloorToInt(ModifStat.Radiance / Stat.MultiplDef);
-            toRemove -= Mathf.FloorToInt(((Stat.Resilience * 3) / 100f) * toRemove);
+            var toRemove = Mathf.FloorToInt(ModifStat.Radiance / base.Stat.MultiplDef);
+            toRemove -= Mathf.FloorToInt(((base.Stat.Resilience * 3) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
             if (source != SourceEffet.BuffDebuff)
                 GetAttacked();
@@ -549,18 +545,18 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
             effet.IsFirstApplication = false;
             ModifStat.Radiance += ModifStat.RadianceMax;
         }
-        GameManager.Instance.BattleMan.LogRadianceChange(this.Name,  GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster), ModifStat.Radiance);
+        GameManager.Instance.BattleMan.LogRadianceChange(this.Name,  GameManager.Instance.BattleMan.GetBehaviorNameFromStat(Caster == null ? null : Caster.BaseStat), ModifStat.Radiance);
         if (ModifStat.Radiance < 0)
         {
             Debug.Log($"{Name} take {ModifStat.Radiance * -1} damage.");
             foreach (var item in PassiveList)
             {
                 if (item is IOnDamagePassive passive)
-                    passive.Apply(_stat);
+                    passive.ApplyEffectOnDommage(Stat);
             }
         }
-        Stat.ModifStateAll(ModifStat);
-        Stat.RectificationStat();
+        Stat.UpdateStat(ModifStat);
+        base.Stat.RectificationStat();
 
         if (ModifStat.PalierChangement > 0)
             EnervementTension();
@@ -580,16 +576,16 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
                 _refBattleMan.MostDamageID = idCaster;
             }
 
-            if (source == SourceEffet.Spell && !Stat.NoTension)
+            if (source == SourceEffet.Spell && !base.Stat.NoTension)
                 ReceiveTension(Source.Attaque);
-            else if (source == SourceEffet.BuffDebuff && !Stat.NoTension)
+            else if (source == SourceEffet.BuffDebuff && !base.Stat.NoTension)
                 ReceiveTension(Source.Dot);
 
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
         else if (ModifStat.Radiance > 0)
         {
-            if (!Stat.NoTension)
+            if (!base.Stat.NoTension)
                 ReceiveTension(Source.Soin);
             UICombat.SpawnDegatSoin(ModifStat.Radiance);
         }
@@ -598,7 +594,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
         UpdateUI();
 
-        if (Stat.Radiance <= 0)
+        if (base.Stat.Radiance <= 0)
         {
             /*EndTurn();*/
             // provoque une fin de tour du joueur a la mort d'un ennemi, est ce que c'est une feature voulu ?
@@ -688,7 +684,7 @@ public class EnnemyBehavior : CombatBehavior<EnnemiStat>
 
     public void GetAttacked()
     {
-        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDamageTakenSFX, Stat.DamageSFX);
+        AudioManager.instance.SFX.PlaySFXClip(SFXType.EnnemyDamageTakenSFX, base.Stat.BaseStat.DamageSFX);
         DecompteDebuffEnnemi(Decompte.none, TimerApplication.Attaque);
 
         GetComponent<Animator>().SetFloat("SpeedMultiplier", GameManager.Instance.BattleMan.AnimationSpeedMultiplier);

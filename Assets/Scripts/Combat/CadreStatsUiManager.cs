@@ -11,7 +11,7 @@ public class CadreStatsUiManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI StatResilienceValue;
     [SerializeField] private TextMeshProUGUI StatForceAmeValue;
 
-    public void ShowStats(EnnemiStat stats)
+    public void ShowStats(EnemyStatsHandler stats)
     {
         var ConvictionTrad = GameManager.Instance.CommonNameData.Conviction;
         var FATrad = GameManager.Instance.CommonNameData.ForceDame;

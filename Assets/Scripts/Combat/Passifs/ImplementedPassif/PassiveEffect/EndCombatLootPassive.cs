@@ -30,7 +30,7 @@ public class EndCombatLootPassive : AbstractPassive, ILootEssencePassive
     private List<EndReward> _endRewardList;
     public int Value { get; private set; }
 
-    private void ApplyReward(CharacterStat charStat, EndReward reward)
+    private void ApplyReward(PlayerStatsHandler charStat, EndReward reward)
     {
         BattleManager battleM = GameManager.Instance.BattleMan;
         switch (reward.Reward)
@@ -40,7 +40,7 @@ public class EndCombatLootPassive : AbstractPassive, ILootEssencePassive
                 {
                     JoueurStat modifStat = CreateInstance<JoueurStat>();
                     modifStat.Conscience = reward.value;
-                    ((JoueurStat)charStat).ModifStateAll(modifStat);
+                    charStat.UpdateStat(modifStat);
                     GameManager.Instance.BattleMan.player.UpdateUI();
                     
                 }
@@ -51,7 +51,6 @@ public class EndCombatLootPassive : AbstractPassive, ILootEssencePassive
                     var essenceAmount = battleM.ListEssence.First().GetComponent<CrystalSoul>().Amount;
                     Value = (int)Math.Round(essenceAmount * ((reward.value / 100f)));
                     battleM.ListEssence.First().GetComponent<CrystalSoul>().Amount = essenceAmount + Value;
-
                 }
                 else
                 {
@@ -60,7 +59,7 @@ public class EndCombatLootPassive : AbstractPassive, ILootEssencePassive
                 break;
         }
     }
-    public void Apply(CharacterStat charStat)
+    public void ApplyLootEffect(PlayerStatsHandler charStat)
     {
         Debug.Log("Apply Passif END COMBAT LOOT");
         foreach (var item in _endRewardList)
@@ -73,4 +72,6 @@ public class EndCombatLootPassive : AbstractPassive, ILootEssencePassive
             }
         }
     }
+
+   
 }

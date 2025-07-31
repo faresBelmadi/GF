@@ -10,7 +10,7 @@ public enum ConditionComparaison
 }
 
 [CreateAssetMenu(fileName = "New EnnemyStat per JoueurStat passiv", menuName = "PassiveEffect/New EnnemyStatPerPlayerStat passiv")]
-public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
+public class EnnemyStatPerPlayerStat : AbstractPassive, IDynamicEventPassive<EnemyStatsHandler>
 {
     [Serializable]
     public struct ConditionStat
@@ -27,21 +27,21 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
     private ConditionComparaison _conditionComparaison;
     [SerializeField]
     private ConditionStat _statToModif;
-    private EnnemiStat _ennemiStat;
+    private EnemyStatsHandler _ennemiStat;
 
-    public void InitPassif(CharacterStat stat)
+    public void SubscribeEvents(EnemyStatsHandler stat)
     {
-        _ennemiStat = stat as EnnemiStat;
+        _ennemiStat = stat as EnemyStatsHandler;
         _ennemiStat.OnRadianceChange += UpdateStat;
-        GameManager.Instance.playerStat.OnRadianceChange += UpdateStat;
+        GameManager.Instance.playerStatHandler.OnRadianceChange += UpdateStat;
     }
-    public void Clear()
+    public void UnsubscribeEvents()
     {
         _ennemiStat.OnRadianceChange -= UpdateStat;
-        GameManager.Instance.playerStat.OnRadianceChange -= UpdateStat;
+        GameManager.Instance.playerStatHandler.OnRadianceChange -= UpdateStat;
     }
 
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHandler<CharacterStat> charStat)
     {
         //Nothing to do
     }
@@ -51,7 +51,8 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
         switch (_statToModif.StatToModif)
         {
             case BaseStats.ForceAme:
-                _ennemiStat.ForceAmeBonus = Mathf.FloorToInt(((modificator / 100f) * _ennemiStat._forceAme));
+                int newValue = Mathf.FloorToInt(((modificator / 100f) * _ennemiStat.ForceDameWithoutBonus));
+                _ennemiStat.SetForceDameBonus(newValue);
                 break;
         }
     }
@@ -62,7 +63,7 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
             case ConditionComparaison.ComparePercentRadiance:
                 int modificator = 0;
                 float enemyPercent = ((float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMax) * 100f;
-                float playerPercent = ((float)GameManager.Instance.playerStat.Radiance / (float)GameManager.Instance.playerStat.RadianceMax) * 100f;
+                float playerPercent = ((float)GameManager.Instance.playerStatHandler.Radiance / (float)GameManager.Instance.playerStatHandler.RadianceMax) * 100f;
                 if (enemyPercent > playerPercent)
                     modificator = _statToModif.IfGreaterBonus;
                 if (enemyPercent < playerPercent)

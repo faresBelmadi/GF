@@ -19,7 +19,7 @@ public class BuffByRangeStat
     public BuffDebuff BuffToApply;
 }
 [CreateAssetMenu(fileName = "New ApplyBuffOnStatRange passiv", menuName = "PassiveEffect/New ApplyBuffOnStatRange passiv")]
-public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartCombatPassive
+public class ApplyBuffOnStatRange : AbstractPassive, IUpdateEnemyStatPassive, IStartCombatPassive
 {
     [Space]
     [Header("ApplyBuffOnStatRange")]
@@ -27,7 +27,7 @@ public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartC
     private BaseStats _triggerStat;
     [SerializeField]
     private List<BuffByRangeStat> _buffs;
-    CharacterStat _stat;
+    EnemyStatsHandler _stat;
 
     private BuffByRangeStat _currentBuff;
     public override string IdTradDesc
@@ -38,7 +38,7 @@ public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartC
         }
     }
 
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHandler<CharacterStat> charStat)
     {
        
     }
@@ -53,7 +53,7 @@ public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartC
         }
     }
 
-    public void InitPassif(CharacterStat stat)
+    public void InitPassif(EnemyStatsHandler stat)
     {
         _stat = stat;
         switch (_triggerStat)

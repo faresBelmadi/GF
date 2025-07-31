@@ -170,7 +170,7 @@ public class DialogueManager : MonoBehaviour
 
     public void GetFullAnswer(int idReponse)
     {
-        if (GameManager.Instance.playerStat.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[idReponse].SeuilConscience)
+        if (GameManager.Instance.playerStatHandler.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[idReponse].SeuilConscience)
             return;
         _dialogPanelComponent.SwitchNumberOfAnswer(0);
         _dialogPanelComponent.MainText.text = ReponsePrincipal(idReponse);
@@ -309,9 +309,9 @@ public class DialogueManager : MonoBehaviour
             for (int i = 0; i < currentPossibleResponseList.Count; i++)
             {
                 _dialogPanelComponent.ClairvoyancePanels[i].SetPanel(currentPossibleResponseList.Count);
-                Debug.Log("Conscience requise = " + currentPossibleResponseList[i].SeuilConscience + "\n Conscience joueur : " + GameManager.Instance.playerStat.Conscience);
+                Debug.Log("Conscience requise = " + currentPossibleResponseList[i].SeuilConscience + "\n Conscience joueur : " + GameManager.Instance.playerStatHandler.Conscience);
                 string response = "";
-                if (GameManager.Instance.playerStat.Conscience >= currentPossibleResponseList[i].SeuilConscience)
+                if (GameManager.Instance.playerStatHandler.Conscience >= currentPossibleResponseList[i].SeuilConscience)
                 {
                     if (!string.IsNullOrEmpty(currentPossibleResponseList[i].IdStringReponse))
                     {
@@ -458,7 +458,7 @@ public class DialogueManager : MonoBehaviour
         HideBullSpeakers();
         if (GameManager.Instance.IsPaused)
             return;
-        if (GameManager.Instance.playerStat.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].SeuilConscience)
+        if (GameManager.Instance.playerStatHandler.Conscience < _CurrentDialogue.Questions[DialogueIndex].ReponsePossible[i].SeuilConscience)
             return;
         if (_CurrentDialogue.Questions[DialogueIndex].Question.type == TypeQuestion.startCombat)
         {
@@ -1084,26 +1084,26 @@ public class DialogueManager : MonoBehaviour
         switch (target)
         {
             case CibleDialogue.joueur:
-                targets = new List<Sprite> { GameManager.Instance.BattleMan.player.Stat.Icon};
+                targets = new List<Sprite> { GameManager.Instance.BattleMan.player.Stat.BaseStat.Icon };
                 buffEffect.GetComponent<DialogBuffEffectComponent>().SetPlayer(ManagerBattle.player);
                 break;
             case CibleDialogue.allEnnemi:
                 targets = new List<Sprite>();
-                targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.Icon));
+                targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.BaseStat.Icon));
                 UIs = new List<UIEnnemi>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.UICombat));
                 
                 break;
             case CibleDialogue.All:
-                targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.Icon))
+                targets = new List<Sprite>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.Stat.BaseStat.Icon))
                 {
-                    GameManager.Instance.BattleMan.player.Stat.Icon
+                    GameManager.Instance.BattleMan.player.Stat.BaseStat.Icon
                 };
                 UIs = new List<UIEnnemi>(GameManager.Instance.BattleMan.EnemyScripts.Select(x => x.UICombat));
                 buffEffect.GetComponent<DialogBuffEffectComponent>().SetPlayer(ManagerBattle.player);
                 break;
             case CibleDialogue.ennemi:
             case CibleDialogue.Speaker:
-                targets = new List<Sprite> { enemyTarget.Stat.Icon };
+                targets = new List<Sprite> { enemyTarget.Stat.BaseStat.Icon };
                 UIs = new List<UIEnnemi> { enemyTarget.UICombat };
                 break;
             default:
@@ -1146,7 +1146,8 @@ public class DialogueManager : MonoBehaviour
                 if (/*ManagerBattle == null*/ ManagerAlea.IsAlea)
                 {
                     var cibleJoueur = effet.Cible == Cible.joueur ? ManagerBattle.player.Stat : null;
-                    ManagerAlea.Stat.ModifStateAll(effet.ResultEffet(ManagerAlea.Stat, Cible: cibleJoueur));
+                    var cibleJoueurStatHolder = effet.Cible == Cible.joueur ? ManagerBattle.player.Stat : null;
+                    ManagerBattle.player.Stat.UpdateStat(effet.ResultEffet(ManagerAlea.Stat, Cible: cibleJoueurStatHolder));
                 }
                 else
                 {
@@ -1231,9 +1232,9 @@ public class DialogueManager : MonoBehaviour
         return null;
     }
 
-    private void ApplyEffectOnPlayer(Effet scriptableObject)
+    private void ApplyEffectOnPlayer(Effet effectToApply)
     {
-        ManagerBattle.player.Stat.ModifStateAll(scriptableObject.ResultEffet(ManagerBattle.player.Stat, Cible: ManagerBattle.player.Stat));
+        ManagerBattle.player.Stat.UpdateStat(effectToApply.ResultEffet(ManagerBattle.player.Stat, Cible: ManagerBattle.player.Stat));
     }
 
     private void ApplyEffectOnEnemies(Effet scriptableObject)
@@ -1246,13 +1247,13 @@ public class DialogueManager : MonoBehaviour
                 {
                     if (passif is IAddStackPassive addStackPassiv)
                     {
-                        enemyScript.Stat.ModifStateAll(addStackPassiv.GetStackModifStat(enemyScript.Stat, scriptableObject.ValeurBrut));
+                        enemyScript.Stat.UpdateStat(addStackPassiv.GetStackModifStat(enemyScript.Stat, scriptableObject.ValeurBrut));
                     }
                 }
             }
             else
             {
-                enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat));
+                enemyScript.Stat.UpdateStat(scriptableObject.ResultEffet(enemyScript.Stat));
             }
         }
     }
@@ -1260,13 +1261,13 @@ public class DialogueManager : MonoBehaviour
     private EnnemyBehavior ApplyEffectOneEnnemi(Effet scriptableObject)
     {
         var enemyScript = ManagerBattle.EnemyScripts[Random.Range(0, ManagerBattle.EnemyScripts.Count)];
-        enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat, enemyScript.LastDamageTaken, enemyScript.Stat));
+        enemyScript.Stat.UpdateStat(scriptableObject.ResultEffet(enemyScript.Stat, enemyScript.LastDamageTaken, enemyScript.Stat));
         return enemyScript;
     }
     private EnnemyBehavior ApplyEffectOnSpeaker(Effet scriptableObject)
     {
         var enemyScript = _listSpeakers[_CurrentDialogue.Questions[DialogueIndex].Question.IDSpeaker].transform.parent.gameObject.GetComponent<EnnemyBehavior>();
-        enemyScript.Stat.ModifStateAll(scriptableObject.ResultEffet(enemyScript.Stat, enemyScript.LastDamageTaken, enemyScript.Stat));
+        enemyScript.Stat.UpdateStat(scriptableObject.ResultEffet(enemyScript.Stat, enemyScript.LastDamageTaken, enemyScript.Stat));
         return enemyScript;
     }
 
