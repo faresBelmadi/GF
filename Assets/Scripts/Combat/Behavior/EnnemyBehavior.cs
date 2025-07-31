@@ -39,8 +39,8 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
         {
             foreach (var item in PassiveList)
             {
-                if (item is IUpdateStatPassive)
-                    ((IUpdateStatPassive)item).Clear();
+                if (item is IDynamicEventPassive<EnemyStatsHandler> passive)
+                    passive.UnsubscribeEvents();
             }
         }
     }
@@ -104,10 +104,8 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
         }
         foreach (var item in PassiveList)
         {
-            if ((item is IUpdateStatPassive passive))
-                passive.InitPassif(_stat);
-            else if ((item is IUpdateEnemyStatPassive enemyPassive))
-                enemyPassive.InitPassif(_stat);
+            if ((item is IDynamicEventPassive<EnemyStatsHandler> passive))
+                passive.SubscribeEvents(_stat);
         }
 
         RefreshPassiveDescription();

@@ -9,7 +9,7 @@ public class StatToModif
     public int Ratio;
 }
 [CreateAssetMenu(fileName = "New Stat By Stat effect", menuName = "PassiveEffect/New Effect Stat By Stat")]
-public class StatPerConsciencePassive : AbstractPassive, IPassiveEffect
+public class StatPerConsciencePassive : AbstractPassive, IEffectOnStat<PlayerStatsHandler>, IPassiveEffect
 {
     [Space]
     [Header("StatPerConsciencePassive")]
@@ -20,9 +20,9 @@ public class StatPerConsciencePassive : AbstractPassive, IPassiveEffect
     private PlayerStatsHandler _joueurStat;
     private int modificator = 1;
 
-    private int GetMainStatValue(StatsHandler charStat) => _mainStat switch
+    private int GetMainStatValue(PlayerStatsHandler charStat) => _mainStat switch
     {
-        StatModif.ConscienceMax => (charStat as PlayerStatsHandler).Conscience,
+        StatModif.ConscienceMax => charStat.Conscience,
         _ => 0
     };
     public void InitPassif(PlayerStatsHandler stat)
@@ -43,7 +43,7 @@ public class StatPerConsciencePassive : AbstractPassive, IPassiveEffect
         Apply(_joueurStat);
     }
 
-    public void Apply(StatsHandler charStat)
+    public void Apply(PlayerStatsHandler charStat)
     {
         int mainStat = GetMainStatValue(charStat);
         JoueurStat modifStat = CreateInstance<JoueurStat>();

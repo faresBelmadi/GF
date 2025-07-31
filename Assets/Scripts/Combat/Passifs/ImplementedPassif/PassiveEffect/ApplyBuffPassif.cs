@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New ApplyBuff passiv", menuName = "PassiveEffect/New ApplyBuff passiv")]
-public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemyBehaviorPassive
+public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<StatsHandler>, IStartTurnPassive, IUpdateEnnemyBehaviorPassive
 {
     [Space]
     [Header("ApplyBuffPassif")]

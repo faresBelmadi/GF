@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public interface IEffect
 {
-    public void Apply(StatsHandler charStat);
+}
+
+public interface IEffectOnStat<T> : IEffect where T:StatsHandler
+{
+    public void Apply(T charStat);
 }

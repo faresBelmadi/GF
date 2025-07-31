@@ -17,7 +17,7 @@ public class PalierAction
 
 
 [CreateAssetMenu(fileName = "New Custom Stat Passiv", menuName = "PassiveEffect/New Custom Stat¨Passiv")]
-public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnPassive
+public class CustomStatPassiv : AbstractPassive, IEffectOnStat<EnemyStatsHandler>, IDynamicEventPassive<EnemyStatsHandler>, IStartTurnPassive
 {
     [Space]
     [Header("CustomStatPassiv")]
@@ -27,7 +27,7 @@ public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnP
     [SerializeField]
     private List<StatToModif> _conversionStat;
     private EnemyStatsHandler _ennemiStat;
-    public void Apply(StatsHandler charStat)
+    public void Apply(EnemyStatsHandler charStat)
     {
         int indPalier = UnityEngine.Random.Range(0, _palierActions.Count);
 
@@ -35,23 +35,23 @@ public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnP
         {
             case CustomStatPalierAction.GainStat:
                 Debug.Log("Gain Stat : " + _palierActions[indPalier].Value);
-                ((EnemyStatsHandler)charStat).CustomStat += _palierActions[indPalier].Value;
+                charStat.CustomStat += _palierActions[indPalier].Value;
                 break;
             case CustomStatPalierAction.ResetAndRefreshTension:
                 Debug.Log("Reset");
-                charStat.ChangeTension(Mathf.RoundToInt(((EnemyStatsHandler)charStat).CustomStat * _palierActions[indPalier].Value));
-                ((EnemyStatsHandler)charStat).CustomStat = 0;
+                charStat.ChangeTension(Mathf.RoundToInt(charStat.CustomStat * _palierActions[indPalier].Value));
+                charStat.CustomStat = 0;
                 break;
         }
     }
 
-    public void InitPassif(StatsHandler stat)
+    public void SubscribeEvents(EnemyStatsHandler stat)
     {
         _ennemiStat = (EnemyStatsHandler) stat;
         _ennemiStat.OnCustomStatModification += UpdateStat;
         
     }
-    public void Clear()
+    public void UnsubscribeEvents()
     {
         _ennemiStat.OnCustomStatModification -= UpdateStat;
     }
@@ -76,4 +76,5 @@ public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnP
             }
         }
     }
+
 }

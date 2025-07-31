@@ -10,7 +10,7 @@ public enum ConditionComparaison
 }
 
 [CreateAssetMenu(fileName = "New EnnemyStat per JoueurStat passiv", menuName = "PassiveEffect/New EnnemyStatPerPlayerStat passiv")]
-public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
+public class EnnemyStatPerPlayerStat : AbstractPassive, IDynamicEventPassive<EnemyStatsHandler>
 {
     [Serializable]
     public struct ConditionStat
@@ -29,13 +29,13 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IUpdateStatPassive
     private ConditionStat _statToModif;
     private EnemyStatsHandler _ennemiStat;
 
-    public void InitPassif(StatsHandler stat)
+    public void SubscribeEvents(EnemyStatsHandler stat)
     {
         _ennemiStat = stat as EnemyStatsHandler;
         _ennemiStat.OnRadianceChange += UpdateStat;
         GameManager.Instance.playerStatHandler.OnRadianceChange += UpdateStat;
     }
-    public void Clear()
+    public void UnsubscribeEvents()
     {
         _ennemiStat.OnRadianceChange -= UpdateStat;
         GameManager.Instance.playerStatHandler.OnRadianceChange -= UpdateStat;

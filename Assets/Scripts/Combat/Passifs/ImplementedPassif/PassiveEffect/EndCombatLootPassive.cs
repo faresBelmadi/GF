@@ -22,7 +22,7 @@ public struct EndReward
     public int value;
 }
 [CreateAssetMenu(fileName = "New Loot Passiv", menuName = "PassiveEffect/New Loot Passive")]
-public class EndCombatLootPassive : AbstractPassive, ILootEssencePassive
+public class EndCombatLootPassive : AbstractPassive, IEffectOnStat<StatsHandler>, ILootEssencePassive
 {
     [Space]
     [Header("EndCombatLootPassive")]

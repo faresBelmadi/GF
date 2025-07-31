@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "New StatOnDamagePassive passiv", menuName = "PassiveEffect/New StatOnDamagePassive passiv")]
-public class StatOnDamagePassive : AbstractPassive, IOnDamagePassive, IStartCombatPassive, IAddStackPassive
+public class StatOnDamagePassive : AbstractPassive, IEffectOnStat<StatsHandler>, IOnDamagePassive, IStartCombatPassive, IAddStackPassive
 {
     [Space]
     [Header("StatOnDamagePassive")]
