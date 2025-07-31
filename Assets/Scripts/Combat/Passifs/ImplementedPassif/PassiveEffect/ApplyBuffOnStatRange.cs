@@ -38,7 +38,7 @@ public class ApplyBuffOnStatRange : AbstractPassive, IUpdateEnemyStatPassive, IS
         }
     }
 
-    public void Apply(StatsHandler charStat)
+    public void Apply(StatsHandler<CharacterStat> charStat)
     {
        
     }

@@ -22,7 +22,7 @@ public struct EndReward
     public int value;
 }
 [CreateAssetMenu(fileName = "New Loot Passiv", menuName = "PassiveEffect/New Loot Passive")]
-public class EndCombatLootPassive : AbstractPassive, IEffectOnStat<StatsHandler>, ILootEssencePassive
+public class EndCombatLootPassive : AbstractPassive, ILootEssencePassive
 {
     [Space]
     [Header("EndCombatLootPassive")]
@@ -30,7 +30,7 @@ public class EndCombatLootPassive : AbstractPassive, IEffectOnStat<StatsHandler>
     private List<EndReward> _endRewardList;
     public int Value { get; private set; }
 
-    private void ApplyReward(StatsHandler charStat, EndReward reward)
+    private void ApplyReward(PlayerStatsHandler charStat, EndReward reward)
     {
         BattleManager battleM = GameManager.Instance.BattleMan;
         switch (reward.Reward)
@@ -40,7 +40,7 @@ public class EndCombatLootPassive : AbstractPassive, IEffectOnStat<StatsHandler>
                 {
                     JoueurStat modifStat = CreateInstance<JoueurStat>();
                     modifStat.Conscience = reward.value;
-                    ((PlayerStatsHandler)charStat).UpdateStat(modifStat);
+                    charStat.UpdateStat(modifStat);
                     GameManager.Instance.BattleMan.player.UpdateUI();
                     
                 }
@@ -59,7 +59,7 @@ public class EndCombatLootPassive : AbstractPassive, IEffectOnStat<StatsHandler>
                 break;
         }
     }
-    public void Apply(StatsHandler charStat)
+    public void ApplyLootEffect(PlayerStatsHandler charStat)
     {
         Debug.Log("Apply Passif END COMBAT LOOT");
         foreach (var item in _endRewardList)
@@ -72,4 +72,6 @@ public class EndCombatLootPassive : AbstractPassive, IEffectOnStat<StatsHandler>
             }
         }
     }
+
+   
 }

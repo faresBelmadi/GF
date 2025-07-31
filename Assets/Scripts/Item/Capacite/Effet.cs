@@ -75,7 +75,7 @@ public class Effet : ScriptableObject
         modifstateOutput = ModifState;
         return ModifState;
     }
-    private JoueurStat ResultEffetCommun(StatsHandler Caster, int LastDamageTaken = 0, StatsHandler Cible = null, int NbEnnemies = 1)
+    private JoueurStat ResultEffetCommun(AbstractStatsHandler Caster, int LastDamageTaken = 0, AbstractStatsHandler Cible = null, int NbEnnemies = 1)
     {
         JoueurStat ModifState = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         ModifState = JoueurStat.CreateFromCharacter(ResultEffetBase(Caster, LastDamageTaken, Cible, NbEnnemies));
@@ -84,7 +84,7 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    public bool VisualizeAttack(StatsHandler caster, StatsHandler cible, out int damageAmount, out int returnedDamages, int NbEnnemies = 1)
+    public bool VisualizeAttack(AbstractStatsHandler caster, AbstractStatsHandler cible, out int damageAmount, out int returnedDamages, int NbEnnemies = 1)
     {
         int percent;
         int nbProcDamage;
@@ -264,7 +264,7 @@ public class Effet : ScriptableObject
 
     }
 
-    private CharacterStat ResultEffetBase(StatsHandler Caster, int LastDamageTaken = 0, StatsHandler Cible = null, int NbEnnemies = 1)
+    private CharacterStat ResultEffetBase(AbstractStatsHandler Caster, int LastDamageTaken = 0, AbstractStatsHandler Cible = null, int NbEnnemies = 1)
     {
         Debug.Log($"Trigger Effect Base: {this.name} - {this.TypeEffet} from {Caster} to {Cible}");
         int valueToChange = ValeurBrut * NbAttaque;
@@ -611,7 +611,7 @@ public class Effet : ScriptableObject
         return ModifState;
     }
 
-    private int RemoveBuffOrDebuffFromList(StatsHandler Cible, bool isDebuff, bool removeBuff=true)
+    private int RemoveBuffOrDebuffFromList(AbstractStatsHandler Cible, bool isDebuff, bool removeBuff=true)
     {
         int nbBuffDebuffRemoved = 0;
         if (Cible.ListBuffDebuff != null)

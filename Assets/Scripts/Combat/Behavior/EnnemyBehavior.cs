@@ -8,8 +8,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
 {
     public UIEnnemi UICombat;
     public int TensionUI;
-    
-    
+
     public int combatID;
     public EnnemiSpell nextAction;
     //public GameObject EssencePrefab;
@@ -28,7 +27,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
    
     public override string Name
     {
-        get { return TradManager.instance.GetTranslation(base.Stat.BaseEnemyStat.IdTradName, base.Stat.BaseEnemyStat.Nom); }
+        get { return TradManager.instance.GetTranslation(base.Stat.BaseStat.IdTradName, base.Stat.BaseStat.Nom); }
     }
 
     public bool IsDead { get; private set; } = false;
@@ -113,8 +112,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
 
     public override void ResetStat()
     {
-        base.Stat.ResetStat();
-        base.ResetStat();
+        Stat.ResetStat();
     }
 
     public void StartPhase()
@@ -127,10 +125,9 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
         IsTurn = true;
         foreach (var passif in PassiveList)
         {
-            if (passif is IStartTurnPassive)
+            if (passif is IStartTurnPassive<EnemyStatsHandler> passive)
             {
-                IStartTurnPassive startTurnpassif = passif as IStartTurnPassive;
-                startTurnpassif.Apply(Stat);
+                passive.ApplyOnTurnStart(Stat);
             }
         }
 
@@ -241,7 +238,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
         if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, GameManager.Instance.CommonStatsData.NbPalier);
         currentTension = TensionUI;
 
-        string[] t = base.Stat.BaseEnemyStat.Nom.Split('(');
+        string[] t = base.Stat.BaseStat.Nom.Split('(');
         UICombat.UpdateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
         UICombat.OnPreviewDamage = PreviewDamage;
@@ -304,17 +301,17 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
 
     protected void NextActionType()
     {
-        if (base.Stat.BaseEnemyStat.Att1 != null)
-            if (base.Stat.BaseEnemyStat.Att1 == nextAction)
+        if (base.Stat.BaseStat.Att1 != null)
+            if (base.Stat.BaseStat.Att1 == nextAction)
                 nextActionType = nextActionEnum.Attaque;
-        if (base.Stat.BaseEnemyStat.Att2 != null)
-            if (base.Stat.BaseEnemyStat.Att2 == nextAction)
+        if (base.Stat.BaseStat.Att2 != null)
+            if (base.Stat.BaseStat.Att2 == nextAction)
                 nextActionType = nextActionEnum.Attaque2;
-        if (base.Stat.BaseEnemyStat.Buff != null)
-            if (base.Stat.BaseEnemyStat.Buff == nextAction)
+        if (base.Stat.BaseStat.Buff != null)
+            if (base.Stat.BaseStat.Buff == nextAction)
                 nextActionType = nextActionEnum.Buff;
-        if (base.Stat.BaseEnemyStat.Debuff != null)
-            if (base.Stat.BaseEnemyStat.Debuff == nextAction)
+        if (base.Stat.BaseStat.Debuff != null)
+            if (base.Stat.BaseStat.Debuff == nextAction)
                 nextActionType = nextActionEnum.Debuff;
     }
 
@@ -372,14 +369,14 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
     {
         Spells = new List<EnnemiSpell>();
 
-        if (base.Stat.BaseEnemyStat.Att1 != null)
-            Spells.Add(base.Stat.BaseEnemyStat.Att1);
-        if (base.Stat.BaseEnemyStat.Att2 != null)
-            Spells.Add(base.Stat.BaseEnemyStat.Att2);
-        if (base.Stat.BaseEnemyStat.Buff != null)
-            Spells.Add(base.Stat.BaseEnemyStat.Buff);
-        if (base.Stat.BaseEnemyStat.Debuff != null)
-            Spells.Add(base.Stat.BaseEnemyStat.Debuff);
+        if (base.Stat.BaseStat.Att1 != null)
+            Spells.Add(base.Stat.BaseStat.Att1);
+        if (base.Stat.BaseStat.Att2 != null)
+            Spells.Add(base.Stat.BaseStat.Att2);
+        if (base.Stat.BaseStat.Buff != null)
+            Spells.Add(base.Stat.BaseStat.Buff);
+        if (base.Stat.BaseStat.Debuff != null)
+            Spells.Add(base.Stat.BaseStat.Debuff);
 
         UnityEngine.Random.InitState((int) DateTime.Now.Ticks);
         foreach (var item in Spells)
@@ -555,7 +552,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
             foreach (var item in PassiveList)
             {
                 if (item is IOnDamagePassive passive)
-                    passive.Apply(Stat);
+                    passive.ApplyEffectOnDommage(Stat);
             }
         }
         Stat.UpdateStat(ModifStat);

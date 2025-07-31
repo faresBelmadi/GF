@@ -17,7 +17,7 @@ public class PalierAction
 
 
 [CreateAssetMenu(fileName = "New Custom Stat Passiv", menuName = "PassiveEffect/New Custom Stat¨Passiv")]
-public class CustomStatPassiv : AbstractPassive, IEffectOnStat<EnemyStatsHandler>, IDynamicEventPassive<EnemyStatsHandler>, IStartTurnPassive
+public class CustomStatPassiv : AbstractPassive, IEffectOnStat<EnemyStatsHandler>, IDynamicEventPassive<EnemyStatsHandler>, IStartTurnPassive<EnemyStatsHandler>
 {
     [Space]
     [Header("CustomStatPassiv")]
@@ -45,9 +45,14 @@ public class CustomStatPassiv : AbstractPassive, IEffectOnStat<EnemyStatsHandler
         }
     }
 
-    public void SubscribeEvents(EnemyStatsHandler stat)
+    public void ApplyOnTurnStart(EnemyStatsHandler stat)
     {
-        _ennemiStat = (EnemyStatsHandler) stat;
+        Apply(stat);
+    }
+
+    public void SubscribeEvents(EnemyStatsHandler reference)
+    {
+        _ennemiStat = reference;
         _ennemiStat.OnCustomStatModification += UpdateStat;
         
     }

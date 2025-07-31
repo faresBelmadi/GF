@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New ApplyBuff passiv", menuName = "PassiveEffect/New ApplyBuff passiv")]
-public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<StatsHandler>, IStartTurnPassive, IUpdateEnnemyBehaviorPassive
+public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<StatsHandler<CharacterStat>>, IStartTurnPassive<StatsHandler<CharacterStat>>, IDynamicEventPassive<EnnemyBehavior>
 {
     [Space]
     [Header("ApplyBuffPassif")]
@@ -17,7 +17,7 @@ public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<StatsHandler>, ISt
     private List<BuffDebuff> _listBuffToApply;
     EnnemyBehavior _behavior;
 
-    public void Apply(StatsHandler charStat)
+    public void Apply(StatsHandler<CharacterStat> charStat)
     {
         //charStat = charStat as EnemyStatsHandler;
         switch (_triggerStat)
@@ -43,7 +43,6 @@ public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<StatsHandler>, ISt
                 break;
         }
     }
-  
 
     public void Clear()
     {
@@ -55,16 +54,7 @@ public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<StatsHandler>, ISt
         }
     }
 
-    public void InitPassif(EnnemyBehavior behavior)
-    {
-        _behavior = behavior;
-        switch (_triggerStat)
-        {
-            case BaseStats.PalierTension:
-                _behavior.OnGainTensionLevel += ApplyBuff;
-                break;
-        }
-    }
+    
 
     public void UpdateStat()
     {
@@ -75,5 +65,26 @@ public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<StatsHandler>, ISt
     {
         int ind = Random.Range(0, _listBuffToApply.Count);
         GameManager.Instance.BattleMan.GiveBuffDebuff(new List<BuffDebuff>{ _listBuffToApply[ind]}, _behavior.combatID);
+    }
+
+    public void ApplyOnTurnStart(StatsHandler<CharacterStat> stat)
+    {
+        Apply(stat);
+    }
+
+    public void SubscribeEvents(EnnemyBehavior reference)
+    {
+        _behavior = reference;
+        switch (_triggerStat)
+        {
+            case BaseStats.PalierTension:
+                _behavior.OnGainTensionLevel += ApplyBuff;
+                break;
+        }
+    }
+
+    public void UnsubscribeEvents()
+    {
+        throw new System.NotImplementedException();
     }
 }

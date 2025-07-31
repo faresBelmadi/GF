@@ -5,12 +5,9 @@ using UnityEngine;
 using UnityEngine.UI.Extensions;
 
 [Serializable]
-public class PlayerStatsHandler : StatsHandler
+public class PlayerStatsHandler : StatsHandler<JoueurStat>
 {
     #region BASE STATS
-    private JoueurStat _baseStat;
-   
-    public JoueurStat BaseJoueurStat { get { return _baseStat; } }
     public int BaseConscienceMax => _baseStat.ConscienceMax;
     public int BaseClairvoyance => _baseStat.ClairvoyanceOriginal;
     #endregion
@@ -43,7 +40,7 @@ public class PlayerStatsHandler : StatsHandler
         ListSpell = new List<Spell>(playerStat.ListSpell);
         SlotsSouvenir = playerStat.SlotsSouvenir;
         ListSouvenir = new List<Souvenir>(playerStat.ListSouvenir);
-        _baseStat = ScriptableObject.Instantiate<JoueurStat>(playerStat.BaseJoueurStat);
+        _baseStat = ScriptableObject.Instantiate<JoueurStat>(playerStat.BaseStat);
     }
     public PlayerStatsHandler(JoueurStat charStat) : base(charStat)
     {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 
 [CreateAssetMenu(fileName = "New StatOnDamagePassive passiv", menuName = "PassiveEffect/New StatOnDamagePassive passiv")]
-public class StatOnDamagePassive : AbstractPassive, IEffectOnStat<StatsHandler>, IOnDamagePassive, IStartCombatPassive, IAddStackPassive
+public class StatOnDamagePassive : AbstractPassive, IEffectOnStat<AbstractStatsHandler>, IOnDamagePassive, IStartCombatPassive, IAddStackPassive
 {
     [Space]
     [Header("StatOnDamagePassive")]
@@ -14,7 +14,7 @@ public class StatOnDamagePassive : AbstractPassive, IEffectOnStat<StatsHandler>,
     private int _numberOfDamageSourceNeeded;
 
     private int _currentSource;
-    public void Apply(StatsHandler charStat)
+    public void Apply(AbstractStatsHandler charStat)
     {
         _currentSource++;
 
@@ -51,7 +51,7 @@ public class StatOnDamagePassive : AbstractPassive, IEffectOnStat<StatsHandler>,
         _currentSource = 0;
     }
 
-    public void AddStack(StatsHandler stat,int numberOfStackToAdd)
+    public void AddStack(StatsHandler<CharacterStat> stat,int numberOfStackToAdd)
     {
         CharacterStat modifStat = CreateInstance<CharacterStat>();
         foreach (var statToModif in _statsToModif)
@@ -61,7 +61,7 @@ public class StatOnDamagePassive : AbstractPassive, IEffectOnStat<StatsHandler>,
         stat.UpdateStat(modifStat);
     }
 
-    public JoueurStat GetStackModifStat(StatsHandler stat, int numberOfStackToAdd)
+    public JoueurStat GetStackModifStat(AbstractStatsHandler stat, int numberOfStackToAdd)
     {
         JoueurStat modifStat = CreateInstance<JoueurStat>();
         foreach (var statToModif in _statsToModif)
@@ -69,5 +69,10 @@ public class StatOnDamagePassive : AbstractPassive, IEffectOnStat<StatsHandler>,
             ModifStat(statToModif, modifStat);
         }
         return modifStat;
+    }
+
+    public void ApplyEffectOnDommage(AbstractStatsHandler stat)
+    {
+        Apply(stat);
     }
 }

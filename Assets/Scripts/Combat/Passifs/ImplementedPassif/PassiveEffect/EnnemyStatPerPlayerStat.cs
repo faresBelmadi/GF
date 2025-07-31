@@ -41,7 +41,7 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IDynamicEventPassive<Ene
         GameManager.Instance.playerStatHandler.OnRadianceChange -= UpdateStat;
     }
 
-    public void Apply(StatsHandler charStat)
+    public void Apply(StatsHandler<CharacterStat> charStat)
     {
         //Nothing to do
     }

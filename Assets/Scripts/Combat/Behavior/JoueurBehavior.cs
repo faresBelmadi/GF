@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
+public class JoueurBehavior : CombatBehavior<PlayerStatsHandler> 
 {
     [SerializeField] private List<GameObject> Spells;
     [SerializeField] private Transform DamageSpawn;
@@ -164,9 +164,9 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
 
     private Spell CheckSouvenirSpell(Spell item)
     {
-        if (base.Stat.BaseJoueurStat.ListSouvenir == null || base.Stat.BaseJoueurStat.ListSouvenir.Count == 0)
+        if (base.Stat.BaseStat.ListSouvenir == null || base.Stat.BaseStat.ListSouvenir.Count == 0)
             return item;
-        foreach (var souvenir in base.Stat.BaseJoueurStat.ListSouvenir)
+        foreach (var souvenir in base.Stat.BaseStat.ListSouvenir)
         {
             if (souvenir.SouvenirSpell != null && souvenir.Equiped)
             {
@@ -376,13 +376,13 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
 
     public override void ResetStat()
     {
-        base.Stat.ResetStat();
+        Stat.ResetStat();
         //Stat.Radiance = Mathf.RoundToInt((Stat.Radiance / (Stat.RadianceMax * 1f)) * Stat.RadianceMaxOriginal);
         nbBuffDebuffApplied = 0;
         _convictionManager.UpdatePoint(0);
         _convictionManager.UpdateMaxConviction(0);
-        base.Stat.OnConvictionChanged -= ConvictionChanged;
-        base.ResetStat();
+        Stat.OnConvictionChanged -= ConvictionChanged;
+        
     }
 
     void Dead()
@@ -736,7 +736,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
             }
             var modifiedBuff = ApplyConviction(buff, ValueConviction());
             base.Stat.ListBuffDebuff.Add(modifiedBuff);
-            base.AddBuffDebuff(modifiedBuff, base.Stat);
+            base.AddBuffDebuff(modifiedBuff, Stat);
             if (toAdd.timerApplication != TimerApplication.Attaque)
                 ApplicationBuffDebuff(Timer, modifiedBuff);
         }
@@ -749,7 +749,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
     {
 
         DecompteDebuff(base.Stat.ListBuffDebuff, Decompte);
-        base.Stat.ListBuffDebuff = UpdateBuffDebuffGameObject(base.Stat.ListBuffDebuff, base.Stat);
+        base.Stat.ListBuffDebuff = UpdateBuffDebuffGameObject(base.Stat.ListBuffDebuff, Stat);
 
         var tempListBuffDebuff = base.Stat.ListBuffDebuff;
 

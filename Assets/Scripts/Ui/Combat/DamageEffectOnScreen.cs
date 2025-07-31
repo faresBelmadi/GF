@@ -23,7 +23,7 @@ public class DamageEffectOnScreen : MonoBehaviour
     [SerializeField]
     private Image _imageToPulse;
 
-    private StatsHandler _stat;
+    private AbstractStatsHandler _stat;
     private float _currentTime = 0f;
     private bool _isScaleUp = true;
     private void Update()
@@ -46,7 +46,7 @@ public class DamageEffectOnScreen : MonoBehaviour
         }
     }
 
-    public void Init(StatsHandler Stat)
+    public void Init(AbstractStatsHandler Stat)
     {
         Reset();
         _stat = Stat;

@@ -14,7 +14,7 @@ public class AutelManager : MonoBehaviour
     [SerializeField]
     private GameObject _backgroundSky;
     public int Etage = 1;
-    public PlayerStatsHandler stats;
+    public PlayerStatsHandler Stat;
     [SerializeField]
     private string _idTradCout;
     [SerializeField]
@@ -121,39 +121,39 @@ public class AutelManager : MonoBehaviour
     {
         if (!isOn)
             return;
-        EssenceText.text = stats.Essence + GameManager.Instance.StatIcons.EssenceSpriteTMP;
+        EssenceText.text = Stat.Essence + GameManager.Instance.StatIcons.EssenceSpriteTMP;
         SetUpStatsDescription();
         if (ShopUiPanel.activeInHierarchy == true)
         {
             UpdateCoutChoix();
-            if (stats.Essence < CoutChoix1[Etage - 1])
+            if (Stat.Essence < CoutChoix1[Etage - 1])
             {
                 ButtonChoix1.GetComponentInChildren<Button>().interactable = false;
             }
-            if (stats.Essence < CoutChoix2[Etage - 1])
+            if (Stat.Essence < CoutChoix2[Etage - 1])
             {
                 ButtonChoix2.GetComponentInChildren<Button>().interactable = false;
             }
-            if (stats.Essence < CoutChoix3[Etage - 1])
+            if (Stat.Essence < CoutChoix3[Etage - 1])
             {
                 ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
             }
             switch (Etage)
             {
                 case 1:
-                    if (stats.Calme < CoutStatChoix3[Etage - 1])
+                    if (Stat.Calme < CoutStatChoix3[Etage - 1])
                     {
                         ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
                     }
                     break;
                 case 2:
-                    if (stats.Radiance < CoutStatChoix3[Etage - 1])
+                    if (Stat.Radiance < CoutStatChoix3[Etage - 1])
                     {
                         ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
                     }
                     break;
                 case 3:
-                    if (stats.Clairvoyance < CoutStatChoix3[Etage - 1])
+                    if (Stat.Clairvoyance < CoutStatChoix3[Etage - 1])
                     {
                         ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
                     }
@@ -166,7 +166,7 @@ public class AutelManager : MonoBehaviour
 
     public void InitAutel()
     {
-        stats = GameManager.Instance.playerStatHandler;
+        Stat = GameManager.Instance.playerStatHandler;
         RetourButton.onClick.RemoveAllListeners();
         //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
         RetourButton.onClick.AddListener(delegate { ShowMenuUiPanel(); });
@@ -309,16 +309,16 @@ public class AutelManager : MonoBehaviour
 
     public void SetUpStatsDescription()
     {
-        stats = GameManager.Instance.playerStatHandler;
-        ValeurRadiance.text = stats.RadianceMax.ToString();
-        ValeurFA.text = stats.ForceAme.ToString();
-        ValeurVitesse.text = stats.Vitesse.ToString();
-        ValeurConviction.text = stats.Conviction.ToString();
-        ValeurResilience.text = stats.Resilience.ToString();
-        ValeurCalme.text = stats.Calme.ToString();
-        ValeurVolonter.text = stats.VolonteMax.ToString();
-        ValeurConscience.text = stats.ConscienceMax.ToString();
-        ValeurClairvoyance.text = stats.Clairvoyance.ToString();
+        Stat = GameManager.Instance.playerStatHandler;
+        ValeurRadiance.text = Stat.RadianceMax.ToString();
+        ValeurFA.text = Stat.ForceAme.ToString();
+        ValeurVitesse.text = Stat.Vitesse.ToString();
+        ValeurConviction.text = Stat.Conviction.ToString();
+        ValeurResilience.text = Stat.Resilience.ToString();
+        ValeurCalme.text = Stat.Calme.ToString();
+        ValeurVolonter.text = Stat.VolonteMax.ToString();
+        ValeurConscience.text = Stat.ConscienceMax.ToString();
+        ValeurClairvoyance.text = Stat.Clairvoyance.ToString();
 
         //ModifRadiance.text = ModifFA.text = ModifVitesse.text = ModifConviction.text = ModifResilience.text =
         //    ModifCalme.text = ModifVolonter.text = ModifConscience.text = ModifClairvoyance.text = "";
@@ -555,7 +555,7 @@ public class AutelManager : MonoBehaviour
     public void RetourMap()
     {
         if (Loot == true) GameManager.Instance.GamePanelMngr.HideAutel();
-        GameManager.Instance.playerStatHandler.ListSouvenir = stats.ListSouvenir;
+        GameManager.Instance.playerStatHandler.ListSouvenir = Stat.ListSouvenir;
         StartCoroutine(GameManager.Instance.pmm.EndAutel(Loot));
     }
 
@@ -624,7 +624,7 @@ public class AutelManager : MonoBehaviour
                 }
                 break;
         }
-        stats.UpdateStat(modifStat);
+        Stat.UpdateStat(modifStat);
     }
 
     public void initChoix3()
@@ -676,7 +676,7 @@ public class AutelManager : MonoBehaviour
     public void Choix1()
     {
         CoutChoix(1);
-        stats.Conscience += 2;
+        Stat.Conscience += 2;
         int random = UnityEngine.Random.Range(0, 101);
         Debug.Log("Loot : " + random);
         if (random > 51)
@@ -697,7 +697,7 @@ public class AutelManager : MonoBehaviour
             if (random <= LootRarityForChoix1[i].Pourcentage && listAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter) != null)
             {
                 string NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter).SouvenirName;
-                stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
+                Stat.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
                 Loot = true;
                 RetourMap();
                 return;
@@ -713,7 +713,7 @@ public class AutelManager : MonoBehaviour
     public void Choix2()
     {
         CoutChoix(2);
-        stats.Conscience += 3;
+        Stat.Conscience += 3;
         string NameLoot;
 
         List<Souvenir> souvList = Etage switch
@@ -726,7 +726,7 @@ public class AutelManager : MonoBehaviour
 
         int ind = Random.Range(0, souvList.Count);
         NameLoot = souvList[ind].SouvenirName;
-        stats.ListSouvenir.Add(Instantiate(souvList[ind]));
+        Stat.ListSouvenir.Add(Instantiate(souvList[ind]));
      
         Loot = true;
         RetourMap();
@@ -735,8 +735,8 @@ public class AutelManager : MonoBehaviour
     public void Choix3()
     {
         CoutChoix(3);
-        stats.Conscience += 3;
-        stats.ListSouvenir.Add(SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir);
+        Stat.Conscience += 3;
+        Stat.ListSouvenir.Add(SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir);
         Loot = true;
         RetourMap();
     }

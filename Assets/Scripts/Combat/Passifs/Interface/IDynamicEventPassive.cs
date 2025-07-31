@@ -1,6 +1,6 @@
-public interface IDynamicEventPassive<T> : IEffect where T : StatsHandler
+public interface IDynamicEventPassive<T> : IEffect
 {
-    void SubscribeEvents(T stat);
+    void SubscribeEvents(T reference);
     void UnsubscribeEvents();
     void UpdateStat();
 }

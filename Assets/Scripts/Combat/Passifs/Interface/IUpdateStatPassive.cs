@@ -1,6 +1,6 @@
 public interface IUpdateStatPassive : IEffect
 {
-    void InitPassif(StatsHandler stat);
+    void InitPassif(StatsHandler<CharacterStat> stat);
     void Clear();
     void UpdateStat ();
 }

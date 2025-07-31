@@ -515,8 +515,8 @@ public class BattleManager : MonoBehaviour
                     passive.ApplyEffectOnStartCombat();
                 if (item is IDecoyPassive)
                     EnemyScripts[i].MakeTangible(); //On rend le decoy tangible
-                if (item is IUpdateEnnemyBehaviorPassive updatePassive)
-                    updatePassive.InitPassif(EnemyScripts[i]);
+                if (item is IDynamicEventPassive<EnnemyBehavior> updatePassive)
+                    updatePassive.SubscribeEvents(EnemyScripts[i]);
             }
         }
         StartPhase();
@@ -792,7 +792,7 @@ public class BattleManager : MonoBehaviour
                         EnemyScripts.First().AddDebuff(item, Timer);
                     break;
                 case Cible.Martyr:
-                    var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.BaseEnemyStat.Nom == "Martyr");
+                    var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.BaseStat.Nom == "Martyr");
                     if (martyr != null)
                     {
                         martyr.AddDebuff(item, Timer);
@@ -1073,7 +1073,7 @@ public class BattleManager : MonoBehaviour
                     EnemyScripts.First().ApplicationEffet(effet, null, source, Caster);
                 break;
             case Cible.Martyr:
-                var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.BaseEnemyStat.Nom == "Martyr");
+                var martyr = EnemyScripts.FirstOrDefault(c => c.Stat.BaseStat.Nom == "Martyr");
                 if (martyr != null)
                 {
                     martyr.ApplicationEffet(effet, null, source, Caster);
@@ -1148,7 +1148,7 @@ public class BattleManager : MonoBehaviour
             if (passif is ILootEssencePassive)
             {
                 ILootEssencePassive lootPassif  = passif as ILootEssencePassive;
-                lootPassif.Apply(player.Stat);
+                lootPassif.ApplyLootEffect(player.Stat);
                 if (lootPassif.Value != 0)
                 {
                     amount += lootPassif.Value;

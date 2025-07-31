@@ -24,12 +24,12 @@ public class EffectComponent : MonoBehaviour, IPointerEnterHandler, IPointerExit
     
     private void OnEnable()
     {
-        CombatBehavior<StatsHandler>.OnUpdateUI += UpdateUI;
+        CombatBehavior<AbstractStatsHandler>.OnUpdateUI += UpdateUI;
         _nameText.text = TradManager.instance.GetTranslation(_idTradEffect, "Effect");
     }
     private void OnDisable()
     {
-        CombatBehavior<StatsHandler>.OnUpdateUI -= UpdateUI;
+        CombatBehavior<AbstractStatsHandler>.OnUpdateUI -= UpdateUI;
     }
   
 

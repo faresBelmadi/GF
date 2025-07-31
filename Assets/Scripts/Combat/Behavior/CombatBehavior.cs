@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class CombatBehavior<T> : MonoBehaviour where T : StatsHandler
+public abstract class CombatBehavior<T> : MonoBehaviour where T : AbstractStatsHandler
 {
     [SerializeField]
     protected T _stat;
@@ -13,7 +13,6 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : StatsHandler
         get => _stat;
         set { _stat = value; }
     }
-    public virtual StatsHandler Stats { get; set; }
     public List<GameObject> ListBuffDebuffGO = new List<GameObject>();
     public Material characterMaterial;
     public float deathDisolveTime = 2f;
@@ -122,7 +121,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : StatsHandler
         return buff;
     }
 
-    public void AddBuffDebuff(BuffDebuff toAdd, StatsHandler characterStat)
+    public void AddBuffDebuff(BuffDebuff toAdd, AbstractStatsHandler characterStat)
     {
         AudioManager.instance.SFX.PlaySFXClip(SFXType.BuffTriggerSFX);
        
@@ -382,7 +381,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : StatsHandler
 
         }
     }
-    public List<BuffDebuff> UpdateBuffDebuffGameObject(List<BuffDebuff> ListBuffDebuff, StatsHandler toChange)
+    public List<BuffDebuff> UpdateBuffDebuffGameObject(List<BuffDebuff> ListBuffDebuff, AbstractStatsHandler toChange)
     {
         foreach (var item in ListBuffDebuff)
         {
@@ -493,7 +492,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : StatsHandler
             t = 0;
         else
             t--;
-
+        
         Stat.SetTension(t * Stat.ValeurPalier);
     }
 
@@ -539,7 +538,7 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : StatsHandler
 
         return Stat.Tension >= Stat.TensionMax;
     }
-    public virtual void ResetStat() => Stat.ResetStat();
+    public abstract void ResetStat();
    
     public void MakeIntangible()
     {

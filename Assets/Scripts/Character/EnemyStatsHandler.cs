@@ -3,11 +3,9 @@ using UnityEngine;
 using UnityEngine.UI.Extensions;
 
 [Serializable]
-public class EnemyStatsHandler : StatsHandler
+public class EnemyStatsHandler : StatsHandler<EnnemiStat>
 {
     #region BASE STATS
-    private EnnemiStat _baseStat;
-    public EnnemiStat BaseEnemyStat { get { return _baseStat; } }
     public int BaseDissimulation => _baseStat.DissimulationOriginal;
     #endregion
 
