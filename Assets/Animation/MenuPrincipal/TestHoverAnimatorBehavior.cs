@@ -4,6 +4,7 @@ public class HoverAnimator : MonoBehaviour
 {
     private Animator animator;
     private bool inBState = false;
+    private bool clicked = false;
 
     void Start()
     {
@@ -12,13 +13,24 @@ public class HoverAnimator : MonoBehaviour
 
     void OnMouseEnter()
     {
-        if (!inBState)
-            animator.SetTrigger("hover");
+        if (!clicked && !inBState)
+        {
+            animator.SetTrigger("CharacterHover");
+        }
     }
 
     void OnMouseExit()
     {
-        animator.SetTrigger("unhover");
+        animator.SetTrigger("CharacterBack");
+    }
+
+     void OnMouseDown()
+    {
+        if (!clicked)
+        {
+            clicked = true;
+            animator.SetTrigger("CharacterClick");
+        }
     }
 
     // Optional: track when in B state
