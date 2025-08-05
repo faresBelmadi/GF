@@ -184,16 +184,17 @@ public class AbstractStatsHandler
         if (charStatModifier.Radiance < 0)
         {
             Radiance += Mathf.FloorToInt(charStatModifier.Radiance * MultiplDef);
+            OnRadianceChange?.Invoke();
         }
         else
         {
             Radiance += Mathf.FloorToInt(charStatModifier.Radiance * MultiplSoin);
+            OnRadianceChange?.Invoke();
         }
 
         IsStun = charStatModifier.isStun;
         RectificationStat();
     }
-
 
     public virtual void RectificationStat()
     {

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New ApplyBuff passiv", menuName = "PassiveEffect/New ApplyBuff passiv")]
-public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<StatsHandler<CharacterStat>>, IStartTurnPassive<StatsHandler<CharacterStat>>, IDynamicEventPassive<EnnemyBehavior>
+public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<EnemyStatsHandler>, IStartTurnPassive<EnemyStatsHandler>, IDynamicEventPassive<EnnemyBehavior>
 {
     [Space]
     [Header("ApplyBuffPassif")]
@@ -17,7 +17,7 @@ public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<StatsHandler<Chara
     private List<BuffDebuff> _listBuffToApply;
     EnnemyBehavior _behavior;
 
-    public void Apply(StatsHandler<CharacterStat> charStat)
+    public void Apply(EnemyStatsHandler charStat)
     {
         //charStat = charStat as EnemyStatsHandler;
         switch (_triggerStat)
@@ -67,7 +67,7 @@ public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<StatsHandler<Chara
         GameManager.Instance.BattleMan.GiveBuffDebuff(new List<BuffDebuff>{ _listBuffToApply[ind]}, _behavior.combatID);
     }
 
-    public void ApplyOnTurnStart(StatsHandler<CharacterStat> stat)
+    public void ApplyOnTurnStart(EnemyStatsHandler stat)
     {
         Apply(stat);
     }
