@@ -735,7 +735,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
                 buff.Effet.Add(Instantiate(item));
             }
             var modifiedBuff = ApplyConviction(buff, ValueConviction());
-            base.Stat.ListBuffDebuff.Add(modifiedBuff);
+            Stat.ListBuffDebuff.Add(modifiedBuff);
             base.AddBuffDebuff(modifiedBuff, Stat);
             if (toAdd.timerApplication != TimerApplication.Attaque)
                 ApplicationBuffDebuff(Timer, modifiedBuff);
