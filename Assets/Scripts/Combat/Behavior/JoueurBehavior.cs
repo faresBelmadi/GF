@@ -833,7 +833,10 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         }
         else
         {
-            ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, Stat);
+            if (caster != null)
+                ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, Stat);
+            else
+                ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Stat);
         }
 
         if (ModifStat.Radiance < 0)
