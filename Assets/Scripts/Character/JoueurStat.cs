@@ -13,9 +13,9 @@ public class JoueurStat : CharacterStat
     public int ConscienceMax;
     public int Clairvoyance;
     public int ClairvoyanceOriginal;
-    public List<Spell> ListSpell;
+    public List<Spell> ListSpell = new List<Spell>();
     public int SlotsSouvenir;
-    public List<Souvenir> ListSouvenir;
+    public List<Souvenir> ListSouvenir = new List<Souvenir>();
     
     public event Action OnConscienceIncrease;
     public event Action OnConscienceDecrease;

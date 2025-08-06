@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Effect", menuName = "Capacité/Create New Effet", order = 11)]
