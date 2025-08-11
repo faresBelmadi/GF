@@ -5,22 +5,22 @@ using UnityEngine;
 
 public partial class EffectTests
 {
-    private JoueurStat CreateSmallCaster()
+    private PlayerStatsHandler CreateSmallCaster()
     {
         var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         caster._forceAme = 1;
         caster.MultiplDegat = 1.5f;
         caster.RadianceMax = 5;
-        return caster;
+        return new PlayerStatsHandler(caster);
     }
 
-    private JoueurStat CreateMediumCaster()
+    private PlayerStatsHandler CreateMediumCaster()
     {
         var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
         caster._forceAme = 5;
         caster.MultiplDegat = 2f;
         caster.RadianceMax = 10;
-        return caster;
+        return new PlayerStatsHandler(caster);
     }
 
     private static TypeEffet[] GetValidateEffetSource() => Enum.GetValues(typeof(TypeEffet)).Cast<TypeEffet>().OrderBy(x => x.ToString()).ToArray();
@@ -32,7 +32,7 @@ public partial class EffectTests
         var expected = FindExpectedResult(typeEffet, 0);
         var effet = CreateEffet(typeEffet, valeurBrute: 0, nbAttaques: 0, pourcentage: 100);
         var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        TestResultEffet(effet, caster, expected);
+        TestResultEffet(effet, new PlayerStatsHandler(caster), expected);
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
@@ -42,7 +42,7 @@ public partial class EffectTests
         var expected = FindExpectedResult(typeEffet, 1);
         var effet = CreateEffet(typeEffet, valeurBrute: 5, nbAttaques: 1, pourcentage: 100);
         var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        TestResultEffet(effet, caster, expected);
+        TestResultEffet(effet, new PlayerStatsHandler(caster), expected);
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
@@ -52,7 +52,7 @@ public partial class EffectTests
         var expected = FindExpectedResult(typeEffet, 2);
         var effet = CreateEffet(typeEffet, valeurBrute: 5, nbAttaques: 2, pourcentage: 100);
         var caster = ScriptableObject.CreateInstance("JoueurStat") as JoueurStat;
-        TestResultEffet(effet, caster, expected);
+        TestResultEffet(effet, new PlayerStatsHandler(caster), expected);
     }
 
     [Test, TestCaseSource("GetValidateEffetSource")]
@@ -112,14 +112,14 @@ public partial class EffectTests
     private object FindExpectedResult(TypeEffet typeEffet, int testIndex)
     {
         //TODO
-        //bool hasExpectaton = ExpectedResultsByEffect.TryGetValue(typeEffet, out var expectations);
-        //Assert.IsTrue(hasExpectaton, $"Expectations for effet {typeEffet} are not defined.");
+        bool hasExpectaton = ExpectedResultsByEffect.TryGetValue(typeEffet, out var expectations);
+       
+        Assert.IsTrue(hasExpectaton, $"Expectations for effet {typeEffet} are not defined.");
 
-        //Assert.Less(testIndex, expectations.Length, $"Not enough expectations defined for effet {typeEffet}");
-        //object expected = expectations[testIndex].Invoke();
+        Assert.Less(testIndex, expectations.Length, $"Not enough expectations defined for effet {typeEffet}");
+        object expected = expectations[testIndex].Invoke();
 
-        //return expected;
-        return null;
+        return expected;
     }
 
     private Effet CreateEffet(TypeEffet typeEffet,
@@ -133,17 +133,17 @@ public partial class EffectTests
         return effet;
     }
 
-    private void TestResultEffet(Effet effet, JoueurStat caster, object expected)
+    private void TestResultEffet(Effet effet, PlayerStatsHandler caster, object expected)
     {
         //TODO
-        //if (expected is Exception expectedException)
-        //{
-        //    Assert.Throws(expectedException.GetType(), () => effet.ResultEffet(caster));
-        //}
-        //else if (expected is JoueurStat expectedStat)
-        //{
-        //    var result = effet.ResultEffet(caster);
-        //    Assert.IsTrue(AreIdentical(expectedStat, result, out string error), error);
-        //}
+        if (expected is Exception expectedException)
+        {
+            Assert.Throws(expectedException.GetType(), () => effet.ResultEffet(caster));
+        }
+        else if (expected is JoueurStat expectedStat)
+        {
+            var result = effet.ResultEffet(caster);
+            Assert.IsTrue(AreIdentical(expectedStat, result, out string error), error);
+        }
     }
 }

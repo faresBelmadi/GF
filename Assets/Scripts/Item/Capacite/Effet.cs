@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Effect", menuName = "Capacité/Create New Effet", order = 11)]
@@ -521,11 +520,6 @@ public class Effet : ScriptableObject
                     Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Cible.Radiance) *
                                      Caster.MultiplDegat); //checker le multipl degat
                 Caster.ChangeRadiance(amountPonction);
-                /* old
-                 * Caster.Radiance += amountPonction;
-                if (Caster.Radiance > Caster.RadianceMax)
-                    Caster.Radiance = Caster.RadianceMax;
-                */
                 ModifState.Radiance += -amountPonction;
                 break;
             case TypeEffet.DamageAllEvenly:
@@ -554,11 +548,6 @@ public class Effet : ScriptableObject
                     Mathf.FloorToInt((((Pourcentage / 100f) * NbAttaque) * Caster.ForceAme) *
                                      Caster.MultiplDegat); //checker le multipl degat
                 Caster.ChangeRadiance(amountPonctionFA);
-               /*Old
-                Caster.Radiance += amountPonctionFA;
-                if (Caster.Radiance > Caster.RadianceMax)
-                    Caster.Radiance = Caster.RadianceMax;
-                */
                 ModifState.Radiance += -amountPonctionFA;
                 break;
             case TypeEffet.PremiereAttaqueJeanne:

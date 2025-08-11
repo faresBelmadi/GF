@@ -229,16 +229,17 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
 
     protected virtual void UpdateUI()
     {
-        if (base.Stat == null)
+        if (Stat == null)
             return;
-        if (currentHp != base.Stat.Radiance) UICombat.UpdateHp(base.Stat.Radiance, base.Stat.RadianceMax);
-        currentHp = base.Stat.Radiance;
+        if (currentHp != Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
+        currentHp = Stat.Radiance;
 
-        TensionUI = Mathf.FloorToInt((base.Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / base.Stat.TensionMax);
-        if (currentTension != TensionUI) UICombat.UpdateTension(TensionUI, GameManager.Instance.CommonStatsData.NbPalier);
+        TensionUI = Mathf.FloorToInt((Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax);
+        if (currentTension != TensionUI) 
+            UICombat.UpdateTension(TensionUI, GameManager.Instance.CommonStatsData.NbPalier);
         currentTension = TensionUI;
 
-        string[] t = base.Stat.BaseStat.Nom.Split('(');
+        string[] t = Stat.BaseStat.Nom.Split('(');
         UICombat.UpdateNom(t[0]);
         UICombat.RaiseEvent = TargetAcquired;
         UICombat.OnPreviewDamage = PreviewDamage;

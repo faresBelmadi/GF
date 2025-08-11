@@ -31,7 +31,7 @@ public class OnDeathEffectOnEnnemyPassif : AbstractPassive, IDeathEffectPassive
         switch (_statToModif.Stat)
         {
             case BaseStats.PalierTension:
-                dependencyBehavior.Stat.ChangeTension(dependencyBehavior.Stat.ValeurPalier * _statToModif.Ratio);
+                dependencyBehavior.Stat.ChangeTension(dependencyBehavior.Stat.ValeurPalier * _statToModif.Ratio +0.1f);
                 break;
         }
     }

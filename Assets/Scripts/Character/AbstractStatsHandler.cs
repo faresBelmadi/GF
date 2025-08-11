@@ -9,7 +9,7 @@ public class AbstractStatsHandler
     #region PROPERTY STATS
     [field: SerializeField, ReadOnly] public int Radiance { get; protected set; }
     [field: SerializeField, ReadOnly] public int RadianceMax { get; protected set; }
-    [field: SerializeField, ReadOnly] private int _forceDame;
+    [field: SerializeField, ReadOnly] protected int _forceDame;
     public int ForceAme
     {
         get => _forceDame + ForceAmeBonus;
@@ -25,7 +25,12 @@ public class AbstractStatsHandler
     [field: SerializeField, ReadOnly] public int Vitesse { get; protected set; }
     [field: SerializeField, ReadOnly] public int Conviction { get; protected set; }
     [field: SerializeField, ReadOnly] public int Calme { get; protected set; }
-    [field: SerializeField, ReadOnly] public int Resilience { get; protected set; }
+    [field: SerializeField, ReadOnly] protected int _resilience;
+    public int Resilience 
+    {
+        get => _resilience + ResiliencePassif;
+        set => _resilience = value;
+    }
     [field: SerializeField, ReadOnly] public int ResiliencePassif { get; protected set; }
     [field: SerializeField, ReadOnly] public int Essence { get; set; }
     [field: SerializeField, ReadOnly] public float MultiplDef { get; protected set; }
@@ -166,12 +171,12 @@ public class AbstractStatsHandler
             MultiplBuffDebuff = charStatModifier.MultipleBuffDebuff;
 
         RadianceMax += charStatModifier.RadianceMax;
-        ForceAme += charStatModifier._forceAme;
+        _forceDame += charStatModifier._forceAme;
         Vitesse += charStatModifier.Vitesse;
         if ((Conviction > 0 && Conviction + charStatModifier.Conviction <= 0) && (Conviction < 0 && Conviction + charStatModifier.Conviction >= 0))
             OnConvictionChanged?.Invoke();
         Conviction += charStatModifier.Conviction;
-        this.Resilience += charStatModifier._resilience;
+        _resilience += charStatModifier._resilience;
         Calme += charStatModifier.Calme;
         Essence += charStatModifier.Essence;
         Tension += charStatModifier.Tension * MultiplTension;
@@ -179,16 +184,17 @@ public class AbstractStatsHandler
         if (charStatModifier.Radiance < 0)
         {
             Radiance += Mathf.FloorToInt(charStatModifier.Radiance * MultiplDef);
+            OnRadianceChange?.Invoke();
         }
         else
         {
             Radiance += Mathf.FloorToInt(charStatModifier.Radiance * MultiplSoin);
+            OnRadianceChange?.Invoke();
         }
 
         IsStun = charStatModifier.isStun;
         RectificationStat();
     }
-
 
     public virtual void RectificationStat()
     {

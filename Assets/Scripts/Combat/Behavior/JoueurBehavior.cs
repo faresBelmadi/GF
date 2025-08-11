@@ -735,7 +735,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
                 buff.Effet.Add(Instantiate(item));
             }
             var modifiedBuff = ApplyConviction(buff, ValueConviction());
-            base.Stat.ListBuffDebuff.Add(modifiedBuff);
+            Stat.ListBuffDebuff.Add(modifiedBuff);
             base.AddBuffDebuff(modifiedBuff, Stat);
             if (toAdd.timerApplication != TimerApplication.Attaque)
                 ApplicationBuffDebuff(Timer, modifiedBuff);
@@ -833,7 +833,10 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         }
         else
         {
-            ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, Stat);
+            if (caster != null)
+                ModifStat = effet.ResultEffet(caster.Stat, LastDamageTaken, Stat);
+            else
+                ModifStat = effet.ResultEffet(Stat, LastDamageTaken, Stat);
         }
 
         if (ModifStat.Radiance < 0)
