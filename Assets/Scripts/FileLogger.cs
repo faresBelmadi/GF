@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-
-public enum LogSeverity { Debug, Info, Error }
-
 public static class FileLogger
 {
     private static readonly object _fileLock = new object();
@@ -28,13 +25,13 @@ public static class FileLogger
         var files = dirInfo.GetFiles("*.txt").OrderBy(f => f.CreationTimeUtc).ToList();
         while (files.Count >= MaxFiles)
         {
-            try 
+            try
             {
-                files[0].Delete(); 
-            } 
-            catch 
+                files[0].Delete();
+            }
+            catch
             {
-                /* ignore */ 
+                /* ignore */
             }
             files.RemoveAt(0);
         }
@@ -80,24 +77,29 @@ public static class FileLogger
         }
     }
 
-    private static void Write(LogSeverity severity, string message)
+    private static void Write(LogSeverity severity, string message, LogSystem logSystem)
     {
-        if (!_initialized) 
-            Init(); // fail-safe
+        if (!_initialized)
+            Init();
 
         var time = DateTime.Now.ToString("HH:mm:ss.fff");
         string line;
+        string logSystemString;
+        if (logSystem == LogSystem.None)
+            logSystemString = "";
+        else
+            logSystemString = $"[{logSystem}]";
 
         switch (severity)
         {
             case LogSeverity.Info:
-                line = $"*[{time}] [INFO]* {message}";
+                line = $"*[{time}] [INFO]* {logSystemString} {message}";
                 break;
             case LogSeverity.Error:
-                line = $"**[{time}] [ERROR]** {message}";
+                line = $"**[{time}] [ERROR]** {logSystemString} {message}";
                 break;
             default:
-                line = $"[{time}] [DEBUG] {message}";
+                line = $"[{time}] [DEBUG] {logSystemString} {message}";
                 break;
         }
 
@@ -107,7 +109,22 @@ public static class FileLogger
                 sw.WriteLine(line);
         }
     }
-    public static void Debug(string msg) => Write(LogSeverity.Debug, msg);
-    public static void Info(string msg) => Write(LogSeverity.Info, msg);
-    public static void Error(string msg) => Write(LogSeverity.Error, msg);
+    public static void Debug(string msg, LogSystem logSystem = LogSystem.None) => Write(LogSeverity.Debug, msg, logSystem);
+    public static void Info(string msg, LogSystem logSystem = LogSystem.None) => Write(LogSeverity.Info, msg, logSystem);
+    public static void Error(string msg, LogSystem logSystem = LogSystem.None) => Write(LogSeverity.Error, msg, logSystem);
+}
+
+public enum LogSeverity 
+{
+    Debug,
+    Info,
+    Error 
+}
+
+public enum LogSystem 
+{
+    None,
+    Dialogue,
+    Stats,
+    Effet
 }

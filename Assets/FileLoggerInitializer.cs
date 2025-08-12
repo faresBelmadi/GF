@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class FileLoggerInitializer : MonoBehaviour
 {
-    int index = 0;
 
     void Awake()
     {
         FileLogger.Init();
+        FileLogger.Debug("TEST log system", LogSystem.Stats);
+        FileLogger.Error("Test Osef");
+        Debug.Log("Test via le unity");
     }
 }
