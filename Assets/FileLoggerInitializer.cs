@@ -9,22 +9,5 @@ public class FileLoggerInitializer : MonoBehaviour
     void Awake()
     {
         FileLogger.Init();
-        FileLogger.Info("Jeu démarré");
     }
-
-    void Start()
-    {
-        FileLogger.Debug("TEST");
-        Debug.Log(Application.persistentDataPath);
-    }
-
-    void Update()
-    {
-        if (index < 10)
-        {
-            FileLogger.Error(index.ToString());
-            index++;
-        }
-    }
-
 }
