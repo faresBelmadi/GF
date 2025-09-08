@@ -58,6 +58,14 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         _baseStat = charStat;
     }
 
+    public override void UpdateBaseStat(JoueurStat modifStat)
+    {
+        Debug.Log($"Player Base Stat Modification for player {_baseStat.name}");
+        //Base Stat Modification
+        _baseStat.ModifStateAll(modifStat);
+        //Current Stat modification;
+        UpdateStat(modifStat);
+    }
     public void UpdateStat(JoueurStat charStatModifier)
     {
         base.UpdateStat(charStatModifier);

@@ -99,5 +99,40 @@ public partial class StatsTests
         Assert.That(statHolder.Clairvoyance, Is.EqualTo(10));
         Assert.That(statHolder.VolonteMax, Is.EqualTo(10));
     }
-   
+
+    [Test]
+    public void UpdateBasePlayerStatsHandler()
+    {
+        int baseValue = 5;
+        var baseStat = CreatePlayerStatSO(baseValue, 3, 5);
+        var modifStat =  ScriptableObject.CreateInstance<JoueurStat>();
+
+        modifStat.ConscienceMax = 5;
+
+        var statHolder = new PlayerStatsHandler(baseStat);
+        var obj = GameObject.FindObjectOfType<GameManager>();
+        GameObject go = GameObject.Instantiate(obj.gameObject);
+        GameManager gm = go.GetComponent<GameManager>();
+        GameManager.Instance = gm;
+
+        statHolder.UpdateBaseStat(modifStat);
+        GameObject.DestroyImmediate(go);
+
+        Assert.That(statHolder.ConscienceMax, Is.EqualTo(10));
+        Assert.That(statHolder.BaseConscienceMax, Is.EqualTo(10));
+    }
+
+    [Test]
+    public void PercentStatHolder()
+    {
+        int baseValue = 10;
+        var baseStat = CreatePlayerStatSO(baseValue, 3, 5);
+        var statHolder = new PlayerStatsHandler(baseStat);
+        
+        Assert.That(statHolder.GetPercentValue(StatEnum.ForceDame, 50f), Is.EqualTo(5f));
+        Assert.That(statHolder.GetPercentValue(StatEnum.ForceDame, 25f), Is.EqualTo(2.5f));
+        Assert.That(statHolder.GetPercentValue(StatEnum.Volonte, 25f), Is.EqualTo(0f));
+
+    }
+
 }

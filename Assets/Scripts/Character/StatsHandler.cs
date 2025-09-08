@@ -30,8 +30,24 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
         _baseStat = charStat;
 
     }
-   
 
+    public virtual float GetPercentValue(StatEnum statToGet, float percentValue) => statToGet switch
+    {
+        StatEnum.ForceDame => (_baseStat.ForceAme * percentValue) / 100f,
+        StatEnum.Radiance => (_baseStat.Radiance * percentValue) / 100f,
+        StatEnum.RadianceMax => (_baseStat.RadianceMax * percentValue) / 100f,
+        _ => 0,
+    };
+
+
+    public virtual void UpdateBaseStat(T modifStat)
+    {
+        Debug.Log($"Base Stat Modification for character {_baseStat.name}");
+        //Base Stat Modification
+        _baseStat.ModifStateAll(modifStat);
+        //Current Stat modification;
+        UpdateStat(modifStat);
+    }
     public virtual void ResetStat()
     {
         RadianceMax = BaseRadianceMax;

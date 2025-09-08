@@ -38,6 +38,14 @@ public class EnemyStatsHandler : StatsHandler<EnnemiStat>
 
         _baseStat = charStat;
     }
+    public override void UpdateBaseStat(EnnemiStat modifStat)
+    {
+        Debug.Log($"Enemy Base Stat Modification for enemy {_baseStat.name}");
+        //Base Stat Modification
+        _baseStat.ModifStateAll(modifStat);
+        //Current Stat modification;
+        UpdateStat(modifStat);
+    }
     public override void ResetStat()
     {
         Dissimulation = BaseDissimulation;
