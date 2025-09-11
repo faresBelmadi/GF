@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
 [Serializable]
 public class PlayerStatsHandler : StatsHandler<JoueurStat>
 {
+    private class PercentIncrease
+    {
+        public StatEnum StatEnum;
+        public float value;
+    }
     #region BASE STATS
     public int BaseConscienceMax => _baseStat.ConscienceMax;
     public int BaseClairvoyance => _baseStat.ClairvoyanceOriginal;
@@ -24,6 +28,7 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
     [field: SerializeField, ReadOnly] public List<Souvenir> ListSouvenir { get; set; } = new List<Souvenir>();
     #endregion
 
+    private List<PercentIncrease> _percentIncreaseList = new List<PercentIncrease>();
     #region EVENTS
     public event Action OnConscienceIncrease;
     public event Action OnConscienceDecrease;
@@ -57,7 +62,20 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
 
         _baseStat = charStat;
     }
-
+    private void UpdatePercentIncrease()
+    {
+        foreach (var souv in ListSouvenir )
+        {
+            foreach (var modif in souv.ModificationStat)
+            {
+                if (modif.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
+                {
+                    modif.ParametreModifStat.ValeurModifier = Mathf.FloorToInt(GetPercentValue(modif.StatModif, modif.ParametreModifStat.Valeur));
+                }
+                
+            }
+        }
+    }
     public override void UpdateBaseStat(JoueurStat modifStat)
     {
         Debug.Log($"Player Base Stat Modification for player {_baseStat.name}");

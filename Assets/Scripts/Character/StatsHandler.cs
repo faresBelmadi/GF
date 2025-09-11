@@ -30,7 +30,12 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
         _baseStat = charStat;
 
     }
-
+    protected virtual float GetPercentValue(StatModif statToGet, float percentValue) => statToGet switch
+    {
+        StatModif.ForceAme => GetPercentValue(StatEnum.ForceDame, percentValue),
+        StatModif.RadianceMax => GetPercentValue(StatEnum.RadianceMax, percentValue),
+        _ => 0,
+    };
     public virtual float GetPercentValue(StatEnum statToGet, float percentValue) => statToGet switch
     {
         StatEnum.ForceDame => (_baseStat.ForceAme * percentValue) / 100f,
