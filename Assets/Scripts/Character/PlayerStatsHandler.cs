@@ -62,8 +62,40 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
 
         _baseStat = charStat;
     }
-    private void UpdatePercentIncrease()
+    /// <summary>
+    /// Update stat from percent increase from equiped souvenir
+    /// </summary>
+    public void UpdatePercentIncreaseFromSouvenir()
     {
+        // Remove all stats to refresh
+        foreach (var souv in ListSouvenir)
+        {
+            foreach (var modif in souv.ModificationStat)
+            {
+                if (modif.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
+                {
+                   
+                    switch (modif.StatModif)
+                    {
+                        case StatModif.RadianceMax:
+                            RadianceMax -= modif.ParametreModifStat.ValeurModifier;
+                            break;
+                        case StatModif.ForceAme:
+                            ForceAme -= modif.ParametreModifStat.ValeurModifier;
+                            break;
+                        case StatModif.Vitesse:
+                            Vitesse -= modif.ParametreModifStat.ValeurModifier;
+                            break;
+                        case StatModif.Clairvoyance:
+                            Clairvoyance -= modif.ParametreModifStat.ValeurModifier;
+                            break;
+                    }
+                }
+            }
+        }
+
+        JoueurStat joueurStat = ScriptableObject.CreateInstance<JoueurStat>();
+        // Settings new values
         foreach (var souv in ListSouvenir )
         {
             foreach (var modif in souv.ModificationStat)
@@ -71,10 +103,27 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
                 if (modif.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                 {
                     modif.ParametreModifStat.ValeurModifier = Mathf.FloorToInt(GetPercentValue(modif.StatModif, modif.ParametreModifStat.Valeur));
+                    switch (modif.StatModif)
+                    {
+                        case StatModif.RadianceMax:
+                            joueurStat.RadianceMax = modif.ParametreModifStat.ValeurModifier;
+                            break;
+                        case StatModif.ForceAme:
+                            joueurStat.ForceAme = modif.ParametreModifStat.ValeurModifier;
+                            break;
+                        case StatModif.Vitesse:
+                            joueurStat.Vitesse = modif.ParametreModifStat.ValeurModifier;
+                            break;
+                        case StatModif.Clairvoyance:
+                            joueurStat.Clairvoyance = modif.ParametreModifStat.ValeurModifier;
+                            break;
+                    }
                 }
                 
             }
         }
+        UpdateStat(joueurStat);
+        ScriptableObject.Destroy(joueurStat);
     }
     public override void UpdateBaseStat(JoueurStat modifStat)
     {

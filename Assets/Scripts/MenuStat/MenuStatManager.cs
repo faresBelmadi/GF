@@ -299,7 +299,7 @@ public class MenuStatManager : MonoBehaviour
                         var Temp = 0;
                         if(item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.RadianceMax);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.RadianceMax);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -321,7 +321,7 @@ public class MenuStatManager : MonoBehaviour
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.ForceAme);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.ForceAme);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -341,7 +341,7 @@ public class MenuStatManager : MonoBehaviour
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Calme);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Calme);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -361,7 +361,7 @@ public class MenuStatManager : MonoBehaviour
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Clairvoyance);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Clairvoyance);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -381,7 +381,7 @@ public class MenuStatManager : MonoBehaviour
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.ConscienceMax);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.ConscienceMax);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -401,7 +401,7 @@ public class MenuStatManager : MonoBehaviour
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Conviction);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Conviction);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -421,7 +421,7 @@ public class MenuStatManager : MonoBehaviour
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Resilience);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Resilience);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -448,7 +448,7 @@ public class MenuStatManager : MonoBehaviour
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Vitesse);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Vitesse);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -468,7 +468,7 @@ public class MenuStatManager : MonoBehaviour
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.VolonteMax);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.VolonteMax);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -489,6 +489,7 @@ public class MenuStatManager : MonoBehaviour
         StatTemp.UpdateStat(modifStat);
         ScriptableObject.Destroy(modifStat);
         StatTemp.RectificationStat();
+        StatTemp.UpdatePercentIncreaseFromSouvenir();
     }
 
     #endregion Application Souvenir
