@@ -43,7 +43,6 @@ public class DebugMode : MonoBehaviour
     private List<string> _aleaString = new List<string>();
     private List<string> _combatString = new List<string>();
 
-    private List<Spell> _spells = new List<Spell>();
     private List<Spell> _equipedSpells = new List<Spell>();
     private Dictionary<string, Spell> _dictionnarySpells = new Dictionary<string, Spell>();
     private Dictionary<string, int> _stats = new Dictionary<string, int>();
@@ -85,8 +84,7 @@ public class DebugMode : MonoBehaviour
     {
         foreach (var item in GameManager.Instance.classSO.Competences)
         {
-            _spells.Add(item.Spell);
-            _dictionnarySpells.Add(item.Spell.Nom, item.Spell);
+            _dictionnarySpells.Add(item.Spell.TitleId.Text, item.Spell);
         }
 
         foreach(var item in GameManager.Instance.playerStat.ListSpell)
@@ -94,18 +92,11 @@ public class DebugMode : MonoBehaviour
             _equipedSpells.Add(item);
         }
 
-        foreach(var item in _spells)
+        foreach(var pair in _dictionnarySpells)
         {
             var toggle = Instantiate(_togglePrefab, _spellContent.transform);
-            toggle.GetComponentInChildren<TMP_Text>().text = item.Nom;
-            toggle.GetComponent<Toggle>().isOn = _equipedSpells.Find(x=>x.Nom == item.Nom) != null;
-            //toggle.GetComponent<Toggle>().onValueChanged.AddListener(x => 
-            //{
-            //    if (x)
-            //    {
-            //        _equipedSpells
-            //    }
-            //})
+            toggle.GetComponentInChildren<TMP_Text>().text = pair.Key;
+            toggle.GetComponent<Toggle>().isOn = _equipedSpells.Find(x => x.TitleId.Text == pair.Key) != null;
         }
 
     }

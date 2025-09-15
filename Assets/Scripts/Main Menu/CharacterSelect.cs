@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -227,7 +224,6 @@ public class CharacterSelect : MonoBehaviour
     }
     public void RefreshText(SelectedCharacter selected)
     {
-        _tutoToggle.SetActive(false);
         if (selected == SelectedCharacter.None)
         {
             _nameText.text = "";
@@ -240,11 +236,6 @@ public class CharacterSelect : MonoBehaviour
                 _nameText.text = TradManager.instance.GetTranslation(GetNameLabel(selected), "My name");
                 _gameplayText.text = TradManager.instance.GetTranslation(GetGameplayLabel(selected), "My gameplay");
                 _loreText.text = TradManager.instance.GetTranslation(GetLoreLabel(selected), "My lore");
-                if (selected == SelectedCharacter.Warrior)
-                {
-                    _tutoToggle.SetActive(true);
-                }
-           
         }
     }
     public void RefreshText() => RefreshText(_selected);
