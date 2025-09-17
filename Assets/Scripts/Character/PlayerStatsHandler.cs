@@ -98,6 +98,8 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         // Settings new values
         foreach (var souv in ListSouvenir )
         {
+            if (!souv.Equiped)
+                continue;
             foreach (var modif in souv.ModificationStat)
             {
                 if (modif.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)

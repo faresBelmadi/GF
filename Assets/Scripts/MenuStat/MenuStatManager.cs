@@ -311,8 +311,11 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.RadianceMax -= item.ParametreModifStat.ValeurModifier;
-                        modifStat.Radiance -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.RadianceMax -= item.ParametreModifStat.ValeurModifier;
+                            modifStat.Radiance -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.ForceAme:
@@ -332,7 +335,10 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.ForceAme -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.ForceAme -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.Calme:
@@ -352,7 +358,10 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.Calme -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.Calme -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.Clairvoyance:
@@ -372,7 +381,10 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.Clairvoyance -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.Clairvoyance -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.ConscienceMax:
@@ -392,7 +404,10 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.ConscienceMax -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.ConscienceMax -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.Conviction:
@@ -412,7 +427,10 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat   .Conviction -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.Conviction -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.Resilience:
@@ -436,10 +454,13 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        var tempResiliencePassif = StatTemp.ResiliencePassif;
-                        modifStat.ResiliencePassif = 0;
-                        modifStat.Resilience -= item.ParametreModifStat.ValeurModifier;
-                        modifStat.ResiliencePassif = tempResiliencePassif;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            var tempResiliencePassif = StatTemp.ResiliencePassif;
+                            modifStat.ResiliencePassif = 0;
+                            modifStat.Resilience -= item.ParametreModifStat.ValeurModifier;
+                            modifStat.ResiliencePassif = tempResiliencePassif;
+                        }
                     }
                     break;
                 case StatModif.Vitesse:
@@ -459,7 +480,10 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.Vitesse -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.Vitesse -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.VolonterMax:
@@ -480,13 +504,16 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.VolonterMax -= item.ParametreModifStat.ValeurModifier;
-                        modifStat.Volonter -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.VolonterMax -= item.ParametreModifStat.ValeurModifier;
+                            modifStat.Volonter -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
             }
         }
-        StatTemp.UpdateStat(modifStat);
+        StatTemp.UpdateBaseStat(modifStat);
         ScriptableObject.Destroy(modifStat);
         StatTemp.RectificationStat();
         StatTemp.UpdatePercentIncreaseFromSouvenir();
