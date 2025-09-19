@@ -1,8 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
-using UnityEngine.UI.Extensions;
 
 
 public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
@@ -11,7 +8,7 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     protected T _baseStat;
     public T BaseStat { get { return _baseStat; } }
     public int BaseRadianceMax => _baseStat.RadianceMax;
-    public int BaseForceDame => _baseStat.ForceAmeOriginal;
+    public int BaseForceDame => _baseStat._forceAme;
     public int BaseVitesse => _baseStat.VitesseOriginal;
     public int BaseConviction => _baseStat.ConvictionOriginal;
     public int BaseCalme => _baseStat.Calme;
@@ -28,6 +25,13 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     public StatsHandler(T charStat) : base(charStat)
     {
         _baseStat = charStat;
+
+    }
+    protected virtual void UpdateStatFromUpgrade()
+    {
+        RadianceMax = BaseRadianceMax;
+        ForceAme = BaseForceDame;
+        Vitesse = BaseVitesse;
 
     }
     protected virtual float GetPercentValue(StatModif statToGet, float percentValue) => statToGet switch
@@ -53,6 +57,7 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
         //Current Stat modification;
         UpdateStat(modifStat);
     }
+    
     public virtual void ResetStat()
     {
         RadianceMax = BaseRadianceMax;

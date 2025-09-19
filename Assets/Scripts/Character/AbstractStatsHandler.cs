@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
@@ -124,6 +123,8 @@ public class AbstractStatsHandler
     {
         ResiliencePassif = newValue;
     }
+
+    
     public void UpdateStat(CharacterStat charStatModifier)
     {
         if (charStatModifier.MultiplDef != 1)

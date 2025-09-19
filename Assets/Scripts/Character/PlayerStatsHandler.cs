@@ -133,8 +133,10 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         //Base Stat Modification
         _baseStat.ModifStateAll(modifStat);
         //Current Stat modification;
-        UpdateStat(modifStat);
+        //UpdateStat(modifStat);
+        UpdateStatFromUpgrade();
     }
+ 
     public void UpdateStat(JoueurStat charStatModifier)
     {
         base.UpdateStat(charStatModifier);
