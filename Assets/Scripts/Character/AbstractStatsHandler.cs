@@ -7,40 +7,61 @@ public class AbstractStatsHandler
 {
     #region PROPERTY STATS
     [field: SerializeField, ReadOnly] public int Radiance { get; protected set; }
-    [field: SerializeField, ReadOnly] public int RadianceMax { get; protected set; }
-    [field: SerializeField, ReadOnly] protected int _forceDame;
-    public int ForceAme
+    protected int _radianceMaxModifier;
+    public virtual int RadianceMax 
+    { 
+        get => _radianceMaxModifier; 
+        protected set=> _radianceMaxModifier = value; 
+    }
+    [field: SerializeField, ReadOnly] protected int _forceDameModifier;
+    public virtual int ForceAme
     {
-        get => _forceDame + ForceAmeBonus;
-        set => _forceDame = value;
+        get => _forceDameModifier + ForceAmeBonus;
+        set => _forceDameModifier = value;
     }
 
     public int ForceDameWithoutBonus
     {
-        get => _forceDame;
+        get => _forceDameModifier;
     }
 
     [field: SerializeField, ReadOnly] public int ForceAmeBonus { get; protected set; }
-    [field: SerializeField, ReadOnly] public int Vitesse { get; protected set; }
-    [field: SerializeField, ReadOnly] public int Conviction { get; protected set; }
-    [field: SerializeField, ReadOnly] public int Calme { get; protected set; }
-    [field: SerializeField, ReadOnly] protected int _resilience;
-    public int Resilience 
+    protected int _vitesseModifier;
+    public virtual int Vitesse 
     {
-        get => _resilience + ResiliencePassif;
-        set => _resilience = value;
+        get => _vitesseModifier;
+        protected set => _vitesseModifier = value; 
     }
-    [field: SerializeField, ReadOnly] public int ResiliencePassif { get; protected set; }
-    [field: SerializeField, ReadOnly] public int Essence { get; set; }
-    [field: SerializeField, ReadOnly] public float MultiplDef { get; protected set; }
-    [field: SerializeField, ReadOnly] public float MultiplSoin { get; protected set; }
-    [field: SerializeField, ReadOnly] public float MultiplDegat { get; protected set; }
-    [field: SerializeField, ReadOnly] public float MultiplBuffDebuff { get; protected set; }
-    [field: SerializeField, ReadOnly] public float MultiplTension { get; protected set; }
-    [field: SerializeField, ReadOnly] public float Tension { get; set; }
-    [field: SerializeField, ReadOnly] public float TensionMax { get; set; }
-    [field: SerializeField, ReadOnly] public float ValeurPalier { get; set; }
-    [field: SerializeField, ReadOnly] public int PalierChangement { get; protected set; }
+    protected int _convictionModifier;
+    public virtual int Conviction 
+    { 
+        get => _convictionModifier;
+        protected set=> _convictionModifier = value;
+    }
+
+    protected int _calmeModifier;
+    public virtual int Calme 
+    { 
+        get => _calmeModifier; 
+        protected set => _calmeModifier = value;
+    }
+    [field: SerializeField, ReadOnly] protected int _resilienceModifier;
+    public virtual int Resilience 
+    {
+        get => _resilienceModifier + ResiliencePassif;
+        set => _resilienceModifier = value;
+    }
+    [field: SerializeField, ReadOnly] public virtual int ResiliencePassif { get; protected set; }
+    [field: SerializeField, ReadOnly] public virtual int Essence { get; set; }
+    [field: SerializeField, ReadOnly] public virtual float MultiplDef { get; protected set; }
+    [field: SerializeField, ReadOnly] public virtual float MultiplSoin { get; protected set; }
+    [field: SerializeField, ReadOnly] public virtual float MultiplDegat { get; protected set; }
+    [field: SerializeField, ReadOnly] public virtual float MultiplBuffDebuff { get; protected set; }
+    [field: SerializeField, ReadOnly] public virtual float MultiplTension { get; protected set; }
+    [field: SerializeField, ReadOnly] public virtual float Tension { get; set; }
+    [field: SerializeField, ReadOnly] public virtual float TensionMax { get; set; }
+    [field: SerializeField, ReadOnly] public virtual float ValeurPalier { get; set; }
+    [field: SerializeField, ReadOnly] public virtual int PalierChangement { get; protected set; }
     [field: SerializeField, ReadOnly] public bool IsStun { get; set; }
 
     [field: SerializeField, ReadOnly] public List<BuffDebuff> ListBuffDebuff { get; set; }
@@ -54,13 +75,13 @@ public class AbstractStatsHandler
     public AbstractStatsHandler(AbstractStatsHandler statsHandler)
     {
         Radiance = statsHandler.Radiance;
-        RadianceMax = statsHandler.RadianceMax;
-        ForceAme = statsHandler.ForceAme;
+        //RadianceMax = statsHandler.RadianceMax;
+        //ForceAme = statsHandler.ForceAme;
         ForceAmeBonus = statsHandler.ForceAmeBonus;
-        Vitesse = statsHandler.Vitesse;
-        Conviction = statsHandler.Conviction;
-        Calme = statsHandler.Calme;
-        Resilience = statsHandler.Resilience;
+        //Vitesse = statsHandler.Vitesse;
+        //Conviction = statsHandler.Conviction;
+        //Calme = statsHandler.Calme;
+        //Resilience = statsHandler.Resilience;
         ResiliencePassif = (int)statsHandler.ResiliencePassif;
         Essence = statsHandler.Essence;
         MultiplDef = statsHandler.MultiplDef;
@@ -81,13 +102,13 @@ public class AbstractStatsHandler
     public AbstractStatsHandler(CharacterStat charStat)
     {
         Radiance = charStat.Radiance;
-        RadianceMax = charStat.RadianceMax;
-        ForceAme = charStat.ForceAmeOriginal;
+        //RadianceMax = charStat.RadianceMax;
+        //ForceAme = charStat.ForceAmeOriginal;
         ForceAmeBonus = charStat.ForceAmeBonus;
-        Vitesse = charStat.Vitesse;
-        Conviction = charStat.Conviction;
-        Calme = charStat.Calme;
-        Resilience = charStat.ResilienceOriginal;
+        //Vitesse = charStat.Vitesse;
+        //Conviction = charStat.Conviction;
+        //Calme = charStat.Calme;
+        //Resilience = charStat.ResilienceOriginal;
         ResiliencePassif = (int)charStat.ResiliencePassif;
         Essence = charStat.Essence;
         MultiplDef = charStat.MultiplDef;
@@ -172,12 +193,12 @@ public class AbstractStatsHandler
             MultiplBuffDebuff = charStatModifier.MultipleBuffDebuff;
 
         RadianceMax += charStatModifier.RadianceMax;
-        _forceDame += charStatModifier._forceAme;
+        _forceDameModifier += charStatModifier._forceAme;
         Vitesse += charStatModifier.Vitesse;
         if ((Conviction > 0 && Conviction + charStatModifier.Conviction <= 0) && (Conviction < 0 && Conviction + charStatModifier.Conviction >= 0))
             OnConvictionChanged?.Invoke();
         Conviction += charStatModifier.Conviction;
-        _resilience += charStatModifier._resilience;
+        _resilienceModifier += charStatModifier._resilience;
         Calme += charStatModifier.Calme;
         Essence += charStatModifier.Essence;
         Tension += charStatModifier.Tension * MultiplTension;

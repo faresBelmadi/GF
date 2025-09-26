@@ -15,8 +15,12 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     public int BaseResilience => _baseStat.ResilienceOriginal;
     #endregion
 
-   
-
+    public override int RadianceMax     { get => base.RadianceMax + BaseRadianceMax; protected set => base.RadianceMax = value; }
+    public override int ForceAme        { get => base.ForceAme + BaseForceDame; set => base.ForceAme = value; }
+    public override int Vitesse         { get => base.Vitesse + BaseVitesse; protected set => base.Vitesse = value; }
+    public override int Conviction      { get => base.Conviction + BaseConviction; protected set => base.Conviction = value; }
+    public override int Calme           { get => base.Calme + BaseCalme; protected set => base.Calme = value; }
+    public override int Resilience      { get => base.Resilience + BaseResilience; set => base.Resilience = value; }
     public StatsHandler(StatsHandler<T> statsHandler) : base(statsHandler)
     {
         ListBuffDebuff = new List<BuffDebuff>(statsHandler.ListBuffDebuff);
@@ -30,7 +34,7 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     protected virtual void UpdateStatFromUpgrade()
     {
         RadianceMax = BaseRadianceMax;
-        ForceAme = BaseForceDame;
+       // ForceAme = BaseForceDame;
         Vitesse = BaseVitesse;
 
     }

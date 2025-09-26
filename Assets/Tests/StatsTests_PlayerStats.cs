@@ -107,7 +107,7 @@ public partial class StatsTests
         var baseStat = CreatePlayerStatSO(baseValue, 3, 5);
         var modifStat =  ScriptableObject.CreateInstance<JoueurStat>();
 
-        modifStat.ConscienceMax = 5;
+        modifStat.ForceAme = 5;
 
         var statHolder = new PlayerStatsHandler(baseStat);
         var obj = GameObject.FindObjectOfType<GameManager>();
@@ -118,8 +118,8 @@ public partial class StatsTests
         statHolder.UpdateBaseStat(modifStat);
         GameObject.DestroyImmediate(go);
 
-        Assert.That(statHolder.ConscienceMax, Is.EqualTo(10));
-        Assert.That(statHolder.BaseConscienceMax, Is.EqualTo(10));
+        Assert.That(statHolder.ForceAme, Is.EqualTo(10));
+        Assert.That(statHolder.BaseForceDame, Is.EqualTo(10));
     }
 
     [Test]
