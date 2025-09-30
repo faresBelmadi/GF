@@ -125,7 +125,7 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
             }
         }
         UpdateStat(joueurStat);
-        ScriptableObject.Destroy(joueurStat);
+        ScriptableObject.DestroyImmediate(joueurStat);
     }
     public override void UpdateBaseStat(JoueurStat modifStat)
     {

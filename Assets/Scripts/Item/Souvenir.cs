@@ -59,8 +59,11 @@ public class Souvenir : ScriptableObject
 
     private void Awake()
     {
-        ProcEmotion.Sort((x, y) => x.Pourcentage.CompareTo(y.Pourcentage));
-        ChoixEmotion();
+        if (ProcEmotion != null)
+        {
+            ProcEmotion.Sort((x, y) => x.Pourcentage.CompareTo(y.Pourcentage));
+            ChoixEmotion();
+        }
         EnableSlot();
     }
 

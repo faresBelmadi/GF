@@ -514,7 +514,7 @@ public class MenuStatManager : MonoBehaviour
             }
         }
         StatTemp.UpdateBaseStat(modifStat);
-        ScriptableObject.Destroy(modifStat);
+        ScriptableObject.DestroyImmediate(modifStat);
         StatTemp.RectificationStat();
         StatTemp.UpdatePercentIncreaseFromSouvenir();
     }
@@ -531,17 +531,17 @@ public class MenuStatManager : MonoBehaviour
         }
     }
 
-    [Obsolete]
-    public void Equiped(ReorderableListEventStruct e)
-    {
-        if (e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped == false && NbSlotsEquiped+e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots <= StatTemp.SlotsSouvenir)
-        {
-            e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped = true;
-            EquipedSouvenir.Add(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
-            ModifStat(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir, true);
-            NbSlotsEquiped += e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots;
-        }
-    }
+    //[Obsolete]
+    //public void Equiped(ReorderableListEventStruct e)
+    //{
+    //    if (e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped == false && NbSlotsEquiped+e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots <= StatTemp.SlotsSouvenir)
+    //    {
+    //        e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped = true;
+    //        EquipedSouvenir.Add(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
+    //        ModifStat(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir, true);
+    //        NbSlotsEquiped += e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots;
+    //    }
+    //}
     public bool Equiped(SouvenirUI souv)
     {
         if (souv.LeSouvenir.Equiped == false && NbSlotsEquiped + souv.LeSouvenir.Slots <= StatTemp.SlotsSouvenir)

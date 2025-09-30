@@ -25,6 +25,7 @@ public partial class StatsTests
         stat.Clairvoyance = initialValue;
         stat.VolonterMax = volonteMax;
 
+        stat.SlotsSouvenir = 10;
         return stat;
     }
     [Test]
