@@ -20,7 +20,7 @@ public partial class StatsTests
         return (Souvenir)AssetDatabase.LoadAssetAtPath(AssetDatabase.GUIDToAssetPath(guids[0]), typeof(Souvenir));
     }
 
-    [Test]
+    //[Test]        Modifiait le SO de souvenir, donc test desactive
     public void EquipMemory()
     {
         int baseValue = 100;
