@@ -9,15 +9,15 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     public T BaseStat { get { return _baseStat; } }
     public int BaseRadianceMax => _baseStat.RadianceMax;
     public int BaseForceDame => _baseStat._forceAme;
-    public int BaseVitesse => _baseStat.VitesseOriginal;
+    public int BaseVitesse => _baseStat.Vitesse;
     public int BaseConviction => _baseStat.ConvictionOriginal;
     public int BaseCalme => _baseStat.Calme;
-    public int BaseResilience => _baseStat.ResilienceOriginal;
+    public int BaseResilience => _baseStat.Resilience;
     #endregion
 
     public override int RadianceMax     { get => base.RadianceMax + BaseRadianceMax; protected set => base.RadianceMax = value; }
-    public override int ForceAme        { get => base.ForceAme + BaseForceDame; set => base.ForceAme = value; }
-    public override int Vitesse         { get => base.Vitesse + BaseVitesse; protected set => base.Vitesse = value; }
+    public override int ForceAme        { get => base.ForceAme + BaseForceDame; }
+    public int VitesseTotal         { get => base.VitesseModifier + BaseVitesse; }
     public override int Conviction      { get => base.Conviction + BaseConviction; protected set => base.Conviction = value; }
     public override int Calme           { get => base.Calme + BaseCalme; protected set => base.Calme = value; }
     public override int Resilience      { get => base.Resilience + BaseResilience; set => base.Resilience = value; }
@@ -28,14 +28,13 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     }
     public StatsHandler(T charStat) : base(charStat)
     {
-        _baseStat = charStat;
-
+        _baseStat = ScriptableObject.Instantiate<T>(charStat);
     }
     protected virtual void UpdateStatFromUpgrade()
     {
         RadianceMax = BaseRadianceMax;
        // ForceAme = BaseForceDame;
-        Vitesse = BaseVitesse;
+        //Vitesse = BaseVitesse;
 
     }
     protected virtual float GetPercentValue(StatModif statToGet, float percentValue) => statToGet switch
@@ -67,7 +66,7 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
         RadianceMax = BaseRadianceMax;
         Radiance = BaseRadianceMax;
         ForceAme = BaseForceDame;
-        Vitesse = BaseVitesse;
+        VitesseModifier = 0;
         Conviction = BaseConviction;
         Resilience = BaseResilience;
         Calme = BaseCalme;

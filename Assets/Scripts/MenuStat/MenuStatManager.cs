@@ -192,7 +192,7 @@ public class MenuStatManager : MonoBehaviour
     {
         ValeurRadiance.text = StatTemp.Radiance.ToString() + "/" + StatTemp.RadianceMax;
         ValeurFA.text = StatTemp.ForceAme.ToString();
-        ValeurVitesse.text = StatTemp.Vitesse.ToString();
+        ValeurVitesse.text = StatTemp.VitesseTotal.ToString();
         ValeurConviction.text = StatTemp.Conviction.ToString();
         ValeurResilience.text = StatTemp.Resilience.ToString();
         ValeurCalme.text = StatTemp.Calme.ToString();

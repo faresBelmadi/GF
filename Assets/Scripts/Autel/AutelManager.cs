@@ -312,7 +312,7 @@ public class AutelManager : MonoBehaviour
         Stat = GameManager.Instance.playerStatHandler;
         ValeurRadiance.text = Stat.RadianceMax.ToString();
         ValeurFA.text = Stat.ForceAme.ToString();
-        ValeurVitesse.text = Stat.Vitesse.ToString();
+        ValeurVitesse.text = Stat.VitesseTotal.ToString();
         ValeurConviction.text = Stat.Conviction.ToString();
         ValeurResilience.text = Stat.Resilience.ToString();
         ValeurCalme.text = Stat.Calme.ToString();

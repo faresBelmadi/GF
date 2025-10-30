@@ -253,11 +253,11 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         else
             StatForceAmeBg.color = Color.white;
 
-        StatSpeedText.text = base.Stat.Vitesse + "";
+        StatSpeedText.text = base.Stat.VitesseTotal + "";
 
-        if (base.Stat.Vitesse > base.Stat.BaseVitesse)
+        if (base.Stat.VitesseTotal > base.Stat.BaseVitesse)
             StatSpeedBg.color = green;
-        else if (base.Stat.Vitesse < base.Stat.BaseVitesse)
+        else if (base.Stat.VitesseTotal < base.Stat.BaseVitesse)
             StatSpeedBg.color = red;
         else
             StatSpeedBg.color = Color.white;

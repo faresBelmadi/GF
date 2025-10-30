@@ -349,7 +349,7 @@ public class BattleManager : MonoBehaviour
         IdOrder = new List<CombatOrder>();
         IdSpeedDictionary = new Dictionary<int, int>
         {
-            {idIndexer, player.Stat.Vitesse}
+            {idIndexer, player.Stat.VitesseTotal}
         };
         idPlayer = idIndexer;
         idIndexer++;
@@ -464,7 +464,7 @@ public class BattleManager : MonoBehaviour
             tempCombatScript.isMainEnemy = ennemyId == _encounter.idMainMob ? true : false;
             EnemyScripts.Add(tempCombatScript);
 
-            IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
+            IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.VitesseTotal);
             tempCombatScript.combatID = idIndexer;
             tempCombatScript.ChooseNextAction();
             idIndexer++;

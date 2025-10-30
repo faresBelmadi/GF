@@ -60,7 +60,7 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         SlotsSouvenir = charStat.SlotsSouvenir;
         ListSouvenir = new List<Souvenir>(charStat.ListSouvenir);
 
-        _baseStat = charStat;
+        _baseStat = ScriptableObject.Instantiate<JoueurStat>(charStat);
     }
     /// <summary>
     /// Update stat from percent increase from equiped souvenir
@@ -84,7 +84,7 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
                             ForceAme -= modif.ParametreModifStat.ValeurModifier;
                             break;
                         case StatModif.Vitesse:
-                            Vitesse -= modif.ParametreModifStat.ValeurModifier;
+                            VitesseModifier -= modif.ParametreModifStat.ValeurModifier;
                             break;
                         case StatModif.Clairvoyance:
                             Clairvoyance -= modif.ParametreModifStat.ValeurModifier;
