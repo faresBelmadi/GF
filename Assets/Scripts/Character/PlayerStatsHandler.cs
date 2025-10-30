@@ -78,10 +78,10 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
                     switch (modif.StatModif)
                     {
                         case StatModif.RadianceMax:
-                            RadianceMax -= modif.ParametreModifStat.ValeurModifier;
+                            RadianceMaxModifier -= modif.ParametreModifStat.ValeurModifier;
                             break;
                         case StatModif.ForceAme:
-                            ForceAme -= modif.ParametreModifStat.ValeurModifier;
+                            ForceDameModifier -= modif.ParametreModifStat.ValeurModifier;
                             break;
                         case StatModif.Vitesse:
                             VitesseModifier -= modif.ParametreModifStat.ValeurModifier;
@@ -177,6 +177,7 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         {
             Conscience = 0;
         }
+        
         base.RectificationStat();
     }
     public override void SetZero()

@@ -15,12 +15,12 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     public int BaseResilience => _baseStat.Resilience;
     #endregion
 
-    public override int RadianceMax     { get => base.RadianceMax + BaseRadianceMax; protected set => base.RadianceMax = value; }
-    public override int ForceAme        { get => base.ForceAme + BaseForceDame; }
-    public int VitesseTotal         { get => base.VitesseModifier + BaseVitesse; }
-    public override int Conviction      { get => base.Conviction + BaseConviction; protected set => base.Conviction = value; }
-    public override int Calme           { get => base.Calme + BaseCalme; protected set => base.Calme = value; }
-    public override int Resilience      { get => base.Resilience + BaseResilience; set => base.Resilience = value; }
+    public override int RadianceMaxTotal     { get => base.RadianceMaxModifier + BaseRadianceMax; }
+    public override int ForceDameTotal       { get => base.ForceDameModifier + BaseForceDame; }
+    public override int VitesseTotal         { get => base.VitesseModifier + BaseVitesse; }
+    public override int ConvictionTotal      { get => base.ConvictionModifier + BaseConviction; }
+    public override int CalmeTotal           { get => base.CalmeModifier + BaseCalme; }
+    public override int ResilienceTotal      { get => base.ResilienceModifier + BaseResilience; }
     public StatsHandler(StatsHandler<T> statsHandler) : base(statsHandler)
     {
         ListBuffDebuff = new List<BuffDebuff>(statsHandler.ListBuffDebuff);
@@ -32,7 +32,7 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     }
     protected virtual void UpdateStatFromUpgrade()
     {
-        RadianceMax = BaseRadianceMax;
+        RadianceMaxModifier = BaseRadianceMax;
        // ForceAme = BaseForceDame;
         //Vitesse = BaseVitesse;
 
@@ -63,13 +63,13 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     
     public virtual void ResetStat()
     {
-        RadianceMax = BaseRadianceMax;
+        RadianceMaxModifier = BaseRadianceMax;
         Radiance = BaseRadianceMax;
-        ForceAme = BaseForceDame;
+        ForceDameModifier = 0;
         VitesseModifier = 0;
-        Conviction = BaseConviction;
-        Resilience = BaseResilience;
-        Calme = BaseCalme;
+        ConvictionModifier = BaseConviction;
+        ResilienceModifier = BaseResilience;
+        CalmeModifier = BaseCalme;
         MultiplDef = 1;
         MultiplSoin = 1;
         MultiplDegat = 1;

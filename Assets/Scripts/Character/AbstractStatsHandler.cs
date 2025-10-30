@@ -8,22 +8,30 @@ public class AbstractStatsHandler
     #region PROPERTY STATS
     [field: SerializeField, ReadOnly] public int Radiance { get; protected set; }
     protected int _radianceMaxModifier;
-    public virtual int RadianceMax 
+    public virtual int RadianceMaxModifier
     { 
         get => _radianceMaxModifier; 
         protected set=> _radianceMaxModifier = value; 
     }
+    public virtual int RadianceMaxTotal { get; }
     [field: SerializeField, ReadOnly] protected int _forceDameModifier;
-    public virtual int ForceAme
-    {
-        get => _forceDameModifier + ForceAmeBonus;
-        protected set => _forceDameModifier = value;
-    }
-
-    public int ForceDameWithoutBonus
+    public int ForceDameModifier
     {
         get => _forceDameModifier;
+        protected set => _forceDameModifier = value;
     }
+    public virtual int ForceDameTotal { get; }
+    //Legacy, a suppr apres verif
+    //public virtual int ForceAme
+    //{
+    //    get => _forceDameModifier + ForceAmeBonus;
+    //    protected set => _forceDameModifier = value;
+    //}
+
+    //public int ForceDameWithoutBonus
+    //{
+    //    get => _forceDameModifier;
+    //}
 
     [field: SerializeField, ReadOnly] public int ForceAmeBonus { get; protected set; }
     protected int _vitesseModifier;
@@ -32,25 +40,28 @@ public class AbstractStatsHandler
         get => _vitesseModifier;
         protected set => _vitesseModifier = value; 
     }
+    public virtual int VitesseTotal { get; }
     protected int _convictionModifier;
-    public virtual int Conviction 
+    public int ConvictionModifier
     { 
         get => _convictionModifier;
         protected set=> _convictionModifier = value;
     }
-
+    public virtual int ConvictionTotal { get; }
     protected int _calmeModifier;
-    public virtual int Calme 
+    public int CalmeModifier
     { 
         get => _calmeModifier; 
         protected set => _calmeModifier = value;
     }
+    public virtual int CalmeTotal { get; }
     [field: SerializeField, ReadOnly] protected int _resilienceModifier;
-    public virtual int Resilience 
+    public int ResilienceModifier
     {
         get => _resilienceModifier + ResiliencePassif;
         set => _resilienceModifier = value;
     }
+    public virtual int ResilienceTotal { get; }
     [field: SerializeField, ReadOnly] public virtual int ResiliencePassif { get; protected set; }
     [field: SerializeField, ReadOnly] public virtual int Essence { get; set; }
     [field: SerializeField, ReadOnly] public virtual float MultiplDef { get; protected set; }
@@ -75,13 +86,13 @@ public class AbstractStatsHandler
     public AbstractStatsHandler(AbstractStatsHandler statsHandler)
     {
         Radiance = statsHandler.Radiance;
-        RadianceMax = statsHandler.RadianceMax;
-        ForceAme = statsHandler.ForceAme;
+       // RadianceMax = statsHandler.RadianceMax;
+        //ForceAme = statsHandler.ForceAme;
         ForceAmeBonus = statsHandler.ForceAmeBonus;
        // Vitesse = statsHandler.Vitesse; // ajouter modifier
-        Conviction = statsHandler.Conviction;
-        Calme = statsHandler.Calme;
-        Resilience = statsHandler.Resilience;
+       // ConvictionTotal = statsHandler.ConvictionTotal;
+      //  CalmeTotal = statsHandler.CalmeTotal;
+       // ResilienceTotal = statsHandler.ResilienceTotal;
         ResiliencePassif = (int)statsHandler.ResiliencePassif;
         Essence = statsHandler.Essence;
         MultiplDef = statsHandler.MultiplDef;
@@ -102,13 +113,13 @@ public class AbstractStatsHandler
     public AbstractStatsHandler(CharacterStat charStat)
     {
         Radiance = charStat.Radiance;
-        RadianceMax = charStat.RadianceMax;
-        ForceAme = charStat.ForceAmeOriginal;
+       // RadianceMax = charStat.RadianceMax;
+        //ForceAme = charStat.ForceAmeOriginal;
         ForceAmeBonus = charStat.ForceAmeBonus;
         //Vitesse = charStat.Vitesse;
-        Conviction = charStat.Conviction;
-        Calme = charStat.Calme;
-        Resilience = charStat.ResilienceOriginal;
+        //ConvictionTotal = charStat.Conviction;
+        //CalmeTotal = charStat.Calme;
+        //ResilienceTotal = charStat.ResilienceOriginal;
         ResiliencePassif = (int)charStat.ResiliencePassif;
         Essence = charStat.Essence;
         MultiplDef = charStat.MultiplDef;
@@ -192,14 +203,14 @@ public class AbstractStatsHandler
         if (charStatModifier.MultipleBuffDebuff != 1)
             MultiplBuffDebuff = charStatModifier.MultipleBuffDebuff;
 
-        RadianceMax += charStatModifier.RadianceMax;
+        RadianceMaxModifier += charStatModifier.RadianceMax;
         _forceDameModifier += charStatModifier._forceAme;
         VitesseModifier += charStatModifier.Vitesse;
-        if ((Conviction > 0 && Conviction + charStatModifier.Conviction <= 0) && (Conviction < 0 && Conviction + charStatModifier.Conviction >= 0))
+        if ((ConvictionTotal > 0 && ConvictionTotal + charStatModifier.Conviction <= 0) && (ConvictionTotal < 0 && ConvictionTotal + charStatModifier.Conviction >= 0))
             OnConvictionChanged?.Invoke();
-        Conviction += charStatModifier.Conviction;
+        ConvictionModifier += charStatModifier.Conviction;
         _resilienceModifier += charStatModifier._resilience;
-        Calme += charStatModifier.Calme;
+        CalmeModifier += charStatModifier.Calme;
         Essence += charStatModifier.Essence;
         Tension += charStatModifier.Tension * MultiplTension;
         PalierChangement += charStatModifier.PalierChangement;
@@ -220,42 +231,43 @@ public class AbstractStatsHandler
 
     public virtual void RectificationStat()
     {
-        if (Radiance > RadianceMax && RadianceMax > 0)
-        {
-            Radiance = RadianceMax;
-        }
+        //  TODO: ne fonctionne plus comme ça, a modifier si besoin
+        //if (Radiance > RadianceMax && RadianceMax > 0)
+        //{
+        //    Radiance = RadianceMax;
+        //}
 
-        if (Conviction > GameManager.Instance.CommonStatsData.ConvictionMax)
-        {
-            Conviction = GameManager.Instance.CommonStatsData.ConvictionMax;
-        }
-        else if (Conviction < GameManager.Instance.CommonStatsData.ConvictionMin)
-        {
-            Conviction = GameManager.Instance.CommonStatsData.ConvictionMin;
-        }
+        //if (ConvictionTotal > GameManager.Instance.CommonStatsData.ConvictionMax)
+        //{
+        //    ConvictionTotal = GameManager.Instance.CommonStatsData.ConvictionMax;
+        //}
+        //else if (ConvictionTotal < GameManager.Instance.CommonStatsData.ConvictionMin)
+        //{
+        //    ConvictionTotal = GameManager.Instance.CommonStatsData.ConvictionMin;
+        //}
 
-        if (Resilience > GameManager.Instance.CommonStatsData.ResilienceMax)
-        {
-            Resilience = GameManager.Instance.CommonStatsData.ResilienceMax - ResiliencePassif;
-        }
-        else if (Resilience < GameManager.Instance.CommonStatsData.ResilienceMin)
-        {
-            Resilience = GameManager.Instance.CommonStatsData.ResilienceMin + ResiliencePassif;
-        }
+        //if (ResilienceTotal > GameManager.Instance.CommonStatsData.ResilienceMax)
+        //{
+        //    ResilienceTotal = GameManager.Instance.CommonStatsData.ResilienceMax - ResiliencePassif;
+        //}
+        //else if (ResilienceTotal < GameManager.Instance.CommonStatsData.ResilienceMin)
+        //{
+        //    ResilienceTotal = GameManager.Instance.CommonStatsData.ResilienceMin + ResiliencePassif;
+        //}
 
-        if (ForceAme < 0)
-            ForceAme = 0;
+        //if (ForceDameT < 0) 
+        //    ForceAme = 0;
     }
     public virtual void SetZero()
     {
-        Calme = 0;
-        Conviction = 0;
-        Resilience = 0;
-        Essence = 0;
-        ForceAme = 0;
-        Radiance = 0;
-        ResiliencePassif = 0;
-        RadianceMax = 0;
+        //CalmeTotal = 0;
+        //ConvictionTotal = 0;
+        //ResilienceTotal = 0;
+        //Essence = 0;
+        ////ForceAme = 0;
+        //Radiance = 0;
+        //ResiliencePassif = 0;
+        //RadianceMax = 0;
     }
     public void SetTension(float newValue)
     {
@@ -329,12 +341,12 @@ public class AbstractStatsHandler
         if (charStatModifier.MultipleBuffDebuff != 1)
             MultiplBuffDebuff = charStatModifier.MultipleBuffDebuff;
 
-        RadianceMax -= charStatModifier.RadianceMax;
-        ForceAme -= charStatModifier.ForceAme;
+        RadianceMaxModifier -= charStatModifier.RadianceMax;
+        ForceDameModifier -= charStatModifier.ForceAme;
         VitesseModifier -= charStatModifier.Vitesse;
-        Conviction -= charStatModifier.Conviction;
-        Resilience -= charStatModifier._resilience;
-        Calme -= charStatModifier.Calme;
+        ConvictionModifier -= charStatModifier.Conviction;
+        ResilienceModifier -= charStatModifier._resilience;
+        CalmeModifier -= charStatModifier.Calme;
         Essence -= charStatModifier.Essence;
         Tension -= charStatModifier.Tension;
 

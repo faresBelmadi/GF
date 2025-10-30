@@ -190,12 +190,12 @@ public class MenuStatManager : MonoBehaviour
     }
     public void UpdateStatUI()
     {
-        ValeurRadiance.text = StatTemp.Radiance.ToString() + "/" + StatTemp.RadianceMax;
-        ValeurFA.text = StatTemp.ForceAme.ToString();
+        ValeurRadiance.text = StatTemp.Radiance.ToString() + "/" + StatTemp.RadianceMaxTotal;
+        ValeurFA.text = StatTemp.ForceDameTotal.ToString();
         ValeurVitesse.text = StatTemp.VitesseTotal.ToString();
-        ValeurConviction.text = StatTemp.Conviction.ToString();
-        ValeurResilience.text = StatTemp.Resilience.ToString();
-        ValeurCalme.text = StatTemp.Calme.ToString();
+        ValeurConviction.text = StatTemp.ConvictionTotal.ToString();
+        ValeurResilience.text = StatTemp.ResilienceTotal.ToString();
+        ValeurCalme.text = StatTemp.CalmeTotal.ToString();
         ValeurVolonter.text = StatTemp.Volonte.ToString() + "/" + StatTemp.VolonteMax.ToString();
         ValeurConscience.text = StatTemp.Conscience.ToString() + "/" + StatTemp.ConscienceMax.ToString();
         ValeurClairvoyance.text = StatTemp.Clairvoyance.ToString();

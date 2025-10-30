@@ -70,18 +70,18 @@ public abstract class CombatBehavior<T> : MonoBehaviour where T : AbstractStatsH
     {
         float value = 0f;
         
-        switch(Stat.Conviction)
+        switch(Stat.ConvictionTotal)
         {
             case 10:
-                value = (Stat.Conviction + commonStats.MaxConvictionBonusValue) * commonStats.ConvictionValue / 100f;
+                value = (Stat.ConvictionTotal + commonStats.MaxConvictionBonusValue) * commonStats.ConvictionValue / 100f;
 
                 break;
             case -10:
-                value = (Stat.Conviction - commonStats.MaxConvictionBonusValue) * commonStats.ConvictionValue / 100f;
+                value = (Stat.ConvictionTotal - commonStats.MaxConvictionBonusValue) * commonStats.ConvictionValue / 100f;
 
                 break;
             default:
-                value = Stat.Conviction * commonStats.ConvictionValue / 100f;
+                value = Stat.ConvictionTotal * commonStats.ConvictionValue / 100f;
                 break;
         }
         return value;

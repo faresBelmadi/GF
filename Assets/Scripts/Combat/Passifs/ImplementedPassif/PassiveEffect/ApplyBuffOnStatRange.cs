@@ -66,7 +66,7 @@ public class ApplyBuffOnStatRange : AbstractPassive, IDynamicEventPassive<EnemyS
 
     private BuffByRangeStat GetDebuffToApply()
     {
-        float radPercent = (_stat.Radiance * 100f) / _stat.RadianceMax;
+        float radPercent = (_stat.Radiance * 100f) / _stat.RadianceMaxTotal;
         foreach (var item in _buffs)
         {
             if (item.MaxInclusive >= radPercent && item.MinExclusive < radPercent)

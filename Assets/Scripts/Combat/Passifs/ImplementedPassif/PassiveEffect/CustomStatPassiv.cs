@@ -68,11 +68,11 @@ public class CustomStatPassiv : AbstractPassive, IEffectOnStat<EnemyStatsHandler
             switch (item.Stat)
             {
                 case BaseStats.RadianceMax:
-                    var pourcentagePVActuel = (float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMax * 100f;
+                    var pourcentagePVActuel = (float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMaxTotal * 100f;
                     CharacterStat modifStat = ScriptableObject.CreateInstance<CharacterStat>();
                     modifStat.RadianceMax = _ennemiStat.BaseRadianceMax;
                     modifStat.RadianceMax += _ennemiStat.CustomStat * 10;
-                    modifStat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * _ennemiStat.RadianceMax); //TODO CHANGE RADIANCE
+                    modifStat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * _ennemiStat.RadianceMaxTotal); //TODO CHANGE RADIANCE
                     break;
                 case BaseStats.ForceAme:
                     _ennemiStat.ChangeForceDame(_ennemiStat.BaseForceDame + _ennemiStat.CustomStat * 1);

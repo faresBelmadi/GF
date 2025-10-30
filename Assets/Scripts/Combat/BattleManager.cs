@@ -193,7 +193,7 @@ public class BattleManager : MonoBehaviour
 
     private void CalcTensionJoueur()
     {
-        player.Stat.TensionMax = (CalmeMoyenAdversaire / CalmeMoyen) * player.Stat.Calme;
+        player.Stat.TensionMax = (CalmeMoyenAdversaire / CalmeMoyen) * player.Stat.CalmeTotal;
         player.Stat.ValeurPalier = player.Stat.TensionMax / GameManager.Instance.CommonStatsData.NbPalier;
         if (player.Stat.PalierChangement > 0)
         {
@@ -211,7 +211,7 @@ public class BattleManager : MonoBehaviour
         {
             if (!item.Stat.NoTension)
             {
-                item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.Calme;
+                item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.CalmeTotal;
                 item.Stat.ValeurPalier = (item.Stat.TensionMax) / GameManager.Instance.CommonStatsData.NbPalier;
                 if (item.Stat.PalierChangement > 0)
                 {
@@ -233,15 +233,15 @@ public class BattleManager : MonoBehaviour
         {
             if (!EnemyScripts[i].Stat.NoTension)
             {
-                tempCalmeEnemy += EnemyScripts[i].Stat.Calme;
+                tempCalmeEnemy += EnemyScripts[i].Stat.CalmeTotal;
                 count++;
             }
         }
 
-        CalmeMoyenJoueur = player.Stat.Calme;
+        CalmeMoyenJoueur = player.Stat.CalmeTotal;
         CalmeMoyenAdversaire = tempCalmeEnemy / count;
         //remplacer 1 par une variable si le cas de plusieurs personnage jouable arrive
-        CalmeMoyen = (tempCalmeEnemy + player.Stat.Calme) / (count + 1);
+        CalmeMoyen = (tempCalmeEnemy + player.Stat.CalmeTotal) / (count + 1);
     }
 
     private bool CheckTension(int key)

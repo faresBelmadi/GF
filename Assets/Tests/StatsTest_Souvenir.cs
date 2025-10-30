@@ -68,6 +68,6 @@ public partial class StatsTests
         souvUI.LeSouvenir = souv;
         menuStatMng.Equiped(souvUI);
 
-        Assert.That(statHolder.ForceAme, Is.EqualTo(110));
+        Assert.That(statHolder.ForceDameTotal, Is.EqualTo(110));
     }
 }

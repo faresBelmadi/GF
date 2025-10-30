@@ -73,7 +73,7 @@ public class HighlightCost : MonoBehaviour
             _radianceHighlightGO.SetActive(true);
             _radianceCalqueImage.fillAmount = _radianceImage.fillAmount;
 
-            float percentCost = ((float)radCost) / (float)Stat.RadianceMax;
+            float percentCost = ((float)radCost) / (float)Stat.RadianceMaxTotal;
             _highlightRadianceImage.fillAmount = _radianceImage.fillAmount - percentCost;
 
            // if (_bloomRadianceComponent.loop == true) _bloomRadianceComponent.OnToggleLoop();
@@ -122,7 +122,7 @@ public class HighlightCost : MonoBehaviour
             _radianceHighlightGO.SetActive(true);
             _radianceCalqueImage.fillAmount = _radianceImage.fillAmount;
 
-            float percentCost = ((float)_selectRadCost) / (float)GameManager.Instance.playerStatHandler.RadianceMax;
+            float percentCost = ((float)_selectRadCost) / (float)GameManager.Instance.playerStatHandler.RadianceMaxTotal;
             _highlightRadianceImage.fillAmount = _radianceImage.fillAmount - percentCost;
 
             _bloomRadianceComponent.TriggerBloom(true);

@@ -141,7 +141,7 @@ public class AutelManager : MonoBehaviour
             switch (Etage)
             {
                 case 1:
-                    if (Stat.Calme < CoutStatChoix3[Etage - 1])
+                    if (Stat.CalmeTotal < CoutStatChoix3[Etage - 1])
                     {
                         ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
                     }
@@ -310,12 +310,12 @@ public class AutelManager : MonoBehaviour
     public void SetUpStatsDescription()
     {
         Stat = GameManager.Instance.playerStatHandler;
-        ValeurRadiance.text = Stat.RadianceMax.ToString();
-        ValeurFA.text = Stat.ForceAme.ToString();
+        ValeurRadiance.text = Stat.RadianceMaxTotal.ToString();
+        ValeurFA.text = Stat.ForceDameTotal.ToString();
         ValeurVitesse.text = Stat.VitesseTotal.ToString();
-        ValeurConviction.text = Stat.Conviction.ToString();
-        ValeurResilience.text = Stat.Resilience.ToString();
-        ValeurCalme.text = Stat.Calme.ToString();
+        ValeurConviction.text = Stat.ConvictionTotal.ToString();
+        ValeurResilience.text = Stat.ResilienceTotal.ToString();
+        ValeurCalme.text = Stat.CalmeTotal.ToString();
         ValeurVolonter.text = Stat.VolonteMax.ToString();
         ValeurConscience.text = Stat.ConscienceMax.ToString();
         ValeurClairvoyance.text = Stat.Clairvoyance.ToString();
