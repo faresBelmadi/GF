@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -155,11 +156,9 @@ public partial class StatsTests
         statHolder.UpdateStat(modifStat);
         Assert.That(statHolder.ForceDameTotal, Is.EqualTo(20));
         
-    }
-    public class VitesseStat
-    {
-        PlayerStatsHandler statHolder;
-        private void InitStats(int baseValue)
+    } 
+    static PlayerStatsHandler statHolder;
+        private static void InitStats(int baseValue)
         {
 
             var baseStat = StatsTests.CreatePlayerStatSO(baseValue, 3, 5);
@@ -171,15 +170,29 @@ public partial class StatsTests
             GameManager.Instance = gm;
         }
 
+    
+    public static void TestCreateStat(int baseValue, int expected, Func<PlayerStatsHandler, int> getStat)
+    {
+        InitStats(baseValue);
+        Assert.That(getStat(statHolder), Is.EqualTo(expected));
+    }
+    public static void TestAddStat(int baseValue, JoueurStat statModifier, int expected, Func<PlayerStatsHandler, int> getStat)
+    {
+        InitStats(baseValue);
+        statHolder.UpdateStat(statModifier);
+        Assert.That(getStat(statHolder), Is.EqualTo(expected));
+    }
+
+    public class VitesseStat
+    {
+       
+
         [TestCase(10,10)]
         [TestCase(-10, -10)]
         [TestCase(0, 0)]
         [TestCase(100000, 100000)]
-        public void TestCreateVitesse(int baseValue, int expected)
-        {
-            InitStats(baseValue);
-            Assert.That(statHolder.VitesseTotal, Is.EqualTo(expected));
-        }
+        public void TestCreateVitesse(int baseValue, int expected) => TestCreateStat(baseValue, expected, f => f.VitesseTotal);
+       
 
         [TestCase(10, 10, 20)]
         [TestCase(10, 0, 10)]
@@ -190,12 +203,11 @@ public partial class StatsTests
         [TestCase(100000, 1, 100001)]
         public void TestAddVitesse(int baseValue, int modifier, int expected)
         {
-            InitStats(baseValue);
             var modifStat = ScriptableObject.CreateInstance<JoueurStat>();
 
             modifStat.Vitesse = modifier;
-            statHolder.UpdateStat(modifStat);
-            Assert.That(statHolder.VitesseTotal, Is.EqualTo(expected));
+            TestAddStat(baseValue, modifStat, expected, f => f.VitesseTotal);
+            
         }
 
         [Test]
