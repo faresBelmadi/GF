@@ -322,7 +322,7 @@ public class BattleManager : MonoBehaviour
 
     public int getJoueurClairvoyance()
     {
-        return player.Stat.Clairvoyance;
+        return player.Stat.ClairvoyanceModifier;
     }
     void DialogueEnableSetup()
     {

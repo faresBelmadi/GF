@@ -21,8 +21,20 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
     [field: SerializeField, ReadOnly] public int Volonte { get; set; }
     [field: SerializeField, ReadOnly] public int VolonteMax { get; set; }
     [field: SerializeField, ReadOnly] public int Conscience { get; set; }
-    [field: SerializeField, ReadOnly] public int ConscienceMax { get; private set; }
-    [field: SerializeField, ReadOnly] public int Clairvoyance { get; private set; }
+    protected int _conscienceMaxModifier;
+    public int ConscienceMaxModifier
+    {
+        get => _conscienceMaxModifier;
+        protected set => _conscienceMaxModifier = value;
+    }
+    public int ConscienceMaxTotal { get => ConscienceMaxModifier + BaseConscienceMax; }
+    protected int _clairvoyanceModifier;
+    public int ClairvoyanceModifier
+    {
+        get => _clairvoyanceModifier;
+        protected set => _clairvoyanceModifier = value;
+    }
+    public int ClairvoyanceTotal { get => ClairvoyanceModifier + BaseClairvoyance; }
     [field: SerializeField, ReadOnly] public List<Spell> ListSpell { get; set; } = new List<Spell>();
     [field: SerializeField, ReadOnly] public int SlotsSouvenir { get; set; }
     [field: SerializeField, ReadOnly] public List<Souvenir> ListSouvenir { get; set; } = new List<Souvenir>();
@@ -39,8 +51,8 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         Volonte = playerStat.Volonte;
         VolonteMax = playerStat.VolonteMax;
         Conscience = playerStat.Conscience;
-        ConscienceMax = playerStat.ConscienceMax;
-        Clairvoyance = playerStat.Clairvoyance;
+       // ConscienceMaxTotal = playerStat.ConscienceMaxModifier;
+        ClairvoyanceModifier = playerStat.ClairvoyanceModifier;
 
         ListSpell = new List<Spell>(playerStat.ListSpell);
         SlotsSouvenir = playerStat.SlotsSouvenir;
@@ -53,8 +65,8 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         Volonte = charStat.Volonter;
         VolonteMax = charStat.VolonterMax;
         Conscience = charStat.Conscience;
-        ConscienceMax = charStat.ConscienceMax;
-        Clairvoyance = charStat.Clairvoyance;
+       // ConscienceMaxTotal = charStat.ConscienceMax;
+        ClairvoyanceModifier = charStat.Clairvoyance;
 
         ListSpell = new List<Spell>(charStat.ListSpell);
         SlotsSouvenir = charStat.SlotsSouvenir;
@@ -87,7 +99,7 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
                             VitesseModifier -= modif.ParametreModifStat.ValeurModifier;
                             break;
                         case StatModif.Clairvoyance:
-                            Clairvoyance -= modif.ParametreModifStat.ValeurModifier;
+                            ClairvoyanceModifier -= modif.ParametreModifStat.ValeurModifier;
                             break;
                     }
                 }
@@ -145,8 +157,8 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         VolonteMax += charStatModifier.VolonterMax;
 
         Conscience += charStatModifier.Conscience;
-        ConscienceMax += charStatModifier.ConscienceMax;
-        Clairvoyance += charStatModifier.Clairvoyance;
+        ConscienceMaxModifier += charStatModifier.ConscienceMax;
+        ClairvoyanceModifier += charStatModifier.Clairvoyance;
 
 
        
@@ -169,9 +181,9 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         {
             Volonte = VolonteMax;
         }
-        if (Conscience > ConscienceMax)
+        if (Conscience > ConscienceMaxModifier)
         {
-            Conscience = ConscienceMax;
+            Conscience = ConscienceMaxModifier;
         }
         if (Conscience < 0)
         {
@@ -184,15 +196,15 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
     {
         Volonte = 0;
         Conscience = 0;
-        ConscienceMax = 0;
-        Clairvoyance = 0;
+        ConscienceMaxModifier = 0;
+        ClairvoyanceModifier = 0;
         VolonteMax = 0;
 
         base.SetZero();
     }
     public override void ResetStat()
     {
-        Clairvoyance = BaseClairvoyance;
+        ClairvoyanceModifier = BaseClairvoyance;
         base.ResetStat();
     }
 }

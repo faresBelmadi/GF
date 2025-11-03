@@ -21,14 +21,16 @@ public partial class StatsTests
         public Action<JoueurStat, int> SetStat;
         public override string ToString() => $"{StatName} [{ScenarioName}]";
     }
-    private static (string name, Func<PlayerStatsHandler, int> get, Func<PlayerStatsHandler, int> getBase, Action<JoueurStat, int> set)[] AllStats = 
+    private static (string name, Func<PlayerStatsHandler, int> get, Func<PlayerStatsHandler, int> getBase, Action<JoueurStat, int> set)[] AllStats =
         {
             ("Radiance Max", f => f.RadianceMaxTotal, f => f.BaseRadianceMax, (x, v) => x.RadianceMax = v),
             ("Force D'ame", f => f.ForceDameTotal, f => f.BaseForceDame, (x, v) => x.ForceAme = v),
             ("Vitesse", f => f.VitesseTotal, f => f.BaseVitesse, (x, v) => x.Vitesse = v),
             ("Conviction", f => f.ConvictionTotal, f => f.BaseConviction, (x, v) => x.Conviction = v),
             ("Calme", f => f.CalmeTotal, f => f.BaseCalme, (x, v) => x.Calme = v),
-            ("Resilience", f => f.ResilienceTotal, f => f.BaseResilience, (x, v) => x.Resilience = v)
+            ("Resilience", f => f.ResilienceTotal, f => f.BaseResilience, (x, v) => x.Resilience = v),
+            ("Conscience Max", f => f.ConscienceMaxTotal, f=>f.BaseConscienceMax, (x,v) => x.ConscienceMax = v),
+            ("Clairvoyance", f => f.ClairvoyanceTotal, f=>f.BaseClairvoyance, (x,v) => x.Clairvoyance = v)
         };
     public static IEnumerable<StatTestCase> AllAddCases()
     {
@@ -88,6 +90,7 @@ public partial class StatsTests
             }
         }
     }
+    
     PlayerStatsHandler statToTest;
     private void InitStat(int baseValue)
     {

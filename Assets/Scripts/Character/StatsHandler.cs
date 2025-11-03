@@ -10,7 +10,7 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     public int BaseRadianceMax => _baseStat.RadianceMax;
     public int BaseForceDame => _baseStat._forceAme;
     public int BaseVitesse => _baseStat.Vitesse;
-    public int BaseConviction => _baseStat.ConvictionOriginal;
+    public int BaseConviction => _baseStat.Conviction;
     public int BaseCalme => _baseStat.Calme;
     public int BaseResilience => _baseStat.Resilience;
     #endregion

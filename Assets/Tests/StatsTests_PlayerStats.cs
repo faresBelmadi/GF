@@ -47,8 +47,8 @@ public partial class StatsTests
 
         Assert.That(statHolder.Volonte, Is.EqualTo(baseStat.Volonter));
         Assert.That(statHolder.Conscience, Is.EqualTo(baseStat.Conscience));
-        Assert.That(statHolder.ConscienceMax, Is.EqualTo(baseStat.ConscienceMax));
-        Assert.That(statHolder.Clairvoyance, Is.EqualTo(baseStat.ClairvoyanceOriginal));
+        Assert.That(statHolder.ConscienceMaxModifier, Is.EqualTo(baseStat.ConscienceMax));
+        Assert.That(statHolder.ClairvoyanceModifier, Is.EqualTo(baseStat.ClairvoyanceOriginal));
         Assert.That(statHolder.VolonteMax, Is.EqualTo(baseStat.VolonterMax));
 
         Assert.That(statHolder.BaseCalme, Is.EqualTo(baseStat.Calme));
@@ -99,7 +99,7 @@ public partial class StatsTests
 
         Assert.That(statHolder.Volonte, Is.EqualTo(baseStat.Volonter));
         Assert.That(statHolder.Conscience, Is.EqualTo(10));
-        Assert.That(statHolder.Clairvoyance, Is.EqualTo(10));
+        Assert.That(statHolder.ClairvoyanceModifier, Is.EqualTo(10));
         Assert.That(statHolder.VolonteMax, Is.EqualTo(10));
     }
 
@@ -296,7 +296,7 @@ public partial class StatsTests
         public void TestCreateForceDame(int baseValue, int expected)
         {
             InitStats(baseValue);
-            Assert.That(statHolder.Clairvoyance, Is.EqualTo(expected));
+            Assert.That(statHolder.ClairvoyanceModifier, Is.EqualTo(expected));
         }
 
         [TestCase(10, 10, 20)]

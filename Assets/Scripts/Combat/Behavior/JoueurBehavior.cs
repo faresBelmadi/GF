@@ -184,7 +184,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
     {
         hPBarManager.InitPBar(base.Stat.Radiance, base.Stat.RadianceMaxTotal);
         tensionBarManager.InitPBar(0, commonStats.NbPalier);
-        conscienceBarManager.InitPBar(base.Stat.Conscience, base.Stat.ConscienceMax);
+        conscienceBarManager.InitPBar(base.Stat.Conscience, base.Stat.ConscienceMaxModifier);
 
         for (int i = 0; i < _passiveTooltips.Count && i < PassiveList.Count; i++)
         {
@@ -217,7 +217,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
 
         if (base.Stat.Conscience != currentCons)
         {
-            conscienceBarManager.UpdatePBar(base.Stat.Conscience, base.Stat.ConscienceMax);
+            conscienceBarManager.UpdatePBar(base.Stat.Conscience, base.Stat.ConscienceMaxModifier);
             conscienceBarManager.ToggleBloomPulses(false);
         }
 
@@ -231,14 +231,14 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         HpText.text = $"{base.Stat.Radiance.ToString()}/{base.Stat.RadianceMaxTotal}";
         HpTextReduced.text = base.Stat.Radiance.ToString();
         HpToolTipText.text = $"{TradManager.instance.GetTranslation(_radianceTextIdTrad)}\nMax: {base.Stat.RadianceMaxTotal.ToString()}";
-        ConscienceText.text = base.Stat.Conscience + "/" + base.Stat.ConscienceMax;
+        ConscienceText.text = base.Stat.Conscience + "/" + base.Stat.ConscienceMaxModifier;
 
-        StatClairvoyanceText.text = base.Stat.Clairvoyance + "";
+        StatClairvoyanceText.text = base.Stat.ClairvoyanceModifier + "";
 
 
-        if (base.Stat.Clairvoyance > base.Stat.BaseClairvoyance)
+        if (base.Stat.ClairvoyanceModifier > base.Stat.BaseClairvoyance)
             StatClairvoyanceBg.color = green;
-        else if (base.Stat.Clairvoyance < base.Stat.BaseClairvoyance)
+        else if (base.Stat.ClairvoyanceModifier < base.Stat.BaseClairvoyance)
             StatClairvoyanceBg.color = red;
         else
             StatClairvoyanceBg.color = Color.white;

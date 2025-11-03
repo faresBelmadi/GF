@@ -153,7 +153,7 @@ public class AutelManager : MonoBehaviour
                     }
                     break;
                 case 3:
-                    if (Stat.Clairvoyance < CoutStatChoix3[Etage - 1])
+                    if (Stat.ClairvoyanceModifier < CoutStatChoix3[Etage - 1])
                     {
                         ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
                     }
@@ -317,8 +317,8 @@ public class AutelManager : MonoBehaviour
         ValeurResilience.text = Stat.ResilienceTotal.ToString();
         ValeurCalme.text = Stat.CalmeTotal.ToString();
         ValeurVolonter.text = Stat.VolonteMax.ToString();
-        ValeurConscience.text = Stat.ConscienceMax.ToString();
-        ValeurClairvoyance.text = Stat.Clairvoyance.ToString();
+        ValeurConscience.text = Stat.ConscienceMaxModifier.ToString();
+        ValeurClairvoyance.text = Stat.ClairvoyanceModifier.ToString();
 
         //ModifRadiance.text = ModifFA.text = ModifVitesse.text = ModifConviction.text = ModifResilience.text =
         //    ModifCalme.text = ModifVolonter.text = ModifConscience.text = ModifClairvoyance.text = "";

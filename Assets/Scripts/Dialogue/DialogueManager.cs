@@ -334,7 +334,7 @@ public class DialogueManager : MonoBehaviour
                     _dialogPanelComponent.Reponse[i].GetComponentInChildren<TMP_Text>(true).text = response;
                     _dialogPanelComponent.Reponse[i].SetActive(true);
                     //Réponse[i].GetComponent<TextAnimation>().LaunchAnim();
-                    if (ManagerBattle.player.Stat.Clairvoyance >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
+                    if (ManagerBattle.player.Stat.ClairvoyanceModifier >= currentPossibleResponseList[i].SeuilClairvoyanceStat)
                     {
                         if (!GameManager.Instance.IsTuto && currentPossibleResponseList.Count > 1)
                             _dialogPanelComponent.ClairvoyancePanels[i].Show();
