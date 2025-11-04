@@ -13,7 +13,7 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
     }
     #region BASE STATS
     public int BaseConscienceMax => _baseStat.ConscienceMax;
-    public int BaseClairvoyance => _baseStat.ClairvoyanceOriginal;
+    public int BaseClairvoyance => _baseStat.Clairvoyance;
     #endregion
 
     #region STATS PROPERTY
@@ -74,6 +74,25 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
 
         _baseStat = ScriptableObject.Instantiate<JoueurStat>(charStat);
     }
+
+    protected override int GetPercentValue(StatModif statToGet, float percentValue) => statToGet switch
+    {
+        StatModif.ConscienceMax => GetPercentValue(StatEnum.ConscienceMax, percentValue),
+        StatModif.Clairvoyance  => GetPercentValue(StatEnum.Clairvoyance, percentValue),
+        _                       => base.GetPercentValue(statToGet, percentValue),
+    };
+    /// <summary>
+    /// Return the fraction of the given stat, round to the nearest integer.
+    /// </summary>
+    /// <param name="statToGet">Stat to get the fraction</param>
+    /// <param name="percentValue">The percebnt value</param>
+    /// <returns>The value rounded to the nearest integer</returns>
+    public override int GetPercentValue(StatEnum statToGet, float percentValue) => statToGet switch
+    {
+        StatEnum.ConscienceMax  => Mathf.RoundToInt((BaseConscienceMax * percentValue) / 100f),
+        StatEnum.Clairvoyance   => Mathf.RoundToInt((BaseClairvoyance * percentValue) / 100f),
+        _                       => base.GetPercentValue(statToGet, percentValue),
+    };
     /// <summary>
     /// Update stat from percent increase from equiped souvenir
     /// </summary>

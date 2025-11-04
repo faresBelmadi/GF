@@ -37,19 +37,28 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
         //Vitesse = BaseVitesse;
 
     }
-    protected virtual float GetPercentValue(StatModif statToGet, float percentValue) => statToGet switch
+    protected virtual int GetPercentValue(StatModif statToGet, float percentValue) => statToGet switch
     {
-        StatModif.ForceAme => GetPercentValue(StatEnum.ForceDame, percentValue),
-        StatModif.RadianceMax => GetPercentValue(StatEnum.RadianceMax, percentValue),
-        _ => 0,
+        StatModif.RadianceMax   => GetPercentValue(StatEnum.RadianceMax, percentValue),
+        StatModif.ForceAme      => GetPercentValue(StatEnum.ForceDame, percentValue),
+        StatModif.Vitesse       => GetPercentValue(StatEnum.Vitesse, percentValue),
+        StatModif.Conviction    => GetPercentValue(StatEnum.Conviction, percentValue),
+        StatModif.Calme         => GetPercentValue(StatEnum.Calme, percentValue),
+        StatModif.Resilience    => GetPercentValue(StatEnum.Resilience, percentValue),
+        _                       => 0,
     };
-    public virtual float GetPercentValue(StatEnum statToGet, float percentValue) => statToGet switch
+    public virtual int GetPercentValue(StatEnum statToGet, float percentValue) => statToGet switch
     {
-        StatEnum.ForceDame => (_baseStat.ForceAme * percentValue) / 100f,
-        StatEnum.Radiance => (_baseStat.Radiance * percentValue) / 100f,
-        StatEnum.RadianceMax => (_baseStat.RadianceMax * percentValue) / 100f,
-        _ => 0,
+        StatEnum.RadianceMax    => Mathf.RoundToInt((BaseRadianceMax * percentValue) / 100f),
+        StatEnum.ForceDame      => Mathf.RoundToInt((BaseForceDame * percentValue) / 100f),
+        StatEnum.Vitesse        => Mathf.RoundToInt((BaseVitesse * percentValue) / 100f),
+        StatEnum.Conviction     => Mathf.RoundToInt((BaseConviction * percentValue) / 100f),
+        StatEnum.Calme          => Mathf.RoundToInt((BaseCalme * percentValue) / 100f),
+        StatEnum.Resilience     => Mathf.RoundToInt((BaseResilience * percentValue) / 100f),
+        _                       => 0,
     };
+
+
 
 
     public virtual void UpdateBaseStat(T modifStat)
