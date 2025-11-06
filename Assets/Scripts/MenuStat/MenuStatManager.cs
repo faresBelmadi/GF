@@ -542,20 +542,29 @@ public class MenuStatManager : MonoBehaviour
     //        NbSlotsEquiped += e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots;
     //    }
     //}
+
+    public bool Equiped(Souvenir souv)
+    {
+        if (souv.Equiped == false && NbSlotsEquiped + souv.Slots <= StatTemp.SlotsSouvenir)
+        {
+            souv.Equiped = true;
+            EquipedSouvenir.Add(souv);
+            ModifStat(souv, true);
+            NbSlotsEquiped += souv.Slots;
+            if (GameManager.Instance.CopyAllSouvenir.Contains(souv))
+            {
+                GameManager.Instance.CopyAllSouvenir.Remove(souv);
+            }
+            return true;
+        }
+        return false;
+    }
     public bool Equiped(SouvenirUI souv)
     {
         if (souv.LeSouvenir.Equiped == false && NbSlotsEquiped + souv.LeSouvenir.Slots <= StatTemp.SlotsSouvenir)
         {
-            souv.LeSouvenir.Equiped = true;
-            EquipedSouvenir.Add(souv.LeSouvenir);
-            ListSouvenirUIEquipped.Add(souv);
-            ModifStat(souv.LeSouvenir, true);
-            NbSlotsEquiped += souv.LeSouvenir.Slots;
-            if (GameManager.Instance.CopyAllSouvenir.Contains(souv.LeSouvenir))
-            {
-                GameManager.Instance.CopyAllSouvenir.Remove(souv.LeSouvenir);
-            }
-            return true;
+            ListSouvenirUIEquipped.Add(souv);  
+            return Equiped(souv.LeSouvenir);
         }
         return false;
     }
@@ -573,17 +582,25 @@ public class MenuStatManager : MonoBehaviour
         }
         e.DroppedObject.GetComponent<ReorderableListElement>().IsTransferable = true;
     }
+    public bool UnEquiped(Souvenir souv)
+    {
+        if (souv.Equiped == true)
+        {
+            souv.Equiped = false;
+            GameManager.Instance.CopyAllSouvenir.Add(souv);
+            EquipedSouvenir.Remove(souv);
+            ModifStat(souv, false);
+            NbSlotsEquiped -= souv.Slots;
+            return true;
+        }
+        return false;
+    }
     public bool UnEquiped(SouvenirUI souv)
     {
         if (souv.LeSouvenir.Equiped == true)
         {
-            souv.LeSouvenir.Equiped = false;
-            GameManager.Instance.CopyAllSouvenir.Add(souv.LeSouvenir);
-            EquipedSouvenir.Remove(souv.LeSouvenir);
             ListSouvenirUIEquipped.Remove(souv);
-            ModifStat(souv.LeSouvenir, false);
-            NbSlotsEquiped -= souv.LeSouvenir.Slots;
-            return true;
+            return UnEquiped(souv.LeSouvenir);
         }
         return false;
     }
