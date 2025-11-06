@@ -52,7 +52,7 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         VolonteMax = playerStat.VolonteMax;
         Conscience = playerStat.Conscience;
        // ConscienceMaxTotal = playerStat.ConscienceMaxModifier;
-        ClairvoyanceModifier = playerStat.ClairvoyanceModifier;
+        //ClairvoyanceModifier = playerStat.ClairvoyanceModifier;
 
         ListSpell = new List<Spell>(playerStat.ListSpell);
         SlotsSouvenir = playerStat.SlotsSouvenir;
@@ -66,7 +66,7 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         VolonteMax = charStat.VolonterMax;
         Conscience = charStat.Conscience;
        // ConscienceMaxTotal = charStat.ConscienceMax;
-        ClairvoyanceModifier = charStat.Clairvoyance;
+       //ClairvoyanceModifier = charStat.Clairvoyance;
 
         ListSpell = new List<Spell>(charStat.ListSpell);
         SlotsSouvenir = charStat.SlotsSouvenir;

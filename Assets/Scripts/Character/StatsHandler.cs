@@ -32,7 +32,7 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     }
     protected virtual void UpdateStatFromUpgrade()
     {
-        RadianceMaxModifier = BaseRadianceMax;
+        //RadianceMaxModifier = BaseRadianceMax;
        // ForceAme = BaseForceDame;
         //Vitesse = BaseVitesse;
 
