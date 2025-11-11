@@ -50,13 +50,23 @@ public partial class StatsTests
         {
             foreach(var scenar in scenarii)
             {
+                int expected = scenar.expected;
+                if ((stat.name == "Force D'ame") && scenar.expected < 0)
+                {
+                    expected = 0;
+                }
+                else if ((stat.name == "Resilience") || (stat.name == "Conviction"))
+                {
+                    if (scenar.expected < -10) expected = -10;
+                    else if (scenar.expected > 10) expected = 10;
+                }
                 yield return new StatTestCase
                 {
                     StatName = stat.name,
                     ScenarioName = scenar.name,
                     BaseValue = scenar.baseValue,
                     Modifier = scenar.modifier,
-                    Expected = scenar.expected,
+                    Expected = expected,
                     GetStat = stat.get,
                     GetBaseStat = stat.getBase,
                     SetStat = stat.set
@@ -72,19 +82,30 @@ public partial class StatsTests
             ("Creation Simple", 10,  10),
             ("Creation Null", 0, 0),
             ("Creation négative", -7 , -7),
-            ("Grande valeures", 12547896,  12547896)
+            ("Grande valeures positives", 12547896,  12547896),
+            ("Grande valeures négatives", -12547896,  -12547896)
         };
 
         foreach (var stat in AllStats)
         {
             foreach (var scenar in scenarii)
             {
+                int expected = scenar.expected;
+                if ((stat.name == "Force D'ame") && scenar.expected < 0)
+                {
+                    expected = 0;
+                }
+                else if ((stat.name == "Resilience") || (stat.name == "Conviction"))
+                {
+                    if (scenar.expected < -10) expected = -10;
+                    else if (scenar.expected > 10) expected = 10;
+                }
                 yield return new StatTestCase
                 {
                     StatName = stat.name,
                     ScenarioName = scenar.name,
                     BaseValue = scenar.baseValue,
-                    Expected = scenar.expected,
+                    Expected = expected,
                     GetStat = stat.get,
                     SetStat = stat.set
                 };
@@ -126,18 +147,8 @@ public partial class StatsTests
         }
     }
 
-    PlayerStatsHandler statToTest;
-    private void InitStat(int baseValue)
-    {
-
-        var baseStat = StatsTests.CreatePlayerStatSO(baseValue, 3, 5);
-        statToTest = new PlayerStatsHandler(baseStat);
-
-        var obj = GameObject.FindObjectOfType<GameManager>();
-        GameObject go = GameObject.Instantiate(obj.gameObject);
-        GameManager gm = go.GetComponent<GameManager>();
-        GameManager.Instance = gm;
-    }
+   
+  
 
     [Test, TestCaseSource(nameof(AllAddCases))]
     public void TestAddStat(StatTestCase testCase)

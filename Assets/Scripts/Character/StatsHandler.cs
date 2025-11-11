@@ -18,9 +18,30 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     public override int RadianceMaxTotal     { get => base.RadianceMaxModifier + BaseRadianceMax; }
     public override int ForceDameTotal       { get => base.ForceDameModifier + BaseForceDame; }
     public override int VitesseTotal         { get => base.VitesseModifier + BaseVitesse; }
-    public override int ConvictionTotal      { get => base.ConvictionModifier + BaseConviction; }
+    public override int ConvictionTotal
+    {
+        get
+        {
+            if ((base.ConvictionModifier + BaseConviction) >= maxConviction)
+                return maxConviction;
+            else if ((base.ConvictionModifier + BaseConviction) <= minConviction)
+                return minConviction;
+            return base.ConvictionModifier + BaseConviction;
+        }
+    }
+        
     public override int CalmeTotal           { get => base.CalmeModifier + BaseCalme; }
-    public override int ResilienceTotal      { get => base.ResilienceModifier + BaseResilience; }
+    public override int ResilienceTotal
+    {
+        get
+        {
+            if ((base.ResilienceModifier + BaseResilience) >= maxResilience)
+                return maxResilience;
+            else if ((base.ResilienceModifier + BaseResilience) <= minResilience)
+                return minResilience;
+            return base.ResilienceModifier + BaseResilience;
+        }
+    }
     public StatsHandler(StatsHandler<T> statsHandler) : base(statsHandler)
     {
         ListBuffDebuff = new List<BuffDebuff>(statsHandler.ListBuffDebuff);

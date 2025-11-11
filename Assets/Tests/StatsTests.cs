@@ -4,7 +4,7 @@ using UnityEngine;
 
 public partial class StatsTests
 {
-
+    PlayerStatsHandler statToTest;
     public CharacterStat CreateStatSO(int initialValue)
     {
         CharacterStat stat = ScriptableObject.CreateInstance<CharacterStat>();
@@ -19,6 +19,17 @@ public partial class StatsTests
 
 
         return stat;
+    }
+    private void InitStat(int baseValue)
+    {
+
+        var baseStat = StatsTests.CreatePlayerStatSO(baseValue, 3, 5);
+        statToTest = new PlayerStatsHandler(baseStat);
+
+        var obj = GameObject.FindObjectOfType<GameManager>();
+        GameObject go = GameObject.Instantiate(obj.gameObject);
+        GameManager gm = go.GetComponent<GameManager>();
+        GameManager.Instance = gm;
     }
     #region TEST SO
     [Test]
@@ -177,6 +188,66 @@ public partial class StatsTests
 
        
     }
-            
+    [Test]
+    [TestCase(10, 0, 10)]
+    [TestCase(0, 10, 10)]
+    [TestCase(0, 20, 10)]
+    [TestCase(1, 2, 3)]
+    [TestCase(5, 2, 7)]
+    [TestCase(5, -2, 3)]
+    [TestCase(5, -5, 0)]
+    [TestCase(3, -5, -2)]
+    [TestCase(-3, -5, -8)]
+    [TestCase(-3, -15, -10)]
+    [TestCase(3, +15, 10)]
+    [TestCase(-3, 0, -3)]
+    [TestCase(-15, 0, -10)]
+    [TestCase(13, 0, 10)]
+    [TestCase(-13, 0, -10)]
+    [TestCase(-3, 1, -2)]
+    [TestCase(13, 1, 10)]
+    [TestCase(13, -5, 8)]
+    public void TestStatConviction (int baseValue, int modifier, int expected)
+    {
+        InitStat(baseValue);
+
+        var modifStat = ScriptableObject.CreateInstance<JoueurStat>();
+        modifStat.Conviction = modifier;
+
+        statToTest.UpdateStat(modifStat);
+
+        Assert.That(statToTest.ConvictionTotal, Is.EqualTo(expected));
+    }
+    [Test]
+    [TestCase(10, 0, 10)]
+    [TestCase(0, 10, 10)]
+    [TestCase(0, 20, 10)]
+    [TestCase(1, 2, 3)]
+    [TestCase(5, 2, 7)]
+    [TestCase(5, -2, 3)]
+    [TestCase(5, -5, 0)]
+    [TestCase(3, -5, -2)]
+    [TestCase(-3, -5, -8)]
+    [TestCase(-3, -15, -10)]
+    [TestCase(3, +15, 10)]
+    [TestCase(-3, 0, -3)]
+    [TestCase(-15, 0, -10)]
+    [TestCase(13, 0, 10)]
+    [TestCase(-13, 0, -10)]
+    [TestCase(-3, 1, -2)]
+    [TestCase(13, 1, 10)]
+    [TestCase(13, -5, 8)]
+    public void TestStatResilience(int baseValue, int modifier, int expected)
+    {
+        InitStat(baseValue);
+
+        var modifStat = ScriptableObject.CreateInstance<JoueurStat>();
+        modifStat.Resilience = modifier;
+
+        statToTest.UpdateStat(modifStat);
+
+        Assert.That(statToTest.ResilienceTotal, Is.EqualTo(expected));
+    }
+
     #endregion
 }

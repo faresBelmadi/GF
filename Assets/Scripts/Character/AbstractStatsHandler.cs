@@ -5,6 +5,18 @@ using UnityEngine.UI.Extensions;
 
 public class AbstractStatsHandler
 {
+    protected const int MAX_DEFAULT_RESILIENCE = 10;
+    protected const int MIN_DEFAULT_RESILIENCE = -10;
+
+    protected int maxResilience = GameManager.Instance?.CommonStatsData?.ResilienceMax ?? MAX_DEFAULT_RESILIENCE;
+    protected int minResilience = GameManager.Instance?.CommonStatsData?.ResilienceMin ?? MIN_DEFAULT_RESILIENCE;
+
+    protected const int MAX_DEFAULT_CONVICTION = 10;
+    protected const int MIN_DEFAULT_CONVICTION = -10;
+
+    protected int maxConviction = GameManager.Instance?.CommonStatsData?.ConvictionMax ?? MAX_DEFAULT_CONVICTION;
+    protected int minConviction = GameManager.Instance?.CommonStatsData?.ConvictionMin ?? MIN_DEFAULT_CONVICTION;
+
     #region PROPERTY STATS
     [field: SerializeField, ReadOnly] public int Radiance { get; protected set; }
     protected int _radianceMaxModifier;
