@@ -16,7 +16,7 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     #endregion
 
     public override int RadianceMaxTotal     { get => base.RadianceMaxModifier + BaseRadianceMax; }
-    public override int ForceDameTotal       { get => base.ForceDameModifier + BaseForceDame; }
+    public override int ForceDameTotal       { get => ((base.ForceDameModifier + BaseForceDame) < 0) ? 0 : (base.ForceDameModifier + BaseForceDame); }
     public override int VitesseTotal         { get => base.VitesseModifier + BaseVitesse; }
     public override int ConvictionTotal
     {
