@@ -12,10 +12,11 @@ public partial class StatsTests
     {
         public string Name;
         public int InitialValue;
+        public int ExpectedBaseValue;
         public int ExpectedValue;
         public Func<PlayerStatsHandler, int> Get;
         public Func<PlayerStatsHandler, int> GetBase;
-        public List<ModificationStatSouvenir> ModifStatList;
+        public List<List<ModificationStatSouvenir>> ModifStatList;
         public override string ToString() => $"{Name}";
     }
     private Souvenir CreateSouvenir(List<ModificationStatSouvenir> modifList)
@@ -41,49 +42,79 @@ public partial class StatsTests
         souvenir.Equiped = false;
         return souvenir;
     }
-    private static (string name, int initialValue, int expectedValue, Func<PlayerStatsHandler, int> get, Func<PlayerStatsHandler, int> getBase, List<ModificationStatSouvenir> modifStatList)[] AllMemoryTestCase =
+    private static (string name, int initialValue, int expectedValue, Func<PlayerStatsHandler, int> get, Func<PlayerStatsHandler, int> getBase, List<List<ModificationStatSouvenir>> modifStatList)[] AllMemoryTestCase =
         {
-            ("Radiance Max", 100, 110,f => f.RadianceMaxTotal, f => f.BaseRadianceMax, new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            ("Radiance Max Flat", 100, 110,f => f.RadianceMaxTotal, f => f.BaseRadianceMax, new List <List<ModificationStatSouvenir>> {new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
             {
                 StatModif = StatModif.RadianceMax,
                 ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.ValeurBrut, Valeur = 10 }
-            } } ),
-            ("Force D'ame",100, 110, f => f.ForceDameTotal, f => f.BaseForceDame,  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            } } } ),
+            ("Radiance Max Percent", 100, 125,f => f.RadianceMaxTotal, f => f.BaseRadianceMax, new List <List<ModificationStatSouvenir>> {new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            {
+                StatModif = StatModif.RadianceMax,
+                ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.Pourcentage, Valeur = 25 }
+            } } } ),
+             ("Radiance Max Percent non entier", 50, 62,f => f.RadianceMaxTotal, f => f.BaseRadianceMax, new List <List<ModificationStatSouvenir>> {new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            {
+                StatModif = StatModif.RadianceMax,
+                ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.Pourcentage, Valeur = 25 }
+            } } } ),
+            ("Force D'ame Flat",100, 110, f => f.ForceDameTotal, f => f.BaseForceDame, new List <List<ModificationStatSouvenir>> { new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
             {
                 StatModif = StatModif.ForceAme,
                 ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.ValeurBrut, Valeur = 10 }
-            } } ),
-            ("Vitesse",100, 110, f => f.VitesseTotal, f => f.BaseVitesse, new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            } } } ),
+             ("Force D'ame Percent",50, 55, f => f.ForceDameTotal, f => f.BaseForceDame, new List <List<ModificationStatSouvenir>> { new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            {
+                StatModif = StatModif.ForceAme,
+                ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.Pourcentage, Valeur = 10 }
+            } } } ),
+            ("Vitesse flat",100, 110, f => f.VitesseTotal, f => f.BaseVitesse, new List <List<ModificationStatSouvenir>> { new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
             {
                 StatModif = StatModif.Vitesse,
                 ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.ValeurBrut, Valeur = 10 }
-            } } ),
-            ("Conviction",5, 10, f => f.ConvictionTotal, f => f.BaseConviction,  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            } } }),
+             ("Vitesse Pourcentage",100, 110, f => f.VitesseTotal, f => f.BaseVitesse, new List <List<ModificationStatSouvenir>> { new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            {
+                StatModif = StatModif.Vitesse,
+                ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.Pourcentage, Valeur = 10 }
+            } } }),
+            ("Conviction",5, 10, f => f.ConvictionTotal, f => f.BaseConviction, new List <List<ModificationStatSouvenir>> {  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
             {
                 StatModif = StatModif.Conviction,
                 ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.ValeurBrut, Valeur = 5 }
-            } } ),
-            ("Calme",100, 110, f => f.CalmeTotal, f => f.BaseCalme,  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            } } } ),
+            ("Calme",100, 110, f => f.CalmeTotal, f => f.BaseCalme,new List <List<ModificationStatSouvenir>> {  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
             {
                 StatModif = StatModif.Calme,
                 ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.ValeurBrut, Valeur = 10 }
-            } } ),
-            ("Resilience",5, 10, f => f.ResilienceTotal, f => f.BaseResilience,  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            } } }),
+             ("Calme Pourcentage",100, 110, f => f.CalmeTotal, f => f.BaseCalme,new List <List<ModificationStatSouvenir>> {  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            {
+                StatModif = StatModif.Calme,
+                ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.Pourcentage, Valeur = 10 }
+            } } }),
+            ("Resilience",5, 10, f => f.ResilienceTotal, f => f.BaseResilience, new List <List<ModificationStatSouvenir>> { new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
             {
                 StatModif = StatModif.Resilience,
                 ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.ValeurBrut, Valeur = 5 }
-            } } ),
-            ("ConscienceMax",100, 110, f => f.ConscienceMaxTotal, f => f.BaseConscienceMax,  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            } } }),
+            ("ConscienceMax",100, 110, f => f.ConscienceMaxTotal, f => f.BaseConscienceMax,new List <List<ModificationStatSouvenir>> {  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
             {
                 StatModif = StatModif.ConscienceMax,
                 ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.ValeurBrut, Valeur = 10 }
-            } }),
-            ("Clairvoyance",100, 110, f => f.ClairvoyanceTotal, f => f.BaseClairvoyance,  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            } } }),
+            ("Clairvoyance flat",100, 110, f => f.ClairvoyanceTotal, f => f.BaseClairvoyance,new List <List<ModificationStatSouvenir>> {  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
             {
                 StatModif = StatModif.Clairvoyance,
                 ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.ValeurBrut, Valeur = 10 }
-            } } ),
-            ("ForceD'ame Mult",100, 160, f => f.ForceDameTotal, f => f.BaseForceDame,  new List<ModificationStatSouvenir>
+            } } }),
+            ("Clairvoyance pourcentage",100, 110, f => f.ClairvoyanceTotal, f => f.BaseClairvoyance,new List <List<ModificationStatSouvenir>> {  new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            {
+                StatModif = StatModif.Clairvoyance,
+                ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.Pourcentage, Valeur = 10 }
+            } } }),
+            ("ForceD'ame Mult",100, 160, f => f.ForceDameTotal, f => f.BaseForceDame, new List <List<ModificationStatSouvenir>> { new List<ModificationStatSouvenir>
             {
                 new ModificationStatSouvenir
                 {
@@ -101,7 +132,34 @@ public partial class StatsTests
                     ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.ValeurBrut, Valeur = 30 }
                 }
 
-            } ),
+            } }),
+
+        };
+
+    private static (string name, int initialValue, int expectedBaseValue, int expectedValue, Func<PlayerStatsHandler, int> get, Func<PlayerStatsHandler, int> getBase, List<List<ModificationStatSouvenir>> modifStatList)[] AllMultiplMemoryTestCase =
+       {
+            ("Radiance Max", 50, 100, 125,f => f.RadianceMaxTotal, f => f.BaseRadianceMax, new List <List<ModificationStatSouvenir>> {new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+                {
+                    StatModif = StatModif.RadianceMax,
+                    ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.ValeurBrut, Valeur = 50 }
+                }, new ModificationStatSouvenir
+                {
+                    StatModif = StatModif.RadianceMax,
+                    ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.Pourcentage, Valeur = 25 }
+                }
+
+            } } ),
+            ("Radiance Max Reverse Order", 50, 100, 125,f => f.RadianceMaxTotal, f => f.BaseRadianceMax, new List <List<ModificationStatSouvenir>> {new List<ModificationStatSouvenir>{ new ModificationStatSouvenir
+            {
+                StatModif = StatModif.RadianceMax,
+                ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.Pourcentage, Valeur = 25 }
+            }, new ModificationStatSouvenir
+            {
+                StatModif = StatModif.RadianceMax,
+                ParametreModifStat = new ParametreModifStat { ParametreStat = ParametreStat.ValeurBrut, Valeur = 50 }
+            }
+
+            } } )
 
         };
 
@@ -113,6 +171,22 @@ public partial class StatsTests
             {
                 Name = memoryCase.name,
                 InitialValue = memoryCase.initialValue,
+                ExpectedValue = memoryCase.expectedValue,
+                Get = memoryCase.get,
+                GetBase = memoryCase.getBase,
+                ModifStatList = memoryCase.modifStatList
+            };
+        }
+    }
+    private static IEnumerable<MemoryTestCase> AllMemoryMultiEquipeValueTestCase()
+    {
+        foreach (var memoryCase in AllMultiplMemoryTestCase)
+        {
+            yield return new MemoryTestCase
+            {
+                Name = memoryCase.name,
+                InitialValue = memoryCase.initialValue,
+                ExpectedBaseValue = memoryCase.expectedBaseValue,
                 ExpectedValue = memoryCase.expectedValue,
                 Get = memoryCase.get,
                 GetBase = memoryCase.getBase,
@@ -136,7 +210,7 @@ public partial class StatsTests
 
     
     [Test, TestCaseSource(nameof(AllMemoryEquipeValueTestCase))]
-    public void EquipMemory(MemoryTestCase testCase)
+    public void MemoryEquip(MemoryTestCase testCase)
     {
         var baseStat = CreatePlayerStatSO(testCase.InitialValue, 3, 5);
         var statHolder = new PlayerStatsHandler(baseStat);
@@ -154,14 +228,94 @@ public partial class StatsTests
         menuStatMng.Stat = statHolder;
         menuStatMng.StatTemp = statTmpHolder;
 
-        Souvenir souv = CreateSouvenir(testCase.ModifStatList);
-        
+        Souvenir souv = CreateSouvenir(testCase.ModifStatList[0]);
+        statTmpHolder.ListSouvenir.Add(souv);
+        statHolder.ListSouvenir.Add(souv);
         menuStatMng.Equiped(souv);
         int modifiedBaseValue = testCase.GetBase(statTmpHolder);
         int modifiedTotalValue = testCase.Get(statTmpHolder);
-        Assert.That(modifiedBaseValue, Is.EqualTo(testCase.ExpectedValue),
+        int expectedBaseValue = (testCase.ModifStatList[0][0].ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)?testCase.InitialValue:testCase.ExpectedValue;
+        Assert.That(modifiedBaseValue, Is.EqualTo(expectedBaseValue),
             $"Erreur sur {testCase.Name} : attendu {testCase.ExpectedValue}, obtenu (Base : {modifiedBaseValue}, Total : {modifiedTotalValue}");
         Assert.That(modifiedTotalValue, Is.EqualTo(testCase.ExpectedValue),
             $"Erreur sur {testCase.Name} : attendu {testCase.ExpectedValue}, obtenu (Base : {modifiedBaseValue}, Total : {modifiedTotalValue}");
+        statHolder.ListSouvenir.Clear();
+        statTmpHolder.ListSouvenir.Clear();
+    }
+
+    [Test, TestCaseSource(nameof(AllMemoryEquipeValueTestCase))]
+    public void MemoryUnequip(MemoryTestCase testCase)
+    {
+        var baseStat = CreatePlayerStatSO(testCase.InitialValue, 3, 5);
+        var statHolder = new PlayerStatsHandler(baseStat);
+        var statTmpHolder = new PlayerStatsHandler(baseStat);
+
+        var obj = GameObject.FindObjectOfType<GameManager>();
+        GameObject go = GameObject.Instantiate(obj.gameObject);
+        GameManager gm = go.GetComponent<GameManager>();
+        GameManager.Instance = gm;
+
+        var msm = GameObject.FindObjectOfType<MenuStatManager>(true);
+        GameObject msmgo = GameObject.Instantiate(msm.gameObject);
+        MenuStatManager menuStatMng = msmgo.GetComponent<MenuStatManager>();
+
+        menuStatMng.Stat = statHolder;
+        menuStatMng.StatTemp = statTmpHolder;
+
+        // Equip
+        Souvenir souv = CreateSouvenir(testCase.ModifStatList[0]);
+        statTmpHolder.ListSouvenir.Add(souv);
+        statHolder.ListSouvenir.Add(souv);
+        menuStatMng.Equiped(souv);
+
+        // Unequip
+        menuStatMng.UnEquiped(souv);
+        statTmpHolder.ListSouvenir.Remove(souv);
+        statHolder.ListSouvenir.Remove(souv);
+
+        int modifiedBaseValue = testCase.GetBase(statTmpHolder);
+        int modifiedTotalValue = testCase.Get(statTmpHolder);
+        Assert.That(modifiedBaseValue, Is.EqualTo(testCase.InitialValue),
+            $"Erreur sur {testCase.Name} : attendu {testCase.InitialValue}, obtenu (Base : {modifiedBaseValue}, Total : {modifiedTotalValue}");
+        Assert.That(modifiedTotalValue, Is.EqualTo(testCase.InitialValue),
+            $"Erreur sur {testCase.Name} : attendu {testCase.InitialValue}, obtenu (Base : {modifiedBaseValue}, Total : {modifiedTotalValue}");
+        statHolder.ListSouvenir.Clear();
+        statTmpHolder.ListSouvenir.Clear();
+    }
+
+    [Test, TestCaseSource(nameof(AllMemoryMultiEquipeValueTestCase))]
+    public void MemoryMultipEquip(MemoryTestCase testCase)
+    {
+        var baseStat = CreatePlayerStatSO(testCase.InitialValue, 3, 5);
+        var statHolder = new PlayerStatsHandler(baseStat);
+        var statTmpHolder = new PlayerStatsHandler(baseStat);
+
+        var obj = GameObject.FindObjectOfType<GameManager>();
+        GameObject go = GameObject.Instantiate(obj.gameObject);
+        GameManager gm = go.GetComponent<GameManager>();
+        GameManager.Instance = gm;
+
+        var msm = GameObject.FindObjectOfType<MenuStatManager>(true);
+        GameObject msmgo = GameObject.Instantiate(msm.gameObject);
+        MenuStatManager menuStatMng = msmgo.GetComponent<MenuStatManager>();
+
+        menuStatMng.Stat = statHolder;
+        menuStatMng.StatTemp = statTmpHolder;
+
+        foreach (var souvCase in testCase.ModifStatList)
+        {
+            Souvenir souv = CreateSouvenir(souvCase);
+            statTmpHolder.ListSouvenir.Add(souv);
+            statHolder.ListSouvenir.Add(souv);
+            menuStatMng.Equiped(souv);
+        }
+        int modifiedBaseValue = testCase.GetBase(statTmpHolder);
+        int modifiedTotalValue = testCase.Get(statTmpHolder);
+        Assert.That(modifiedBaseValue, Is.EqualTo(testCase.ExpectedBaseValue),
+            $"Erreur sur {testCase.Name} : attendu {testCase.ExpectedBaseValue}, obtenu (Base : {modifiedBaseValue}, Total : {modifiedTotalValue}");
+        Assert.That(modifiedTotalValue, Is.EqualTo(testCase.ExpectedValue),
+            $"Erreur sur {testCase.Name} : attendu {testCase.ExpectedValue}, obtenu (Base : {modifiedBaseValue}, Total : {modifiedTotalValue}");
+        statTmpHolder.ListSouvenir.Clear();
+        statHolder.ListSouvenir.Clear();
     }
 }

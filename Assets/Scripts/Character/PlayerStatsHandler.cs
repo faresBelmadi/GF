@@ -35,16 +35,22 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         protected set => _clairvoyanceModifier = value;
     }
     public int ClairvoyanceTotal { get => ClairvoyanceModifier + BaseClairvoyance; }
+    #endregion
+
+    #region OBJECTSLIST
     [field: SerializeField, ReadOnly] public List<Spell> ListSpell { get; set; } = new List<Spell>();
     [field: SerializeField, ReadOnly] public int SlotsSouvenir { get; set; }
     [field: SerializeField, ReadOnly] public List<Souvenir> ListSouvenir { get; set; } = new List<Souvenir>();
+    
+    private List<PercentIncrease> _percentIncreaseList = new List<PercentIncrease>();
     #endregion
 
-    private List<PercentIncrease> _percentIncreaseList = new List<PercentIncrease>();
     #region EVENTS
     public event Action OnConscienceIncrease;
     public event Action OnConscienceDecrease;
     #endregion
+
+    #region CONSTRUCTORS
     public PlayerStatsHandler(PlayerStatsHandler playerStat) : base(playerStat)
     {
         Lvl = playerStat.Lvl;
@@ -74,7 +80,13 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
 
         _baseStat = ScriptableObject.Instantiate<JoueurStat>(charStat);
     }
-
+    #endregion
+    /// <summary>
+    /// Return the fraction of the given stat, round to the nearest integer.
+    /// </summary>
+    /// <param name="statToGet">Stat to get the fraction</param>
+    /// <param name="percentValue">The percebnt value</param>
+    /// <returns>The value rounded to the nearest integer</returns>
     protected override int GetPercentValue(StatModif statToGet, float percentValue) => statToGet switch
     {
         StatModif.ConscienceMax => GetPercentValue(StatEnum.ConscienceMax, percentValue),
@@ -117,8 +129,14 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
                         case StatModif.Vitesse:
                             VitesseModifier -= modif.ParametreModifStat.ValeurModifier;
                             break;
+                        case StatModif.Resilience:
+                            ResilienceModifier -= modif.ParametreModifStat.ValeurModifier;
+                            break;
                         case StatModif.Clairvoyance:
                             ClairvoyanceModifier -= modif.ParametreModifStat.ValeurModifier;
+                            break;
+                        case StatModif.Calme:
+                            CalmeModifier -= modif.ParametreModifStat.ValeurModifier;
                             break;
                     }
                 }
@@ -147,8 +165,14 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
                         case StatModif.Vitesse:
                             joueurStat.Vitesse = modif.ParametreModifStat.ValeurModifier;
                             break;
+                        case StatModif.Resilience:
+                            joueurStat.Resilience = modif.ParametreModifStat.ValeurModifier;
+                            break;
                         case StatModif.Clairvoyance:
                             joueurStat.Clairvoyance = modif.ParametreModifStat.ValeurModifier;
+                            break;
+                        case StatModif.Calme:
+                            joueurStat.Calme = modif.ParametreModifStat.ValeurModifier;
                             break;
                     }
                 }

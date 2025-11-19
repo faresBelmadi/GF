@@ -569,19 +569,19 @@ public class MenuStatManager : MonoBehaviour
         return false;
     }
 
-    [Obsolete]
-    public void UnEquiped(ReorderableListEventStruct e)
-    {
-        if (e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped == true)
-        {
-            e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped = false;
-            GameManager.Instance.CopyAllSouvenir.Add(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
-            EquipedSouvenir.Remove(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
-            ModifStat(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir, false);
-            NbSlotsEquiped -= e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots;
-        }
-        e.DroppedObject.GetComponent<ReorderableListElement>().IsTransferable = true;
-    }
+    //[Obsolete]
+    //public void UnEquiped(ReorderableListEventStruct e)
+    //{
+    //    if (e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped == true)
+    //    {
+    //        e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped = false;
+    //        GameManager.Instance.CopyAllSouvenir.Add(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
+    //        EquipedSouvenir.Remove(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
+    //        ModifStat(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir, false);
+    //        NbSlotsEquiped -= e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots;
+    //    }
+    //    e.DroppedObject.GetComponent<ReorderableListElement>().IsTransferable = true;
+    //}
     public bool UnEquiped(Souvenir souv)
     {
         if (souv.Equiped == true)
