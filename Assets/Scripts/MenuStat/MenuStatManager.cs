@@ -197,7 +197,7 @@ public class MenuStatManager : MonoBehaviour
         ValeurResilience.text = StatTemp.ResilienceTotal.ToString();
         ValeurCalme.text = StatTemp.CalmeTotal.ToString();
         ValeurVolonter.text = StatTemp.Volonte.ToString() + "/" + StatTemp.VolonteMax.ToString();
-        ValeurConscience.text = StatTemp.Conscience.ToString() + "/" + StatTemp.ConscienceMaxModifier.ToString();
+        ValeurConscience.text = StatTemp.Conscience.ToString() + "/" + StatTemp.ConscienceMaxTotal.ToString();
         ValeurClairvoyance.text = StatTemp.ClairvoyanceModifier.ToString();
 
         int radiance = 0, forcedame = 0, conviction = 0, vitesse = 0, resilience = 0, calme = 0, conscience = 0, volonte = 0, clairvoyance = 0;

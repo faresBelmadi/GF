@@ -10,7 +10,8 @@ public class DebugStatPanel : MonoBehaviour
     [SerializeField] private TMP_Text _vitValueText;
     [SerializeField] private TMP_Text _convicValueText;
     [SerializeField] private TMP_Text _calmeValueText;
-    [SerializeField] private TMP_Text _conscienceaValueText;
+    [SerializeField] private TMP_Text _conscienceValueText;
+    [SerializeField] private TMP_Text _conscienceMaxValueText;
     [SerializeField] private TMP_Text _clairvoyanceValueText;
 
 
@@ -31,7 +32,8 @@ public class DebugStatPanel : MonoBehaviour
             _vitValueText.text = GameManager.Instance.playerStatHandler.VitesseTotal.ToString();
             _convicValueText.text = GameManager.Instance.playerStatHandler.ConvictionTotal.ToString();
             _calmeValueText.text = GameManager.Instance.playerStatHandler.CalmeTotal.ToString();
-            _conscienceaValueText.text = GameManager.Instance.playerStatHandler.ConscienceMaxTotal.ToString();
+            _conscienceValueText.text = GameManager.Instance.playerStatHandler.Conscience.ToString();
+            _conscienceMaxValueText.text = GameManager.Instance.playerStatHandler.ConscienceMaxTotal.ToString();
             _clairvoyanceValueText.text = GameManager.Instance.playerStatHandler.ClairvoyanceTotal.ToString();
         }
     }

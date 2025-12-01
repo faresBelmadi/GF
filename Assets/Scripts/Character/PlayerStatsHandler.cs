@@ -20,7 +20,7 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
     [field: SerializeField, ReadOnly] public int Lvl { get; private set; }
     [field: SerializeField, ReadOnly] public int Volonte { get; set; }
     [field: SerializeField, ReadOnly] public int VolonteMax { get; set; }
-    [field: SerializeField, ReadOnly] public int Conscience { get; set; }
+    [field: SerializeField, ReadOnly] public int Conscience { get; private set; }
     protected int _conscienceMaxModifier;
     public int ConscienceMaxModifier
     {
@@ -224,9 +224,9 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         {
             Volonte = VolonteMax;
         }
-        if (Conscience > ConscienceMaxModifier)
+        if (Conscience > ConscienceMaxTotal)
         {
-            Conscience = ConscienceMaxModifier;
+            Conscience = ConscienceMaxTotal ;
         }
         if (Conscience < 0)
         {
@@ -249,5 +249,19 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
     {
         ClairvoyanceModifier = BaseClairvoyance;
         base.ResetStat();
+    }
+    public void GainConscience(int valueToGain)
+    {
+        Conscience += valueToGain;
+        if (Conscience > ConscienceMaxTotal)
+        {
+            Conscience = ConscienceMaxTotal;
+        }
+    }
+    public void LoseConscience(int valueToLose)
+    {
+        Conscience -= valueToLose;
+        if (Conscience < 0)
+            Conscience = 0;
     }
 }

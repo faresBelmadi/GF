@@ -184,7 +184,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
     {
         hPBarManager.InitPBar(base.Stat.Radiance, base.Stat.RadianceMaxTotal);
         tensionBarManager.InitPBar(0, commonStats.NbPalier);
-        conscienceBarManager.InitPBar(base.Stat.Conscience, base.Stat.ConscienceMaxModifier);
+        conscienceBarManager.InitPBar(base.Stat.Conscience, base.Stat.ConscienceMaxTotal);
 
         for (int i = 0; i < _passiveTooltips.Count && i < PassiveList.Count; i++)
         {
@@ -217,7 +217,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
 
         if (base.Stat.Conscience != currentCons)
         {
-            conscienceBarManager.UpdatePBar(base.Stat.Conscience, base.Stat.ConscienceMaxModifier);
+            conscienceBarManager.UpdatePBar(base.Stat.Conscience, base.Stat.ConscienceMaxTotal);
             conscienceBarManager.ToggleBloomPulses(false);
         }
 
@@ -231,7 +231,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         HpText.text = $"{base.Stat.Radiance.ToString()}/{base.Stat.RadianceMaxTotal}";
         HpTextReduced.text = base.Stat.Radiance.ToString();
         HpToolTipText.text = $"{TradManager.instance.GetTranslation(_radianceTextIdTrad)}\nMax: {base.Stat.RadianceMaxTotal.ToString()}";
-        ConscienceText.text = base.Stat.Conscience + "/" + base.Stat.ConscienceMaxModifier;
+        ConscienceText.text = base.Stat.Conscience + "/" + base.Stat.ConscienceMaxTotal;
 
         StatClairvoyanceText.text = base.Stat.ClairvoyanceModifier + "";
 
@@ -535,7 +535,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
             switch (price.typeCost)
             {
                 case TypeCostSpell.conscience:
-                    base.Stat.Conscience -= price.Value;
+                    base.Stat.LoseConscience(price.Value);
                     break;
                 case TypeCostSpell.radiance:
                     base.Stat.RemoveAmountRadiance(price.Value);

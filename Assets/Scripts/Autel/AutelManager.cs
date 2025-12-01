@@ -317,7 +317,7 @@ public class AutelManager : MonoBehaviour
         ValeurResilience.text = Stat.ResilienceTotal.ToString();
         ValeurCalme.text = Stat.CalmeTotal.ToString();
         ValeurVolonter.text = Stat.VolonteMax.ToString();
-        ValeurConscience.text = Stat.ConscienceMaxModifier.ToString();
+        ValeurConscience.text = Stat.Conscience.ToString();
         ValeurClairvoyance.text = Stat.ClairvoyanceModifier.ToString();
 
         //ModifRadiance.text = ModifFA.text = ModifVitesse.text = ModifConviction.text = ModifResilience.text =
@@ -676,7 +676,8 @@ public class AutelManager : MonoBehaviour
     public void Choix1()
     {
         CoutChoix(1);
-        Stat.Conscience += 2;
+        Stat.GainConscience(2);
+        
         int random = UnityEngine.Random.Range(0, 101);
         Debug.Log("Loot : " + random);
         if (random > 51)
@@ -713,7 +714,7 @@ public class AutelManager : MonoBehaviour
     public void Choix2()
     {
         CoutChoix(2);
-        Stat.Conscience += 3;
+        Stat.GainConscience(3);
         string NameLoot;
 
         List<Souvenir> souvList = Etage switch
@@ -735,7 +736,7 @@ public class AutelManager : MonoBehaviour
     public void Choix3()
     {
         CoutChoix(3);
-        Stat.Conscience += 3;
+        Stat.GainConscience(3);
         Stat.ListSouvenir.Add(SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir);
         Loot = true;
         RetourMap();
