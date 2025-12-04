@@ -4,8 +4,6 @@ using UnityEngine;
 
 public partial class StatsTests
 {
-
-
     public static JoueurStat CreatePlayerStatSO(int initialValue, int volonte, int volonteMax)
     {
         JoueurStat stat = ScriptableObject.CreateInstance<JoueurStat>();

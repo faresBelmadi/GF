@@ -36,7 +36,7 @@ public class EnemyStatsHandler : StatsHandler<EnnemiStat>
         Dissimulation = charStat.Dissimulation;
         _customStat = charStat.CustomStat;
 
-        _baseStat = charStat;
+        _baseStat = ScriptableObject.Instantiate<EnnemiStat>(charStat);
     }
     public override void UpdateBaseStat(EnnemiStat modifStat)
     {
