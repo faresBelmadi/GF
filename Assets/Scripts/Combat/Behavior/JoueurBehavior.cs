@@ -233,12 +233,12 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         HpToolTipText.text = $"{TradManager.instance.GetTranslation(_radianceTextIdTrad)}\nMax: {base.Stat.RadianceMaxTotal.ToString()}";
         ConscienceText.text = base.Stat.Conscience + "/" + base.Stat.ConscienceMaxTotal;
 
-        StatClairvoyanceText.text = base.Stat.ClairvoyanceModifier + "";
+        StatClairvoyanceText.text = base.Stat.ClairvoyanceTotal + "";
 
 
-        if (base.Stat.ClairvoyanceModifier > base.Stat.BaseClairvoyance)
+        if (base.Stat.ClairvoyanceTotal > base.Stat.BaseClairvoyance)
             StatClairvoyanceBg.color = green;
-        else if (base.Stat.ClairvoyanceModifier < base.Stat.BaseClairvoyance)
+        else if (base.Stat.ClairvoyanceTotal < base.Stat.BaseClairvoyance)
             StatClairvoyanceBg.color = red;
         else
             StatClairvoyanceBg.color = Color.white;

@@ -318,7 +318,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
 
     protected void UpdateIntention()
     {
-        if (GameManager.Instance.BattleMan.getJoueurClairvoyance() >= base.Stat.Dissimulation)
+        if (GameManager.Instance.BattleMan.player.Stat.ClairvoyanceTotal >= base.Stat.Dissimulation)
         {
             switch (nextActionType)
             {
