@@ -247,7 +247,7 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
     }
     public override void ResetStat()
     {
-        ClairvoyanceModifier = BaseClairvoyance;
+        ClairvoyanceModifier = 0;
         base.ResetStat();
     }
     public void GainConscience(int valueToGain)

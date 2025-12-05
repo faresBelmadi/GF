@@ -93,13 +93,13 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
     
     public virtual void ResetStat()
     {
-        RadianceMaxModifier = BaseRadianceMax;
+        RadianceMaxModifier = 0;
         Radiance = BaseRadianceMax;
         ForceDameModifier = 0;
         VitesseModifier = 0;
-        ConvictionModifier = BaseConviction;
-        ResilienceModifier = BaseResilience;
-        CalmeModifier = BaseCalme;
+        ConvictionModifier = 0;
+        ResilienceModifier = 0;
+        CalmeModifier = 0;
         MultiplDef = 1;
         MultiplSoin = 1;
         MultiplDegat = 1;
