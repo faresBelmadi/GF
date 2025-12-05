@@ -299,9 +299,11 @@ public class Effet : ScriptableObject
                     //var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Caster.Radiance / Caster.RadianceMax) * Caster.RadianceMaxOriginal));
                     //ModifState.RadianceMax += radianceModifier;
                     //ModifState.Radiance += radianceActModifier;
-                    int addAmount = Mathf.FloorToInt(Caster.RadianceMaxTotal * Pourcentage * .01f);
-                    ModifState.RadianceMax += addAmount;
-                    ModifState.Radiance += addAmount;
+                    int radAmount = Caster.GetPercentValue(StatEnum.Radiance, Pourcentage);
+                    int radMaxAmount = Caster.GetPercentValue(StatEnum.RadianceMax, Pourcentage);
+                    //int addAmount = Mathf.FloorToInt(Caster.RadianceMaxTotal * Pourcentage * .01f);
+                    ModifState.RadianceMax += radMaxAmount;
+                    ModifState.Radiance += radAmount;
                 }
                 else
                 {
@@ -310,8 +312,10 @@ public class Effet : ScriptableObject
                     //ModifState.RadianceMax += radianceModifier;
                     //ModifState.Radiance += radianceModifier;//radianceActModifier;
                     int addAmount = Mathf.FloorToInt(Cible.RadianceMaxTotal * Pourcentage * .01f);
-                    ModifState.RadianceMax += addAmount;
-                    ModifState.Radiance += addAmount;
+                    int radAmount = Cible.GetPercentValue(StatEnum.Radiance, Pourcentage);
+                    int radMaxAmount = Cible.GetPercentValue(StatEnum.RadianceMax, Pourcentage);
+                    ModifState.RadianceMax += radMaxAmount;
+                    ModifState.Radiance += radAmount;
                 }
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:

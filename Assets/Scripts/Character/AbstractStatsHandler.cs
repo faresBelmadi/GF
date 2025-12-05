@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
-public class AbstractStatsHandler
+public abstract class AbstractStatsHandler
 {
     protected const int MAX_DEFAULT_RESILIENCE = 10;
     protected const int MIN_DEFAULT_RESILIENCE = -10;
@@ -168,7 +168,7 @@ public class AbstractStatsHandler
         ResiliencePassif = newValue;
     }
 
-    
+    public abstract int GetPercentValue(StatEnum statToGet, float percentValue);
     public void UpdateStat(CharacterStat charStatModifier)
     {
         if (charStatModifier.MultiplDef != 1)

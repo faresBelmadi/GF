@@ -68,8 +68,9 @@ public class StatsHandler <T> : AbstractStatsHandler where T : CharacterStat
         StatModif.Resilience    => GetPercentValue(StatEnum.Resilience, percentValue),
         _                       => 0,
     };
-    public virtual int GetPercentValue(StatEnum statToGet, float percentValue) => statToGet switch
+    public override int GetPercentValue(StatEnum statToGet, float percentValue) => statToGet switch
     {
+        StatEnum.Radiance       => Mathf.RoundToInt((Radiance * percentValue) / 100f),
         StatEnum.RadianceMax    => Mathf.RoundToInt((BaseRadianceMax * percentValue) / 100f),
         StatEnum.ForceDame      => Mathf.RoundToInt((BaseForceDame * percentValue) / 100f),
         StatEnum.Vitesse        => Mathf.RoundToInt((BaseVitesse * percentValue) / 100f),
