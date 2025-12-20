@@ -286,15 +286,34 @@ public class MenuStatManager : MonoBehaviour
 
     #region Application Souvenir
 
-    public void ModifStat(Souvenir LeSouvenir, bool Equiped)
+    public void ModifStat(Souvenir leSouvenir, bool isEquiped)
     {
         JoueurStat modifStat = ScriptableObject.CreateInstance<JoueurStat>();
-        foreach (var item in LeSouvenir.ModificationStat)
+        foreach (var item in leSouvenir.ModificationStat)
         {
             switch (item.StatModif)
             {
+                case StatModif.Radiance:
+                    if (isEquiped == true)
+                    {
+                        var Temp = 0;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            Temp = item.ParametreModifStat.Valeur;
+                        }
+                        modifStat.Radiance += Temp;
+                        item.ParametreModifStat.ValeurModifier = Temp;
+                    }
+                    else
+                    {
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.Radiance -= item.ParametreModifStat.ValeurModifier;
+                        }
+                    }
+                    break;
                 case StatModif.RadianceMax:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if(item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
@@ -319,7 +338,7 @@ public class MenuStatManager : MonoBehaviour
                     }
                     break;
                 case StatModif.ForceAme:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
@@ -342,7 +361,7 @@ public class MenuStatManager : MonoBehaviour
                     }
                     break;
                 case StatModif.Calme:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
@@ -365,7 +384,7 @@ public class MenuStatManager : MonoBehaviour
                     }
                     break;
                 case StatModif.Clairvoyance:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
@@ -388,7 +407,7 @@ public class MenuStatManager : MonoBehaviour
                     }
                     break;
                 case StatModif.ConscienceMax:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
@@ -411,7 +430,7 @@ public class MenuStatManager : MonoBehaviour
                     }
                     break;
                 case StatModif.Conviction:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
@@ -434,7 +453,7 @@ public class MenuStatManager : MonoBehaviour
                     }
                     break;
                 case StatModif.Resilience:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
@@ -464,7 +483,7 @@ public class MenuStatManager : MonoBehaviour
                     }
                     break;
                 case StatModif.Vitesse:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
@@ -487,7 +506,7 @@ public class MenuStatManager : MonoBehaviour
                     }
                     break;
                 case StatModif.VolonterMax:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
@@ -514,9 +533,12 @@ public class MenuStatManager : MonoBehaviour
             }
         }
         StatTemp.UpdateBaseStat(modifStat);
+        if (modifStat.Radiance != 0)
+            StatTemp.ChangeRadiance(modifStat.Radiance);
         ScriptableObject.DestroyImmediate(modifStat);
         StatTemp.RectificationStat();
-        StatTemp.UpdatePercentIncreaseFromSouvenir();
+        StatTemp.UpdatePercentIncreaseFromSouvenir(EquipedSouvenir);
+       
     }
 
     #endregion Application Souvenir
@@ -588,8 +610,8 @@ public class MenuStatManager : MonoBehaviour
         {
             souv.Equiped = false;
             GameManager.Instance.CopyAllSouvenir.Add(souv);
-            EquipedSouvenir.Remove(souv);
             ModifStat(souv, false);
+            EquipedSouvenir.Remove(souv);
             NbSlotsEquiped -= souv.Slots;
             return true;
         }

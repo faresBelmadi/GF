@@ -105,13 +105,20 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         StatEnum.Clairvoyance   => Mathf.RoundToInt((BaseClairvoyance * percentValue) / 100f),
         _                       => base.GetPercentValue(statToGet, percentValue),
     };
+
     /// <summary>
     /// Update stat from percent increase from equiped souvenir
     /// </summary>
-    public void UpdatePercentIncreaseFromSouvenir()
+    public void UpdatePercentIncreaseFromSouvenir() => UpdatePercentIncreaseFromSouvenir(ListSouvenir);
+
+    /// <summary>
+    /// Update stat from percent increase from equiped souvenir
+    /// </summary>
+    /// <param name="listSouv">the souvenir list to use</param>
+    public void UpdatePercentIncreaseFromSouvenir(List<Souvenir> listSouv)
     {
         // Remove all stats to refresh
-        foreach (var souv in ListSouvenir)
+        foreach (var souv in listSouv)
         {
             foreach (var modif in souv.ModificationStat)
             {
@@ -120,6 +127,10 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
                    
                     switch (modif.StatModif)
                     {
+                        case StatModif.Radiance:
+                            Radiance -= modif.ParametreModifStat.ValeurModifier;
+                            modif.ParametreModifStat.ValeurModifier = 0;
+                            break;
                         case StatModif.RadianceMax:
                             RadianceMaxModifier -= modif.ParametreModifStat.ValeurModifier;
                             break;
@@ -145,8 +156,9 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
 
         JoueurStat joueurStat = ScriptableObject.CreateInstance<JoueurStat>();
         // Settings new values
-        foreach (var souv in ListSouvenir )
+        foreach (var souv in listSouv)
         {
+            int radianceModifier = 0;
             if (!souv.Equiped)
                 continue;
             foreach (var modif in souv.ModificationStat)
@@ -157,26 +169,38 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
                     switch (modif.StatModif)
                     {
                         case StatModif.RadianceMax:
+                            radianceModifier += Mathf.FloorToInt(GetPercentValue(StatEnum.Radiance, modif.ParametreModifStat.Valeur));
                             joueurStat.RadianceMax = modif.ParametreModifStat.ValeurModifier;
                             break;
                         case StatModif.ForceAme:
-                            joueurStat.ForceAme = modif.ParametreModifStat.ValeurModifier;
+                            joueurStat.ForceAme += modif.ParametreModifStat.ValeurModifier;
                             break;
                         case StatModif.Vitesse:
-                            joueurStat.Vitesse = modif.ParametreModifStat.ValeurModifier;
+                            joueurStat.Vitesse += modif.ParametreModifStat.ValeurModifier;
                             break;
                         case StatModif.Resilience:
-                            joueurStat.Resilience = modif.ParametreModifStat.ValeurModifier;
+                            joueurStat.Resilience += modif.ParametreModifStat.ValeurModifier;
                             break;
                         case StatModif.Clairvoyance:
-                            joueurStat.Clairvoyance = modif.ParametreModifStat.ValeurModifier;
+                            joueurStat.Clairvoyance += modif.ParametreModifStat.ValeurModifier;
                             break;
                         case StatModif.Calme:
-                            joueurStat.Calme = modif.ParametreModifStat.ValeurModifier;
+                            joueurStat.Calme += modif.ParametreModifStat.ValeurModifier;
                             break;
                     }
                 }
-                
+            }
+            if (radianceModifier != 0)
+            {
+                ModificationStatSouvenir modificationStatSouvenir = new();
+                modificationStatSouvenir.StatModif = StatModif.Radiance;
+                ParametreModifStat parametreModifStat = new();
+                parametreModifStat.ParametreStat = ParametreStat.ValeurBrut;
+                parametreModifStat.ValeurModifier = radianceModifier;
+                modificationStatSouvenir.ParametreModifStat = parametreModifStat;
+                souv.ModificationStat.Add(modificationStatSouvenir);
+
+                joueurStat.Radiance += radianceModifier;
             }
         }
         UpdateStat(joueurStat);

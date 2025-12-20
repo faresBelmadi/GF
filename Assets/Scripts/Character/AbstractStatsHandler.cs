@@ -244,9 +244,9 @@ public abstract class AbstractStatsHandler
     public virtual void RectificationStat()
     {
         //  TODO: ne fonctionne plus comme ça, a modifier si besoin
-        //if (Radiance > RadianceMax && RadianceMax > 0)
+        //if (Radiance > RadianceMaxTotal && RadianceMaxTotal > 0)
         //{
-        //    Radiance = RadianceMax;
+        //    Radiance = RadianceMaxTotal;
         //}
 
         //if (ConvictionTotal > GameManager.Instance.CommonStatsData.ConvictionMax)

@@ -28,7 +28,8 @@ public enum StatModif
     Calme,
     VolonterMax,
     ConscienceMax,
-    Clairvoyance
+    Clairvoyance,
+    Radiance
 }
 public enum BaseStats
 {
