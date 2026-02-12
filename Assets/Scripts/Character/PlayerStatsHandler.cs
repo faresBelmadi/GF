@@ -274,6 +274,11 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         ClairvoyanceModifier = 0;
         base.ResetStat();
     }
+    public void SetConscience(int valueToSet)
+    {
+        Conscience = valueToSet;
+        RectificationStat();
+    }
     public void GainConscience(int valueToGain)
     {
         Conscience += valueToGain;
