@@ -61,16 +61,16 @@ public class DebugStatPanel : MonoBehaviour
     {
         if (GameManager.Instance.playerStatHandler != null)
         {
-            _faValueText.text = GameManager.Instance.playerStatHandler.ForceDameTotal.ToString();
+            _faValueText.text = $"({GameManager.Instance.playerStatHandler.BaseForceDame} + {GameManager.Instance.playerStatHandler.ForceDameModifier}) = {GameManager.Instance.playerStatHandler.ForceDameTotal.ToString()}";
             _radValueText.text = GameManager.Instance.playerStatHandler.Radiance.ToString();
-            _radMaxValueText.text = GameManager.Instance.playerStatHandler.RadianceMaxTotal.ToString();
-            _resValueText.text = GameManager.Instance.playerStatHandler.ResilienceTotal.ToString();
-            _vitValueText.text = GameManager.Instance.playerStatHandler.VitesseTotal.ToString();
-            _convicValueText.text = GameManager.Instance.playerStatHandler.ConvictionTotal.ToString();
-            _calmeValueText.text = GameManager.Instance.playerStatHandler.CalmeTotal.ToString();
+            _radMaxValueText.text = $"({GameManager.Instance.playerStatHandler.BaseRadianceMax} + {GameManager.Instance.playerStatHandler.RadianceMaxModifier}) = {GameManager.Instance.playerStatHandler.RadianceMaxTotal.ToString()}"; ;
+            _resValueText.text = $"({GameManager.Instance.playerStatHandler.BaseResilience} + {GameManager.Instance.playerStatHandler.ResilienceModifier}) = {GameManager.Instance.playerStatHandler.ResilienceTotal.ToString()}";
+            _vitValueText.text = $"({GameManager.Instance.playerStatHandler.BaseVitesse} + {GameManager.Instance.playerStatHandler.VitesseModifier}) = {GameManager.Instance.playerStatHandler.VitesseTotal.ToString()}"; ;
+            _convicValueText.text = $"({GameManager.Instance.playerStatHandler.BaseConviction} + {GameManager.Instance.playerStatHandler.ConvictionModifier}) = {GameManager.Instance.playerStatHandler.ConvictionTotal.ToString()}"; ;
+            _calmeValueText.text = $"({GameManager.Instance.playerStatHandler.BaseCalme} + {GameManager.Instance.playerStatHandler.CalmeModifier}) = {GameManager.Instance.playerStatHandler.CalmeTotal.ToString()}";
             _conscienceValueText.text = GameManager.Instance.playerStatHandler.Conscience.ToString();
-            _conscienceMaxValueText.text = GameManager.Instance.playerStatHandler.ConscienceMaxTotal.ToString();
-            _clairvoyanceValueText.text = GameManager.Instance.playerStatHandler.ClairvoyanceTotal.ToString();
+            _conscienceMaxValueText.text = $"({GameManager.Instance.playerStatHandler.BaseConscienceMax} + {GameManager.Instance.playerStatHandler.ConscienceMaxModifier}) = {GameManager.Instance.playerStatHandler.ConscienceMaxTotal.ToString()}"; ;
+            _clairvoyanceValueText.text = $"({GameManager.Instance.playerStatHandler.BaseClairvoyance} + {GameManager.Instance.playerStatHandler.ClairvoyanceModifier}) = {GameManager.Instance.playerStatHandler.ClairvoyanceTotal.ToString()}";
         }
         string effectTypeName = _typeEffectdropdown.options[_typeEffectdropdown.value].text;
         var type = (TypeEffet)Enum.Parse(typeof(TypeEffet), effectTypeName);
