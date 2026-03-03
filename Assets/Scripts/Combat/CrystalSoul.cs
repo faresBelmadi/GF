@@ -64,7 +64,7 @@ public class CrystalSoul : MonoBehaviour
         {
             GameManager.Instance.BattleMan.player.PreviewHPBarUpdate(
                 GameManager.Instance.BattleMan.player.Stat.Radiance + Heal,
-                GameManager.Instance.BattleMan.player.Stat.RadianceMax);
+                GameManager.Instance.BattleMan.player.Stat.RadianceMaxTotal);
 
             GameManager.Instance.BattleMan.player.PreviewTensionBarUpddate();
         }

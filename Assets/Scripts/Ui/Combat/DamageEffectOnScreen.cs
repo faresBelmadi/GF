@@ -63,7 +63,7 @@ public class DamageEffectOnScreen : MonoBehaviour
 
     private void UpdateEffect()
     {
-        float percent = (_stat.Radiance * 100f) / _stat.RadianceMax;
+        float percent = (_stat.Radiance * 100f) / _stat.RadianceMaxTotal;
         float ratio = percent / 100f;
         float alphaValue1 = Mathf.Clamp01(_curveDamageEffectLow.Evaluate(ratio));
         float alphaValue2 = Mathf.Clamp01(_curveDamageEffectHigh.Evaluate(ratio));

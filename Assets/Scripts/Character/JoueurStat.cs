@@ -20,7 +20,6 @@ public class JoueurStat : CharacterStat
     public event Action OnConscienceIncrease;
     public event Action OnConscienceDecrease;
 
-    [Obsolete]
     public void ModifStateAll(JoueurStat ModifState)
     {
         this.Volonter += ModifState.Volonter;
@@ -37,12 +36,10 @@ public class JoueurStat : CharacterStat
         //La conscience a été modifié, on notifie
         if (ModifState.Conscience > 0 || ModifState.ConscienceMax > 0)
         {
-            Debug.LogWarning("ModifStatConscience+Joueur");
             OnConscienceIncrease?.Invoke();
         }
         else if (ModifState.Conscience < 0 || ModifState.ConscienceMax < 0)
         {
-            Debug.LogWarning("ModifStatConscience-Joueur");
             OnConscienceDecrease?.Invoke();
         }
     }

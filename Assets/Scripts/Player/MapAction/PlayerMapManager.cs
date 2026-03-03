@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI.Extensions;
 
 public class PlayerMapManager : MonoBehaviour
 {
@@ -48,6 +49,9 @@ public class PlayerMapManager : MonoBehaviour
 
     //GameObject[] rootScene;
     private Scene _scene;
+
+    [ReadOnly]
+    public bool IsOnMap = true;
 
     public static event Action OnShowMap;
 
@@ -303,8 +307,8 @@ public class PlayerMapManager : MonoBehaviour
         {
             GameManager.Instance.UnloadCombat();
             GameManager.Instance.ShowMap();
+            IsOnMap = true;
         }
-
         AudioManager.instance.PlayMusic(MusicType.CombatMusic);
         //yield return SceneManager.UnloadSceneAsync(_scene);
         yield return null;
@@ -317,6 +321,7 @@ public class PlayerMapManager : MonoBehaviour
         //CurrentRoomCamera.SetActive(false);
         //GameManager.Instance.AleaMan = null;
         //MenuCamera.SetActive(true);
+        IsOnMap = true;
         GameManager.Instance.UnloadEvent();
         GameManager.Instance.ShowMap();
         yield return null;
@@ -351,11 +356,11 @@ public class PlayerMapManager : MonoBehaviour
         //MenuCamera.SetActive(true);
         if (Loot == true)
         {
-
             ShowMenuStat();
         }
         else
         {
+            IsOnMap = true;
             AudioManager.instance.PlayMusic(MusicType.CombatMusic);
             GameManager.Instance.ShowMap();
             yield return null;
@@ -385,10 +390,15 @@ public class PlayerMapManager : MonoBehaviour
         //MenuCamera.SetActive(true);
         //yield return SceneManager.UnloadSceneAsync(s);
         AudioManager.instance.PlayMusic(MusicType.CombatMusic);
+        
         if (TutoManager.Instance == null)
         {
             GameManager.Instance.UiMondeMan.EnableMonde();
-            GameManager.Instance.ShowMap();
+            if (IsOnMap == false)
+            {
+                GameManager.Instance.ShowMap();
+                IsOnMap = true;
+            }
         }
         else
         {
@@ -401,10 +411,12 @@ public class PlayerMapManager : MonoBehaviour
         if (isShowing)
         {
             GameManager.Instance.ShowMap();
+            IsOnMap = true;
         }
         else
         {
             GameManager.Instance.HideMap();
+            IsOnMap = false;
         }
     }
 

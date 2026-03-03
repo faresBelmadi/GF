@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using TMPro;
+using Unity.Plastic.Newtonsoft.Json.Linq;
 using UnityEngine;
 
 using UnityEngine.UI;
@@ -27,12 +28,24 @@ public class PulseBloom_System : MonoBehaviour
 
     [SerializeField]
     public Material bloomMaterial;
+    private Material _runtimeMaterial;
     private Coroutine bloomRoutine = null;
+
     private CultureInfo en_us = CultureInfo.GetCultureInfo("en-US");
+
+    private void Awake()
+    {
+        Graphic renderer = GetComponent<Graphic>();
+        if (renderer != null && bloomMaterial != null)
+        {
+            _runtimeMaterial = new Material(bloomMaterial);
+            renderer.material = _runtimeMaterial;
+        }
+    }
     private void Start()
     {
-        if (bloomMaterial != null)
-            bloomMaterial.SetFloat("_Intensity", .5f);
+        if (_runtimeMaterial != null)
+            _runtimeMaterial.SetFloat("_Intensity", .5f);
         if(startActive) 
             TriggerBloom();
     }
@@ -60,6 +73,7 @@ public class PulseBloom_System : MonoBehaviour
             StopCoroutine(bloomRoutine);
         }
     }
+   
     private IEnumerator BloomingRoutine()
     {
         float timePassed = 0f;
@@ -67,20 +81,20 @@ public class PulseBloom_System : MonoBehaviour
         do
         {
             float applyedIntensity = bloomIntensityShape.Evaluate(timePassed / bloomDuration) * bloomIntensity;
-            if (bloomMaterial != null)
+            if (_runtimeMaterial != null)
             {
-                bloomMaterial.SetFloat("_Intensity", applyedIntensity);
-                bloomMaterial.SetColor("_Color", bloomGradient.Evaluate(timePassed / bloomDuration));
+                _runtimeMaterial.SetFloat("_Intensity", applyedIntensity);
+                _runtimeMaterial.SetColor("_Color", bloomGradient.Evaluate(timePassed / bloomDuration));
             }
 
             timePassed += Time.deltaTime;
             yield return null;
 
         } while (timePassed < bloomDuration);
-        if (bloomMaterial != null)
+        if (_runtimeMaterial != null)
         {
-            bloomMaterial.SetFloat("_Intensity", defaultIntensity);
-            bloomMaterial.SetColor("_Color", Color.white); 
+            _runtimeMaterial.SetFloat("_Intensity", defaultIntensity);
+            _runtimeMaterial.SetColor("_Color", Color.white); 
         }
         bloomRoutine = null;
         if (loop) { TriggerBloom(); }

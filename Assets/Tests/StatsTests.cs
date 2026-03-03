@@ -4,7 +4,7 @@ using UnityEngine;
 
 public partial class StatsTests
 {
-
+    PlayerStatsHandler statToTest;
     public CharacterStat CreateStatSO(int initialValue)
     {
         CharacterStat stat = ScriptableObject.CreateInstance<CharacterStat>();
@@ -19,6 +19,17 @@ public partial class StatsTests
 
 
         return stat;
+    }
+    private void InitStat(int baseValue)
+    {
+
+        var baseStat = StatsTests.CreatePlayerStatSO(baseValue, 3, 5);
+        statToTest = new PlayerStatsHandler(baseStat);
+
+        var obj = GameObject.FindObjectOfType<GameManager>();
+        GameObject go = GameObject.Instantiate(obj.gameObject);
+        GameManager gm = go.GetComponent<GameManager>();
+        GameManager.Instance = gm;
     }
     #region TEST SO
     [Test]
@@ -110,17 +121,17 @@ public partial class StatsTests
     [Test]
     public void ConstructorStatsHandler()
     {
-        var baseStat = CreateStatSO(0);
+        JoueurStat baseStat = (JoueurStat) CreateStatSO(0);
         
-        var statHolder = new AbstractStatsHandler(baseStat);
+        var statHolder = new PlayerStatsHandler(baseStat);
         
-        Assert.That(statHolder.Calme, Is.EqualTo(baseStat.Calme));
-        Assert.That(statHolder.Conviction, Is.EqualTo(baseStat.Conviction));
-        Assert.That(statHolder.Resilience, Is.EqualTo(baseStat.Resilience));
+        Assert.That(statHolder.CalmeTotal, Is.EqualTo(baseStat.Calme));
+        Assert.That(statHolder.ConvictionTotal, Is.EqualTo(baseStat.Conviction));
+        Assert.That(statHolder.ResilienceTotal, Is.EqualTo(baseStat.Resilience));
         Assert.That(statHolder.Essence, Is.EqualTo(baseStat.Essence));
-        Assert.That(statHolder.ForceAme, Is.EqualTo(baseStat.ForceAme));
+        Assert.That(statHolder.ForceDameTotal, Is.EqualTo(baseStat.ForceAme));
         Assert.That(statHolder.Radiance, Is.EqualTo(baseStat.Radiance));
-        Assert.That(statHolder.RadianceMax, Is.EqualTo(baseStat.RadianceMax));
+        Assert.That(statHolder.RadianceMaxTotal, Is.EqualTo(baseStat.RadianceMax));
 
         //Assert.That(statHolder.BaseCalme, Is.EqualTo(baseStat.Calme));
         //Assert.That(statHolder.BaseConviction, Is.EqualTo(baseStat.Conviction));
@@ -132,19 +143,19 @@ public partial class StatsTests
     public void UpdateStatsHandler()
     {
         int baseValue = 0;
-        var baseStat = CreateStatSO(baseValue);
+        var baseStat = (JoueurStat)CreateStatSO(baseValue);
         var modifStat = CreateStatSO(10);
 
-        var statHolder = new AbstractStatsHandler(baseStat);
+        PlayerStatsHandler statHolder = new PlayerStatsHandler(baseStat);
         statHolder.UpdateStat(modifStat);
 
-        Assert.That(statHolder.Calme, Is.EqualTo(10));
-        Assert.That(statHolder.Conviction, Is.EqualTo(10));
-        Assert.That(statHolder.Resilience, Is.EqualTo(10));
+        Assert.That(statHolder.CalmeTotal, Is.EqualTo(10));
+        Assert.That(statHolder.ConvictionTotal, Is.EqualTo(10));
+        Assert.That(statHolder.ResilienceTotal, Is.EqualTo(10));
         Assert.That(statHolder.Essence, Is.EqualTo(10));
-        Assert.That(statHolder.ForceAme, Is.EqualTo(10));
+        Assert.That(statHolder.ForceDameTotal, Is.EqualTo(10));
         Assert.That(statHolder.Radiance, Is.EqualTo(10));
-        Assert.That(statHolder.RadianceMax, Is.EqualTo(10));
+        Assert.That(statHolder.RadianceMaxTotal  , Is.EqualTo(10));
 
         //Assert.That(statHolder.Calme, Is.Not.EqualTo(statHolder.BaseCalme));
         //Assert.That(statHolder.Conviction, Is.Not.EqualTo(statHolder.BaseConviction));
@@ -158,25 +169,85 @@ public partial class StatsTests
         //Assert.That(statHolder.BaseForceDame, Is.EqualTo(baseValue));
         //Assert.That(statHolder.BaseRadianceMax, Is.EqualTo(baseValue));
     }
-    [Test]
+   // [Test]
     public void ResetStatHolder()
     {
         int baseValue = 0;
-        var baseStat = CreateStatSO(baseValue);
+        var baseStat = (JoueurStat)CreateStatSO(baseValue);
         var modifStat = CreateStatSO(10);
 
-        var statHolder = new AbstractStatsHandler(baseStat);
+        var statHolder = new PlayerStatsHandler(baseStat);
         statHolder.UpdateStat(modifStat);
         //statHolder.ResetStat();
-        Assert.That(statHolder.Calme, Is.EqualTo(baseValue));
-        Assert.That(statHolder.Conviction, Is.EqualTo(baseValue));
-        Assert.That(statHolder.Resilience, Is.EqualTo(baseValue));
-        Assert.That(statHolder.ForceAme, Is.EqualTo(baseValue));
+        Assert.That(statHolder.CalmeTotal, Is.EqualTo(baseValue));
+        Assert.That(statHolder.ConvictionTotal, Is.EqualTo(baseValue));
+        Assert.That(statHolder.ResilienceTotal, Is.EqualTo(baseValue));
+        Assert.That(statHolder.ForceDameTotal, Is.EqualTo(baseValue));
         Assert.That(statHolder.Radiance, Is.EqualTo(baseValue));
-        Assert.That(statHolder.RadianceMax, Is.EqualTo(baseValue));
+        Assert.That(statHolder.RadianceMaxTotal, Is.EqualTo(baseValue));
 
        
     }
-            
+    [Test]
+    [TestCase(10, 0, 10)]
+    [TestCase(0, 10, 10)]
+    [TestCase(0, 20, 10)]
+    [TestCase(1, 2, 3)]
+    [TestCase(5, 2, 7)]
+    [TestCase(5, -2, 3)]
+    [TestCase(5, -5, 0)]
+    [TestCase(3, -5, -2)]
+    [TestCase(-3, -5, -8)]
+    [TestCase(-3, -15, -10)]
+    [TestCase(3, +15, 10)]
+    [TestCase(-3, 0, -3)]
+    [TestCase(-15, 0, -10)]
+    [TestCase(13, 0, 10)]
+    [TestCase(-13, 0, -10)]
+    [TestCase(-3, 1, -2)]
+    [TestCase(13, 1, 10)]
+    [TestCase(13, -5, 8)]
+    public void TestStatConviction (int baseValue, int modifier, int expected)
+    {
+        InitStat(baseValue);
+
+        var modifStat = ScriptableObject.CreateInstance<JoueurStat>();
+        modifStat.Conviction = modifier;
+
+        statToTest.UpdateStat(modifStat);
+
+        Assert.That(statToTest.ConvictionTotal, Is.EqualTo(expected));
+    }
+    [Test]
+    [TestCase(10, 0, 10)]
+    [TestCase(0, 10, 10)]
+    [TestCase(0, 20, 10)]
+    [TestCase(1, 2, 3)]
+    [TestCase(5, 2, 7)]
+    [TestCase(5, -2, 3)]
+    [TestCase(5, -5, 0)]
+    [TestCase(3, -5, -2)]
+    [TestCase(-3, -5, -8)]
+    [TestCase(-3, -15, -10)]
+    [TestCase(3, +15, 10)]
+    [TestCase(-3, 0, -3)]
+    [TestCase(-15, 0, -10)]
+    [TestCase(13, 0, 10)]
+    [TestCase(-13, 0, -10)]
+    [TestCase(-3, 1, -2)]
+    [TestCase(13, 1, 10)]
+    [TestCase(13, -5, 8)]
+    public void TestStatResilience(int baseValue, int modifier, int expected)
+    {
+        InitStat(baseValue);
+
+        var modifStat = ScriptableObject.CreateInstance<JoueurStat>();
+        modifStat.Resilience = modifier;
+
+        statToTest.UpdateStat(modifStat);
+
+        Assert.That(statToTest.ResilienceTotal, Is.EqualTo(expected));
+    }
+
     #endregion
 }

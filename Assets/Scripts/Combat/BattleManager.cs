@@ -193,7 +193,7 @@ public class BattleManager : MonoBehaviour
 
     private void CalcTensionJoueur()
     {
-        player.Stat.TensionMax = (CalmeMoyenAdversaire / CalmeMoyen) * player.Stat.Calme;
+        player.Stat.TensionMax = (CalmeMoyenAdversaire / CalmeMoyen) * player.Stat.CalmeTotal;
         player.Stat.ValeurPalier = player.Stat.TensionMax / GameManager.Instance.CommonStatsData.NbPalier;
         if (player.Stat.PalierChangement > 0)
         {
@@ -211,7 +211,7 @@ public class BattleManager : MonoBehaviour
         {
             if (!item.Stat.NoTension)
             {
-                item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.Calme;
+                item.Stat.TensionMax = (CalmeMoyenJoueur / CalmeMoyen) * item.Stat.CalmeTotal;
                 item.Stat.ValeurPalier = (item.Stat.TensionMax) / GameManager.Instance.CommonStatsData.NbPalier;
                 if (item.Stat.PalierChangement > 0)
                 {
@@ -233,15 +233,15 @@ public class BattleManager : MonoBehaviour
         {
             if (!EnemyScripts[i].Stat.NoTension)
             {
-                tempCalmeEnemy += EnemyScripts[i].Stat.Calme;
+                tempCalmeEnemy += EnemyScripts[i].Stat.CalmeTotal;
                 count++;
             }
         }
 
-        CalmeMoyenJoueur = player.Stat.Calme;
+        CalmeMoyenJoueur = player.Stat.CalmeTotal;
         CalmeMoyenAdversaire = tempCalmeEnemy / count;
         //remplacer 1 par une variable si le cas de plusieurs personnage jouable arrive
-        CalmeMoyen = (tempCalmeEnemy + player.Stat.Calme) / (count + 1);
+        CalmeMoyen = (tempCalmeEnemy + player.Stat.CalmeTotal) / (count + 1);
     }
 
     private bool CheckTension(int key)
@@ -320,10 +320,6 @@ public class BattleManager : MonoBehaviour
         GameManager.OnStartDialog -= CombatEnableSetup;
     }
 
-    public int getJoueurClairvoyance()
-    {
-        return player.Stat.Clairvoyance;
-    }
     void DialogueEnableSetup()
     {
         player.InitRefBattleMan(this);
@@ -349,7 +345,7 @@ public class BattleManager : MonoBehaviour
         IdOrder = new List<CombatOrder>();
         IdSpeedDictionary = new Dictionary<int, int>
         {
-            {idIndexer, player.Stat.Vitesse}
+            {idIndexer, player.Stat.VitesseTotal}
         };
         idPlayer = idIndexer;
         idIndexer++;
@@ -464,7 +460,7 @@ public class BattleManager : MonoBehaviour
             tempCombatScript.isMainEnemy = ennemyId == _encounter.idMainMob ? true : false;
             EnemyScripts.Add(tempCombatScript);
 
-            IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.Vitesse);
+            IdSpeedDictionary.Add(idIndexer, tempCombatScript.Stat.VitesseTotal);
             tempCombatScript.combatID = idIndexer;
             tempCombatScript.ChooseNextAction();
             idIndexer++;
