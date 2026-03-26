@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
@@ -22,6 +21,8 @@ public class PauseMenu : MonoBehaviour
     private Button _prevButton;
     [SerializeField]
     private GameObject _optionPanel;
+    [SerializeField]
+    private GameObject _bugReportPanel;
 
     private bool _isPaused = false;
 
@@ -30,6 +31,7 @@ public class PauseMenu : MonoBehaviour
     void Start()
     {
         HideGlossary();
+        HideBugReport();
     }
 
     // Update is called once per frame
@@ -45,6 +47,7 @@ public class PauseMenu : MonoBehaviour
     }
     public void Pause()
     {
+        
         HideGlossary();
         GameManager.Instance.IsPaused = true;
         _pageShowed = 0;
@@ -56,6 +59,7 @@ public class PauseMenu : MonoBehaviour
     {
         HideGlossary();
         HideOptions();
+        HideBugReport();
         GameManager.Instance.IsPaused = false;
         _pauseMenuAnimator.SetTrigger("Hide");
         Time.timeScale = 1f;
@@ -63,6 +67,7 @@ public class PauseMenu : MonoBehaviour
     }
     public void ShowOptions()
     {
+        HideBugReport();
         _glossaryHolder.SetActive(false);
         _optionPanel.SetActive(true);
     }
@@ -73,6 +78,7 @@ public class PauseMenu : MonoBehaviour
     public void ShowGlossary()
     {
         HideOptions();
+        HideBugReport();
         _glossaryHolder.SetActive(true);
         ShowSelectedGlossaryPage(_pageShowed);
     }
@@ -121,4 +127,16 @@ public class PauseMenu : MonoBehaviour
         Application.Quit();
 #endif
     }
+    public void ShowBugReport()
+    {
+        HideGlossary();
+        HideOptions();
+        _bugReportPanel.SetActive(true);
+
+    }
+    public void HideBugReport()
+    {
+        _bugReportPanel.SetActive(false);
+    }
+    
 }
