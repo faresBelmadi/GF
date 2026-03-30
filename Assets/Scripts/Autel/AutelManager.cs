@@ -141,7 +141,7 @@ public class AutelManager : MonoBehaviour
             switch (Etage)
             {
                 case 1:
-                    if (Stat.Calme < CoutStatChoix3[Etage - 1])
+                    if (Stat.CalmeTotal < CoutStatChoix3[Etage - 1])
                     {
                         ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
                     }
@@ -153,7 +153,7 @@ public class AutelManager : MonoBehaviour
                     }
                     break;
                 case 3:
-                    if (Stat.Clairvoyance < CoutStatChoix3[Etage - 1])
+                    if (Stat.ClairvoyanceTotal < CoutStatChoix3[Etage - 1])
                     {
                         ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
                     }
@@ -310,15 +310,15 @@ public class AutelManager : MonoBehaviour
     public void SetUpStatsDescription()
     {
         Stat = GameManager.Instance.playerStatHandler;
-        ValeurRadiance.text = Stat.RadianceMax.ToString();
-        ValeurFA.text = Stat.ForceAme.ToString();
-        ValeurVitesse.text = Stat.Vitesse.ToString();
-        ValeurConviction.text = Stat.Conviction.ToString();
-        ValeurResilience.text = Stat.Resilience.ToString();
-        ValeurCalme.text = Stat.Calme.ToString();
+        ValeurRadiance.text = Stat.RadianceMaxTotal.ToString();
+        ValeurFA.text = Stat.ForceDameTotal.ToString();
+        ValeurVitesse.text = Stat.VitesseTotal.ToString();
+        ValeurConviction.text = Stat.ConvictionTotal.ToString();
+        ValeurResilience.text = Stat.ResilienceTotal.ToString();
+        ValeurCalme.text = Stat.CalmeTotal.ToString();
         ValeurVolonter.text = Stat.VolonteMax.ToString();
-        ValeurConscience.text = Stat.ConscienceMax.ToString();
-        ValeurClairvoyance.text = Stat.Clairvoyance.ToString();
+        ValeurConscience.text = Stat.Conscience.ToString();
+        ValeurClairvoyance.text = Stat.ClairvoyanceTotal.ToString();
 
         //ModifRadiance.text = ModifFA.text = ModifVitesse.text = ModifConviction.text = ModifResilience.text =
         //    ModifCalme.text = ModifVolonter.text = ModifConscience.text = ModifClairvoyance.text = "";
@@ -676,7 +676,8 @@ public class AutelManager : MonoBehaviour
     public void Choix1()
     {
         CoutChoix(1);
-        Stat.Conscience += 2;
+        Stat.GainConscience(2);
+        
         int random = UnityEngine.Random.Range(0, 101);
         Debug.Log("Loot : " + random);
         if (random > 51)
@@ -713,7 +714,7 @@ public class AutelManager : MonoBehaviour
     public void Choix2()
     {
         CoutChoix(2);
-        Stat.Conscience += 3;
+        Stat.GainConscience(3);
         string NameLoot;
 
         List<Souvenir> souvList = Etage switch
@@ -735,7 +736,7 @@ public class AutelManager : MonoBehaviour
     public void Choix3()
     {
         CoutChoix(3);
-        Stat.Conscience += 3;
+        Stat.GainConscience(3);
         Stat.ListSouvenir.Add(SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir);
         Loot = true;
         RetourMap();

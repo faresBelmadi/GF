@@ -182,9 +182,9 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
 
     private void InitUI()
     {
-        hPBarManager.InitPBar(base.Stat.Radiance, base.Stat.RadianceMax);
+        hPBarManager.InitPBar(base.Stat.Radiance, base.Stat.RadianceMaxTotal);
         tensionBarManager.InitPBar(0, commonStats.NbPalier);
-        conscienceBarManager.InitPBar(base.Stat.Conscience, base.Stat.ConscienceMax);
+        conscienceBarManager.InitPBar(base.Stat.Conscience, base.Stat.ConscienceMaxTotal);
 
         for (int i = 0; i < _passiveTooltips.Count && i < PassiveList.Count; i++)
         {
@@ -197,7 +197,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         //ProgressBar Updates
         if (base.Stat.Radiance != currentHp)
         {
-            hPBarManager.UpdatePBar(base.Stat.Radiance, base.Stat.RadianceMax);
+            hPBarManager.UpdatePBar(base.Stat.Radiance, base.Stat.RadianceMaxTotal);
             hPBarManager.ToggleBloomPulses(false);
             //Debug.Log($"Delta: {Stat.Radiance-currentHp}");
         }
@@ -217,7 +217,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
 
         if (base.Stat.Conscience != currentCons)
         {
-            conscienceBarManager.UpdatePBar(base.Stat.Conscience, base.Stat.ConscienceMax);
+            conscienceBarManager.UpdatePBar(base.Stat.Conscience, base.Stat.ConscienceMaxTotal);
             conscienceBarManager.ToggleBloomPulses(false);
         }
 
@@ -228,54 +228,54 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         _volonteManager.UpdatePoint(base.Stat.Volonte);
 
 
-        HpText.text = $"{base.Stat.Radiance.ToString()}/{base.Stat.RadianceMax}";
+        HpText.text = $"{base.Stat.Radiance.ToString()}/{base.Stat.RadianceMaxTotal}";
         HpTextReduced.text = base.Stat.Radiance.ToString();
-        HpToolTipText.text = $"{TradManager.instance.GetTranslation(_radianceTextIdTrad)}\nMax: {base.Stat.RadianceMax.ToString()}";
-        ConscienceText.text = base.Stat.Conscience + "/" + base.Stat.ConscienceMax;
+        HpToolTipText.text = $"{TradManager.instance.GetTranslation(_radianceTextIdTrad)}\nMax: {base.Stat.RadianceMaxTotal.ToString()}";
+        ConscienceText.text = base.Stat.Conscience + "/" + base.Stat.ConscienceMaxTotal;
 
-        StatClairvoyanceText.text = base.Stat.Clairvoyance + "";
+        StatClairvoyanceText.text = base.Stat.ClairvoyanceTotal + "";
 
 
-        if (base.Stat.Clairvoyance > base.Stat.BaseClairvoyance)
+        if (base.Stat.ClairvoyanceTotal > base.Stat.BaseClairvoyance)
             StatClairvoyanceBg.color = green;
-        else if (base.Stat.Clairvoyance < base.Stat.BaseClairvoyance)
+        else if (base.Stat.ClairvoyanceTotal < base.Stat.BaseClairvoyance)
             StatClairvoyanceBg.color = red;
         else
             StatClairvoyanceBg.color = Color.white;
 
 
-        StatForceAmeText.text = base.Stat.ForceAme + "";
+        StatForceAmeText.text = base.Stat.ForceDameTotal + "";
 
-        if (base.Stat.ForceAme > base.Stat.BaseForceDame)
+        if (base.Stat.ForceDameTotal > base.Stat.BaseForceDame)
             StatForceAmeBg.color = new Color(147, 250, 165);
-        else if (base.Stat.ForceAme < base.Stat.BaseForceDame)
+        else if (base.Stat.ForceDameTotal < base.Stat.BaseForceDame)
             StatForceAmeBg.color = red;
         else
             StatForceAmeBg.color = Color.white;
 
-        StatSpeedText.text = base.Stat.Vitesse + "";
+        StatSpeedText.text = base.Stat.VitesseTotal + "";
 
-        if (base.Stat.Vitesse > base.Stat.BaseVitesse)
+        if (base.Stat.VitesseTotal > base.Stat.BaseVitesse)
             StatSpeedBg.color = green;
-        else if (base.Stat.Vitesse < base.Stat.BaseVitesse)
+        else if (base.Stat.VitesseTotal < base.Stat.BaseVitesse)
             StatSpeedBg.color = red;
         else
             StatSpeedBg.color = Color.white;
 
-        StatConvictionText.text = base.Stat.Conviction + "";
+        StatConvictionText.text = base.Stat.ConvictionTotal + "";
 
-        if (base.Stat.Conviction > base.Stat.BaseConviction)
+        if (base.Stat.ConvictionTotal > base.Stat.BaseConviction)
             StatConvictionBg.color = green;
-        else if (base.Stat.Conviction < base.Stat.BaseConviction)
+        else if (base.Stat.ConvictionTotal < base.Stat.BaseConviction)
             StatConvictionBg.color = red;
         else
             StatConvictionBg.color = Color.white;
 
-        StatResilienceText.text = base.Stat.Resilience + "";
+        StatResilienceText.text = base.Stat.ResilienceTotal + "";
 
-        if (base.Stat.Resilience > base.Stat.BaseResilience)
+        if (base.Stat.ResilienceTotal > base.Stat.BaseResilience)
             StatResilienceBg.color = green;
-        else if (base.Stat.Resilience < base.Stat.BaseResilience)
+        else if (base.Stat.ResilienceTotal < base.Stat.BaseResilience)
             StatResilienceBg.color = red;
         else
             StatResilienceBg.color = Color.white;
@@ -286,13 +286,13 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         }
 
         //  ConvictionNbBuffText.text = nbBuffDebuffApplied + "/" + commonStats.ConvictionNbBuffTrigger;
-        if (base.Stat.Conviction != 0)
+        if (base.Stat.ConvictionTotal != 0)
         {
             _convictionManager.UpdateMaxConviction(commonStats.ConvictionNbBuffTrigger);
         }
         else
             _convictionManager.UpdateMaxConviction(0);
-        _convictionManager.Positive = base.Stat.Conviction > 0;
+        _convictionManager.Positive = base.Stat.ConvictionTotal > 0;
         _convictionManager.UpdatePoint(nbBuffDebuffApplied);
 
 
@@ -307,7 +307,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         nbBuffDebuffApplied = 0;
         _convictionManager.UpdatePoint(0);
         _convictionManager.UpdateMaxConviction(0); 
-        if (base.Stat.Conviction != 0)
+        if (base.Stat.ConvictionTotal != 0)
         {
             _convictionManager.UpdateMaxConviction(commonStats.ConvictionNbBuffTrigger);
         }
@@ -535,7 +535,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
             switch (price.typeCost)
             {
                 case TypeCostSpell.conscience:
-                    base.Stat.Conscience -= price.Value;
+                    base.Stat.LoseConscience(price.Value);
                     break;
                 case TypeCostSpell.radiance:
                     base.Stat.RemoveAmountRadiance(price.Value);
@@ -708,8 +708,8 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
 
         for (int i = 0; i < base.Stat.MultiplBuffDebuff; i++)
         {
-            if(((toAdd.IDCombatOrigine == _refBattleMan.idPlayer && base.Stat.Conviction > 0 && !toAdd.IsDebuff) 
-                || (toAdd.IDCombatOrigine != _refBattleMan.idPlayer && base.Stat.Conviction<0 && toAdd.IsDebuff)) && _refBattleMan.IsCombatOn)
+            if(((toAdd.IDCombatOrigine == _refBattleMan.idPlayer && base.Stat.ConvictionTotal > 0 && !toAdd.IsDebuff) 
+                || (toAdd.IDCombatOrigine != _refBattleMan.idPlayer && base.Stat.ConvictionTotal<0 && toAdd.IsDebuff)) && _refBattleMan.IsCombatOn)
             {
 
                 nbBuffDebuffApplied++;
@@ -842,7 +842,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         if (ModifStat.Radiance < 0)
         {
             var toRemove = ModifStat.Radiance;
-            toRemove -= Mathf.FloorToInt(((base.Stat.Resilience * 3) / 100f) * toRemove);
+            toRemove -= Mathf.FloorToInt(((base.Stat.ResilienceTotal * 3) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
             if (effet.IsAttaqueEffet)
                 GetAttacked();
@@ -920,7 +920,7 @@ public class JoueurBehavior : CombatBehavior<PlayerStatsHandler>
         //if (Stat.Radiance > Stat.RadianceMax)
         //    Stat.Radiance = Stat.RadianceMax;
         AudioManager.instance.SFX.PlaySFXClip(SFXType.EssenceConsuptionSFX);
-        hPBarManager.UpdatePBar(base.Stat.Radiance, base.Stat.RadianceMax);
+        hPBarManager.UpdatePBar(base.Stat.Radiance, base.Stat.RadianceMaxTotal);
         ReceiveTension(source);
         UpdateUI();
     }

@@ -51,7 +51,7 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IDynamicEventPassive<Ene
         switch (_statToModif.StatToModif)
         {
             case BaseStats.ForceAme:
-                int newValue = Mathf.FloorToInt(((modificator / 100f) * _ennemiStat.ForceDameWithoutBonus));
+                int newValue = Mathf.FloorToInt(((modificator / 100f) * _ennemiStat.BaseForceDame));
                 _ennemiStat.SetForceDameBonus(newValue);
                 break;
         }
@@ -62,8 +62,8 @@ public class EnnemyStatPerPlayerStat : AbstractPassive, IDynamicEventPassive<Ene
         {
             case ConditionComparaison.ComparePercentRadiance:
                 int modificator = 0;
-                float enemyPercent = ((float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMax) * 100f;
-                float playerPercent = ((float)GameManager.Instance.playerStatHandler.Radiance / (float)GameManager.Instance.playerStatHandler.RadianceMax) * 100f;
+                float enemyPercent = ((float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMaxTotal) * 100f;
+                float playerPercent = ((float)GameManager.Instance.playerStatHandler.Radiance / (float)GameManager.Instance.playerStatHandler.RadianceMaxTotal) * 100f;
                 if (enemyPercent > playerPercent)
                     modificator = _statToModif.IfGreaterBonus;
                 if (enemyPercent < playerPercent)

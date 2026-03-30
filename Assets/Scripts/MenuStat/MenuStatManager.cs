@@ -190,15 +190,15 @@ public class MenuStatManager : MonoBehaviour
     }
     public void UpdateStatUI()
     {
-        ValeurRadiance.text = StatTemp.Radiance.ToString() + "/" + StatTemp.RadianceMax;
-        ValeurFA.text = StatTemp.ForceAme.ToString();
-        ValeurVitesse.text = StatTemp.Vitesse.ToString();
-        ValeurConviction.text = StatTemp.Conviction.ToString();
-        ValeurResilience.text = StatTemp.Resilience.ToString();
-        ValeurCalme.text = StatTemp.Calme.ToString();
+        ValeurRadiance.text = StatTemp.Radiance.ToString() + "/" + StatTemp.RadianceMaxTotal;
+        ValeurFA.text = StatTemp.ForceDameTotal.ToString();
+        ValeurVitesse.text = StatTemp.VitesseTotal.ToString();
+        ValeurConviction.text = StatTemp.ConvictionTotal.ToString();
+        ValeurResilience.text = StatTemp.ResilienceTotal.ToString();
+        ValeurCalme.text = StatTemp.CalmeTotal.ToString();
         ValeurVolonter.text = StatTemp.Volonte.ToString() + "/" + StatTemp.VolonteMax.ToString();
-        ValeurConscience.text = StatTemp.Conscience.ToString() + "/" + StatTemp.ConscienceMax.ToString();
-        ValeurClairvoyance.text = StatTemp.Clairvoyance.ToString();
+        ValeurConscience.text = StatTemp.Conscience.ToString() + "/" + StatTemp.ConscienceMaxTotal.ToString();
+        ValeurClairvoyance.text = StatTemp.ClairvoyanceTotal.ToString();
 
         int radiance = 0, forcedame = 0, conviction = 0, vitesse = 0, resilience = 0, calme = 0, conscience = 0, volonte = 0, clairvoyance = 0;
         
@@ -286,20 +286,39 @@ public class MenuStatManager : MonoBehaviour
 
     #region Application Souvenir
 
-    public void ModifStat(Souvenir LeSouvenir, bool Equiped)
+    public void ModifStat(Souvenir leSouvenir, bool isEquiped)
     {
         JoueurStat modifStat = ScriptableObject.CreateInstance<JoueurStat>();
-        foreach (var item in LeSouvenir.ModificationStat)
+        foreach (var item in leSouvenir.ModificationStat)
         {
             switch (item.StatModif)
             {
+                case StatModif.Radiance:
+                    if (isEquiped == true)
+                    {
+                        var Temp = 0;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            Temp = item.ParametreModifStat.Valeur;
+                        }
+                        modifStat.Radiance += Temp;
+                        item.ParametreModifStat.ValeurModifier = Temp;
+                    }
+                    else
+                    {
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.Radiance -= item.ParametreModifStat.ValeurModifier;
+                        }
+                    }
+                    break;
                 case StatModif.RadianceMax:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if(item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.RadianceMax);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.RadianceMax);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -311,17 +330,20 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.RadianceMax -= item.ParametreModifStat.ValeurModifier;
-                        modifStat.Radiance -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.RadianceMax -= item.ParametreModifStat.ValeurModifier;
+                            modifStat.Radiance -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.ForceAme:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.ForceAme);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.ForceAme);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -332,16 +354,19 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.ForceAme -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.ForceAme -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.Calme:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Calme);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Calme);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -352,16 +377,19 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.Calme -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.Calme -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.Clairvoyance:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Clairvoyance);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Clairvoyance);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -372,16 +400,19 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.Clairvoyance -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.Clairvoyance -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.ConscienceMax:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.ConscienceMax);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.ConscienceMax);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -392,16 +423,19 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.ConscienceMax -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.ConscienceMax -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.Conviction:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Conviction);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Conviction);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -412,16 +446,19 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat   .Conviction -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.Conviction -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.Resilience:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Resilience);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Resilience);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -436,19 +473,22 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        var tempResiliencePassif = StatTemp.ResiliencePassif;
-                        modifStat.ResiliencePassif = 0;
-                        modifStat.Resilience -= item.ParametreModifStat.ValeurModifier;
-                        modifStat.ResiliencePassif = tempResiliencePassif;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            var tempResiliencePassif = StatTemp.ResiliencePassif;
+                            modifStat.ResiliencePassif = 0;
+                            modifStat.Resilience -= item.ParametreModifStat.ValeurModifier;
+                            modifStat.ResiliencePassif = tempResiliencePassif;
+                        }
                     }
                     break;
                 case StatModif.Vitesse:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Vitesse);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.Vitesse);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -459,16 +499,19 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.Vitesse -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.Vitesse -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
                 case StatModif.VolonterMax:
-                    if (Equiped == true)
+                    if (isEquiped == true)
                     {
                         var Temp = 0;
                         if (item.ParametreModifStat.ParametreStat == ParametreStat.Pourcentage)
                         {
-                            Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.VolonteMax);
+                           // Temp = Mathf.FloorToInt((item.ParametreModifStat.Valeur / 100f) * Stat.VolonteMax);
                         }
                         else if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
                         {
@@ -480,15 +523,22 @@ public class MenuStatManager : MonoBehaviour
                     }
                     else
                     {
-                        modifStat.VolonterMax -= item.ParametreModifStat.ValeurModifier;
-                        modifStat.Volonter -= item.ParametreModifStat.ValeurModifier;
+                        if (item.ParametreModifStat.ParametreStat == ParametreStat.ValeurBrut)
+                        {
+                            modifStat.VolonterMax -= item.ParametreModifStat.ValeurModifier;
+                            modifStat.Volonter -= item.ParametreModifStat.ValeurModifier;
+                        }
                     }
                     break;
             }
         }
-        StatTemp.UpdateStat(modifStat);
-        ScriptableObject.Destroy(modifStat);
+        StatTemp.UpdateBaseStat(modifStat);
+        if (modifStat.Radiance != 0)
+            StatTemp.ChangeRadiance(modifStat.Radiance);
+        ScriptableObject.DestroyImmediate(modifStat);
         StatTemp.RectificationStat();
+        StatTemp.UpdatePercentIncreaseFromSouvenir(EquipedSouvenir);
+       
     }
 
     #endregion Application Souvenir
@@ -503,59 +553,76 @@ public class MenuStatManager : MonoBehaviour
         }
     }
 
-    [Obsolete]
-    public void Equiped(ReorderableListEventStruct e)
+    //[Obsolete]
+    //public void Equiped(ReorderableListEventStruct e)
+    //{
+    //    if (e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped == false && NbSlotsEquiped+e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots <= StatTemp.SlotsSouvenir)
+    //    {
+    //        e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped = true;
+    //        EquipedSouvenir.Add(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
+    //        ModifStat(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir, true);
+    //        NbSlotsEquiped += e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots;
+    //    }
+    //}
+
+    public bool Equiped(Souvenir souv)
     {
-        if (e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped == false && NbSlotsEquiped+e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots <= StatTemp.SlotsSouvenir)
+        if (souv.Equiped == false && NbSlotsEquiped + souv.Slots <= StatTemp.SlotsSouvenir)
         {
-            e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped = true;
-            EquipedSouvenir.Add(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
-            ModifStat(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir, true);
-            NbSlotsEquiped += e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots;
-        }
-    }
-    public bool Equiped(SouvenirUI souv)
-    {
-        if (souv.LeSouvenir.Equiped == false && NbSlotsEquiped + souv.LeSouvenir.Slots <= StatTemp.SlotsSouvenir)
-        {
-            souv.LeSouvenir.Equiped = true;
-            EquipedSouvenir.Add(souv.LeSouvenir);
-            ListSouvenirUIEquipped.Add(souv);
-            ModifStat(souv.LeSouvenir, true);
-            NbSlotsEquiped += souv.LeSouvenir.Slots;
-            if (GameManager.Instance.CopyAllSouvenir.Contains(souv.LeSouvenir))
+            souv.Equiped = true;
+            EquipedSouvenir.Add(souv);
+            ModifStat(souv, true);
+            NbSlotsEquiped += souv.Slots;
+            if (GameManager.Instance.CopyAllSouvenir.Contains(souv))
             {
-                GameManager.Instance.CopyAllSouvenir.Remove(souv.LeSouvenir);
+                GameManager.Instance.CopyAllSouvenir.Remove(souv);
             }
             return true;
         }
         return false;
     }
-
-    [Obsolete]
-    public void UnEquiped(ReorderableListEventStruct e)
+    public bool Equiped(SouvenirUI souv)
     {
-        if (e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped == true)
+        if (souv.LeSouvenir.Equiped == false && NbSlotsEquiped + souv.LeSouvenir.Slots <= StatTemp.SlotsSouvenir)
         {
-            e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped = false;
-            GameManager.Instance.CopyAllSouvenir.Add(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
-            EquipedSouvenir.Remove(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
-            ModifStat(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir, false);
-            NbSlotsEquiped -= e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots;
+            ListSouvenirUIEquipped.Add(souv);  
+            return Equiped(souv.LeSouvenir);
         }
-        e.DroppedObject.GetComponent<ReorderableListElement>().IsTransferable = true;
+        return false;
+    }
+
+    //[Obsolete]
+    //public void UnEquiped(ReorderableListEventStruct e)
+    //{
+    //    if (e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped == true)
+    //    {
+    //        e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Equiped = false;
+    //        GameManager.Instance.CopyAllSouvenir.Add(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
+    //        EquipedSouvenir.Remove(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir);
+    //        ModifStat(e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir, false);
+    //        NbSlotsEquiped -= e.DroppedObject.GetComponent<SouvenirUI>().LeSouvenir.Slots;
+    //    }
+    //    e.DroppedObject.GetComponent<ReorderableListElement>().IsTransferable = true;
+    //}
+    public bool UnEquiped(Souvenir souv)
+    {
+        if (souv.Equiped == true)
+        {
+            souv.Equiped = false;
+            GameManager.Instance.CopyAllSouvenir.Add(souv);
+            ModifStat(souv, false);
+            EquipedSouvenir.Remove(souv);
+            NbSlotsEquiped -= souv.Slots;
+            return true;
+        }
+        return false;
     }
     public bool UnEquiped(SouvenirUI souv)
     {
         if (souv.LeSouvenir.Equiped == true)
         {
-            souv.LeSouvenir.Equiped = false;
-            GameManager.Instance.CopyAllSouvenir.Add(souv.LeSouvenir);
-            EquipedSouvenir.Remove(souv.LeSouvenir);
             ListSouvenirUIEquipped.Remove(souv);
-            ModifStat(souv.LeSouvenir, false);
-            NbSlotsEquiped -= souv.LeSouvenir.Slots;
-            return true;
+            return UnEquiped(souv.LeSouvenir);
         }
         return false;
     }

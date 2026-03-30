@@ -231,7 +231,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
     {
         if (Stat == null)
             return;
-        if (currentHp != Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMax);
+        if (currentHp != Stat.Radiance) UICombat.UpdateHp(Stat.Radiance, Stat.RadianceMaxTotal);
         currentHp = Stat.Radiance;
 
         TensionUI = Mathf.FloorToInt((Stat.Tension * GameManager.Instance.CommonStatsData.NbPalier) / Stat.TensionMax);
@@ -318,7 +318,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
 
     protected void UpdateIntention()
     {
-        if (GameManager.Instance.BattleMan.getJoueurClairvoyance() >= base.Stat.Dissimulation)
+        if (GameManager.Instance.BattleMan.player.Stat.ClairvoyanceTotal >= base.Stat.Dissimulation)
         {
             switch (nextActionType)
             {
@@ -535,7 +535,7 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
         if (ModifStat.Radiance < 0)
         {
             var toRemove = Mathf.FloorToInt(ModifStat.Radiance / base.Stat.MultiplDef);
-            toRemove -= Mathf.FloorToInt(((base.Stat.Resilience * 3) / 100f) * toRemove);
+            toRemove -= Mathf.FloorToInt(((base.Stat.ResilienceTotal * 3) / 100f) * toRemove);
             ModifStat.Radiance = toRemove;
             if (source != SourceEffet.BuffDebuff)
                 GetAttacked();
@@ -659,13 +659,13 @@ public class EnnemyBehavior : CombatBehavior<EnemyStatsHandler>
             if (damageList[ennemy.combatID - 1] < 0)
             {
                 var toRemove = Mathf.FloorToInt(damageList[ennemy.combatID - 1] / ennemy.Stat.MultiplDef);
-                toRemove -= Mathf.FloorToInt(((ennemy.Stat.Resilience * 3) / 100f) * toRemove);
-                ennemy.UICombat.PreviewDmg(ennemy.Stat.Radiance + toRemove, ennemy.Stat.RadianceMax);
+                toRemove -= Mathf.FloorToInt(((ennemy.Stat.ResilienceTotal * 3) / 100f) * toRemove);
+                ennemy.UICombat.PreviewDmg(ennemy.Stat.Radiance + toRemove, ennemy.Stat.RadianceMaxTotal);
             }
         }
         if(returnedDmg != 0)
         {
-            _refBattleMan.player.PreviewHPBarUpdate(_refBattleMan.player.Stat.Radiance + returnedDmg, _refBattleMan.player.Stat.RadianceMax);
+            _refBattleMan.player.PreviewHPBarUpdate(_refBattleMan.player.Stat.Radiance + returnedDmg, _refBattleMan.player.Stat.RadianceMaxTotal);
         }
     }
 

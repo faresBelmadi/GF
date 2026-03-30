@@ -85,7 +85,6 @@ public class CharacterStat : ScriptableObject
 
     public event Action OnConvictionChanged;
 
-    [Obsolete]
     public void ModifStateAll(CharacterStat ModifState)
     {
         if (ModifState.MultiplDef != 1)
