@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [Header("Managers")]
     //public RoomManager rm;
     public PlayerMapManager pmm;
+    [field:SerializeField] public FloorManager FloorManager { get; private set; }
 
     public BattleManager BattleMan;
     public TutoManager TutoManager;
@@ -38,7 +39,6 @@ public class GameManager : MonoBehaviour
     public List<ClassPlayer> AllClasses;
     public List<Encounter> AllEncounter;
     public int EncounterIndex;
-    [field:SerializeField] public List<FloorData> AllFloors { get; private set; }
     [field: SerializeField] public EncounterSetData EncounterSet { get; private set; }
     //[SerializeField] private List<Encounter> TutoEncounter;
     //[SerializeField] private int CurrentTutoEncounter = 0;
@@ -107,7 +107,7 @@ public class GameManager : MonoBehaviour
     }
 
     #region Events
-
+    public static event Action OnNewFloorGenerated;
     public static event Action OnStartCombat;
     public static event Action OnLootAfterCombat;
     public static event Action OnStartEvent;

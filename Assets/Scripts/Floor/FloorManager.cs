@@ -6,13 +6,15 @@ public class FloorManager : MonoBehaviour
 {
     [field: SerializeField] public List<FloorData> AllFloors { get; private set; }
     [field:SerializeField] public Generator MapGenerator { get; private set; }
-    public FloorData CurrentFloor => AllFloors[_currentFloorIndex];
     private int _currentFloorIndex = -1;
+
+    public FloorData CurrentFloor => AllFloors[_currentFloorIndex];
+    public bool IsLastFloor => _currentFloorIndex >= AllFloors.Count - 1;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        NewFloor();
     }
 
     // Update is called once per frame
@@ -21,9 +23,11 @@ public class FloorManager : MonoBehaviour
         
     }
 
-    private void NewFloor()
+    public void NewFloor()
     {
         _currentFloorIndex++;
-        MapGenerator.GenerateNewMap();
+        Debug.Log("Generating new floor (" + _currentFloorIndex + ")");
+        MapGenerator.InitGenerator();
+        MapGenerator.GenerateNewMap(CurrentFloor.RoomPool);
     }
 }

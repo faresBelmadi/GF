@@ -294,7 +294,15 @@ public class PlayerMapManager : MonoBehaviour
         {
             //CHANGEMENT FLOOR
             //Ajouter verif étage
-            GameManager.Instance.EndGame();
+            if (GameManager.Instance.FloorManager.IsLastFloor)
+            {
+                GameManager.Instance.EndGame();
+            }
+            else
+            {
+                GameManager.Instance.UnloadCombat();
+                GameManager.Instance.FloorManager.NewFloor();
+            }
         }
 
         if (IsLoot)

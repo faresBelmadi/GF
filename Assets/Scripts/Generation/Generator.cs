@@ -56,13 +56,8 @@ public class Generator : MonoBehaviour
 
     void Start()
     {
-        spawnedRoomsObj = new Dictionary<Vector2, GameObject>();
-        Lines = new List<GameObject>();
-        //availableRoomPool = new List<TypeRoom>(roomPool);
-
-        mapNodes = GameManager.Instance.pmm.map;
-
-        GenerateNewMap();
+        //InitGenerator();
+        //GenerateNewMap();
     }
 
     private void Update()
@@ -86,9 +81,18 @@ public class Generator : MonoBehaviour
             }
         }
     }
+    public void InitGenerator()
+    {
+        spawnedRoomsObj = new Dictionary<Vector2, GameObject>();
+        Lines = new List<GameObject>();
+        //availableRoomPool = new List<TypeRoom>(roomPool);
+
+        mapNodes = GameManager.Instance.pmm.map;
+    }
     public void GenerateNewMap(List<TypeRoom> newRoomPool)
     {
         roomPool = new List<TypeRoom>(newRoomPool);
+        GenerateNewMap();
     }
     public void GenerateNewMap()
     {
