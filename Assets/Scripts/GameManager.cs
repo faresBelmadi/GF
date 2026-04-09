@@ -34,13 +34,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GamePanelManager _gamePanelManager;
     [field: SerializeField] public Generator MapGenerator { get; private set; }
 
-    [Header("Classes & Encounter")] public List<ClassPlayer> AllClasses;
-
-
+    [Header("Classes & Encounter")] 
+    public List<ClassPlayer> AllClasses;
     public List<Encounter> AllEncounter;
     public int EncounterIndex;
-
-  
+    [field:SerializeField] public List<FloorData> AllFloors { get; private set; }
     [field: SerializeField] public EncounterSetData EncounterSet { get; private set; }
     //[SerializeField] private List<Encounter> TutoEncounter;
     //[SerializeField] private int CurrentTutoEncounter = 0;

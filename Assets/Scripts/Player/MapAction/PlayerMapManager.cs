@@ -292,6 +292,8 @@ public class PlayerMapManager : MonoBehaviour
         //MenuCamera.SetActive(true);
         if (CurrentRoom.roomType == TypeRoom.BOSS)
         {
+            //CHANGEMENT FLOOR
+            //Ajouter verif étage
             GameManager.Instance.EndGame();
         }
 
