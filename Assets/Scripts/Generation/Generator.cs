@@ -1,18 +1,7 @@
-﻿//using JetBrains.Annotations;
-//using System;
-//using System.CodeDom.Compiler;
-using JetBrains.Annotations;
-using Synapse.Runtime.Debug;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-
-
-
-//using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+
 
 public class Generator : MonoBehaviour
 {
@@ -78,6 +67,11 @@ public class Generator : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            Debug.Log("R pressed: Regenerate Map");
+            GenerateNewMap();
+        }
         if (doCycle)
         {
             if (TEMPtimer < cycleTime)
@@ -92,7 +86,10 @@ public class Generator : MonoBehaviour
             }
         }
     }
-
+    public void GenerateNewMap(List<TypeRoom> newRoomPool)
+    {
+        roomPool = new List<TypeRoom>(newRoomPool);
+    }
     public void GenerateNewMap()
     {
         MapData mapData = GameManager.Instance.loadedData.CurrentRun.map;
