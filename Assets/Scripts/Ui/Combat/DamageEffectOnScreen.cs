@@ -68,7 +68,6 @@ public class DamageEffectOnScreen : MonoBehaviour
         float alphaValue1 = Mathf.Clamp01(_curveDamageEffectLow.Evaluate(ratio));
         float alphaValue2 = Mathf.Clamp01(_curveDamageEffectHigh.Evaluate(ratio));
 
-        Debug.Log($"Alpha1 : {alphaValue1}, Alpha2 : {alphaValue2}");
         StartCoroutine(FadeImage(_damageImage1, _damageImage1.color.a, alphaValue1, _fadeTimer));
         StartCoroutine(FadeImage(_damageImage2, _damageImage2.color.a, alphaValue2, _fadeTimer));
 

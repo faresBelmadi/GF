@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI.Extensions;
 
@@ -292,5 +293,43 @@ public class PlayerStatsHandler : StatsHandler<JoueurStat>
         Conscience -= valueToLose;
         if (Conscience < 0)
             Conscience = 0;
+    }
+    public string PrintBaseStat()
+    {
+        StringBuilder strb = new();
+        strb.AppendLine("-------PLAYER STAT-------");
+        strb.AppendLine();
+        strb.AppendLine($"BASE STATS");
+        strb.AppendLine($"BASE FORCE D'AME : {BaseForceDame}");
+        strb.AppendLine($"BASE FORCE D'AME : {BaseRadianceMax}");
+        strb.AppendLine($"BASE FORCE D'AME : {BaseVitesse}");
+        strb.AppendLine($"BASE FORCE D'AME : {BaseConscienceMax}");
+        strb.AppendLine($"BASE FORCE D'AME : {BaseConviction}");
+        strb.AppendLine($"BASE FORCE D'AME : {BaseClairvoyance}");
+        strb.AppendLine($"BASE FORCE D'AME : {BaseRadianceMax}");
+        strb.AppendLine($"BASE FORCE D'AME : {BaseCalme}");
+        strb.AppendLine("------END BASE STAT------");
+        return strb.ToString();
+    }
+    public override string ToString()
+    {
+        StringBuilder strb = new();
+        strb.AppendLine("*************************");
+        strb.AppendLine("-------PLAYER STAT-------");
+        strb.AppendLine();
+        strb.AppendLine("Total (base + modifier)");
+        strb.AppendLine($"FORCE D'AME       : {ForceDameTotal} ({BaseForceDame} + {_forceDameModifier})");
+        strb.AppendLine($"RADIANCE MAX      : {RadianceMaxTotal} ({BaseRadianceMax} + {_radianceMaxModifier})");
+        strb.AppendLine($"VITESSE           : {VitesseTotal} ({BaseVitesse} + {_vitesseModifier})");
+        strb.AppendLine($"CONSCIENCE MAX    : {ConscienceMaxTotal} ({BaseConscienceMax} + {_conscienceMaxModifier})");
+        strb.AppendLine($"CONVICTION        : {ConvictionTotal} ({BaseConviction} + {_convictionModifier})");
+        strb.AppendLine($"CLAIRVOYANCE      : {ClairvoyanceTotal} ({BaseClairvoyance} + {_clairvoyanceModifier})");
+        strb.AppendLine($"RADIANCE MAX      : {RadianceMaxTotal} ({BaseRadianceMax} + {_radianceMaxModifier})");
+        strb.AppendLine($"CALME             : {CalmeTotal} ({BaseCalme} + {_calmeModifier}) ");
+        strb.AppendLine("--------END  STAT--------");
+
+        strb.AppendLine();
+
+        return strb.ToString();
     }
 }

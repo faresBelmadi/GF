@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using Image = UnityEngine.UI.Image;
+using System.Text;
 
 public class AutelManager : MonoBehaviour
 {
@@ -166,6 +167,8 @@ public class AutelManager : MonoBehaviour
 
     public void InitAutel()
     {
+        Debug.Log("[AUTEL] Initialisation AUTEL");
+        Debug.Log("[AUTEL] Player stat before autel : \n" + GameManager.Instance.playerStatHandler.ToString());
         Stat = GameManager.Instance.playerStatHandler;
         RetourButton.onClick.RemoveAllListeners();
         //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
@@ -232,6 +235,7 @@ public class AutelManager : MonoBehaviour
     }
     public void SetShopActive()
     {
+        Debug.Log("[AUTEL] Enter SHOP");
         if (_isFirstVisitShop)
         {
             ShowExplicationShopPanel();
@@ -252,6 +256,7 @@ public class AutelManager : MonoBehaviour
 
     public void SetLvlUpActive()
     {
+        Debug.Log("[AUTEL] Enter LEVEL UP");
         if (_isFirstVisitLvlUp)
         {
             ShowExplicationLevelUpPanel();
@@ -446,7 +451,7 @@ public class AutelManager : MonoBehaviour
             Debug.Log("Max capa buy");
             return;
         }
-        Debug.Log("capa acheté");
+        Debug.Log("[AUTEL] Achat spell : " + capa.Spell.TradName);
 
         GameManager.Instance.playerStatHandler.Essence -= capa.EssenceCost;
         var capaClassSO = GameManager.Instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == capa.IDLvl);
@@ -462,7 +467,6 @@ public class AutelManager : MonoBehaviour
         CheckMark.gameObject.SetActive(true);
 
         RetourButton.onClick.RemoveAllListeners();
-        //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
         RetourButton.onClick.AddListener(delegate { RetourMap(); });
 
         BuyButton.onClick.RemoveAllListeners();
@@ -472,41 +476,55 @@ public class AutelManager : MonoBehaviour
     public void SetStatBougthCapa(Competence capa)
     {
         JoueurStat modifJoueurStat = ScriptableObject.CreateInstance<JoueurStat>();
+        StringBuilder strb = new StringBuilder();
+        strb.AppendLine("Stats modifiées :");
+        strb.AppendLine("----------------");
         foreach (var modifStat in capa.ModifStat)
         {
             var value = modifStat.Valeur;
             switch (modifStat.StatModif)
             {
                 case StatModif.Calme:
+                    strb.AppendLine("Modif calme : " + value);
                     modifJoueurStat.Calme = value;
                     break;
                 case StatModif.Clairvoyance:
+                    strb.AppendLine("Modif clairvoyance : " + value);
                     modifJoueurStat.Clairvoyance = value;
                     break;
                 case StatModif.ConscienceMax:
+                    strb.AppendLine("Modif conscienceMax : " + value);
                     modifJoueurStat.ConscienceMax = value;
                     break;
                 case StatModif.Conviction:
+                    strb.AppendLine("Modif conviction : " + value);
                     modifJoueurStat.Conviction = value;
                     break;
                 case StatModif.ForceAme:
+                    strb.AppendLine("Modif Force d'Ame : " + value);
                     modifJoueurStat.ForceAme = value;
                     break;
                 case StatModif.RadianceMax:
+                    strb.AppendLine("Modif Radiance Max : " + value);
                     modifJoueurStat.RadianceMax = value;
                     modifJoueurStat.Radiance = value;
                     break;
                 case StatModif.Resilience:
+                    strb.AppendLine("Modif Resilience : " + value);
                     modifJoueurStat.Resilience = value;
                     break;
                 case StatModif.VolonterMax:
+                    strb.AppendLine("Modif Volonte Max : " + value);
                     modifJoueurStat.VolonterMax = value;
                     break;
                 case StatModif.Vitesse:
+                    strb.AppendLine("Modif Vitesse : " + value);
                     modifJoueurStat.Vitesse = value;
                     break;
             }
         }
+        strb.AppendLine("----------------");
+        Debug.Log(strb.ToString());
         GameManager.Instance.BattleMan.player.Stat.UpdateStat(modifJoueurStat);
     }
 
@@ -554,6 +572,8 @@ public class AutelManager : MonoBehaviour
 
     public void RetourMap()
     {
+        Debug.Log("[AUTEL] Leave Autel, Retour MAP");
+        Debug.Log("[AUTEL] Player stat after autel : \n" + GameManager.Instance.playerStatHandler.ToString());
         if (Loot == true) GameManager.Instance.GamePanelMngr.HideAutel();
         GameManager.Instance.playerStatHandler.ListSouvenir = Stat.ListSouvenir;
         StartCoroutine(GameManager.Instance.pmm.EndAutel(Loot));
