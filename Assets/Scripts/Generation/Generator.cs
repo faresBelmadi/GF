@@ -73,38 +73,39 @@ public class Generator : MonoBehaviour
 
         mapNodes = GameManager.Instance.pmm.map;
 
-        GenerateNewMap();
+        GenerateNewMap(GameManager.Instance.UseLoadedMap);
     }
 
     private void Update()
     {
-        if (doCycle)
-        {
-            if (TEMPtimer < cycleTime)
-            {
-                TEMPtimer += Time.deltaTime;
-            }
-            else
-            {
-                TEMPtimer = 0f;
-                //availableRoomPool = new List<TypeRoom>(roomPool);
-                GenerateNewMap();
-            }
-        }
+        //if (doCycle)
+        //{
+        //    if (TEMPtimer < cycleTime)
+        //    {
+        //        TEMPtimer += Time.deltaTime;
+        //    }
+        //    else
+        //    {
+        //        TEMPtimer = 0f;
+        //        //availableRoomPool = new List<TypeRoom>(roomPool);
+        //        GenerateNewMap();
+        //    }
+        //}
     }
 
-    public void GenerateNewMap()
+    public void GenerateNewMap(bool loadMap)
     {
         MapData mapData = GameManager.Instance.loadedData.CurrentRun.map;
 
         int usedSeed;
-        if (useLoad && mapData != null)
+        if (loadMap && mapData != null)
         {
             usedSeed = mapData.usedSeed;
         }
         else
         {
             usedSeed = seed == 0 ? Random.Range(int.MinValue, int.MaxValue) : seed;
+            GameManager.Instance.loadedData.CurrentRun.map.usedSeed = usedSeed;
         }
 
         //int usedSeed = mapData == null ? 
@@ -158,15 +159,18 @@ public class Generator : MonoBehaviour
         GameManager.Instance.pmm.pathsGameObjects = new GameObject[roomCnt, roomCnt];
 
         // <= LOAD already visited rooms
-        if (useLoad && mapData != null)
+        if (loadMap && mapData != null)
         {
             foreach (PlayerMapManager.MapNode thisRoom in mapNodes)
             {
-                if (mapData.visitedRoomIds.Contains(thisRoom.objectInstance.GetComponent<Room>().ID))
+                if (thisRoom.objectInstance != null)
                 {
-                    thisRoom.objectInstance.GetComponent<Room>().roomState = RoomState.VISITED;
-                    thisRoom.objectInstance.GetComponent<Room>().SetShaderByState(RoomState.VISITED);
-                    thisRoom.objectInstance.GetComponent<Room>().SetAccessibleRooms();
+                    if (mapData.visitedRoomIds.Contains(thisRoom.objectInstance.GetComponent<Room>().ID))
+                    {
+                        thisRoom.objectInstance.GetComponent<Room>().roomState = RoomState.VISITED;
+                        thisRoom.objectInstance.GetComponent<Room>().SetShaderByState(RoomState.VISITED);
+                        thisRoom.objectInstance.GetComponent<Room>().SetAccessibleRooms();
+                    }
                 }
             }
 

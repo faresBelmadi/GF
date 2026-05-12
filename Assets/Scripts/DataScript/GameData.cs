@@ -17,8 +17,8 @@ public class MapData
 {
     public int usedSeed;
     public List<int> visitedRoomIds;
-    public List<Tuple<int, int>> roomSelectedEncounter;
 }
+
 
 [System.Serializable]
 public class PlayerData

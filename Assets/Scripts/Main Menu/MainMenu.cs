@@ -27,7 +27,11 @@ public class MainMenu : MonoBehaviour
     private GameObject _optionMenu;
     [SerializeField]
     private CharacterSelect _characterSelect;
-   
+    [SerializeField]
+    private ContinueButton _continueButton;
+    [SerializeField]
+    private StartGame _startGame;
+
     private bool _anyKeyPushed = false;
 
 
@@ -66,6 +70,11 @@ public class MainMenu : MonoBehaviour
         _cameraAnimator.SetTrigger(_CHARACTERSELECTTRIGGER);
         _canvaAnimator.SetTrigger(_CHARACTERSELECTTRIGGER);
         _crystalAnimator.SetTrigger(_CHARACTERSELECTTRIGGER);
+    }
+    public void ContinueGame()
+    {
+        ShowCharacterSelect();
+        _startGame.Button_StartGame(_continueButton.savedClass, false);
     }
     public void CharacterSelectBack()
     {

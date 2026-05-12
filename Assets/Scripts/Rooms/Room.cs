@@ -314,6 +314,7 @@ public class Room : MonoBehaviour
                 AudioManager.instance.SFX.PlaySFXClip(SFXType.MapSFX);
             }
             GameManager.Instance.SetRoom(this);
+            GameManager.Instance.loadedData.CurrentRun.map.visitedRoomIds.Add(ID);
             roomState = RoomState.VISITED;
             SetShaderByState(roomState);
             GameManager.Instance.pmm.UpdateAllPathShaders();
