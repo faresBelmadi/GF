@@ -133,7 +133,7 @@ B36D;{stat value=CONV} +4, {stat value=FA} +15% et {stat value=RES} +2  jusqu'a 
 B37D;{stat value=CONV} +20;{stat value=CONV} +20;;;;
 B38D;{stat value=CL} +2, {stat value=FA} +15%;{stat value=CL} +2, {stat value=FA} +15%;;;;
 B39D;{stat value=FA} +15%;{stat value=FA} +15%;;;;
-B40D;Les soins sont augmenté de 20% pendant 2 combat;Heal are increase by 20 % for 2 fight;;;;
+B40D;Les soins sont augmenté de 20% pendant 2 combat;Heal are increased by 20 % for the next 2 fight;;;;
 B41D;{stat value=RAM} +20%  jusqu'a la prochaine perte de conscience;{stat value=RAM} +20%  until the next loss of conscious;;;;
 B42D;{stat value=VOL} +1;{stat value=VOL} +1;;;;
 B43D;{stat value=CONV} +5;{stat value=CONV} +5;;;;
@@ -198,7 +198,7 @@ D10D;{stat value=VIT} -3, {stat value=CL} -3;{stat value=VIT}-3, {stat value=CL}
 D11D;{stat value=RAD} -5 % {stat value=FA} -5%;{stat value=RAD} 5%, {stat value=FA} -5%;光芒 5%，坚毅 -5;;;
 D12D;Quand il meurt, ne laisse pas d'essence;Will not drop Essence when they die;当他死亡时，不会掉落精华。;;;
 D13D;{stat value=CONV} -2 pour tout le combat;{stat value=CONV} -2 this fight;整场战斗信念-2;;;
-D14D;-10 % {stat value=FA}, -1 {stat value=CONV};{stat value=FA} -10%, {stat value=CONV};坚韧 -10%，信念 -1。;;;
+D14D;-10 % {stat value=FA}, -1 {stat value=CONV};{stat value=FA} -10%, -1 {stat value=CONV};坚韧 -10%，信念 -1。;;;
 D15D; Dégats subit +20 %;Increase damage taken by 20%;受到的伤害提高 20;;;
 D16D; {stat value=RES} -3, {stat value=FA} -15% , divise par deux les gains de tension du porteur;{stat value=RES} -3, {stat value=FA} -15%, wielder's Tension gains are divided by 2;;;;
 D17D;20% de chance d'effectuer une action offensive durant son tour;20% chances to do an offensive action during their turn.;在其回合内有 20% 的几率采取攻击行动。;;;
@@ -358,13 +358,9 @@ Under pressure also apply a debuff of {stat value=CONV} -3";;;;
 SC15D;"{stat value=CL} +5
 {stat value=VIT} -3
 bienfaiteur {stat value=RAM} +5% et augmente le soin de 2%";{stat value=CL} +5, {stat value=VIT} -3 benefecator {stat value=RAM}  +5 % and increase healing by +2%;;;;
-SC16D;"{stat value=RAM} +30%
-{stat value=RES} -4
-{stat value=VIT} +6
+SC16D;"{stat value=RAM} +30%, {stat value=RES} -4, {stat value=VIT} +6
 Appliquer soif de vengeance, vous donne aussi un buff de {stat value=CONV} de +5     ""Soif de vengeance"" : Augmente de 5 points la {stat value=FA} pour chaque pourcentage de {stat value=RAD} manquant";{stat value=RAM} +30%,  {stat value=VIT} +6, {stat value=RES} -4, thirst for vengence also give you a buff of +5 {stat value=CONV};;;;
-SC17D;"{stat value=FA} +30%
-{stat value=CAL} -5
-{stat value=CL} -8   
+SC17D;"{stat value=FA} +30%, {stat value=CAL} -5, {stat value=CL} -8   
 Hémmoragie passe la {stat value=CONV} du porteur à -20";"{stat value=FA} +30% {stat value=CAL} -5, {stat value=CL} -8 
 Hemorrhage make the opponent {stat value=CONV} pass to -20";;;;
 SC18D;"{stat value=RAM} +15%, {stat value=CL} +8, Calm +6
@@ -375,9 +371,7 @@ SC19D;"{stat value=RAM} +15%
 {stat value=VIT} -10
 Protection rapprochée dure une phase de plus";"{stat value=RAM} +15%, {stat value=RES} +4, {stat value=VIT}-10,
 Close protection stay one more phase";;;;
-SC20D;"{stat value=FA} +40%
-{stat value=CAL} -6
-{stat value=CONS} max -3 
+SC20D;"{stat value=FA} +40%, {stat value=CAL} -6, {stat value=CONS} max -3 
 Si mise a mort tue sa cible. Etourdis dure 2 tour.
 ""étourdi"" Ne peut pas effectuer d'action durant son Tour.";"{stat value=FA} +40%, {stat value=CAL} -6, {stat value=CONS} max  -3
 If ""Execution"" kills the target, ""Stun"" will lasts for 2 turns instead of 1.

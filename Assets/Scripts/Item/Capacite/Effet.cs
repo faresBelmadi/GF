@@ -311,11 +311,13 @@ public class Effet : ScriptableObject
                     //var radianceActModifier = Mathf.FloorToInt((Pourcentage / 100f) * ((Cible.Radiance / Cible.RadianceMax) * Cible.RadianceMaxOriginal));
                     //ModifState.RadianceMax += radianceModifier;
                     //ModifState.Radiance += radianceModifier;//radianceActModifier;
-                    int addAmount = Mathf.FloorToInt(Cible.RadianceMaxTotal * Pourcentage * .01f);
+                    float radianceProportion = (float)Cible.Radiance / (float)Cible.RadianceMaxTotal;
                     int radAmount = Cible.GetPercentValue(StatEnum.Radiance, Pourcentage);
                     int radMaxAmount = Cible.GetPercentValue(StatEnum.RadianceMax, Pourcentage);
+                    int rad = (int) ((Cible.RadianceMaxTotal + radMaxAmount) * radianceProportion);
                     ModifState.RadianceMax += radMaxAmount;
-                    ModifState.Radiance += radAmount;
+                    Cible.SetRadiance(rad);
+                    //ModifState.Radiance += radAmount;
                 }
                 break;
             case TypeEffet.AugmentFADernierDegatsSubi:
