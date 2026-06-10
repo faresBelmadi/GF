@@ -51,6 +51,7 @@ public class Cristopher : MonoBehaviour, IDropZone
     }
     public void InitCristopher()
     {
+        _currentFreeSlot = GameManager.Instance.playerStatHandler.ListSouvenir.Where(s=> s.Equiped).Sum(s => s.Slots);
         _usedSlot = new Dictionary<int, bool>();
         _rendererSlots = new List<Image>(_freeSlots.Count);
 
