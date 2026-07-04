@@ -17,7 +17,7 @@ public class PalierAction
 
 
 [CreateAssetMenu(fileName = "New Custom Stat Passiv", menuName = "PassiveEffect/New Custom Stat¨Passiv")]
-public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnPassive
+public class CustomStatPassiv : AbstractPassive, IEffectOnStat<EnemyStatsHandler>, IDynamicEventPassive<EnemyStatsHandler>, IStartTurnPassive<EnemyStatsHandler>
 {
     [Space]
     [Header("CustomStatPassiv")]
@@ -26,8 +26,8 @@ public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnP
     [Tooltip("Chaque point de la custom stat donnera autant de points de stat que le ratio indique")]
     [SerializeField]
     private List<StatToModif> _conversionStat;
-    private EnnemiStat _ennemiStat;
-    public void Apply(CharacterStat charStat)
+    private EnemyStatsHandler _ennemiStat;
+    public void Apply(EnemyStatsHandler charStat)
     {
         int indPalier = UnityEngine.Random.Range(0, _palierActions.Count);
 
@@ -35,23 +35,28 @@ public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnP
         {
             case CustomStatPalierAction.GainStat:
                 Debug.Log("Gain Stat : " + _palierActions[indPalier].Value);
-                ((EnnemiStat)charStat).CustomStat += _palierActions[indPalier].Value;
+                charStat.CustomStat += _palierActions[indPalier].Value;
                 break;
             case CustomStatPalierAction.ResetAndRefreshTension:
                 Debug.Log("Reset");
-                charStat.Tension += Mathf.RoundToInt(((EnnemiStat)charStat).CustomStat * _palierActions[indPalier].Value);
-                ((EnnemiStat)charStat).CustomStat = 0;
+                charStat.ChangeTension(Mathf.RoundToInt(charStat.CustomStat * _palierActions[indPalier].Value));
+                charStat.CustomStat = 0;
                 break;
         }
     }
 
-    public void InitPassif(CharacterStat stat)
+    public void ApplyOnTurnStart(EnemyStatsHandler stat)
     {
-        _ennemiStat = stat as EnnemiStat;
+        Apply(stat);
+    }
+
+    public void SubscribeEvents(EnemyStatsHandler reference)
+    {
+        _ennemiStat = reference;
         _ennemiStat.OnCustomStatModification += UpdateStat;
         
     }
-    public void Clear()
+    public void UnsubscribeEvents()
     {
         _ennemiStat.OnCustomStatModification -= UpdateStat;
     }
@@ -63,17 +68,18 @@ public class CustomStatPassiv : AbstractPassive, IUpdateStatPassive, IStartTurnP
             switch (item.Stat)
             {
                 case BaseStats.RadianceMax:
-                    var pourcentagePVActuel = (float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMax * 100f;
-                    _ennemiStat.RadianceMax = _ennemiStat.RadianceMaxOriginal;
-                    _ennemiStat.RadianceMax += _ennemiStat.CustomStat * 10;
-                    _ennemiStat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * _ennemiStat.RadianceMax);
+                    var pourcentagePVActuel = (float)_ennemiStat.Radiance / (float)_ennemiStat.RadianceMaxTotal * 100f;
+                    CharacterStat modifStat = ScriptableObject.CreateInstance<CharacterStat>();
+                    modifStat.RadianceMax = _ennemiStat.BaseRadianceMax;
+                    modifStat.RadianceMax += _ennemiStat.CustomStat * 10;
+                    modifStat.Radiance = Mathf.FloorToInt(pourcentagePVActuel / 100 * _ennemiStat.RadianceMaxTotal); //TODO CHANGE RADIANCE
                     break;
                 case BaseStats.ForceAme:
-                    _ennemiStat.ForceAme = _ennemiStat.ForceAmeOriginal;
-                    _ennemiStat.ForceAme += _ennemiStat.CustomStat * 1;
+                    _ennemiStat.ChangeForceDame(_ennemiStat.BaseForceDame + _ennemiStat.CustomStat * 1);
                     break;
                
             }
         }
     }
+
 }

@@ -23,7 +23,7 @@ public class DamageEffectOnScreen : MonoBehaviour
     [SerializeField]
     private Image _imageToPulse;
 
-    private JoueurStat _stat;
+    private AbstractStatsHandler _stat;
     private float _currentTime = 0f;
     private bool _isScaleUp = true;
     private void Update()
@@ -46,7 +46,7 @@ public class DamageEffectOnScreen : MonoBehaviour
         }
     }
 
-    public void Init(JoueurStat Stat)
+    public void Init(AbstractStatsHandler Stat)
     {
         Reset();
         _stat = Stat;
@@ -63,12 +63,11 @@ public class DamageEffectOnScreen : MonoBehaviour
 
     private void UpdateEffect()
     {
-        float percent = (_stat.Radiance * 100f) / _stat.RadianceMax;
+        float percent = (_stat.Radiance * 100f) / _stat.RadianceMaxTotal;
         float ratio = percent / 100f;
         float alphaValue1 = Mathf.Clamp01(_curveDamageEffectLow.Evaluate(ratio));
         float alphaValue2 = Mathf.Clamp01(_curveDamageEffectHigh.Evaluate(ratio));
 
-        Debug.Log($"Alpha1 : {alphaValue1}, Alpha2 : {alphaValue2}");
         StartCoroutine(FadeImage(_damageImage1, _damageImage1.color.a, alphaValue1, _fadeTimer));
         StartCoroutine(FadeImage(_damageImage2, _damageImage2.color.a, alphaValue2, _fadeTimer));
 

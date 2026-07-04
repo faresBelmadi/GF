@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using TMPro;
 using System.Linq;
 using Image = UnityEngine.UI.Image;
+using System.Text;
 
 public class AutelManager : MonoBehaviour
 {
@@ -14,7 +15,7 @@ public class AutelManager : MonoBehaviour
     [SerializeField]
     private GameObject _backgroundSky;
     public int Etage = 1;
-    public JoueurStat stats;
+    public PlayerStatsHandler Stat;
     [SerializeField]
     private string _idTradCout;
     [SerializeField]
@@ -121,39 +122,39 @@ public class AutelManager : MonoBehaviour
     {
         if (!isOn)
             return;
-        EssenceText.text = stats.Essence + GameManager.Instance.StatIcons.EssenceSpriteTMP;
+        EssenceText.text = Stat.Essence + GameManager.Instance.StatIcons.EssenceSpriteTMP;
         SetUpStatsDescription();
         if (ShopUiPanel.activeInHierarchy == true)
         {
             UpdateCoutChoix();
-            if (stats.Essence < CoutChoix1[Etage - 1])
+            if (Stat.Essence < CoutChoix1[Etage - 1])
             {
                 ButtonChoix1.GetComponentInChildren<Button>().interactable = false;
             }
-            if (stats.Essence < CoutChoix2[Etage - 1])
+            if (Stat.Essence < CoutChoix2[Etage - 1])
             {
                 ButtonChoix2.GetComponentInChildren<Button>().interactable = false;
             }
-            if (stats.Essence < CoutChoix3[Etage - 1])
+            if (Stat.Essence < CoutChoix3[Etage - 1])
             {
                 ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
             }
             switch (Etage)
             {
                 case 1:
-                    if (stats.Calme < CoutStatChoix3[Etage - 1])
+                    if (Stat.CalmeTotal < CoutStatChoix3[Etage - 1])
                     {
                         ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
                     }
                     break;
                 case 2:
-                    if (stats.Radiance < CoutStatChoix3[Etage - 1])
+                    if (Stat.Radiance < CoutStatChoix3[Etage - 1])
                     {
                         ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
                     }
                     break;
                 case 3:
-                    if (stats.Clairvoyance < CoutStatChoix3[Etage - 1])
+                    if (Stat.ClairvoyanceTotal < CoutStatChoix3[Etage - 1])
                     {
                         ButtonChoix3.GetComponentInChildren<Button>().interactable = false;
                     }
@@ -161,12 +162,14 @@ public class AutelManager : MonoBehaviour
             }
 
         }
-        _nbSpellText.text = $"Spells {GameManager.Instance.playerStat.ListSpell.Count}/12";
+        _nbSpellText.text = $"Spells {GameManager.Instance.playerStatHandler.ListSpell.Count}/12";
     }
 
     public void InitAutel()
     {
-        stats = GameManager.Instance.playerStat;
+        Debug.Log("[AUTEL] Initialisation AUTEL");
+        Debug.Log("[AUTEL] Player stat before autel : \n" + GameManager.Instance.playerStatHandler.ToString());
+        Stat = GameManager.Instance.playerStatHandler;
         RetourButton.onClick.RemoveAllListeners();
         //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
         RetourButton.onClick.AddListener(delegate { ShowMenuUiPanel(); });
@@ -232,6 +235,7 @@ public class AutelManager : MonoBehaviour
     }
     public void SetShopActive()
     {
+        Debug.Log("[AUTEL] Enter SHOP");
         if (_isFirstVisitShop)
         {
             ShowExplicationShopPanel();
@@ -252,6 +256,7 @@ public class AutelManager : MonoBehaviour
 
     public void SetLvlUpActive()
     {
+        Debug.Log("[AUTEL] Enter LEVEL UP");
         if (_isFirstVisitLvlUp)
         {
             ShowExplicationLevelUpPanel();
@@ -309,16 +314,16 @@ public class AutelManager : MonoBehaviour
 
     public void SetUpStatsDescription()
     {
-        stats = GameManager.Instance.playerStat;
-        ValeurRadiance.text = stats.RadianceMax.ToString();
-        ValeurFA.text = stats.ForceAme.ToString();
-        ValeurVitesse.text = stats.Vitesse.ToString();
-        ValeurConviction.text = stats.Conviction.ToString();
-        ValeurResilience.text = stats.Resilience.ToString();
-        ValeurCalme.text = stats.Calme.ToString();
-        ValeurVolonter.text = stats.VolonterMax.ToString();
-        ValeurConscience.text = stats.ConscienceMax.ToString();
-        ValeurClairvoyance.text = stats.Clairvoyance.ToString();
+        Stat = GameManager.Instance.playerStatHandler;
+        ValeurRadiance.text = Stat.RadianceMaxTotal.ToString();
+        ValeurFA.text = Stat.ForceDameTotal.ToString();
+        ValeurVitesse.text = Stat.VitesseTotal.ToString();
+        ValeurConviction.text = Stat.ConvictionTotal.ToString();
+        ValeurResilience.text = Stat.ResilienceTotal.ToString();
+        ValeurCalme.text = Stat.CalmeTotal.ToString();
+        ValeurVolonter.text = Stat.VolonteMax.ToString();
+        ValeurConscience.text = Stat.Conscience.ToString();
+        ValeurClairvoyance.text = Stat.ClairvoyanceTotal.ToString();
 
         //ModifRadiance.text = ModifFA.text = ModifVitesse.text = ModifConviction.text = ModifResilience.text =
         //    ModifCalme.text = ModifVolonter.text = ModifConscience.text = ModifClairvoyance.text = "";
@@ -342,7 +347,7 @@ public class AutelManager : MonoBehaviour
                 ClearButtonColor();
                 AllSpellsIcon[Id].GetComponent<Image>().color = _selectedColor;
                 ModifStatCapa(capa);
-                if (capa.EssenceCost <= GameManager.Instance.playerStat.Essence && !capa.Bought && capa.isBuyable)
+                if (capa.EssenceCost <= GameManager.Instance.playerStatHandler.Essence && !capa.Bought && capa.isBuyable)
                 {
                     BuyButton.onClick.AddListener(delegate { BuyCapa(capa); });
                     BuyButton.GetComponent<Image>().color = Color.white;
@@ -441,20 +446,20 @@ public class AutelManager : MonoBehaviour
 
     public void BuyCapa(Competence capa)
     {
-        if (GameManager.Instance.playerStat.ListSpell.Count > 11)
+        if (GameManager.Instance.playerStatHandler.ListSpell.Count > 11)
         {
             Debug.Log("Max capa buy");
             return;
         }
-        Debug.Log("capa acheté");
+        Debug.Log("[AUTEL] Achat spell : " + capa.Spell.TradName);
 
-        GameManager.Instance.playerStat.Essence -= capa.EssenceCost;
+        GameManager.Instance.playerStatHandler.Essence -= capa.EssenceCost;
         var capaClassSO = GameManager.Instance.classSO.Competences.FirstOrDefault(x => x.IDLvl == capa.IDLvl);
         capaClassSO.Bought = true;
         capaClassSO.Equiped = true;
         capa.Bought = true;
         capa.Equiped = true;
-        GameManager.Instance.playerStat.ListSpell.Add(capa.Spell);
+        GameManager.Instance.playerStatHandler.ListSpell.Add(capa.Spell);
         SetStatBougthCapa(capa);
         CheckLinkCapa(capa);
 
@@ -462,7 +467,6 @@ public class AutelManager : MonoBehaviour
         CheckMark.gameObject.SetActive(true);
 
         RetourButton.onClick.RemoveAllListeners();
-        //RetourButton.onClick.AddListener(delegate{SceneManager.LoadScene("Monde")});
         RetourButton.onClick.AddListener(delegate { RetourMap(); });
 
         BuyButton.onClick.RemoveAllListeners();
@@ -472,43 +476,56 @@ public class AutelManager : MonoBehaviour
     public void SetStatBougthCapa(Competence capa)
     {
         JoueurStat modifJoueurStat = ScriptableObject.CreateInstance<JoueurStat>();
+        StringBuilder strb = new StringBuilder();
+        strb.AppendLine("Stats modifiées :");
+        strb.AppendLine("----------------");
         foreach (var modifStat in capa.ModifStat)
         {
             var value = modifStat.Valeur;
             switch (modifStat.StatModif)
             {
                 case StatModif.Calme:
+                    strb.AppendLine("Modif calme : " + value);
                     modifJoueurStat.Calme = value;
                     break;
                 case StatModif.Clairvoyance:
+                    strb.AppendLine("Modif clairvoyance : " + value);
                     modifJoueurStat.Clairvoyance = value;
                     break;
                 case StatModif.ConscienceMax:
+                    strb.AppendLine("Modif conscienceMax : " + value);
                     modifJoueurStat.ConscienceMax = value;
                     break;
                 case StatModif.Conviction:
+                    strb.AppendLine("Modif conviction : " + value);
                     modifJoueurStat.Conviction = value;
                     break;
                 case StatModif.ForceAme:
+                    strb.AppendLine("Modif Force d'Ame : " + value);
                     modifJoueurStat.ForceAme = value;
                     break;
                 case StatModif.RadianceMax:
+                    strb.AppendLine("Modif Radiance Max : " + value);
                     modifJoueurStat.RadianceMax = value;
                     modifJoueurStat.Radiance = value;
                     break;
                 case StatModif.Resilience:
+                    strb.AppendLine("Modif Resilience : " + value);
                     modifJoueurStat.Resilience = value;
                     break;
                 case StatModif.VolonterMax:
+                    strb.AppendLine("Modif Volonte Max : " + value);
                     modifJoueurStat.VolonterMax = value;
                     break;
                 case StatModif.Vitesse:
+                    strb.AppendLine("Modif Vitesse : " + value);
                     modifJoueurStat.Vitesse = value;
                     break;
             }
         }
-
-        GameManager.Instance.playerStat.ModifStateAll(modifJoueurStat);
+        strb.AppendLine("----------------");
+        Debug.Log(strb.ToString());
+        GameManager.Instance.playerStatHandler.UpdateStat(modifJoueurStat);
     }
 
     public void CheckLinkCapa(Competence capa)
@@ -555,8 +572,10 @@ public class AutelManager : MonoBehaviour
 
     public void RetourMap()
     {
+        Debug.Log("[AUTEL] Leave Autel, Retour MAP");
+        Debug.Log("[AUTEL] Player stat after autel : \n" + GameManager.Instance.playerStatHandler.ToString());
         if (Loot == true) GameManager.Instance.GamePanelMngr.HideAutel();
-        GameManager.Instance.playerStat.ListSouvenir = stats.ListSouvenir;
+        GameManager.Instance.playerStatHandler.ListSouvenir = Stat.ListSouvenir;
         StartCoroutine(GameManager.Instance.pmm.EndAutel(Loot));
     }
 
@@ -576,20 +595,21 @@ public class AutelManager : MonoBehaviour
 
     public void CoutChoix(int Choix)
     {
+        JoueurStat modifStat = ScriptableObject.CreateInstance<JoueurStat>();
         switch (Etage)
         {
             case 1:
                 switch (Choix)
                 {
                     case 1:
-                        stats.Essence -= CoutChoix1[0];
+                        modifStat.Essence -= CoutChoix1[0];
                         break;
                     case 2:
-                        stats.Essence -= CoutChoix2[0];
+                        modifStat.Essence -= CoutChoix2[0];
                         break;
                     case 3:
-                        stats.Essence -= CoutChoix3[0];
-                        stats.Calme -= CoutStatChoix3[0];
+                        modifStat.Essence -= CoutChoix3[0];
+                        modifStat.Calme -= CoutStatChoix3[0];
                         break;
                 }
                 break;
@@ -597,14 +617,14 @@ public class AutelManager : MonoBehaviour
                 switch (Choix)
                 {
                     case 1:
-                        stats.Essence -= CoutChoix1[1];
+                        modifStat.Essence -= CoutChoix1[1];
                         break;
                     case 2:
-                        stats.Essence -= CoutChoix2[1];
+                        modifStat.Essence -= CoutChoix2[1];
                         break;
                     case 3:
-                        stats.Essence -= CoutChoix3[1];
-                        stats.RadianceMax -= CoutStatChoix3[1];
+                        modifStat.Essence -= CoutChoix3[1];
+                        modifStat.RadianceMax -= CoutStatChoix3[1];
                         break;
                 }
                 break;
@@ -612,18 +632,19 @@ public class AutelManager : MonoBehaviour
                 switch (Choix)
                 {
                     case 1:
-                        stats.Essence -= CoutChoix1[2];
+                        modifStat.Essence -= CoutChoix1[2];
                         break;
                     case 2:
-                        stats.Essence -= CoutChoix2[2];
+                        modifStat.Essence -= CoutChoix2[2];
                         break;
                     case 3:
-                        stats.Essence -= CoutChoix3[2];
-                        stats.Clairvoyance -= CoutStatChoix3[2];
+                        modifStat.Essence -= CoutChoix3[2];
+                        modifStat.Clairvoyance -= CoutStatChoix3[2];
                         break;
                 }
                 break;
         }
+        Stat.UpdateStat(modifStat);
     }
 
     public void initChoix3()
@@ -675,7 +696,8 @@ public class AutelManager : MonoBehaviour
     public void Choix1()
     {
         CoutChoix(1);
-        stats.Conscience += 2;
+        Stat.GainConscience(2);
+        
         int random = UnityEngine.Random.Range(0, 101);
         Debug.Log("Loot : " + random);
         if (random > 51)
@@ -696,7 +718,7 @@ public class AutelManager : MonoBehaviour
             if (random <= LootRarityForChoix1[i].Pourcentage && listAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter) != null)
             {
                 string NameLoot = listAllSouvenir.FirstOrDefault(c => c.Rarete == LootRarityForChoix1[i].rareter).SouvenirName;
-                stats.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
+                Stat.ListSouvenir.Add(Instantiate(listAllSouvenir.FirstOrDefault(c => c.SouvenirName == NameLoot)));
                 Loot = true;
                 RetourMap();
                 return;
@@ -712,7 +734,7 @@ public class AutelManager : MonoBehaviour
     public void Choix2()
     {
         CoutChoix(2);
-        stats.Conscience += 3;
+        Stat.GainConscience(3);
         string NameLoot;
 
         List<Souvenir> souvList = Etage switch
@@ -725,7 +747,7 @@ public class AutelManager : MonoBehaviour
 
         int ind = Random.Range(0, souvList.Count);
         NameLoot = souvList[ind].SouvenirName;
-        stats.ListSouvenir.Add(Instantiate(souvList[ind]));
+        Stat.ListSouvenir.Add(Instantiate(souvList[ind]));
      
         Loot = true;
         RetourMap();
@@ -734,8 +756,8 @@ public class AutelManager : MonoBehaviour
     public void Choix3()
     {
         CoutChoix(3);
-        stats.Conscience += 3;
-        stats.ListSouvenir.Add(SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir);
+        Stat.GainConscience(3);
+        Stat.ListSouvenir.Add(SouvenirChoix3.GetComponent<SouvenirUI>().LeSouvenir);
         Loot = true;
         RetourMap();
     }

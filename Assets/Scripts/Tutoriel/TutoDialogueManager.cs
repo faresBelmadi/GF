@@ -46,8 +46,8 @@ public class TutoDialogueManager : DialogueManager
                 UiHolder.SetActive(true);
                 //Hpfill.fillAmount = 0.1f;
                 var joueurBehav = TutoManager.Instance.Player;
-                joueurBehav.Stat.Radiance = joueurBehav.Stat.RadianceMax / 10;
-                _hpBarManager.InitPBar(joueurBehav.Stat.Radiance, joueurBehav.Stat.RadianceMax);
+                joueurBehav.Stat.SetRadiance(joueurBehav.Stat.RadianceMaxTotal / 10);
+                _hpBarManager.InitPBar(joueurBehav.Stat.Radiance, joueurBehav.Stat.RadianceMaxTotal);
                 joueurBehav.UpdateUI();
             }
 
@@ -56,7 +56,7 @@ public class TutoDialogueManager : DialogueManager
                 //Hpfill.fillAmount = 1f;
                 StartCoroutine(FadeOut(1));
                 var joueurBehav = TutoManager.Instance.Player;
-                joueurBehav.Stat.Radiance = joueurBehav.Stat.RadianceMax;
+                joueurBehav.Stat.SetRadiance(joueurBehav.Stat.RadianceMaxTotal);
                 //_hpBarManager.UpdatePBar(joueurBehav.Stat.Radiance, joueurBehav.Stat.RadianceMax);
                 joueurBehav.UpdateUI();
             }

@@ -19,7 +19,7 @@ public class BuffByRangeStat
     public BuffDebuff BuffToApply;
 }
 [CreateAssetMenu(fileName = "New ApplyBuffOnStatRange passiv", menuName = "PassiveEffect/New ApplyBuffOnStatRange passiv")]
-public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartCombatPassive
+public class ApplyBuffOnStatRange : AbstractPassive, IDynamicEventPassive<EnemyStatsHandler>, IStartCombatPassive
 {
     [Space]
     [Header("ApplyBuffOnStatRange")]
@@ -27,46 +27,46 @@ public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartC
     private BaseStats _triggerStat;
     [SerializeField]
     private List<BuffByRangeStat> _buffs;
-    CharacterStat _stat;
+    EnemyStatsHandler _stat;
 
     private BuffByRangeStat _currentBuff;
     public override string IdTradDesc
     {
         get
         {
-            return GetDebuffToApply().IdTradDesc;
+            return _stat==null?"":GetDebuffToApply().IdTradDesc;
         }
     }
 
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHandler<CharacterStat> charStat)
     {
        
     }
 
-    public void Clear()
+    public void UnsubscribeEvents()
     {
         switch (_triggerStat)
         {
             case BaseStats.Radiance:
-                _stat.OnRadianceChange -= ApplyBuff;
+                _stat.OnRadianceChange -= UpdateStat;
                 break;
         }
     }
 
-    public void InitPassif(CharacterStat stat)
+    public void SubscribeEvents(EnemyStatsHandler stat)
     {
         _stat = stat;
         switch (_triggerStat)
         {
             case BaseStats.Radiance:
-                stat.OnRadianceChange += ApplyBuff;
+                stat.OnRadianceChange += UpdateStat;
                 break;
         }
     }
 
     private BuffByRangeStat GetDebuffToApply()
     {
-        float radPercent = (_stat.Radiance * 100f) / _stat.RadianceMax;
+        float radPercent = (_stat.Radiance * 100f) / _stat.RadianceMaxTotal;
         foreach (var item in _buffs)
         {
             if (item.MaxInclusive >= radPercent && item.MinExclusive < radPercent)
@@ -76,7 +76,7 @@ public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartC
     }
 
    
-    public void ApplyBuff()
+    public void UpdateStat()
     {
        
         if (!GameManager.Instance.BattleMan.IsCombatOn)
@@ -100,13 +100,10 @@ public class ApplyBuffOnStatRange : AbstractPassive, IUpdateStatPassive, IStartC
         GameManager.Instance.BattleMan.GiveBuffDebuff(new List<BuffDebuff> { buffToApply.BuffToApply });
        
     }
-    public void UpdateStat()
-    {
-        throw new System.NotImplementedException();
-    }
+
 
     public void ApplyEffectOnStartCombat()
     {
-        ApplyBuff();
+        UpdateStat();
     }
 }

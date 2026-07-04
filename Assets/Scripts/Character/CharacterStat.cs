@@ -65,7 +65,7 @@ public class CharacterStat : ScriptableObject
     public float ValeurPalier = 0;
     public int PalierChangement = 0;
     public int nbAttaqueRecu = 0;
-    public List<AbstractPassive> PassiveList;
+    public List<AbstractPassive> PassiveList = new List<AbstractPassive>();
     public Action ActionPassif;
     public bool isStun = false;
     [Header("SFX")]

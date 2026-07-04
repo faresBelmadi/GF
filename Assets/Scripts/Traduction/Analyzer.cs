@@ -364,11 +364,11 @@ public class Analyzer : MonoBehaviour
                 {
                     if (GameManager.Instance == null && TutoManager.Instance != null)
                     {
-                        numericValue = TutoManager.Instance.JoueurStat.ForceAme * (value / 100f);
+                        numericValue = GameManager.Instance.playerStatHandler.ForceDameTotal * (value / 100f);
                     }
-                    else if (GameManager.Instance.playerStat != null)
+                    else if (GameManager.Instance.playerStatHandler != null)
                     {
-                        numericValue = GameManager.Instance.playerStat.ForceAme * (value / 100f);
+                        numericValue = GameManager.Instance.playerStatHandler.ForceDameTotal * (value / 100f);
                     }
                     spriteName = _clairvoyanceIconData.StatForceDame.name;
                 }
@@ -376,11 +376,11 @@ public class Analyzer : MonoBehaviour
                 {
                     if (GameManager.Instance == null && TutoManager.Instance != null)
                     {
-                        numericValue = TutoManager.Instance.JoueurStat.RadianceMax * (value / 100f);
+                        numericValue = GameManager.Instance.playerStatHandler.RadianceMaxTotal * (value / 100f);
                     }
-                    else if (GameManager.Instance.playerStat != null)
+                    else if (GameManager.Instance.playerStatHandler != null)
                     {
-                        numericValue = GameManager.Instance.playerStat.RadianceMax * (value / 100f);
+                        numericValue = GameManager.Instance.playerStatHandler.RadianceMaxTotal * (value / 100f);
                     }
                     spriteName = (_clairvoyanceIconData.StatRadiance == null) ? "RAM" : _clairvoyanceIconData.StatRadiance.name;
                 }
@@ -388,11 +388,11 @@ public class Analyzer : MonoBehaviour
                 {
                     if (GameManager.Instance == null && TutoManager.Instance != null)
                     {
-                        numericValue = TutoManager.Instance.JoueurStat.Radiance * (value / 100f);
+                        numericValue = GameManager.Instance.playerStatHandler.Radiance * (value / 100f);
                     }
-                    else if (GameManager.Instance.playerStat != null)
+                    else if (GameManager.Instance.playerStatHandler != null)
                     {
-                        numericValue = GameManager.Instance.playerStat.Radiance * (value / 100f);
+                        numericValue = GameManager.Instance.playerStatHandler.Radiance * (value / 100f);
                     }
                     spriteName = (_clairvoyanceIconData.StatRadiance == null) ? "RAM" : _clairvoyanceIconData.StatRadiance.name;
                 }
@@ -415,22 +415,22 @@ public class Analyzer : MonoBehaviour
                     {
                         if (GameManager.Instance == null && TutoManager.Instance != null)
                         {
-                            damageValue = TutoManager.Instance.JoueurStat.ForceAme * (percentValue / 100f);
+                            damageValue = GameManager.Instance.playerStatHandler.ForceDameTotal * (percentValue / 100f);
                         }
-                        else if (GameManager.Instance.playerStat != null)
+                        else if (GameManager.Instance.playerStatHandler != null)
                         {
-                            damageValue = GameManager.Instance.playerStat.ForceAme * (percentValue / 100f);
+                            damageValue = GameManager.Instance.playerStatHandler.ForceDameTotal * (percentValue / 100f);
                         }
                     }
                     else if (attributes[TradAttribute.stat].Equals("RAM", StringComparison.InvariantCultureIgnoreCase))
                     {
                         if (GameManager.Instance == null && TutoManager.Instance != null)
                         {
-                            damageValue = TutoManager.Instance.JoueurStat.RadianceMax * (percentValue / 100f);
+                            damageValue = GameManager.Instance.playerStatHandler.RadianceMaxTotal * (percentValue / 100f);
                         }
-                        else if (GameManager.Instance.playerStat != null)
+                        else if (GameManager.Instance.playerStatHandler != null)
                         {
-                            numericValue = GameManager.Instance.playerStat.RadianceMax * (percentValue / 100f);
+                            numericValue = GameManager.Instance.playerStatHandler.RadianceMaxTotal * (percentValue / 100f);
                         }
                     }
                 }

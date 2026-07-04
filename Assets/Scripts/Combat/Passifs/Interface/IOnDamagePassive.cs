@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IOnDamagePassive : IEffect
 {
-    
+    void ApplyEffectOnDommage(AbstractStatsHandler stat);
 }

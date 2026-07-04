@@ -11,17 +11,17 @@ public class CadreStatsUiManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI StatResilienceValue;
     [SerializeField] private TextMeshProUGUI StatForceAmeValue;
 
-    public void ShowStats(EnnemiStat stats)
+    public void ShowStats(EnemyStatsHandler stats)
     {
         var ConvictionTrad = GameManager.Instance.CommonNameData.Conviction;
         var FATrad = GameManager.Instance.CommonNameData.ForceDame;
         var ResilienceTrad = GameManager.Instance.CommonNameData.Resilience;
         StatConviction.text = $"{ConvictionTrad}";
-        StatConvictionValue.text = $" {stats.Conviction}";
+        StatConvictionValue.text = $" {stats.ConvictionTotal}";
         StatForceAme.text = $"{FATrad}";
-        StatForceAmeValue.text = $" {stats.ForceAme}";
+        StatForceAmeValue.text = $" {stats.ForceDameTotal}";
         StatResilience.text = $"{ResilienceTrad}";
-        StatResilienceValue.text = $" {stats.Resilience}";
+        StatResilienceValue.text = $" {stats.ResilienceTotal}";
     }
 
     public void HideStats()

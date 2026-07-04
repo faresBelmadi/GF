@@ -31,7 +31,7 @@ public class SkillTreePrinter : MonoBehaviour
         SpawnedLines = new List<GameObject>();
         SpawnedNodes = new List<GameObject>();
         ClassTitle.text = GameManager.Instance.classSO.NameClass;
-        EssenceHeader.text = "Essence : " + GameManager.Instance.playerStat.Essence;
+        EssenceHeader.text = "Essence : " + GameManager.Instance.playerStatHandler.Essence;
         LoadNodes();
     }
 
@@ -91,8 +91,8 @@ public class SkillTreePrinter : MonoBehaviour
 
     public void UpdateSkillTree(SpellUI ToUpdate)
     {
-        GameManager.Instance.playerStat.Essence -= ToUpdate.LinkedSpell.CostUnlock;
-        EssenceHeader.text = "Essence : " + GameManager.Instance.playerStat.Essence;
+        GameManager.Instance.playerStatHandler.Essence -= ToUpdate.LinkedSpell.CostUnlock;
+        EssenceHeader.text = "Essence : " + GameManager.Instance.playerStatHandler.Essence;
         foreach (var item in ToUpdate.LinkedSpell.IDChildren)
         {
             var t = SpawnedNodes.First(c => c.name == item + "");

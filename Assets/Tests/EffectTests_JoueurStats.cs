@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
 /*TODO*/
-/*
+
 public partial class EffectTests
 {
     private static string[] TestedJoueurStatFieldNames =
@@ -23,10 +24,6 @@ public partial class EffectTests
             nameof(JoueurStat.RadianceMax),
             nameof(JoueurStat._resilience),
             nameof(JoueurStat.Tension),
-            nameof(JoueurStat.TensionAttaque),
-            nameof(JoueurStat.TensionDebuff),
-            nameof(JoueurStat.TensionDot),
-            nameof(JoueurStat.TensionSoin),
             nameof(JoueurStat.Vitesse),
             nameof(JoueurStat.Volonter),
             nameof(JoueurStat.VolonterMax),
@@ -57,8 +54,6 @@ public partial class EffectTests
             defaultJoueurStat.Conscience = 0;
             defaultJoueurStat.ConscienceMax = 0;
             defaultJoueurStat.Conviction = 0;
-            defaultJoueurStat.ConvictionMin = -10;
-            defaultJoueurStat.ConvictionMax = 10;
             defaultJoueurStat.ConvictionOriginal = 0;
             defaultJoueurStat.Essence = 0;
             defaultJoueurStat._forceAme = 0;
@@ -74,19 +69,17 @@ public partial class EffectTests
             defaultJoueurStat.RadianceMaxOriginal = 0;
             defaultJoueurStat.Resilience = 0;
             defaultJoueurStat.ResiliencePassif = 0;
-            defaultJoueurStat.ResilienceMin = -10;
-            defaultJoueurStat.ResilienceMax = 10;
             defaultJoueurStat.ResilienceOriginal = 0;
             defaultJoueurStat.SlotsSouvenir = 0;
             defaultJoueurStat.Tension = 0;
-            defaultJoueurStat.TensionAttaque = 4;
-            defaultJoueurStat.TensionDebuff = 3;
-            defaultJoueurStat.TensionDot = 1;
-            defaultJoueurStat.TensionSoin = -1;
             defaultJoueurStat.Vitesse = 0;
             defaultJoueurStat.VitesseOriginal = 0;
             defaultJoueurStat.Volonter = 0;
             defaultJoueurStat.VolonterMax = 0;
+            defaultJoueurStat.ListBuffDebuff = new List<BuffDebuff>();
+            defaultJoueurStat.ListSouvenir = new List<Souvenir>();
+            defaultJoueurStat.ListSpell = new List<Spell>();
+            defaultJoueurStat.PassiveList = new List<AbstractPassive>();
             return defaultJoueurStat;
         }
     }
@@ -141,4 +134,3 @@ public partial class EffectTests
         Assert.IsTrue(AreIdentical(ExpectedDefaultJoueurStat, newJoueurStat, out string error), error);
     }
 }
-*/

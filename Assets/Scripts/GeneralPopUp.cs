@@ -210,7 +210,7 @@ public class GeneralPopUp : MonoBehaviour
 
         Debug.Log("Spawning PopUp Prefab");
         GameObject popUpObject = Instantiate(quickPupUpPrefab, spawnTransform);
-        Debug.Log("Init PopUp");
+
         QuickPopUpAccesor popUpAccessor = popUpObject.GetComponent<QuickPopUpAccesor>();
         popUpAccessor.SetText(popUp.text);
         popUpAccessor.SetEffectSprite(popUp.effectSprite);
@@ -220,7 +220,7 @@ public class GeneralPopUp : MonoBehaviour
 
         Vector3 startPos = popUpRect.anchoredPosition;
         Vector3 endpos = startPos + Vector3.up * quickPopUpFinalHeight;
-        Debug.Log("MoovePrefab");
+
         bool nextTriggered = false;
         float elapsedTime = 0;
         while (elapsedTime<Mathf.Max(quickPopUpAnimDuration,BaseQueueDelay))
@@ -242,7 +242,6 @@ public class GeneralPopUp : MonoBehaviour
 
             yield return null;
         }
-        Debug.Log("Destroy Prefab");
         Destroy(popUpObject);
 
         quickPopUpRoutines[spawnTransform] = null;

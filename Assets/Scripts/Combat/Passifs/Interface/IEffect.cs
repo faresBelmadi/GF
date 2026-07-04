@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public interface IEffect
 {
-    public void Apply(CharacterStat charStat);
+}
+
+public interface IEffectOnStat<T> : IEffect 
+{
+    public void Apply(T charStat);
 }

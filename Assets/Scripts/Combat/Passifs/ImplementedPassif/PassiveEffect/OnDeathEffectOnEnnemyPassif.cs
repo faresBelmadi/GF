@@ -10,7 +10,7 @@ public class OnDeathEffectOnEnnemyPassif : AbstractPassive, IDeathEffectPassive
     [SerializeField]
     private StatToModif _statToModif;
 
-    public void Apply(CharacterStat charStat)
+    public void Apply(StatsHandler<CharacterStat> charStat)
     {
         //...
     }
@@ -20,7 +20,7 @@ public class OnDeathEffectOnEnnemyPassif : AbstractPassive, IDeathEffectPassive
         EnnemyBehavior dependencyBehavior = null;
         foreach (var enemy in GameManager.Instance.BattleMan.EnemyScripts)
         {
-            if (enemy.Stat.IdTradName == _dependency.IdTradName)
+            if (enemy.Stat.BaseStat.IdTradName == _dependency.IdTradName)
             {
                 dependencyBehavior = enemy;
             }
@@ -31,7 +31,7 @@ public class OnDeathEffectOnEnnemyPassif : AbstractPassive, IDeathEffectPassive
         switch (_statToModif.Stat)
         {
             case BaseStats.PalierTension:
-                dependencyBehavior.Stat.Tension += dependencyBehavior.Stat.ValeurPalier * _statToModif.Ratio;
+                dependencyBehavior.Stat.ChangeTension(dependencyBehavior.Stat.ValeurPalier * _statToModif.Ratio +0.1f);
                 break;
         }
     }

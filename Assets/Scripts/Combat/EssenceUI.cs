@@ -70,7 +70,7 @@ public class EssenceUI : MonoBehaviour
         {
             GameManager.Instance.BattleMan.player.PreviewHPBarUpdate(
                 GameManager.Instance.BattleMan.player.Stat.Radiance + _essenceRootObject.Heal,
-                GameManager.Instance.BattleMan.player.Stat.RadianceMax);
+                GameManager.Instance.BattleMan.player.Stat.RadianceMaxTotal);
 
             GameManager.Instance.BattleMan.player.PreviewTensionBarUpddate();
         }
@@ -78,7 +78,7 @@ public class EssenceUI : MonoBehaviour
         {
             TutoManager.Instance.BattleManager.player.PreviewHPBarUpdate(
                 TutoManager.Instance.BattleManager.player.Stat.Radiance + _essenceRootObject.Heal,
-                TutoManager.Instance.BattleManager.player.Stat.RadianceMax);
+                TutoManager.Instance.BattleManager.player.Stat.RadianceMaxTotal);
 
             TutoManager.Instance.BattleManager.player.PreviewTensionBarUpddate();
         }

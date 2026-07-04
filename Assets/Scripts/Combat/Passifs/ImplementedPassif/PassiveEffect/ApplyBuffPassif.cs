@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New ApplyBuff passiv", menuName = "PassiveEffect/New ApplyBuff passiv")]
-public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemyBehaviorPassive
+public class ApplyBuffPassif : AbstractPassive, IEffectOnStat<EnemyStatsHandler>, IStartTurnPassive<EnemyStatsHandler>, IDynamicEventPassive<EnnemyBehavior>
 {
     [Space]
     [Header("ApplyBuffPassif")]
@@ -17,9 +17,9 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemy
     private List<BuffDebuff> _listBuffToApply;
     EnnemyBehavior _behavior;
 
-    public void Apply(CharacterStat charStat)
+    public void Apply(EnemyStatsHandler charStat)
     {
-        charStat = charStat as EnnemiStat;
+        //charStat = charStat as EnemyStatsHandler;
         switch (_triggerStat)
         {
             case BaseStats.None:
@@ -29,7 +29,8 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemy
                 {
                     if (_gainTension)
                     {
-                        charStat.Tension += charStat.ValeurPalier;
+                        charStat.ChangeTension(charStat.ValeurPalier);
+                        
                     }
                     ApplyBuff();
                 }
@@ -42,7 +43,6 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemy
                 break;
         }
     }
-  
 
     public void Clear()
     {
@@ -54,16 +54,7 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemy
         }
     }
 
-    public void InitPassif(EnnemyBehavior behavior)
-    {
-        _behavior = behavior;
-        switch (_triggerStat)
-        {
-            case BaseStats.PalierTension:
-                _behavior.OnGainTensionLevel += ApplyBuff;
-                break;
-        }
-    }
+    
 
     public void UpdateStat()
     {
@@ -74,5 +65,26 @@ public class ApplyBuffPassif : AbstractPassive, IStartTurnPassive, IUpdateEnnemy
     {
         int ind = Random.Range(0, _listBuffToApply.Count);
         GameManager.Instance.BattleMan.GiveBuffDebuff(new List<BuffDebuff>{ _listBuffToApply[ind]}, _behavior.combatID);
+    }
+
+    public void ApplyOnTurnStart(EnemyStatsHandler stat)
+    {
+        Apply(stat);
+    }
+
+    public void SubscribeEvents(EnnemyBehavior reference)
+    {
+        _behavior = reference;
+        switch (_triggerStat)
+        {
+            case BaseStats.PalierTension:
+                _behavior.OnGainTensionLevel += ApplyBuff;
+                break;
+        }
+    }
+
+    public void UnsubscribeEvents()
+    {
+        throw new System.NotImplementedException();
     }
 }
