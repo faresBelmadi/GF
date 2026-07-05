@@ -2050,19 +2050,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fec9b970d31eee5479309846a749daf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Stat: {fileID: 11400000, guid: 405097f65e9bc8d4f9eb986341b47e4c, type: 2}
+  _stat:
+    <Radiance>k__BackingField: 0
+    _forceDameModifier: 0
+    <ForceAmeBonus>k__BackingField: 0
+    _resilienceModifier: 0
+    <ResiliencePassif>k__BackingField: 0
+    <Essence>k__BackingField: 0
+    <MultiplDef>k__BackingField: 0
+    <MultiplSoin>k__BackingField: 0
+    <MultiplDegat>k__BackingField: 0
+    <MultiplBuffDebuff>k__BackingField: 0
+    <MultiplTension>k__BackingField: 0
+    <Tension>k__BackingField: 0
+    <TensionMax>k__BackingField: 0
+    <ValeurPalier>k__BackingField: 0
+    <PalierChangement>k__BackingField: 0
+    <IsStun>k__BackingField: 0
+    <ListBuffDebuff>k__BackingField: []
+    <Dissimulation>k__BackingField: 0
+    _customStat: 0
   ListBuffDebuffGO: []
+  characterMaterial: {fileID: 0}
+  deathDisolveTime: 2
   BuffPrefab: {fileID: 8673195161482103611, guid: b0d011bbc909fee4aa8d4f0cbec06220, type: 3}
   BuffContainer: {fileID: 2949275931394164129}
   DebuffContainer: {fileID: 7957818628269418758}
   _debuffTextColor: {r: 1, g: 0, b: 0, a: 1}
   _buffTextColor: {r: 0, g: 1, b: 0, a: 1}
+  _passiveTooltips: []
   LastDamageTaken: 0
   gainedTension: 0
+  <IsIntangible>k__BackingField: 0
+  nbBuffDebuffApplied: 0
   UICombat: {fileID: 3076876060913747266}
   TensionUI: 0
-  characterMaterial: {fileID: 0}
-  deathDisolveTime: 2
   combatID: 0
   nextAction: {fileID: 0}
   IsTurn: 0
@@ -2096,6 +2118,7 @@ MonoBehaviour:
   soinPrefab: {fileID: 369757569958449724, guid: 27af5be5d6aa1cb4bab7c465b4dfdeae, type: 3}
   degatPrefab: {fileID: 6455525814061643745, guid: 9a2387407ca1b4e439ff7a03898d83b4, type: 3}
   DebuffSpawned: []
+  CadreStatsUiManager: {fileID: 0}
 --- !u!114 &5881645925775171943
 MonoBehaviour:
   m_ObjectHideFlags: 0
