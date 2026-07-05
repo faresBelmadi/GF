@@ -12,20 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dd4f7d6642da7c46884bf7f51860f2b, type: 3}
   m_Name: Contremaitre
   m_EditorClassIdentifier: 
-  Radiance: 200
+  Icon: {fileID: 0}
   RadianceMax: 200
   RadianceMaxOriginal: 200
-  ForceAme: 100
+  _forceAme: 0
+  ForceAmeBonus: 0
   ForceAmeOriginal: 100
   Vitesse: 0
   VitesseOriginal: 0
   Conviction: 0
-  ConvictionMin: -10
-  ConvictionMax: 10
   ConvictionOriginal: 0
-  Resilience: 0
-  ResilienceMin: -10
-  ResilienceMax: 10
+  _resilience: 0
+  ResiliencePassif: 0
   ResilienceOriginal: 0
   Calme: 25
   Essence: 25
@@ -33,20 +31,23 @@ MonoBehaviour:
   MultiplSoin: 1
   MultiplDegat: 1
   MultipleBuffDebuff: 1
+  MultipleTension: 1
   ListBuffDebuff: []
-  TensionAttaque: 0
-  TensionDebuff: 0
-  TensionSoin: 0
-  TensionDot: 0
   Tension: 0
   TensionMax: 0
   ValeurPalier: 0
-  NbPalier: 3
   PalierChangement: 0
   nbAttaqueRecu: 0
-  Nom: 
+  PassiveList: []
+  isStun: 0
+  _deathSFX: {fileID: 0}
+  _tensionSFX: {fileID: 0}
+  _damageSFX: {fileID: 0}
+  IdTradName: 
+  Nom: Contremaitre
   Dissimulation: 0
   DissimulationOriginal: 0
+  NoTension: 0
   Spawnable: {fileID: 5875054188192873923, guid: f8b3796b5253b094b9089e283d9dc0f9, type: 3}
   Att1: {fileID: 11400000, guid: 27cefd4971bf88646bde4a8841830dac, type: 2}
   Att2: {fileID: 11400000, guid: 6f38d0dc63e1d84438e294db65e3e19c, type: 2}
